@@ -1,0 +1,2 @@
+[*.{cs,vb,xaml}]
+tab_width = 4
