@@ -1,4 +1,5 @@
-﻿using Autofac;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Win32;
 
 namespace Launcher.App;
@@ -9,21 +10,21 @@ public partial class App
 
     private void Application_Startup(object sender, StartupEventArgs e)
     {
-        var builder = new ContainerBuilder();
+        var builder = Host.CreateApplicationBuilder(e.Args);
 
-        BuildContainer(builder);
+        BuildContainer(builder.Services);
 
-        var container = builder.Build();
+        using var host = builder.Build();
 
-        using var scope = container.BeginLifetimeScope();
+        using var scope = host.Services.CreateScope();
 
-        scope.Resolve<MainWindow>().Show();
+        scope.ServiceProvider.GetRequiredService<MainWindow>().Show();
     }
 
-    private static void BuildContainer(ContainerBuilder builder)
+    private static void BuildContainer(IServiceCollection builder)
     {
-        builder.RegisterType<Settings>().SingleInstance();
+        builder.AddSingleton<Settings>();
 
-        builder.RegisterType<MainWindow>();
+        builder.AddScoped<MainWindow>();
     }
 }

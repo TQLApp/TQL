@@ -10,7 +10,7 @@ using ModifierKeys = Launcher.App.Interop.ModifierKeys;
 
 namespace Launcher.App;
 
-public partial class MainWindow : Window
+public partial class MainWindow
 {
     private readonly Settings _settings;
     private KeyboardHook? _keyboardHook;
