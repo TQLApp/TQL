@@ -1,20 +1,14 @@
-﻿<Window x:Class="Launcher.App.MainWindow"
+﻿<support:BlurWindow x:Class="Launcher.App.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Launcher.App"
+        xmlns:support="clr-namespace:Launcher.App.Support"
         mc:Ignorable="d"
-        Title="MainWindow"
+        Title="Launcher"
         Width="800"
         SizeToContent="Height"
-        Background="Transparent"
-        WindowStyle="None"
-        TextOptions.TextFormattingMode="Display"
-        UseLayoutRounding="True"
-        SnapsToDevicePixels="True"
-        RenderOptions.ClearTypeHint="Enabled"
-        ResizeMode="NoResize"
         ShowInTaskbar="False"
         Loaded="Window_Loaded"
         Closed="Window_Closed"
@@ -27,4 +21,4 @@
             </TextBox.CaretBrush>
         </TextBox>
     </StackPanel>
-</Window>
+</support:BlurWindow>

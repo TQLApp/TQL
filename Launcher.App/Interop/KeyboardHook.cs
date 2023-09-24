@@ -1,8 +1,8 @@
 ﻿// Taken from https://stackoverflow.com/questions/2450373/set-global-hotkeys-using-c-sharp.
 
 using System.Runtime.InteropServices;
-using System;
 using System.Windows.Forms;
+using System.Windows.Input;
 
 namespace Launcher.App.Interop;
 
@@ -21,12 +21,11 @@ public sealed class KeyboardHook : IDisposable
     /// </summary>
     private class Window : NativeWindow, IDisposable
     {
-        private static int WM_HOTKEY = 0x0312;
+        private const int WM_HOTKEY = 0x0312;
 
         public Window()
         {
-            // create the handle for the window.
-            this.CreateHandle(new CreateParams());
+            _ = Handle;
         }
 
         /// <summary>
@@ -46,11 +45,11 @@ public sealed class KeyboardHook : IDisposable
 
                 // invoke the event to notify the parent.
                 if (KeyPressed != null)
-                    KeyPressed(this, new KeyPressedEventArgs(modifier, key));
+                    KeyPressed(this, new HotkeyPressedEventArgs(modifier, key));
             }
         }
 
-        public event EventHandler<KeyPressedEventArgs>? KeyPressed;
+        public event EventHandler<HotkeyPressedEventArgs>? KeyPressed;
 
         #region IDisposable Members
 
@@ -68,7 +67,7 @@ public sealed class KeyboardHook : IDisposable
     public KeyboardHook()
     {
         // register the event of the inner native window.
-        _window.KeyPressed += delegate(object? sender, KeyPressedEventArgs args)
+        _window.KeyPressed += delegate(object? sender, HotkeyPressedEventArgs args)
         {
             if (KeyPressed != null)
                 KeyPressed(this, args);
@@ -93,7 +92,7 @@ public sealed class KeyboardHook : IDisposable
     /// <summary>
     /// A hot key has been pressed.
     /// </summary>
-    public event EventHandler<KeyPressedEventArgs>? KeyPressed;
+    public event EventHandler<HotkeyPressedEventArgs>? KeyPressed;
 
     #region IDisposable Members
 
@@ -115,36 +114,14 @@ public sealed class KeyboardHook : IDisposable
 /// <summary>
 /// Event Args for the event that is fired after the hot key has been pressed.
 /// </summary>
-public class KeyPressedEventArgs : EventArgs
+public class HotkeyPressedEventArgs : EventArgs
 {
-    private ModifierKeys _modifier;
-    private Keys _key;
-
-    internal KeyPressedEventArgs(ModifierKeys modifier, Keys key)
+    public HotkeyPressedEventArgs(ModifierKeys modifier, Keys key)
     {
-        _modifier = modifier;
-        _key = key;
+        Modifier = modifier;
+        Key = key;
     }
 
-    public ModifierKeys Modifier
-    {
-        get { return _modifier; }
-    }
-
-    public Keys Key
-    {
-        get { return _key; }
-    }
-}
-
-/// <summary>
-/// The enumeration of possible modifiers.
-/// </summary>
-[Flags]
-public enum ModifierKeys : uint
-{
-    Alt = 1,
-    Control = 2,
-    Shift = 4,
-    Win = 8
+    public ModifierKeys Modifier { get; }
+    public Keys Key { get; }
 }
