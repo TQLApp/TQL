@@ -1,18 +1,21 @@
 ﻿using System.Windows.Input;
 using Launcher.App.Interop;
+using Launcher.App.Services;
 using Keys = System.Windows.Forms.Keys;
 using Screen = System.Windows.Forms.Screen;
 
 namespace Launcher.App;
 
-public partial class MainWindow
+internal partial class MainWindow
 {
     private readonly Settings _settings;
+    private readonly IPluginManager _pluginManager;
     private KeyboardHook? _keyboardHook;
 
-    public MainWindow(Settings settings)
+    public MainWindow(Settings settings, IPluginManager pluginManager)
     {
         _settings = settings;
+        _pluginManager = pluginManager;
 
         InitializeComponent();
 

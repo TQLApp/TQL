@@ -14,7 +14,23 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Services\Database\Migrations\*.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Services\Database\Migrations\*.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.0.151" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
+    <PackageReference Include="System.Data.SQLite" Version="1.0.118" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Launcher.Abstractions\Launcher.Abstractions.csproj" />
+    <ProjectReference Include="..\Launcher.Plugins.AzureDevOps\Launcher.Plugins.AzureDevOps.csproj" />
   </ItemGroup>
 
 </Project>

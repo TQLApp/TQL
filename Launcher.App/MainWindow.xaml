@@ -1,19 +1,21 @@
-﻿<support:BlurWindow x:Class="Launcher.App.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Launcher.App"
-        xmlns:support="clr-namespace:Launcher.App.Support"
-        mc:Ignorable="d"
-        Title="Launcher"
-        Width="800"
-        SizeToContent="Height"
-        ShowInTaskbar="False"
-        Loaded="Window_Loaded"
-        Closed="Window_Closed"
-        PreviewKeyDown="Window_PreviewKeyDown"
-        Deactivated="Window_Deactivated">
+﻿<support:BlurWindow
+    x:Class="Launcher.App.MainWindow"
+    x:ClassModifier="internal"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:Launcher.App"
+    xmlns:support="clr-namespace:Launcher.App.Support"
+    mc:Ignorable="d"
+    Title="Launcher"
+    Width="800"
+    SizeToContent="Height"
+    ShowInTaskbar="False"
+    Loaded="Window_Loaded"
+    Closed="Window_Closed"
+    PreviewKeyDown="Window_PreviewKeyDown"
+    Deactivated="Window_Deactivated">
     <StackPanel Orientation="Vertical">
         <TextBox x:Name="_search" FontSize="18pt" Margin="14" Foreground="White" Background="Transparent" BorderThickness="0">
             <TextBox.CaretBrush>
