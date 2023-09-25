@@ -129,7 +129,7 @@ internal class Db : IDb, IDisposable
 
         public void DeleteCache(string key)
         {
-            Execute("delete from Cache where Key = @Key", key);
+            Execute("delete from Cache where Key = @key", new { key });
         }
 
         private IEnumerable<T> Query<T>(string sql, object? param = null) =>
