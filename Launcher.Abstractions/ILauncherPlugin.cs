@@ -4,7 +4,9 @@ namespace Launcher.Abstractions;
 
 public interface ILauncherPlugin
 {
+    Guid Id { get; }
+
     void ConfigureServices(IServiceCollection services);
 
-    ImmutableArray<ICategory> CreateCategories(IServiceProvider serviceProvider);
+    ImmutableArray<ICategory> Initialize(IServiceProvider serviceProvider);
 }

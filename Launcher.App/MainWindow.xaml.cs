@@ -1,6 +1,8 @@
 ﻿using System.Windows.Input;
+using Launcher.App.ConfigurationUI;
 using Launcher.App.Interop;
 using Launcher.App.Services;
+using Microsoft.Extensions.DependencyInjection;
 using Keys = System.Windows.Forms.Keys;
 using Screen = System.Windows.Forms.Screen;
 
@@ -10,12 +12,14 @@ internal partial class MainWindow
 {
     private readonly Settings _settings;
     private readonly IPluginManager _pluginManager;
+    private readonly IServiceProvider _serviceProvider;
     private KeyboardHook? _keyboardHook;
 
-    public MainWindow(Settings settings, IPluginManager pluginManager)
+    public MainWindow(Settings settings, IPluginManager pluginManager, IServiceProvider serviceProvider)
     {
         _settings = settings;
         _pluginManager = pluginManager;
+        _serviceProvider = serviceProvider;
 
         InitializeComponent();
 
@@ -33,6 +37,10 @@ internal partial class MainWindow
     {
 #if DEBUG
         DoShow();
+
+        var window = _serviceProvider.GetRequiredService<ConfigurationWindow>();
+        window.Owner = this;
+        window.ShowDialog();
 #endif
     }
 

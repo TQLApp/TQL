@@ -7,6 +7,7 @@
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
     <LangVersion>latest</LangVersion>
+    <ApplicationIcon>mainicon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,6 +20,10 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Services\Database\Migrations\*.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="mainicon.ico" />
   </ItemGroup>
 
   <ItemGroup>

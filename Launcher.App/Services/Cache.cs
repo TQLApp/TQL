@@ -53,6 +53,11 @@ internal class Cache<T> : ICache<T>
         }
     }
 
+    public void Invalidate()
+    {
+        Create();
+    }
+
     private void Create()
     {
         lock (_syncRoot)

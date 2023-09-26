@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using System.Linq;
 using System.Reflection;
 using Launcher.App.Services.Database;
+using Launcher.App.ConfigurationUI;
 
 namespace Launcher.App;
 
@@ -25,7 +26,7 @@ public partial class App
                     plugins
                         .Select(
                             plugin =>
-                                new PluginEntry(plugin, plugin.CreateCategories(serviceProvider))
+                                new PluginEntry(plugin, plugin.Initialize(serviceProvider))
                         )
                         .ToImmutableArray()
                 )
@@ -74,7 +75,9 @@ public partial class App
         builder.AddSingleton<IStore, Store>();
         builder.AddSingleton<IDb, Db>();
         builder.AddSingleton<Settings>();
+        builder.AddSingleton<IConfigurationManager, ConfigurationManager>();
 
-        builder.AddScoped<MainWindow>();
+        builder.AddTransient<MainWindow>();
+        builder.AddTransient<ConfigurationWindow>();
     }
 }
