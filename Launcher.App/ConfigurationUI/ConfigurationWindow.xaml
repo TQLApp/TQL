@@ -10,7 +10,7 @@
                     Title="Launcher Configuration" Height="450" Width="800"
                     WindowStartupLocation="CenterScreen"
                     Icon="pack://application:,,,/mainicon.ico">
-    <Grid Margin="12">
+    <Grid Margin="9">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
@@ -20,11 +20,11 @@
             <ColumnDefinition Width="8px" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <TreeView x:Name="_pages" SelectedItemChanged="_pages_SelectedItemChanged" />
-        <Border x:Name="_container" Width="Auto" Grid.Column="2" />
+        <TreeView x:Name="_pages" SelectedItemChanged="_pages_SelectedItemChanged" Margin="3" />
+        <Border x:Name="_container" Width="Auto" Grid.Column="2" Margin="3" />
         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Grid.ColumnSpan="3" Grid.Row="1">
-            <Button Content="Save" Margin="8, 8, 0, 0" IsDefault="true" />
-            <Button Content="Cancel" Margin="8, 8, 0, 0" IsCancel="true" />
+            <Button x:Name="_acceptButton" Content="Save" Margin="3" IsDefault="true" Click="_acceptButton_Click" />
+            <Button Content="Cancel" Margin="3" IsCancel="true" />
         </StackPanel>
     </Grid>
 </support:BaseWindow>

@@ -2,7 +2,7 @@
 
 public interface IConfigurationUI
 {
-    bool IsValid { get; }
+    string? GetValidationResult();
 
-    string GetConfiguration();
+    void Save();
 }

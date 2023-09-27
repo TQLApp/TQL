@@ -14,6 +14,8 @@ public partial class App
 {
     private void Application_Startup(object sender, StartupEventArgs e)
     {
+        System.Windows.Forms.Application.EnableVisualStyles();
+
         var plugins = GetPlugins().ToImmutableArray();
 
         var builder = Host.CreateApplicationBuilder(e.Args);
@@ -25,8 +27,7 @@ public partial class App
                 new PluginManager(
                     plugins
                         .Select(
-                            plugin =>
-                                new PluginEntry(plugin, plugin.Initialize(serviceProvider))
+                            plugin => new PluginEntry(plugin, plugin.Initialize(serviceProvider))
                         )
                         .ToImmutableArray()
                 )

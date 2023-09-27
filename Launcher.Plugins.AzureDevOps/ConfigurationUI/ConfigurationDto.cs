@@ -1,10 +1,11 @@
-﻿namespace Launcher.Plugins.AzureDevOps.ConfigurationUI;
+﻿using System.Collections.ObjectModel;
+using Launcher.Plugins.AzureDevOps.Support;
+
+namespace Launcher.Plugins.AzureDevOps.ConfigurationUI;
 
 internal class ConfigurationDto
 {
-    public List<ConnectionDto> Connections { get; } = new();
-
-    public bool IsValid => Connections.All(p => p.GetIsValid());
+    public ObservableCollection<ConnectionDto> Connections { get; } = new();
 
     public static ConfigurationDto FromConfiguration(Configuration configuration)
     {

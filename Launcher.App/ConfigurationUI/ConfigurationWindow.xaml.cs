@@ -2,6 +2,8 @@
 using Launcher.App.Services;
 using System.Linq;
 using System.Windows.Controls;
+using System.Windows.Forms;
+using Launcher.App.Support;
 
 namespace Launcher.App.ConfigurationUI;
 
@@ -32,5 +34,35 @@ internal partial class ConfigurationWindow
     private void _pages_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
     {
         _container.Child = (UIElement?)((TreeViewItem?)e.NewValue)?.Tag;
+    }
+
+    private void _acceptButton_Click(object sender, RoutedEventArgs e)
+    {
+        foreach (TreeViewItem page in _pages.Items)
+        {
+            var control = (IConfigurationUI)page.Tag;
+
+            var validationResult = control.GetValidationResult();
+            if (validationResult == null)
+                continue;
+
+            page.IsSelected = true;
+
+            TaskDialogEx.Alert(
+                this,
+                "Cannot save configuration",
+                validationResult,
+                TaskDialogIcon.Warning
+            );
+
+            return;
+        }
+
+        foreach (TreeViewItem page in _pages.Items)
+        {
+            ((IConfigurationUI)page.Tag).Save();
+        }
+
+        DialogResult = true;
     }
 }

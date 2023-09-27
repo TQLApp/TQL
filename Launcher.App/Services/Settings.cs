@@ -6,10 +6,10 @@ internal class Settings
 {
     private readonly RegistryKey _key;
 
-    public string? ShowOnScreen
+    public int? ShowOnScreen
     {
-        get => GetString(nameof(ShowOnScreen));
-        set => SetString(nameof(ShowOnScreen), value);
+        get => GetInteger(nameof(ShowOnScreen));
+        set => SetInteger(nameof(ShowOnScreen), value);
     }
 
     public Settings(IStore store)
@@ -20,6 +20,16 @@ internal class Settings
     private string? GetString(string name) => _key.GetValue(name) as string;
 
     private void SetString(string name, string? value)
+    {
+        if (value == null)
+            _key.DeleteValue(name);
+        else
+            _key.SetValue(name, value);
+    }
+
+    private int? GetInteger(string name) => _key.GetValue(name) as int?;
+
+    private void SetInteger(string name, int? value)
     {
         if (value == null)
             _key.DeleteValue(name);

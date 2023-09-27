@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Linq;
+using System.Windows.Input;
 using Launcher.App.ConfigurationUI;
 using Launcher.App.Interop;
 using Launcher.App.Services;
@@ -15,7 +16,11 @@ internal partial class MainWindow
     private readonly IServiceProvider _serviceProvider;
     private KeyboardHook? _keyboardHook;
 
-    public MainWindow(Settings settings, IPluginManager pluginManager, IServiceProvider serviceProvider)
+    public MainWindow(
+        Settings settings,
+        IPluginManager pluginManager,
+        IServiceProvider serviceProvider
+    )
     {
         _settings = settings;
         _pluginManager = pluginManager;
@@ -73,10 +78,16 @@ internal partial class MainWindow
     {
         var screen = Screen.PrimaryScreen!;
 
-        foreach (var item in Screen.AllScreens)
+        if (
+            _settings.ShowOnScreen.HasValue
+            && _settings.ShowOnScreen.Value < Screen.AllScreens.Length
+        )
         {
-            if (item.DeviceName == _settings.ShowOnScreen)
-                screen = item;
+            screen = Screen.AllScreens
+                .OrderBy(p => p.Bounds.X)
+                .ThenBy(p => p.Bounds.Y)
+                .Skip(_settings.ShowOnScreen.Value)
+                .First();
         }
 
         var source = PresentationSource.FromVisual(this)!;

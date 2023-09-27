@@ -4,21 +4,85 @@ namespace Launcher.Plugins.AzureDevOps.ConfigurationUI;
 
 internal partial class ConfigurationControl : IConfigurationUI
 {
-    public bool IsValid => ((ConfigurationDto)DataContext).IsValid;
+    private readonly IConfigurationManager _configurationManager;
+
+    private new ConfigurationDto DataContext => (ConfigurationDto)base.DataContext;
+
+    public string? GetValidationResult() => null;
 
     public ConfigurationControl(IConfigurationManager configurationManager)
     {
+        _configurationManager = configurationManager;
+
         InitializeComponent();
 
         var configuration = Configuration.FromJson(
             configurationManager.GetConfiguration(AzureDevOpsPlugin.Id)
         );
 
-        DataContext = ConfigurationDto.FromConfiguration(configuration);
+        base.DataContext = ConfigurationDto.FromConfiguration(configuration);
+
+        UpdateEnabled();
     }
 
-    public string GetConfiguration()
+    private void UpdateEnabled()
     {
-        return ((ConfigurationDto)DataContext).ToConfiguration().ToJson();
+        _delete.IsEnabled = _connections.SelectedItem != null;
+        _update.IsEnabled = CreateConnectionDto().GetIsValid();
     }
+
+    private ConnectionDto CreateConnectionDto() => new() { Name = _name.Text, Url = _url.Text };
+
+    public void Save()
+    {
+        _configurationManager.SetConfiguration(
+            AzureDevOpsPlugin.Id,
+            DataContext.ToConfiguration().ToJson()
+        );
+    }
+
+    private void _add_Click(object sender, RoutedEventArgs e)
+    {
+        _connections.SelectedItem = null;
+
+        ClearEdit();
+    }
+
+    private void _delete_Click(object sender, RoutedEventArgs e)
+    {
+        DataContext.Connections.Remove((ConnectionDto)_connections.SelectedItem);
+    }
+
+    private void _update_Click(object sender, RoutedEventArgs e)
+    {
+        if (_connections.SelectedItem != null)
+            DataContext.Connections[_connections.SelectedIndex] = CreateConnectionDto();
+        else
+            DataContext.Connections.Add(CreateConnectionDto());
+
+        ClearEdit();
+    }
+
+    private void ClearEdit()
+    {
+        _name.Text = null;
+        _url.Text = null;
+    }
+
+    private void _connections_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        var connectionDto = (ConnectionDto)_connections.SelectedItem;
+
+        if (connectionDto != null)
+        {
+            _name.Text = connectionDto.Name;
+            _url.Text = connectionDto.Url;
+        }
+
+        UpdateEnabled();
+    }
+
+    private void _name_TextChanged(object sender, TextChangedEventArgs e) => UpdateEnabled();
+
+    private void _url_TextChanged(object sender, TextChangedEventArgs e) => UpdateEnabled();
 }
