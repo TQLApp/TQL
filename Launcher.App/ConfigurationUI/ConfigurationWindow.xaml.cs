@@ -40,27 +40,9 @@ internal partial class ConfigurationWindow
     {
         foreach (TreeViewItem page in _pages.Items)
         {
-            var control = (IConfigurationUI)page.Tag;
-
-            var validationResult = control.GetValidationResult();
-            if (validationResult == null)
-                continue;
-
-            page.IsSelected = true;
-
-            TaskDialogEx.Alert(
-                this,
-                "Cannot save configuration",
-                validationResult,
-                TaskDialogIcon.Warning
-            );
-
-            return;
-        }
-
-        foreach (TreeViewItem page in _pages.Items)
-        {
-            ((IConfigurationUI)page.Tag).Save();
+            var status = ((IConfigurationUI)page.Tag).Save();
+            if (status == SaveStatus.Failure)
+                return;
         }
 
         DialogResult = true;

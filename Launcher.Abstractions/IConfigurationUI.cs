@@ -2,7 +2,5 @@
 
 public interface IConfigurationUI
 {
-    string? GetValidationResult();
-
-    void Save();
+    SaveStatus Save();
 }

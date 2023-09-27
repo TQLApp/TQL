@@ -8,8 +8,6 @@ internal partial class ConfigurationControl : IConfigurationUI
 
     private new ConfigurationDto DataContext => (ConfigurationDto)base.DataContext;
 
-    public string? GetValidationResult() => null;
-
     public ConfigurationControl(IConfigurationManager configurationManager)
     {
         _configurationManager = configurationManager;
@@ -33,12 +31,14 @@ internal partial class ConfigurationControl : IConfigurationUI
 
     private ConnectionDto CreateConnectionDto() => new() { Name = _name.Text, Url = _url.Text };
 
-    public void Save()
+    public SaveStatus Save()
     {
         _configurationManager.SetConfiguration(
             AzureDevOpsPlugin.Id,
             DataContext.ToConfiguration().ToJson()
         );
+
+        return SaveStatus.Success;
     }
 
     private void _add_Click(object sender, RoutedEventArgs e)
