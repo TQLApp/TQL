@@ -15,7 +15,8 @@
     Loaded="Window_Loaded"
     Closed="Window_Closed"
     PreviewKeyDown="Window_PreviewKeyDown"
-    Deactivated="Window_Deactivated">
+    Deactivated="Window_Deactivated"
+    Background="Transparent">
     <StackPanel Orientation="Vertical">
         <TextBox x:Name="_search" FontSize="18pt" Margin="14" Foreground="White" Background="Transparent" BorderThickness="0">
             <TextBox.CaretBrush>

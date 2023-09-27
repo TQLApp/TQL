@@ -7,6 +7,8 @@ using System.Linq;
 using System.Reflection;
 using Launcher.App.Services.Database;
 using Launcher.App.ConfigurationUI;
+using Microsoft.Win32;
+using FramePFX.Themes;
 
 namespace Launcher.App;
 
@@ -15,6 +17,8 @@ public partial class App
     private void Application_Startup(object sender, StartupEventArgs e)
     {
         System.Windows.Forms.Application.EnableVisualStyles();
+
+        SetMode();
 
         var plugins = GetPlugins().ToImmutableArray();
 
@@ -45,6 +49,20 @@ public partial class App
         using var scope = host.Services.CreateScope();
 
         scope.ServiceProvider.GetRequiredService<MainWindow>().Show();
+    }
+
+    private void SetMode()
+    {
+        using var key = Registry.CurrentUser.OpenSubKey(
+            @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize"
+        );
+
+        var isLight = (key?.GetValue("AppsUseLightTheme") as int?) == 1;
+
+        if (isLight)
+            ThemesController.SetTheme(ThemeType.LightTheme);
+        else
+            ThemesController.SetTheme(ThemeType.SoftDark);
     }
 
     private IEnumerable<ILauncherPlugin> GetPlugins()

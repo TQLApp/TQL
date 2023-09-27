@@ -25,7 +25,7 @@ public sealed class KeyboardHook : IDisposable
 
         public Window()
         {
-            _ = Handle;
+            CreateHandle(new CreateParams());
         }
 
         /// <summary>

@@ -7,7 +7,8 @@
                     xmlns:local="clr-namespace:Launcher.App.ConfigurationUI"
                     xmlns:support="clr-namespace:Launcher.App.Support"
                     mc:Ignorable="d"
-                    Title="Launcher Configuration" Height="450" Width="800"
+                    Title="Launcher Configuration"
+                    Height="450" Width="800"
                     WindowStartupLocation="CenterScreen"
                     Icon="pack://application:,,,/mainicon.ico">
     <Grid Margin="9">

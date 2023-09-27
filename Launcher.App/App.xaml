@@ -4,8 +4,14 @@
              xmlns:local="clr-namespace:Launcher.App"
              Startup="Application_Startup">
     <Application.Resources>
-        <Style TargetType="{x:Type Button}">
-            <Setter Property="Padding" Value="8, 3" />
-        </Style>
+
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes/ColourDictionaries/SoftDark.xaml"/>
+                <ResourceDictionary Source="Themes/ColourDictionaries/LightTheme.xaml"/>
+                <ResourceDictionary Source="Themes/ControlColours.xaml"/>
+                <ResourceDictionary Source="Themes/Controls.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
