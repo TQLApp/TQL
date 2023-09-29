@@ -3,6 +3,5 @@
 public interface IMatch
 {
     string Text { get; }
-    ICategory Category { get; }
-    ICategory? ChildCategory { get; }
+    IImage Icon { get; }
 }

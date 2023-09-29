@@ -131,7 +131,7 @@ internal class AzureCacheManager : ICacheManager<AzureData>
             );
         }
 
-        return new AzureConnection(connection.Name, projects.ToImmutableArray());
+        return new AzureConnection(connection.Name, connection.Url, projects.ToImmutableArray());
     }
 
     private async Task<Dictionary<Guid, HashSet<Feature>>> GetFeatures(Connection connection)

@@ -4,7 +4,5 @@ namespace Launcher.App.Services;
 
 internal interface IPluginManager
 {
-    ImmutableArray<PluginEntry> Plugins { get; }
+    ImmutableArray<ILauncherPlugin> Plugins { get; }
 }
-
-internal record struct PluginEntry(ILauncherPlugin Plugin, ImmutableArray<ICategory> Categories);

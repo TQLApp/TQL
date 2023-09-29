@@ -1,8 +1,14 @@
 ﻿namespace Launcher.Plugins.AzureDevOps.Data;
 
-internal record AzureData(ImmutableArray<AzureConnection> Connections);
+internal record AzureData(ImmutableArray<AzureConnection> Connections)
+{
+    public AzureConnection GetConnection(string url)
+    {
+        return Connections.Single(p => p.Url == url);
+    }
+};
 
-internal record AzureConnection(string Name, ImmutableArray<AzureProject> Projects);
+internal record AzureConnection(string Name, string Url, ImmutableArray<AzureProject> Projects);
 
 internal record AzureProject(
     Guid Id,

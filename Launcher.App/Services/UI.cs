@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -77,6 +78,18 @@ internal class UI : IUI, IDisposable
         });
 
         return tcs.Task;
+    }
+
+    public void LaunchUrl(string url)
+    {
+        try
+        {
+            Process.Start(url);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to launch '{Url}'", url);
+        }
     }
 
     public void Dispose()

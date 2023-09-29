@@ -1,12 +1,8 @@
 ﻿namespace Launcher.Abstractions;
 
-public interface ICategory
+public interface ISearchableMatch : IMatch
 {
-    Guid Id { get; }
-    IImage Icon { get; }
-    string Title { get; }
-
-    Task<ImmutableArray<IMatch>> Search(
+    Task<IEnumerable<IMatch>> Search(
         ISearchContext context,
         string text,
         CancellationToken cancellationToken

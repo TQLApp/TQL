@@ -3,7 +3,6 @@ using Launcher.App.Services;
 using Launcher.Plugins.AzureDevOps;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Linq;
 using System.Reflection;
 using Launcher.App.Services.Database;
 using Launcher.App.ConfigurationUI;
@@ -29,16 +28,15 @@ public partial class App
 
         BuildContainer(builder.Services);
 
-        builder.Services.AddSingleton<IPluginManager>(
-            serviceProvider =>
-                new PluginManager(
-                    plugins
-                        .Select(
-                            plugin => new PluginEntry(plugin, plugin.Initialize(serviceProvider))
-                        )
-                        .ToImmutableArray()
-                )
-        );
+        builder.Services.AddSingleton<IPluginManager>(serviceProvider =>
+        {
+            foreach (var plugin in plugins)
+            {
+                plugin.Initialize(serviceProvider);
+            }
+
+            return new PluginManager(plugins);
+        });
 
         builder.Services.Add(ServiceDescriptor.Singleton(typeof(ICache<>), typeof(Cache<>)));
 

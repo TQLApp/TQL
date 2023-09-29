@@ -1,11 +1,5 @@
-﻿namespace Launcher.App.Services;
+﻿using Launcher.Abstractions;
 
-internal class PluginManager : IPluginManager
-{
-    public ImmutableArray<PluginEntry> Plugins { get; }
+namespace Launcher.App.Services;
 
-    public PluginManager(ImmutableArray<PluginEntry> plugins)
-    {
-        Plugins = plugins;
-    }
-}
+internal record PluginManager(ImmutableArray<ILauncherPlugin> Plugins) : IPluginManager;

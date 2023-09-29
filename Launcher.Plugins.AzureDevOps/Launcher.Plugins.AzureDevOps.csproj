@@ -9,7 +9,17 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Launcher.Abstractions\Launcher.Abstractions.csproj" />
+	  <None Remove="Resources\Boards.png" />
+	  <None Remove="Resources\Dashboards.png" />
+	  <None Remove="Resources\Pipelines.png" />
+	  <None Remove="Resources\Repositories.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="Resources\Boards.png" />
+	  <EmbeddedResource Include="Resources\Dashboards.png" />
+	  <EmbeddedResource Include="Resources\Pipelines.png" />
+	  <EmbeddedResource Include="Resources\Repositories.png" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -21,18 +31,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="NeutralResources.Designer.cs">
-	    <DesignTime>True</DesignTime>
-	    <AutoGen>True</AutoGen>
-	    <DependentUpon>NeutralResources.resx</DependentUpon>
-	  </Compile>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <EmbeddedResource Update="NeutralResources.resx">
-	    <Generator>ResXFileCodeGenerator</Generator>
-	    <LastGenOutput>NeutralResources.Designer.cs</LastGenOutput>
-	  </EmbeddedResource>
+	  <ProjectReference Include="..\Launcher.Utilities\Launcher.Utilities.csproj" />
 	</ItemGroup>
 
 </Project>

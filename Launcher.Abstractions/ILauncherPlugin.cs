@@ -8,5 +8,8 @@ public interface ILauncherPlugin
 
     void ConfigureServices(IServiceCollection services);
 
-    ImmutableArray<ICategory> Initialize(IServiceProvider serviceProvider);
+    void Initialize(IServiceProvider serviceProvider);
+
+    IMatch? DeserializeMatch(Guid typeId, string json);
+    Task<IEnumerable<IMatch>> GetMatches();
 }
