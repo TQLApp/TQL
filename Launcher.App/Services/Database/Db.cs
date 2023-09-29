@@ -65,7 +65,7 @@ internal class Db : IDb, IDisposable
                 .OrderBy(p => p, StringComparer.OrdinalIgnoreCase)
         )
         {
-            var migrationName = resourceName[resourceNamePrefix.Length..];
+            var migrationName = resourceName.Substring(resourceNamePrefix.Length);
             if (!migrations.Add(migrationName))
                 continue;
 

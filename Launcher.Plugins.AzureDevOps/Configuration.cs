@@ -1,5 +1,4 @@
-﻿using System.Configuration;
-using System.Text.Json;
+﻿using System.Text.Json;
 
 namespace Launcher.Plugins.AzureDevOps;
 

@@ -1,5 +1,3 @@
-﻿using System.Windows.Media.Imaging;
-
-namespace Launcher.Abstractions;
+﻿namespace Launcher.Abstractions;
 
 public interface IImage { }

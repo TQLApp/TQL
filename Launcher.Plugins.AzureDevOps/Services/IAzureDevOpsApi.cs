@@ -1,3 +1,9 @@
-﻿namespace Launcher.Plugins.AzureDevOps.Services;
+﻿using Microsoft.VisualStudio.Services.WebApi;
 
-internal interface IAzureDevOpsApi { }
+namespace Launcher.Plugins.AzureDevOps.Services;
+
+internal interface IAzureDevOpsApi
+{
+    Task<T> GetClient<T>(string collectionUri)
+        where T : IVssHttpClient;
+}

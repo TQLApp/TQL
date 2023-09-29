@@ -1,16 +1,19 @@
 ﻿using Launcher.Abstractions;
+using Launcher.Plugins.AzureDevOps.Data;
 
 namespace Launcher.Plugins.AzureDevOps.ConfigurationUI;
 
 internal partial class ConfigurationControl : IConfigurationUI
 {
     private readonly IConfigurationManager _configurationManager;
+    private readonly ICache<AzureData> _cache;
 
     private new ConfigurationDto DataContext => (ConfigurationDto)base.DataContext;
 
-    public ConfigurationControl(IConfigurationManager configurationManager)
+    public ConfigurationControl(IConfigurationManager configurationManager, ICache<AzureData> cache)
     {
         _configurationManager = configurationManager;
+        _cache = cache;
 
         InitializeComponent();
 
@@ -37,6 +40,8 @@ internal partial class ConfigurationControl : IConfigurationUI
             AzureDevOpsPlugin.Id,
             DataContext.ToConfiguration().ToJson()
         );
+
+        _cache.Invalidate();
 
         return SaveStatus.Success;
     }

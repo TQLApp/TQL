@@ -1,57 +1,67 @@
 ﻿using System.Windows.Forms;
 using System.Windows.Interop;
+using Launcher.Interop;
 
 namespace Launcher.App.Support;
 
-internal static class TaskDialogEx
+public static class TaskDialogEx
 {
-    public static TaskDialogButton Show(UIElement owner, TaskDialogPage page)
+    public static TaskDialog CreateDialog(string title, string? subtitle, TaskDialogIcon mainIcon)
     {
-        var interop = new WindowInteropHelper(Window.GetWindow(owner)!);
-        var mainWindowSrc = HwndSource.FromHwnd(interop.Handle)!;
-
-        page.AllowMinimize = false;
-        page.Caption = "Launcher";
-
-        return TaskDialog.ShowDialog(mainWindowSrc.Handle, page);
+        return new TaskDialog
+        {
+            CanBeMinimized = false,
+            MainIcon = mainIcon,
+            MainInstruction = title,
+            Content = subtitle,
+            PositionRelativeToWindow = true,
+            WindowTitle = "Launchers"
+        };
     }
 
-    public static void Alert(
+    public static DialogResult Confirm(
         UIElement owner,
-        string heading,
-        string? text = null,
-        TaskDialogIcon? icon = null
+        string title,
+        string? subtitle = null,
+        TaskDialogCommonButtons buttons = TaskDialogCommonButtons.Yes | TaskDialogCommonButtons.No,
+        TaskDialogIcon icon = TaskDialogIcon.Warning
     )
     {
-        Show(
-            owner,
-            new TaskDialogPage
-            {
-                Buttons = new TaskDialogButtonCollection { new TaskDialogButton("OK") },
-                Heading = heading,
-                Text = text,
-                Icon = icon ?? TaskDialogIcon.Error,
-                AllowCancel = true
-            }
-        );
+        if (owner == null)
+            throw new ArgumentNullException(nameof(owner));
+        if (title == null)
+            throw new ArgumentNullException(nameof(title));
+
+        var taskDialog = CreateDialog(title, subtitle, icon);
+
+        taskDialog.AllowDialogCancellation = (buttons & TaskDialogCommonButtons.Cancel) != 0;
+        taskDialog.CommonButtons = buttons;
+
+        return (DialogResult)taskDialog.Show(GetOwner(owner));
     }
 
-    public static bool Confirm(UIElement owner, string heading, string? text = null)
+    public static void Error(
+        UIElement owner,
+        string title,
+        string? subtitle = null,
+        TaskDialogIcon icon = TaskDialogIcon.Error
+    )
     {
-        var yes = new TaskDialogButton("Yes");
+        if (owner == null)
+            throw new ArgumentNullException(nameof(owner));
+        if (title == null)
+            throw new ArgumentNullException(nameof(title));
 
-        var result = Show(
-            owner,
-            new TaskDialogPage
-            {
-                Buttons = new TaskDialogButtonCollection { yes, new TaskDialogButton("No") },
-                Heading = heading,
-                Text = text,
-                Icon = TaskDialogIcon.Error,
-                AllowCancel = true
-            }
-        );
+        var taskDialog = CreateDialog(title, subtitle, TaskDialogIcon.Error);
 
-        return result == yes;
+        taskDialog.AllowDialogCancellation = true;
+        taskDialog.CommonButtons = TaskDialogCommonButtons.OK;
+
+        taskDialog.Show(GetOwner(owner));
+    }
+
+    private static IntPtr GetOwner(UIElement owner)
+    {
+        return new WindowInteropHelper(Window.GetWindow(owner)!).Handle;
     }
 }

@@ -2,8 +2,8 @@ using Launcher.Abstractions;
 using Launcher.Plugins.AzureDevOps.Categories;
 using Launcher.Plugins.AzureDevOps.ConfigurationUI;
 using Launcher.Plugins.AzureDevOps.Data;
+using Launcher.Plugins.AzureDevOps.Services;
 using Microsoft.Extensions.DependencyInjection;
-using System.Text.Json;
 
 namespace Launcher.Plugins.AzureDevOps;
 
@@ -18,11 +18,18 @@ public class AzureDevOpsPlugin : ILauncherPlugin
     {
         services.AddSingleton<RepositoriesCategory>();
         services.AddSingleton<ICacheManager<AzureData>, AzureCacheManager>();
+        services.AddSingleton<IAzureDevOpsApi, AzureDevOpsApi>();
+
         services.AddTransient<ConfigurationControl>();
     }
 
     public ImmutableArray<ICategory> Initialize(IServiceProvider serviceProvider)
     {
+#if DEBUG
+        // TODO: REMOVE
+        serviceProvider.GetRequiredService<ICache<AzureData>>().Invalidate();
+#endif
+
         serviceProvider
             .GetRequiredService<IConfigurationManager>()
             .RegisterConfigurationUIFactory(new ConfigurationUIFactory());

@@ -2,8 +2,6 @@
 using Launcher.App.Services;
 using System.Linq;
 using System.Windows.Controls;
-using System.Windows.Forms;
-using Launcher.App.Support;
 
 namespace Launcher.App.ConfigurationUI;
 

@@ -1,9 +1,7 @@
 ﻿using System.Linq;
 using System.Windows.Input;
-using Launcher.App.ConfigurationUI;
 using Launcher.App.Interop;
 using Launcher.App.Services;
-using Microsoft.Extensions.DependencyInjection;
 using Keys = System.Windows.Forms.Keys;
 using Screen = System.Windows.Forms.Screen;
 
@@ -43,9 +41,9 @@ internal partial class MainWindow
 #if DEBUG
         DoShow();
 
-        var window = _serviceProvider.GetRequiredService<ConfigurationWindow>();
-        window.Owner = this;
-        window.ShowDialog();
+        //var window = _serviceProvider.GetRequiredService<ConfigurationWindow>();
+        //window.Owner = this;
+        //window.ShowDialog();
 #endif
     }
 

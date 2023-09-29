@@ -14,6 +14,9 @@ namespace Launcher.App;
 
 public partial class App
 {
+    private IHost? _host;
+    private IServiceScope? _scope;
+
     private void Application_Startup(object sender, StartupEventArgs e)
     {
         System.Windows.Forms.Application.EnableVisualStyles();
@@ -44,11 +47,11 @@ public partial class App
             plugin.ConfigureServices(builder.Services);
         }
 
-        using var host = builder.Build();
+        _host = builder.Build();
 
-        using var scope = host.Services.CreateScope();
+        _scope = _host.Services.CreateScope();
 
-        scope.ServiceProvider.GetRequiredService<MainWindow>().Show();
+        _scope.ServiceProvider.GetRequiredService<MainWindow>().Show();
     }
 
     private void SetMode()
@@ -95,8 +98,15 @@ public partial class App
         builder.AddSingleton<IDb, Db>();
         builder.AddSingleton<Settings>();
         builder.AddSingleton<IConfigurationManager, ConfigurationManager>();
+        builder.AddSingleton<IUI, UI>();
 
         builder.AddTransient<MainWindow>();
         builder.AddTransient<ConfigurationWindow>();
+    }
+
+    private void Application_Exit(object sender, ExitEventArgs e)
+    {
+        _scope?.Dispose();
+        _host?.Dispose();
     }
 }

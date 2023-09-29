@@ -1,6 +1,4 @@
-﻿using Launcher.Abstractions;
-
-namespace Launcher.App.Services;
+﻿namespace Launcher.App.Services;
 
 internal class PluginManager : IPluginManager
 {
