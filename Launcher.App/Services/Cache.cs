@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using Launcher.Abstractions;
 using Launcher.App.Services.Database;
@@ -17,6 +18,8 @@ internal class Cache<T> : ICache<T>
     private bool _creating;
 
     public bool IsAvailable => _tcs.Task.IsCompleted;
+
+    public event EventHandler<CacheEventArgs<T>>? Updated;
 
     public Cache(ILogger<Cache<T>> logger, ICacheManager<T> cacheManager, IDb db)
     {
@@ -99,6 +102,20 @@ internal class Cache<T> : ICache<T>
                     _tcs = tcs;
                     _updated = now;
                 }
+
+                ThreadPool.QueueUserWorkItem(_ =>
+                {
+                    _logger.LogInformation("Raising cache updated");
+
+                    try
+                    {
+                        OnUpdated(new CacheEventArgs<T>(data));
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Raising cache updated failed");
+                    }
+                });
             }
             catch (Exception ex)
             {
@@ -127,4 +144,6 @@ internal class Cache<T> : ICache<T>
             return _tcs.Task;
         }
     }
+
+    protected virtual void OnUpdated(CacheEventArgs<T> e) => Updated?.Invoke(this, e);
 }

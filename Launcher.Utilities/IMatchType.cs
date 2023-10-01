@@ -6,5 +6,5 @@ public interface IMatchType
 {
     Guid Id { get; }
 
-    IMatch Deserialize(string json);
+    IMatch Deserialize(string text, string json);
 }

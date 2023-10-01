@@ -4,7 +4,7 @@ using Launcher.Utilities;
 
 namespace Launcher.Plugins.AzureDevOps.Categories;
 
-internal class RepositoriesMatch : CachedMatch<AzureData>
+internal class BacklogsMatch : CachedMatch<AzureData>
 {
     private readonly Images _images;
     private readonly string _url;
@@ -12,7 +12,7 @@ internal class RepositoriesMatch : CachedMatch<AzureData>
     public override string Text { get; }
     public override IImage Icon => _images.Repositories;
 
-    public RepositoriesMatch(string text, Images images, string url, ICache<AzureData> cache)
+    public BacklogsMatch(string text, Images images, string url, ICache<AzureData> cache)
         : base(cache)
     {
         _images = images;
@@ -24,10 +24,12 @@ internal class RepositoriesMatch : CachedMatch<AzureData>
     protected override IEnumerable<IMatch> Create(AzureData data)
     {
         return from project in data.GetConnection(_url).Projects
-            from repository in project.Repositories
-            select new RepositoryMatch(
-                _images,
-                new RepositoryMatchDto(_url, project.Name, repository.Name)
+            from team in project.Teams
+            from backlog in project.Backlogs
+            select new UrlMatch(
+                $"{project.Name}/{team.Name} {backlog.Name} Backlog",
+                _images.Boards,
+                $"{_url}/_backlogs/backlog/{Uri.EscapeDataString(team.Name)}/{Uri.EscapeDataString(backlog.Name)}"
             );
     }
 }

@@ -5,7 +5,6 @@ using Launcher.Plugins.AzureDevOps.Data;
 using Launcher.Plugins.AzureDevOps.Services;
 using Launcher.Utilities;
 using Microsoft.Extensions.DependencyInjection;
-using System.Text.Json;
 
 namespace Launcher.Plugins.AzureDevOps;
 
@@ -69,15 +68,26 @@ public class AzureDevOpsPlugin : ILauncherPlugin
     public Task<IEnumerable<IMatch>> GetMatches()
     {
         var images = _serviceProvider!.GetRequiredService<Images>();
+        var cache = _serviceProvider!.GetRequiredService<ICache<AzureData>>();
         var matches = new List<IMatch>();
 
         foreach (var connection in _connections)
         {
             matches.Add(
+                new BacklogsMatch(
+                    GetMatchName("Azure Backlog", connection),
+                    images,
+                    connection.Url,
+                    cache
+                )
+            );
+
+            matches.Add(
                 new RepositoriesMatch(
                     GetMatchName("Azure Repository", connection),
                     images,
-                    connection.Url
+                    connection.Url,
+                    cache
                 )
             );
         }

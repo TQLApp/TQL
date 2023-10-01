@@ -15,6 +15,7 @@ internal record AzureProject(
     string Name,
     ImmutableArray<AzureWorkItemType> WorkItemTypes,
     ImmutableArray<AzureDashboard> Dashboards,
+    ImmutableArray<AzureBacklog> Backlogs,
     ImmutableArray<AzureBoard> Boards,
     ImmutableArray<AzureTeam> Teams,
     ImmutableArray<AzureRepository> Repositories,
@@ -24,6 +25,8 @@ internal record AzureProject(
 internal record AzureWorkItemType(string Name);
 
 internal record AzureDashboard(Guid Id, string Name);
+
+internal record AzureBacklog(string Name);
 
 internal record AzureBoard(Guid Id, string Name);
 

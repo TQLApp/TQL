@@ -2,7 +2,7 @@
 
 namespace Launcher.Abstractions;
 
-public interface IRunnableMatch
+public interface IRunnableMatch : IMatch
 {
     Task Run(IServiceProvider serviceProvider, Window owner);
 }

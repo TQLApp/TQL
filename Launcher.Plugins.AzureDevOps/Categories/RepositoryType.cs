@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-using Launcher.Abstractions;
+﻿using Launcher.Abstractions;
 using Launcher.Utilities;
 
 namespace Launcher.Plugins.AzureDevOps.Categories;
@@ -17,8 +16,8 @@ internal class RepositoryType : IMatchType
         _images = images;
     }
 
-    public IMatch Deserialize(string json)
+    public IMatch Deserialize(string text, string json)
     {
-        return new RepositoryMatch(_images, JsonSerializer.Deserialize<RepositoryDto>(json));
+        return new RepositoryMatch(_images, JsonSerializer.Deserialize<RepositoryMatchDto>(json)!);
     }
 }

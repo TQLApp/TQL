@@ -6,6 +6,7 @@ internal class Images
 {
     public IImage Boards { get; }
     public IImage Dashboards { get; }
+    public IImage Document { get; }
     public IImage Pipelines { get; }
     public IImage Repositories { get; }
 
@@ -13,6 +14,7 @@ internal class Images
     {
         Boards = LoadImage("Boards");
         Dashboards = LoadImage("Dashboards");
+        Document = LoadImage("Document");
         Pipelines = LoadImage("Pipelines");
         Repositories = LoadImage("Repositories");
 

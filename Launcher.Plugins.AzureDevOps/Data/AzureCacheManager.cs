@@ -53,6 +53,7 @@ internal class AzureCacheManager : ICacheManager<AzureData>
         {
             var workItemTypes = ImmutableArray<AzureWorkItemType>.Empty;
             var dashboards = ImmutableArray<AzureDashboard>.Empty;
+            var backlogs = ImmutableArray<AzureBacklog>.Empty;
             var boards = ImmutableArray<AzureBoard>.Empty;
             var teams = ImmutableArray<AzureTeam>.Empty;
             var repositories = ImmutableArray<AzureRepository>.Empty;
@@ -83,6 +84,22 @@ internal class AzureCacheManager : ICacheManager<AzureData>
                 boards = (
                     from board in await workClient.GetBoardsAsync(new TeamContext(project.Id))
                     select new AzureBoard(board.Id, board.Name)
+                ).ToImmutableArray();
+
+                var backlogConfigurations = await workClient.GetBacklogConfigurationsAsync(
+                    new TeamContext(project.Id)
+                );
+
+                backlogs = (
+                    from backlog in backlogConfigurations.PortfolioBacklogs.Concat(
+                        new[]
+                        {
+                            backlogConfigurations.RequirementBacklog,
+                            backlogConfigurations.TaskBacklog
+                        }
+                    )
+                    where backlog != null
+                    select new AzureBacklog(backlog.Name)
                 ).ToImmutableArray();
 
                 var teamClient = await _api.GetClient<TeamHttpClient>(connection.Url);
@@ -123,6 +140,7 @@ internal class AzureCacheManager : ICacheManager<AzureData>
                     project.Name,
                     workItemTypes,
                     dashboards,
+                    backlogs,
                     boards,
                     teams,
                     repositories,

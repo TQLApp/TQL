@@ -1,6 +1,4 @@
-﻿using System.Text.Json;
-
-namespace Launcher.Plugins.AzureDevOps;
+﻿namespace Launcher.Plugins.AzureDevOps;
 
 internal record Configuration(ImmutableArray<Connection> Connections)
 {
