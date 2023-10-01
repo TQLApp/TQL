@@ -1,6 +1,5 @@
 ﻿using Launcher.Abstractions;
 using System.IO;
-using System.Windows.Media.Imaging;
 
 namespace Launcher.App.Services;
 

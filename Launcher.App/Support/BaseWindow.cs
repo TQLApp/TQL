@@ -1,6 +1,4 @@
-﻿using System.Windows.Media;
-
-namespace Launcher.App.Support;
+﻿namespace Launcher.App.Support;
 
 public class BaseWindow : Window
 {

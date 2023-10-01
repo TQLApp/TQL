@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using Microsoft.Win32;
+using Path = System.IO.Path;
 
 namespace Launcher.App.Services;
 

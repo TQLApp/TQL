@@ -4,12 +4,20 @@ namespace Launcher.App.Services;
 
 internal class Settings
 {
+    public const int DefaultHistoryInRootResults = 90;
+
     private readonly RegistryKey _key;
 
     public int? ShowOnScreen
     {
         get => GetInteger(nameof(ShowOnScreen));
         set => SetInteger(nameof(ShowOnScreen), value);
+    }
+
+    public int? HistoryInRootResults
+    {
+        get => GetInteger(nameof(HistoryInRootResults));
+        set => SetInteger(nameof(HistoryInRootResults), value);
     }
 
     public Settings(IStore store)

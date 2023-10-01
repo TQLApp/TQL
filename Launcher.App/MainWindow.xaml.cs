@@ -1,7 +1,6 @@
-﻿using System.Linq;
-using System.Windows.Input;
-using Launcher.App.Interop;
+﻿using Launcher.App.Interop;
 using Launcher.App.Services;
+using Microsoft.Extensions.DependencyInjection;
 using Keys = System.Windows.Forms.Keys;
 using Screen = System.Windows.Forms.Screen;
 
@@ -13,6 +12,7 @@ internal partial class MainWindow
     private readonly IPluginManager _pluginManager;
     private readonly IServiceProvider _serviceProvider;
     private KeyboardHook? _keyboardHook;
+    private SearchManager? _searchManager;
 
     public MainWindow(
         Settings settings,
@@ -74,6 +74,19 @@ internal partial class MainWindow
 
     private void DoShow()
     {
+        RepositionScreen();
+
+        _search.Text = "";
+
+        _searchManager = _serviceProvider.GetRequiredService<SearchManager>();
+
+        Visibility = Visibility.Visible;
+
+        _search.Focus();
+    }
+
+    private void RepositionScreen()
+    {
         var screen = Screen.PrimaryScreen!;
 
         if (
@@ -95,15 +108,18 @@ internal partial class MainWindow
         Left =
             (screen.WorkingArea.Left / scaleX) + ((screen.WorkingArea.Width / scaleX) - Width) / 2;
         Top = (screen.WorkingArea.Top / scaleY) + ((screen.WorkingArea.Height / scaleY) - 30) / 2;
-
-        Visibility = Visibility.Visible;
-
-        _search.Text = "";
-        _search.Focus();
     }
 
     private void DoHide()
     {
         Visibility = Visibility.Hidden;
+
+        _searchManager?.Dispose();
+        _searchManager = null;
+    }
+
+    private void _search_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        _searchManager?.SearchChanged(_search.Text);
     }
 }

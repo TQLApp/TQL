@@ -26,10 +26,9 @@ internal class BacklogsMatch : CachedMatch<AzureData>
         return from project in data.GetConnection(_url).Projects
             from team in project.Teams
             from backlog in project.Backlogs
-            select new UrlMatch(
-                $"{project.Name}/{team.Name} {backlog.Name} Backlog",
-                _images.Boards,
-                $"{_url}/_backlogs/backlog/{Uri.EscapeDataString(team.Name)}/{Uri.EscapeDataString(backlog.Name)}"
+            select new BacklogMatch(
+                new BacklogMatchDto(_url, project.Name, team.Name, backlog.Name),
+                _images
             );
     }
 }

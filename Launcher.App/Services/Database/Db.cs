@@ -1,12 +1,12 @@
 ﻿using Dapper;
 using System.Data.SQLite;
 using System.IO;
-using System.Linq;
 using System.Threading;
+using Path = System.IO.Path;
 
 namespace Launcher.App.Services.Database;
 
-internal class Db : IDb, IDisposable
+internal partial class Db : IDb, IDisposable
 {
     private readonly SQLiteConnection _connection;
 
@@ -98,57 +98,5 @@ internal class Db : IDb, IDisposable
         _semaphore.Dispose();
 
         _connection.Dispose();
-    }
-
-    private class DbAccess : IDbAccess
-    {
-        private readonly Db _owner;
-        private bool _disposed;
-        private readonly SQLiteTransaction _transaction;
-
-        public DbAccess(Db owner)
-        {
-            _owner = owner;
-
-            _transaction = owner._connection.BeginTransaction();
-        }
-
-        public CacheEntity? GetCache(string key)
-        {
-            return Query<CacheEntity>("select * from Cache where Key = @key", new { key })
-                .SingleOrDefault();
-        }
-
-        public void SetCache(CacheEntity entity)
-        {
-            Execute(
-                "replace into Cache(Key, Value, Version, Updated) values (@Key, @Value, @Version, @Updated)",
-                entity
-            );
-        }
-
-        public void DeleteCache(string key)
-        {
-            Execute("delete from Cache where Key = @key", new { key });
-        }
-
-        private IEnumerable<T> Query<T>(string sql, object? param = null) =>
-            _owner._connection.Query<T>(sql, param, _transaction);
-
-        private void Execute(string sql, object? param = null) =>
-            _owner._connection.Execute(sql, param, _transaction);
-
-        public void Dispose()
-        {
-            if (!_disposed)
-            {
-                _transaction.Commit();
-                _transaction.Dispose();
-
-                _owner._semaphore.Release();
-
-                _disposed = true;
-            }
-        }
     }
 }

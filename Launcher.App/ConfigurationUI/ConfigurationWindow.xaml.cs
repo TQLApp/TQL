@@ -1,7 +1,5 @@
 ﻿using Launcher.Abstractions;
 using Launcher.App.Services;
-using System.Linq;
-using System.Windows.Controls;
 
 namespace Launcher.App.ConfigurationUI;
 

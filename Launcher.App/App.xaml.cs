@@ -8,6 +8,7 @@ using Launcher.App.Services.Database;
 using Launcher.App.ConfigurationUI;
 using Microsoft.Win32;
 using FramePFX.Themes;
+using Microsoft.Extensions.Logging;
 
 namespace Launcher.App;
 
@@ -26,17 +27,9 @@ public partial class App
 
         var builder = Host.CreateApplicationBuilder(e.Args);
 
-        BuildContainer(builder.Services);
+        ConfigureServices(builder.Services);
 
-        builder.Services.AddSingleton<IPluginManager>(serviceProvider =>
-        {
-            foreach (var plugin in plugins)
-            {
-                plugin.Initialize(serviceProvider);
-            }
-
-            return new PluginManager(plugins);
-        });
+        builder.Services.AddSingleton<IPluginManager>(new PluginManager(plugins));
 
         builder.Services.Add(ServiceDescriptor.Singleton(typeof(ICache<>), typeof(Cache<>)));
 
@@ -46,6 +39,16 @@ public partial class App
         }
 
         _host = builder.Build();
+
+        var logger = _host.Services.GetRequiredService<ILogger<App>>();
+
+        logger.LogInformation("Initializing plugins");
+
+        var pluginManager = (PluginManager)_host.Services.GetRequiredService<IPluginManager>();
+
+        pluginManager.Initialize(_host.Services);
+
+        logger.LogInformation("Startup complete");
 
         _scope = _host.Services.CreateScope();
 
@@ -89,7 +92,7 @@ public partial class App
         }
     }
 
-    private static void BuildContainer(IServiceCollection builder)
+    private static void ConfigureServices(IServiceCollection builder)
     {
         builder.AddSingleton<IImageFactory, ImageFactory>();
         builder.AddSingleton<IStore, Store>();
@@ -100,6 +103,7 @@ public partial class App
 
         builder.AddTransient<MainWindow>();
         builder.AddTransient<ConfigurationWindow>();
+        builder.AddTransient<SearchManager>();
     }
 
     private void Application_Exit(object sender, ExitEventArgs e)

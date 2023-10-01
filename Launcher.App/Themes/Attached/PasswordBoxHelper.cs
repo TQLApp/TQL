@@ -1,5 +1,3 @@
-using System.Windows.Controls;
-
 namespace FramePFX.Themes.Attached
 {
     public class PasswordBoxHelper

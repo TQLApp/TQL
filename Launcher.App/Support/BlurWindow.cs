@@ -1,6 +1,5 @@
 ﻿using System.Runtime.InteropServices;
 using System.Windows.Interop;
-using System.Windows.Media;
 
 namespace Launcher.App.Support;
 

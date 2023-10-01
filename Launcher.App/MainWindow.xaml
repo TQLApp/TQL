@@ -18,7 +18,7 @@
     Deactivated="Window_Deactivated"
     Background="Transparent">
     <StackPanel Orientation="Vertical">
-        <TextBox x:Name="_search" FontSize="18pt" Margin="14" Foreground="White" Background="Transparent" BorderThickness="0">
+        <TextBox x:Name="_search" FontSize="18pt" Margin="14" Foreground="White" Background="Transparent" BorderThickness="0" TextChanged="_search_TextChanged">
             <TextBox.CaretBrush>
                 <SolidColorBrush Color="Silver"/>
             </TextBox.CaretBrush>

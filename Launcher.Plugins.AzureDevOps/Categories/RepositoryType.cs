@@ -16,7 +16,7 @@ internal class RepositoryType : IMatchType
         _images = images;
     }
 
-    public IMatch Deserialize(string text, string json)
+    public IMatch Deserialize(string json)
     {
         return new RepositoryMatch(_images, JsonSerializer.Deserialize<RepositoryMatchDto>(json)!);
     }

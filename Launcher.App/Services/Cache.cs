@@ -1,6 +1,4 @@
-﻿using System.Text.Json;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Threading;
 using Launcher.Abstractions;
 using Launcher.App.Services.Database;
 using Microsoft.Extensions.Logging;
