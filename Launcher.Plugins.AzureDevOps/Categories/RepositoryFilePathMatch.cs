@@ -10,6 +10,7 @@ internal class RepositoryFilePathMatch : IRunnableMatch, ISerializableMatch
 
     public string Text => _dto.FilePath;
     public IImage Icon => _images.Document;
+    public Guid TypeId => RepositoryFilePathType.Id;
 
     public RepositoryFilePathMatch(RepositoryFilePathMatchDto dto, Images images)
     {
@@ -24,9 +25,9 @@ internal class RepositoryFilePathMatch : IRunnableMatch, ISerializableMatch
         return Task.CompletedTask;
     }
 
-    public (Guid TypeId, string Json) Serialize()
+    public string Serialize()
     {
-        return (RepositoryFilePathType.Id, JsonSerializer.Serialize(_dto));
+        return JsonSerializer.Serialize(_dto);
     }
 }
 

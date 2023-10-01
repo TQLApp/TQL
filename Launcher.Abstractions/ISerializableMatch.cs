@@ -2,5 +2,5 @@
 
 public interface ISerializableMatch
 {
-    (Guid TypeId, string Json) Serialize();
+    string Serialize();
 }

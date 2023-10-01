@@ -15,6 +15,7 @@ internal class RepositoryMatch : IRunnableMatch, ISearchableMatch, ISerializable
 
     public string Text => $"{_dto.ProjectName}/{_dto.RepositoryName}";
     public IImage Icon => _images.Repositories;
+    public Guid TypeId => RepositoryType.Id;
 
     public RepositoryMatch(Images images, RepositoryMatchDto dto)
     {
@@ -34,7 +35,7 @@ internal class RepositoryMatch : IRunnableMatch, ISearchableMatch, ISerializable
         var cache = context.GetDataCached($"{GetType().FullName}:{_dto}", GetRepositoryFilePaths);
 
         if (!cache.IsCompleted)
-            await context.DebounceDelay();
+            await context.DebounceDelay(cancellationToken);
 
         var filePaths = await cache;
 
@@ -42,15 +43,14 @@ internal class RepositoryMatch : IRunnableMatch, ISearchableMatch, ISerializable
             () =>
                 context.Filter(
                     context
-                        .Prefilter(filePaths, text)
+                        .Prefilter(filePaths)
                         .Select(
                             p =>
                                 new RepositoryFilePathMatch(
                                     new RepositoryFilePathMatchDto(_dto, p),
                                     _images
                                 )
-                        ),
-                    text
+                        )
                 ),
             cancellationToken
         );
@@ -85,9 +85,9 @@ internal class RepositoryMatch : IRunnableMatch, ISearchableMatch, ISerializable
         return Task.CompletedTask;
     }
 
-    public (Guid TypeId, string Json) Serialize()
+    public string Serialize()
     {
-        return (RepositoryType.Id, JsonSerializer.Serialize(_dto));
+        return JsonSerializer.Serialize(_dto);
     }
 }
 

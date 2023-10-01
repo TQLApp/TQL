@@ -65,34 +65,27 @@ public class AzureDevOpsPlugin : ILauncherPlugin
         }
     }
 
-    public Task<IEnumerable<IMatch>> GetMatches()
+    public IEnumerable<IMatch> GetMatches()
     {
         var images = _serviceProvider!.GetRequiredService<Images>();
         var cache = _serviceProvider!.GetRequiredService<ICache<AzureData>>();
-        var matches = new List<IMatch>();
 
         foreach (var connection in _connections)
         {
-            matches.Add(
-                new BacklogsMatch(
-                    GetMatchName("Azure Backlog", connection),
-                    images,
-                    connection.Url,
-                    cache
-                )
+            yield return new BacklogsMatch(
+                GetMatchName("Azure Backlog", connection),
+                images,
+                connection.Url,
+                cache
             );
 
-            matches.Add(
-                new RepositoriesMatch(
-                    GetMatchName("Azure Repository", connection),
-                    images,
-                    connection.Url,
-                    cache
-                )
+            yield return new RepositoriesMatch(
+                GetMatchName("Azure Repository", connection),
+                images,
+                connection.Url,
+                cache
             );
         }
-
-        return Task.FromResult<IEnumerable<IMatch>>(matches);
 
         string GetMatchName(string name, Connection connection)
         {

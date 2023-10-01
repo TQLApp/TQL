@@ -8,6 +8,7 @@ public abstract class CachedMatch<T> : ISearchableMatch
 
     public abstract string Text { get; }
     public abstract IImage Icon { get; }
+    public abstract Guid TypeId { get; }
 
     protected CachedMatch(ICache<T> cache)
     {
@@ -52,6 +53,6 @@ public abstract class CachedMatch<T> : ISearchableMatch
         CancellationToken cancellationToken
     )
     {
-        return context.Filter(await _matches.Task, text);
+        return context.Filter(await _matches.Task);
     }
 }

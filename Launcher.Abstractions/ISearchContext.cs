@@ -6,9 +6,9 @@ public interface ISearchContext
 
     IDictionary<string, object> Context { get; }
 
-    Task DebounceDelay();
+    Task DebounceDelay(CancellationToken cancellationToken);
 
-    IEnumerable<IMatch> Filter(IEnumerable<IMatch> matches, string text);
+    IEnumerable<IMatch> Filter(IEnumerable<IMatch> matches);
 
-    IEnumerable<string> Prefilter(IEnumerable<string> matches, string text);
+    IEnumerable<string> Prefilter(IEnumerable<string> matches);
 }

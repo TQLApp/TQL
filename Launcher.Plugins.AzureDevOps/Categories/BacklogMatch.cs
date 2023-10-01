@@ -10,6 +10,7 @@ internal class BacklogMatch : IRunnableMatch, ISerializableMatch
 
     public string Text => $"{_dto.ProjectName}/{_dto.TeamName} {_dto.BacklogName} Backlog";
     public IImage Icon => _images.Boards;
+    public Guid TypeId => BacklogType.Id;
 
     public BacklogMatch(BacklogMatchDto dto, Images images)
     {
@@ -24,9 +25,9 @@ internal class BacklogMatch : IRunnableMatch, ISerializableMatch
         return Task.CompletedTask;
     }
 
-    public (Guid TypeId, string Json) Serialize()
+    public string Serialize()
     {
-        return (BacklogType.Id, JsonSerializer.Serialize(_dto));
+        return JsonSerializer.Serialize(_dto);
     }
 }
 

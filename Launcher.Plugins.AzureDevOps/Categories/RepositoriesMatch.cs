@@ -11,6 +11,7 @@ internal class RepositoriesMatch : CachedMatch<AzureData>
 
     public override string Text { get; }
     public override IImage Icon => _images.Repositories;
+    public override Guid TypeId => Guid.Parse("b2b479f8-572e-4a02-a87e-c1ba244b17cf");
 
     public RepositoriesMatch(string text, Images images, string url, ICache<AzureData> cache)
         : base(cache)

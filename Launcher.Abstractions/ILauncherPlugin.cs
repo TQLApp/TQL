@@ -11,5 +11,6 @@ public interface ILauncherPlugin
     void Initialize(IServiceProvider serviceProvider);
 
     IMatch? DeserializeMatch(Guid typeId, string json);
-    Task<IEnumerable<IMatch>> GetMatches();
+
+    IEnumerable<IMatch> GetMatches();
 }
