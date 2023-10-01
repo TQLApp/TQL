@@ -16,7 +16,7 @@ internal class BacklogType : IMatchType
         _images = images;
     }
 
-    public IMatch Deserialize(string text, string json)
+    public IMatch Deserialize(string json)
     {
         return new BacklogMatch(JsonSerializer.Deserialize<BacklogMatchDto>(json)!, _images);
     }

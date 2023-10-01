@@ -16,7 +16,7 @@ internal class RepositoryFilePathType : IMatchType
         _images = images;
     }
 
-    public IMatch Deserialize(string text, string json)
+    public IMatch Deserialize(string json)
     {
         return new RepositoryFilePathMatch(
             JsonSerializer.Deserialize<RepositoryFilePathMatchDto>(json)!,
