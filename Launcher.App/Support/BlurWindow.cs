@@ -21,7 +21,7 @@ public class BlurWindow : BaseWindow
 
         mainWindowSrc!.CompositionTarget!.BackgroundColor = Color.FromArgb(0, 0, 0, 0);
 
-        if (Environment.OSVersion.Version.Major > 6)
+        if (Environment.OSVersion.Version.Major >= 6)
         {
             Dwm.Windows10EnableBlurBehind(interop.Handle);
 

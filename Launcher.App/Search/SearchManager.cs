@@ -117,11 +117,22 @@ internal class SearchManager : IDisposable
 
     private async void DoSearch()
     {
+        _logger.LogInformation("Performing search for '{Search}'", _search);
+
         _context?.Dispose();
 
-        _context = new SearchContext(_serviceProvider, _search, _history);
+        var context = new SearchContext(_serviceProvider, _search, _history);
+
+        _context = context;
 
         var results = Stack.Length == 0 ? GetRootSearchResults() : await GetSubSearchResults();
+
+        // If the current _context changed (i.e. isn't our version anymore),
+        // a new async task was started while we were working. Don't process
+        // the results if this happens.
+
+        if (context != _context)
+            return;
 
         if (results != null)
             Results = results.ToImmutableArray();
@@ -133,31 +144,32 @@ internal class SearchManager : IDisposable
 
     private IEnumerable<SearchResult>? GetRootSearchResults()
     {
-        if (_context == null)
+        var context = _context;
+        if (context == null)
             return null;
 
         // When no search has been entered yet, just return the top
         // 100 items of the history.
 
-        if (_context.Search.Length == 0)
-            return _context.History?.Items.Select(p => _context.GetSearchResult(p.Match)).Take(100);
+        if (context.Search.Length == 0)
+            return context.History?.Items.Select(p => context.GetSearchResult(p.Match)).Take(100);
 
         // Get the root items from all plugins.
 
-        var rootItems = _context
+        var rootItems = context
             .Filter(_pluginManager.Plugins.SelectMany(p => p.GetMatches()))
-            .Select(_context.GetSearchResult)
+            .Select(context.GetSearchResult)
             .Where(p => p.Penalty <= 0)
             .ToList();
 
-        if (_context.History == null)
+        if (context.History == null)
             return rootItems;
 
         // Filter the history and get the associated states.
 
-        var history = _context
-            .Filter(_context.History.Items.Select(p => p.Match))
-            .Select(_context.GetSearchResult)
+        var history = context
+            .Filter(context.History.Items.Select(p => p.Match))
+            .Select(context.GetSearchResult)
             .ToList();
 
         // Sort exact matches of the history above the root items, and
@@ -174,15 +186,16 @@ internal class SearchManager : IDisposable
 
     private async Task<IEnumerable<SearchResult>?> GetSubSearchResults()
     {
-        if (_context == null)
+        var context = _context;
+        if (context == null)
             return null;
 
         // We let the current match handle filtering. This allows certain
         // matches to fully delegate search to an external service.
 
-        var result = await Stack.Last().Search(_context, _search, _context.CancellationToken);
+        var result = await Stack.Last().Search(context, _search, context.CancellationToken);
 
-        return result.Select(_context.GetSearchResult);
+        return result.Select(context.GetSearchResult);
     }
 
     protected virtual void OnSearchResultsChanged() =>

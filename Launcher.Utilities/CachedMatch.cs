@@ -4,7 +4,8 @@ namespace Launcher.Utilities;
 
 public abstract class CachedMatch<T> : ISearchableMatch
 {
-    private volatile TaskCompletionSource<ImmutableArray<IMatch>> _matches = new();
+    private readonly ICache<T> _cache;
+    private ImmutableArray<IMatch>? _matches;
 
     public abstract string Text { get; }
     public abstract IImage Icon { get; }
@@ -12,37 +13,9 @@ public abstract class CachedMatch<T> : ISearchableMatch
 
     protected CachedMatch(ICache<T> cache)
     {
-        cache.Updated += (_, e) => Create(true, e.Cache);
+        _cache = cache;
 
-        Task.Run(async () =>
-        {
-            var data = await cache.Get();
-
-            Create(false, data);
-        });
-    }
-
-    private void Create(bool update, T data)
-    {
-        TaskCompletionSource<ImmutableArray<IMatch>> tcs;
-        if (update)
-            tcs = new();
-        else
-            tcs = _matches;
-
-        try
-        {
-            tcs.SetResult(Create(data).ToImmutableArray());
-        }
-        catch (Exception ex)
-        {
-            tcs.SetException(ex);
-        }
-        finally
-        {
-            if (update)
-                _matches = tcs;
-        }
+        cache.Updated += (_, e) => _matches = Create(e.Cache).ToImmutableArray();
     }
 
     protected abstract IEnumerable<IMatch> Create(T cache);
@@ -53,6 +26,9 @@ public abstract class CachedMatch<T> : ISearchableMatch
         CancellationToken cancellationToken
     )
     {
-        return context.Filter(await _matches.Task);
+        if (_matches == null)
+            _matches = Create(await _cache.Get()).ToImmutableArray();
+
+        return context.Filter(_matches);
     }
 }

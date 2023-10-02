@@ -1,4 +1,5 @@
-﻿using Launcher.App.Interop;
+﻿using System.Diagnostics;
+using Launcher.App.Interop;
 using Launcher.App.Search;
 using Launcher.App.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -42,7 +43,7 @@ internal partial class MainWindow
 #if DEBUG
         DoShow();
 
-        //var window = _serviceProvider.GetRequiredService<ConfigurationWindow>();
+        //var window = _serviceProvider.GetRequiredService<ConfigurationUI.ConfigurationWindow>();
         //window.Owner = this;
         //window.ShowDialog();
 #endif
