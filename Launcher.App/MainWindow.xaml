@@ -23,5 +23,32 @@
                 <SolidColorBrush Color="Silver"/>
             </TextBox.CaretBrush>
         </TextBox>
+        <ListBox x:Name="_results" SelectionMode="Single" Height="300">
+            <ListBoxItem>
+                <ListBoxItem.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/Boards.png" Height="28" Margin="0,0,4,0" VerticalAlignment="Center" />
+                        <TextBlock FontSize="18pt"  VerticalAlignment="Center">
+                            <TextBlock.Resources>
+                                <VisualBrush x:Key="WavyBrush" Viewbox="0,0,2,2" ViewboxUnits="Absolute" Viewport="0,2.3,6,4" ViewportUnits="Absolute" TileMode="Tile">
+                                    <VisualBrush.Visual>
+                                        <Path Data="M 0,1 C 1,0 1,2 2,1" Stroke="Red" StrokeThickness="0.2" StrokeEndLineCap="Square" StrokeStartLineCap="Square" />
+                                    </VisualBrush.Visual>
+                                </VisualBrush>
+                            </TextBlock.Resources>
+                            <Run Text="Hi, this is some wavy text">
+                                <Run.TextDecorations>
+                                    <TextDecoration Location="Underline">
+                                        <TextDecoration.Pen>
+                                            <Pen Brush="{StaticResource WavyBrush}" Thickness="6" />
+                                        </TextDecoration.Pen>
+                                    </TextDecoration>
+                                </Run.TextDecorations>
+                                </Run>
+                        </TextBlock>
+                    </StackPanel>
+                </ListBoxItem.Content>
+            </ListBoxItem>
+        </ListBox>
     </StackPanel>
 </support:BlurWindow>

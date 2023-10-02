@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using Launcher.App.Interop;
+﻿using Launcher.App.Interop;
 using Launcher.App.Search;
 using Launcher.App.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -80,12 +79,40 @@ internal partial class MainWindow
 
         _search.Text = "";
 
+        _results.Items.Clear();
+        _results.Visibility = Visibility.Collapsed;
+
         _searchManager = _serviceProvider.GetRequiredService<SearchManager>();
+        _searchManager.SearchResultsChanged += _searchManager_SearchResultsChanged;
+        _searchManager.StackChanged += _searchManager_StackChanged;
 
         Visibility = Visibility.Visible;
 
         _search.Focus();
     }
+
+    private void _searchManager_SearchResultsChanged(object sender, EventArgs e)
+    {
+        if (_searchManager == null || _searchManager.Results.Length == 0)
+        {
+            _results.Items.Clear();
+            _results.Visibility = Visibility.Collapsed;
+            return;
+        }
+
+        _results.Visibility = Visibility.Visible;
+
+        _results.Items.Clear();
+
+        foreach (var result in _searchManager.Results)
+        {
+            _results.Items.Add(new ListBoxItem { });
+        }
+
+        var results = _searchManager?.Results;
+    }
+
+    private void _searchManager_StackChanged(object sender, EventArgs e) { }
 
     private void RepositionScreen()
     {
@@ -116,8 +143,13 @@ internal partial class MainWindow
     {
         Visibility = Visibility.Hidden;
 
-        _searchManager?.Dispose();
-        _searchManager = null;
+        if (_searchManager != null)
+        {
+            _searchManager.SearchResultsChanged -= _searchManager_SearchResultsChanged;
+            _searchManager.StackChanged -= _searchManager_StackChanged;
+            _searchManager.Dispose();
+            _searchManager = null;
+        }
     }
 
     private void _search_TextChanged(object sender, TextChangedEventArgs e)
