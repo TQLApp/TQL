@@ -1,4 +1,5 @@
 ﻿using Launcher.App.Interop;
+using Launcher.App.Search;
 using Launcher.App.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Keys = System.Windows.Forms.Keys;

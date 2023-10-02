@@ -8,6 +8,7 @@ using Launcher.App.Services.Database;
 using Launcher.App.ConfigurationUI;
 using Microsoft.Win32;
 using FramePFX.Themes;
+using Launcher.App.Search;
 using Microsoft.Extensions.Logging;
 
 namespace Launcher.App;

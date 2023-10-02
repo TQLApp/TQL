@@ -76,7 +76,7 @@ internal class AzureCacheManager : ICacheManager<AzureData>
                     from dashboard in (
                         await dashboardClient.GetDashboardsAsync(new TeamContext(project.Id))
                     ).DashboardEntries
-                    select new AzureDashboard(dashboard.Id.Value, dashboard.Name)
+                    select new AzureDashboard(dashboard.Id!.Value, dashboard.Name)
                 ).ToImmutableArray();
 
                 var workClient = await _api.GetClient<WorkHttpClient>(connection.Url);

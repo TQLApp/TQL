@@ -36,8 +36,6 @@
 **            cache and return the resulting string
 **
 ===========================================================*/
-using System;
-using System.Text;
 
 namespace Launcher.App.Support
 {
@@ -49,7 +47,7 @@ namespace Launcher.App.Support
         private const int MAX_BUILDER_SIZE = 360;
 
         [ThreadStatic]
-        private static StringBuilder CachedInstance;
+        private static StringBuilder? CachedInstance;
 
         public static StringBuilder Acquire(
             int capacity = 16 /*StringBuilder.DefaultCapacity*/
@@ -57,7 +55,7 @@ namespace Launcher.App.Support
         {
             if (capacity <= MAX_BUILDER_SIZE)
             {
-                StringBuilder sb = StringBuilderCache.CachedInstance;
+                StringBuilder? sb = StringBuilderCache.CachedInstance;
                 if (sb != null)
                 {
                     // Avoid StringBuilder block fragmentation by getting a new StringBuilder

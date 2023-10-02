@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using Launcher.Abstractions;
+﻿using Launcher.Abstractions;
 using Launcher.App.Services.Database;
 using Microsoft.Extensions.Logging;
 

@@ -1,12 +1,11 @@
 ﻿using Launcher.Abstractions;
-using Microsoft.Extensions.Logging;
-using System.Threading;
 using Launcher.App.Services;
 using Launcher.App.Services.Database;
+using Microsoft.Extensions.Logging;
 
-namespace Launcher.App;
+namespace Launcher.App.Search;
 
-internal partial class SearchManager : IDisposable
+internal class SearchManager : IDisposable
 {
     private readonly ILogger<SearchManager> _logger;
     private readonly Settings _settings;
@@ -116,11 +115,13 @@ internal partial class SearchManager : IDisposable
         DoSearch();
     }
 
-    private void DoSearch()
+    private async void DoSearch()
     {
+        _context?.Dispose();
+
         _context = new SearchContext(_serviceProvider, _search, _history);
 
-        var results = Stack.Length == 0 ? GetRootSearchResults() : GetSubSearchResults();
+        var results = Stack.Length == 0 ? GetRootSearchResults() : await GetSubSearchResults();
 
         if (results != null)
             Results = results.ToImmutableArray();
@@ -139,13 +140,13 @@ internal partial class SearchManager : IDisposable
         // 100 items of the history.
 
         if (_context.Search.Length == 0)
-            return _context.History?.Items.Select(p => _context.GetMatchState(p.Match)).Take(100);
+            return _context.History?.Items.Select(p => _context.GetSearchResult(p.Match)).Take(100);
 
         // Get the root items from all plugins.
 
         var rootItems = _context
             .Filter(_pluginManager.Plugins.SelectMany(p => p.GetMatches()))
-            .Select(_context.GetMatchState)
+            .Select(_context.GetSearchResult)
             .Where(p => p.Penalty <= 0)
             .ToList();
 
@@ -156,7 +157,7 @@ internal partial class SearchManager : IDisposable
 
         var history = _context
             .Filter(_context.History.Items.Select(p => p.Match))
-            .Select(_context.GetMatchState)
+            .Select(_context.GetSearchResult)
             .ToList();
 
         // Sort exact matches of the history above the root items, and
@@ -171,9 +172,17 @@ internal partial class SearchManager : IDisposable
         return result;
     }
 
-    private IEnumerable<SearchResult>? GetSubSearchResults()
+    private async Task<IEnumerable<SearchResult>?> GetSubSearchResults()
     {
-        throw new NotImplementedException();
+        if (_context == null)
+            return null;
+
+        // We let the current match handle filtering. This allows certain
+        // matches to fully delegate search to an external service.
+
+        var result = await Stack.Last().Search(_context, _search, _context.CancellationToken);
+
+        return result.Select(_context.GetSearchResult);
     }
 
     protected virtual void OnSearchResultsChanged() =>
@@ -183,16 +192,7 @@ internal partial class SearchManager : IDisposable
 
     public void Dispose()
     {
-        // TODO release managed resources here
-    }
-
-    private class History
-    {
-        public List<(HistoryEntity History, IMatch Match)> Items { get; }
-
-        public History(IEnumerable<(HistoryEntity History, IMatch Match)> items)
-        {
-            Items = items.ToList();
-        }
+        _context?.Dispose();
+        _context = null;
     }
 }
