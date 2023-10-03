@@ -1,4 +1,5 @@
 ﻿using Launcher.Abstractions;
+using Path = System.IO.Path;
 
 namespace Launcher.Plugins.AzureDevOps;
 
@@ -12,19 +13,26 @@ internal class Images
 
     public Images(IImageFactory imageFactory)
     {
-        Boards = LoadImage("Boards");
-        Dashboards = LoadImage("Dashboards");
-        Document = LoadImage("Document");
-        Pipelines = LoadImage("Pipelines");
-        Repositories = LoadImage("Repositories");
+        Boards = LoadImage("Boards.png");
+        Dashboards = LoadImage("Dashboards.png");
+        Document = LoadImage("Document.svg");
+        Pipelines = LoadImage("Pipelines.png");
+        Repositories = LoadImage("Repositories.png");
 
         IImage LoadImage(string name)
         {
             using var stream = GetType().Assembly.GetManifestResourceStream(
-                $"{GetType().Namespace}.Resources.{name}.png"
+                $"{GetType().Namespace}.Resources.{name}"
             );
 
-            return imageFactory.FromStream(stream!);
+            var imageType = Path.GetExtension(name) switch
+            {
+                ".svg" => ImageType.Svg,
+                ".png" => ImageType.Png,
+                _ => throw new InvalidOperationException("Cannot map resource extension")
+            };
+
+            return imageFactory.FromStream(stream!, imageType);
         }
     }
 }

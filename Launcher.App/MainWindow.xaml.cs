@@ -169,8 +169,9 @@ internal partial class MainWindow
         collection.Add(
             new Image
             {
-                Source = ((Services.Image)match.Icon).BitmapImage,
+                Source = ((Services.Image)match.Icon).ImageSource,
                 Width = 18,
+                Height = 18,
                 Margin = new Thickness(0, 0, 6, 0),
                 VerticalAlignment = VerticalAlignment.Center
             }

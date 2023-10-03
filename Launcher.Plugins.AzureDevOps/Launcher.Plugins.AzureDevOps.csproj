@@ -10,10 +10,12 @@
 
 	<ItemGroup>
 	  <None Remove="Resources\**\*.png" />
+	  <None Remove="Resources\**\*.svg" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <EmbeddedResource Include="Resources\**\*.png" />
+	  <EmbeddedResource Include="Resources\**\*.svg" />
 	</ItemGroup>
 
 	<ItemGroup>
