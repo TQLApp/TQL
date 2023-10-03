@@ -4,6 +4,9 @@ using Launcher.App.Search;
 using Launcher.App.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System.ComponentModel;
+using System.IdentityModel.Protocols.WSTrust;
+using System.Text.RegularExpressions;
 using Image = System.Windows.Controls.Image;
 using Keys = System.Windows.Forms.Keys;
 using Screen = System.Windows.Forms.Screen;
@@ -12,12 +15,25 @@ namespace Launcher.App;
 
 internal partial class MainWindow
 {
+    private static DrawingImage LoadImage(string resourceName, Brush? fill = null)
+    {
+        using var stream = typeof(MainWindow).Assembly.GetManifestResourceStream(
+            $"{typeof(MainWindow).Namespace}.Resources.{resourceName}"
+        );
+
+        return ImageFactory.CreateSvgImage(stream!, fill);
+    }
+
     private readonly Settings _settings;
     private readonly IServiceProvider _serviceProvider;
     private readonly ILogger<MainWindow> _logger;
     private KeyboardHook? _keyboardHook;
     private SearchManager? _searchManager;
     private readonly TextDecoration _textDecoration;
+    private readonly DrawingImage _runImage = LoadImage("Person Running.svg");
+    private readonly DrawingImage _starImage = LoadImage("Star.svg", Brushes.Yellow);
+    private readonly DrawingImage _starFilledImage = LoadImage("Star Filled.svg");
+    private readonly DrawingImage _categoryImage = LoadImage("Apps List.svg");
 
     private IMatch? SelectedMatch
     {
@@ -138,12 +154,14 @@ internal partial class MainWindow
 
         foreach (var result in _searchManager.Results)
         {
-            var listBoxItem = new ListBoxItem
+            var listBoxItem = new MyListBoxItem
             {
                 VerticalAlignment = VerticalAlignment.Center,
                 IsSelected = _results.Items.Count == 0,
                 Tag = result
             };
+
+            listBoxItem.IsMouseOverOrSelectedChanged += ListBoxItem_IsMouseOverOrSelectedChanged;
 
             var stackPanel = new StackPanel
             {
@@ -151,11 +169,71 @@ internal partial class MainWindow
                 Margin = new Thickness(2)
             };
 
-            listBoxItem.Content = stackPanel;
+            var iconsStackPanel = new StackPanel
+            {
+                Orientation = Orientation.Horizontal,
+                Margin = new Thickness(0, 0, 6, 0)
+            };
+
+            Grid.SetColumn(iconsStackPanel, 1);
+
+            var grid = new Grid
+            {
+                ColumnDefinitions =
+                {
+                    new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
+                    new ColumnDefinition { Width = GridLength.Auto }
+                },
+                Children = { stackPanel, iconsStackPanel },
+                HorizontalAlignment = HorizontalAlignment.Stretch
+            };
+
+            listBoxItem.Content = grid;
+            listBoxItem.HorizontalContentAlignment = HorizontalAlignment.Stretch;
 
             RenderMatch(stackPanel.Children, result.Match, result.TextMatch, result.IsFuzzyMatch);
 
+            RenderMatchIcons(listBoxItem);
+
             _results.Items.Add(listBoxItem);
+        }
+    }
+
+    private void ListBoxItem_IsMouseOverOrSelectedChanged(object sender, EventArgs e)
+    {
+        RenderMatchIcons((ListBoxItem)sender);
+    }
+
+    private void RenderMatchIcons(ListBoxItem listBoxItem)
+    {
+        var grid = (Grid)listBoxItem.Content;
+        var iconsStackPanel = (StackPanel)grid.Children[grid.Children.Count - 1];
+        var searchResult = (SearchResult)listBoxItem.Tag;
+
+        iconsStackPanel.Children.Clear();
+
+        if (!(listBoxItem.IsMouseOver || listBoxItem.IsSelected))
+            return;
+
+        if (searchResult.Match is IRunnableMatch)
+            AddIcon(_runImage);
+        if (searchResult.Match is ISearchableMatch)
+            AddIcon(_categoryImage);
+        if (searchResult.HistoryId.HasValue)
+            AddIcon(listBoxItem.IsSelected ? _starFilledImage : _starImage);
+
+        void AddIcon(DrawingImage icon)
+        {
+            iconsStackPanel.Children.Add(
+                new Image
+                {
+                    Source = icon,
+                    Width = 14,
+                    Height = 14,
+                    Margin = new Thickness(6, 0, 0, 0),
+                    VerticalAlignment = VerticalAlignment.Center
+                }
+            );
         }
     }
 

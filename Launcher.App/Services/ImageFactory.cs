@@ -46,7 +46,7 @@ internal class ImageFactory : IImageFactory
         return bitmapImage;
     }
 
-    private DrawingImage CreateSvgImage(Stream stream)
+    public static DrawingImage CreateSvgImage(Stream stream, Brush? fill = null)
     {
         var doc = XDocument.Load(stream);
 
@@ -59,14 +59,16 @@ internal class ImageFactory : IImageFactory
                 var pathData = element.Attribute("d")?.Value;
 
                 if (!string.IsNullOrEmpty(pathData))
+                {
                     return new DrawingImage
                     {
                         Drawing = new GeometryDrawing(
-                            Brushes.White,
+                            fill ?? Brushes.White,
                             new Pen(Brushes.Transparent, 0),
                             Geometry.Parse(pathData)
                         )
                     };
+                }
             }
         }
 

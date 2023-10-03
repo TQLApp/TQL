@@ -10,12 +10,16 @@
     <ApplicationIcon>mainicon.ico</ApplicationIcon>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Reference Include="PresentationFramework.Aero2" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove="Resources\**\*" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Include="Resources\**\*" />
+	</ItemGroup>
 
   <ItemGroup>
-    <EditorConfigFiles Remove="C:\Projects\Launcher\Launcher.App\.editorconfig" />
+    <Reference Include="PresentationFramework.Aero2" />
   </ItemGroup>
 
   <ItemGroup>
