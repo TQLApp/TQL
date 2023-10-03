@@ -13,25 +13,46 @@ namespace Launcher.App;
 internal partial class MainWindow
 {
     private readonly Settings _settings;
-    private readonly IPluginManager _pluginManager;
     private readonly IServiceProvider _serviceProvider;
     private readonly ILogger<MainWindow> _logger;
     private KeyboardHook? _keyboardHook;
     private SearchManager? _searchManager;
+    private readonly TextDecoration _textDecoration;
+
+    private IMatch? SelectedMatch
+    {
+        get
+        {
+            var selected = default(IMatch);
+
+            if (_results.SelectedItem != null)
+            {
+                var listBoxItem = (ListBoxItem)_results.SelectedItem;
+                var searchResult = (SearchResult)listBoxItem.Tag;
+                selected = searchResult.Match;
+            }
+
+            return selected;
+        }
+    }
 
     public MainWindow(
         Settings settings,
-        IPluginManager pluginManager,
         IServiceProvider serviceProvider,
         ILogger<MainWindow> logger
     )
     {
         _settings = settings;
-        _pluginManager = pluginManager;
         _serviceProvider = serviceProvider;
         _logger = logger;
 
         InitializeComponent();
+
+        _textDecoration = new TextDecoration
+        {
+            Location = TextDecorationLocation.Underline,
+            Pen = new Pen((Brush)_results.FindResource("WavyBrush"), 6)
+        };
 
         SetupShortcut();
     }
@@ -91,6 +112,12 @@ internal partial class MainWindow
         _searchManager.SearchResultsChanged += _searchManager_SearchResultsChanged;
         _searchManager.StackChanged += _searchManager_StackChanged;
 
+        RenderStack();
+
+        // Force recalculation of the height of the window.
+
+        UpdateLayout();
+
         Visibility = Visibility.Visible;
 
         _search.Focus();
@@ -109,17 +136,10 @@ internal partial class MainWindow
 
         _results.Items.Clear();
 
-        var textDecoration = new TextDecoration
-        {
-            Location = TextDecorationLocation.Underline,
-            Pen = new Pen((Brush)_results.FindResource("WavyBrush"), 6)
-        };
-
         foreach (var result in _searchManager.Results)
         {
             var listBoxItem = new ListBoxItem
             {
-                FontSize = _search.FontSize,
                 VerticalAlignment = VerticalAlignment.Center,
                 IsSelected = _results.Items.Count == 0,
                 Tag = result
@@ -133,61 +153,98 @@ internal partial class MainWindow
 
             listBoxItem.Content = stackPanel;
 
-            stackPanel.Children.Add(
-                new Image
-                {
-                    Source = ((Services.Image)result.Match.Icon).BitmapImage,
-                    Width = 18,
-                    Margin = new Thickness(0, 0, 6, 0),
-                    VerticalAlignment = VerticalAlignment.Center
-                }
-            );
-
-            var textBlock = new TextBlock();
-
-            stackPanel.Children.Add(textBlock);
-
-            var offset = 0;
-
-            var textMatch = result.TextMatch;
-            var text = result.Text;
-
-            if (textMatch != null)
-            {
-                foreach (var range in textMatch.Ranges)
-                {
-                    if (offset < range.Offset)
-                    {
-                        var part = text.Substring(offset, range.Offset - offset);
-                        textBlock.Inlines.Add(new Run(part));
-                    }
-
-                    if (range.Length > 0)
-                    {
-                        var part = text.Substring(range.Offset, range.Length);
-                        var inline = new Bold(new Run(part));
-
-                        if (result.IsFuzzyMatch)
-                            inline.TextDecorations.Add(textDecoration);
-
-                        textBlock.Inlines.Add(inline);
-                    }
-
-                    offset = range.Offset + range.Length;
-                }
-            }
-
-            if (offset < text.Length)
-            {
-                var part = text.Substring(offset);
-                textBlock.Inlines.Add(new Run(part));
-            }
+            RenderMatch(stackPanel.Children, result.Match, result.TextMatch, result.IsFuzzyMatch);
 
             _results.Items.Add(listBoxItem);
         }
     }
 
-    private void _searchManager_StackChanged(object sender, EventArgs e) { }
+    private void RenderMatch(
+        UIElementCollection collection,
+        IMatch match,
+        TextMatch? textMatch,
+        bool isFuzzyMatch
+    )
+    {
+        collection.Add(
+            new Image
+            {
+                Source = ((Services.Image)match.Icon).BitmapImage,
+                Width = 18,
+                Margin = new Thickness(0, 0, 6, 0),
+                VerticalAlignment = VerticalAlignment.Center
+            }
+        );
+
+        var textBlock = new TextBlock { FontSize = _search.FontSize };
+
+        collection.Add(textBlock);
+
+        var offset = 0;
+
+        var text = match.Text;
+
+        if (textMatch != null)
+        {
+            foreach (var range in textMatch.Ranges)
+            {
+                if (offset < range.Offset)
+                {
+                    var part = text.Substring(offset, range.Offset - offset);
+                    textBlock.Inlines.Add(new Run(part));
+                }
+
+                if (range.Length > 0)
+                {
+                    var part = text.Substring(range.Offset, range.Length);
+                    var inline = new Bold(new Run(part));
+
+                    if (isFuzzyMatch)
+                        inline.TextDecorations.Add(_textDecoration);
+
+                    textBlock.Inlines.Add(inline);
+                }
+
+                offset = range.Offset + range.Length;
+            }
+        }
+
+        if (offset < text.Length)
+        {
+            var part = text.Substring(offset);
+            textBlock.Inlines.Add(new Run(part));
+        }
+    }
+
+    private void _searchManager_StackChanged(object sender, EventArgs e) => RenderStack();
+
+    private void RenderStack()
+    {
+        if (_searchManager == null)
+            return;
+
+        if (_searchManager.Stack.Length == 0)
+        {
+            _stack.Visibility = Visibility.Collapsed;
+            return;
+        }
+
+        _stack.Visibility = Visibility.Visible;
+
+        _stackContainer.Children.Clear();
+
+        foreach (var match in _searchManager.Stack)
+        {
+            if (_stackContainer.Children.Count > 0)
+            {
+                _stackContainer.Children.Add(
+                    new TextBlock(new Run(" » ")) { FontSize = _search.FontSize }
+                );
+            }
+
+            RenderMatch(_stackContainer.Children, match, null, false);
+        }
+    }
 
     private void RepositionScreen()
     {
@@ -234,15 +291,6 @@ internal partial class MainWindow
 
     private void _search_PreviewKeyDown(object sender, KeyEventArgs e)
     {
-        var selected = default(IMatch);
-
-        if (_results.SelectedItem != null)
-        {
-            var listBoxItem = (ListBoxItem)_results.SelectedItem;
-            var searchResult = (SearchResult)listBoxItem.Tag;
-            selected = searchResult.Match;
-        }
-
         switch (e.Key)
         {
             case Key.Up:
@@ -258,20 +306,24 @@ internal partial class MainWindow
                 break;
 
             case Key.Enter:
-                if (selected is IRunnableMatch runnable)
-                {
+            {
+                if (SelectedMatch is IRunnableMatch runnable)
                     RunItem(runnable);
-                    e.Handled = true;
-                }
+                else if (SelectedMatch is ISearchableMatch searchable)
+                    PushItem(searchable);
+                e.Handled = true;
                 break;
+            }
 
             case Key.Tab:
-                if (selected is ISearchableMatch searchable)
+            {
+                if (SelectedMatch is ISearchableMatch searchable)
                 {
                     PushItem(searchable);
                     e.Handled = true;
                 }
                 break;
+            }
 
             case Key.Escape:
                 if (_searchManager?.Stack.Length > 0)
@@ -285,6 +337,34 @@ internal partial class MainWindow
                 if (_search.Text.Length == 0 && _searchManager?.Stack.Length > 0)
                     PopItem();
                 break;
+        }
+    }
+
+    private void _results_PreviewKeyDown(object sender, KeyEventArgs e)
+    {
+        switch (e.Key)
+        {
+            case Key.Enter:
+                if (SelectedMatch is IRunnableMatch runnable)
+                {
+                    RunItem(runnable);
+                    e.Handled = true;
+                }
+                break;
+
+            case Key.Escape:
+                _search.Focus();
+                e.Handled = true;
+                break;
+        }
+    }
+
+    private void _results_MouseUp(object sender, MouseButtonEventArgs e)
+    {
+        if (e.ChangedButton == MouseButton.Left && SelectedMatch is IRunnableMatch runnable)
+        {
+            RunItem(runnable);
+            e.Handled = true;
         }
     }
 
@@ -321,19 +401,23 @@ internal partial class MainWindow
 
     private void PushItem(ISearchableMatch match)
     {
+        _searchManager?.SuspendSearch();
+
         _search.Text = string.Empty;
 
-        _results.Items.Clear();
-
         _searchManager?.Push(match);
+
+        _searchManager?.ResumeSearch();
     }
 
     private void PopItem()
     {
+        _searchManager?.SuspendSearch();
+
         _search.Text = string.Empty;
 
-        _results.Items.Clear();
-
         _searchManager?.Pop();
+
+        _searchManager?.ResumeSearch();
     }
 }

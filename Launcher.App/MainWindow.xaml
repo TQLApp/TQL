@@ -17,25 +17,49 @@
                     Deactivated="Window_Deactivated"
                     Background="Transparent">
     <StackPanel Orientation="Vertical">
-        <TextBox x:Name="_search"
-                 FontSize="15pt"
-                 Margin="14"
-                 Foreground="White"
-                 Background="Transparent"
-                 BorderThickness="0"
-                 TextChanged="_search_TextChanged"
-                 PreviewKeyDown="_search_PreviewKeyDown"
-                 AcceptsTab="True"
-                 AcceptsReturn="True">
-            <TextBox.CaretBrush>
-                <SolidColorBrush Color="Silver"/>
-            </TextBox.CaretBrush>
-        </TextBox>
+        <Grid Margin="8,0,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border x:Name="_stack"
+                    Margin="0,8,3,8"
+                    CornerRadius="4"
+                    BorderThickness="1"
+                    MaxWidth="300"
+                    BorderBrush="#80ffffff"
+                    Background="#40ffffff">
+                <StackPanel x:Name="_stackContainer"
+                            Orientation="Horizontal"
+                            Margin="10,6"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Right"/>
+            </Border>
+
+            <TextBox x:Name="_search"
+                     FontSize="15pt"
+                     Margin="6,14,14,14"
+                     Foreground="White"
+                     Background="Transparent"
+                     BorderThickness="0"
+                     TextChanged="_search_TextChanged"
+                     PreviewKeyDown="_search_PreviewKeyDown"
+                     AcceptsTab="True"
+                     AcceptsReturn="True"
+                     Grid.Column="1">
+                <TextBox.CaretBrush>
+                    <SolidColorBrush Color="Silver"/>
+                </TextBox.CaretBrush>
+            </TextBox>
+        </Grid>
         <ListBox x:Name="_results"
                  SelectionMode="Single"
                  Height="280"
                  Foreground="White"
-                 Background="Transparent">
+                 Background="Transparent"
+                 PreviewKeyDown="_results_PreviewKeyDown"
+                 MouseUp="_results_MouseUp">
             <ListBox.Resources>
                 <VisualBrush x:Key="WavyBrush"
                              Viewbox="0,0,2,2"

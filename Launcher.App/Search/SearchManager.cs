@@ -17,6 +17,7 @@ internal class SearchManager : IDisposable
         SynchronizationContext.Current;
     private string _search = string.Empty;
     private SearchContext? _context;
+    private int _suspendSearch = 0;
 
     public ImmutableArray<SearchResult> Results { get; private set; } =
         ImmutableArray<SearchResult>.Empty;
@@ -117,29 +118,36 @@ internal class SearchManager : IDisposable
 
     private async void DoSearch()
     {
-        _logger.LogInformation("Performing search for '{Search}'", _search);
-
-        _context?.Dispose();
-
-        var context = new SearchContext(_serviceProvider, _search, _history);
-
-        _context = context;
-
-        var results = Stack.Length == 0 ? GetRootSearchResults() : await GetSubSearchResults();
-
-        // If the current _context changed (i.e. isn't our version anymore),
-        // a new async task was started while we were working. Don't process
-        // the results if this happens.
-
-        if (context != _context)
+        if (_suspendSearch > 0)
             return;
 
-        if (results != null)
-            Results = results.ToImmutableArray();
-        else
-            Results = ImmutableArray<SearchResult>.Empty;
+        _logger.LogInformation("Performing search for '{Search}'", _search);
 
-        OnSearchResultsChanged();
+        try
+        {
+            _context?.Dispose();
+
+            var context = new SearchContext(_serviceProvider, _search, _history);
+
+            _context = context;
+
+            var results = Stack.Length == 0 ? GetRootSearchResults() : await GetSubSearchResults();
+
+            // If the current _context changed (i.e. isn't our version anymore),
+            // a new async task was started while we were working. Don't process
+            // the results if this happens.
+
+            if (context != _context)
+                return;
+
+            Results = results?.ToImmutableArray() ?? ImmutableArray<SearchResult>.Empty;
+
+            OnSearchResultsChanged();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failure while performing search");
+        }
     }
 
     private IEnumerable<SearchResult>? GetRootSearchResults()
@@ -207,5 +215,21 @@ internal class SearchManager : IDisposable
     {
         _context?.Dispose();
         _context = null;
+    }
+
+    public void SuspendSearch()
+    {
+        _suspendSearch++;
+    }
+
+    public void ResumeSearch(bool performSearch = true)
+    {
+        if (_suspendSearch == 0)
+            throw new InvalidOperationException("Unbalanced SuspendSearch and ResumeSearch");
+
+        _suspendSearch--;
+
+        if (_suspendSearch == 0 && performSearch)
+            DoSearch();
     }
 }
