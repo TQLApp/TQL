@@ -1,5 +1,4 @@
 ﻿using System.Collections.Concurrent;
-using System.Diagnostics;
 using Fastenshtein;
 using Launcher.Abstractions;
 using Launcher.App.Services.Database;
@@ -55,13 +54,8 @@ internal class SearchContext : ISearchContext, IDisposable
     {
         var results = new List<SearchResult>();
 
-        var parallelOptions = new ParallelOptions();
-        if (Debugger.IsAttached)
-            parallelOptions.MaxDegreeOfParallelism = 1;
-
         Parallel.ForEach(
             matches,
-            parallelOptions,
             match =>
             {
                 var searchResult = GetSearchResult(match);

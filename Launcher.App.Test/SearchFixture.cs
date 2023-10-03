@@ -33,6 +33,12 @@ public class SearchFixture
         Assert.AreEqual(expected, searchResult.FuzzyText);
     }
 
+    [Test]
+    public void EmptySearch()
+    {
+        AssertMatch("", "Azure Repository", "Azure Repository");
+    }
+
     private void AssertMatch(string search, string text, string? expected, int? penalty = null)
     {
         var searchResult = GetSearchResult(search, text);

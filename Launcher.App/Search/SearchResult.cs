@@ -16,4 +16,7 @@ internal record SearchResult(
     long? HistoryId,
     DateTime? LastAccessed,
     int? Penalty
-);
+)
+{
+    public bool IsFuzzyMatch => FuzzyText != null;
+};

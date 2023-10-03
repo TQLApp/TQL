@@ -10,7 +10,7 @@ internal class BacklogsMatch : CachedMatch<AzureData>
     private readonly string _url;
 
     public override string Text { get; }
-    public override IImage Icon => _images.Repositories;
+    public override IImage Icon => _images.Boards;
     public override Guid TypeId => Guid.Parse("14365335-45a2-43a3-af7d-fe2229744cc7");
 
     public BacklogsMatch(string text, Images images, string url, ICache<AzureData> cache)
