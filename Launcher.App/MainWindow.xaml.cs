@@ -2,6 +2,7 @@
 using Launcher.App.Interop;
 using Launcher.App.Search;
 using Launcher.App.Services;
+using Launcher.App.Services.Database;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.ComponentModel;
@@ -27,6 +28,7 @@ internal partial class MainWindow
     private readonly Settings _settings;
     private readonly IServiceProvider _serviceProvider;
     private readonly ILogger<MainWindow> _logger;
+    private readonly IDb _db;
     private KeyboardHook? _keyboardHook;
     private SearchManager? _searchManager;
     private readonly TextDecoration _textDecoration;
@@ -35,32 +37,26 @@ internal partial class MainWindow
     private readonly DrawingImage _starFilledImage = LoadImage("Star Filled.svg");
     private readonly DrawingImage _categoryImage = LoadImage("Apps List.svg");
 
-    private IMatch? SelectedMatch
+    private SearchResult? SelectedSearchResult
     {
         get
         {
-            var selected = default(IMatch);
-
-            if (_results.SelectedItem != null)
-            {
-                var listBoxItem = (ListBoxItem)_results.SelectedItem;
-                var searchResult = (SearchResult)listBoxItem.Tag;
-                selected = searchResult.Match;
-            }
-
-            return selected;
+            var listBoxItem = (ListBoxItem)_results.SelectedItem;
+            return (SearchResult?)listBoxItem?.Tag;
         }
     }
 
     public MainWindow(
         Settings settings,
         IServiceProvider serviceProvider,
-        ILogger<MainWindow> logger
+        ILogger<MainWindow> logger,
+        IDb db
     )
     {
         _settings = settings;
         _serviceProvider = serviceProvider;
         _logger = logger;
+        _db = db;
 
         InitializeComponent();
 
@@ -219,7 +215,7 @@ internal partial class MainWindow
             AddIcon(_runImage);
         if (searchResult.Match is ISearchableMatch)
             AddIcon(_categoryImage);
-        if (searchResult.HistoryId.HasValue)
+        if (searchResult.InHistory)
             AddIcon(listBoxItem.IsSelected ? _starFilledImage : _starImage);
 
         void AddIcon(DrawingImage icon)
@@ -370,6 +366,8 @@ internal partial class MainWindow
 
     private void _search_PreviewKeyDown(object sender, KeyEventArgs e)
     {
+        var searchResult = SelectedSearchResult;
+
         switch (e.Key)
         {
             case Key.Up:
@@ -386,19 +384,19 @@ internal partial class MainWindow
 
             case Key.Enter:
             {
-                if (SelectedMatch is IRunnableMatch runnable)
-                    RunItem(runnable);
-                else if (SelectedMatch is ISearchableMatch searchable)
-                    PushItem(searchable);
+                if (searchResult?.Match is IRunnableMatch runnable)
+                    RunItem(runnable, searchResult);
+                else if (searchResult?.Match is ISearchableMatch searchable)
+                    PushItem(searchable, searchResult);
                 e.Handled = true;
                 break;
             }
 
             case Key.Tab:
             {
-                if (SelectedMatch is ISearchableMatch searchable)
+                if (searchResult?.Match is ISearchableMatch searchable)
                 {
-                    PushItem(searchable);
+                    PushItem(searchable, searchResult);
                     e.Handled = true;
                 }
                 break;
@@ -421,12 +419,14 @@ internal partial class MainWindow
 
     private void _results_PreviewKeyDown(object sender, KeyEventArgs e)
     {
+        var searchResult = SelectedSearchResult;
+
         switch (e.Key)
         {
             case Key.Enter:
-                if (SelectedMatch is IRunnableMatch runnable)
+                if (searchResult?.Match is IRunnableMatch runnable)
                 {
-                    RunItem(runnable);
+                    RunItem(runnable, searchResult);
                     e.Handled = true;
                 }
                 break;
@@ -440,9 +440,11 @@ internal partial class MainWindow
 
     private void _results_MouseUp(object sender, MouseButtonEventArgs e)
     {
-        if (e.ChangedButton == MouseButton.Left && SelectedMatch is IRunnableMatch runnable)
+        var searchResult = SelectedSearchResult;
+
+        if (e.ChangedButton == MouseButton.Left && searchResult?.Match is IRunnableMatch runnable)
         {
-            RunItem(runnable);
+            RunItem(runnable, searchResult);
             e.Handled = true;
         }
     }
@@ -464,8 +466,10 @@ internal partial class MainWindow
 
     private void SelectPage(int i) => SelectItem(i * 8);
 
-    private async void RunItem(IRunnableMatch match)
+    private async void RunItem(IRunnableMatch match, SearchResult searchResult)
     {
+        MarkAsAccessed(searchResult);
+
         try
         {
             await match.Run(_serviceProvider, this);
@@ -478,8 +482,10 @@ internal partial class MainWindow
         DoHide();
     }
 
-    private void PushItem(ISearchableMatch match)
+    private void PushItem(ISearchableMatch match, SearchResult searchResult)
     {
+        MarkAsAccessed(searchResult);
+
         _searchManager?.SuspendSearch();
 
         _search.Text = string.Empty;
@@ -487,6 +493,37 @@ internal partial class MainWindow
         _searchManager?.Push(match);
 
         _searchManager?.ResumeSearch();
+    }
+
+    private void MarkAsAccessed(SearchResult searchResult)
+    {
+        if (searchResult.Match is not ISerializableMatch match)
+            return;
+
+        var parentTypeId = default(Guid?);
+        if (_searchManager?.Stack.Length > 0)
+            parentTypeId = _searchManager.Stack.Last().TypeId;
+        var json = match.Serialize();
+
+        using var access = _db.Access();
+
+        var historyId = access.FindHistory(parentTypeId, match.TypeId, json);
+
+        if (historyId.HasValue)
+        {
+            access.MarkHistoryAsAccessed(historyId.Value);
+        }
+        else
+        {
+            access.AddHistory(
+                new HistoryEntity
+                {
+                    ParentTypeId = parentTypeId,
+                    TypeId = match.TypeId,
+                    Json = json
+                }
+            );
+        }
     }
 
     private void PopItem()

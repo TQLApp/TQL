@@ -1,6 +1,6 @@
 ﻿namespace Launcher.Abstractions;
 
-public interface ISerializableMatch
+public interface ISerializableMatch : IMatch
 {
     string Serialize();
 }

@@ -1,5 +1,6 @@
 ﻿using System.Data.SQLite;
 using Dapper;
+using Microsoft.VisualStudio.Services.Operations;
 
 namespace Launcher.App.Services.Database;
 
@@ -69,6 +70,27 @@ internal partial class Db
                 "update History set LastAccess = @LastAccess, AccessCount = AccessCount + 1",
                 new { LastAccess = DateTime.UtcNow }
             );
+        }
+
+        public long? FindHistory(Guid? parentTypeId, Guid typeId, string json)
+        {
+            var sql = "select Id from History where ";
+            if (parentTypeId.HasValue)
+                sql += "ParentTypeId = @parentTypeId and ";
+            else
+                sql += "ParentTypeId is null and ";
+            sql += "TypeId = @typeId and Json = @json";
+
+            return Query<long?>(
+                    sql,
+                    new
+                    {
+                        parentTypeId,
+                        typeId,
+                        json
+                    }
+                )
+                .Single();
         }
 
         public void DeleteHistory(long id)

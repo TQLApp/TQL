@@ -180,7 +180,7 @@ internal class SearchContext : ISearchContext, IDisposable
             simpleText,
             fuzzyText,
             textMatch,
-            history?.Id,
+            history?.Id != null,
             history?.LastAccess,
             penalty
         );
