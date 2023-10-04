@@ -92,6 +92,8 @@ internal class SearchManager : IDisposable
     {
         Stack = Stack.Add(match);
 
+        ClearResults();
+
         OnStackChanged();
 
         DoSearch();
@@ -102,11 +104,20 @@ internal class SearchManager : IDisposable
         if (Stack.Length == 0)
             return;
 
+        ClearResults();
+
         Stack = Stack.RemoveAt(Stack.Length - 1);
 
         OnStackChanged();
 
         DoSearch();
+    }
+
+    private void ClearResults()
+    {
+        Results = ImmutableArray<SearchResult>.Empty;
+
+        OnSearchResultsChanged();
     }
 
     public void SearchChanged(string search)
@@ -116,7 +127,7 @@ internal class SearchManager : IDisposable
         DoSearch();
     }
 
-    private async void DoSearch()
+    public async void DoSearch()
     {
         if (_suspendSearch > 0)
             return;

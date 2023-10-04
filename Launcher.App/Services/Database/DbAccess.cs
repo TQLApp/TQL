@@ -49,7 +49,7 @@ internal partial class Db
         public void AddHistory(HistoryEntity history)
         {
             Execute(
-                "insert into History(PluginId, ParentTypeId, TypeId, Json, LastAccess, AccessCount) values (@PluginId, @TypeId, @Json, @LastAccess, 1)",
+                "insert into History(PluginId, ParentTypeId, TypeId, Json, LastAccess, AccessCount) values (@PluginId, @ParentTypeId, @TypeId, @Json, @LastAccess, 1)",
                 new
                 {
                     history.PluginId,
@@ -71,27 +71,18 @@ internal partial class Db
             );
         }
 
-        public long? FindHistory(Guid pluginId, Guid? parentTypeId, Guid typeId, string json)
+        public long? FindHistory(Guid pluginId, Guid typeId, string json)
         {
             return Query<long?>(
-                    $"""
-                    select Id
-                    from History
-                    where
-                        PluginId = @pluginId and
-                        ParentTypeId {(parentTypeId.HasValue ? "= @parentTypeId" : "is null")} and
-                        TypeId = @typeId and
-                        Json = @json
-                    """,
+                    "select Id from History where PluginId = @pluginId and TypeId = @typeId and Json = @json",
                     new
                     {
                         pluginId,
-                        parentTypeId,
                         typeId,
                         json
                     }
                 )
-                .Single();
+                .SingleOrDefault();
         }
 
         public void DeleteHistory(long id)

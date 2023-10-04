@@ -47,13 +47,16 @@ internal partial class MainWindow
         Settings settings,
         IServiceProvider serviceProvider,
         ILogger<MainWindow> logger,
-        IDb db
+        IDb db,
+        CacheManagerManager cacheManagerManager
     )
     {
         _settings = settings;
         _serviceProvider = serviceProvider;
         _logger = logger;
         _db = db;
+
+        cacheManagerManager.LoadingChanged += CacheManagerManager_LoadingChanged;
 
         InitializeComponent();
 
@@ -64,6 +67,21 @@ internal partial class MainWindow
         };
 
         SetupShortcut();
+    }
+
+    private void CacheManagerManager_LoadingChanged(object sender, EventArgs e)
+    {
+        Dispatcher.BeginInvoke(
+            new Action(() =>
+            {
+                var isLoading = ((CacheManagerManager)sender).IsLoading;
+
+                _spinner.Visibility = isLoading ? Visibility.Visible : Visibility.Collapsed;
+
+                if (!isLoading)
+                    _searchManager?.DoSearch();
+            })
+        );
     }
 
     private void SetupShortcut()
@@ -212,7 +230,7 @@ internal partial class MainWindow
             AddIcon(_runImage);
         if (searchResult.Match is ISearchableMatch)
             AddIcon(_categoryImage);
-        if (searchResult.InHistory)
+        if (searchResult.HistoryId.HasValue)
             AddIcon(listBoxItem.IsSelected ? _starFilledImage : _starImage);
 
         void AddIcon(DrawingImage icon)
@@ -502,12 +520,9 @@ internal partial class MainWindow
 
         using var access = _db.Access();
 
-        var historyId = access.FindHistory(
-            match.TypeId.PluginId,
-            parentTypeId,
-            match.TypeId.Id,
-            json
-        );
+        var historyId =
+            searchResult.HistoryId
+            ?? access.FindHistory(match.TypeId.PluginId, match.TypeId.Id, json);
 
         if (historyId.HasValue)
         {

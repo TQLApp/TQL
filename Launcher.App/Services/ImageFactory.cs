@@ -32,7 +32,7 @@ internal class ImageFactory : IImageFactory
         }
     }
 
-    private BitmapImage CreateBitmapImage(Stream stream)
+    public static BitmapImage CreateBitmapImage(Stream stream)
     {
         var bitmapImage = new BitmapImage();
 

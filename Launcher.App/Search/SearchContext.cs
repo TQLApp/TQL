@@ -141,7 +141,7 @@ internal class SearchContext : ISearchContext, IDisposable
         var penalty = default(int?);
 
         if (json != null)
-            history = History?.GetByJson(json)?.History;
+            history = History?.GetByJson(match.TypeId, json)?.History;
 
         var textMatch = TextMatching.Match(_lowerSimplifiedSearch, lowerSimpleText, _distribution);
 
@@ -180,7 +180,7 @@ internal class SearchContext : ISearchContext, IDisposable
             simpleText,
             fuzzyText != null,
             textMatch,
-            history?.Id != null,
+            history?.Id,
             history?.LastAccess,
             penalty
         );

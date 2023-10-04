@@ -13,7 +13,7 @@ internal record SearchResult(
     string SimpleText,
     bool IsFuzzyMatch,
     TextMatch? TextMatch,
-    bool InHistory,
+    long? HistoryId,
     DateTime? LastAccessed,
     int? Penalty
 );

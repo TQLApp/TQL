@@ -8,6 +8,6 @@ internal interface IDbAccess : IDisposable
     List<HistoryEntity> GetHistory(int days);
     void AddHistory(HistoryEntity history);
     void MarkHistoryAsAccessed(long id);
-    long? FindHistory(Guid pluginId, Guid? parentTypeId, Guid typeId, string json);
+    long? FindHistory(Guid pluginId, Guid typeId, string json);
     void DeleteHistory(long id);
 }

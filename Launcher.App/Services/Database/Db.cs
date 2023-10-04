@@ -1,4 +1,5 @@
-﻿using Dapper;
+﻿using System.Data;
+using Dapper;
 using System.Data.SQLite;
 using System.IO;
 using Path = System.IO.Path;
@@ -15,6 +16,8 @@ internal partial class Db : IDb, IDisposable
 
     public Db(IStore store)
     {
+        SetupDapper();
+
         var fileName = Path.Combine(store.UserSettingsFolder, "Launcher.db");
         bool exists = File.Exists(fileName);
 
@@ -36,6 +39,34 @@ internal partial class Db : IDb, IDisposable
         }
 
         Migrate(!exists);
+    }
+
+    private void SetupDapper()
+    {
+        SqlMapper.AddTypeHandler(new SQLiteGuidTypeHandler());
+        SqlMapper.RemoveTypeMap(typeof(Guid));
+        SqlMapper.RemoveTypeMap(typeof(Guid?));
+    }
+
+    private class SQLiteGuidTypeHandler : SqlMapper.TypeHandler<Guid>
+    {
+        public override void SetValue(IDbDataParameter parameter, Guid value)
+        {
+            parameter.Value = value.ToByteArray();
+        }
+
+        public override Guid Parse(object value)
+        {
+            return value switch
+            {
+                byte[] byteArrayValue => new Guid(byteArrayValue),
+                string stringValue => Guid.Parse(stringValue),
+                _
+                    => throw new ArgumentException(
+                        $"Cannot convert type '{value.GetType()}' to a Guid"
+                    )
+            };
+        }
     }
 
     private void Migrate(bool isNew)

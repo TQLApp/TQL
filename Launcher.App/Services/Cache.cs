@@ -9,6 +9,7 @@ internal class Cache<T> : ICache<T>
     private readonly ILogger<Cache<T>> _logger;
     private readonly ICacheManager<T> _cacheManager;
     private readonly IDb _db;
+    private readonly CacheManagerManager _cacheManagerManager;
     private TaskCompletionSource<T> _tcs = new();
     private DateTime _updated;
     private readonly object _syncRoot = new();
@@ -18,11 +19,17 @@ internal class Cache<T> : ICache<T>
 
     public event EventHandler<CacheEventArgs<T>>? Updated;
 
-    public Cache(ILogger<Cache<T>> logger, ICacheManager<T> cacheManager, IDb db)
+    public Cache(
+        ILogger<Cache<T>> logger,
+        ICacheManager<T> cacheManager,
+        IDb db,
+        CacheManagerManager cacheManagerManager
+    )
     {
         _logger = logger;
         _cacheManager = cacheManager;
         _db = db;
+        _cacheManagerManager = cacheManagerManager;
 
         LoadFromDb();
 
@@ -66,6 +73,8 @@ internal class Cache<T> : ICache<T>
                 return;
             _creating = true;
         }
+
+        _cacheManagerManager.StartLoading();
 
         Task.Run(async () =>
         {
@@ -124,6 +133,8 @@ internal class Cache<T> : ICache<T>
                 {
                     _creating = false;
                 }
+
+                _cacheManagerManager.StopLoading();
 
                 _logger.LogInformation("Recreating cache complete");
             }

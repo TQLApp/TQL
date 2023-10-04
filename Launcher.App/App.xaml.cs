@@ -101,6 +101,7 @@ public partial class App
         builder.AddSingleton<Settings>();
         builder.AddSingleton<IConfigurationManager, ConfigurationManager>();
         builder.AddSingleton<IUI, UI>();
+        builder.AddSingleton<CacheManagerManager>();
 
         builder.AddTransient<MainWindow>();
         builder.AddTransient<ConfigurationWindow>();

@@ -16,7 +16,7 @@ internal class History
         _byJson = Items.ToDictionary(p => p.History.Json!, p => p);
     }
 
-    public (HistoryEntity History, IMatch Match)? GetByJson(string json)
+    public (HistoryEntity History, IMatch Match)? GetByJson(MatchTypeId typeId, string json)
     {
         if (_byJson.TryGetValue(json, out var result))
             return result;
