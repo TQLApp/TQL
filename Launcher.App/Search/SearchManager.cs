@@ -17,7 +17,8 @@ internal class SearchManager : IDisposable
         SynchronizationContext.Current;
     private string _search = string.Empty;
     private SearchContext? _context;
-    private int _suspendSearch = 0;
+    private int _suspendSearch;
+    private readonly Dictionary<string, object> _contextContext = new();
 
     public ImmutableArray<SearchResult> Results { get; private set; } =
         ImmutableArray<SearchResult>.Empty;
@@ -138,7 +139,13 @@ internal class SearchManager : IDisposable
         {
             _context?.Dispose();
 
-            var context = new SearchContext(_serviceProvider, _search, Stack.LastOrDefault()?.TypeId, _history);
+            var context = new SearchContext(
+                _serviceProvider,
+                _search,
+                Stack.LastOrDefault()?.TypeId,
+                _history,
+                _contextContext
+            );
 
             _context = context;
 
