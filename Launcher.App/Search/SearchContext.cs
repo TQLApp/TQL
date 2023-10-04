@@ -14,6 +14,7 @@ internal class SearchContext : ISearchContext, IDisposable
     private readonly ThreadLocal<Levenshtein> _levenshtein;
     private readonly CharDistribution _distribution;
     private readonly string _lowerSimplifiedSearch;
+    private readonly MatchTypeId? _parentTypeId;
 
     public IServiceProvider ServiceProvider { get; }
     public IDictionary<string, object> Context { get; } = new Dictionary<string, object>();
@@ -22,8 +23,14 @@ internal class SearchContext : ISearchContext, IDisposable
     public string SimplifiedSearch { get; }
     public CancellationToken CancellationToken => _cts.Token;
 
-    public SearchContext(IServiceProvider serviceProvider, string search, History? history)
+    public SearchContext(
+        IServiceProvider serviceProvider,
+        string search,
+        MatchTypeId? parentTypeId,
+        History? history
+    )
     {
+        _parentTypeId = parentTypeId;
         ServiceProvider = serviceProvider;
         Search = search;
         History = history;
@@ -189,7 +196,7 @@ internal class SearchContext : ISearchContext, IDisposable
     private int CalculatePenalty(
         TextMatch? textMatch,
         string simpleText,
-        HistoryEntity? entity,
+        HistoryEntity? history,
         int? distance
     )
     {
@@ -206,16 +213,15 @@ internal class SearchContext : ISearchContext, IDisposable
                 ? 1
                 : (TextUtils.IsWordBoundary(simpleText, textMatch.Ranges[0].Offset) ? 0 : 1);
 
-        // Add a penalty of 1 or 2 depending on how often the favorite
-        // was accessed. (Add 2 if there's no favorite attached to the item.)
+        // Add a penalty based on how often the favorite was accessed.
         int accessCountPenalty =
-            entity != null
+            history != null
                 ? (
-                    entity.AccessCount!.Value < 5
-                        ? 0
-                        : entity.AccessCount!.Value < 10
-                            ? -1
-                            : -2
+                    history.AccessCount!.Value < 5
+                        ? -1
+                        : history.AccessCount!.Value < 10
+                            ? -2
+                            : -3
                 )
                 : 0;
 

@@ -138,7 +138,7 @@ internal class SearchManager : IDisposable
         {
             _context?.Dispose();
 
-            var context = new SearchContext(_serviceProvider, _search, _history);
+            var context = new SearchContext(_serviceProvider, _search, Stack.LastOrDefault()?.TypeId, _history);
 
             _context = context;
 
