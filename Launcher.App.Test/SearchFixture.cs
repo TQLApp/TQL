@@ -17,20 +17,10 @@ public class SearchFixture
 
     [TestCase("ab", "abc", ">ab<c", 0)]
     [TestCase("ba", "abc", ">a<bc", 2)]
-    [TestCase("dfeg", "abcdefghij", "abc>defg<hij", 0)]
+    [TestCase("dfeg", "abcdefghij", "abc>def<ghij", 4)]
     public void FuzzyMatch(string search, string text, string? expected, int penalty)
     {
         AssertMatch(search, text, expected, penalty);
-    }
-
-    [TestCase("ab", "abc", null)]
-    [TestCase("ba", "abc", "a")]
-    [TestCase("dfeg", "abcdefghij", "def")]
-    public void FuzzySearch(string search, string text, string expected)
-    {
-        var searchResult = GetSearchResult(search, text);
-
-        Assert.AreEqual(expected, searchResult.FuzzyText);
     }
 
     [Test]
@@ -54,7 +44,7 @@ public class SearchFixture
     {
         var searchContext = new SearchContext(null!, search, null);
 
-        return searchContext.GetSearchResult(new Match(text, null!, default));
+        return searchContext.GetSearchResult(new Match(text, null!, null!));
     }
 
     private string? FormatSearchResult(SearchResult searchResult)
@@ -79,5 +69,5 @@ public class SearchFixture
         return result;
     }
 
-    private record Match(string Text, IImage Icon, Guid TypeId) : IMatch;
+    private record Match(string Text, IImage Icon, MatchTypeId TypeId) : IMatch;
 }

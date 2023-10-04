@@ -4,5 +4,5 @@ public interface IMatch
 {
     string Text { get; }
     IImage Icon { get; }
-    Guid TypeId { get; }
+    MatchTypeId TypeId { get; }
 }

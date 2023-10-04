@@ -5,11 +5,12 @@ namespace Launcher.Plugins.AzureDevOps.Categories;
 
 internal class RepositoryFilePathType : IMatchType
 {
-    public static Guid Id = Guid.Parse("07461529-2c9a-4bda-be99-a94b8640fe7d");
+    public static MatchTypeId TypeId =
+        new(Guid.Parse("07461529-2c9a-4bda-be99-a94b8640fe7d"), AzureDevOpsPlugin.Id);
 
     private readonly Images _images;
 
-    Guid IMatchType.Id => Id;
+    public Guid Id => TypeId.Id;
 
     public RepositoryFilePathType(Images images)
     {

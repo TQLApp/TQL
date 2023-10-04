@@ -5,11 +5,12 @@ namespace Launcher.Plugins.AzureDevOps.Categories;
 
 internal class BacklogType : IMatchType
 {
-    public static Guid Id = Guid.Parse("6d8e941f-1181-453f-b298-7c063e0a8da4");
+    public static readonly MatchTypeId TypeId =
+        new(Guid.Parse("6d8e941f-1181-453f-b298-7c063e0a8da4"), AzureDevOpsPlugin.Id);
 
     private readonly Images _images;
 
-    Guid IMatchType.Id => Id;
+    public Guid Id => TypeId.Id;
 
     public BacklogType(Images images)
     {

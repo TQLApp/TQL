@@ -11,12 +11,9 @@ internal record SearchResult(
     IMatch Match,
     string Text,
     string SimpleText,
-    string? FuzzyText,
+    bool IsFuzzyMatch,
     TextMatch? TextMatch,
     bool InHistory,
     DateTime? LastAccessed,
     int? Penalty
-)
-{
-    public bool IsFuzzyMatch => FuzzyText != null;
-};
+);

@@ -178,7 +178,7 @@ internal class SearchContext : ISearchContext, IDisposable
             match,
             text,
             simpleText,
-            fuzzyText,
+            fuzzyText != null,
             textMatch,
             history?.Id != null,
             history?.LastAccess,

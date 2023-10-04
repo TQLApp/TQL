@@ -10,7 +10,7 @@ internal class BacklogMatch : IRunnableMatch, ISerializableMatch
 
     public string Text => $"{_dto.ProjectName}/{_dto.TeamName} {_dto.BacklogName} Backlog";
     public IImage Icon => _images.Boards;
-    public Guid TypeId => BacklogType.Id;
+    public MatchTypeId TypeId => BacklogType.TypeId;
 
     public BacklogMatch(BacklogMatchDto dto, Images images)
     {

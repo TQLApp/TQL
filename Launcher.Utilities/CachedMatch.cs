@@ -9,7 +9,7 @@ public abstract class CachedMatch<T> : ISearchableMatch
 
     public abstract string Text { get; }
     public abstract IImage Icon { get; }
-    public abstract Guid TypeId { get; }
+    public abstract MatchTypeId TypeId { get; }
 
     protected CachedMatch(ICache<T> cache)
     {

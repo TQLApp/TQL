@@ -5,9 +5,6 @@ using Launcher.App.Services;
 using Launcher.App.Services.Database;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System.ComponentModel;
-using System.IdentityModel.Protocols.WSTrust;
-using System.Text.RegularExpressions;
 using Image = System.Windows.Controls.Image;
 using Keys = System.Windows.Forms.Keys;
 using Screen = System.Windows.Forms.Screen;
@@ -500,14 +497,17 @@ internal partial class MainWindow
         if (searchResult.Match is not ISerializableMatch match)
             return;
 
-        var parentTypeId = default(Guid?);
-        if (_searchManager?.Stack.Length > 0)
-            parentTypeId = _searchManager.Stack.Last().TypeId;
+        var parentTypeId = _searchManager?.Stack.LastOrDefault()?.TypeId.Id;
         var json = match.Serialize();
 
         using var access = _db.Access();
 
-        var historyId = access.FindHistory(parentTypeId, match.TypeId, json);
+        var historyId = access.FindHistory(
+            match.TypeId.PluginId,
+            parentTypeId,
+            match.TypeId.Id,
+            json
+        );
 
         if (historyId.HasValue)
         {
@@ -518,8 +518,9 @@ internal partial class MainWindow
             access.AddHistory(
                 new HistoryEntity
                 {
+                    PluginId = match.TypeId.PluginId,
                     ParentTypeId = parentTypeId,
-                    TypeId = match.TypeId,
+                    TypeId = match.TypeId.Id,
                     Json = json
                 }
             );

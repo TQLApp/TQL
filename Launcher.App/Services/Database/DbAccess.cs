@@ -1,6 +1,5 @@
 ﻿using System.Data.SQLite;
 using Dapper;
-using Microsoft.VisualStudio.Services.Operations;
 
 namespace Launcher.App.Services.Database;
 
@@ -72,19 +71,21 @@ internal partial class Db
             );
         }
 
-        public long? FindHistory(Guid? parentTypeId, Guid typeId, string json)
+        public long? FindHistory(Guid pluginId, Guid? parentTypeId, Guid typeId, string json)
         {
-            var sql = "select Id from History where ";
-            if (parentTypeId.HasValue)
-                sql += "ParentTypeId = @parentTypeId and ";
-            else
-                sql += "ParentTypeId is null and ";
-            sql += "TypeId = @typeId and Json = @json";
-
             return Query<long?>(
-                    sql,
+                    $"""
+                    select Id
+                    from History
+                    where
+                        PluginId = @pluginId and
+                        ParentTypeId {(parentTypeId.HasValue ? "= @parentTypeId" : "is null")} and
+                        TypeId = @typeId and
+                        Json = @json
+                    """,
                     new
                     {
+                        pluginId,
                         parentTypeId,
                         typeId,
                         json
