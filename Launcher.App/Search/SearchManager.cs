@@ -243,4 +243,11 @@ internal class SearchManager : IDisposable
         if (_suspendSearch == 0 && performSearch)
             DoSearch();
     }
+
+    public void DeleteHistory(long historyId)
+    {
+        _history?.Items.RemoveAll(p => p.History.Id == historyId);
+
+        DoSearch();
+    }
 }

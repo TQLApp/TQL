@@ -30,8 +30,8 @@ internal partial class MainWindow
     private SearchManager? _searchManager;
     private readonly TextDecoration _textDecoration;
     private readonly DrawingImage _runImage = LoadImage("Person Running.svg");
-    private readonly DrawingImage _starImage = LoadImage("Star.svg", Brushes.Yellow);
-    private readonly DrawingImage _starFilledImage = LoadImage("Star Filled.svg");
+    private readonly DrawingImage _starImage = LoadImage("Star.svg");
+    private readonly DrawingImage _dismissImage = LoadImage("Dismiss.svg");
     private readonly DrawingImage _categoryImage = LoadImage("Apps List.svg");
 
     private SearchResult? SelectedSearchResult
@@ -147,6 +147,8 @@ internal partial class MainWindow
 
         Visibility = Visibility.Visible;
 
+        Activate();
+
         _search.Focus();
     }
 
@@ -223,28 +225,70 @@ internal partial class MainWindow
 
         iconsStackPanel.Children.Clear();
 
-        if (!(listBoxItem.IsMouseOver || listBoxItem.IsSelected))
-            return;
-
-        if (searchResult.Match is IRunnableMatch)
-            AddIcon(_runImage);
-        if (searchResult.Match is ISearchableMatch)
-            AddIcon(_categoryImage);
-        if (searchResult.HistoryId.HasValue)
-            AddIcon(listBoxItem.IsSelected ? _starFilledImage : _starImage);
-
-        void AddIcon(DrawingImage icon)
+        if (listBoxItem.IsMouseOver || listBoxItem.IsSelected)
         {
-            iconsStackPanel.Children.Add(
-                new Image
+            if (searchResult.Match is IRunnableMatch)
+                AddIcon(_runImage);
+            if (searchResult.Match is ISearchableMatch)
+                AddIcon(_categoryImage);
+        }
+
+        if (searchResult.HistoryId.HasValue)
+        {
+            var star = AddIcon(_starImage);
+            var dismiss = AddIcon(_dismissImage);
+
+            star.MouseEnter += (_, _) =>
+            {
+                star.Visibility = Visibility.Collapsed;
+                dismiss.Visibility = Visibility.Visible;
+            };
+
+            dismiss.MouseLeave += (_, _) =>
+            {
+                dismiss.Visibility = Visibility.Collapsed;
+                star.Visibility = Visibility.Visible;
+            };
+
+            dismiss.Cursor = Cursors.Hand;
+            dismiss.Visibility = Visibility.Collapsed;
+
+            dismiss.MouseDown += (_, _) => dismiss.CaptureMouse();
+
+            dismiss.MouseUp += (_, e) =>
+            {
+                if (dismiss.IsMouseOver)
                 {
-                    Source = icon,
-                    Width = 14,
-                    Height = 14,
-                    Margin = new Thickness(6, 0, 0, 0),
-                    VerticalAlignment = VerticalAlignment.Center
+                    using (var access = _db.Access())
+                    {
+                        access.DeleteHistory(searchResult.HistoryId.Value);
+                    }
+
+                    _searchManager?.DeleteHistory(searchResult.HistoryId.Value);
                 }
-            );
+
+                dismiss.ReleaseMouseCapture();
+
+                e.Handled = true;
+
+                _search.Focus();
+            };
+        }
+
+        Image AddIcon(DrawingImage icon)
+        {
+            var image = new Image
+            {
+                Source = icon,
+                Width = 14,
+                Height = 14,
+                Margin = new Thickness(6, 0, 0, 0),
+                VerticalAlignment = VerticalAlignment.Center
+            };
+
+            iconsStackPanel.Children.Add(image);
+
+            return image;
         }
     }
 
