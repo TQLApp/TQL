@@ -6,8 +6,6 @@ using Launcher.App.Services.Database;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Image = System.Windows.Controls.Image;
-using Keys = System.Windows.Forms.Keys;
-using Screen = System.Windows.Forms.Screen;
 
 namespace Launcher.App;
 
@@ -67,6 +65,15 @@ internal partial class MainWindow
         };
 
         SetupShortcut();
+
+        _notifyIcon = SetupNotifyIcon();
+    }
+
+    private void OpenSettings()
+    {
+        var window = _serviceProvider.GetRequiredService<ConfigurationUI.ConfigurationWindow>();
+        window.Owner = this;
+        window.ShowDialog();
     }
 
     private void CacheManagerManager_LoadingChanged(object sender, EventArgs e)
@@ -84,21 +91,10 @@ internal partial class MainWindow
         );
     }
 
-    private void SetupShortcut()
-    {
-        _keyboardHook = new KeyboardHook();
-        _keyboardHook.RegisterHotKey(ModifierKeys.Alt, Keys.Back);
-        _keyboardHook.KeyPressed += _keyboardHook_KeyPressed;
-    }
-
     private void Window_Loaded(object sender, RoutedEventArgs e)
     {
 #if DEBUG
         DoShow();
-
-        //var window = _serviceProvider.GetRequiredService<ConfigurationUI.ConfigurationWindow>();
-        //window.Owner = this;
-        //window.ShowDialog();
 #endif
     }
 
@@ -111,6 +107,8 @@ internal partial class MainWindow
     {
         _keyboardHook?.Dispose();
         _keyboardHook = null;
+
+        _notifyIcon.Dispose();
     }
 
     private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -378,31 +376,6 @@ internal partial class MainWindow
 
             RenderMatch(_stackContainer.Children, match, null, false);
         }
-    }
-
-    private void RepositionScreen()
-    {
-        var screen = Screen.PrimaryScreen!;
-
-        if (
-            _settings.ShowOnScreen.HasValue
-            && _settings.ShowOnScreen.Value < Screen.AllScreens.Length
-        )
-        {
-            screen = Screen.AllScreens
-                .OrderBy(p => p.Bounds.X)
-                .ThenBy(p => p.Bounds.Y)
-                .Skip(_settings.ShowOnScreen.Value)
-                .First();
-        }
-
-        var source = PresentationSource.FromVisual(this)!;
-        var scaleX = source.CompositionTarget!.TransformToDevice.M11;
-        var scaleY = source.CompositionTarget!.TransformToDevice.M22;
-
-        Left =
-            (screen.WorkingArea.Left / scaleX) + ((screen.WorkingArea.Width / scaleX) - Width) / 2;
-        Top = (screen.WorkingArea.Top / scaleY) + ((screen.WorkingArea.Height / scaleY) - 30) / 2;
     }
 
     private void DoHide()

@@ -47,4 +47,13 @@
     <ProjectReference Include="..\Launcher.Plugins.AzureDevOps\Launcher.Plugins.AzureDevOps.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="MainWindow.MyListBoxItem.xaml.cs">
+		<DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="MainWindow.WinForms.xaml.cs">
+		<DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
 </Project>
