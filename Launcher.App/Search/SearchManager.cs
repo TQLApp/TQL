@@ -74,7 +74,19 @@ internal class SearchManager : IDisposable
                     {
                         var match = plugin.DeserializeMatch(entity.TypeId!.Value, entity.Json!);
                         if (match != null)
+                        {
+                            var json = ((ISerializableMatch)match).Serialize();
+                            if (json != entity.Json)
+                            {
+                                _logger.LogWarning(
+                                    "Serialized JSON did not match the JSON stored in the history table"
+                                );
+
+                                entity.Json = json;
+                            }
+
                             matches.Add((entity, match));
+                        }
                     }
                 }
 

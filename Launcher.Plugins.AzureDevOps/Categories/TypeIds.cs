@@ -17,6 +17,9 @@ internal static class TypeIds
     );
     public static readonly MatchTypeId Dashboard = CreateId("c1779024-b674-4244-9a97-771a9c18ffc4");
 
+    public static readonly MatchTypeId News = CreateId("2e9aece7-2741-4559-8b81-3964be627c81");
+    public static readonly MatchTypeId New = CreateId("1149d624-9dcf-4fc5-bdf5-41f2bdfd2217");
+
     public static readonly MatchTypeId Repositories = CreateId(
         "b2b479f8-572e-4a02-a87e-c1ba244b17cf"
     );

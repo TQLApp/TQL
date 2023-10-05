@@ -99,6 +99,13 @@ public class AzureDevOpsPlugin : ILauncherPlugin
                 connection.Url,
                 cache
             );
+
+            yield return new NewsMatch(
+                GetMatchName("Azure New", connection),
+                images,
+                connection.Url,
+                cache
+            );
         }
 
         string GetMatchName(string name, Connection connection)

@@ -5,6 +5,7 @@ namespace Launcher.Plugins.AzureDevOps;
 
 internal class Images
 {
+    public IImage Azure { get; }
     public IImage Boards { get; }
     public IImage Dashboards { get; }
     public IImage Document { get; }
@@ -13,6 +14,7 @@ internal class Images
 
     public Images(IImageFactory imageFactory)
     {
+        Azure = LoadImage("Azure.png");
         Boards = LoadImage("Boards.png");
         Dashboards = LoadImage("Dashboards.png");
         Document = LoadImage("Document.svg");
