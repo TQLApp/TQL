@@ -21,6 +21,12 @@ partial class MainWindow
 
         notifyIcon.ContextMenu.MenuItems.Add("Search\tAlt+Back", (_, _) => DoShow());
         notifyIcon.ContextMenu.MenuItems.Add("-");
+#if DEBUG
+        notifyIcon.ContextMenu.MenuItems.Add(
+            "Invalidate All Caches",
+            (_, _) => InvalidateAllCaches()
+        );
+#endif
         notifyIcon.ContextMenu.MenuItems.Add("Settings", (_, _) => OpenSettings());
         notifyIcon.ContextMenu.MenuItems.Add("-");
         notifyIcon.ContextMenu.MenuItems.Add("Exit", (_, _) => Close());
@@ -50,6 +56,11 @@ partial class MainWindow
 
             return new System.Drawing.Icon(stream);
         }
+    }
+
+    private void InvalidateAllCaches()
+    {
+        _cacheManagerManager.InvalidateAllCaches();
     }
 
     private void SetupShortcut()

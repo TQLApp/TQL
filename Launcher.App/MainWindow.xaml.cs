@@ -24,6 +24,7 @@ internal partial class MainWindow
     private readonly IServiceProvider _serviceProvider;
     private readonly ILogger<MainWindow> _logger;
     private readonly IDb _db;
+    private readonly CacheManagerManager _cacheManagerManager;
     private KeyboardHook? _keyboardHook;
     private SearchManager? _searchManager;
     private readonly TextDecoration _textDecoration;
@@ -55,6 +56,7 @@ internal partial class MainWindow
         _serviceProvider = serviceProvider;
         _logger = logger;
         _db = db;
+        _cacheManagerManager = cacheManagerManager;
         _ui = (UI)ui;
 
         cacheManagerManager.LoadingChanged += CacheManagerManager_LoadingChanged;

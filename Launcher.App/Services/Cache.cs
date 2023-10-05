@@ -31,6 +31,8 @@ internal class Cache<T> : ICache<T>
         _db = db;
         _cacheManagerManager = cacheManagerManager;
 
+        cacheManagerManager.Register(this);
+
         LoadFromDb();
 
         if (!IsAvailable)

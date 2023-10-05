@@ -12,11 +12,16 @@ internal static class TypeIds
     public static readonly MatchTypeId Boards = CreateId("8d85fc68-ac7c-4d25-a837-7ab475b073f6");
     public static readonly MatchTypeId Board = CreateId("e7836666-a0da-42f9-a793-9de3cad07099");
 
+    public static readonly MatchTypeId Dashboards = CreateId(
+        "bfa272e9-988c-4ede-b33a-4e926e78a1c3"
+    );
+    public static readonly MatchTypeId Dashboard = CreateId("c1779024-b674-4244-9a97-771a9c18ffc4");
+
     public static readonly MatchTypeId Repositories = CreateId(
-        "8d85fc68-ac7c-4d25-a837-7ab475b073f6"
+        "b2b479f8-572e-4a02-a87e-c1ba244b17cf"
     );
     public static readonly MatchTypeId Repository = CreateId(
-        "e7836666-a0da-42f9-a793-9de3cad07099"
+        "c43afa23-6d71-4940-ba4c-256d1a5d13bb"
     );
     public static readonly MatchTypeId RepositoryFilePath = CreateId(
         "07461529-2c9a-4bda-be99-a94b8640fe7d"
