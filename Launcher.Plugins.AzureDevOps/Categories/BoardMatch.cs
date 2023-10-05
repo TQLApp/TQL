@@ -3,16 +3,16 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Launcher.Plugins.AzureDevOps.Categories;
 
-internal class BacklogMatch : IRunnableMatch, ISerializableMatch
+internal class BoardMatch : IRunnableMatch, ISerializableMatch
 {
-    private readonly BacklogMatchDto _dto;
+    private readonly BoardMatchDto _dto;
     private readonly Images _images;
 
-    public string Text => $"{_dto.ProjectName}/{_dto.TeamName} {_dto.BacklogName} Backlog";
+    public string Text => $"{_dto.ProjectName}/{_dto.TeamName} {_dto.BoardName} Board";
     public IImage Icon => _images.Boards;
-    public MatchTypeId TypeId => TypeIds.Backlog;
+    public MatchTypeId TypeId => TypeIds.Board;
 
-    public BacklogMatch(BacklogMatchDto dto, Images images)
+    public BoardMatch(BoardMatchDto dto, Images images)
     {
         _dto = dto;
         _images = images;
@@ -31,8 +31,8 @@ internal class BacklogMatch : IRunnableMatch, ISerializableMatch
     }
 }
 
-internal record BacklogMatchDto(string Url, string ProjectName, string TeamName, string BacklogName)
+internal record BoardMatchDto(string Url, string ProjectName, string TeamName, string BoardName)
 {
     public string GetUrl() =>
-        $"{Url.TrimEnd('/')}/{Uri.EscapeDataString(ProjectName)}/_backlogs/backlog/{Uri.EscapeDataString(TeamName)}/{Uri.EscapeDataString(BacklogName)}";
+        $"{Url.TrimEnd('/')}/{Uri.EscapeDataString(ProjectName)}/_boards/board/t/{Uri.EscapeDataString(TeamName)}/{Uri.EscapeDataString(BoardName)}";
 };

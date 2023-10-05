@@ -79,6 +79,13 @@ public class AzureDevOpsPlugin : ILauncherPlugin
                 cache
             );
 
+            yield return new BoardsMatch(
+                GetMatchName("Azure Board", connection),
+                images,
+                connection.Url,
+                cache
+            );
+
             yield return new RepositoriesMatch(
                 GetMatchName("Azure Repository", connection),
                 images,

@@ -10,7 +10,7 @@ internal class RepositoryFilePathMatch : IRunnableMatch, ISerializableMatch
 
     public string Text => _dto.FilePath;
     public IImage Icon => _images.Document;
-    public MatchTypeId TypeId => RepositoryFilePathType.TypeId;
+    public MatchTypeId TypeId => TypeIds.RepositoryFilePath;
 
     public RepositoryFilePathMatch(RepositoryFilePathMatchDto dto, Images images)
     {

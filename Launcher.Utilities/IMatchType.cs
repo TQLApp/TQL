@@ -1,7 +1,9 @@
-﻿using Launcher.Abstractions;
+﻿using JetBrains.Annotations;
+using Launcher.Abstractions;
 
 namespace Launcher.Utilities;
 
+[UsedImplicitly(ImplicitUseTargetFlags.WithInheritors | ImplicitUseTargetFlags.Default)]
 public interface IMatchType
 {
     Guid Id { get; }

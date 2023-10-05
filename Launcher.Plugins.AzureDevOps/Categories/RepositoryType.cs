@@ -7,10 +7,7 @@ internal class RepositoryType : IMatchType
 {
     private readonly Images _images;
 
-    public static readonly MatchTypeId TypeId =
-        new(Guid.Parse("c43afa23-6d71-4940-ba4c-256d1a5d13bb"), AzureDevOpsPlugin.Id);
-
-    public Guid Id => TypeId.Id;
+    public Guid Id => TypeIds.Repository.Id;
 
     public RepositoryType(Images images)
     {

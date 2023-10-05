@@ -4,16 +4,16 @@ using Launcher.Utilities;
 
 namespace Launcher.Plugins.AzureDevOps.Categories;
 
-internal class RepositoriesMatch : CachedMatch<AzureData>
+internal class BoardsMatch : CachedMatch<AzureData>
 {
     private readonly Images _images;
     private readonly string _url;
 
     public override string Text { get; }
-    public override IImage Icon => _images.Repositories;
-    public override MatchTypeId TypeId => TypeIds.Repositories;
+    public override IImage Icon => _images.Boards;
+    public override MatchTypeId TypeId => TypeIds.Boards;
 
-    public RepositoriesMatch(string text, Images images, string url, ICache<AzureData> cache)
+    public BoardsMatch(string text, Images images, string url, ICache<AzureData> cache)
         : base(cache)
     {
         _images = images;
@@ -25,10 +25,11 @@ internal class RepositoriesMatch : CachedMatch<AzureData>
     protected override IEnumerable<IMatch> Create(AzureData data)
     {
         return from project in data.GetConnection(_url).Projects
-            from repository in project.Repositories
-            select new RepositoryMatch(
-                _images,
-                new RepositoryMatchDto(_url, project.Name, repository.Name)
+            from team in project.Teams
+            from board in project.Boards
+            select new BoardMatch(
+                new BoardMatchDto(_url, project.Name, team.Name, board.Name),
+                _images
             );
     }
 }

@@ -15,7 +15,7 @@ internal class RepositoryMatch : IRunnableMatch, ISearchableMatch, ISerializable
 
     public string Text => $"{_dto.ProjectName}/{_dto.RepositoryName}";
     public IImage Icon => _images.Repositories;
-    public MatchTypeId TypeId => RepositoryType.TypeId;
+    public MatchTypeId TypeId => TypeIds.Repository;
 
     public RepositoryMatch(Images images, RepositoryMatchDto dto)
     {
