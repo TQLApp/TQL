@@ -106,6 +106,13 @@ public class AzureDevOpsPlugin : ILauncherPlugin
                 connection.Url,
                 cache
             );
+
+            yield return new PipelinesMatch(
+                GetMatchName("Azure Pipeline", connection),
+                images,
+                connection.Url,
+                cache
+            );
         }
 
         string GetMatchName(string name, Connection connection)
