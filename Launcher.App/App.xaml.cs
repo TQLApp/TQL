@@ -43,6 +43,10 @@ public partial class App
 
         var logger = _host.Services.GetRequiredService<ILogger<App>>();
 
+        ((UI)_host.Services.GetRequiredService<IUI>()).SetSynchronizationContext(
+            SynchronizationContext.Current
+        );
+
         logger.LogInformation("Initializing plugins");
 
         var pluginManager = (PluginManager)_host.Services.GetRequiredService<IPluginManager>();

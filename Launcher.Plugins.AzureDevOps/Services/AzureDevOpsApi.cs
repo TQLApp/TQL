@@ -1,4 +1,5 @@
-﻿using Launcher.Abstractions;
+﻿using System.Windows.Forms;
+using Launcher.Abstractions;
 using Microsoft.TeamFoundation.Core.WebApi;
 using Microsoft.VisualStudio.Services.Client;
 using Microsoft.VisualStudio.Services.Client.Controls;
@@ -27,10 +28,12 @@ internal class AzureDevOpsApi : IAzureDevOpsApi
         {
             if (!_connections.TryGetValue(collectionUri, out var connection))
             {
+                var dialogHost = new DialogHost(_ui, $"Azure DevOps at {collectionUri}");
+
                 var credentials = new VssClientCredentials(
                     new WindowsCredential(false),
                     new VssFederatedCredential(false),
-                    new DialogHost(_ui)
+                    dialogHost
                 );
 
                 credentials.Storage = new VssClientCredentialStorage(
@@ -40,6 +43,8 @@ internal class AzureDevOpsApi : IAzureDevOpsApi
 
                 connection = new VssConnection(new Uri(collectionUri), credentials);
                 _connections.Add(collectionUri, connection);
+
+                dialogHost.Connection = connection;
 
                 await connection.ConnectAsync();
 
@@ -56,10 +61,52 @@ internal class AzureDevOpsApi : IAzureDevOpsApi
     private class DialogHost : IDialogHost
     {
         private readonly IUI _ui;
+        private readonly string _apiName;
 
-        public DialogHost(IUI ui) => _ui = ui;
+        public VssConnection? Connection { get; set; }
 
-        public Task<bool?> InvokeDialogAsync(InvokeDialogFunc showDialog, object state) =>
-            _ui.RunOnAuthenticationThread(owner => showDialog(owner.Handle, state));
+        public DialogHost(IUI ui, string apiName)
+        {
+            _ui = ui;
+            _apiName = apiName;
+        }
+
+        public async Task<bool?> InvokeDialogAsync(InvokeDialogFunc showDialog, object state)
+        {
+            var authentication = new InteractiveAuthentication(this, showDialog, state);
+
+            await _ui.PerformInteractiveAuthentication(authentication);
+
+            return authentication.Result;
+        }
+
+        private class InteractiveAuthentication : IInteractiveAuthentication
+        {
+            private readonly DialogHost _owner;
+            private readonly InvokeDialogFunc _showDialog;
+            private readonly object _state;
+
+            public bool? Result { get; private set; }
+
+            public string ResourceName => _owner._apiName;
+
+            public InteractiveAuthentication(
+                DialogHost owner,
+                InvokeDialogFunc showDialog,
+                object state
+            )
+            {
+                _owner = owner;
+                _showDialog = showDialog;
+                _state = state;
+            }
+
+            public Task Authenticate(IWin32Window owner)
+            {
+                Result = _showDialog(owner.Handle, _state);
+
+                return Task.CompletedTask;
+            }
+        }
     }
 }

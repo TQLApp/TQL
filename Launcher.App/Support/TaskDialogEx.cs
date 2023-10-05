@@ -27,11 +27,6 @@ public static class TaskDialogEx
         TaskDialogIcon icon = TaskDialogIcon.Warning
     )
     {
-        if (owner == null)
-            throw new ArgumentNullException(nameof(owner));
-        if (title == null)
-            throw new ArgumentNullException(nameof(title));
-
         var taskDialog = CreateDialog(title, subtitle, icon);
 
         taskDialog.AllowDialogCancellation = (buttons & TaskDialogCommonButtons.Cancel) != 0;
@@ -40,24 +35,24 @@ public static class TaskDialogEx
         return (DialogResult)taskDialog.Show(GetOwner(owner));
     }
 
-    public static void Error(
+    public static DialogResult Error(
         UIElement owner,
         string title,
-        string? subtitle = null,
-        TaskDialogIcon icon = TaskDialogIcon.Error
+        Exception exception,
+        TaskDialogIcon icon = TaskDialogIcon.Error,
+        TaskDialogCommonButtons buttons = TaskDialogCommonButtons.OK
     )
     {
-        if (owner == null)
-            throw new ArgumentNullException(nameof(owner));
-        if (title == null)
-            throw new ArgumentNullException(nameof(title));
-
-        var taskDialog = CreateDialog(title, subtitle, TaskDialogIcon.Error);
+        var taskDialog = CreateDialog(title, exception.Message, icon);
 
         taskDialog.AllowDialogCancellation = true;
-        taskDialog.CommonButtons = TaskDialogCommonButtons.OK;
+        taskDialog.CommonButtons = buttons;
+        taskDialog.Width = 400;
 
-        taskDialog.Show(GetOwner(owner));
+        taskDialog.ExpandedControlText = "Show exception details";
+        taskDialog.ExpandedInformation = exception.PrintStackTrace();
+
+        return (DialogResult)taskDialog.Show(GetOwner(owner));
     }
 
     private static IntPtr GetOwner(UIElement owner)

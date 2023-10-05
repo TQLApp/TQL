@@ -13,9 +13,9 @@ internal partial class MainWindow
 {
     private static DrawingImage LoadImage(string resourceName, Brush? fill = null)
     {
-        using var stream = typeof(MainWindow).Assembly.GetManifestResourceStream(
-            $"{typeof(MainWindow).Namespace}.Resources.{resourceName}"
-        );
+        using var stream = Application
+            .GetResourceStream(new Uri($"/Resources/{resourceName}", UriKind.Relative))!
+            .Stream;
 
         return ImageFactory.CreateSvgImage(stream!, fill);
     }
@@ -31,6 +31,7 @@ internal partial class MainWindow
     private readonly DrawingImage _starImage = LoadImage("Star.svg");
     private readonly DrawingImage _dismissImage = LoadImage("Dismiss.svg");
     private readonly DrawingImage _categoryImage = LoadImage("Apps List.svg");
+    private readonly UI _ui;
 
     private SearchResult? SelectedSearchResult
     {
@@ -46,13 +47,15 @@ internal partial class MainWindow
         IServiceProvider serviceProvider,
         ILogger<MainWindow> logger,
         IDb db,
-        CacheManagerManager cacheManagerManager
+        CacheManagerManager cacheManagerManager,
+        IUI ui
     )
     {
         _settings = settings;
         _serviceProvider = serviceProvider;
         _logger = logger;
         _db = db;
+        _ui = (UI)ui;
 
         cacheManagerManager.LoadingChanged += CacheManagerManager_LoadingChanged;
 
@@ -122,7 +125,16 @@ internal partial class MainWindow
         }
     }
 
-    private void Window_Deactivated(object sender, EventArgs e) => DoHide();
+    private void Window_Deactivated(object sender, EventArgs e)
+    {
+        // Detect whether a child dialog is being displayed.
+        var haveChildWindow = Application.Current.Windows
+            .OfType<Window>()
+            .Any(p => p.Owner == this);
+
+        if (!haveChildWindow)
+            DoHide();
+    }
 
     private void DoShow()
     {
@@ -138,6 +150,8 @@ internal partial class MainWindow
         _searchManager.StackChanged += _searchManager_StackChanged;
 
         RenderStack();
+
+        _ui.SetMainWindow(this);
 
         // Force recalculation of the height of the window.
 
@@ -380,6 +394,8 @@ internal partial class MainWindow
 
     private void DoHide()
     {
+        _ui.SetMainWindow(null);
+
         Visibility = Visibility.Hidden;
 
         if (_searchManager != null)

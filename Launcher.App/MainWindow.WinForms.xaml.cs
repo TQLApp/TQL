@@ -44,11 +44,11 @@ partial class MainWindow
 
         System.Drawing.Icon LoadIcon()
         {
-            var resource = Application.GetResourceStream(
-                new Uri("/mainicon.ico", UriKind.Relative)
-            );
+            using var stream = Application
+                .GetResourceStream(new Uri("/mainicon.ico", UriKind.Relative))!
+                .Stream;
 
-            return new System.Drawing.Icon(resource!.Stream);
+            return new System.Drawing.Icon(stream);
         }
     }
 

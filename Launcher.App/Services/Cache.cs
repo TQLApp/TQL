@@ -33,8 +33,8 @@ internal class Cache<T> : ICache<T>
 
         LoadFromDb();
 
-        if (!IsAvailable || _updated < DateTime.UtcNow - _cacheManager.Expiration)
-            Create();
+        if (!IsAvailable)
+            Create(true);
     }
 
     private void LoadFromDb()
@@ -62,10 +62,10 @@ internal class Cache<T> : ICache<T>
 
     public void Invalidate()
     {
-        Create();
+        Create(false);
     }
 
-    private void Create()
+    private void Create(bool initialLoad)
     {
         lock (_syncRoot)
         {
@@ -101,11 +101,19 @@ internal class Cache<T> : ICache<T>
 
                 lock (_syncRoot)
                 {
-                    var tcs = new TaskCompletionSource<T>();
+                    if (initialLoad)
+                    {
+                        _tcs.SetResult(data);
+                    }
+                    else
+                    {
+                        var tcs = new TaskCompletionSource<T>();
 
-                    tcs.SetResult(data);
+                        tcs.SetResult(data);
 
-                    _tcs = tcs;
+                        _tcs = tcs;
+                    }
+
                     _updated = now;
                 }
 
@@ -147,7 +155,7 @@ internal class Cache<T> : ICache<T>
         {
             // Recreate the cache if it's out of date.
             if (!_creating && IsAvailable && _updated < DateTime.UtcNow - _cacheManager.Expiration)
-                Create();
+                Invalidate();
 
             return _tcs.Task;
         }

@@ -2,7 +2,6 @@
 
 public interface IUI
 {
-    Task RunOnAuthenticationThread(Action<IWin32Window> func);
-    Task<T> RunOnAuthenticationThread<T>(Func<IWin32Window, T> func);
+    Task PerformInteractiveAuthentication(IInteractiveAuthentication interactiveAuthentication);
     void LaunchUrl(string url);
 }

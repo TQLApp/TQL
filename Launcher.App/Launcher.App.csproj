@@ -10,13 +10,13 @@
     <ApplicationIcon>mainicon.ico</ApplicationIcon>
   </PropertyGroup>
 
-	<ItemGroup>
-		<None Remove="Resources\**\*" />
-	</ItemGroup>
+  <ItemGroup>
+    <None Remove="Resources\**\*" />
+  </ItemGroup>
 
-	<ItemGroup>
-		<EmbeddedResource Include="Resources\**\*" />
-	</ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\**\*" />
+  </ItemGroup>
 
   <ItemGroup>
     <Reference Include="PresentationFramework.Aero2" />

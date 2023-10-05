@@ -10,6 +10,9 @@
     <Compile Update="ConfigurationUI\ConfigurationWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Services\InteractiveAuthenticationWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="SpinnerUserControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -19,6 +22,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="MainWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Services\InteractiveAuthenticationWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="SpinnerUserControl.xaml">
