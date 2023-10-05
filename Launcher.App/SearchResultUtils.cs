@@ -74,10 +74,7 @@ internal static class SearchResultUtils
                 if (range.Length > 0)
                 {
                     var part = text.Substring(range.Offset, range.Length);
-
-                    // HACK: No idea why the bold run renders as Black when the
-                    // explicit foreground color is removed here.
-                    var inline = new Bold(new Run(part)) { Foreground = Brushes.White };
+                    var inline = new Bold(new Run(part));
 
                     if (isFuzzyMatch)
                         inline.TextDecorations.Add(WavyLineDecoration);

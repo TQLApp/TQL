@@ -16,6 +16,14 @@
                     PreviewKeyDown="Window_PreviewKeyDown"
                     Deactivated="Window_Deactivated"
                     Background="Transparent">
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+        <Style TargetType="Run">
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+    </Window.Resources>
     <StackPanel Orientation="Vertical">
         <Grid Margin="8,0,0,0">
             <Grid.ColumnDefinitions>
@@ -65,7 +73,6 @@
                  SelectionMode="Single"
                  FontSize="15pt"
                  Height="280"
-                 Foreground="White"
                  Background="Transparent"
                  PreviewKeyDown="_results_PreviewKeyDown"
                  MouseUp="_results_MouseUp">
