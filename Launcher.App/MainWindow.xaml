@@ -63,27 +63,24 @@
         </Grid>
         <ListBox x:Name="_results"
                  SelectionMode="Single"
+                 FontSize="15pt"
                  Height="280"
                  Foreground="White"
                  Background="Transparent"
                  PreviewKeyDown="_results_PreviewKeyDown"
                  MouseUp="_results_MouseUp">
-            <ListBox.Resources>
-                <VisualBrush x:Key="WavyBrush"
-                             Viewbox="0,0,2,2"
-                             ViewboxUnits="Absolute"
-                             Viewport="0,2.3,6,4"
-                             ViewportUnits="Absolute"
-                             TileMode="Tile">
-                    <VisualBrush.Visual>
-                        <Path Data="M 0,1 C 1,0 1,2 2,1"
-                              Stroke="Red"
-                              StrokeThickness="0.2"
-                              StrokeEndLineCap="Square"
-                              StrokeStartLineCap="Square" />
-                    </VisualBrush.Visual>
-                </VisualBrush>
-            </ListBox.Resources>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <local:SearchResultControl DataContext="{Binding}"
+                                               IsSelected="{Binding IsSelected, Mode=OneWay, RelativeSource={RelativeSource Self}}"
+                                               HistoryRemoved="SearchResultControl_HistoryRemoved"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                </Style>
+            </ListBox.ItemContainerStyle>
         </ListBox>
     </StackPanel>
 </support:BlurWindow>

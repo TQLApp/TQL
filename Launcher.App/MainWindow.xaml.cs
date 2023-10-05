@@ -5,21 +5,11 @@ using Launcher.App.Services;
 using Launcher.App.Services.Database;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Image = System.Windows.Controls.Image;
 
 namespace Launcher.App;
 
 internal partial class MainWindow
 {
-    private static DrawingImage LoadImage(string resourceName, Brush? fill = null)
-    {
-        using var stream = Application
-            .GetResourceStream(new Uri($"/Resources/{resourceName}", UriKind.Relative))!
-            .Stream;
-
-        return ImageFactory.CreateSvgImage(stream!, fill);
-    }
-
     private readonly Settings _settings;
     private readonly IServiceProvider _serviceProvider;
     private readonly ILogger<MainWindow> _logger;
@@ -27,21 +17,9 @@ internal partial class MainWindow
     private readonly CacheManagerManager _cacheManagerManager;
     private KeyboardHook? _keyboardHook;
     private SearchManager? _searchManager;
-    private readonly TextDecoration _textDecoration;
-    private readonly DrawingImage _runImage = LoadImage("Person Running.svg");
-    private readonly DrawingImage _starImage = LoadImage("Star.svg");
-    private readonly DrawingImage _dismissImage = LoadImage("Dismiss.svg");
-    private readonly DrawingImage _categoryImage = LoadImage("Apps List.svg");
     private readonly UI _ui;
 
-    private SearchResult? SelectedSearchResult
-    {
-        get
-        {
-            var listBoxItem = (ListBoxItem)_results.SelectedItem;
-            return (SearchResult?)listBoxItem?.Tag;
-        }
-    }
+    private SearchResult? SelectedSearchResult => (SearchResult?)_results.SelectedItem;
 
     public MainWindow(
         Settings settings,
@@ -62,12 +40,6 @@ internal partial class MainWindow
         cacheManagerManager.LoadingChanged += CacheManagerManager_LoadingChanged;
 
         InitializeComponent();
-
-        _textDecoration = new TextDecoration
-        {
-            Location = TextDecorationLocation.Underline,
-            Pen = new Pen((Brush)_results.FindResource("WavyBrush"), 6)
-        };
 
         SetupShortcut();
 
@@ -144,7 +116,7 @@ internal partial class MainWindow
 
         _search.Text = "";
 
-        _results.Items.Clear();
+        _results.ItemsSource = null;
         _results.Visibility = Visibility.Collapsed;
 
         _searchManager = _serviceProvider.GetRequiredService<SearchManager>();
@@ -170,198 +142,17 @@ internal partial class MainWindow
     {
         if (_searchManager == null || _searchManager.Results.Length == 0)
         {
-            _results.Items.Clear();
+            _results.ItemsSource = null;
             _results.Visibility = Visibility.Collapsed;
             return;
         }
 
         _results.Visibility = Visibility.Visible;
 
-        _results.Items.Clear();
+        _results.ItemsSource = _searchManager.Results;
 
-        foreach (var result in _searchManager.Results)
-        {
-            var listBoxItem = new MyListBoxItem
-            {
-                VerticalAlignment = VerticalAlignment.Center,
-                IsSelected = _results.Items.Count == 0,
-                Tag = result
-            };
-
-            listBoxItem.IsMouseOverOrSelectedChanged += ListBoxItem_IsMouseOverOrSelectedChanged;
-
-            var stackPanel = new StackPanel
-            {
-                Orientation = Orientation.Horizontal,
-                Margin = new Thickness(2)
-            };
-
-            var iconsStackPanel = new StackPanel
-            {
-                Orientation = Orientation.Horizontal,
-                Margin = new Thickness(0, 0, 6, 0)
-            };
-
-            Grid.SetColumn(iconsStackPanel, 1);
-
-            var grid = new Grid
-            {
-                ColumnDefinitions =
-                {
-                    new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
-                    new ColumnDefinition { Width = GridLength.Auto }
-                },
-                Children = { stackPanel, iconsStackPanel },
-                HorizontalAlignment = HorizontalAlignment.Stretch
-            };
-
-            listBoxItem.Content = grid;
-            listBoxItem.HorizontalContentAlignment = HorizontalAlignment.Stretch;
-
-            RenderMatch(stackPanel.Children, result.Match, result.TextMatch, result.IsFuzzyMatch);
-
-            RenderMatchIcons(listBoxItem);
-
-            _results.Items.Add(listBoxItem);
-        }
-    }
-
-    private void ListBoxItem_IsMouseOverOrSelectedChanged(object sender, EventArgs e)
-    {
-        RenderMatchIcons((ListBoxItem)sender);
-    }
-
-    private void RenderMatchIcons(ListBoxItem listBoxItem)
-    {
-        var grid = (Grid)listBoxItem.Content;
-        var iconsStackPanel = (StackPanel)grid.Children[grid.Children.Count - 1];
-        var searchResult = (SearchResult)listBoxItem.Tag;
-
-        iconsStackPanel.Children.Clear();
-
-        if (listBoxItem.IsMouseOver || listBoxItem.IsSelected)
-        {
-            if (searchResult.Match is IRunnableMatch)
-                AddIcon(_runImage);
-            if (searchResult.Match is ISearchableMatch)
-                AddIcon(_categoryImage);
-        }
-
-        if (searchResult.HistoryId.HasValue)
-        {
-            var star = AddIcon(_starImage);
-            var dismiss = AddIcon(_dismissImage);
-
-            star.MouseEnter += (_, _) =>
-            {
-                star.Visibility = Visibility.Collapsed;
-                dismiss.Visibility = Visibility.Visible;
-            };
-
-            dismiss.MouseLeave += (_, _) =>
-            {
-                dismiss.Visibility = Visibility.Collapsed;
-                star.Visibility = Visibility.Visible;
-            };
-
-            dismiss.Cursor = Cursors.Hand;
-            dismiss.Visibility = Visibility.Collapsed;
-
-            dismiss.MouseDown += (_, _) => dismiss.CaptureMouse();
-
-            dismiss.MouseUp += (_, e) =>
-            {
-                if (dismiss.IsMouseOver)
-                {
-                    using (var access = _db.Access())
-                    {
-                        access.DeleteHistory(searchResult.HistoryId.Value);
-                    }
-
-                    _searchManager?.DeleteHistory(searchResult.HistoryId.Value);
-                }
-
-                dismiss.ReleaseMouseCapture();
-
-                e.Handled = true;
-
-                _search.Focus();
-            };
-        }
-
-        Image AddIcon(DrawingImage icon)
-        {
-            var image = new Image
-            {
-                Source = icon,
-                Width = 14,
-                Height = 14,
-                Margin = new Thickness(6, 0, 0, 0),
-                VerticalAlignment = VerticalAlignment.Center
-            };
-
-            iconsStackPanel.Children.Add(image);
-
-            return image;
-        }
-    }
-
-    private void RenderMatch(
-        UIElementCollection collection,
-        IMatch match,
-        TextMatch? textMatch,
-        bool isFuzzyMatch
-    )
-    {
-        collection.Add(
-            new Image
-            {
-                Source = ((Services.Image)match.Icon).ImageSource,
-                Width = 18,
-                Height = 18,
-                Margin = new Thickness(0, 0, 6, 0),
-                VerticalAlignment = VerticalAlignment.Center
-            }
-        );
-
-        var textBlock = new TextBlock { FontSize = _search.FontSize };
-
-        collection.Add(textBlock);
-
-        var offset = 0;
-
-        var text = match.Text;
-
-        if (textMatch != null)
-        {
-            foreach (var range in textMatch.Ranges)
-            {
-                if (offset < range.Offset)
-                {
-                    var part = text.Substring(offset, range.Offset - offset);
-                    textBlock.Inlines.Add(new Run(part));
-                }
-
-                if (range.Length > 0)
-                {
-                    var part = text.Substring(range.Offset, range.Length);
-                    var inline = new Bold(new Run(part));
-
-                    if (isFuzzyMatch)
-                        inline.TextDecorations.Add(_textDecoration);
-
-                    textBlock.Inlines.Add(inline);
-                }
-
-                offset = range.Offset + range.Length;
-            }
-        }
-
-        if (offset < text.Length)
-        {
-            var part = text.Substring(offset);
-            textBlock.Inlines.Add(new Run(part));
-        }
+        if (_results.Items.Count > 0)
+            _results.SelectedIndex = 0;
     }
 
     private void _searchManager_StackChanged(object sender, EventArgs e) => RenderStack();
@@ -390,7 +181,13 @@ internal partial class MainWindow
                 );
             }
 
-            RenderMatch(_stackContainer.Children, match, null, false);
+            SearchResultUtils.RenderMatch(
+                _stackContainer.Children,
+                match,
+                null,
+                false,
+                _search.FontSize
+            );
         }
     }
 
@@ -501,17 +298,15 @@ internal partial class MainWindow
 
     private void SelectItem(int offset)
     {
-        var index = _results.SelectedIndex == -1 ? 0 : _results.SelectedIndex + offset;
-
         if (_results.Items.Count == 0)
             return;
 
-        var item = (ListBoxItem)
-            _results.Items[Math.Min(Math.Max(index, 0), _results.Items.Count - 1)];
+        var index = _results.SelectedIndex == -1 ? 0 : _results.SelectedIndex + offset;
+        var newIndex = Math.Min(Math.Max(index, 0), _results.Items.Count - 1);
 
-        item.IsSelected = true;
+        _results.SelectedIndex = newIndex;
 
-        _results.ScrollIntoView(item);
+        _results.ScrollIntoView(_results.Items[newIndex]);
     }
 
     private void SelectPage(int i) => SelectItem(i * 8);
@@ -586,5 +381,21 @@ internal partial class MainWindow
         _searchManager?.Pop();
 
         _searchManager?.ResumeSearch();
+    }
+
+    private void SearchResultControl_HistoryRemoved(object sender, EventArgs e)
+    {
+        var searchResult = SelectedSearchResult;
+        if (searchResult?.HistoryId == null)
+            return;
+
+        using (var access = _db.Access())
+        {
+            access.DeleteHistory(searchResult.HistoryId.Value);
+        }
+
+        _searchManager?.DeleteHistory(searchResult.HistoryId.Value);
+
+        _search.Focus();
     }
 }

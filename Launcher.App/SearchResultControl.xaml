@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="Launcher.App.SearchResultControl"
+             x:ClassModifier="internal"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Launcher.App"
+             Background="Transparent"
+             DataContextChanged="UserControl_DataContextChanged"
+             MouseEnter="UserControl_MouseEnter"
+             MouseLeave="UserControl_MouseLeave"
+             mc:Ignorable="d" 
+             d:DesignHeight="20" d:DesignWidth="300">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel x:Name="_resultPanel"
+                    Orientation="Horizontal"
+                    Margin="2" />
+        <StackPanel x:Name="_iconsPanel"
+                    Grid.Column="1"
+                    Orientation="Horizontal"
+                    Margin="0,0,6,0" />
+    </Grid>
+</UserControl>
