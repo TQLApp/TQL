@@ -13,6 +13,7 @@ internal record AzureConnection(string Name, string Url, ImmutableArray<AzurePro
 internal record AzureProject(
     Guid Id,
     string Name,
+    ImmutableArray<AzureFeature> Features,
     ImmutableArray<AzureWorkItemType> WorkItemTypes,
     ImmutableArray<AzureDashboard> Dashboards,
     ImmutableArray<AzureBacklog> Backlogs,
@@ -21,6 +22,13 @@ internal record AzureProject(
     ImmutableArray<AzureRepository> Repositories,
     ImmutableArray<AzureBuildDefinition> BuildDefinitions
 );
+
+internal enum AzureFeature
+{
+    Repositories,
+    Boards,
+    Pipelines
+}
 
 internal record AzureWorkItemType(string Name);
 

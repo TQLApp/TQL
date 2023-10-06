@@ -23,6 +23,9 @@ internal static class TypeIds
     public static readonly MatchTypeId Pipelines = CreateId("ad43b94d-b94d-4974-8bd9-9d479ed9c9c7");
     public static readonly MatchTypeId Pipeline = CreateId("34e37fdc-6843-4dd4-8cb8-5d9d299a4aa7");
 
+    public static readonly MatchTypeId Queries = CreateId("d2fc58ee-11a2-4f3e-86d5-82cac7d8a502");
+    public static readonly MatchTypeId Query = CreateId("e3f61eb6-3a0d-4f81-aacd-a730952be408");
+
     public static readonly MatchTypeId Repositories = CreateId(
         "b2b479f8-572e-4a02-a87e-c1ba244b17cf"
     );

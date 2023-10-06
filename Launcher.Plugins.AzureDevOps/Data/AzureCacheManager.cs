@@ -59,7 +59,7 @@ internal class AzureCacheManager : ICacheManager<AzureData>
             var repositories = ImmutableArray<AzureRepository>.Empty;
             var buildDefinitions = ImmutableArray<AzureBuildDefinition>.Empty;
 
-            if (features[project.Id].Contains(Feature.Boards))
+            if (features[project.Id].Contains(AzureFeature.Boards))
             {
                 var workItemClient = await _api.GetClient<WorkItemTrackingHttpClient>(
                     connection.Url
@@ -112,7 +112,7 @@ internal class AzureCacheManager : ICacheManager<AzureData>
                 ).ToImmutableArray();
             }
 
-            if (features[project.Id].Contains(Feature.Pipelines))
+            if (features[project.Id].Contains(AzureFeature.Pipelines))
             {
                 var buildClient = await _api.GetClient<BuildHttpClient>(connection.Url);
 
@@ -126,7 +126,7 @@ internal class AzureCacheManager : ICacheManager<AzureData>
                 ).ToImmutableArray();
             }
 
-            if (features[project.Id].Contains(Feature.Repositories))
+            if (features[project.Id].Contains(AzureFeature.Repositories))
             {
                 var gitClient = await _api.GetClient<GitHttpClient>(connection.Url);
 
@@ -140,6 +140,7 @@ internal class AzureCacheManager : ICacheManager<AzureData>
                 new AzureProject(
                     project.Id,
                     project.Name,
+                    features[project.Id].ToImmutableArray(),
                     workItemTypes,
                     dashboards,
                     backlogs,
@@ -154,7 +155,7 @@ internal class AzureCacheManager : ICacheManager<AzureData>
         return new AzureConnection(connection.Name, connection.Url, projects.ToImmutableArray());
     }
 
-    private async Task<Dictionary<Guid, HashSet<Feature>>> GetFeatures(Connection connection)
+    private async Task<Dictionary<Guid, HashSet<AzureFeature>>> GetFeatures(Connection connection)
     {
         var featureClient = await _api.GetClient<FeatureManagementHttpClient>(connection.Url);
 
@@ -166,7 +167,7 @@ internal class AzureCacheManager : ICacheManager<AzureData>
 
         var projectClient = await _api.GetClient<ProjectHttpClient>(connection.Url);
 
-        var result = new Dictionary<Guid, HashSet<Feature>>();
+        var result = new Dictionary<Guid, HashSet<AzureFeature>>();
 
         foreach (var project in await projectClient.GetProjects())
         {
@@ -187,7 +188,7 @@ internal class AzureCacheManager : ICacheManager<AzureData>
                 project.Id.ToString()
             );
 
-            var projectFeatures = new HashSet<Feature>();
+            var projectFeatures = new HashSet<AzureFeature>();
 
             foreach (var feature in state.FeatureStates)
             {
@@ -196,13 +197,13 @@ internal class AzureCacheManager : ICacheManager<AzureData>
                     switch (feature.Key)
                     {
                         case "ms.vss-code.version-control":
-                            projectFeatures.Add(Feature.Repositories);
+                            projectFeatures.Add(AzureFeature.Repositories);
                             break;
                         case "ms.vss-work.agile":
-                            projectFeatures.Add(Feature.Boards);
+                            projectFeatures.Add(AzureFeature.Boards);
                             break;
                         case "ms.vss-build.pipelines":
-                            projectFeatures.Add(Feature.Pipelines);
+                            projectFeatures.Add(AzureFeature.Pipelines);
                             break;
                     }
                 }
@@ -212,12 +213,5 @@ internal class AzureCacheManager : ICacheManager<AzureData>
         }
 
         return result;
-    }
-
-    private enum Feature
-    {
-        Repositories,
-        Boards,
-        Pipelines
     }
 }

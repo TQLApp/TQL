@@ -69,6 +69,7 @@ public class AzureDevOpsPlugin : ILauncherPlugin
     {
         var images = _serviceProvider!.GetRequiredService<Images>();
         var cache = _serviceProvider!.GetRequiredService<ICache<AzureData>>();
+        var api = _serviceProvider!.GetRequiredService<IAzureDevOpsApi>();
 
         foreach (var connection in _connections)
         {
@@ -112,6 +113,14 @@ public class AzureDevOpsPlugin : ILauncherPlugin
                 images,
                 connection.Url,
                 cache
+            );
+
+            yield return new QueriesMatch(
+                GetMatchName("Azure Query", connection),
+                images,
+                connection.Url,
+                cache,
+                api
             );
         }
 
