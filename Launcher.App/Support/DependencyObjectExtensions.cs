@@ -2,17 +2,18 @@
 
 internal static class DependencyObjectExtensions
 {
-    public static T? FindVisualChild<T>(this DependencyObject parent, string childName)
+    public static T? FindVisualChild<T>(this DependencyObject parent, string? childName = null)
         where T : DependencyObject
     {
-        T? foundChild = null;
+        var foundChild = default(T);
 
         int childrenCount = VisualTreeHelper.GetChildrenCount(parent);
         for (int i = 0; i < childrenCount; i++)
         {
             var child = VisualTreeHelper.GetChild(parent, i);
+
             // If the child is not of the request child type child
-            T? childType = child as T;
+            var childType = child as T;
             if (childType == null)
             {
                 // recursively drill down the tree
@@ -24,9 +25,10 @@ internal static class DependencyObjectExtensions
             }
             else if (!string.IsNullOrEmpty(childName))
             {
-                var frameworkElement = child as FrameworkElement;
                 // If the child's name is set for search
-                if (frameworkElement != null && frameworkElement.Name == childName)
+                if (
+                    child is FrameworkElement frameworkElement && frameworkElement.Name == childName
+                )
                 {
                     // if the child's name is of the request name
                     foundChild = (T)child;

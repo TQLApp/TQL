@@ -1,5 +1,6 @@
 ﻿using Launcher.Abstractions;
 using Launcher.App.Search;
+using Launcher.App.Support;
 using Microsoft.VisualStudio.Services.TestManagement.TestPlanning.WebApi;
 
 namespace Launcher.App;
@@ -31,31 +32,28 @@ internal static class SearchResultUtils
             )
         };
 
-    public static void RenderMatch(
-        UIElementCollection collection,
+    public static UIElement RenderMatch(
         IMatch match,
         TextMatch? textMatch,
         bool isFuzzyMatch,
         double? fontSize = null
     )
     {
-        collection.Add(
-            new Image
-            {
-                Source = ((Services.Image)match.Icon).ImageSource,
-                Width = 18,
-                Height = 18,
-                Margin = new Thickness(0, 0, 6, 0),
-                VerticalAlignment = VerticalAlignment.Center
-            }
-        );
+        var icon = new Image
+        {
+            Source = ((Services.Image)match.Icon).ImageSource,
+            Width = 18,
+            Height = 18,
+            Margin = new Thickness(0, 0, 6, 0),
+            VerticalAlignment = VerticalAlignment.Center
+        };
 
         var textBlock = new TextBlock();
 
         if (fontSize.HasValue)
             textBlock.FontSize = fontSize.Value;
 
-        collection.Add(textBlock);
+        var marquee = new MarqueeControl { Content = textBlock };
 
         var offset = 0;
 
@@ -91,5 +89,19 @@ internal static class SearchResultUtils
             var part = text.Substring(offset);
             textBlock.Inlines.Add(new Run(part));
         }
+
+        var grid = new Grid();
+
+        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+        grid.ColumnDefinitions.Add(
+            new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }
+        );
+
+        grid.Children.Add(icon);
+        grid.Children.Add(marquee);
+
+        Grid.SetColumn(marquee, 1);
+
+        return grid;
     }
 }

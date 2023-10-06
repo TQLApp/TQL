@@ -1,6 +1,7 @@
 ﻿using Launcher.Abstractions;
 using Launcher.App.Search;
 using Launcher.App.Services;
+using Launcher.App.Support;
 using Image = System.Windows.Controls.Image;
 
 namespace Launcher.App;
@@ -50,8 +51,7 @@ internal partial class SearchResultUserControl
     {
         var searchResult = DataContext!;
 
-        SearchResultUtils.RenderMatch(
-            _resultPanel.Children,
+        _resultPanel.Child = SearchResultUtils.RenderMatch(
             searchResult.Match,
             searchResult.TextMatch,
             searchResult.IsFuzzyMatch
@@ -64,7 +64,9 @@ internal partial class SearchResultUserControl
     {
         RenderMatchIcons();
 
-        _marquee.IsRunning = IsMouseOver || IsSelected;
+        var marquee = _resultPanel.FindVisualChild<MarqueeControl>()!;
+
+        marquee.IsRunning = IsMouseOver || IsSelected;
     }
 
     private void RenderMatchIcons()

@@ -181,12 +181,8 @@ internal partial class MainWindow
                 );
             }
 
-            SearchResultUtils.RenderMatch(
-                _stackContainer.Children,
-                match,
-                null,
-                false,
-                _search.FontSize
+            _stackContainer.Children.Add(
+                SearchResultUtils.RenderMatch(match, null, false, _search.FontSize)
             );
         }
     }
