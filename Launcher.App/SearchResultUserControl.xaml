@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Launcher.App.SearchResultControl"
+﻿<UserControl x:Class="Launcher.App.SearchResultUserControl"
              x:ClassModifier="internal"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -16,9 +16,20 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <StackPanel x:Name="_resultPanel"
-                    Orientation="Horizontal"
-                    Margin="2" />
+
+        <Border x:Name="_marqueeBorder" ClipToBounds="True">
+            <Canvas x:Name="_marqueeCanvas"
+                    Loaded="_marqueeCanvas_Loaded">
+                <ContentControl x:Name="_marqueeContent" Canvas.Left="0">
+                    <ContentControl.Content>
+                        <StackPanel x:Name="_resultPanel"
+                                    Orientation="Horizontal"
+                                    Margin="2" />
+                    </ContentControl.Content>
+                </ContentControl>
+            </Canvas>
+        </Border>
+       
         <StackPanel x:Name="_iconsPanel"
                     Grid.Column="1"
                     Orientation="Horizontal"

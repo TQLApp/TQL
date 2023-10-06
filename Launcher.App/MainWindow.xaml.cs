@@ -383,7 +383,7 @@ internal partial class MainWindow
         _searchManager?.ResumeSearch();
     }
 
-    private void SearchResultControl_HistoryRemoved(object sender, EventArgs e)
+    private void SearchResultUserControl_HistoryRemoved(object sender, EventArgs e)
     {
         var searchResult = SelectedSearchResult;
         if (searchResult?.HistoryId == null)

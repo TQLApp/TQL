@@ -1,11 +1,12 @@
 ﻿using Launcher.Abstractions;
 using Launcher.App.Search;
 using Launcher.App.Services;
+using System.Windows.Media.Animation;
 using Image = System.Windows.Controls.Image;
 
 namespace Launcher.App;
 
-internal partial class SearchResultControl
+internal partial class SearchResultUserControl
 {
     private static DrawingImage LoadImage(string resourceName, Brush? fill = null)
     {
@@ -24,10 +25,10 @@ internal partial class SearchResultControl
     public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register(
         nameof(IsSelected),
         typeof(bool),
-        typeof(SearchResultControl),
+        typeof(SearchResultUserControl),
         new FrameworkPropertyMetadata(
             false,
-            (d, e) => ((SearchResultControl)d).OnIsSelectedChanged(d, e)
+            (d, e) => ((SearchResultUserControl)d).OnIsSelectedChanged(d, e)
         )
     );
 
@@ -41,9 +42,59 @@ internal partial class SearchResultControl
 
     public event EventHandler? HistoryRemoved;
 
-    public SearchResultControl()
+    public SearchResultUserControl()
     {
         InitializeComponent();
+    }
+
+    private void UserControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+    {
+        var searchResult = DataContext!;
+
+        SearchResultUtils.RenderMatch(
+            _resultPanel.Children,
+            searchResult.Match,
+            searchResult.TextMatch,
+            searchResult.IsFuzzyMatch
+        );
+
+        RenderMatchIcons();
+    }
+
+    private void IsSelectedOrMouseOverChanged()
+    {
+        RenderMatchIcons();
+
+        if (IsMouseOver || IsSelected)
+        {
+            var to = _marqueeBorder.ActualWidth - _marqueeContent.ActualWidth - 4;
+            if (to < 0)
+            {
+                var duration = TimeSpan.FromMilliseconds(-to * 10);
+                var delay = TimeSpan.FromSeconds(0.7);
+                var wait = TimeSpan.FromSeconds(1);
+
+                var animation = new DoubleAnimationUsingKeyFrames
+                {
+                    RepeatBehavior = RepeatBehavior.Forever,
+                    KeyFrames =
+                    {
+                        new LinearDoubleKeyFrame(0, KeyTime.FromTimeSpan(TimeSpan.Zero)),
+                        new LinearDoubleKeyFrame(0, KeyTime.FromTimeSpan(delay)),
+                        new LinearDoubleKeyFrame(to, KeyTime.FromTimeSpan(delay + duration)),
+                        new LinearDoubleKeyFrame(to, KeyTime.FromTimeSpan(delay + duration + wait))
+                    }
+                };
+
+                _marqueeContent.BeginAnimation(Canvas.LeftProperty, animation);
+            }
+        }
+        else
+        {
+            _marqueeContent.BeginAnimation(Canvas.LeftProperty, null);
+
+            Canvas.SetLeft(_marqueeContent, 0);
+        }
     }
 
     private void RenderMatchIcons()
@@ -110,29 +161,23 @@ internal partial class SearchResultControl
         }
     }
 
-    private void UserControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-    {
-        var searchResult = DataContext!;
-
-        SearchResultUtils.RenderMatch(
-            _resultPanel.Children,
-            searchResult.Match,
-            searchResult.TextMatch,
-            searchResult.IsFuzzyMatch
-        );
-
-        RenderMatchIcons();
-    }
-
     private void OnIsSelectedChanged(object sender, DependencyPropertyChangedEventArgs e) =>
-        RenderMatchIcons();
+        IsSelectedOrMouseOverChanged();
 
-    private void UserControl_MouseEnter(object sender, MouseEventArgs e) => RenderMatchIcons();
+    private void UserControl_MouseEnter(object sender, MouseEventArgs e) =>
+        IsSelectedOrMouseOverChanged();
 
-    private void UserControl_MouseLeave(object sender, MouseEventArgs e) => RenderMatchIcons();
+    private void UserControl_MouseLeave(object sender, MouseEventArgs e) =>
+        IsSelectedOrMouseOverChanged();
 
     protected virtual void OnHistoryRemoved()
     {
         HistoryRemoved?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void _marqueeCanvas_Loaded(object sender, RoutedEventArgs e)
+    {
+        _marqueeCanvas.Height =
+            _resultPanel.RenderSize.Height + _resultPanel.Margin.Top + _resultPanel.Margin.Bottom;
     }
 }

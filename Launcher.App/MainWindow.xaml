@@ -74,13 +74,14 @@
                  FontSize="15pt"
                  Height="280"
                  Background="Transparent"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                  PreviewKeyDown="_results_PreviewKeyDown"
                  MouseUp="_results_MouseUp">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <local:SearchResultControl DataContext="{Binding}"
-                                               IsSelected="{Binding IsSelected, Mode=OneWay, RelativeSource={RelativeSource Self}}"
-                                               HistoryRemoved="SearchResultControl_HistoryRemoved"/>
+                    <local:SearchResultUserControl DataContext="{Binding}"
+                                                   IsSelected="{Binding IsSelected, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}"
+                                                   HistoryRemoved="SearchResultUserControl_HistoryRemoved"/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
             <ListBox.ItemContainerStyle>
