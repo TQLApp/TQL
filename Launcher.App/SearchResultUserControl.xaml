@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Launcher.App"
+             xmlns:support="clr-namespace:Launcher.App.Support"
              Background="Transparent"
              DataContextChanged="UserControl_DataContextChanged"
              MouseEnter="UserControl_MouseEnter"
@@ -17,18 +18,11 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <Border x:Name="_marqueeBorder" ClipToBounds="True">
-            <Canvas x:Name="_marqueeCanvas"
-                    Loaded="_marqueeCanvas_Loaded">
-                <ContentControl x:Name="_marqueeContent" Canvas.Left="0">
-                    <ContentControl.Content>
-                        <StackPanel x:Name="_resultPanel"
-                                    Orientation="Horizontal"
-                                    Margin="2" />
-                    </ContentControl.Content>
-                </ContentControl>
-            </Canvas>
-        </Border>
+        <support:MarqueeControl x:Name="_marquee">
+            <StackPanel x:Name="_resultPanel"
+                        Orientation="Horizontal"
+                        Margin="2" />
+        </support:MarqueeControl>
        
         <StackPanel x:Name="_iconsPanel"
                     Grid.Column="1"

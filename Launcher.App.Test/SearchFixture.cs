@@ -42,7 +42,7 @@ public class SearchFixture
 
     private static SearchResult GetSearchResult(string search, string text)
     {
-        var searchContext = new SearchContext(null!, search, null, null);
+        var searchContext = new SearchContext(null!, search, null, null, null!);
 
         return searchContext.GetSearchResult(new Match(text, null!, null!));
     }

@@ -1,7 +1,6 @@
 ﻿using Launcher.Abstractions;
 using Launcher.App.Search;
 using Launcher.App.Services;
-using System.Windows.Media.Animation;
 using Image = System.Windows.Controls.Image;
 
 namespace Launcher.App;
@@ -65,36 +64,7 @@ internal partial class SearchResultUserControl
     {
         RenderMatchIcons();
 
-        if (IsMouseOver || IsSelected)
-        {
-            var to = _marqueeBorder.ActualWidth - _marqueeContent.ActualWidth - 4;
-            if (to < 0)
-            {
-                var duration = TimeSpan.FromMilliseconds(-to * 10);
-                var delay = TimeSpan.FromSeconds(0.7);
-                var wait = TimeSpan.FromSeconds(1);
-
-                var animation = new DoubleAnimationUsingKeyFrames
-                {
-                    RepeatBehavior = RepeatBehavior.Forever,
-                    KeyFrames =
-                    {
-                        new LinearDoubleKeyFrame(0, KeyTime.FromTimeSpan(TimeSpan.Zero)),
-                        new LinearDoubleKeyFrame(0, KeyTime.FromTimeSpan(delay)),
-                        new LinearDoubleKeyFrame(to, KeyTime.FromTimeSpan(delay + duration)),
-                        new LinearDoubleKeyFrame(to, KeyTime.FromTimeSpan(delay + duration + wait))
-                    }
-                };
-
-                _marqueeContent.BeginAnimation(Canvas.LeftProperty, animation);
-            }
-        }
-        else
-        {
-            _marqueeContent.BeginAnimation(Canvas.LeftProperty, null);
-
-            Canvas.SetLeft(_marqueeContent, 0);
-        }
+        _marquee.IsRunning = IsMouseOver || IsSelected;
     }
 
     private void RenderMatchIcons()
@@ -170,14 +140,5 @@ internal partial class SearchResultUserControl
     private void UserControl_MouseLeave(object sender, MouseEventArgs e) =>
         IsSelectedOrMouseOverChanged();
 
-    protected virtual void OnHistoryRemoved()
-    {
-        HistoryRemoved?.Invoke(this, EventArgs.Empty);
-    }
-
-    private void _marqueeCanvas_Loaded(object sender, RoutedEventArgs e)
-    {
-        _marqueeCanvas.Height =
-            _resultPanel.RenderSize.Height + _resultPanel.Margin.Top + _resultPanel.Margin.Bottom;
-    }
+    protected virtual void OnHistoryRemoved() => HistoryRemoved?.Invoke(this, EventArgs.Empty);
 }
