@@ -54,7 +54,8 @@ internal partial class SearchResultUserControl
         _resultPanel.Child = SearchResultUtils.RenderMatch(
             searchResult.Match,
             searchResult.TextMatch,
-            searchResult.IsFuzzyMatch
+            searchResult.IsFuzzyMatch,
+            wrapTextInMarquee: true
         );
 
         RenderMatchIcons();

@@ -1,6 +1,6 @@
 ﻿using Launcher.App.Services;
 
-namespace Launcher.App;
+namespace Launcher.App.Support;
 
 internal partial class SpinnerUserControl
 {

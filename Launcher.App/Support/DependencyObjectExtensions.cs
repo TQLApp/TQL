@@ -23,7 +23,7 @@ internal static class DependencyObjectExtensions
                 if (foundChild != null)
                     break;
             }
-            else if (!string.IsNullOrEmpty(childName))
+            else if (childName != null)
             {
                 // If the child's name is set for search
                 if (

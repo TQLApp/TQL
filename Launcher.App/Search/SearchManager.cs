@@ -19,14 +19,18 @@ internal class SearchManager : IDisposable
     private SearchContext? _context;
     private int _suspendSearch;
     private readonly Dictionary<string, object> _contextContext = new();
+    private int _isSearchingCount;
 
     public ImmutableArray<SearchResult> Results { get; private set; } =
         ImmutableArray<SearchResult>.Empty;
     public ImmutableArray<ISearchableMatch> Stack { get; private set; } =
         ImmutableArray<ISearchableMatch>.Empty;
 
+    public bool IsSearching => _isSearchingCount > 0;
+
     public event EventHandler? SearchResultsChanged;
     public event EventHandler? StackChanged;
+    public event EventHandler? IsSearchingChanged;
 
     public SearchManager(
         ILogger<SearchManager> logger,
@@ -231,20 +235,29 @@ internal class SearchManager : IDisposable
         // We let the current match handle filtering. This allows certain
         // matches to fully delegate search to an external service.
 
-        var result = await Stack.Last().Search(context, _search, context.CancellationToken);
+        var task = Stack.Last().Search(context, _search, context.CancellationToken);
+        var raiseSearching = !task.IsCompleted;
 
-        return result.Select(context.GetSearchResult);
-    }
+        if (raiseSearching)
+        {
+            _isSearchingCount++;
+            OnIsSearchingChanged();
+        }
 
-    protected virtual void OnSearchResultsChanged() =>
-        SearchResultsChanged?.Invoke(this, EventArgs.Empty);
+        try
+        {
+            var result = await task;
 
-    protected virtual void OnStackChanged() => StackChanged?.Invoke(this, EventArgs.Empty);
-
-    public void Dispose()
-    {
-        _context?.Dispose();
-        _context = null;
+            return result.Select(context.GetSearchResult);
+        }
+        finally
+        {
+            if (raiseSearching)
+            {
+                _isSearchingCount--;
+                OnIsSearchingChanged();
+            }
+        }
     }
 
     public void SuspendSearch()
@@ -268,5 +281,19 @@ internal class SearchManager : IDisposable
         _history?.Items.RemoveAll(p => p.History.Id == historyId);
 
         DoSearch();
+    }
+
+    protected virtual void OnSearchResultsChanged() =>
+        SearchResultsChanged?.Invoke(this, EventArgs.Empty);
+
+    protected virtual void OnStackChanged() => StackChanged?.Invoke(this, EventArgs.Empty);
+
+    protected virtual void OnIsSearchingChanged() =>
+        IsSearchingChanged?.Invoke(this, EventArgs.Empty);
+
+    public void Dispose()
+    {
+        _context?.Dispose();
+        _context = null;
     }
 }

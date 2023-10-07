@@ -29,7 +29,7 @@ internal class RepositoryMatch : IRunnableMatch, ISearchableMatch, ISerializable
         CancellationToken cancellationToken
     )
     {
-        if (string.IsNullOrWhiteSpace(text))
+        if (text.IsWhiteSpace())
             return Array.Empty<IMatch>();
 
         var cache = context.GetDataCached($"{GetType().FullName}:{_dto}", GetRepositoryFilePaths);

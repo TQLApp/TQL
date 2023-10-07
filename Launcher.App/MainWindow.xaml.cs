@@ -122,6 +122,7 @@ internal partial class MainWindow
         _searchManager = _serviceProvider.GetRequiredService<SearchManager>();
         _searchManager.SearchResultsChanged += _searchManager_SearchResultsChanged;
         _searchManager.StackChanged += _searchManager_StackChanged;
+        _searchManager.IsSearchingChanged += _searchManager_IsSearchingChanged;
 
         RenderStack();
 
@@ -136,6 +137,12 @@ internal partial class MainWindow
         Activate();
 
         _search.Focus();
+    }
+
+    private void _searchManager_IsSearchingChanged(object sender, EventArgs e)
+    {
+        _dancingDots.Visibility =
+            _searchManager?.IsSearching ?? false ? Visibility.Visible : Visibility.Collapsed;
     }
 
     private void _searchManager_SearchResultsChanged(object sender, EventArgs e)
@@ -197,6 +204,7 @@ internal partial class MainWindow
         {
             _searchManager.SearchResultsChanged -= _searchManager_SearchResultsChanged;
             _searchManager.StackChanged -= _searchManager_StackChanged;
+            _searchManager.IsSearchingChanged -= _searchManager_IsSearchingChanged;
             _searchManager.Dispose();
             _searchManager = null;
         }
@@ -238,10 +246,8 @@ internal partial class MainWindow
             case Key.Tab:
             {
                 if (searchResult?.Match is ISearchableMatch searchable)
-                {
                     PushItem(searchable, searchResult);
-                    e.Handled = true;
-                }
+                e.Handled = true;
                 break;
             }
 

@@ -30,6 +30,7 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
             <Border x:Name="_stack"
@@ -62,12 +63,17 @@
                 </TextBox.CaretBrush>
             </TextBox>
 
-            <local:SpinnerUserControl x:Name="_spinner"
-                                      Grid.Column="2"
-                                      Width="26"
-                                      Height="26"
-                                      Margin="0,0,14,0"
-                                      Visibility="Collapsed" />
+            <support:DancingDotsUserControl x:Name="_dancingDots"
+                                            Grid.Column="2"
+                                            Margin="0,0,20,19"
+                                            Visibility="Collapsed" />
+
+            <support:SpinnerUserControl x:Name="_spinner"
+                                        Grid.Column="3"
+                                        Width="20"
+                                        Height="20"
+                                        Margin="0,0,20,0"
+                                        Visibility="Collapsed" />
         </Grid>
         <ListBox x:Name="_results"
                  SelectionMode="Single"

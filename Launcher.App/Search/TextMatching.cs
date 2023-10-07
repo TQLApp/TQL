@@ -1,4 +1,6 @@
-﻿namespace Launcher.App.Search;
+﻿using Launcher.App.Support;
+
+namespace Launcher.App.Search;
 
 internal static class TextMatching
 {
@@ -24,7 +26,7 @@ internal static class TextMatching
 
     public static IEnumerable<TextRange>? Find(string search, string item)
     {
-        if (string.IsNullOrEmpty(search))
+        if (search.IsEmpty())
             return Array.Empty<TextRange>();
 
         List<TextRange>? shortest = null;

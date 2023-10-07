@@ -122,6 +122,14 @@ public class AzureDevOpsPlugin : ILauncherPlugin
                 cache,
                 api
             );
+
+            yield return new WorkItemsMatch(
+                GetMatchName("Azure Work Item", connection),
+                images,
+                connection.Url,
+                cache,
+                api
+            );
         }
 
         string GetMatchName(string name, Connection connection)

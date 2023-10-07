@@ -22,6 +22,7 @@ internal class SearchContext : ISearchContext, IDisposable
     public History? History { get; }
     public string SimplifiedSearch { get; }
     public CancellationToken CancellationToken => _cts.Token;
+    public bool IsPreliminaryResultsSuppressed { get; private set; }
 
     public SearchContext(
         IServiceProvider serviceProvider,
@@ -228,6 +229,11 @@ internal class SearchContext : ISearchContext, IDisposable
                 : 0;
 
         return distancePenalty + itemMatchCountPenalty + wordBoundaryPenalty + accessCountPenalty;
+    }
+
+    public void SuppressPreliminaryResults()
+    {
+        IsPreliminaryResultsSuppressed = true;
     }
 
     public void Dispose()

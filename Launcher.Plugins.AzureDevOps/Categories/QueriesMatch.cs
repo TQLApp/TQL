@@ -1,6 +1,7 @@
 ﻿using Launcher.Abstractions;
 using Launcher.Plugins.AzureDevOps.Data;
 using Launcher.Plugins.AzureDevOps.Services;
+using Launcher.Plugins.AzureDevOps.Support;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
 
 namespace Launcher.Plugins.AzureDevOps.Categories;
@@ -38,7 +39,7 @@ internal class QueriesMatch : ISearchableMatch
         CancellationToken cancellationToken
     )
     {
-        if (string.IsNullOrWhiteSpace(text))
+        if (text.IsWhiteSpace())
             return Array.Empty<IMatch>();
 
         await context.DebounceDelay(cancellationToken);

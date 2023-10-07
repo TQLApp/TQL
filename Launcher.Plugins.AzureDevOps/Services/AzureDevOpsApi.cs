@@ -1,11 +1,13 @@
 ﻿using System.Windows.Forms;
 using Launcher.Abstractions;
+using Microsoft.Extensions.Logging;
 using Microsoft.TeamFoundation.Core.WebApi;
 using Microsoft.VisualStudio.Services.Client;
 using Microsoft.VisualStudio.Services.Client.Controls;
 using Microsoft.VisualStudio.Services.Common;
 using Microsoft.VisualStudio.Services.Common.TokenStorage;
 using Microsoft.VisualStudio.Services.WebApi;
+using Microsoft.Win32;
 using NeoSmart.AsyncLock;
 
 namespace Launcher.Plugins.AzureDevOps.Services;
@@ -13,12 +15,14 @@ namespace Launcher.Plugins.AzureDevOps.Services;
 internal class AzureDevOpsApi : IAzureDevOpsApi
 {
     private readonly IUI _ui;
+    private readonly ILogger<IAzureDevOpsApi> _logger;
     private readonly AsyncLock _lock = new();
     private readonly Dictionary<string, VssConnection> _connections = new();
 
-    public AzureDevOpsApi(IUI ui)
+    public AzureDevOpsApi(IUI ui, ILogger<IAzureDevOpsApi> logger)
     {
         _ui = ui;
+        _logger = logger;
     }
 
     public async Task<T> GetClient<T>(string collectionUri)
@@ -26,7 +30,36 @@ internal class AzureDevOpsApi : IAzureDevOpsApi
     {
         using (await _lock.LockAsync())
         {
-            if (!_connections.TryGetValue(collectionUri, out var connection))
+            try
+            {
+                if (!_connections.ContainsKey(collectionUri))
+                    _connections[collectionUri] = await AttemptConnect();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Connect failed, retrying");
+
+                // Clear any cached credentials.
+
+                using (
+                    var key = Registry.CurrentUser.OpenSubKey(
+                        @"Software\Microsoft\VSCommon\14.0\ClientServices\TokenStorage\Launcher",
+                        true
+                    )
+                )
+                {
+                    key?.DeleteSubKeyTree(collectionUri);
+                }
+
+                // Remove first because the connect attempt may still throw.
+                _connections.Remove(collectionUri);
+
+                _connections[collectionUri] = await AttemptConnect();
+            }
+
+            return await _connections[collectionUri].GetClientAsync<T>();
+
+            async Task<VssConnection> AttemptConnect()
             {
                 var dialogHost = new DialogHost(_ui, $"Azure DevOps at {collectionUri}");
 
@@ -41,8 +74,7 @@ internal class AzureDevOpsApi : IAzureDevOpsApi
                     VssTokenStorageFactory.GetTokenStorageNamespace("Launcher")
                 );
 
-                connection = new VssConnection(new Uri(collectionUri), credentials);
-                _connections.Add(collectionUri, connection);
+                var connection = new VssConnection(new Uri(collectionUri), credentials);
 
                 dialogHost.Connection = connection;
 
@@ -52,9 +84,9 @@ internal class AzureDevOpsApi : IAzureDevOpsApi
 
                 var client = await connection.GetClientAsync<ProjectHttpClient>();
                 await client.GetProjects();
-            }
 
-            return await connection.GetClientAsync<T>();
+                return connection;
+            }
         }
     }
 

@@ -14,7 +14,7 @@
                 <ResourceDictionary Source="Themes/ControlColours.xaml"/>
                 <ResourceDictionary Source="Themes/Controls.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            
+
             <Style TargetType="{x:Type ListBoxItem}">
                 <Setter Property="HorizontalContentAlignment" Value="Left" />
                 <Setter Property="VerticalContentAlignment" Value="Top" />
@@ -26,7 +26,8 @@
                         <ControlTemplate TargetType="support:MarqueeControl">
                             <Border x:Name="_border"
                                     ClipToBounds="True">
-                                <Canvas x:Name="_canvas">
+                                <Canvas x:Name="_canvas"
+                                        Height="{Binding ElementName=_content, Path=ActualHeight}">
                                     <ContentControl x:Name="_content"
                                                     Canvas.Left="0">
                                         <ContentControl.Content>

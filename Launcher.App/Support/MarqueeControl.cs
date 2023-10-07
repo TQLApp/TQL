@@ -33,10 +33,6 @@ internal class MarqueeControl : ContentControl
         _canvas = this.FindVisualChild<Canvas>("_canvas")!;
         _content = this.FindVisualChild<ContentControl>("_content")!;
 
-        var content = (FrameworkElement)_content.Content;
-
-        _canvas.Height = content.RenderSize.Height + content.Margin.Top + content.Margin.Bottom;
-
         UpdateAnimation();
     }
 

@@ -35,4 +35,7 @@ internal static class TypeIds
     public static readonly MatchTypeId RepositoryFilePath = CreateId(
         "07461529-2c9a-4bda-be99-a94b8640fe7d"
     );
+
+    public static readonly MatchTypeId WorkItems = CreateId("3d57f05c-fbdd-4383-b305-3f48b2f018d2");
+    public static readonly MatchTypeId WorkItem = CreateId("f73482ba-e069-4897-899a-fad1afbdb5f5");
 }

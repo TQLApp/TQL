@@ -36,7 +36,8 @@ internal static class SearchResultUtils
         IMatch match,
         TextMatch? textMatch,
         bool isFuzzyMatch,
-        double? fontSize = null
+        double? fontSize = null,
+        bool wrapTextInMarquee = false
     )
     {
         var icon = new Image
@@ -52,8 +53,6 @@ internal static class SearchResultUtils
 
         if (fontSize.HasValue)
             textBlock.FontSize = fontSize.Value;
-
-        var marquee = new MarqueeControl { Content = textBlock };
 
         var offset = 0;
 
@@ -98,9 +97,21 @@ internal static class SearchResultUtils
         );
 
         grid.Children.Add(icon);
-        grid.Children.Add(marquee);
 
-        Grid.SetColumn(marquee, 1);
+        if (wrapTextInMarquee)
+        {
+            var marquee = new MarqueeControl { Content = textBlock };
+
+            grid.Children.Add(marquee);
+
+            Grid.SetColumn(marquee, 1);
+        }
+        else
+        {
+            grid.Children.Add(textBlock);
+
+            Grid.SetColumn(textBlock, 1);
+        }
 
         return grid;
     }

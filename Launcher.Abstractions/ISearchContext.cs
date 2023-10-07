@@ -11,4 +11,6 @@ public interface ISearchContext
     IEnumerable<IMatch> Filter(IEnumerable<IMatch> matches);
 
     IEnumerable<string> Prefilter(IEnumerable<string> matches);
+
+    void SuppressPreliminaryResults();
 }
