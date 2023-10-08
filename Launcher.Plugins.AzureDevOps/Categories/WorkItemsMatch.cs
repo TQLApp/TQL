@@ -2,14 +2,13 @@
 using Launcher.Plugins.AzureDevOps.Data;
 using Launcher.Plugins.AzureDevOps.Services;
 using Launcher.Plugins.AzureDevOps.Support;
-using Launcher.Utilities;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
 using Microsoft.VisualStudio.Services.Search.WebApi;
 using Microsoft.VisualStudio.Services.Search.WebApi.Contracts.WorkItem;
 
 namespace Launcher.Plugins.AzureDevOps.Categories;
 
-internal class WorkItemsMatch : ISearchableMatch
+internal class WorkItemsMatch : ISearchableMatch, ISerializableMatch
 {
     private readonly Images _images;
     private readonly string _url;
@@ -105,5 +104,10 @@ internal class WorkItemsMatch : ISearchableMatch
                     _images
                 )
         );
+    }
+
+    public string Serialize()
+    {
+        return JsonSerializer.Serialize(new RootItemDto(_url));
     }
 }

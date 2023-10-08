@@ -1,7 +1,6 @@
 ﻿using Launcher.Abstractions;
 using Launcher.App.Search;
 using Launcher.App.Support;
-using Microsoft.VisualStudio.Services.TestManagement.TestPlanning.WebApi;
 
 namespace Launcher.App;
 

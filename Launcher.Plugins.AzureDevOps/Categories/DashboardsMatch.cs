@@ -4,7 +4,7 @@ using Launcher.Utilities;
 
 namespace Launcher.Plugins.AzureDevOps.Categories;
 
-internal class DashboardsMatch : CachedMatch<AzureData>
+internal class DashboardsMatch : CachedMatch<AzureData>, ISerializableMatch
 {
     private readonly Images _images;
     private readonly string _url;
@@ -30,5 +30,10 @@ internal class DashboardsMatch : CachedMatch<AzureData>
                 new DashboardMatchDto(_url, project.Name, dashboard.Id, dashboard.Name),
                 _images
             );
+    }
+
+    public string Serialize()
+    {
+        return JsonSerializer.Serialize(new RootItemDto(_url));
     }
 }

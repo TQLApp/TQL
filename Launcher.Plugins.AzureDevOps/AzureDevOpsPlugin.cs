@@ -3,8 +3,11 @@ using Launcher.Plugins.AzureDevOps.Categories;
 using Launcher.Plugins.AzureDevOps.ConfigurationUI;
 using Launcher.Plugins.AzureDevOps.Data;
 using Launcher.Plugins.AzureDevOps.Services;
+using Launcher.Plugins.AzureDevOps.Support;
 using Launcher.Utilities;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Reflection;
 
 namespace Launcher.Plugins.AzureDevOps;
 
@@ -16,7 +19,6 @@ public class AzureDevOpsPlugin : ILauncherPlugin
     private readonly MatchTypeManagerBuilder _matchTypeManagerBuilder;
     private MatchTypeManager? _matchTypeManager;
     private IServiceProvider? _serviceProvider;
-    private ImmutableArray<Connection> _connections;
 
     Guid ILauncherPlugin.Id => Id;
 
@@ -31,6 +33,7 @@ public class AzureDevOpsPlugin : ILauncherPlugin
         services.AddSingleton<ICacheManager<AzureData>, AzureCacheManager>();
         services.AddSingleton<IAzureDevOpsApi, AzureDevOpsApi>();
         services.AddSingleton<Images>();
+        services.AddSingleton<ConnectionManager>();
 
         services.AddTransient<ConfigurationControl>();
 
@@ -45,99 +48,18 @@ public class AzureDevOpsPlugin : ILauncherPlugin
 
         configurationManager.RegisterConfigurationUIFactory(new ConfigurationUIFactory());
 
-        configurationManager.ConfigurationChanged += (s, e) =>
-        {
-            if (e.PluginId == Id)
-                LoadConnections(e.Configuration);
-        };
-
-        LoadConnections(configurationManager.GetConfiguration(Id));
-
         _matchTypeManager = _matchTypeManagerBuilder.Build(serviceProvider);
-
-        void LoadConnections(string? json)
-        {
-            Configuration? configuration = null;
-            if (json != null)
-                configuration = JsonSerializer.Deserialize<Configuration>(json);
-
-            _connections = configuration?.Connections ?? ImmutableArray<Connection>.Empty;
-        }
     }
 
     public IEnumerable<IMatch> GetMatches()
     {
-        var images = _serviceProvider!.GetRequiredService<Images>();
-        var cache = _serviceProvider!.GetRequiredService<ICache<AzureData>>();
-        var api = _serviceProvider!.GetRequiredService<IAzureDevOpsApi>();
+        var connectionManager = _serviceProvider.GetRequiredService<ConnectionManager>();
 
-        foreach (var connection in _connections)
-        {
-            yield return new BacklogsMatch(
-                GetMatchName("Azure Backlog", connection),
-                images,
-                connection.Url,
-                cache
-            );
-
-            yield return new BoardsMatch(
-                GetMatchName("Azure Board", connection),
-                images,
-                connection.Url,
-                cache
-            );
-
-            yield return new DashboardsMatch(
-                GetMatchName("Azure Dashboard", connection),
-                images,
-                connection.Url,
-                cache
-            );
-
-            yield return new RepositoriesMatch(
-                GetMatchName("Azure Repository", connection),
-                images,
-                connection.Url,
-                cache
-            );
-
-            yield return new NewsMatch(
-                GetMatchName("Azure New", connection),
-                images,
-                connection.Url,
-                cache
-            );
-
-            yield return new PipelinesMatch(
-                GetMatchName("Azure Pipeline", connection),
-                images,
-                connection.Url,
-                cache
-            );
-
-            yield return new QueriesMatch(
-                GetMatchName("Azure Query", connection),
-                images,
-                connection.Url,
-                cache,
-                api
-            );
-
-            yield return new WorkItemsMatch(
-                GetMatchName("Azure Work Item", connection),
-                images,
-                connection.Url,
-                cache,
-                api
-            );
-        }
-
-        string GetMatchName(string name, Connection connection)
-        {
-            if (_connections.Length > 1)
-                return $"{name} ({connection.Name})";
-            return name;
-        }
+        return from connection in connectionManager.Connections
+            let json = JsonSerializer.Serialize(new RootItemDto(connection.Url))
+            from matchType in _matchTypeManager!.MatchTypes
+            where matchType.GetType().GetCustomAttribute<RootMatchTypeAttribute>() != null
+            select matchType.Deserialize(json);
     }
 
     public IMatch? DeserializeMatch(Guid typeId, string json)

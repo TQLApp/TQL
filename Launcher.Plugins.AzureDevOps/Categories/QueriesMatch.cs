@@ -6,7 +6,7 @@ using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
 
 namespace Launcher.Plugins.AzureDevOps.Categories;
 
-internal class QueriesMatch : ISearchableMatch
+internal class QueriesMatch : ISearchableMatch, ISerializableMatch
 {
     private readonly Images _images;
     private readonly string _url;
@@ -72,5 +72,10 @@ internal class QueriesMatch : ISearchableMatch
         }
 
         return result;
+    }
+
+    public string Serialize()
+    {
+        return JsonSerializer.Serialize(new RootItemDto(_url));
     }
 }

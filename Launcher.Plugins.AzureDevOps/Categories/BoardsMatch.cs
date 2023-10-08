@@ -4,7 +4,7 @@ using Launcher.Utilities;
 
 namespace Launcher.Plugins.AzureDevOps.Categories;
 
-internal class BoardsMatch : CachedMatch<AzureData>
+internal class BoardsMatch : CachedMatch<AzureData>, ISerializableMatch
 {
     private readonly Images _images;
     private readonly string _url;
@@ -31,5 +31,10 @@ internal class BoardsMatch : CachedMatch<AzureData>
                 new BoardMatchDto(_url, project.Name, team.Name, board.Name),
                 _images
             );
+    }
+
+    public string Serialize()
+    {
+        return JsonSerializer.Serialize(new RootItemDto(_url));
     }
 }

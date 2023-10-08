@@ -4,7 +4,7 @@ using Launcher.Utilities;
 
 namespace Launcher.Plugins.AzureDevOps.Categories;
 
-internal class NewsMatch : CachedMatch<AzureData>
+internal class NewsMatch : CachedMatch<AzureData>, ISerializableMatch
 {
     private readonly Images _images;
     private readonly string _url;
@@ -39,5 +39,10 @@ internal class NewsMatch : CachedMatch<AzureData>
                 );
             }
         }
+    }
+
+    public string Serialize()
+    {
+        return JsonSerializer.Serialize(new RootItemDto(_url));
     }
 }

@@ -1,4 +1,5 @@
-﻿using Launcher.Abstractions;
+﻿using System.Diagnostics;
+using Launcher.Abstractions;
 using Launcher.App.Services;
 using Launcher.App.Services.Database;
 using Microsoft.Extensions.Logging;
@@ -203,6 +204,11 @@ internal class SearchManager : IDisposable
             .Select(context.GetSearchResult)
             .Where(p => p.Penalty <= 0)
             .ToList();
+
+        Debug.Assert(
+            rootItems.All(p => p.Match is ISerializableMatch),
+            "Root items should be serializable"
+        );
 
         if (context.History == null)
             return rootItems;

@@ -4,7 +4,7 @@ using Launcher.Utilities;
 
 namespace Launcher.Plugins.AzureDevOps.Categories;
 
-internal class RepositoriesMatch : CachedMatch<AzureData>
+internal class RepositoriesMatch : CachedMatch<AzureData>, ISerializableMatch
 {
     private readonly Images _images;
     private readonly string _url;
@@ -30,5 +30,10 @@ internal class RepositoriesMatch : CachedMatch<AzureData>
                 _images,
                 new RepositoryMatchDto(_url, project.Name, repository.Name)
             );
+    }
+
+    public string Serialize()
+    {
+        return JsonSerializer.Serialize(new RootItemDto(_url));
     }
 }
