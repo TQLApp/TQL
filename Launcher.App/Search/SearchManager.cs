@@ -236,12 +236,15 @@ internal class SearchManager : IDisposable
         // matches to fully delegate search to an external service.
 
         var task = Stack.Last().Search(context, _search, context.CancellationToken);
-        var raiseSearching = !task.IsCompleted;
+        var completedInline = task.IsCompleted;
 
-        if (raiseSearching)
+        if (!completedInline)
         {
             _isSearchingCount++;
             OnIsSearchingChanged();
+
+            if (!context.IsPreliminaryResultsSuppressed)
+                ShowPreliminaryResults();
         }
 
         try
@@ -252,12 +255,35 @@ internal class SearchManager : IDisposable
         }
         finally
         {
-            if (raiseSearching)
+            if (!completedInline)
             {
                 _isSearchingCount--;
                 OnIsSearchingChanged();
             }
         }
+    }
+
+    private void ShowPreliminaryResults()
+    {
+        if (_context == null || _history == null)
+            return;
+
+        var parentTypeId = Stack.Last().TypeId;
+
+        Results = _context
+            .Filter(
+                _history.Items
+                    .Where(
+                        p =>
+                            p.History.PluginId == parentTypeId.PluginId
+                            && p.History.ParentTypeId == parentTypeId.Id
+                    )
+                    .Select(p => p.Match)
+            )
+            .Select(_context.GetSearchResult)
+            .ToImmutableArray();
+
+        OnSearchResultsChanged();
     }
 
     public void SuspendSearch()
