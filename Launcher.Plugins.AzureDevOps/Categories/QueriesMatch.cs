@@ -11,7 +11,7 @@ internal class QueriesMatch : ISearchableMatch, ISerializableMatch
     private readonly Images _images;
     private readonly string _url;
     private readonly ICache<AzureData> _cache;
-    private readonly IAzureDevOpsApi _api;
+    private readonly AzureDevOpsApi _api;
 
     public string Text { get; }
     public IImage Icon => _images.Boards;
@@ -22,7 +22,7 @@ internal class QueriesMatch : ISearchableMatch, ISerializableMatch
         Images images,
         string url,
         ICache<AzureData> cache,
-        IAzureDevOpsApi api
+        AzureDevOpsApi api
     )
     {
         _images = images;

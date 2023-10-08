@@ -12,7 +12,7 @@ internal class QueriesType : IMatchType
     private readonly Images _images;
     private readonly ICache<AzureData> _cache;
     private readonly ConnectionManager _connectionManager;
-    private readonly IAzureDevOpsApi _api;
+    private readonly AzureDevOpsApi _api;
 
     public Guid Id => TypeIds.Queries.Id;
 
@@ -20,7 +20,7 @@ internal class QueriesType : IMatchType
         Images images,
         ICache<AzureData> cache,
         ConnectionManager connectionManager,
-        IAzureDevOpsApi api
+        AzureDevOpsApi api
     )
     {
         _images = images;

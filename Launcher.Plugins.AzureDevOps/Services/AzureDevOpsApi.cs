@@ -12,14 +12,14 @@ using NeoSmart.AsyncLock;
 
 namespace Launcher.Plugins.AzureDevOps.Services;
 
-internal class AzureDevOpsApi : IAzureDevOpsApi
+internal class AzureDevOpsApi
 {
     private readonly IUI _ui;
-    private readonly ILogger<IAzureDevOpsApi> _logger;
+    private readonly ILogger<AzureDevOpsApi> _logger;
     private readonly AsyncLock _lock = new();
     private readonly Dictionary<string, VssConnection> _connections = new();
 
-    public AzureDevOpsApi(IUI ui, ILogger<IAzureDevOpsApi> logger)
+    public AzureDevOpsApi(IUI ui, ILogger<AzureDevOpsApi> logger)
     {
         _ui = ui;
         _logger = logger;

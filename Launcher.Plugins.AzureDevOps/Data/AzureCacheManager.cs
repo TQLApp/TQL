@@ -14,12 +14,12 @@ namespace Launcher.Plugins.AzureDevOps.Data;
 internal class AzureCacheManager : ICacheManager<AzureData>
 {
     private readonly IConfigurationManager _configurationManager;
-    private readonly IAzureDevOpsApi _api;
+    private readonly AzureDevOpsApi _api;
 
     public TimeSpan Expiration => TimeSpan.FromHours(0.5);
     public int Version => 1;
 
-    public AzureCacheManager(IConfigurationManager configurationManager, IAzureDevOpsApi api)
+    public AzureCacheManager(IConfigurationManager configurationManager, AzureDevOpsApi api)
     {
         _configurationManager = configurationManager;
         _api = api;

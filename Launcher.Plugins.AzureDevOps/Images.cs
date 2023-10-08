@@ -9,8 +9,10 @@ internal class Images
     public IImage Boards { get; }
     public IImage Dashboards { get; }
     public IImage Document { get; }
+    public IImage Outlook { get; }
     public IImage Pipelines { get; }
     public IImage Repositories { get; }
+    public IImage Teams { get; }
 
     public Images(IImageFactory imageFactory)
     {
@@ -18,8 +20,10 @@ internal class Images
         Boards = LoadImage("Boards.png");
         Dashboards = LoadImage("Dashboards.png");
         Document = LoadImage("Document.svg");
+        Outlook = LoadImage("Outlook.png");
         Pipelines = LoadImage("Pipelines.png");
         Repositories = LoadImage("Repositories.png");
+        Teams = LoadImage("Teams.png");
 
         IImage LoadImage(string name)
         {

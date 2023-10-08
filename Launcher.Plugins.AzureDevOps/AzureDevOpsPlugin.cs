@@ -6,7 +6,6 @@ using Launcher.Plugins.AzureDevOps.Services;
 using Launcher.Plugins.AzureDevOps.Support;
 using Launcher.Utilities;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 using System.Reflection;
 
 namespace Launcher.Plugins.AzureDevOps;
@@ -31,7 +30,7 @@ public class AzureDevOpsPlugin : ILauncherPlugin
     {
         services.AddSingleton<RepositoriesMatch>();
         services.AddSingleton<ICacheManager<AzureData>, AzureCacheManager>();
-        services.AddSingleton<IAzureDevOpsApi, AzureDevOpsApi>();
+        services.AddSingleton<AzureDevOpsApi>();
         services.AddSingleton<Images>();
         services.AddSingleton<ConnectionManager>();
 

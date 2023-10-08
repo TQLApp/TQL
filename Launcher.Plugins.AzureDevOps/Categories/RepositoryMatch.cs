@@ -61,7 +61,7 @@ internal class RepositoryMatch : IRunnableMatch, ISearchableMatch, ISerializable
     )
     {
         var gitClient = await serviceProvider
-            .GetRequiredService<IAzureDevOpsApi>()
+            .GetRequiredService<AzureDevOpsApi>()
             .GetClient<GitHttpClient>(_dto.Url);
 
         using var stream = await gitClient
