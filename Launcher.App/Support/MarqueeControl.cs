@@ -45,9 +45,9 @@ internal class MarqueeControl : ContentControl
 
         if (IsRunning && to < 0)
         {
-            var duration = TimeSpan.FromMilliseconds(-to * 10);
-            var delay = TimeSpan.FromSeconds(0.7);
-            var wait = TimeSpan.FromSeconds(1);
+            var duration = TimeSpan.FromMilliseconds(-to * 8);
+            var delay = TimeSpan.FromSeconds(0.5);
+            var wait = TimeSpan.FromSeconds(0.8);
 
             var animation = new DoubleAnimationUsingKeyFrames
             {
