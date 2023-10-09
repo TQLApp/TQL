@@ -10,6 +10,8 @@ namespace Launcher.App;
 
 internal partial class MainWindow
 {
+    private const int ResultItemsCount = 8;
+
     private readonly Settings _settings;
     private readonly IServiceProvider _serviceProvider;
     private readonly ILogger<MainWindow> _logger;
@@ -18,6 +20,7 @@ internal partial class MainWindow
     private KeyboardHook? _keyboardHook;
     private SearchManager? _searchManager;
     private readonly UI _ui;
+    private double _listBoxRowHeight = double.NaN;
 
     private SearchResult? SelectedSearchResult => (SearchResult?)_results.SelectedItem;
 
@@ -40,6 +43,9 @@ internal partial class MainWindow
         cacheManagerManager.LoadingChanged += CacheManagerManager_LoadingChanged;
 
         InitializeComponent();
+
+        if (!double.IsNaN(_listBoxRowHeight))
+            RecalculateListBoxHeight();
 
         SetupShortcut();
 
@@ -311,7 +317,7 @@ internal partial class MainWindow
         _results.ScrollIntoView(_results.Items[newIndex]);
     }
 
-    private void SelectPage(int i) => SelectItem(i * 8);
+    private void SelectPage(int i) => SelectItem(i * ResultItemsCount);
 
     private async void RunItem(IRunnableMatch match, SearchResult searchResult)
     {
@@ -399,5 +405,37 @@ internal partial class MainWindow
         _searchManager?.DeleteHistory(searchResult.HistoryId.Value);
 
         _search.Focus();
+    }
+
+    private void SearchResultUserControl_SizeChanged(object sender, SizeChangedEventArgs e)
+    {
+        for (
+            var current = (DependencyObject?)sender;
+            current != null;
+            current = VisualTreeHelper.GetParent(current)
+        )
+        {
+            if (current is ListBoxItem listBoxItem)
+            {
+                // For some reason, we get two size changed events. The second
+                // one is the right one, and is bigger than the first one, so
+                // this logic filters for that.
+                if (double.IsNaN(_listBoxRowHeight) || _listBoxRowHeight < listBoxItem.ActualHeight)
+                {
+                    _listBoxRowHeight = listBoxItem.ActualHeight;
+
+                    RecalculateListBoxHeight();
+                }
+                return;
+            }
+        }
+    }
+
+    private void RecalculateListBoxHeight()
+    {
+        _results.Height =
+            _listBoxRowHeight * ResultItemsCount
+            + _results.BorderThickness.Top
+            + _results.BorderThickness.Bottom;
     }
 }
