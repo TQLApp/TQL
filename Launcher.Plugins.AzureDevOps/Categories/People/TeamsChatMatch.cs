@@ -1,6 +1,5 @@
 using Launcher.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
-using System.Net.Mail;
 
 namespace Launcher.Plugins.AzureDevOps.Categories.People;
 
