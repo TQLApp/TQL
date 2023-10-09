@@ -226,7 +226,7 @@ internal class SearchManager : IDisposable
         var result = new List<SearchResult>();
 
         result.AddRange(history.Where(p => p.Penalty < 0));
-        result.AddRange(rootItems);
+        result.AddRange(rootItems.Where(p => !p.HistoryId.HasValue));
         result.AddRange(history.Where(p => p.Penalty >= 0));
 
         return result;
