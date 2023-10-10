@@ -16,13 +16,20 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
         <Border x:Name="_resultPanel"
                 Margin="2" />
-       
+
+        <Border x:Name="_iconsPanelWrapper"
+                Grid.Column="1" 
+                BorderBrush="#40ffffff"
+                BorderThickness="1,0,0,0"
+                Margin="6,6,6,6" />
+
         <StackPanel x:Name="_iconsPanel"
-                    Grid.Column="1"
+                    Grid.Column="2"
                     Orientation="Horizontal"
                     Margin="0,0,6,0" />
     </Grid>

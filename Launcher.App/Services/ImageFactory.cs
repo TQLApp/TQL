@@ -1,15 +1,12 @@
 ﻿using System.IO;
-using System.Xml.Linq;
 using Launcher.Abstractions;
-using Brushes = System.Windows.Media.Brushes;
-using Pen = System.Windows.Media.Pen;
+using SharpVectors.Converters;
+using SharpVectors.Renderers.Wpf;
 
 namespace Launcher.App.Services;
 
 internal class ImageFactory : IImageFactory
 {
-    private static readonly XNamespace SvgNs = "http://www.w3.org/2000/svg";
-
     public IImage FromBytes(byte[] bytes, ImageType imageType)
     {
         using var stream = new MemoryStream(bytes);
@@ -48,30 +45,20 @@ internal class ImageFactory : IImageFactory
 
     public static DrawingImage CreateSvgImage(Stream stream, Brush? fill = null)
     {
-        var doc = XDocument.Load(stream);
-
-        if (doc.Root?.Elements().Count() == 1)
+        var settings = new WpfDrawingSettings
         {
-            var element = doc.Root.Elements().Single();
+            IncludeRuntime = true,
+            TextAsGeometry = false,
+            OptimizePath = true
+        };
 
-            if (element.Name == SvgNs + "path")
-            {
-                var pathData = element.Attribute("d")?.Value;
-
-                if (!string.IsNullOrEmpty(pathData))
-                {
-                    return new DrawingImage
-                    {
-                        Drawing = new GeometryDrawing(
-                            fill ?? Brushes.White,
-                            new Pen(Brushes.Transparent, 0),
-                            Geometry.Parse(pathData)
-                        )
-                    };
-                }
-            }
+        using (var reader = new FileSvgReader(settings))
+        {
+            var drawGroup = reader.Read(stream);
+            if (drawGroup != null)
+                return new DrawingImage(drawGroup);
         }
 
-        throw new InvalidOperationException("Cannot parse SVG file");
+        throw new InvalidOperationException("Could not convert SVG image");
     }
 }

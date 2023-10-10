@@ -117,6 +117,8 @@ internal partial class SearchResultUserControl
             };
         }
 
+        _iconsPanelWrapper.Visibility = _iconsPanel.Children.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+
         Image AddIcon(DrawingImage icon)
         {
             var image = new Image

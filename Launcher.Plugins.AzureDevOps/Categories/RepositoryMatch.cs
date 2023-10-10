@@ -29,9 +29,6 @@ internal class RepositoryMatch : IRunnableMatch, ISearchableMatch, ISerializable
         CancellationToken cancellationToken
     )
     {
-        if (text.IsWhiteSpace())
-            return Array.Empty<IMatch>();
-
         var cache = context.GetDataCached($"{GetType().FullName}:{_dto}", GetRepositoryFilePaths);
 
         if (!cache.IsCompleted)
