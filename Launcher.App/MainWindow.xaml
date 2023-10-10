@@ -42,7 +42,7 @@
                     Background="#40ffffff">
                 <StackPanel x:Name="_stackContainer"
                             Orientation="Horizontal"
-                            Margin="10,6"
+                            Margin="10,5"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Right"/>
             </Border>
