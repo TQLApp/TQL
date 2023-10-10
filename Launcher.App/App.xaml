@@ -15,11 +15,6 @@
                 <ResourceDictionary Source="Themes/Controls.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
-            <Style TargetType="{x:Type ListBoxItem}">
-                <Setter Property="HorizontalContentAlignment" Value="Left" />
-                <Setter Property="VerticalContentAlignment" Value="Top" />
-            </Style>
-
             <Style TargetType="support:MarqueeControl">
                 <Setter Property="Template">
                     <Setter.Value>
