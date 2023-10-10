@@ -26,9 +26,12 @@ internal class PipelinesType : IMatchType
         _connectionManager = connectionManager;
     }
 
-    public IMatch Deserialize(string json)
+    public IMatch? Deserialize(string json)
     {
         var dto = JsonSerializer.Deserialize<RootItemDto>(json)!;
+
+        if (!_connectionManager.Connections.Any(p => p.Url == dto.Url))
+            return null;
 
         return new PipelinesMatch(
             MatchUtils.GetMatchLabel("Azure Pipeline", _connectionManager, dto.Url),

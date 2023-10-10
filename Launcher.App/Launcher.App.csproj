@@ -46,6 +46,7 @@
     <ProjectReference Include="..\Launcher.Abstractions\Launcher.Abstractions.csproj" />
     <ProjectReference Include="..\Launcher.Interop\Launcher.Interop.csproj" />
     <ProjectReference Include="..\Launcher.Plugins.AzureDevOps\Launcher.Plugins.AzureDevOps.csproj" />
+    <ProjectReference Include="..\Launcher.Plugins.Azure\Launcher.Plugins.Azure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

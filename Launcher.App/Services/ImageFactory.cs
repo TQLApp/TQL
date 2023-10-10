@@ -29,6 +29,11 @@ internal class ImageFactory : IImageFactory
         }
     }
 
+    public IImage FromImageSource(ImageSource imageSource)
+    {
+        return new Image(imageSource);
+    }
+
     public static BitmapImage CreateBitmapImage(Stream stream)
     {
         var bitmapImage = new BitmapImage();
@@ -43,7 +48,7 @@ internal class ImageFactory : IImageFactory
         return bitmapImage;
     }
 
-    public static DrawingImage CreateSvgImage(Stream stream, Brush? fill = null)
+    public static DrawingImage CreateSvgImage(Stream stream)
     {
         var settings = new WpfDrawingSettings
         {
@@ -52,11 +57,16 @@ internal class ImageFactory : IImageFactory
             OptimizePath = true
         };
 
-        using (var reader = new FileSvgReader(settings))
+        using var reader = new FileSvgReader(settings);
+
+        var drawGroup = reader.Read(stream);
+        if (drawGroup != null)
         {
-            var drawGroup = reader.Read(stream);
-            if (drawGroup != null)
-                return new DrawingImage(drawGroup);
+            var drawing = new DrawingImage(drawGroup);
+
+            drawing.Freeze();
+
+            return drawing;
         }
 
         throw new InvalidOperationException("Could not convert SVG image");

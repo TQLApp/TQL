@@ -22,9 +22,12 @@ internal class BacklogsType : IMatchType
         _connectionManager = connectionManager;
     }
 
-    public IMatch Deserialize(string json)
+    public IMatch? Deserialize(string json)
     {
         var dto = JsonSerializer.Deserialize<RootItemDto>(json)!;
+
+        if (!_connectionManager.Connections.Any(p => p.Url == dto.Url))
+            return null;
 
         return new BacklogsMatch(
             MatchUtils.GetMatchLabel("Azure Backlog", _connectionManager, dto.Url),

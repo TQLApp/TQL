@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net48</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<LangVersion>latest</LangVersion>
+		<UseWPF>true</UseWPF>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Remove="Resources\**\*" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Include="Resources\**\*" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Azure.Identity" Version="1.10.1" />
+		<PackageReference Include="Azure.ResourceManager.ResourceGraph" Version="1.0.1" />
+		<PackageReference Include="NeoSmart.AsyncLock" Version="3.2.1" />
+		<PackageReference Include="System.Text.Json" Version="7.0.3" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Launcher.Utilities\Launcher.Utilities.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="ConfigurationUI\ConfigurationControl.xaml.cs">
+	    <SubType>Code</SubType>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Data\" />
+	  <Folder Include="Support\" />
+	</ItemGroup>
+
+</Project>

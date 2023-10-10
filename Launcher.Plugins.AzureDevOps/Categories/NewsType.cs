@@ -22,9 +22,12 @@ internal class NewsType : IMatchType
         _connectionManager = connectionManager;
     }
 
-    public IMatch Deserialize(string json)
+    public IMatch? Deserialize(string json)
     {
         var dto = JsonSerializer.Deserialize<RootItemDto>(json)!;
+
+        if (!_connectionManager.Connections.Any(p => p.Url == dto.Url))
+            return null;
 
         return new NewsMatch(
             MatchUtils.GetMatchLabel("Azure New", _connectionManager, dto.Url),

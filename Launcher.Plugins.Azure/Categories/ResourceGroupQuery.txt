@@ -1,0 +1,8 @@
+﻿resourcecontainers
+| where (name contains ('{0}'))
+| where (type =~ ('Microsoft.Resources/subscriptions/resourcegroups'))
+| project id,name,type,kind,subscriptionId,resourceGroup
+| extend matchscore = name startswith '{0}'
+| extend normalizedName = tolower(tostring(name))
+| sort by matchscore desc, normalizedName asc
+| take {1}

@@ -77,15 +77,17 @@
                                         Visibility="Collapsed"
                                         ToolTip="Cache is being updated..." />
         </Grid>
+
         <ListBox x:Name="_results"
                  SelectionMode="Single"
                  FontSize="15pt"
                  Background="Transparent"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 BorderThickness="0"
+                 Margin="2"
                  PreviewKeyDown="_results_PreviewKeyDown"
-                 MouseUp="_results_MouseUp"
-                 Margin="1">
-            
+                 MouseUp="_results_MouseUp">
+
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <local:SearchResultUserControl DataContext="{Binding}"
@@ -94,7 +96,7 @@
                                                    SizeChanged="SearchResultUserControl_SizeChanged"/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
-            
+
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -133,7 +135,8 @@
                     </Setter>
                 </Style>
             </ListBox.ItemContainerStyle>
-            
+
         </ListBox>
+        
     </StackPanel>
 </support:BlurWindow>

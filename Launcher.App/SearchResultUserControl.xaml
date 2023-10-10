@@ -22,7 +22,7 @@
         <Border x:Name="_resultPanel"
                 Margin="2" />
 
-        <Border x:Name="_iconsPanelWrapper"
+        <Border x:Name="_separator"
                 Grid.Column="1" 
                 BorderBrush="#40ffffff"
                 BorderThickness="1,0,0,0"

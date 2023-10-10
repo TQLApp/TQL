@@ -19,7 +19,8 @@ public class BlurWindow : BaseWindow
         var interop = new WindowInteropHelper(this);
         var mainWindowSrc = HwndSource.FromHwnd(interop.Handle);
 
-        mainWindowSrc!.CompositionTarget!.BackgroundColor = Color.FromArgb(0, 0, 0, 0);
+        // This color is used to blend with the background.
+        mainWindowSrc!.CompositionTarget!.BackgroundColor = Color.FromArgb(0x40, 0, 0, 0);
 
         if (Environment.OSVersion.Version.Major >= 6)
         {

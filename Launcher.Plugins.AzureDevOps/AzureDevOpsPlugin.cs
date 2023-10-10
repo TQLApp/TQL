@@ -28,7 +28,6 @@ public class AzureDevOpsPlugin : ILauncherPlugin
 
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddSingleton<RepositoriesMatch>();
         services.AddSingleton<ICacheManager<AzureData>, AzureCacheManager>();
         services.AddSingleton<AzureDevOpsApi>();
         services.AddSingleton<Images>();
@@ -52,7 +51,7 @@ public class AzureDevOpsPlugin : ILauncherPlugin
 
     public IEnumerable<IMatch> GetMatches()
     {
-        var connectionManager = _serviceProvider.GetRequiredService<ConnectionManager>();
+        var connectionManager = _serviceProvider!.GetRequiredService<ConnectionManager>();
 
         return from connection in connectionManager.Connections
             let json = JsonSerializer.Serialize(new RootItemDto(connection.Url))

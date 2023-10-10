@@ -29,9 +29,12 @@ internal class QueriesType : IMatchType
         _api = api;
     }
 
-    public IMatch Deserialize(string json)
+    public IMatch? Deserialize(string json)
     {
         var dto = JsonSerializer.Deserialize<RootItemDto>(json)!;
+
+        if (!_connectionManager.Connections.Any(p => p.Url == dto.Url))
+            return null;
 
         return new QueriesMatch(
             MatchUtils.GetMatchLabel("Azure Query", _connectionManager, dto.Url),

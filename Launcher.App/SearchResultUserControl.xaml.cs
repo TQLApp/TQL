@@ -8,13 +8,13 @@ namespace Launcher.App;
 
 internal partial class SearchResultUserControl
 {
-    private static DrawingImage LoadImage(string resourceName, Brush? fill = null)
+    private static DrawingImage LoadImage(string resourceName)
     {
         using var stream = Application
             .GetResourceStream(new Uri($"/Resources/{resourceName}", UriKind.Relative))!
             .Stream;
 
-        return ImageFactory.CreateSvgImage(stream!, fill);
+        return ImageFactory.CreateSvgImage(stream!);
     }
 
     private static readonly DrawingImage RunImage = LoadImage("Person Running.svg");
@@ -117,7 +117,8 @@ internal partial class SearchResultUserControl
             };
         }
 
-        _iconsPanelWrapper.Visibility = _iconsPanel.Children.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+        _separator.Visibility =
+            _iconsPanel.Children.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
 
         Image AddIcon(DrawingImage icon)
         {

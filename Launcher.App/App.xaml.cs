@@ -10,6 +10,7 @@ using Microsoft.Win32;
 using FramePFX.Themes;
 using Launcher.App.Search;
 using Microsoft.Extensions.Logging;
+using Launcher.Plugins.Azure;
 
 namespace Launcher.App;
 
@@ -77,7 +78,7 @@ public partial class App
     private IEnumerable<ILauncherPlugin> GetPlugins()
     {
         // TODO: Make extensible.
-        var assemblies = new[] { typeof(AzureDevOpsPlugin).Assembly };
+        var assemblies = new[] { typeof(AzureDevOpsPlugin).Assembly, typeof(AzurePlugin).Assembly };
 
         foreach (var assembly in assemblies)
         {

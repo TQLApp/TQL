@@ -29,9 +29,12 @@ internal class WorkItemsType : IMatchType
         _api = api;
     }
 
-    public IMatch Deserialize(string json)
+    public IMatch? Deserialize(string json)
     {
         var dto = JsonSerializer.Deserialize<RootItemDto>(json)!;
+
+        if (!_connectionManager.Connections.Any(p => p.Url == dto.Url))
+            return null;
 
         return new WorkItemsMatch(
             MatchUtils.GetMatchLabel("Azure Work Item", _connectionManager, dto.Url),
