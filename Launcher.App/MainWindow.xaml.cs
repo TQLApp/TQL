@@ -165,7 +165,7 @@ internal partial class MainWindow
         _results.ItemsSource = _searchManager.Results;
 
         if (_results.Items.Count > 0)
-            _results.SelectedIndex = 0;
+            SetSelectedIndex(0);
     }
 
     private void _searchManager_StackChanged(object sender, EventArgs e) => RenderStack();
@@ -312,8 +312,12 @@ internal partial class MainWindow
         var index = _results.SelectedIndex == -1 ? 0 : _results.SelectedIndex + offset;
         var newIndex = Math.Min(Math.Max(index, 0), _results.Items.Count - 1);
 
-        _results.SelectedIndex = newIndex;
+        SetSelectedIndex(newIndex);
+    }
 
+    private void SetSelectedIndex(int newIndex)
+    {
+        _results.SelectedIndex = newIndex;
         _results.ScrollIntoView(_results.Items[newIndex]);
     }
 
