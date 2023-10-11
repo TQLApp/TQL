@@ -42,9 +42,23 @@ internal abstract class GraphUserMatchBase : ISearchableMatch, ISerializableMatc
         if (users == null)
             return ImmutableArray<IMatch>.Empty;
 
+        var duplicateDisplayNames = users
+            .Cast<GraphUser>()
+            .GroupBy(p => p.DisplayName, StringComparer.CurrentCultureIgnoreCase)
+            .Where(p => p.Count() > 1)
+            .Select(p => p.Key)
+            .ToHashSet(StringComparer.CurrentCultureIgnoreCase);
+
         return users
             .Cast<GraphUser>()
-            .Select(p => CreateMatch(new GraphUserDto(_url, p.DisplayName, p.MailAddress)))
+            .Select(p =>
+            {
+                var displayName = p.DisplayName;
+                if (duplicateDisplayNames.Contains(displayName))
+                    displayName += $" - {p.MailAddress}";
+
+                return CreateMatch(new GraphUserDto(_url, displayName, p.MailAddress));
+            })
             .OrderBy(p => p.Text, StringComparer.CurrentCultureIgnoreCase);
     }
 
