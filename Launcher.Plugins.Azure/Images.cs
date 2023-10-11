@@ -9,7 +9,7 @@ internal class Images
 
     public Images(IImageFactory imageFactory)
     {
-        Azure = LoadImage("Azure.png");
+        Azure = LoadImage("Azure.svg");
 
         IImage LoadImage(string name)
         {

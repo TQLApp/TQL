@@ -16,14 +16,14 @@ internal class Images
 
     public Images(IImageFactory imageFactory)
     {
-        Azure = LoadImage("Azure.png");
+        Azure = LoadImage("Azure.svg");
         Boards = LoadImage("Boards.png");
         Dashboards = LoadImage("Dashboards.png");
         Document = LoadImage("Document.svg");
-        Outlook = LoadImage("Outlook.png");
+        Outlook = LoadImage("Outlook.svg");
         Pipelines = LoadImage("Pipelines.png");
         Repositories = LoadImage("Repositories.png");
-        Teams = LoadImage("Teams.png");
+        Teams = LoadImage("Teams.svg");
 
         IImage LoadImage(string name)
         {
