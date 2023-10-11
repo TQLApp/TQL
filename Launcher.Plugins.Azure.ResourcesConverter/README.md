@@ -6,14 +6,15 @@ change in the future.
 
 ## Instructions
 
-- Open the Azure Portal and the Inspection tab of Chrome.
-- Open the Elements tab and find a DIV called FxSymbolContainer. Copy the element
-  (highlight it and press Ctrl+C) and copy the contents into the FxImages.html file.
-  Note however that these images are loaded on the fly. It's best to open the
-  All Resources panel and scroll to some of the pages there to seed the cache.
-- Open the Sources tab and do a global search for "open ai" (different options work,
-  but at the time of writing, this open returned just one JSON file). The JSON file
-  should have a format with at the top level an object with a "manifests" property,
-  and nested two levels down a property called "assetTypes". Copy the contents of
-  this file into the Resources.json file.
+- Open the Azure Portal and Chrome DevTools and go to the Sources tab.
+- Do a global search for `open ai` (different options work, but at the time of
+  writing, this open returned just one JSON file). The JSON file should have a
+  format with at the top level an object with a "manifests" property, and nested
+  two levels down a property called "assetTypes". Copy the contents of this file
+  into the Resources.json file.
+- Do a global search for `requireconfig\"` (including the backslash and quote).
+  This should give you at least two files where the search matched an property
+  name `"requireConfig"` or `"fxRequireConfig"`. Copy the full contents of these
+  files into the RequireConfig.js file. The algorithm is smart enough to pick up
+  the interesting parts from the copied JavaScript.
 - Run the app.

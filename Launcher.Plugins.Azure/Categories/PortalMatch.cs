@@ -26,7 +26,14 @@ internal class PortalMatch : IRunnableMatch, ISerializableMatch
 
         var resourceDisplayName = resourceName?.SingularDisplayName ?? dto.Type;
 
-        if (!dto.ResourceGroup.IsEmpty())
+        if (
+            !dto.ResourceGroup.IsEmpty()
+            && !string.Equals(
+                dto.Type,
+                "Microsoft.Resources/subscriptions/resourceGroups",
+                StringComparison.OrdinalIgnoreCase
+            )
+        )
             sb.Append(dto.ResourceGroup).Append('/');
         sb.Append(dto.Name).Append(" - ").Append(resourceDisplayName);
 
