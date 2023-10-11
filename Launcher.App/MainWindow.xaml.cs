@@ -44,6 +44,9 @@ internal partial class MainWindow
 
         InitializeComponent();
 
+        _runImage.Source = SearchResultUserControl.RunImage;
+        _categoryImage.Source = SearchResultUserControl.CategoryImage;
+
         if (!double.IsNaN(_listBoxRowHeight))
             RecalculateListBoxHeight();
 

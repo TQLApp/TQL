@@ -25,29 +25,33 @@
         </Style>
     </Window.Resources>
     <StackPanel Orientation="Vertical">
-        <Grid Margin="8,0,0,0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
 
-            <Border x:Name="_stack"
+        <Border BorderBrush="#60ffffff" BorderThickness="0,0,0,0.5">
+
+            <Grid Margin="8,0,0,0">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Border x:Name="_stack"
                     Margin="0,8,3,8"
                     CornerRadius="4"
                     BorderThickness="1"
                     MaxWidth="300"
                     BorderBrush="#80ffffff"
                     Background="#40ffffff">
-                <StackPanel x:Name="_stackContainer"
+                    <StackPanel x:Name="_stackContainer"
                             Orientation="Horizontal"
                             Margin="10,5"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Right"/>
-            </Border>
+                </Border>
 
-            <TextBox x:Name="_search"
+                <TextBox x:Name="_search"
                      FontSize="15pt"
                      Margin="6,14,14,14"
                      Foreground="White"
@@ -58,25 +62,26 @@
                      AcceptsTab="True"
                      AcceptsReturn="True"
                      Grid.Column="1">
-                <TextBox.CaretBrush>
-                    <SolidColorBrush Color="Silver"/>
-                </TextBox.CaretBrush>
-            </TextBox>
+                    <TextBox.CaretBrush>
+                        <SolidColorBrush Color="Silver"/>
+                    </TextBox.CaretBrush>
+                </TextBox>
 
-            <support:DancingDotsUserControl x:Name="_dancingDots"
+                <support:DancingDotsUserControl x:Name="_dancingDots"
                                             Grid.Column="2"
                                             Margin="0,0,20,19"
                                             Visibility="Collapsed"
                                             ToolTip="Searching..." />
 
-            <support:SpinnerUserControl x:Name="_spinner"
+                <support:SpinnerUserControl x:Name="_spinner"
                                         Grid.Column="3"
                                         Width="20"
                                         Height="20"
                                         Margin="0,0,20,0"
                                         Visibility="Collapsed"
                                         ToolTip="Cache is being updated..." />
-        </Grid>
+            </Grid>
+        </Border>
 
         <ListBox x:Name="_results"
                  SelectionMode="Single"
@@ -84,7 +89,6 @@
                  Background="Transparent"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                  BorderThickness="0"
-                 Margin="2"
                  PreviewKeyDown="_results_PreviewKeyDown"
                  MouseUp="_results_MouseUp">
 
@@ -107,7 +111,7 @@
                                         BorderThickness="{TemplateBinding BorderThickness}"
                                         Background="{TemplateBinding Background}"
                                         Padding="{TemplateBinding Padding}"
-                                        Margin="1"
+                                        Margin="2"
                                         SnapsToDevicePixels="true"
                                         CornerRadius="4">
                                     <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
@@ -137,6 +141,52 @@
             </ListBox.ItemContainerStyle>
 
         </ListBox>
+
+        <Border BorderBrush="#60ffffff" BorderThickness="0,0.5,0,0" Padding="20,8,20,10" Background="#10ffffff">
+            <StackPanel Orientation="Horizontal">
+                <StackPanel.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="FontSize" Value="10pt"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                    </Style>
+                    <Style TargetType="Image">
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="Margin" Value="0,2,0,0"/>
+                    </Style>
+                    <Style x:Key="ButtonBorder" TargetType="Border">
+                        <Setter Property="BorderBrush" Value="#50ffffff" />
+                        <Setter Property="BorderThickness" Value="1" />
+                        <Setter Property="CornerRadius" Value="3" />
+                        <Setter Property="Background" Value="#20ffffff" />
+                        <Setter Property="Padding" Value="6,0,6,1" />
+                        <Setter Property="Margin" Value="0,2,0,0" />
+                    </Style>
+                </StackPanel.Resources>
+                
+                <Border Style="{StaticResource ButtonBorder}">
+                    <TextBlock>Alt</TextBlock>
+                </Border>
+                <Border Style="{StaticResource ButtonBorder}">
+                    <TextBlock>Back</TextBlock>
+                </Border>
+                <TextBlock Margin="8,0,20,0">Open Launcher</TextBlock>
+                
+                <Border Style="{StaticResource ButtonBorder}">
+                    <TextBlock>Enter</TextBlock>
+                </Border>
+                <TextBlock Margin="8,0,4,0">Launch</TextBlock>
+                <Image x:Name="_runImage" Height="15" Width="15" />
+                <TextBlock Margin="4,0,20,0">matches</TextBlock>
+                
+                <Border Style="{StaticResource ButtonBorder}">
+                    <TextBlock>Tab</TextBlock>
+                </Border>
+                <TextBlock Margin="8,0,6,0">Open</TextBlock>
+                <Image x:Name="_categoryImage" Height="15" Width="15" />
+                <TextBlock Margin="4,0,20,0">matches</TextBlock>
+
+            </StackPanel>
+        </Border>
         
     </StackPanel>
 </support:BlurWindow>

@@ -17,10 +17,10 @@ internal partial class SearchResultUserControl
         return ImageFactory.CreateSvgImage(stream!);
     }
 
-    private static readonly DrawingImage RunImage = LoadImage("Person Running.svg");
-    private static readonly DrawingImage StarImage = LoadImage("Star.svg");
-    private static readonly DrawingImage DismissImage = LoadImage("Dismiss.svg");
-    private static readonly DrawingImage CategoryImage = LoadImage("Apps List.svg");
+    public static readonly DrawingImage RunImage = LoadImage("Person Running.svg");
+    public static readonly DrawingImage StarImage = LoadImage("Star.svg");
+    public static readonly DrawingImage DismissImage = LoadImage("Dismiss.svg");
+    public static readonly DrawingImage CategoryImage = LoadImage("Apps List.svg");
 
     public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register(
         nameof(IsSelected),
