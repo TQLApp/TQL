@@ -66,8 +66,8 @@ internal partial class Db
         public void MarkHistoryAsAccessed(long id)
         {
             Execute(
-                "update History set LastAccess = @LastAccess, AccessCount = AccessCount + 1",
-                new { LastAccess = DateTime.UtcNow }
+                "update History set LastAccess = @LastAccess, AccessCount = AccessCount + 1 where Id = @id",
+                new { id, LastAccess = DateTime.UtcNow }
             );
         }
 
