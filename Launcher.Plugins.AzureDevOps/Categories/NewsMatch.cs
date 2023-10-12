@@ -1,5 +1,6 @@
 ﻿using Launcher.Abstractions;
 using Launcher.Plugins.AzureDevOps.Data;
+using Launcher.Plugins.AzureDevOps.Services;
 using Launcher.Utilities;
 
 namespace Launcher.Plugins.AzureDevOps.Categories;
@@ -7,15 +8,22 @@ namespace Launcher.Plugins.AzureDevOps.Categories;
 internal class NewsMatch : CachedMatch<AzureData>, ISerializableMatch
 {
     private readonly string _url;
+    private readonly AzureWorkItemIconManager _iconManager;
 
     public override string Text { get; }
-    public override ImageSource Icon => Images.Azure;
+    public override ImageSource Icon => Images.Boards;
     public override MatchTypeId TypeId => TypeIds.News;
 
-    public NewsMatch(string text, string url, ICache<AzureData> cache)
+    public NewsMatch(
+        string text,
+        string url,
+        ICache<AzureData> cache,
+        AzureWorkItemIconManager iconManager
+    )
         : base(cache)
     {
         _url = url;
+        _iconManager = iconManager;
 
         Text = text;
     }
@@ -25,13 +33,15 @@ internal class NewsMatch : CachedMatch<AzureData>, ISerializableMatch
         foreach (var project in data.GetConnection(_url).Projects)
         {
             yield return new NewMatch(
-                new NewMatchDto(_url, project.Name, NewMatchType.Query, null)
+                new NewMatchDto(_url, project.Name, NewMatchType.Query, null),
+                _iconManager
             );
 
             foreach (var workItemType in project.WorkItemTypes)
             {
                 yield return new NewMatch(
-                    new NewMatchDto(_url, project.Name, NewMatchType.WorkItem, workItemType.Name)
+                    new NewMatchDto(_url, project.Name, NewMatchType.WorkItem, workItemType.Name),
+                    _iconManager
                 );
             }
         }

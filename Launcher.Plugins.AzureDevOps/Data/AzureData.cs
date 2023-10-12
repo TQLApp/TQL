@@ -30,7 +30,9 @@ internal enum AzureFeature
     Pipelines
 }
 
-internal record AzureWorkItemType(string Name);
+internal record AzureWorkItemType(string Name, AzureWorkItemIcon Icon);
+
+internal record AzureWorkItemIcon(byte[] Data, string MediaType);
 
 internal record AzureDashboard(Guid Id, string Name);
 

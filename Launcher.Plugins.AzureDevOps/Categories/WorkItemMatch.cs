@@ -1,4 +1,5 @@
 ﻿using Launcher.Abstractions;
+using Launcher.Plugins.AzureDevOps.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Launcher.Plugins.AzureDevOps.Categories;
@@ -6,14 +7,19 @@ namespace Launcher.Plugins.AzureDevOps.Categories;
 internal class WorkItemMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
 {
     private readonly WorkItemMatchDto _dto;
+    private readonly AzureWorkItemIconManager _iconManager;
 
     public string Text => $"{_dto.ProjectName}/{_dto.Type} {_dto.Id}: {_dto.Title}";
-    public ImageSource Icon => Images.Boards;
+    public ImageSource Icon { get; }
     public MatchTypeId TypeId => TypeIds.WorkItem;
 
-    public WorkItemMatch(WorkItemMatchDto dto)
+    public WorkItemMatch(WorkItemMatchDto dto, AzureWorkItemIconManager iconManager)
     {
         _dto = dto;
+        _iconManager = iconManager;
+
+        Icon =
+            iconManager.GetWorkItemIconImage(dto.Url, dto.ProjectName, dto.Type) ?? Images.Boards;
     }
 
     public Task Run(IServiceProvider serviceProvider, Window owner)

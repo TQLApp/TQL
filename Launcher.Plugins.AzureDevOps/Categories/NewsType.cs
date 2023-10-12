@@ -11,13 +11,19 @@ internal class NewsType : IMatchType
 {
     private readonly ICache<AzureData> _cache;
     private readonly ConnectionManager _connectionManager;
+    private readonly AzureWorkItemIconManager _iconManager;
 
     public Guid Id => TypeIds.News.Id;
 
-    public NewsType(ICache<AzureData> cache, ConnectionManager connectionManager)
+    public NewsType(
+        ICache<AzureData> cache,
+        ConnectionManager connectionManager,
+        AzureWorkItemIconManager iconManager
+    )
     {
         _cache = cache;
         _connectionManager = connectionManager;
+        _iconManager = iconManager;
     }
 
     public IMatch? Deserialize(string json)
@@ -30,7 +36,8 @@ internal class NewsType : IMatchType
         return new NewsMatch(
             MatchUtils.GetMatchLabel("Azure New", _connectionManager, dto.Url),
             dto.Url,
-            _cache
+            _cache,
+            _iconManager
         );
     }
 }

@@ -8,6 +8,9 @@ using Microsoft.TeamFoundation.SourceControl.WebApi;
 using Microsoft.TeamFoundation.Work.WebApi;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
 using Microsoft.VisualStudio.Services.ExtensionManagement.WebApi.FeatureManagement;
+using System.Net.Http;
+using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
+using System.IO;
 
 namespace Launcher.Plugins.AzureDevOps.Data;
 
@@ -15,14 +18,20 @@ internal class AzureCacheManager : ICacheManager<AzureData>
 {
     private readonly IConfigurationManager _configurationManager;
     private readonly AzureDevOpsApi _api;
+    private readonly HttpClient _httpClient;
 
     public TimeSpan Expiration => TimeSpan.FromHours(0.5);
     public int Version => 1;
 
-    public AzureCacheManager(IConfigurationManager configurationManager, AzureDevOpsApi api)
+    public AzureCacheManager(
+        IConfigurationManager configurationManager,
+        AzureDevOpsApi api,
+        HttpClient httpClient
+    )
     {
         _configurationManager = configurationManager;
         _api = api;
+        _httpClient = httpClient;
     }
 
     public async Task<AzureData> Create()
@@ -65,10 +74,15 @@ internal class AzureCacheManager : ICacheManager<AzureData>
                     connection.Url
                 );
 
-                workItemTypes = (
-                    from workItemType in await workItemClient.GetWorkItemTypesAsync(project.Id)
-                    select new AzureWorkItemType(workItemType.Name)
-                ).ToImmutableArray();
+                var workItemTypeList = new List<AzureWorkItemType>();
+
+                foreach (var workItemType in await workItemClient.GetWorkItemTypesAsync(project.Id))
+                {
+                    var icon = await CreateWorkItemIcon(workItemType.Icon);
+                    workItemTypeList.Add(new AzureWorkItemType(workItemType.Name, icon));
+                }
+
+                workItemTypes = workItemTypeList.ToImmutableArray();
 
                 var dashboardClient = await _api.GetClient<DashboardHttpClient>(connection.Url);
 
@@ -153,6 +167,23 @@ internal class AzureCacheManager : ICacheManager<AzureData>
         }
 
         return new AzureConnection(connection.Name, connection.Url, projects.ToImmutableArray());
+    }
+
+    private async Task<AzureWorkItemIcon> CreateWorkItemIcon(WorkItemIcon icon)
+    {
+        using var response = await _httpClient.GetAsync(icon.Url);
+
+        response.EnsureSuccessStatusCode();
+
+        using var source = await response.Content.ReadAsStreamAsync();
+        using var target = new MemoryStream();
+
+        await source.CopyToAsync(target);
+
+        return new AzureWorkItemIcon(
+            target.ToArray(),
+            response.Content.Headers.ContentType.MediaType
+        );
     }
 
     private async Task<Dictionary<Guid, HashSet<AzureFeature>>> GetFeatures(Connection connection)

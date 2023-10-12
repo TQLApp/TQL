@@ -1,4 +1,5 @@
 ﻿using Launcher.Abstractions;
+using Launcher.Plugins.AzureDevOps.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Launcher.Plugins.AzureDevOps.Categories;
@@ -15,12 +16,23 @@ internal class NewMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
             _ => throw new ArgumentOutOfRangeException()
         };
 
-    public ImageSource Icon => Images.Azure;
+    public ImageSource Icon { get; }
     public MatchTypeId TypeId => TypeIds.New;
 
-    public NewMatch(NewMatchDto dto)
+    public NewMatch(NewMatchDto dto, AzureWorkItemIconManager iconManager)
     {
         _dto = dto;
+
+        if (dto.Type == NewMatchType.WorkItem)
+        {
+            Icon =
+                iconManager.GetWorkItemIconImage(dto.Url, dto.ProjectName, dto.Name!)
+                ?? Images.Boards;
+        }
+        else
+        {
+            Icon = Images.Boards;
+        }
     }
 
     public Task Run(IServiceProvider serviceProvider, Window owner)

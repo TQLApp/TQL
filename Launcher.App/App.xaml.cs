@@ -11,6 +11,7 @@ using FramePFX.Themes;
 using Launcher.App.Search;
 using Microsoft.Extensions.Logging;
 using Launcher.Plugins.Azure;
+using System.Net.Http;
 
 namespace Launcher.App;
 
@@ -107,6 +108,7 @@ public partial class App
         builder.AddSingleton<IUI, UI>();
         builder.AddSingleton<CacheManagerManager>();
         builder.AddSingleton<IClipboard, ClipboardImpl>();
+        builder.AddSingleton<HttpClient>();
 
         builder.AddTransient<MainWindow>();
         builder.AddTransient<ConfigurationWindow>();

@@ -13,16 +13,24 @@ internal class WorkItemsMatch : ISearchableMatch, ISerializableMatch
     private readonly string _url;
     private readonly ICache<AzureData> _cache;
     private readonly AzureDevOpsApi _api;
+    private readonly AzureWorkItemIconManager _iconManager;
 
     public string Text { get; }
     public ImageSource Icon => Images.Boards;
     public MatchTypeId TypeId => TypeIds.WorkItems;
 
-    public WorkItemsMatch(string text, string url, ICache<AzureData> cache, AzureDevOpsApi api)
+    public WorkItemsMatch(
+        string text,
+        string url,
+        ICache<AzureData> cache,
+        AzureDevOpsApi api,
+        AzureWorkItemIconManager iconManager
+    )
     {
         _url = url;
         _cache = cache;
         _api = api;
+        _iconManager = iconManager;
 
         Text = text;
     }
@@ -64,7 +72,8 @@ internal class WorkItemsMatch : ISearchableMatch, ISerializableMatch
                         workItem.Id!.Value,
                         (string)workItem.Fields["System.WorkItemType"],
                         (string)workItem.Fields["System.Title"]
-                    )
+                    ),
+                    _iconManager
                 )
             };
         }
@@ -91,7 +100,8 @@ internal class WorkItemsMatch : ISearchableMatch, ISerializableMatch
                         int.Parse(p.Fields["system.id"]),
                         p.Fields["system.workitemtype"],
                         p.Fields["system.title"]
-                    )
+                    ),
+                    _iconManager
                 )
         );
     }
