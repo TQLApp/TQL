@@ -26,121 +26,120 @@
     </Window.Resources>
     <StackPanel Orientation="Vertical">
 
-        <Border BorderBrush="#60ffffff" BorderThickness="0,0,0,0.5">
+        <Grid Margin="8,0,0,0">
 
-            <Grid Margin="8,0,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+            <Border x:Name="_stack"
+                Margin="0,8,3,8"
+                CornerRadius="4"
+                BorderThickness="1"
+                MaxWidth="300"
+                BorderBrush="#80ffffff"
+                Background="#40ffffff">
+                <StackPanel x:Name="_stackContainer"
+                        Orientation="Horizontal"
+                        Margin="10,5"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Right"/>
+            </Border>
 
-                <Border x:Name="_stack"
-                    Margin="0,8,3,8"
-                    CornerRadius="4"
-                    BorderThickness="1"
-                    MaxWidth="300"
-                    BorderBrush="#80ffffff"
-                    Background="#40ffffff">
-                    <StackPanel x:Name="_stackContainer"
-                            Orientation="Horizontal"
-                            Margin="10,5"
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Right"/>
-                </Border>
+            <TextBox x:Name="_search"
+                    FontSize="15pt"
+                    Margin="6,14,14,14"
+                    Foreground="White"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    TextChanged="_search_TextChanged"
+                    PreviewKeyDown="_search_PreviewKeyDown"
+                    AcceptsTab="True"
+                    AcceptsReturn="True"
+                    Grid.Column="1">
+                <TextBox.CaretBrush>
+                    <SolidColorBrush Color="Silver"/>
+                </TextBox.CaretBrush>
+            </TextBox>
 
-                <TextBox x:Name="_search"
-                     FontSize="15pt"
-                     Margin="6,14,14,14"
-                     Foreground="White"
-                     Background="Transparent"
-                     BorderThickness="0"
-                     TextChanged="_search_TextChanged"
-                     PreviewKeyDown="_search_PreviewKeyDown"
-                     AcceptsTab="True"
-                     AcceptsReturn="True"
-                     Grid.Column="1">
-                    <TextBox.CaretBrush>
-                        <SolidColorBrush Color="Silver"/>
-                    </TextBox.CaretBrush>
-                </TextBox>
-
-                <support:DancingDotsUserControl x:Name="_dancingDots"
-                                            Grid.Column="2"
-                                            Margin="0,0,20,19"
-                                            Visibility="Collapsed"
-                                            ToolTip="Searching..." />
-
-                <support:SpinnerUserControl x:Name="_spinner"
-                                        Grid.Column="3"
-                                        Width="20"
-                                        Height="20"
-                                        Margin="0,0,20,0"
+            <support:DancingDotsUserControl x:Name="_dancingDots"
+                                        Grid.Column="2"
+                                        Margin="0,0,20,19"
                                         Visibility="Collapsed"
-                                        ToolTip="Cache is being updated..." />
-            </Grid>
+                                        ToolTip="Searching..." />
+
+            <support:SpinnerUserControl x:Name="_spinner"
+                                    Grid.Column="3"
+                                    Width="20"
+                                    Height="20"
+                                    Margin="0,0,20,0"
+                                    Visibility="Collapsed"
+                                    ToolTip="Cache is being updated..." />
+        </Grid>
+
+        <Border x:Name="_resultsContainer" BorderBrush="#60ffffff" BorderThickness="0,0.5,0,0">
+            <ListBox x:Name="_results"
+                     SelectionMode="Single"
+                     FontSize="15pt"
+                     Background="Transparent"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     BorderThickness="0"
+                     PreviewKeyDown="_results_PreviewKeyDown"
+                     MouseUp="_results_MouseUp">
+
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <local:SearchResultUserControl DataContext="{Binding}"
+                                                       IsSelected="{Binding IsSelected, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}"
+                                                       HistoryRemoved="SearchResultUserControl_HistoryRemoved"
+                                                       SizeChanged="SearchResultUserControl_SizeChanged"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                    <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            Background="{TemplateBinding Background}"
+                                            Padding="{TemplateBinding Padding}"
+                                            Margin="2"
+                                            SnapsToDevicePixels="true"
+                                            CornerRadius="4">
+                                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <MultiTrigger>
+                                            <MultiTrigger.Conditions>
+                                                <Condition Property="IsMouseOver" Value="True"/>
+                                            </MultiTrigger.Conditions>
+                                            <Setter Property="Background" TargetName="Bd" Value="#30ffffff"/>
+                                            <Setter Property="BorderBrush" TargetName="Bd" Value="#60ffffff"/>
+                                        </MultiTrigger>
+                                        <MultiTrigger>
+                                            <MultiTrigger.Conditions>
+                                                <Condition Property="IsSelected" Value="True"/>
+                                            </MultiTrigger.Conditions>
+                                            <Setter Property="Background" TargetName="Bd" Value="#40ffffff"/>
+                                            <Setter Property="BorderBrush" TargetName="Bd" Value="#80ffffff"/>
+                                        </MultiTrigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+
+            </ListBox>
         </Border>
-
-        <ListBox x:Name="_results"
-                 SelectionMode="Single"
-                 FontSize="15pt"
-                 Background="Transparent"
-                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                 BorderThickness="0"
-                 PreviewKeyDown="_results_PreviewKeyDown"
-                 MouseUp="_results_MouseUp">
-
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <local:SearchResultUserControl DataContext="{Binding}"
-                                                   IsSelected="{Binding IsSelected, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}"
-                                                   HistoryRemoved="SearchResultUserControl_HistoryRemoved"
-                                                   SizeChanged="SearchResultUserControl_SizeChanged"/>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}"
-                                        BorderThickness="{TemplateBinding BorderThickness}"
-                                        Background="{TemplateBinding Background}"
-                                        Padding="{TemplateBinding Padding}"
-                                        Margin="2"
-                                        SnapsToDevicePixels="true"
-                                        CornerRadius="4">
-                                    <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                                </Border>
-                                <ControlTemplate.Triggers>
-                                    <MultiTrigger>
-                                        <MultiTrigger.Conditions>
-                                            <Condition Property="IsMouseOver" Value="True"/>
-                                        </MultiTrigger.Conditions>
-                                        <Setter Property="Background" TargetName="Bd" Value="#30ffffff"/>
-                                        <Setter Property="BorderBrush" TargetName="Bd" Value="#60ffffff"/>
-                                    </MultiTrigger>
-                                    <MultiTrigger>
-                                        <MultiTrigger.Conditions>
-                                            <Condition Property="IsSelected" Value="True"/>
-                                        </MultiTrigger.Conditions>
-                                        <Setter Property="Background" TargetName="Bd" Value="#40ffffff"/>
-                                        <Setter Property="BorderBrush" TargetName="Bd" Value="#80ffffff"/>
-                                    </MultiTrigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </ListBox.ItemContainerStyle>
-
-        </ListBox>
 
         <Border BorderBrush="#60ffffff" BorderThickness="0,0.5,0,0" Padding="20,8,20,10" Background="#10ffffff">
             <StackPanel Orientation="Horizontal">

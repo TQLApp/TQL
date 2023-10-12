@@ -126,7 +126,7 @@ internal partial class MainWindow
         _search.Text = "";
 
         _results.ItemsSource = null;
-        _results.Visibility = Visibility.Collapsed;
+        _resultsContainer.Visibility = Visibility.Collapsed;
 
         _searchManager = _serviceProvider.GetRequiredService<SearchManager>();
         _searchManager.SearchResultsChanged += _searchManager_SearchResultsChanged;
@@ -159,11 +159,11 @@ internal partial class MainWindow
         if (_searchManager == null || _searchManager.Results.Length == 0)
         {
             _results.ItemsSource = null;
-            _results.Visibility = Visibility.Collapsed;
+            _resultsContainer.Visibility = Visibility.Collapsed;
             return;
         }
 
-        _results.Visibility = Visibility.Visible;
+        _resultsContainer.Visibility = Visibility.Visible;
 
         _results.ItemsSource = _searchManager.Results;
 
