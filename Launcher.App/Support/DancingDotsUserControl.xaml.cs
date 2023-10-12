@@ -21,12 +21,15 @@ internal partial class DancingDotsUserControl
 
         foreach (var target in new[] { _image1, _image2, _image1, _image3 })
         {
-            var result = new DoubleAnimationUsingKeyFrames
+            Timeline result = new DoubleAnimationUsingKeyFrames
             {
                 KeyFrames =
                 {
                     new LinearDoubleKeyFrame(target.Height, KeyTime.FromTimeSpan(offset)),
-                    new LinearDoubleKeyFrame(0, KeyTime.FromTimeSpan(offset + duration)),
+                    new LinearDoubleKeyFrame(
+                        target.Height / 2,
+                        KeyTime.FromTimeSpan(offset + duration)
+                    ),
                     new LinearDoubleKeyFrame(
                         target.Height,
                         KeyTime.FromTimeSpan(offset + duration + duration)
@@ -36,6 +39,30 @@ internal partial class DancingDotsUserControl
 
             Storyboard.SetTarget(result, target);
             Storyboard.SetTargetProperty(result, new PropertyPath(HeightProperty));
+
+            storyboard.Children.Add(result);
+
+            result = new ThicknessAnimationUsingKeyFrames
+            {
+                KeyFrames =
+                {
+                    new LinearThicknessKeyFrame(target.Margin, KeyTime.FromTimeSpan(offset)),
+                    new LinearThicknessKeyFrame(
+                        target.Margin with
+                        {
+                            Bottom = 0
+                        },
+                        KeyTime.FromTimeSpan(offset + duration)
+                    ),
+                    new LinearThicknessKeyFrame(
+                        target.Margin,
+                        KeyTime.FromTimeSpan(offset + duration + duration)
+                    )
+                }
+            };
+
+            Storyboard.SetTarget(result, target);
+            Storyboard.SetTargetProperty(result, new PropertyPath(MarginProperty));
 
             storyboard.Children.Add(result);
 

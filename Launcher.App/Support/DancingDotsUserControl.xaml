@@ -8,7 +8,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="60" d:DesignWidth="60">
     <StackPanel Orientation="Horizontal">
-        <Image x:Name="_image1" Height="5" Width="5" Stretch="Fill" VerticalAlignment="Bottom" Margin="0,0,4,0">
+        <Image x:Name="_image1" Height="7" Width="7" Stretch="Fill" VerticalAlignment="Bottom" Margin="0,0,2,1">
             <Image.Source>
                 <DrawingImage>
                     <DrawingImage.Drawing>
@@ -23,7 +23,7 @@
                 </DrawingImage>
             </Image.Source>
         </Image>
-        <Image x:Name="_image2" Height="5" Width="5" Stretch="Fill" VerticalAlignment="Bottom" Margin="0,0,4,0">
+        <Image x:Name="_image2" Height="7" Width="7" Stretch="Fill" VerticalAlignment="Bottom" Margin="0,0,2,1">
             <Image.Source>
                 <DrawingImage>
                     <DrawingImage.Drawing>
@@ -38,7 +38,7 @@
                 </DrawingImage>
             </Image.Source>
         </Image>
-        <Image x:Name="_image3" Height="5" Width="5" Stretch="Fill" VerticalAlignment="Bottom">
+        <Image x:Name="_image3" Height="7" Width="7" Stretch="Fill" VerticalAlignment="Bottom" Margin="0,0,0,1">
             <Image.Source>
                 <DrawingImage>
                     <DrawingImage.Drawing>
