@@ -23,23 +23,11 @@ internal partial class SearchResultUserControl
     public static readonly DrawingImage CategoryImage = LoadImage("Apps List.svg");
     public static readonly DrawingImage CopyImage = LoadImage("Copy.svg");
 
-    public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register(
-        nameof(IsSelected),
-        typeof(bool),
-        typeof(SearchResultUserControl),
-        new FrameworkPropertyMetadata(
-            false,
-            (d, e) => ((SearchResultUserControl)d).OnIsSelectedChanged(d, e)
-        )
-    );
+    private ListBoxItem? _listBoxItem;
 
     private new SearchResult? DataContext => (SearchResult?)base.DataContext;
-
-    public bool IsSelected
-    {
-        get => (bool)GetValue(IsSelectedProperty);
-        set => SetValue(IsSelectedProperty, value);
-    }
+    private bool IsListBoxItemSelectedOrMouseOver =>
+        _listBoxItem != null && (_listBoxItem.IsMouseOver || _listBoxItem.IsSelected);
 
     public event EventHandler? RemoveHistoryClicked;
     public event EventHandler? CopyClicked;
@@ -47,6 +35,20 @@ internal partial class SearchResultUserControl
     public SearchResultUserControl()
     {
         InitializeComponent();
+    }
+
+    protected override void OnVisualParentChanged(DependencyObject oldParent)
+    {
+        base.OnVisualParentChanged(oldParent);
+
+        _listBoxItem = this.FindVisualParent<ListBoxItem>();
+        if (_listBoxItem == null)
+            return;
+
+        _listBoxItem.MouseEnter += (_, _) => IsListBoxItemSelectedOrMouseOverChanged();
+        _listBoxItem.MouseLeave += (_, _) => IsListBoxItemSelectedOrMouseOverChanged();
+        _listBoxItem.Selected += (_, _) => IsListBoxItemSelectedOrMouseOverChanged();
+        _listBoxItem.Unselected += (_, _) => IsListBoxItemSelectedOrMouseOverChanged();
     }
 
     private void UserControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -63,13 +65,13 @@ internal partial class SearchResultUserControl
         RenderMatchIcons();
     }
 
-    private void IsSelectedOrMouseOverChanged()
+    private void IsListBoxItemSelectedOrMouseOverChanged()
     {
         RenderMatchIcons();
 
         var marquee = _resultPanel.FindVisualChild<MarqueeControl>()!;
 
-        marquee.IsRunning = IsMouseOver || IsSelected;
+        marquee.IsRunning = IsListBoxItemSelectedOrMouseOver;
     }
 
     private void RenderMatchIcons()
@@ -78,7 +80,7 @@ internal partial class SearchResultUserControl
 
         _iconsPanel.Children.Clear();
 
-        if (IsMouseOver || IsSelected)
+        if (IsListBoxItemSelectedOrMouseOver)
         {
             if (searchResult.Match is IRunnableMatch)
                 AddIcon(RunImage);
@@ -128,15 +130,6 @@ internal partial class SearchResultUserControl
             return image;
         }
     }
-
-    private void OnIsSelectedChanged(object sender, DependencyPropertyChangedEventArgs e) =>
-        IsSelectedOrMouseOverChanged();
-
-    private void UserControl_MouseEnter(object sender, MouseEventArgs e) =>
-        IsSelectedOrMouseOverChanged();
-
-    private void UserControl_MouseLeave(object sender, MouseEventArgs e) =>
-        IsSelectedOrMouseOverChanged();
 
     protected virtual void OnRemoveHistoryClicked() =>
         RemoveHistoryClicked?.Invoke(this, EventArgs.Empty);

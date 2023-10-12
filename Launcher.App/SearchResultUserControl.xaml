@@ -8,8 +8,6 @@
              xmlns:support="clr-namespace:Launcher.App.Support"
              Background="Transparent"
              DataContextChanged="UserControl_DataContextChanged"
-             MouseEnter="UserControl_MouseEnter"
-             MouseLeave="UserControl_MouseLeave"
              mc:Ignorable="d" 
              d:DesignHeight="20" d:DesignWidth="300">
     <Grid>

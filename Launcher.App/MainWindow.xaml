@@ -108,7 +108,6 @@
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <local:SearchResultUserControl DataContext="{Binding}"
-                                                           IsSelected="{Binding IsSelected, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}"
                                                            RemoveHistoryClicked="SearchResultUserControl_RemoveHistoryClicked"
                                                            CopyClicked="SearchResultUserControl_CopyClicked"
                                                            SizeChanged="SearchResultUserControl_SizeChanged"/>

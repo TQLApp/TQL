@@ -2,6 +2,21 @@
 
 internal static class DependencyObjectExtensions
 {
+    public static T? FindVisualParent<T>(this DependencyObject element)
+    {
+        for (
+            var parent = VisualTreeHelper.GetParent(element);
+            parent != null;
+            parent = VisualTreeHelper.GetParent(parent)
+        )
+        {
+            if (parent is T typedParent)
+                return typedParent;
+        }
+
+        return default;
+    }
+
     public static T? FindVisualChild<T>(this DependencyObject parent, string? childName = null)
         where T : DependencyObject
     {
