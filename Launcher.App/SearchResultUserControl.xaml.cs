@@ -83,17 +83,18 @@ internal partial class SearchResultUserControl
         if (IsListBoxItemSelectedOrMouseOver)
         {
             if (searchResult.Match is IRunnableMatch)
-                AddIcon(RunImage);
+                AddIcon(RunImage, "Match can be launched");
             if (searchResult.Match is ICopyableMatch)
-                AddIcon(CopyImage).AttachOnClickHandler((_, _) => OnCopyClicked());
+                AddIcon(CopyImage, "Copy a link to the match to the clipboard")
+                    .AttachOnClickHandler((_, _) => OnCopyClicked());
             if (searchResult.Match is ISearchableMatch)
-                AddIcon(CategoryImage);
+                AddIcon(CategoryImage, "Match contains sub items");
         }
 
         if (searchResult.HistoryId.HasValue)
         {
             var star = AddIcon(StarImage);
-            var dismiss = AddIcon(DismissImage);
+            var dismiss = AddIcon(DismissImage, "Remove match from the history");
 
             star.MouseEnter += (_, _) =>
             {
@@ -114,15 +115,26 @@ internal partial class SearchResultUserControl
         _separator.Visibility =
             _iconsPanel.Children.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
 
-        Image AddIcon(DrawingImage icon)
+        Image AddIcon(DrawingImage icon, string? toolTip = null)
         {
+            ToolTip? toolTipControl = null;
+            if (toolTip != null)
+            {
+                toolTipControl = new ToolTip
+                {
+                    FontSize = SystemFonts.MessageFontSize,
+                    Content = toolTip
+                };
+            }
+
             var image = new Image
             {
                 Source = icon,
                 Width = 14,
                 Height = 14,
                 Margin = new Thickness(6, 0, 0, 0),
-                VerticalAlignment = VerticalAlignment.Center
+                VerticalAlignment = VerticalAlignment.Center,
+                ToolTip = toolTipControl
             };
 
             _iconsPanel.Children.Add(image);
