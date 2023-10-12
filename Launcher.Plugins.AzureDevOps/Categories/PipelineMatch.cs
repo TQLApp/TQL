@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Launcher.Plugins.AzureDevOps.Categories;
 
-internal class PipelineMatch : IRunnableMatch, ISerializableMatch
+internal class PipelineMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
 {
     private readonly PipelineMatchDto _dto;
 
@@ -29,6 +29,13 @@ internal class PipelineMatch : IRunnableMatch, ISerializableMatch
     public string Serialize()
     {
         return JsonSerializer.Serialize(_dto);
+    }
+
+    public Task Copy(IServiceProvider serviceProvider)
+    {
+        serviceProvider.GetRequiredService<IClipboard>().CopyUri(Text, _dto.GetUrl());
+
+        return Task.CompletedTask;
     }
 }
 

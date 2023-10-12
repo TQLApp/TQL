@@ -106,6 +106,7 @@ public partial class App
         builder.AddSingleton<IConfigurationManager, ConfigurationManager>();
         builder.AddSingleton<IUI, UI>();
         builder.AddSingleton<CacheManagerManager>();
+        builder.AddSingleton<IClipboard, ClipboardImpl>();
 
         builder.AddTransient<MainWindow>();
         builder.AddTransient<ConfigurationWindow>();

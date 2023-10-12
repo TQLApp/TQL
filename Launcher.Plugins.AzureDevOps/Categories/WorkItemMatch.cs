@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Launcher.Plugins.AzureDevOps.Categories;
 
-internal class WorkItemMatch : IRunnableMatch, ISerializableMatch
+internal class WorkItemMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
 {
     private readonly WorkItemMatchDto _dto;
 
@@ -26,6 +26,20 @@ internal class WorkItemMatch : IRunnableMatch, ISerializableMatch
     public string Serialize()
     {
         return JsonSerializer.Serialize(_dto);
+    }
+
+    public Task Copy(IServiceProvider serviceProvider)
+    {
+        var clipboard = serviceProvider.GetRequiredService<IClipboard>();
+
+        var url = _dto.GetUrl();
+
+        clipboard.CopyMarkdown(
+            $"[{clipboard.EscapeMarkdown(_dto.Type)} {_dto.Id}]({clipboard.EscapeMarkdown(url)}): {clipboard.EscapeMarkdown(_dto.Title)}",
+            url
+        );
+
+        return Task.CompletedTask;
     }
 }
 

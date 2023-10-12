@@ -21,6 +21,7 @@ internal partial class SearchResultUserControl
     public static readonly DrawingImage StarImage = LoadImage("Star.svg");
     public static readonly DrawingImage DismissImage = LoadImage("Dismiss.svg");
     public static readonly DrawingImage CategoryImage = LoadImage("Apps List.svg");
+    public static readonly DrawingImage CopyImage = LoadImage("Copy.svg");
 
     public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register(
         nameof(IsSelected),
@@ -40,7 +41,8 @@ internal partial class SearchResultUserControl
         set => SetValue(IsSelectedProperty, value);
     }
 
-    public event EventHandler? HistoryRemoved;
+    public event EventHandler? RemoveHistoryClicked;
+    public event EventHandler? CopyClicked;
 
     public SearchResultUserControl()
     {
@@ -80,6 +82,8 @@ internal partial class SearchResultUserControl
         {
             if (searchResult.Match is IRunnableMatch)
                 AddIcon(RunImage);
+            if (searchResult.Match is ICopyableMatch)
+                AddIcon(CopyImage).AttachOnClickHandler((_, _) => OnCopyClicked());
             if (searchResult.Match is ISearchableMatch)
                 AddIcon(CategoryImage);
         }
@@ -101,20 +105,8 @@ internal partial class SearchResultUserControl
                 star.Visibility = Visibility.Visible;
             };
 
-            dismiss.Cursor = Cursors.Hand;
             dismiss.Visibility = Visibility.Collapsed;
-
-            dismiss.MouseDown += (_, _) => dismiss.CaptureMouse();
-
-            dismiss.MouseUp += (_, e) =>
-            {
-                if (dismiss.IsMouseOver)
-                    OnHistoryRemoved();
-
-                dismiss.ReleaseMouseCapture();
-
-                e.Handled = true;
-            };
+            dismiss.AttachOnClickHandler((_, _) => OnRemoveHistoryClicked());
         }
 
         _separator.Visibility =
@@ -146,5 +138,8 @@ internal partial class SearchResultUserControl
     private void UserControl_MouseLeave(object sender, MouseEventArgs e) =>
         IsSelectedOrMouseOverChanged();
 
-    protected virtual void OnHistoryRemoved() => HistoryRemoved?.Invoke(this, EventArgs.Empty);
+    protected virtual void OnRemoveHistoryClicked() =>
+        RemoveHistoryClicked?.Invoke(this, EventArgs.Empty);
+
+    protected virtual void OnCopyClicked() => CopyClicked?.Invoke(this, EventArgs.Empty);
 }

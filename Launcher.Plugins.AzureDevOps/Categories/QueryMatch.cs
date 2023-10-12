@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Launcher.Plugins.AzureDevOps.Categories;
 
-internal class QueryMatch : IRunnableMatch, ISerializableMatch
+internal class QueryMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
 {
     private readonly QueryMatchDto _dto;
 
@@ -27,6 +27,13 @@ internal class QueryMatch : IRunnableMatch, ISerializableMatch
     public string Serialize()
     {
         return JsonSerializer.Serialize(_dto);
+    }
+
+    public Task Copy(IServiceProvider serviceProvider)
+    {
+        serviceProvider.GetRequiredService<IClipboard>().CopyUri(Text, _dto.GetUrl());
+
+        return Task.CompletedTask;
     }
 }
 

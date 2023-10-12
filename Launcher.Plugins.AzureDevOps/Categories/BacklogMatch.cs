@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Launcher.Plugins.AzureDevOps.Categories;
 
-internal class BacklogMatch : IRunnableMatch, ISerializableMatch
+internal class BacklogMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
 {
     private readonly BacklogMatchDto _dto;
 
@@ -26,6 +26,13 @@ internal class BacklogMatch : IRunnableMatch, ISerializableMatch
     public string Serialize()
     {
         return JsonSerializer.Serialize(_dto);
+    }
+
+    public Task Copy(IServiceProvider serviceProvider)
+    {
+        serviceProvider.GetRequiredService<IClipboard>().CopyUri(Text, _dto.GetUrl());
+
+        return Task.CompletedTask;
     }
 }
 

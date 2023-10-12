@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Launcher.Plugins.AzureDevOps.Categories.People;
 
-internal class TeamsCallMatch : IRunnableMatch, ISerializableMatch
+internal class TeamsCallMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
 {
     private readonly GraphUserDto _dto;
 
@@ -18,15 +18,25 @@ internal class TeamsCallMatch : IRunnableMatch, ISerializableMatch
 
     public Task Run(IServiceProvider serviceProvider, Window owner)
     {
-        serviceProvider
-            .GetRequiredService<IUI>()
-            .LaunchUrl($"msteams:/l/call/0/0?users={Uri.EscapeDataString(_dto.EmailAddress)}");
+        serviceProvider.GetRequiredService<IUI>().LaunchUrl(GetUrl());
 
         return Task.CompletedTask;
+    }
+
+    private string GetUrl()
+    {
+        return $"msteams:/l/call/0/0?users={Uri.EscapeDataString(_dto.EmailAddress)}";
     }
 
     public string Serialize()
     {
         return JsonSerializer.Serialize(_dto);
+    }
+
+    public Task Copy(IServiceProvider serviceProvider)
+    {
+        serviceProvider.GetRequiredService<IClipboard>().CopyUri(Text, GetUrl());
+
+        return Task.CompletedTask;
     }
 }

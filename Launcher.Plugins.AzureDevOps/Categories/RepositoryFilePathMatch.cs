@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Launcher.Plugins.AzureDevOps.Categories;
 
-internal class RepositoryFilePathMatch : IRunnableMatch, ISerializableMatch
+internal class RepositoryFilePathMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
 {
     private readonly RepositoryFilePathMatchDto _dto;
 
@@ -26,6 +26,13 @@ internal class RepositoryFilePathMatch : IRunnableMatch, ISerializableMatch
     public string Serialize()
     {
         return JsonSerializer.Serialize(_dto);
+    }
+
+    public Task Copy(IServiceProvider serviceProvider)
+    {
+        serviceProvider.GetRequiredService<IClipboard>().CopyUri(Text, _dto.GetUrl());
+
+        return Task.CompletedTask;
     }
 }
 

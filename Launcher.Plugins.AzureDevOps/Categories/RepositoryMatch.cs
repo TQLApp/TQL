@@ -8,7 +8,11 @@ using System.Text.Json.Nodes;
 
 namespace Launcher.Plugins.AzureDevOps.Categories;
 
-internal class RepositoryMatch : IRunnableMatch, ISearchableMatch, ISerializableMatch
+internal class RepositoryMatch
+    : IRunnableMatch,
+        ISearchableMatch,
+        ISerializableMatch,
+        ICopyableMatch
 {
     private readonly RepositoryMatchDto _dto;
 
@@ -80,6 +84,13 @@ internal class RepositoryMatch : IRunnableMatch, ISearchableMatch, ISerializable
     public string Serialize()
     {
         return JsonSerializer.Serialize(_dto);
+    }
+
+    public Task Copy(IServiceProvider serviceProvider)
+    {
+        serviceProvider.GetRequiredService<IClipboard>().CopyUri(Text, _dto.GetUrl());
+
+        return Task.CompletedTask;
     }
 }
 

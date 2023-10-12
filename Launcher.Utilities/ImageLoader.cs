@@ -1,7 +1,6 @@
 ﻿using System.IO;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Launcher.Abstractions;
 using SharpVectors.Converters;
 using SharpVectors.Renderers.Wpf;
 

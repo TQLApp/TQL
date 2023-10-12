@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Launcher.Plugins.AzureDevOps.Categories;
 
-internal class BoardMatch : IRunnableMatch, ISerializableMatch
+internal class BoardMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
 {
     private readonly BoardMatchDto _dto;
 
@@ -26,6 +26,13 @@ internal class BoardMatch : IRunnableMatch, ISerializableMatch
     public string Serialize()
     {
         return JsonSerializer.Serialize(_dto);
+    }
+
+    public Task Copy(IServiceProvider serviceProvider)
+    {
+        serviceProvider.GetRequiredService<IClipboard>().CopyUri(Text, _dto.GetUrl());
+
+        return Task.CompletedTask;
     }
 }
 

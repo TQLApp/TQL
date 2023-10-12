@@ -355,6 +355,23 @@ internal partial class MainWindow
         _searchManager?.ResumeSearch();
     }
 
+    private async void CopyItem(ICopyableMatch match, SearchResult searchResult)
+    {
+        MarkAsAccessed(searchResult);
+
+        try
+        {
+            await match.Copy(_serviceProvider);
+
+            _snackbar.Text = "Link copied";
+            _snackbar.Visibility = Visibility.Visible;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to copy match");
+        }
+    }
+
     private void MarkAsAccessed(SearchResult searchResult)
     {
         if (searchResult.Match is not ISerializableMatch match)
@@ -398,7 +415,7 @@ internal partial class MainWindow
         _searchManager?.ResumeSearch();
     }
 
-    private void SearchResultUserControl_HistoryRemoved(object sender, EventArgs e)
+    private void SearchResultUserControl_RemoveHistoryClicked(object sender, EventArgs e)
     {
         var searchResult = SelectedSearchResult;
         if (searchResult?.HistoryId == null)
@@ -444,5 +461,14 @@ internal partial class MainWindow
             _listBoxRowHeight * ResultItemsCount
             + _results.BorderThickness.Top
             + _results.BorderThickness.Bottom;
+    }
+
+    private void SearchResultUserControl_CopyClicked(object sender, EventArgs e)
+    {
+        var searchResult = SelectedSearchResult;
+        if (searchResult?.Match is ICopyableMatch match)
+            CopyItem(match, searchResult);
+
+        _search.Focus();
     }
 }

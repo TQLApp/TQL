@@ -1,5 +1,4 @@
-﻿using Launcher.Abstractions;
-using Launcher.Utilities;
+﻿using Launcher.Utilities;
 
 namespace Launcher.Plugins.Azure;
 

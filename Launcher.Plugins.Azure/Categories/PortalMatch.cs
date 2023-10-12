@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Launcher.Plugins.Azure.Categories;
 
-internal class PortalMatch : IRunnableMatch, ISerializableMatch
+internal class PortalMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
 {
     private readonly PortalMatchDto _dto;
 
@@ -50,6 +50,13 @@ internal class PortalMatch : IRunnableMatch, ISerializableMatch
     public string Serialize()
     {
         return JsonSerializer.Serialize(_dto);
+    }
+
+    public Task Copy(IServiceProvider serviceProvider)
+    {
+        serviceProvider.GetRequiredService<IClipboard>().CopyUri(Text, _dto.GetUrl());
+
+        return Task.CompletedTask;
     }
 }
 
