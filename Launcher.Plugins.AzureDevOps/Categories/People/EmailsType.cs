@@ -8,15 +8,13 @@ namespace Launcher.Plugins.AzureDevOps.Categories.People;
 [RootMatchType]
 internal class EmailsType : IMatchType
 {
-    private readonly Images _images;
     private readonly ConnectionManager _connectionManager;
     private readonly AzureDevOpsApi _api;
 
     public Guid Id => TypeIds.Emails.Id;
 
-    public EmailsType(Images images, ConnectionManager connectionManager, AzureDevOpsApi api)
+    public EmailsType(ConnectionManager connectionManager, AzureDevOpsApi api)
     {
-        _images = images;
         _connectionManager = connectionManager;
         _api = api;
     }
@@ -31,8 +29,7 @@ internal class EmailsType : IMatchType
         return new EmailsMatch(
             MatchUtils.GetMatchLabel("Email", _connectionManager, dto.Url),
             dto.Url,
-            _api,
-            _images
+            _api
         );
     }
 }

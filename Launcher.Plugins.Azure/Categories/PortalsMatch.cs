@@ -29,27 +29,17 @@ internal class PortalsMatch : ISearchableMatch, ISerializableMatch
         return reader.ReadToEnd();
     }
 
-    private readonly Images _images;
     private readonly Guid _id;
     private readonly AzureApi _api;
-    private readonly IImageFactory _imageFactory;
 
     public string Text { get; }
-    public IImage Icon => _images.Azure;
+    public ImageSource Icon => Images.Azure;
     public MatchTypeId TypeId => TypeIds.Portals;
 
-    public PortalsMatch(
-        string text,
-        Images images,
-        Guid id,
-        AzureApi api,
-        IImageFactory imageFactory
-    )
+    public PortalsMatch(string text, Guid id, AzureApi api)
     {
-        _images = images;
         _id = id;
         _api = api;
-        _imageFactory = imageFactory;
 
         Text = text;
     }
@@ -118,9 +108,7 @@ internal class PortalsMatch : ISearchableMatch, ISerializableMatch
                             p.SubscriptionId,
                             p.ResourceGroup,
                             p.NormalizedName
-                        ),
-                        _images,
-                        _imageFactory
+                        )
                     )
             )
             .ToList<IMatch>();

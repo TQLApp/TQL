@@ -9,7 +9,6 @@ namespace Launcher.Plugins.AzureDevOps.Categories;
 [RootMatchType]
 internal class QueriesType : IMatchType
 {
-    private readonly Images _images;
     private readonly ICache<AzureData> _cache;
     private readonly ConnectionManager _connectionManager;
     private readonly AzureDevOpsApi _api;
@@ -17,13 +16,11 @@ internal class QueriesType : IMatchType
     public Guid Id => TypeIds.Queries.Id;
 
     public QueriesType(
-        Images images,
         ICache<AzureData> cache,
         ConnectionManager connectionManager,
         AzureDevOpsApi api
     )
     {
-        _images = images;
         _cache = cache;
         _connectionManager = connectionManager;
         _api = api;
@@ -38,7 +35,6 @@ internal class QueriesType : IMatchType
 
         return new QueriesMatch(
             MatchUtils.GetMatchLabel("Azure Query", _connectionManager, dto.Url),
-            _images,
             dto.Url,
             _cache,
             _api

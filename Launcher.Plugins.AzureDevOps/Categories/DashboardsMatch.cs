@@ -6,17 +6,15 @@ namespace Launcher.Plugins.AzureDevOps.Categories;
 
 internal class DashboardsMatch : CachedMatch<AzureData>, ISerializableMatch
 {
-    private readonly Images _images;
     private readonly string _url;
 
     public override string Text { get; }
-    public override IImage Icon => _images.Dashboards;
+    public override ImageSource Icon => Images.Dashboards;
     public override MatchTypeId TypeId => TypeIds.Dashboards;
 
-    public DashboardsMatch(string text, Images images, string url, ICache<AzureData> cache)
+    public DashboardsMatch(string text, string url, ICache<AzureData> cache)
         : base(cache)
     {
-        _images = images;
         _url = url;
 
         Text = text;
@@ -27,8 +25,7 @@ internal class DashboardsMatch : CachedMatch<AzureData>, ISerializableMatch
         return from project in data.GetConnection(_url).Projects
             from dashboard in project.Dashboards
             select new DashboardMatch(
-                new DashboardMatchDto(_url, project.Name, dashboard.Id, dashboard.Name),
-                _images
+                new DashboardMatchDto(_url, project.Name, dashboard.Id, dashboard.Name)
             );
     }
 

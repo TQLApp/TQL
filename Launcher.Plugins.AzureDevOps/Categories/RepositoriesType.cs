@@ -9,19 +9,13 @@ namespace Launcher.Plugins.AzureDevOps.Categories;
 [RootMatchType]
 internal class RepositoriesType : IMatchType
 {
-    private readonly Images _images;
     private readonly ICache<AzureData> _cache;
     private readonly ConnectionManager _connectionManager;
 
     public Guid Id => TypeIds.Repositories.Id;
 
-    public RepositoriesType(
-        Images images,
-        ICache<AzureData> cache,
-        ConnectionManager connectionManager
-    )
+    public RepositoriesType(ICache<AzureData> cache, ConnectionManager connectionManager)
     {
-        _images = images;
         _cache = cache;
         _connectionManager = connectionManager;
     }
@@ -35,7 +29,6 @@ internal class RepositoriesType : IMatchType
 
         return new RepositoriesMatch(
             MatchUtils.GetMatchLabel("Azure Repository", _connectionManager, dto.Url),
-            _images,
             dto.Url,
             _cache
         );

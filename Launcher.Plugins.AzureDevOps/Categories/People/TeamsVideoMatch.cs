@@ -6,16 +6,14 @@ namespace Launcher.Plugins.AzureDevOps.Categories.People;
 internal class TeamsVideoMatch : IRunnableMatch, ISerializableMatch
 {
     private readonly GraphUserDto _dto;
-    private readonly Images _images;
 
     public string Text => _dto.DisplayName;
-    public IImage Icon => _images.Teams;
+    public ImageSource Icon => Images.Teams;
     public MatchTypeId TypeId => TypeIds.TeamsVideo;
 
-    public TeamsVideoMatch(GraphUserDto dto, Images images)
+    public TeamsVideoMatch(GraphUserDto dto)
     {
         _dto = dto;
-        _images = images;
     }
 
     public Task Run(IServiceProvider serviceProvider, Window owner)

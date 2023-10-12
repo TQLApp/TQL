@@ -12,7 +12,7 @@ internal abstract class GraphUserMatchBase : ISearchableMatch, ISerializableMatc
     private readonly AzureDevOpsApi _api;
 
     public abstract string Text { get; }
-    public abstract IImage Icon { get; }
+    public abstract ImageSource Icon { get; }
     public abstract MatchTypeId TypeId { get; }
 
     protected GraphUserMatchBase(string url, AzureDevOpsApi api)

@@ -6,16 +6,14 @@ namespace Launcher.Plugins.AzureDevOps.Categories;
 internal class BacklogMatch : IRunnableMatch, ISerializableMatch
 {
     private readonly BacklogMatchDto _dto;
-    private readonly Images _images;
 
     public string Text => $"{_dto.ProjectName}/{_dto.TeamName} {_dto.BacklogName} Backlog";
-    public IImage Icon => _images.Boards;
+    public ImageSource Icon => Images.Boards;
     public MatchTypeId TypeId => TypeIds.Backlog;
 
-    public BacklogMatch(BacklogMatchDto dto, Images images)
+    public BacklogMatch(BacklogMatchDto dto)
     {
         _dto = dto;
-        _images = images;
     }
 
     public Task Run(IServiceProvider serviceProvider, Window owner)

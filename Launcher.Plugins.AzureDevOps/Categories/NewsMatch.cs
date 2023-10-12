@@ -6,17 +6,15 @@ namespace Launcher.Plugins.AzureDevOps.Categories;
 
 internal class NewsMatch : CachedMatch<AzureData>, ISerializableMatch
 {
-    private readonly Images _images;
     private readonly string _url;
 
     public override string Text { get; }
-    public override IImage Icon => _images.Azure;
+    public override ImageSource Icon => Images.Azure;
     public override MatchTypeId TypeId => TypeIds.News;
 
-    public NewsMatch(string text, Images images, string url, ICache<AzureData> cache)
+    public NewsMatch(string text, string url, ICache<AzureData> cache)
         : base(cache)
     {
-        _images = images;
         _url = url;
 
         Text = text;
@@ -27,15 +25,13 @@ internal class NewsMatch : CachedMatch<AzureData>, ISerializableMatch
         foreach (var project in data.GetConnection(_url).Projects)
         {
             yield return new NewMatch(
-                new NewMatchDto(_url, project.Name, NewMatchType.Query, null),
-                _images
+                new NewMatchDto(_url, project.Name, NewMatchType.Query, null)
             );
 
             foreach (var workItemType in project.WorkItemTypes)
             {
                 yield return new NewMatch(
-                    new NewMatchDto(_url, project.Name, NewMatchType.WorkItem, workItemType.Name),
-                    _images
+                    new NewMatchDto(_url, project.Name, NewMatchType.WorkItem, workItemType.Name)
                 );
             }
         }

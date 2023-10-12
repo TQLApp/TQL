@@ -6,17 +6,15 @@ namespace Launcher.Plugins.AzureDevOps.Categories;
 
 internal class PipelinesMatch : CachedMatch<AzureData>, ISerializableMatch
 {
-    private readonly Images _images;
     private readonly string _url;
 
     public override string Text { get; }
-    public override IImage Icon => _images.Pipelines;
+    public override ImageSource Icon => Images.Pipelines;
     public override MatchTypeId TypeId => TypeIds.Pipelines;
 
-    public PipelinesMatch(string text, Images images, string url, ICache<AzureData> cache)
+    public PipelinesMatch(string text, string url, ICache<AzureData> cache)
         : base(cache)
     {
-        _images = images;
         _url = url;
 
         Text = text;
@@ -33,8 +31,7 @@ internal class PipelinesMatch : CachedMatch<AzureData>, ISerializableMatch
                     buildDefinition.Id,
                     buildDefinition.Path,
                     buildDefinition.Name
-                ),
-                _images
+                )
             );
     }
 

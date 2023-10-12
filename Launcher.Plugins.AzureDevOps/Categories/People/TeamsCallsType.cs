@@ -8,15 +8,13 @@ namespace Launcher.Plugins.AzureDevOps.Categories.People;
 [RootMatchType]
 internal class TeamsCallsType : IMatchType
 {
-    private readonly Images _images;
     private readonly ConnectionManager _connectionManager;
     private readonly AzureDevOpsApi _api;
 
     public Guid Id => TypeIds.TeamsCalls.Id;
 
-    public TeamsCallsType(Images images, ConnectionManager connectionManager, AzureDevOpsApi api)
+    public TeamsCallsType(ConnectionManager connectionManager, AzureDevOpsApi api)
     {
-        _images = images;
         _connectionManager = connectionManager;
         _api = api;
     }
@@ -31,8 +29,7 @@ internal class TeamsCallsType : IMatchType
         return new TeamsCallsMatch(
             MatchUtils.GetMatchLabel("Teams Call", _connectionManager, dto.Url),
             dto.Url,
-            _api,
-            _images
+            _api
         );
     }
 }

@@ -1,4 +1,5 @@
-﻿using Launcher.Abstractions;
+﻿using System.Windows.Media;
+using Launcher.Abstractions;
 using Launcher.App.Search;
 
 namespace Launcher.App.Test;
@@ -69,5 +70,5 @@ public class SearchFixture
         return result;
     }
 
-    private record Match(string Text, IImage Icon, MatchTypeId TypeId) : IMatch;
+    private record Match(string Text, ImageSource Icon, MatchTypeId TypeId) : IMatch;
 }

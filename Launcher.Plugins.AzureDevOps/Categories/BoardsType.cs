@@ -9,15 +9,13 @@ namespace Launcher.Plugins.AzureDevOps.Categories;
 [RootMatchType]
 internal class BoardsType : IMatchType
 {
-    private readonly Images _images;
     private readonly ICache<AzureData> _cache;
     private readonly ConnectionManager _connectionManager;
 
     public Guid Id => TypeIds.Boards.Id;
 
-    public BoardsType(Images images, ICache<AzureData> cache, ConnectionManager connectionManager)
+    public BoardsType(ICache<AzureData> cache, ConnectionManager connectionManager)
     {
-        _images = images;
         _cache = cache;
         _connectionManager = connectionManager;
     }
@@ -31,7 +29,6 @@ internal class BoardsType : IMatchType
 
         return new BoardsMatch(
             MatchUtils.GetMatchLabel("Azure Board", _connectionManager, dto.Url),
-            _images,
             dto.Url,
             _cache
         );

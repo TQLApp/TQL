@@ -6,16 +6,14 @@ namespace Launcher.Plugins.AzureDevOps.Categories;
 internal class RepositoryFilePathMatch : IRunnableMatch, ISerializableMatch
 {
     private readonly RepositoryFilePathMatchDto _dto;
-    private readonly Images _images;
 
     public string Text => _dto.FilePath;
-    public IImage Icon => _images.Document;
+    public ImageSource Icon => Images.Document;
     public MatchTypeId TypeId => TypeIds.RepositoryFilePath;
 
-    public RepositoryFilePathMatch(RepositoryFilePathMatchDto dto, Images images)
+    public RepositoryFilePathMatch(RepositoryFilePathMatchDto dto)
     {
         _dto = dto;
-        _images = images;
     }
 
     public Task Run(IServiceProvider serviceProvider, Window owner)

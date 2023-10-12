@@ -1,7 +1,7 @@
 ﻿using Launcher.Abstractions;
 using Launcher.App.Search;
-using Launcher.App.Services;
 using Launcher.App.Support;
+using Launcher.Utilities;
 using Image = System.Windows.Controls.Image;
 
 namespace Launcher.App;

@@ -6,17 +6,15 @@ namespace Launcher.Plugins.AzureDevOps.Categories;
 internal class QueryMatch : IRunnableMatch, ISerializableMatch
 {
     private readonly QueryMatchDto _dto;
-    private readonly Images _images;
 
     public string Text =>
         System.IO.Path.Combine(_dto.ProjectName, _dto.Path.Trim('\\')).Replace('\\', '/');
-    public IImage Icon => _images.Boards;
+    public ImageSource Icon => Images.Boards;
     public MatchTypeId TypeId => TypeIds.Query;
 
-    public QueryMatch(QueryMatchDto dto, Images images)
+    public QueryMatch(QueryMatchDto dto)
     {
         _dto = dto;
-        _images = images;
     }
 
     public Task Run(IServiceProvider serviceProvider, Window owner)

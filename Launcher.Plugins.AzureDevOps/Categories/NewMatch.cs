@@ -6,7 +6,6 @@ namespace Launcher.Plugins.AzureDevOps.Categories;
 internal class NewMatch : IRunnableMatch, ISerializableMatch
 {
     private readonly NewMatchDto _dto;
-    private readonly Images _images;
 
     public string Text =>
         _dto.Type switch
@@ -16,13 +15,12 @@ internal class NewMatch : IRunnableMatch, ISerializableMatch
             _ => throw new ArgumentOutOfRangeException()
         };
 
-    public IImage Icon => _images.Azure;
+    public ImageSource Icon => Images.Azure;
     public MatchTypeId TypeId => TypeIds.New;
 
-    public NewMatch(NewMatchDto dto, Images images)
+    public NewMatch(NewMatchDto dto)
     {
         _dto = dto;
-        _images = images;
     }
 
     public Task Run(IServiceProvider serviceProvider, Window owner)

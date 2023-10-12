@@ -6,17 +6,15 @@ namespace Launcher.Plugins.AzureDevOps.Categories;
 
 internal class RepositoriesMatch : CachedMatch<AzureData>, ISerializableMatch
 {
-    private readonly Images _images;
     private readonly string _url;
 
     public override string Text { get; }
-    public override IImage Icon => _images.Repositories;
+    public override ImageSource Icon => Images.Repositories;
     public override MatchTypeId TypeId => TypeIds.Repositories;
 
-    public RepositoriesMatch(string text, Images images, string url, ICache<AzureData> cache)
+    public RepositoriesMatch(string text, string url, ICache<AzureData> cache)
         : base(cache)
     {
-        _images = images;
         _url = url;
 
         Text = text;
@@ -26,10 +24,7 @@ internal class RepositoriesMatch : CachedMatch<AzureData>, ISerializableMatch
     {
         return from project in data.GetConnection(_url).Projects
             from repository in project.Repositories
-            select new RepositoryMatch(
-                _images,
-                new RepositoryMatchDto(_url, project.Name, repository.Name)
-            );
+            select new RepositoryMatch(new RepositoryMatchDto(_url, project.Name, repository.Name));
     }
 
     public string Serialize()

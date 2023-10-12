@@ -6,17 +6,15 @@ namespace Launcher.Plugins.AzureDevOps.Categories;
 
 internal class BacklogsMatch : CachedMatch<AzureData>, ISerializableMatch
 {
-    private readonly Images _images;
     private readonly string _url;
 
     public override string Text { get; }
-    public override IImage Icon => _images.Boards;
+    public override ImageSource Icon => Images.Boards;
     public override MatchTypeId TypeId => TypeIds.Backlogs;
 
-    public BacklogsMatch(string text, Images images, string url, ICache<AzureData> cache)
+    public BacklogsMatch(string text, string url, ICache<AzureData> cache)
         : base(cache)
     {
-        _images = images;
         _url = url;
 
         Text = text;
@@ -28,8 +26,7 @@ internal class BacklogsMatch : CachedMatch<AzureData>, ISerializableMatch
             from team in project.Teams
             from backlog in project.Backlogs
             select new BacklogMatch(
-                new BacklogMatchDto(_url, project.Name, team.Name, backlog.Name),
-                _images
+                new BacklogMatchDto(_url, project.Name, team.Name, backlog.Name)
             );
     }
 

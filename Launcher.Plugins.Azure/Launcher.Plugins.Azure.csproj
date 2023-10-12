@@ -28,7 +28,6 @@
 		<PackageReference Include="Azure.Identity" Version="1.10.1" />
 		<PackageReference Include="Azure.ResourceManager.ResourceGraph" Version="1.0.1" />
 		<PackageReference Include="NeoSmart.AsyncLock" Version="3.2.1" />
-		<PackageReference Include="SharpVectors.Wpf" Version="1.8.2" />
 		<PackageReference Include="System.Text.Json" Version="7.0.3" />
 	</ItemGroup>
 

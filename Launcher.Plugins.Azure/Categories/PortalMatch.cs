@@ -9,18 +9,18 @@ internal class PortalMatch : IRunnableMatch, ISerializableMatch
     private readonly PortalMatchDto _dto;
 
     public string Text { get; }
-    public IImage Icon { get; }
+    public ImageSource Icon { get; }
     public MatchTypeId TypeId => TypeIds.Portal;
 
-    public PortalMatch(PortalMatchDto dto, Images images, IImageFactory imageFactory)
+    public PortalMatch(PortalMatchDto dto)
     {
         var resourceName = ResourceNames.GetResourceName(dto.Type, dto.Kind);
         _dto = dto;
 
         if (resourceName?.Icon != null)
-            Icon = imageFactory.FromImageSource(resourceName.Icon);
+            Icon = resourceName.Icon;
         else
-            Icon = images.Azure;
+            Icon = Images.Azure;
 
         var sb = StringBuilderCache.Acquire();
 

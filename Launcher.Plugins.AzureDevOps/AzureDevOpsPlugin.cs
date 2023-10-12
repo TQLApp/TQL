@@ -30,7 +30,6 @@ public class AzureDevOpsPlugin : ILauncherPlugin
     {
         services.AddSingleton<ICacheManager<AzureData>, AzureCacheManager>();
         services.AddSingleton<AzureDevOpsApi>();
-        services.AddSingleton<Images>();
         services.AddSingleton<ConnectionManager>();
 
         services.AddTransient<ConfigurationControl>();

@@ -9,19 +9,13 @@ namespace Launcher.Plugins.AzureDevOps.Categories;
 [RootMatchType]
 internal class PipelinesType : IMatchType
 {
-    private readonly Images _images;
     private readonly ICache<AzureData> _cache;
     private readonly ConnectionManager _connectionManager;
 
     public Guid Id => TypeIds.Pipelines.Id;
 
-    public PipelinesType(
-        Images images,
-        ICache<AzureData> cache,
-        ConnectionManager connectionManager
-    )
+    public PipelinesType(ICache<AzureData> cache, ConnectionManager connectionManager)
     {
-        _images = images;
         _cache = cache;
         _connectionManager = connectionManager;
     }
@@ -35,7 +29,6 @@ internal class PipelinesType : IMatchType
 
         return new PipelinesMatch(
             MatchUtils.GetMatchLabel("Azure Pipeline", _connectionManager, dto.Url),
-            _images,
             dto.Url,
             _cache
         );

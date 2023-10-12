@@ -41,7 +41,7 @@ internal static class SearchResultUtils
     {
         var icon = new Image
         {
-            Source = ((Services.Image)match.Icon).ImageSource,
+            Source = match.Icon,
             Width = 18,
             Height = 18,
             Margin = new Thickness(0, 0, 6, 0),

@@ -8,24 +8,16 @@ namespace Launcher.Plugins.AzureDevOps.Categories;
 
 internal class QueriesMatch : ISearchableMatch, ISerializableMatch
 {
-    private readonly Images _images;
     private readonly string _url;
     private readonly ICache<AzureData> _cache;
     private readonly AzureDevOpsApi _api;
 
     public string Text { get; }
-    public IImage Icon => _images.Boards;
+    public ImageSource Icon => Images.Boards;
     public MatchTypeId TypeId => TypeIds.Queries;
 
-    public QueriesMatch(
-        string text,
-        Images images,
-        string url,
-        ICache<AzureData> cache,
-        AzureDevOpsApi api
-    )
+    public QueriesMatch(string text, string url, ICache<AzureData> cache, AzureDevOpsApi api)
     {
-        _images = images;
         _url = url;
         _cache = cache;
         _api = api;
@@ -63,8 +55,7 @@ internal class QueriesMatch : ISearchableMatch, ISerializableMatch
                     queries.Value.Select(
                         p =>
                             new QueryMatch(
-                                new QueryMatchDto(_url, project.Name, p.Id, p.Path, p.Name),
-                                _images
+                                new QueryMatchDto(_url, project.Name, p.Id, p.Path, p.Name)
                             )
                     )
                 );

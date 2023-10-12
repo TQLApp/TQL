@@ -6,16 +6,14 @@ namespace Launcher.Plugins.AzureDevOps.Categories;
 internal class DashboardMatch : IRunnableMatch, ISerializableMatch
 {
     private readonly DashboardMatchDto _dto;
-    private readonly Images _images;
 
     public string Text => $"{_dto.ProjectName}/{_dto.DashboardName} Dashboard";
-    public IImage Icon => _images.Dashboards;
+    public ImageSource Icon => Images.Dashboards;
     public MatchTypeId TypeId => TypeIds.Dashboard;
 
-    public DashboardMatch(DashboardMatchDto dto, Images images)
+    public DashboardMatch(DashboardMatchDto dto)
     {
         _dto = dto;
-        _images = images;
     }
 
     public Task Run(IServiceProvider serviceProvider, Window owner)

@@ -10,24 +10,16 @@ namespace Launcher.Plugins.AzureDevOps.Categories;
 
 internal class WorkItemsMatch : ISearchableMatch, ISerializableMatch
 {
-    private readonly Images _images;
     private readonly string _url;
     private readonly ICache<AzureData> _cache;
     private readonly AzureDevOpsApi _api;
 
     public string Text { get; }
-    public IImage Icon => _images.Boards;
+    public ImageSource Icon => Images.Boards;
     public MatchTypeId TypeId => TypeIds.WorkItems;
 
-    public WorkItemsMatch(
-        string text,
-        Images images,
-        string url,
-        ICache<AzureData> cache,
-        AzureDevOpsApi api
-    )
+    public WorkItemsMatch(string text, string url, ICache<AzureData> cache, AzureDevOpsApi api)
     {
-        _images = images;
         _url = url;
         _cache = cache;
         _api = api;
@@ -72,8 +64,7 @@ internal class WorkItemsMatch : ISearchableMatch, ISerializableMatch
                         workItem.Id!.Value,
                         (string)workItem.Fields["System.WorkItemType"],
                         (string)workItem.Fields["System.Title"]
-                    ),
-                    _images
+                    )
                 )
             };
         }
@@ -100,8 +91,7 @@ internal class WorkItemsMatch : ISearchableMatch, ISerializableMatch
                         int.Parse(p.Fields["system.id"]),
                         p.Fields["system.workitemtype"],
                         p.Fields["system.title"]
-                    ),
-                    _images
+                    )
                 )
         );
     }

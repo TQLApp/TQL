@@ -28,7 +28,6 @@ public class AzurePlugin : ILauncherPlugin
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddSingleton<AzureApi>();
-        services.AddSingleton<Images>();
         services.AddSingleton<ConnectionManager>();
 
         services.AddTransient<ConfigurationControl>();

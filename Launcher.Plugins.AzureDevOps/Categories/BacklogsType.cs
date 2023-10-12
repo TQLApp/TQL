@@ -9,15 +9,13 @@ namespace Launcher.Plugins.AzureDevOps.Categories;
 [RootMatchType]
 internal class BacklogsType : IMatchType
 {
-    private readonly Images _images;
     private readonly ICache<AzureData> _cache;
     private readonly ConnectionManager _connectionManager;
 
     public Guid Id => TypeIds.Backlogs.Id;
 
-    public BacklogsType(Images images, ICache<AzureData> cache, ConnectionManager connectionManager)
+    public BacklogsType(ICache<AzureData> cache, ConnectionManager connectionManager)
     {
-        _images = images;
         _cache = cache;
         _connectionManager = connectionManager;
     }
@@ -31,7 +29,6 @@ internal class BacklogsType : IMatchType
 
         return new BacklogsMatch(
             MatchUtils.GetMatchLabel("Azure Backlog", _connectionManager, dto.Url),
-            _images,
             dto.Url,
             _cache
         );

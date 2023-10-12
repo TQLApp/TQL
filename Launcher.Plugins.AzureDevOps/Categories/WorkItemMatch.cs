@@ -6,16 +6,14 @@ namespace Launcher.Plugins.AzureDevOps.Categories;
 internal class WorkItemMatch : IRunnableMatch, ISerializableMatch
 {
     private readonly WorkItemMatchDto _dto;
-    private readonly Images _images;
 
     public string Text => $"{_dto.ProjectName}/{_dto.Type} {_dto.Id}: {_dto.Title}";
-    public IImage Icon => _images.Boards;
+    public ImageSource Icon => Images.Boards;
     public MatchTypeId TypeId => TypeIds.WorkItem;
 
-    public WorkItemMatch(WorkItemMatchDto dto, Images images)
+    public WorkItemMatch(WorkItemMatchDto dto)
     {
         _dto = dto;
-        _images = images;
     }
 
     public Task Run(IServiceProvider serviceProvider, Window owner)

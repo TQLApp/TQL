@@ -6,16 +6,14 @@ namespace Launcher.Plugins.AzureDevOps.Categories;
 internal class BoardMatch : IRunnableMatch, ISerializableMatch
 {
     private readonly BoardMatchDto _dto;
-    private readonly Images _images;
 
     public string Text => $"{_dto.ProjectName}/{_dto.TeamName} {_dto.BoardName} Board";
-    public IImage Icon => _images.Boards;
+    public ImageSource Icon => Images.Boards;
     public MatchTypeId TypeId => TypeIds.Board;
 
-    public BoardMatch(BoardMatchDto dto, Images images)
+    public BoardMatch(BoardMatchDto dto)
     {
         _dto = dto;
-        _images = images;
     }
 
     public Task Run(IServiceProvider serviceProvider, Window owner)

@@ -1,4 +1,5 @@
 ﻿using Launcher.Abstractions;
+using System.Windows.Media;
 
 namespace Launcher.Utilities;
 
@@ -8,7 +9,7 @@ public abstract class CachedMatch<T> : ISearchableMatch
     private ImmutableArray<IMatch>? _matches;
 
     public abstract string Text { get; }
-    public abstract IImage Icon { get; }
+    public abstract ImageSource Icon { get; }
     public abstract MatchTypeId TypeId { get; }
 
     protected CachedMatch(ICache<T> cache)

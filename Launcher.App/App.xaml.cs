@@ -100,7 +100,6 @@ public partial class App
 
     private static void ConfigureServices(IServiceCollection builder)
     {
-        builder.AddSingleton<IImageFactory, ImageFactory>();
         builder.AddSingleton<IStore, Store>();
         builder.AddSingleton<IDb, Db>();
         builder.AddSingleton<Settings>();

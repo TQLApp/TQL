@@ -1,39 +1,14 @@
 ﻿using System.IO;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Launcher.Abstractions;
 using SharpVectors.Converters;
 using SharpVectors.Renderers.Wpf;
 
-namespace Launcher.App.Services;
+namespace Launcher.Utilities;
 
-internal class ImageFactory : IImageFactory
+public static class ImageFactory
 {
-    public IImage FromBytes(byte[] bytes, ImageType imageType)
-    {
-        using var stream = new MemoryStream(bytes);
-
-        return FromStream(stream, imageType);
-    }
-
-    public IImage FromStream(Stream stream, ImageType imageType)
-    {
-        switch (imageType)
-        {
-            case ImageType.Png:
-                return new Image(CreateBitmapImage(stream));
-
-            case ImageType.Svg:
-                return new Image(CreateSvgImage(stream));
-
-            default:
-                throw new ArgumentOutOfRangeException(nameof(imageType), imageType, null);
-        }
-    }
-
-    public IImage FromImageSource(ImageSource imageSource)
-    {
-        return new Image(imageSource);
-    }
-
     public static BitmapImage CreateBitmapImage(Stream stream)
     {
         var bitmapImage = new BitmapImage();
@@ -70,5 +45,18 @@ internal class ImageFactory : IImageFactory
         }
 
         throw new InvalidOperationException("Could not convert SVG image");
+    }
+
+    public static ImageSource FromEmbeddedResource(Type relativeTo, string name)
+    {
+        var resourceName = $"{relativeTo.Namespace}.{name}";
+        using var stream = relativeTo.Assembly.GetManifestResourceStream(resourceName);
+
+        if (stream == null)
+            throw new ArgumentException($"Cannot find resource '{resourceName}'");
+
+        if (name.EndsWith(".svg", StringComparison.OrdinalIgnoreCase))
+            return CreateSvgImage(stream);
+        return CreateBitmapImage(stream);
     }
 }

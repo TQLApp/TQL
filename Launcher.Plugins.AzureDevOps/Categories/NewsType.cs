@@ -9,15 +9,13 @@ namespace Launcher.Plugins.AzureDevOps.Categories;
 [RootMatchType]
 internal class NewsType : IMatchType
 {
-    private readonly Images _images;
     private readonly ICache<AzureData> _cache;
     private readonly ConnectionManager _connectionManager;
 
     public Guid Id => TypeIds.News.Id;
 
-    public NewsType(Images images, ICache<AzureData> cache, ConnectionManager connectionManager)
+    public NewsType(ICache<AzureData> cache, ConnectionManager connectionManager)
     {
-        _images = images;
         _cache = cache;
         _connectionManager = connectionManager;
     }
@@ -31,7 +29,6 @@ internal class NewsType : IMatchType
 
         return new NewsMatch(
             MatchUtils.GetMatchLabel("Azure New", _connectionManager, dto.Url),
-            _images,
             dto.Url,
             _cache
         );

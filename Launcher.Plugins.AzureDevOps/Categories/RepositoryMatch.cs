@@ -10,16 +10,14 @@ namespace Launcher.Plugins.AzureDevOps.Categories;
 
 internal class RepositoryMatch : IRunnableMatch, ISearchableMatch, ISerializableMatch
 {
-    private readonly Images _images;
     private readonly RepositoryMatchDto _dto;
 
     public string Text => $"{_dto.ProjectName}/{_dto.RepositoryName}";
-    public IImage Icon => _images.Repositories;
+    public ImageSource Icon => Images.Repositories;
     public MatchTypeId TypeId => TypeIds.Repository;
 
-    public RepositoryMatch(Images images, RepositoryMatchDto dto)
+    public RepositoryMatch(RepositoryMatchDto dto)
     {
-        _images = images;
         _dto = dto;
     }
 
@@ -43,10 +41,7 @@ internal class RepositoryMatch : IRunnableMatch, ISearchableMatch, ISerializable
                         .Prefilter(filePaths)
                         .Select(
                             p =>
-                                new RepositoryFilePathMatch(
-                                    new RepositoryFilePathMatchDto(_dto, p),
-                                    _images
-                                )
+                                new RepositoryFilePathMatch(new RepositoryFilePathMatchDto(_dto, p))
                         )
                 ),
             cancellationToken

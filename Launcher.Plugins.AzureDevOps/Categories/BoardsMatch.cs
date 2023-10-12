@@ -6,17 +6,15 @@ namespace Launcher.Plugins.AzureDevOps.Categories;
 
 internal class BoardsMatch : CachedMatch<AzureData>, ISerializableMatch
 {
-    private readonly Images _images;
     private readonly string _url;
 
     public override string Text { get; }
-    public override IImage Icon => _images.Boards;
+    public override ImageSource Icon => Images.Boards;
     public override MatchTypeId TypeId => TypeIds.Boards;
 
-    public BoardsMatch(string text, Images images, string url, ICache<AzureData> cache)
+    public BoardsMatch(string text, string url, ICache<AzureData> cache)
         : base(cache)
     {
-        _images = images;
         _url = url;
 
         Text = text;
@@ -27,10 +25,7 @@ internal class BoardsMatch : CachedMatch<AzureData>, ISerializableMatch
         return from project in data.GetConnection(_url).Projects
             from team in project.Teams
             from board in project.Boards
-            select new BoardMatch(
-                new BoardMatchDto(_url, project.Name, team.Name, board.Name),
-                _images
-            );
+            select new BoardMatch(new BoardMatchDto(_url, project.Name, team.Name, board.Name));
     }
 
     public string Serialize()

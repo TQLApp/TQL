@@ -6,19 +6,17 @@ namespace Launcher.Plugins.AzureDevOps.Categories;
 internal class PipelineMatch : IRunnableMatch, ISerializableMatch
 {
     private readonly PipelineMatchDto _dto;
-    private readonly Images _images;
 
     public string Text =>
         System.IO.Path
             .Combine(_dto.ProjectName, _dto.Path.Trim('\\'), _dto.Name)
             .Replace('\\', '/');
-    public IImage Icon => _images.Pipelines;
+    public ImageSource Icon => Images.Pipelines;
     public MatchTypeId TypeId => TypeIds.Pipeline;
 
-    public PipelineMatch(PipelineMatchDto dto, Images images)
+    public PipelineMatch(PipelineMatchDto dto)
     {
         _dto = dto;
-        _images = images;
     }
 
     public Task Run(IServiceProvider serviceProvider, Window owner)
