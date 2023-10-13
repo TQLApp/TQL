@@ -3,7 +3,6 @@ using Launcher.Plugins.GitHub.Services;
 using Launcher.Plugins.GitHub.Support;
 using Microsoft.Extensions.DependencyInjection;
 using Octokit;
-using System.Security.Cryptography;
 
 namespace Launcher.Plugins.GitHub.Categories;
 
