@@ -5,16 +5,16 @@ using Octokit;
 
 namespace Launcher.Plugins.GitHub.Categories;
 
-internal class RepositoriesMatch : ISearchableMatch, ISerializableMatch
+internal class IssuesMatch : ISearchableMatch, ISerializableMatch
 {
     private readonly Guid _id;
     private readonly GitHubApi _api;
 
     public string Text { get; }
-    public ImageSource Icon => Images.Repository;
-    public MatchTypeId TypeId => TypeIds.Repositories;
+    public ImageSource Icon => Images.Issue;
+    public MatchTypeId TypeId => TypeIds.Issues;
 
-    public RepositoriesMatch(string text, Guid id, GitHubApi api)
+    public IssuesMatch(string text, Guid id, GitHubApi api)
     {
         _id = id;
         _api = api;
@@ -35,12 +35,22 @@ internal class RepositoriesMatch : ISearchableMatch, ISerializableMatch
 
         var client = await _api.GetClient(_id);
 
-        var response = await client.Search.SearchRepo(new SearchRepositoriesRequest(text));
+        var response = await client.Search.SearchIssues(new SearchIssuesRequest(text));
 
         cancellationToken.ThrowIfCancellationRequested();
 
         return response.Items.Select(
-            p => new RepositoryMatch(new RepositoryMatchDto(_id, p.FullName, p.HtmlUrl), _api)
+            p =>
+                new IssueMatch(
+                    new IssueMatchDto(
+                        _id,
+                        GitHubUtils.GetRepositoryName(p.HtmlUrl),
+                        p.Number,
+                        p.Title,
+                        p.HtmlUrl,
+                        p.State.Value
+                    )
+                )
         );
     }
 

@@ -12,4 +12,28 @@ internal static class Images
         typeof(Images),
         "Resources.Copy.svg"
     );
+    public static readonly ImageSource OpenIssue = ImageFactory.FromEmbeddedResource(
+        typeof(Images),
+        "Resources.Open Issue.svg"
+    );
+    public static readonly ImageSource ClosedIssue = ImageFactory.FromEmbeddedResource(
+        typeof(Images),
+        "Resources.Closed Issue.svg"
+    );
+    public static readonly ImageSource Repository = ImageFactory.FromEmbeddedResource(
+        typeof(Images),
+        "Resources.Repository.svg"
+    );
+    public static readonly ImageSource Issue = ImageFactory.FromEmbeddedResource(
+        typeof(Images),
+        "Resources.Issue.svg"
+    );
+    public static readonly ImageSource PullRequest = ImageFactory.FromEmbeddedResource(
+        typeof(Images),
+        "Resources.Pull Request.svg"
+    );
+    public static readonly ImageSource User = ImageFactory.FromEmbeddedResource(
+        typeof(Images),
+        "Resources.User.svg"
+    );
 }

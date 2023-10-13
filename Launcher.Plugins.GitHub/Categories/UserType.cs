@@ -4,18 +4,19 @@ using Launcher.Utilities;
 
 namespace Launcher.Plugins.GitHub.Categories;
 
-internal class RepositoryType : IMatchType
+internal class UserType : IMatchType
 {
     private readonly GitHubApi _api;
-    public Guid Id => TypeIds.Repository.Id;
 
-    public RepositoryType(GitHubApi api)
+    public Guid Id => TypeIds.User.Id;
+
+    public UserType(GitHubApi api)
     {
         _api = api;
     }
 
     public IMatch Deserialize(string json)
     {
-        return new RepositoryMatch(JsonSerializer.Deserialize<RepositoryMatchDto>(json)!, _api);
+        return new UserMatch(JsonSerializer.Deserialize<UserMatchDto>(json)!, _api);
     }
 }

@@ -3,24 +3,19 @@ using Launcher.Plugins.GitHub.Services;
 using Launcher.Plugins.GitHub.Support;
 using Microsoft.Extensions.DependencyInjection;
 using Octokit;
-using System.Security.Cryptography;
 
 namespace Launcher.Plugins.GitHub.Categories;
 
-internal class RepositoryMatch
-    : IRunnableMatch,
-        ISerializableMatch,
-        ICopyableMatch,
-        ISearchableMatch
+internal class UserMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, ISearchableMatch
 {
-    private readonly RepositoryMatchDto _dto;
+    private readonly UserMatchDto _dto;
     private readonly GitHubApi _api;
 
-    public string Text => _dto.Name;
-    public ImageSource Icon => Images.Repository;
-    public MatchTypeId TypeId => TypeIds.Repository;
+    public string Text => _dto.Login;
+    public ImageSource Icon => Images.User;
+    public MatchTypeId TypeId => TypeIds.User;
 
-    public RepositoryMatch(RepositoryMatchDto dto, GitHubApi api)
+    public UserMatch(UserMatchDto dto, GitHubApi api)
     {
         _dto = dto;
         _api = api;
@@ -58,26 +53,20 @@ internal class RepositoryMatch
 
         var client = await _api.GetClient(_dto.ConnectionId);
 
-        var response = await client.Search.SearchIssues(
-            new SearchIssuesRequest(text) { Repos = { _dto.Name } }
+        var response = await client.Search.SearchRepo(
+            new SearchRepositoriesRequest(text) { User = _dto.Login }
         );
 
         cancellationToken.ThrowIfCancellationRequested();
 
         return response.Items.Select(
             p =>
-                new IssueMatch(
-                    new IssueMatchDto(
-                        _dto.ConnectionId,
-                        GitHubUtils.GetRepositoryName(p.HtmlUrl),
-                        p.Number,
-                        p.Title,
-                        p.HtmlUrl,
-                        p.State.Value
-                    )
+                new RepositoryMatch(
+                    new RepositoryMatchDto(_dto.ConnectionId, p.FullName, p.HtmlUrl),
+                    _api
                 )
         );
     }
 }
 
-internal record RepositoryMatchDto(Guid ConnectionId, string Name, string Url);
+internal record UserMatchDto(Guid ConnectionId, string Login, string Url);
