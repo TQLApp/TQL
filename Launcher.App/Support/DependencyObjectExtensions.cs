@@ -4,6 +4,21 @@ internal static class DependencyObjectExtensions
 {
     public static T? FindVisualParent<T>(this DependencyObject element)
     {
+        // First try to resolve the visual parent of content elements
+        // like text Run's.
+
+        while (
+            element != null
+            && element is not Visual
+            && element is FrameworkContentElement contentElement
+        )
+        {
+            element = contentElement.Parent;
+        }
+
+        if (element == null)
+            return default;
+
         for (
             var parent = VisualTreeHelper.GetParent(element);
             parent != null;

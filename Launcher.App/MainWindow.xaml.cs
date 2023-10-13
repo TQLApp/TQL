@@ -3,6 +3,7 @@ using Launcher.App.Interop;
 using Launcher.App.Search;
 using Launcher.App.Services;
 using Launcher.App.Services.Database;
+using Launcher.App.Support;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -22,6 +23,7 @@ internal partial class MainWindow
     private readonly UI _ui;
     private double _listBoxRowHeight = double.NaN;
     private bool _pendingEnter;
+    private SearchResult? _mouseDownSearchResult;
 
     private SearchResult? SelectedSearchResult => (SearchResult?)_results.SelectedItem;
 
@@ -318,23 +320,52 @@ internal partial class MainWindow
         }
     }
 
+    private void _results_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+    {
+        if (e.ChangedButton != MouseButton.Left)
+            return;
+
+        _mouseDownSearchResult = null;
+
+        // Getting the search result the user is selecting is fiddly
+        // because we're in the preview event. The list box item
+        // won't yet be the selected one.
+
+        if (e.OriginalSource is DependencyObject source)
+        {
+            var control = source.FindVisualParent<SearchResultUserControl>();
+            if (control != null)
+                _mouseDownSearchResult = control.DataContext as SearchResult;
+        }
+    }
+
     private void _results_MouseUp(object sender, MouseButtonEventArgs e)
     {
-        var searchResult = SelectedSearchResult;
+        if (e.ChangedButton != MouseButton.Left)
+            return;
 
-        if (e.ChangedButton == MouseButton.Left)
+        // Match the selected search result with what we captured on mouse down.
+        // We can receive mouse up's without a mouse down, if the mouse down
+        // started outside of the window. So, reset the _mouseDownSearchResult
+        // and hope this logic is correct.
+
+        var searchResult = SelectedSearchResult;
+        var isMouseDownSearchResult = searchResult == _mouseDownSearchResult;
+        _mouseDownSearchResult = null;
+
+        if (!isMouseDownSearchResult)
+            return;
+
+        if (searchResult?.Match is IRunnableMatch runnable)
         {
-            if (searchResult?.Match is IRunnableMatch runnable)
-            {
-                RunItem(runnable, searchResult);
-                e.Handled = true;
-            }
-            if (searchResult?.Match is ISearchableMatch searchable)
-            {
-                PushItem(searchable, searchResult);
-                _search.Focus();
-                e.Handled = true;
-            }
+            RunItem(runnable, searchResult);
+            e.Handled = true;
+        }
+        if (searchResult?.Match is ISearchableMatch searchable)
+        {
+            PushItem(searchable, searchResult);
+            _search.Focus();
+            e.Handled = true;
         }
     }
 
