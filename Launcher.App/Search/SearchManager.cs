@@ -271,12 +271,13 @@ internal class SearchManager : IDisposable
 
     private void ShowPreliminaryResults()
     {
-        if (Context == null || _history == null)
+        var context = Context;
+        if (context == null || _history == null)
             return;
 
         var parentTypeId = Stack.Last().TypeId;
 
-        Results = Context
+        Results = context
             .Filter(
                 _history.Items
                     .Where(
@@ -286,7 +287,7 @@ internal class SearchManager : IDisposable
                     )
                     .Select(p => p.Match)
             )
-            .Select(Context.GetSearchResult)
+            .Select(context.GetSearchResult)
             .ToImmutableArray();
 
         OnSearchResultsChanged();

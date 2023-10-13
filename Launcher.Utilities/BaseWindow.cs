@@ -1,4 +1,6 @@
-﻿namespace Launcher.App.Support;
+﻿using System.Windows.Media;
+
+namespace Launcher.Utilities;
 
 public class BaseWindow : Window
 {

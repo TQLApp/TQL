@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using Launcher.Abstractions;
+using Microsoft.Win32;
 
 namespace Launcher.App.Services;
 

@@ -2,6 +2,7 @@
 using Dapper;
 using System.Data.SQLite;
 using System.IO;
+using Launcher.Abstractions;
 using Path = System.IO.Path;
 
 namespace Launcher.App.Services.Database;

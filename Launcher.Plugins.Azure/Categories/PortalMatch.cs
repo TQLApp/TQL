@@ -14,9 +14,9 @@ internal class PortalMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
 
     public PortalMatch(PortalMatchDto dto)
     {
-        var resourceName = ResourceNames.GetResourceName(dto.Type, dto.Kind);
         _dto = dto;
 
+        var resourceName = ResourceNames.GetResourceName(dto.Type, dto.Kind);
         if (resourceName?.Icon != null)
             Icon = resourceName.Icon;
         else

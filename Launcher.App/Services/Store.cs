@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Launcher.Abstractions;
 using Microsoft.Win32;
 using Path = System.IO.Path;
 
@@ -18,5 +19,12 @@ internal class Store : IStore
         Directory.CreateDirectory(UserSettingsFolder);
     }
 
-    public RegistryKey CreateBaseKey() => Registry.CurrentUser.CreateSubKey("Software\\Launcher");
+    public RegistryKey CreateBaseKey() => Registry.CurrentUser.CreateSubKey("Software\\Launcher")!;
+
+    public RegistryKey CreatePluginKey(Guid pluginId)
+    {
+        using var key = CreateBaseKey();
+
+        return key.CreateSubKey($"Plugins\\{pluginId}")!;
+    }
 }

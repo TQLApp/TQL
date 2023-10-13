@@ -12,6 +12,7 @@ using Launcher.App.Search;
 using Microsoft.Extensions.Logging;
 using Launcher.Plugins.Azure;
 using System.Net.Http;
+using Launcher.Plugins.GitHub;
 
 namespace Launcher.App;
 
@@ -79,7 +80,12 @@ public partial class App
     private IEnumerable<ILauncherPlugin> GetPlugins()
     {
         // TODO: Make extensible.
-        var assemblies = new[] { typeof(AzureDevOpsPlugin).Assembly, typeof(AzurePlugin).Assembly };
+        var assemblies = new[]
+        {
+            typeof(AzureDevOpsPlugin).Assembly,
+            typeof(AzurePlugin).Assembly,
+            typeof(GitHubPlugin).Assembly
+        };
 
         foreach (var assembly in assemblies)
         {
