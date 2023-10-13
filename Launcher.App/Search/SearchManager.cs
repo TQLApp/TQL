@@ -17,7 +17,6 @@ internal class SearchManager : IDisposable
     private readonly SynchronizationContext _synchronizationContext =
         SynchronizationContext.Current;
     private string _search = string.Empty;
-    private SearchContext? _context;
     private int _suspendSearch;
     private readonly Dictionary<string, object> _contextContext = new();
     private int _isSearchingCount;
@@ -27,6 +26,7 @@ internal class SearchManager : IDisposable
     public ImmutableArray<ISearchableMatch> Stack { get; private set; } =
         ImmutableArray<ISearchableMatch>.Empty;
 
+    public SearchContext? Context { get; private set; }
     public bool IsSearching => _isSearchingCount > 0;
 
     public event EventHandler? SearchResultsChanged;
@@ -154,7 +154,7 @@ internal class SearchManager : IDisposable
 
         try
         {
-            _context?.Dispose();
+            Context?.Dispose();
 
             var context = new SearchContext(
                 _serviceProvider,
@@ -164,7 +164,7 @@ internal class SearchManager : IDisposable
                 _contextContext
             );
 
-            _context = context;
+            Context = context;
 
             var results = Stack.Length == 0 ? GetRootSearchResults() : await GetSubSearchResults();
 
@@ -172,7 +172,7 @@ internal class SearchManager : IDisposable
             // a new async task was started while we were working. Don't process
             // the results if this happens.
 
-            if (context != _context)
+            if (context != Context)
                 return;
 
             Results = results?.ToImmutableArray() ?? ImmutableArray<SearchResult>.Empty;
@@ -187,7 +187,7 @@ internal class SearchManager : IDisposable
 
     private IEnumerable<SearchResult>? GetRootSearchResults()
     {
-        var context = _context;
+        var context = Context;
         if (context == null)
             return null;
 
@@ -234,7 +234,7 @@ internal class SearchManager : IDisposable
 
     private async Task<IEnumerable<SearchResult>?> GetSubSearchResults()
     {
-        var context = _context;
+        var context = Context;
         if (context == null)
             return null;
 
@@ -271,12 +271,12 @@ internal class SearchManager : IDisposable
 
     private void ShowPreliminaryResults()
     {
-        if (_context == null || _history == null)
+        if (Context == null || _history == null)
             return;
 
         var parentTypeId = Stack.Last().TypeId;
 
-        Results = _context
+        Results = Context
             .Filter(
                 _history.Items
                     .Where(
@@ -286,7 +286,7 @@ internal class SearchManager : IDisposable
                     )
                     .Select(p => p.Match)
             )
-            .Select(_context.GetSearchResult)
+            .Select(Context.GetSearchResult)
             .ToImmutableArray();
 
         OnSearchResultsChanged();
@@ -325,7 +325,7 @@ internal class SearchManager : IDisposable
 
     public void Dispose()
     {
-        _context?.Dispose();
-        _context = null;
+        Context?.Dispose();
+        Context = null;
     }
 }

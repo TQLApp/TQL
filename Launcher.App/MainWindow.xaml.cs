@@ -21,6 +21,7 @@ internal partial class MainWindow
     private SearchManager? _searchManager;
     private readonly UI _ui;
     private double _listBoxRowHeight = double.NaN;
+    private bool _pendingEnter;
 
     private SearchResult? SelectedSearchResult => (SearchResult?)_results.SelectedItem;
 
@@ -125,6 +126,8 @@ internal partial class MainWindow
 
         _search.Text = "";
 
+        _pendingEnter = false;
+
         _results.ItemsSource = null;
         _resultsContainer.Visibility = Visibility.Collapsed;
 
@@ -150,8 +153,12 @@ internal partial class MainWindow
 
     private void _searchManager_IsSearchingChanged(object sender, EventArgs e)
     {
-        _dancingDots.Visibility =
-            _searchManager?.IsSearching ?? false ? Visibility.Visible : Visibility.Collapsed;
+        var isSearching = _searchManager?.IsSearching ?? false;
+
+        _dancingDots.Visibility = isSearching ? Visibility.Visible : Visibility.Collapsed;
+
+        if (isSearching)
+            _pendingEnter = false;
     }
 
     private void _searchManager_SearchResultsChanged(object sender, EventArgs e)
@@ -168,7 +175,18 @@ internal partial class MainWindow
         _results.ItemsSource = _searchManager.Results;
 
         if (_results.Items.Count > 0)
+        {
             SetSelectedIndex(0);
+
+            if (_pendingEnter && _results.Items.Count == 1)
+            {
+                var searchResult = SelectedSearchResult;
+                if (searchResult?.Match is IRunnableMatch runnable)
+                    RunItem(runnable, searchResult);
+            }
+        }
+
+        _pendingEnter = false;
     }
 
     private void _searchManager_StackChanged(object sender, EventArgs e) => RenderStack();
@@ -221,87 +239,76 @@ internal partial class MainWindow
 
     private void _search_TextChanged(object sender, TextChangedEventArgs e)
     {
+        _pendingEnter = false;
         _searchManager?.SearchChanged(_search.Text);
     }
 
-    private void _search_PreviewKeyDown(object sender, KeyEventArgs e)
+    private void _search_PreviewKeyDown(object sender, KeyEventArgs e) =>
+        HandlePreviewKeyDown(e, true);
+
+    private void _results_PreviewKeyDown(object sender, KeyEventArgs e) =>
+        HandlePreviewKeyDown(e, false);
+
+    private void HandlePreviewKeyDown(KeyEventArgs e, bool inSearch)
     {
         var searchResult = SelectedSearchResult;
 
         switch (e.Key)
         {
-            case Key.Up:
-            case Key.Down:
+            case Key.Up
+            or Key.Down when inSearch:
                 SelectItem(e.Key == Key.Up ? -1 : 1);
                 e.Handled = true;
                 break;
 
-            case Key.PageUp:
-            case Key.PageDown:
+            case Key.PageUp
+            or Key.PageDown when inSearch:
                 SelectPage(e.Key == Key.PageUp ? -1 : 1);
                 e.Handled = true;
                 break;
 
             case Key.Enter:
-            {
-                if (searchResult?.Match is IRunnableMatch runnable)
+                if (
+                    searchResult == null
+                    && _searchManager
+                        is { IsSearching: true, Context.IsPreliminaryResultsSuppressed: true }
+                )
+                    _pendingEnter = true;
+                else if (searchResult?.Match is IRunnableMatch runnable)
                     RunItem(runnable, searchResult);
-                else if (searchResult?.Match is ISearchableMatch searchable)
-                    PushItem(searchable, searchResult);
+                else if (searchResult?.Match is ISearchableMatch searchable1)
+                    PushItem(searchable1, searchResult);
+                if (!inSearch)
+                    _search.Focus();
                 e.Handled = true;
                 break;
-            }
 
             case Key.Tab:
-            {
-                if (searchResult?.Match is ISearchableMatch searchable)
-                    PushItem(searchable, searchResult);
+                if (searchResult?.Match is ISearchableMatch searchable2)
+                    PushItem(searchable2, searchResult);
+                if (!inSearch)
+                    _search.Focus();
                 e.Handled = true;
                 break;
-            }
 
             case Key.Escape:
                 if (_searchManager?.Stack.Length > 0)
                     PopItem();
-                else
+                else if (inSearch)
                     DoHide();
+                else
+                    _search.Focus();
                 e.Handled = true;
                 break;
 
             case Key.Back:
                 if (_search.Text.Length == 0 && _searchManager?.Stack.Length > 0)
+                {
                     PopItem();
-                break;
-        }
-    }
-
-    private void _results_PreviewKeyDown(object sender, KeyEventArgs e)
-    {
-        var searchResult = SelectedSearchResult;
-
-        switch (e.Key)
-        {
-            case Key.Enter:
-                if (searchResult?.Match is IRunnableMatch runnable)
-                {
-                    RunItem(runnable, searchResult);
-                    _search.Focus();
+                    if (!inSearch)
+                        _search.Focus();
                     e.Handled = true;
                 }
-                break;
-
-            case Key.Tab:
-                if (searchResult?.Match is ISearchableMatch searchable)
-                {
-                    PushItem(searchable, searchResult);
-                    _search.Focus();
-                    e.Handled = true;
-                }
-                break;
-
-            case Key.Escape:
-                _search.Focus();
-                e.Handled = true;
                 break;
         }
     }
