@@ -25,20 +25,8 @@
         </Style>
     </Window.Resources>
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="25"/>
-        </Grid.RowDefinitions>
     
-        <StackPanel Orientation="Vertical"
-                    Grid.ColumnSpan="3"
-                    Grid.RowSpan="3">
+        <StackPanel Orientation="Vertical">
 
             <Grid Margin="8,0,0,0">
 
@@ -207,8 +195,9 @@
 
         <support:SnackBarUserControl x:Name="_snackbar"
                                      Visibility="Collapsed"
-                                     Grid.Column="1"
-                                     Grid.Row="1" />
+                                     HorizontalAlignment="Center"
+                                     VerticalAlignment="Bottom"
+                                     Margin="0,0,0,25" />
 
     </Grid>
 </support:BlurWindow>
