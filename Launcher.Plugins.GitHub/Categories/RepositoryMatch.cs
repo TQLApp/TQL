@@ -10,7 +10,8 @@ internal class RepositoryMatch
     : IRunnableMatch,
         ISerializableMatch,
         ICopyableMatch,
-        ISearchableMatch
+        ISearchableMatch,
+        IHasSearchHint
 {
     private readonly RepositoryMatchDto _dto;
     private readonly GitHubApi _api;
@@ -18,6 +19,8 @@ internal class RepositoryMatch
     public string Text => _dto.Name;
     public ImageSource Icon => Images.Repository;
     public MatchTypeId TypeId => TypeIds.Repository;
+
+    public string SearchHint => "Find issues";
 
     public RepositoryMatch(RepositoryMatchDto dto, GitHubApi api)
     {

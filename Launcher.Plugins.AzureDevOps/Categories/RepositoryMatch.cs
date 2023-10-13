@@ -12,13 +12,15 @@ internal class RepositoryMatch
     : IRunnableMatch,
         ISearchableMatch,
         ISerializableMatch,
-        ICopyableMatch
+        ICopyableMatch,
+        IHasSearchHint
 {
     private readonly RepositoryMatchDto _dto;
 
     public string Text => $"{_dto.ProjectName}/{_dto.RepositoryName}";
     public ImageSource Icon => Images.Repositories;
     public MatchTypeId TypeId => TypeIds.Repository;
+    public string SearchHint => "Find files";
 
     public RepositoryMatch(RepositoryMatchDto dto)
     {

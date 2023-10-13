@@ -219,6 +219,11 @@ internal partial class MainWindow
                 SearchResultUtils.RenderMatch(match, null, false, _search.FontSize)
             );
         }
+
+        var searchHint = (_searchManager.Stack.Last() as IHasSearchHint)?.SearchHint;
+
+        // The HintedTextBox style expects the hint in the Tag.
+        _search.Tag = searchHint;
     }
 
     private void DoHide()

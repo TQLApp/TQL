@@ -1442,6 +1442,7 @@
                                    x:Name="PART_Placeholder"
                                    FontFamily="{TemplateBinding FontFamily}"
                                    FontSize="{TemplateBinding FontSize}"
+                                   FontStyle="Italic"
                                    Margin="3 0 0 0"
                                    Padding="{TemplateBinding Padding}"
                                    VerticalAlignment="Center"

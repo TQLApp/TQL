@@ -6,7 +6,12 @@ using Octokit;
 
 namespace Launcher.Plugins.GitHub.Categories;
 
-internal class UserMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, ISearchableMatch
+internal class UserMatch
+    : IRunnableMatch,
+        ISerializableMatch,
+        ICopyableMatch,
+        ISearchableMatch,
+        IHasSearchHint
 {
     private readonly UserMatchDto _dto;
     private readonly GitHubApi _api;
@@ -14,6 +19,7 @@ internal class UserMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, I
     public string Text => _dto.Login;
     public ImageSource Icon => Images.User;
     public MatchTypeId TypeId => TypeIds.User;
+    public string SearchHint => "Find repositories";
 
     public UserMatch(UserMatchDto dto, GitHubApi api)
     {

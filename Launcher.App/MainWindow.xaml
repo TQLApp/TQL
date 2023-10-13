@@ -6,6 +6,7 @@
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:local="clr-namespace:Launcher.App"
                     xmlns:support="clr-namespace:Launcher.App.Support"
+                    xmlns:attached="clr-namespace:FramePFX.Themes.Attached"
                     mc:Ignorable="d"
                     Title="Launcher"
                     Width="800"
@@ -52,34 +53,36 @@
                 </Border>
 
                 <TextBox x:Name="_search"
-                        FontSize="15pt"
-                        Margin="6,14,14,14"
-                        Foreground="White"
-                        Background="Transparent"
-                        BorderThickness="0"
-                        TextChanged="_search_TextChanged"
-                        PreviewKeyDown="_search_PreviewKeyDown"
-                        AcceptsTab="True"
-                        AcceptsReturn="True"
-                        Grid.Column="1">
+                         Style="{StaticResource HintedTextBox}"
+                         FontSize="15pt"
+                         Margin="6,14,14,14"
+                         Foreground="White"
+                         Background="Transparent"
+                         BorderThickness="0"
+                         TextChanged="_search_TextChanged"
+                         PreviewKeyDown="_search_PreviewKeyDown"
+                         AcceptsTab="True"
+                         AcceptsReturn="True"
+                         Grid.Column="1"
+                         attached:TextHinting.ShowWhenFocused="True">
                     <TextBox.CaretBrush>
                         <SolidColorBrush Color="Silver"/>
                     </TextBox.CaretBrush>
                 </TextBox>
 
                 <support:DancingDotsUserControl x:Name="_dancingDots"
-                                            Grid.Column="2"
-                                            Margin="0,0,20,19"
-                                            Visibility="Collapsed"
-                                            ToolTip="Searching..." />
+                                                Grid.Column="2"
+                                                Margin="0,0,20,19"
+                                                Visibility="Collapsed"
+                                                ToolTip="Searching..." />
 
                 <support:SpinnerUserControl x:Name="_spinner"
-                                        Grid.Column="3"
-                                        Width="20"
-                                        Height="20"
-                                        Margin="0,0,20,0"
-                                        Visibility="Collapsed"
-                                        ToolTip="Cache is being updated..." />
+                                            Grid.Column="3"
+                                            Width="20"
+                                            Height="20"
+                                            Margin="0,0,20,0"
+                                            Visibility="Collapsed"
+                                            ToolTip="Cache is being updated..." />
             </Grid>
 
             <Border x:Name="_resultsContainer" BorderBrush="#60ffffff" BorderThickness="0,0.5,0,0">
