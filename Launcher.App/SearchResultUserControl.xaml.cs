@@ -45,6 +45,11 @@ internal partial class SearchResultUserControl
         if (_listBoxItem == null)
             return;
 
+        var searchResult = DataContext;
+
+        if (searchResult is { Match: IRunnableMatch or ISearchableMatch })
+            _listBoxItem.Cursor = Cursors.Hand;
+
         _listBoxItem.MouseEnter += (_, _) => IsListBoxItemSelectedOrMouseOverChanged();
         _listBoxItem.MouseLeave += (_, _) => IsListBoxItemSelectedOrMouseOverChanged();
         _listBoxItem.Selected += (_, _) => IsListBoxItemSelectedOrMouseOverChanged();

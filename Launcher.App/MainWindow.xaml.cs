@@ -285,6 +285,16 @@ internal partial class MainWindow
                 if (searchResult?.Match is IRunnableMatch runnable)
                 {
                     RunItem(runnable, searchResult);
+                    _search.Focus();
+                    e.Handled = true;
+                }
+                break;
+
+            case Key.Tab:
+                if (searchResult?.Match is ISearchableMatch searchable)
+                {
+                    PushItem(searchable, searchResult);
+                    _search.Focus();
                     e.Handled = true;
                 }
                 break;
@@ -300,10 +310,19 @@ internal partial class MainWindow
     {
         var searchResult = SelectedSearchResult;
 
-        if (e.ChangedButton == MouseButton.Left && searchResult?.Match is IRunnableMatch runnable)
+        if (e.ChangedButton == MouseButton.Left)
         {
-            RunItem(runnable, searchResult);
-            e.Handled = true;
+            if (searchResult?.Match is IRunnableMatch runnable)
+            {
+                RunItem(runnable, searchResult);
+                e.Handled = true;
+            }
+            if (searchResult?.Match is ISearchableMatch searchable)
+            {
+                PushItem(searchable, searchResult);
+                _search.Focus();
+                e.Handled = true;
+            }
         }
     }
 
