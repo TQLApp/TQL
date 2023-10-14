@@ -7,7 +7,6 @@ namespace Launcher.Plugins.AzureDevOps.Categories;
 internal class WorkItemMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
 {
     private readonly WorkItemMatchDto _dto;
-    private readonly AzureWorkItemIconManager _iconManager;
 
     public string Text => $"{_dto.ProjectName}/{_dto.Type} {_dto.Id}: {_dto.Title}";
     public ImageSource Icon { get; }
@@ -16,7 +15,6 @@ internal class WorkItemMatch : IRunnableMatch, ISerializableMatch, ICopyableMatc
     public WorkItemMatch(WorkItemMatchDto dto, AzureWorkItemIconManager iconManager)
     {
         _dto = dto;
-        _iconManager = iconManager;
 
         Icon =
             iconManager.GetWorkItemIconImage(dto.Url, dto.ProjectName, dto.Type) ?? Images.Boards;

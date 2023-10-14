@@ -11,16 +11,24 @@ internal class QueriesMatch : ISearchableMatch, ISerializableMatch
     private readonly string _url;
     private readonly ICache<AzureData> _cache;
     private readonly AzureDevOpsApi _api;
+    private readonly AzureWorkItemIconManager _iconManager;
 
     public string Text { get; }
     public ImageSource Icon => Images.Boards;
     public MatchTypeId TypeId => TypeIds.Queries;
 
-    public QueriesMatch(string text, string url, ICache<AzureData> cache, AzureDevOpsApi api)
+    public QueriesMatch(
+        string text,
+        string url,
+        ICache<AzureData> cache,
+        AzureDevOpsApi api,
+        AzureWorkItemIconManager iconManager
+    )
     {
         _url = url;
         _cache = cache;
         _api = api;
+        _iconManager = iconManager;
 
         Text = text;
     }
@@ -55,7 +63,9 @@ internal class QueriesMatch : ISearchableMatch, ISerializableMatch
                     queries.Value.Select(
                         p =>
                             new QueryMatch(
-                                new QueryMatchDto(_url, project.Name, p.Id, p.Path, p.Name)
+                                new QueryMatchDto(_url, project.Name, p.Id, p.Path, p.Name),
+                                _api,
+                                _iconManager
                             )
                     )
                 );

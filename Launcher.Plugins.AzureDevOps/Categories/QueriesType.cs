@@ -12,18 +12,21 @@ internal class QueriesType : IMatchType
     private readonly ICache<AzureData> _cache;
     private readonly ConnectionManager _connectionManager;
     private readonly AzureDevOpsApi _api;
+    private readonly AzureWorkItemIconManager _iconManager;
 
     public Guid Id => TypeIds.Queries.Id;
 
     public QueriesType(
         ICache<AzureData> cache,
         ConnectionManager connectionManager,
-        AzureDevOpsApi api
+        AzureDevOpsApi api,
+        AzureWorkItemIconManager iconManager
     )
     {
         _cache = cache;
         _connectionManager = connectionManager;
         _api = api;
+        _iconManager = iconManager;
     }
 
     public IMatch? Deserialize(string json)
@@ -37,7 +40,8 @@ internal class QueriesType : IMatchType
             MatchUtils.GetMatchLabel("Azure Query", _connectionManager, dto.Url),
             dto.Url,
             _cache,
-            _api
+            _api,
+            _iconManager
         );
     }
 }
