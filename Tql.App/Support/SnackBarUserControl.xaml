@@ -12,7 +12,7 @@
     
     <Border Background="#e0000000"
             CornerRadius="{Binding ActualHeight, RelativeSource={RelativeSource Self}, Converter={StaticResource HeightToRadiusConverter}}">
-        <TextBlock Text="{Binding Text, RelativeSource={RelativeSource AncestorType=local:SnackBarUserControl}}"
+        <TextBlock Text="{Binding Text, RelativeSource={RelativeSource AncestorType=support:SnackBarUserControl}}"
                    FontSize="14pt"
                    Foreground="#b0ffffff"
                    Padding="28,5,28,8"/>
