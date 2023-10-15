@@ -1,0 +1,32 @@
+﻿<UserControl x:Class="Tql.App.SearchResultUserControl"
+             x:ClassModifier="internal"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             Background="Transparent"
+             DataContextChanged="UserControl_DataContextChanged"
+             mc:Ignorable="d" 
+             d:DesignHeight="20" d:DesignWidth="300">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <Border x:Name="_resultPanel"
+                Margin="2" />
+
+        <Border x:Name="_separator"
+                Grid.Column="1" 
+                BorderBrush="#40ffffff"
+                BorderThickness="1,0,0,0"
+                Margin="10,6,6,6" />
+
+        <StackPanel x:Name="_iconsPanel"
+                    Grid.Column="2"
+                    Orientation="Horizontal"
+                    Margin="0,0,6,0" />
+    </Grid>
+</UserControl>
