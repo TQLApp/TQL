@@ -19,7 +19,7 @@ internal abstract class IssueMatchBase : IRunnableMatch, ISerializableMatch, ICo
 
     public Task Run(IServiceProvider serviceProvider, Window owner)
     {
-        serviceProvider.GetRequiredService<IUI>().LaunchUrl(Dto.Url);
+        serviceProvider.GetRequiredService<IUI>().OpenUrl(Dto.Url);
 
         return Task.CompletedTask;
     }

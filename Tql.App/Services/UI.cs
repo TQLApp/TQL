@@ -47,7 +47,7 @@ internal class UI : IUI
         return tcs.Task;
     }
 
-    public void LaunchUrl(string url)
+    public void OpenUrl(string url)
     {
         try
         {

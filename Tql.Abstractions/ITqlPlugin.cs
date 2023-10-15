@@ -2,7 +2,7 @@
 
 namespace Tql.Abstractions;
 
-public interface ILauncherPlugin
+public interface ITqlPlugin
 {
     Guid Id { get; }
 

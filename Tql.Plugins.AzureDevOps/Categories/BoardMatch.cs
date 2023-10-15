@@ -18,7 +18,7 @@ internal class BoardMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
 
     public Task Run(IServiceProvider serviceProvider, Window owner)
     {
-        serviceProvider.GetRequiredService<IUI>().LaunchUrl(_dto.GetUrl());
+        serviceProvider.GetRequiredService<IUI>().OpenUrl(_dto.GetUrl());
 
         return Task.CompletedTask;
     }

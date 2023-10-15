@@ -77,7 +77,7 @@ public partial class App
             ThemesController.SetTheme(ThemeType.SoftDark);
     }
 
-    private IEnumerable<ILauncherPlugin> GetPlugins()
+    private IEnumerable<ITqlPlugin> GetPlugins()
     {
         // TODO: Make extensible.
         var assemblies = new[]
@@ -91,16 +91,16 @@ public partial class App
         {
             foreach (var type in assembly.ExportedTypes)
             {
-                var attribute = type.GetCustomAttribute<LauncherPluginAttribute>();
+                var attribute = type.GetCustomAttribute<TqlPluginAttribute>();
                 if (attribute == null)
                     continue;
 
-                if (!typeof(ILauncherPlugin).IsAssignableFrom(type))
+                if (!typeof(ITqlPlugin).IsAssignableFrom(type))
                     throw new InvalidOperationException(
-                        $"'{type}' does not implement '{nameof(ILauncherPlugin)}'"
+                        $"'{type}' does not implement '{nameof(ITqlPlugin)}'"
                     );
 
-                yield return (ILauncherPlugin)Activator.CreateInstance(type)!;
+                yield return (ITqlPlugin)Activator.CreateInstance(type)!;
             }
         }
     }

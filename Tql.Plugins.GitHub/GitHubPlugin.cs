@@ -9,8 +9,8 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.GitHub;
 
-[LauncherPlugin]
-public class GitHubPlugin : ILauncherPlugin
+[TqlPlugin]
+public class GitHubPlugin : ITqlPlugin
 {
     public static readonly Guid Id = Guid.Parse("028ffb5f-5d9f-4ee1-91fd-47f192d16e20");
 
@@ -18,7 +18,7 @@ public class GitHubPlugin : ILauncherPlugin
     private MatchTypeManager? _matchTypeManager;
     private IServiceProvider? _serviceProvider;
 
-    Guid ILauncherPlugin.Id => Id;
+    Guid ITqlPlugin.Id => Id;
 
     public GitHubPlugin()
     {

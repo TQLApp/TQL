@@ -1,4 +1,4 @@
 ﻿namespace Tql.Abstractions;
 
 [AttributeUsage(AttributeTargets.Class)]
-public class LauncherPluginAttribute : Attribute { }
+public class TqlPluginAttribute : Attribute { }

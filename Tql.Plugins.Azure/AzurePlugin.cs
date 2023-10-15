@@ -9,8 +9,8 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.Azure;
 
-[LauncherPlugin]
-public class AzurePlugin : ILauncherPlugin
+[TqlPlugin]
+public class AzurePlugin : ITqlPlugin
 {
     public static readonly Guid Id = Guid.Parse("51ebb93a-4d72-4231-adf0-4985f377a1b7");
 
@@ -18,7 +18,7 @@ public class AzurePlugin : ILauncherPlugin
     private MatchTypeManager? _matchTypeManager;
     private IServiceProvider? _serviceProvider;
 
-    Guid ILauncherPlugin.Id => Id;
+    Guid ITqlPlugin.Id => Id;
 
     public AzurePlugin()
     {

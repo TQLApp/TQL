@@ -18,7 +18,7 @@ internal class EmailMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
 
     public Task Run(IServiceProvider serviceProvider, Window owner)
     {
-        serviceProvider.GetRequiredService<IUI>().LaunchUrl(GetUrl());
+        serviceProvider.GetRequiredService<IUI>().OpenUrl(GetUrl());
 
         return Task.CompletedTask;
     }

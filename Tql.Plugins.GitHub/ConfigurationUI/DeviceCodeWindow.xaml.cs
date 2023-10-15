@@ -109,7 +109,7 @@ internal partial class DeviceCodeWindow
 
     private void _openPage_Click(object sender, RoutedEventArgs e)
     {
-        _ui.LaunchUrl(_loginDto.VerificationUri);
+        _ui.OpenUrl(_loginDto.VerificationUri);
     }
 
     private void _copy_Click(object sender, RoutedEventArgs e)

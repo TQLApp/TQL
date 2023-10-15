@@ -10,8 +10,8 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.AzureDevOps;
 
-[LauncherPlugin]
-public class AzureDevOpsPlugin : ILauncherPlugin
+[TqlPlugin]
+public class AzureDevOpsPlugin : ITqlPlugin
 {
     public static readonly Guid Id = Guid.Parse("36828080-c1f0-4759-8dff-2b764a44b62e");
 
@@ -19,7 +19,7 @@ public class AzureDevOpsPlugin : ILauncherPlugin
     private MatchTypeManager? _matchTypeManager;
     private IServiceProvider? _serviceProvider;
 
-    Guid ILauncherPlugin.Id => Id;
+    Guid ITqlPlugin.Id => Id;
 
     public AzureDevOpsPlugin()
     {

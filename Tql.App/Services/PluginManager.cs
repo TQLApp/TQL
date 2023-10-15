@@ -2,7 +2,7 @@
 
 namespace Tql.App.Services;
 
-internal record PluginManager(ImmutableArray<ILauncherPlugin> Plugins) : IPluginManager
+internal record PluginManager(ImmutableArray<ITqlPlugin> Plugins) : IPluginManager
 {
     public void Initialize(IServiceProvider serviceProvider)
     {
