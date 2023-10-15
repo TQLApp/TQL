@@ -33,7 +33,7 @@ internal class AzureApi
 
                 var tokenCachePersistenceOptions = new TokenCachePersistenceOptions
                 {
-                    Name = $"Launcher_{id}"
+                    Name = $"Tql_{id}"
                 };
 
                 var credential = new ChainedTokenCredential(

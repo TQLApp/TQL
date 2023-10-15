@@ -8,7 +8,7 @@
                     xmlns:attached="clr-namespace:Tql.App.Themes.Attached"
                     xmlns:app="clr-namespace:Tql.App"
                     mc:Ignorable="d"
-                    Title="Launcher"
+                    Title="Techie's Quick Launcher"
                     Width="800"
                     SizeToContent="Height"
                     ShowInTaskbar="False"
@@ -176,7 +176,7 @@
                     <Border Style="{StaticResource ButtonBorder}">
                         <TextBlock>Back</TextBlock>
                     </Border>
-                    <TextBlock Margin="8,0,20,0">Open Launcher</TextBlock>
+                    <TextBlock Margin="8,0,20,0">Open TQL</TextBlock>
                 
                     <Border Style="{StaticResource ButtonBorder}">
                         <TextBlock>Enter</TextBlock>

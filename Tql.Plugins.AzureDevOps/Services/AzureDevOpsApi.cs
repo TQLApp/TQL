@@ -43,7 +43,7 @@ internal class AzureDevOpsApi
 
                 using (
                     var key = Registry.CurrentUser.OpenSubKey(
-                        @"Software\Microsoft\VSCommon\14.0\ClientServices\TokenStorage\Launcher",
+                        @"Software\Microsoft\VSCommon\14.0\ClientServices\TokenStorage\Tql",
                         true
                     )
                 )
@@ -71,7 +71,7 @@ internal class AzureDevOpsApi
 
                 credentials.Storage = new VssClientCredentialStorage(
                     collectionUri,
-                    VssTokenStorageFactory.GetTokenStorageNamespace("Launcher")
+                    VssTokenStorageFactory.GetTokenStorageNamespace("Tql")
                 );
 
                 var connection = new VssConnection(new Uri(collectionUri), credentials);

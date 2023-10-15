@@ -14,7 +14,7 @@ partial class MainWindow
         var notifyIcon = new NotifyIcon();
 
         notifyIcon.Icon = LoadIcon();
-        notifyIcon.Text = "Launcher";
+        notifyIcon.Text = "Techie's Quick Launcher";
         notifyIcon.Visible = true;
 
         notifyIcon.ContextMenu = new System.Windows.Forms.ContextMenu();

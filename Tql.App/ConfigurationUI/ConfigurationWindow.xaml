@@ -6,7 +6,7 @@
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:utilities="clr-namespace:Tql.Utilities;assembly=Tql.Utilities"
                     mc:Ignorable="d"
-                    Title="Launcher Configuration"
+                    Title="Techie's Quick Launcher - Configuration"
                     Height="450" Width="800"
                     WindowStartupLocation="CenterScreen"
                     Icon="pack://application:,,,/mainicon.ico">

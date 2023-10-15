@@ -13,7 +13,7 @@ internal class Converter
         var icons = await ConvertRequireConfig();
 
         File.WriteAllText(
-            "..\\..\\..\\..\\Launcher.Plugins.Azure\\Categories\\Resources.json",
+            "..\\..\\..\\..\\Tql.Plugins.Azure\\Categories\\Resources.json",
             JsonConvert.SerializeObject(
                 new AssetCollection(assetTypes, icons),
                 new JsonSerializerSettings
@@ -122,7 +122,7 @@ internal class Converter
 
         using var client = new HttpClient();
 
-        var cachePath = Path.Combine(Path.GetTempPath(), "LauncherResourceConverter");
+        var cachePath = Path.Combine(Path.GetTempPath(), "TqlAzureResourceConverter");
         Directory.CreateDirectory(cachePath);
 
         await Parallel.ForEachAsync(

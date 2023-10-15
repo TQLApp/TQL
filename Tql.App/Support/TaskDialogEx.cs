@@ -15,7 +15,7 @@ public static class TaskDialogEx
             MainInstruction = title,
             Content = subtitle,
             PositionRelativeToWindow = true,
-            WindowTitle = "Launchers"
+            WindowTitle = "Techie's Quick Launcher"
         };
     }
 

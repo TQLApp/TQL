@@ -55,7 +55,7 @@ internal class UI : IUI
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to launch '{Url}'", url);
+            _logger.LogError(ex, "Failed to open '{Url}'", url);
         }
     }
 

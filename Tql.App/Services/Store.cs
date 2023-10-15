@@ -13,13 +13,13 @@ internal class Store : IStore
     {
         UserSettingsFolder = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-            "Launcher"
+            "TQL"
         );
 
         Directory.CreateDirectory(UserSettingsFolder);
     }
 
-    public RegistryKey CreateBaseKey() => Registry.CurrentUser.CreateSubKey("Software\\Launcher")!;
+    public RegistryKey CreateBaseKey() => Registry.CurrentUser.CreateSubKey("Software\\TQL")!;
 
     public RegistryKey CreatePluginKey(Guid pluginId)
     {
