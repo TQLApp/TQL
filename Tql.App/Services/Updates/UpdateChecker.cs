@@ -61,10 +61,6 @@ internal class UpdateChecker : IDisposable
             appVersion
         );
 
-#if DEBUG
-        appVersion = new Version();
-#endif
-
         if (appVersion.CompareTo(releaseVersion) >= 0)
             return false;
 
