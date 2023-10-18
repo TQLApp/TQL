@@ -12,11 +12,11 @@
                     Width="800"
                     SizeToContent="Height"
                     ShowInTaskbar="False"
-                    Loaded="Window_Loaded"
+                    Background="Transparent"
                     Closed="Window_Closed"
                     PreviewKeyDown="Window_PreviewKeyDown"
                     Deactivated="Window_Deactivated"
-                    Background="Transparent">
+                    SourceInitialized="Window_SourceInitialized">
     <Window.Resources>
         <Style TargetType="TextBlock">
             <Setter Property="Foreground" Value="White"/>

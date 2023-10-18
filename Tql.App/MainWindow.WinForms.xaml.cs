@@ -72,6 +72,10 @@ partial class MainWindow
 
     private void RepositionScreen()
     {
+        var source = PresentationSource.FromVisual(this);
+        if (source == null)
+            return;
+
         var screen = Screen.PrimaryScreen!;
 
         if (
@@ -86,7 +90,6 @@ partial class MainWindow
                 .First();
         }
 
-        var source = PresentationSource.FromVisual(this)!;
         var scaleX = source.CompositionTarget!.TransformToDevice.M11;
         var scaleY = source.CompositionTarget!.TransformToDevice.M22;
 

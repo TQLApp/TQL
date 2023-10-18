@@ -19,7 +19,7 @@ namespace Tql.App;
 public partial class App
 {
     private IHost? _host;
-    private IServiceScope? _scope;
+    private MainWindow? _mainWindow;
 
     private void Application_Startup(object sender, StartupEventArgs e)
     {
@@ -58,9 +58,11 @@ public partial class App
 
         logger.LogInformation("Startup complete");
 
-        _scope = _host.Services.CreateScope();
+        _mainWindow = _host.Services.GetRequiredService<MainWindow>();
 
-        _scope.ServiceProvider.GetRequiredService<MainWindow>().Show();
+#if DEBUG
+        _mainWindow.DoShow();
+#endif
     }
 
     private void SetMode()
@@ -123,7 +125,6 @@ public partial class App
 
     private void Application_Exit(object sender, ExitEventArgs e)
     {
-        _scope?.Dispose();
         _host?.Dispose();
     }
 }

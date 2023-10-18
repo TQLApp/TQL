@@ -9,6 +9,18 @@ using Tql.App.Support;
 
 namespace Tql.App;
 
+// Arguably, this class is doing too much. It would be better to
+// focus this window on just the search capabilities, and remove
+// everything around that (the keyboard hook, notification icon,
+// etc) somewhere else. That would allow us to show the window
+// only when the user requests a search.
+//
+// However, this causes significant slow down. I've tried this a
+// few different ways, and it all causes noticeable delay in the
+// search dialog becoming available. If you're fast enough (like
+// I am), it's not fast enough to capture the first characters
+// typed.
+
 internal partial class MainWindow
 {
     private const int ResultItemsCount = 8;
@@ -80,13 +92,6 @@ internal partial class MainWindow
         );
     }
 
-    private void Window_Loaded(object sender, RoutedEventArgs e)
-    {
-#if DEBUG
-        DoShow();
-#endif
-    }
-
     private void _keyboardHook_KeyPressed(object? sender, HotkeyPressedEventArgs e)
     {
         DoShow();
@@ -122,7 +127,7 @@ internal partial class MainWindow
             DoHide();
     }
 
-    private void DoShow()
+    public void DoShow()
     {
         RepositionScreen();
 
@@ -146,11 +151,18 @@ internal partial class MainWindow
 
         UpdateLayout();
 
-        Visibility = Visibility.Visible;
+        Show();
 
         Activate();
 
         _search.Focus();
+    }
+
+    private void Window_SourceInitialized(object sender, EventArgs e)
+    {
+        RepositionScreen();
+
+        Activate();
     }
 
     private void _searchManager_IsSearchingChanged(object sender, EventArgs e)
