@@ -1,4 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using System.IO.Compression;
+using System.Net.Http;
+using Dasync.Collections;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 using Formatting = Newtonsoft.Json.Formatting;
@@ -12,18 +15,19 @@ internal class Converter
         var assetTypes = ConvertResources();
         var icons = await ConvertRequireConfig();
 
-        File.WriteAllText(
-            "..\\..\\..\\..\\Tql.Plugins.Azure\\Categories\\Resources.json",
-            JsonConvert.SerializeObject(
-                new AssetCollection(assetTypes, icons),
-                new JsonSerializerSettings
-                {
-                    NullValueHandling = NullValueHandling.Ignore,
-                    Formatting = Formatting.Indented,
-                    ContractResolver = new CamelCasePropertyNamesContractResolver()
-                }
-            )
-        );
+        using var stream = File.Create("..\\..\\..\\..\\Tql.Plugins.Azure\\Categories\\Resources.json.gz");
+        using var gzStream = new GZipStream(stream, CompressionLevel.Optimal);
+        using var writer = new StreamWriter(gzStream);
+        using var json = new JsonTextWriter(writer);
+
+        var serializer = JsonSerializer.Create(new JsonSerializerSettings
+        {
+            NullValueHandling = NullValueHandling.Ignore,
+            Formatting = Formatting.Indented,
+            ContractResolver = new CamelCasePropertyNamesContractResolver()
+        });
+
+        serializer.Serialize(json, new AssetCollection(assetTypes, icons));
     }
 
     private List<AssetType> ConvertResources()
@@ -125,25 +129,24 @@ internal class Converter
         var cachePath = Path.Combine(Path.GetTempPath(), "TqlAzureResourceConverter");
         Directory.CreateDirectory(cachePath);
 
-        await Parallel.ForEachAsync(
-            assets,
-            async (asset, cancellationToken) =>
+        await assets.ParallelForEachAsync(
+            async (asset) =>
             {
                 var hash = Encryption.Hash(asset);
                 var cacheFileName = Path.Combine(cachePath, hash);
 
                 if (!File.Exists(cacheFileName))
                 {
-                    await using (var source = await client.GetStreamAsync(asset, cancellationToken))
-                    await using (var target = File.Create(cacheFileName + ".tmp"))
+                    using (var source = await client.GetStreamAsync(asset))
+                    using (var target = File.Create(cacheFileName + ".tmp"))
                     {
-                        await source.CopyToAsync(target, cancellationToken);
+                        await source.CopyToAsync(target);
                     }
 
                     File.Move(cacheFileName + ".tmp", cacheFileName);
                 }
 
-                var data = await File.ReadAllTextAsync(cacheFileName, cancellationToken);
+                var data = File.ReadAllText(cacheFileName);
 
                 foreach (var line in data.Split('\n'))
                 {

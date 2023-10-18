@@ -1,0 +1,5 @@
+<Include>
+  <?define Version="0.1"?>
+  <!-- This needs to be changed for every new version -->
+  <?define VersionId="09d186ec-f70b-4b05-bdb8-f6b794417878"?>
+</Include>

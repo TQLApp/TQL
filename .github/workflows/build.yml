@@ -1,0 +1,54 @@
+name: Create Setup
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build
+    runs-on: windows-2022
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch tags
+        run: git fetch --tags --force
+
+      - name: Get Build Version
+        id: get-build-version
+        shell: pwsh
+        run: ./Build/GetBuildVersion.ps1 -tag ${{ github.ref }}
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1
+
+      - uses: actions/cache@v1
+        id: cache
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-v2-${{ hashFiles('**/packages.lock.json') }}
+
+      - name: Restore Solution
+        run: msbuild -nodeReuse:false -maxCpuCount -target:Restore -property:Platform="Any CPU" -property:Configuration="Release" -property:Version="${{ steps.get-build-version.outputs.build-version }}" Tql.sln
+
+      - name: Build Solution
+        run: msbuild -nodeReuse:false -maxCpuCount -target:Build -property:Platform="Any CPU" -property:Configuration="Release" -property:Version="${{ steps.get-build-version.outputs.build-version }}" Tql.sln
+      - name: Create MSI
+        shell: pwsh
+        run: ./Build/Build.ps1
+
+      - name: Get Tag Annotation
+        uses: ericcornelissen/git-tag-annotation-action@v2
+        id: tag-data
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: Build/Distrib/Tql*.msi
+          generate_release_notes: true
+          body: ${{ steps.tag-data.outputs.git-tag-annotation }}

@@ -1,0 +1,8 @@
+{
+  "overrides": [
+    {
+      "files": "*.wxs",
+      "options": { "parser": "html" }
+    }
+  ]
+}

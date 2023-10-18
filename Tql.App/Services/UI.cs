@@ -63,4 +63,9 @@ internal class UI : IUI
     {
         _mainWindow = mainWindow;
     }
+
+    public void Shutdown()
+    {
+        _synchronizationContext?.Post(_ => Application.Current.Shutdown(), null);
+    }
 }

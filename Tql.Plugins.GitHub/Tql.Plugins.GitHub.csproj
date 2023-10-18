@@ -7,6 +7,7 @@
 		<LangVersion>latest</LangVersion>
 		<UseWPF>true</UseWPF>
 		<UseWindowsForms>true</UseWindowsForms>
+		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -14,7 +15,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="Resources\**\*" />
+		<None Remove="Resources\**\*" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -28,13 +29,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Reference Include="System.Security" />
+		<Reference Include="System.Security" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="ConfigurationUI\ConfigurationControl.xaml.cs">
-	    <SubType>Code</SubType>
-	  </Compile>
+		<Compile Update="ConfigurationUI\ConfigurationControl.xaml.cs">
+			<SubType>Code</SubType>
+		</Compile>
 	</ItemGroup>
 
 </Project>

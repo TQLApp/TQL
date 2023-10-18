@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.IO.Compression;
 using System.Xml.Linq;
 using SharpVectors.Converters;
 using SharpVectors.Renderers.Wpf;
@@ -15,11 +16,12 @@ internal static class ResourceNames
     private static AssetCollection LoadAssetCollection()
     {
         using var stream = typeof(ResourceNames).Assembly.GetManifestResourceStream(
-            $"{typeof(ResourceNames).Namespace}.Resources.json"
+            $"{typeof(ResourceNames).Namespace}.Resources.json.gz"
         );
+        using var gzStream = new GZipStream(stream!, CompressionMode.Decompress);
 
         return JsonSerializer.Deserialize<AssetCollection>(
-            stream!,
+            gzStream,
             new JsonSerializerOptions
             {
                 ReadCommentHandling = JsonCommentHandling.Skip,

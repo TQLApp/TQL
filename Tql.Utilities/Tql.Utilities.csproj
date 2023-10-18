@@ -7,16 +7,17 @@
 		<LangVersion>latest</LangVersion>
 		<UseWPF>true</UseWPF>
 		<UseWindowsForms>true</UseWindowsForms>
+		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="JetBrains.Annotations" Version="2023.2.0" />
-	  <PackageReference Include="SharpVectors.Wpf" Version="1.8.2" />
-	  <PackageReference Include="System.Text.Json" Version="7.0.3" />
+		<PackageReference Include="JetBrains.Annotations" Version="2023.2.0" />
+		<PackageReference Include="SharpVectors.Wpf" Version="1.8.2" />
+		<PackageReference Include="System.Text.Json" Version="7.0.3" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Tql.Abstractions\Tql.Abstractions.csproj" />
+		<ProjectReference Include="..\Tql.Abstractions\Tql.Abstractions.csproj" />
 	</ItemGroup>
 
 </Project>

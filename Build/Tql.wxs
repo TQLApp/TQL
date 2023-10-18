@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <!-- 
+    Shared variables
+  -->
+
+  <?define ProductName="Techie's Quick Launcher"?>
+  <?define ProductDescription="Quick Launcher for Techies"?>
+  <?define Manufacturer="Pieter van Ginkel"?>
+  <?include Version.wxi?>
+  <?define RegistryRoot="HKCU"?>
+  <?define RegistryBaseKey="Software\TQL"?>
+
+  <Product
+    Name="$(var.ProductName)"
+    Manufacturer="$(var.Manufacturer)"
+    Id="$(var.VersionId)"
+    UpgradeCode="bc88996c-303d-44f0-aca4-28490b78603b"
+    Language="1033"
+    Codepage="1252"
+    Version="$(var.Version)"
+  >
+    <Package
+      Id="*"
+      Keywords="Installer"
+      Description="$(var.ProductName) Installer"
+      Manufacturer="$(var.Manufacturer)"
+      InstallerVersion="100"
+      Languages="1033"
+      Compressed="yes"
+      SummaryCodepage="1252"
+      InstallScope="perUser"
+    />
+
+    <WixVariable Id="WixUILicenseRtf" Value="..\Assets\LICENSE.rtf" />
+    <WixVariable Id="WixUIDialogBmp" Value="..\Assets\WixUIDialogBmp.png" />
+    <WixVariable Id="WixUIBannerBmp" Value="..\Assets\WixUIBannerBmp.png" />
+
+    <Media Id="1" Cabinet="Product.cab" EmbedCab="yes" />
+
+    <!-- 
+      Directory structure
+    -->
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="AppDataFolder">
+        <Directory Id="INSTALLFOLDER" Name="TQL">
+          <Directory Id="MyBinFolder" Name="Bin" />
+        </Directory>
+      </Directory>
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="MyProgramMenuFolder" Name="$(var.ProductName)" />
+      </Directory>
+      <Directory Id="StartupFolder" />
+    </Directory>
+
+    <!-- 
+      Shortcuts
+    -->
+
+    <DirectoryRef Id="MyProgramMenuFolder">
+      <Component Id="MyShortcuts" Guid="8dd80f29-afef-4af5-9a16-82919972a228">
+        <Shortcut
+          Id="StartMenuShortcut"
+          Name="$(var.ProductName)"
+          Description="$(var.ProductDescription)"
+          Target="[MyBinFolder]Tql.App.exe"
+          WorkingDirectory="INSTALLFOLDER"
+        />
+        <Shortcut
+          Id="StartMenuUninstallShortcut"
+          Name="Uninstall $(var.ProductName)"
+          Target="[SystemFolder]msiexec.exe"
+          Arguments="/x [ProductCode]"
+          Description="Uninstalls $(var.ProductDescription)"
+        />
+        <RemoveFolder
+          Id="ShortcutsCleanup"
+          Directory="MyProgramMenuFolder"
+          On="uninstall"
+        />
+        <RegistryValue
+          Root="$(var.RegistryRoot)"
+          Key="$(var.RegistryBaseKey)\Installation"
+          Name="Shortcuts"
+          Value="1"
+          Type="integer"
+          KeyPath="yes"
+        />
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="StartupFolder">
+      <Component
+        Id="MyStartupShortcuts"
+        Guid="da8817bc-20f4-4429-8503-41179cdba7ed"
+      >
+        <Shortcut
+          Id="StartupShortcut"
+          Name="$(var.ProductName)"
+          Description="$(var.ProductDescription)"
+          Target="[MyBinFolder]Tql.App.exe"
+          WorkingDirectory="INSTALLFOLDER"
+        />
+        <RemoveFile
+          Id="StartupShortcutCleanup"
+          Name="$(var.ProductName).lnk"
+          Directory="StartupFolder"
+          On="uninstall"
+        />
+        <RegistryValue
+          Root="$(var.RegistryRoot)"
+          Key="$(var.RegistryBaseKey)\Installation"
+          Name="StartupShortcuts"
+          Value="1"
+          Type="integer"
+          KeyPath="yes"
+        />
+      </Component>
+    </DirectoryRef>
+
+    <!-- 
+      Main product.
+    -->
+
+    <ComponentGroup Id="MyProduct" Directory="INSTALLFOLDER">
+      <Component
+        Id="CleanupComponent"
+        Guid="ea575cf4-df5e-4d66-9cd9-9dee225cb33d"
+      >
+        <RemoveFolder
+          Id="InstallationFolderCleanup"
+          Directory="INSTALLFOLDER"
+          On="uninstall"
+        />
+        <RegistryValue
+          Root="$(var.RegistryRoot)"
+          Key="$(var.RegistryBaseKey)"
+          Type="string"
+          Value=""
+          KeyPath="yes"
+        />
+      </Component>
+    </ComponentGroup>
+
+    <Feature Id="MyFeature" Title="$(var.ProductName)" Level="1">
+      <ComponentGroupRef Id="MyProduct" />
+      <ComponentGroupRef Id="MyAppComponents" />
+      <ComponentRef Id="MyShortcuts" />
+      <ComponentRef Id="MyStartupShortcuts" />
+    </Feature>
+
+    <!-- 
+      Default the launch the application. The user may disable this,
+      but it ensures that the app gets re-launched on silent upgrades.
+    -->
+
+    <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOX" Value="1" />
+
+    <!-- 
+      UI
+    -->
+
+    <UI>
+      <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+      <Property
+        Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT"
+        Value="Launch $(var.ProductName)"
+      />
+
+      <UIRef Id="WixUI_InstallDir" />
+      <UIRef Id="WixUI_Common" />
+
+      <DialogRef Id="ProgressDlg" />
+      <DialogRef Id="ExitDialog" />
+    </UI>
+
+    <InstallUISequence>
+      <Show Dialog="ProgressDlg" Before="ExecuteAction" />
+      <Show Dialog="ExitDialog" OnExit="success" />
+    </InstallUISequence>
+
+    <!-- 
+      Upgrade metadata
+    -->
+
+    <MajorUpgrade
+      DowngradeErrorMessage="A later version of $(var.ProductName) is already installed. Setup will now exit."
+    />
+
+    <!--
+      Launching the app
+    -->
+
+    <CustomAction
+      Id="LaunchApplication"
+      Execute="immediate"
+      Impersonate="yes"
+      Return="asyncNoWait"
+      Directory="INSTALLFOLDER"
+      ExeCommand="[MyBinFolder]Tql.App.exe"
+    />
+
+    <InstallExecuteSequence>
+      <Custom Action="LaunchApplication" After="InstallFinalize">
+        WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1
+      </Custom>
+    </InstallExecuteSequence>
+  </Product>
+</Wix>

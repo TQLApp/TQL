@@ -9,6 +9,7 @@ using Tql.App.ConfigurationUI;
 using Tql.App.Search;
 using Tql.App.Services;
 using Tql.App.Services.Database;
+using Tql.App.Services.Updates;
 using Tql.App.Themes;
 using Tql.Plugins.Azure;
 using Tql.Plugins.AzureDevOps;
@@ -46,11 +47,18 @@ public partial class App
 
         var logger = _host.Services.GetRequiredService<ILogger<App>>();
 
+#if !DEBUG
+        logger.LogInformation("Checking for updates");
+
+        if (TryStartUpdate(logger))
+            return;
+#endif
+
+        logger.LogInformation("Initializing plugins");
+
         ((UI)_host.Services.GetRequiredService<IUI>()).SetSynchronizationContext(
             SynchronizationContext.Current
         );
-
-        logger.LogInformation("Initializing plugins");
 
         var pluginManager = (PluginManager)_host.Services.GetRequiredService<IPluginManager>();
 
@@ -63,6 +71,26 @@ public partial class App
 #if DEBUG
         _mainWindow.DoShow();
 #endif
+    }
+
+    private bool TryStartUpdate(ILogger<App> logger)
+    {
+        try
+        {
+            if (_host!.Services.GetRequiredService<UpdateChecker>().TryStartUpdate())
+            {
+                logger.LogInformation("Update is running; shutting down");
+
+                Shutdown();
+                return true;
+            }
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Failed to check for updates");
+        }
+
+        return false;
     }
 
     private void SetMode()
@@ -117,6 +145,7 @@ public partial class App
         builder.AddSingleton<CacheManagerManager>();
         builder.AddSingleton<IClipboard, ClipboardImpl>();
         builder.AddSingleton<HttpClient>();
+        builder.AddSingleton<UpdateChecker>();
 
         builder.AddTransient<MainWindow>();
         builder.AddTransient<ConfigurationWindow>();
