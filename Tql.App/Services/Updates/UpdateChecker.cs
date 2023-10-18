@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Octokit;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.RegularExpressions;
@@ -43,6 +44,16 @@ internal class UpdateChecker : IDisposable
         InitializeRequest(request);
 
         using var response = await _httpClient.SendAsync(request);
+
+        if (response.StatusCode == HttpStatusCode.NotFound)
+        {
+            _logger.LogInformation(
+                "Request for latest release returned not found; build is likely going"
+            );
+            return false;
+        }
+
+        response.EnsureSuccessStatusCode();
 
         var json = await response.Content.ReadAsStringAsync();
 
@@ -127,6 +138,9 @@ internal class UpdateChecker : IDisposable
         InitializeRequest(request);
 
         using var response = await _httpClient.SendAsync(request);
+
+        response.EnsureSuccessStatusCode();
+
         using var source = await response.Content.ReadAsStreamAsync();
         using var target = File.Create(targetFileName);
 
