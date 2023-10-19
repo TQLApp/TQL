@@ -24,6 +24,7 @@
         <Style TargetType="Run">
             <Setter Property="Foreground" Value="White"/>
         </Style>
+        <Style TargetType="ScrollBar" BasedOn="{StaticResource TransparentScrollBar}"/>
     </Window.Resources>
     <Grid>
     
