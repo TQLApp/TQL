@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using System.Windows.Forms;
 using Tql.App.Interop;
+using Tql.App.Services;
 using Application = System.Windows.Application;
 
 namespace Tql.App;
@@ -78,19 +79,8 @@ partial class MainWindow
         if (source == null)
             return;
 
-        var screen = Screen.PrimaryScreen!;
-
-        if (
-            _settings.ShowOnScreen.HasValue
-            && _settings.ShowOnScreen.Value < Screen.AllScreens.Length
-        )
-        {
-            screen = Screen.AllScreens
-                .OrderBy(p => p.Bounds.X)
-                .ThenBy(p => p.Bounds.Y)
-                .Skip(_settings.ShowOnScreen.Value)
-                .First();
-        }
+        var showOnScreen = ShowOnScreenManager.Create(_settings.ShowOnScreen);
+        var screen = showOnScreen.GetScreen();
 
         var scaleX = source.CompositionTarget!.TransformToDevice.M11;
         var scaleY = source.CompositionTarget!.TransformToDevice.M22;

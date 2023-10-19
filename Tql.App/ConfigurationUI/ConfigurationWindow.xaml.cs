@@ -15,12 +15,14 @@ internal partial class ConfigurationWindow
         var factories = ((ConfigurationManager)configurationManager).ConfigurationUIFactories;
 
         foreach (
-            var factory in factories.OrderBy(p => p.Title, StringComparer.CurrentCultureIgnoreCase)
+            var factory in factories
+                .OrderBy(p => p.Order)
+                .ThenBy(p => p.Factory.Title, StringComparer.CurrentCultureIgnoreCase)
         )
         {
-            var ui = (UIElement)factory.CreateControl(serviceProvider);
+            var ui = (UIElement)factory.Factory.CreateControl(serviceProvider);
 
-            _pages.Items.Add(new TreeViewItem { Header = factory.Title, Tag = ui });
+            _pages.Items.Add(new TreeViewItem { Header = factory.Factory.Title, Tag = ui });
         }
 
         if (_pages.Items.Count > 0)

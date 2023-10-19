@@ -53,6 +53,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Compile Update="ConfigurationUI\GeneralConfigurationControl.xaml.cs">
+		  <SubType>Code</SubType>
+		</Compile>
 		<Compile Update="MainWindow.WinForms.xaml.cs">
 			<DependentUpon>MainWindow.xaml</DependentUpon>
 		</Compile>

@@ -9,10 +9,10 @@ internal class Settings
 
     private readonly RegistryKey _key;
 
-    public int? ShowOnScreen
+    public string? ShowOnScreen
     {
-        get => GetInteger(nameof(ShowOnScreen));
-        set => SetInteger(nameof(ShowOnScreen), value);
+        get => GetString(nameof(ShowOnScreen));
+        set => SetString(nameof(ShowOnScreen), value);
     }
 
     public int? HistoryInRootResults
@@ -35,6 +35,25 @@ internal class Settings
         else
             _key.SetValue(name, value);
     }
+
+    private bool? GetBoolean(string name) =>
+        GetInteger(name) switch
+        {
+            null => null,
+            0 => false,
+            _ => true
+        };
+
+    private void SetBoolean(string name, bool? value) =>
+        SetInteger(
+            name,
+            value switch
+            {
+                null => null,
+                true => 1,
+                false => 0
+            }
+        );
 
     private int? GetInteger(string name) => _key.GetValue(name) as int?;
 

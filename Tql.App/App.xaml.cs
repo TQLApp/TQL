@@ -14,6 +14,7 @@ using Tql.App.Themes;
 using Tql.Plugins.Azure;
 using Tql.Plugins.AzureDevOps;
 using Tql.Plugins.GitHub;
+using ConfigurationManager = Tql.App.Services.ConfigurationManager;
 
 namespace Tql.App;
 
@@ -56,6 +57,8 @@ public partial class App
 
         logger.LogInformation("Initializing plugins");
 
+        RegisterConfigurationUIPages();
+
         ((UI)_host.Services.GetRequiredService<IUI>()).SetSynchronizationContext(
             SynchronizationContext.Current
         );
@@ -71,6 +74,17 @@ public partial class App
 #if DEBUG
         _mainWindow.DoShow();
 #endif
+    }
+
+    private void RegisterConfigurationUIPages()
+    {
+        var configurationManager = (ConfigurationManager)
+            _host!.Services.GetRequiredService<IConfigurationManager>();
+
+        configurationManager.RegisterConfigurationUIFactory(
+            new ConfigurationUIFactory<GeneralConfigurationControl>("General"),
+            -1
+        );
     }
 
     private bool TryStartUpdate(ILogger<App> logger)
@@ -150,10 +164,20 @@ public partial class App
         builder.AddTransient<MainWindow>();
         builder.AddTransient<ConfigurationWindow>();
         builder.AddTransient<SearchManager>();
+        builder.AddTransient<GeneralConfigurationControl>();
     }
 
     private void Application_Exit(object sender, ExitEventArgs e)
     {
         _host?.Dispose();
+    }
+
+    private record ConfigurationUIFactory<T>(string Title) : IConfigurationUIFactory
+        where T : IConfigurationUI
+    {
+        public IConfigurationUI CreateControl(IServiceProvider serviceProvider)
+        {
+            return serviceProvider.GetRequiredService<T>();
+        }
     }
 }

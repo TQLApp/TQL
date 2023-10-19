@@ -10,9 +10,9 @@ internal class ConfigurationManager : IConfigurationManager
     private readonly IStore _store;
     private readonly object _syncRoot = new();
     private readonly Dictionary<Guid, string> _configuration = new();
-    private readonly List<IConfigurationUIFactory> _configurationUIFactories = new();
+    private readonly List<ConfigurationUIFactory> _configurationUIFactories = new();
 
-    public ImmutableArray<IConfigurationUIFactory> ConfigurationUIFactories
+    public ImmutableArray<ConfigurationUIFactory> ConfigurationUIFactories
     {
         get
         {
@@ -71,9 +71,14 @@ internal class ConfigurationManager : IConfigurationManager
 
     public void RegisterConfigurationUIFactory(IConfigurationUIFactory factory)
     {
+        RegisterConfigurationUIFactory(factory, 0);
+    }
+
+    public void RegisterConfigurationUIFactory(IConfigurationUIFactory factory, int order)
+    {
         lock (_syncRoot)
         {
-            _configurationUIFactories.Add(factory);
+            _configurationUIFactories.Add(new ConfigurationUIFactory(factory, order));
         }
     }
 
@@ -113,3 +118,5 @@ internal class ConfigurationManager : IConfigurationManager
     protected virtual void OnConfigurationChanged(ConfigurationChangedEventArgs e) =>
         ConfigurationChanged?.Invoke(this, e);
 }
+
+internal record ConfigurationUIFactory(IConfigurationUIFactory Factory, int Order);

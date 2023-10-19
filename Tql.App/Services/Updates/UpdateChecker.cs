@@ -1,11 +1,9 @@
 ﻿using System.Diagnostics;
 using Microsoft.Extensions.Logging;
-using Octokit;
 using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text.RegularExpressions;
 using Tql.Abstractions;
 using Tql.App.Support;
 using Path = System.IO.Path;

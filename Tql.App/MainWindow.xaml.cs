@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System.Runtime.Serialization;
 using Tql.Abstractions;
 using Tql.App.Interop;
 using Tql.App.Search;
