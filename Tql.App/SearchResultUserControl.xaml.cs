@@ -72,18 +72,32 @@ internal partial class SearchResultUserControl
         if (IsListBoxItemSelectedOrMouseOver)
         {
             if (searchResult.Match is IRunnableMatch)
-                AddIcon(Images.Run, "Match can be launched");
+            {
+                AddIcon(
+                    Images.Run,
+                    "Match can be launched",
+                    "This match is for something you can launch. Click on it, or press Enter to launch the match."
+                );
+            }
             if (searchResult.Match is ICopyableMatch)
-                AddIcon(Images.Copy, "Copy a link to the match to the clipboard")
+            {
+                AddIcon(Images.Copy, content: "Copy a link to the match to the clipboard.")
                     .AttachOnClickHandler(OnCopyClicked);
+            }
             if (searchResult.Match is ISearchableMatch)
-                AddIcon(Images.Category, "Match contains sub items");
+            {
+                AddIcon(
+                    Images.Category,
+                    "Match contains sub items",
+                    "This match is a category and can it self be searched. Press Tab to enter the category to search in it."
+                );
+            }
         }
 
         if (searchResult.HistoryId.HasValue)
         {
             var star = AddIcon(Images.Star);
-            var dismiss = AddIcon(Images.Dismiss, "Remove match from the history");
+            var dismiss = AddIcon(Images.Dismiss, content: "Remove match from the history");
 
             star.MouseEnter += (_, _) =>
             {
@@ -104,27 +118,18 @@ internal partial class SearchResultUserControl
         _separator.Visibility =
             _iconsPanel.Children.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
 
-        Image AddIcon(DrawingImage icon, string? toolTip = null)
+        Image AddIcon(DrawingImage icon, string? header = null, string? content = null)
         {
-            ToolTip? toolTipControl = null;
-            if (toolTip != null)
-            {
-                toolTipControl = new ToolTip
-                {
-                    FontSize = SystemFonts.MessageFontSize,
-                    Content = toolTip
-                };
-            }
-
             var image = new Image
             {
                 Source = icon,
                 Width = 14,
                 Height = 14,
                 Margin = new Thickness(6, 0, 0, 0),
-                VerticalAlignment = VerticalAlignment.Center,
-                ToolTip = toolTipControl
+                VerticalAlignment = VerticalAlignment.Center
             };
+
+            image.SetPopoverToolTip(header, content);
 
             _iconsPanel.Children.Add(image);
 

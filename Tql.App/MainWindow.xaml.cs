@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System.Runtime.Serialization;
 using Tql.Abstractions;
 using Tql.App.Interop;
 using Tql.App.Search;
@@ -63,12 +64,27 @@ internal partial class MainWindow
         _categoryImage.Source = Images.Category;
 
         _clearImage.Source = Images.Backspace;
-        _clearImage.AttachOnClickHandler(() => _search.Text = null);
+        _clearImage.AttachOnClickHandler(DoShow);
+
+        _feedbackImage.Source = Images.CommentNote;
+        _feedbackImage.AttachOnClickHandler(OpenHelp);
+        _feedbackImage.SetPopoverToolTip(
+            "Leave feedback for the developers",
+            "Leave ideas, features suggestions or bug reports for the developers."
+        );
 
         _helpImage.Source = Images.Help;
         _helpImage.AttachOnClickHandler(OpenHelp);
+        _helpImage.SetPopoverToolTip("Help & documentation");
+
         _settingsImage.Source = Images.Settings;
         _settingsImage.AttachOnClickHandler(OpenSettings);
+        _settingsImage.SetPopoverToolTip("Settings");
+
+        _spinner.SetPopoverToolTip(
+            "Cache is being updated",
+            "The cache of one or more plugins is being updated."
+        );
 
         if (!double.IsNaN(_listBoxRowHeight))
             RecalculateListBoxHeight();
@@ -160,6 +176,8 @@ internal partial class MainWindow
 
         _ui.SetMainWindow(this);
 
+        UpdateClearVisibility();
+
         // Force recalculation of the height of the window.
 
         UpdateLayout();
@@ -216,7 +234,12 @@ internal partial class MainWindow
         _pendingEnter = false;
     }
 
-    private void _searchManager_StackChanged(object sender, EventArgs e) => RenderStack();
+    private void _searchManager_StackChanged(object sender, EventArgs e)
+    {
+        RenderStack();
+
+        UpdateClearVisibility();
+    }
 
     private void RenderStack()
     {
@@ -273,7 +296,16 @@ internal partial class MainWindow
     {
         _pendingEnter = false;
         _searchManager?.SearchChanged(_search.Text);
-        _clearImage.Visibility = _search.Text.IsEmpty() ? Visibility.Collapsed : Visibility.Visible;
+
+        UpdateClearVisibility();
+    }
+
+    private void UpdateClearVisibility()
+    {
+        _clearImage.Visibility =
+            _search.Text.IsEmpty() && _searchManager?.Stack.Length == 0
+                ? Visibility.Collapsed
+                : Visibility.Visible;
     }
 
     private void _search_PreviewKeyDown(object sender, KeyEventArgs e) =>

@@ -89,8 +89,7 @@
                                                 Width="20"
                                                 Height="20"
                                                 Margin="0,0,20,0"
-                                                Visibility="Collapsed"
-                                                ToolTip="Cache is being updated..." />
+                                                Visibility="Collapsed" />
                 </StackPanel>
             </Grid>
 
@@ -209,6 +208,7 @@
                     </StackPanel>
 
                     <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        <Image x:Name="_feedbackImage" Height="16" Width="16" Margin="12,0,0,0" />
                         <Image x:Name="_settingsImage" Height="16" Width="16" Margin="12,0,0,0" />
                         <Image x:Name="_helpImage" Height="16" Width="16" Margin="12,0,0,0" />
                     </StackPanel>
