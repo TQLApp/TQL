@@ -59,8 +59,11 @@ internal partial class MainWindow
 
         InitializeComponent();
 
-        _runImage.Source = SearchResultUserControl.RunImage;
-        _categoryImage.Source = SearchResultUserControl.CategoryImage;
+        _runImage.Source = Images.Run;
+        _categoryImage.Source = Images.Category;
+
+        _clear.Source = Images.Backspace;
+        _clear.AttachOnClickHandler((_, _) => _search.Text = null);
 
         if (!double.IsNaN(_listBoxRowHeight))
             RecalculateListBoxHeight();
@@ -260,6 +263,7 @@ internal partial class MainWindow
     {
         _pendingEnter = false;
         _searchManager?.SearchChanged(_search.Text);
+        _clear.Visibility = _search.Text.IsEmpty() ? Visibility.Collapsed : Visibility.Visible;
     }
 
     private void _search_PreviewKeyDown(object sender, KeyEventArgs e) =>

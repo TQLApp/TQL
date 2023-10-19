@@ -1,28 +1,12 @@
 ﻿using Tql.Abstractions;
 using Tql.App.Search;
 using Tql.App.Support;
-using Tql.Utilities;
 using Image = System.Windows.Controls.Image;
 
 namespace Tql.App;
 
 internal partial class SearchResultUserControl
 {
-    private static DrawingImage LoadImage(string resourceName)
-    {
-        using var stream = Application
-            .GetResourceStream(new Uri($"/Resources/{resourceName}", UriKind.Relative))!
-            .Stream;
-
-        return ImageFactory.CreateSvgImage(stream!);
-    }
-
-    public static readonly DrawingImage RunImage = LoadImage("Person Running.svg");
-    public static readonly DrawingImage StarImage = LoadImage("Star.svg");
-    public static readonly DrawingImage DismissImage = LoadImage("Dismiss.svg");
-    public static readonly DrawingImage CategoryImage = LoadImage("Apps List.svg");
-    public static readonly DrawingImage CopyImage = LoadImage("Copy.svg");
-
     private ListBoxItem? _listBoxItem;
 
     private new SearchResult? DataContext => (SearchResult?)base.DataContext;
@@ -88,18 +72,18 @@ internal partial class SearchResultUserControl
         if (IsListBoxItemSelectedOrMouseOver)
         {
             if (searchResult.Match is IRunnableMatch)
-                AddIcon(RunImage, "Match can be launched");
+                AddIcon(Images.Run, "Match can be launched");
             if (searchResult.Match is ICopyableMatch)
-                AddIcon(CopyImage, "Copy a link to the match to the clipboard")
+                AddIcon(Images.Copy, "Copy a link to the match to the clipboard")
                     .AttachOnClickHandler((_, _) => OnCopyClicked());
             if (searchResult.Match is ISearchableMatch)
-                AddIcon(CategoryImage, "Match contains sub items");
+                AddIcon(Images.Category, "Match contains sub items");
         }
 
         if (searchResult.HistoryId.HasValue)
         {
-            var star = AddIcon(StarImage);
-            var dismiss = AddIcon(DismissImage, "Remove match from the history");
+            var star = AddIcon(Images.Star);
+            var dismiss = AddIcon(Images.Dismiss, "Remove match from the history");
 
             star.MouseEnter += (_, _) =>
             {

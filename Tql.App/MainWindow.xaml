@@ -36,7 +36,6 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
                 <Border x:Name="_stack"
@@ -71,20 +70,28 @@
                     </TextBox.CaretBrush>
                 </TextBox>
 
-                <support:DancingDotsUserControl x:Name="_dancingDots"
-                                                Grid.Column="2"
-                                                VerticalAlignment="Center"
-                                                Margin="0,4,20,0"
-                                                Visibility="Collapsed"
-                                                ToolTip="Searching..." />
+                <StackPanel Orientation="Horizontal"
+                            Grid.Column="2">
+                    <Image x:Name="_clear"
+                           Height="16"
+                           Width="16"
+                           Margin="0,0,20,0"
+                           VerticalAlignment="Center"
+                           Visibility="Collapsed" />
 
-                <support:SpinnerUserControl x:Name="_spinner"
-                                            Grid.Column="3"
-                                            Width="20"
-                                            Height="20"
-                                            Margin="0,0,20,0"
-                                            Visibility="Collapsed"
-                                            ToolTip="Cache is being updated..." />
+                    <support:DancingDotsUserControl x:Name="_dancingDots"
+                                                    VerticalAlignment="Center"
+                                                    Margin="0,4,20,0"
+                                                    Visibility="Collapsed"
+                                                    ToolTip="Searching..." />
+
+                    <support:SpinnerUserControl x:Name="_spinner"
+                                                Width="20"
+                                                Height="20"
+                                                Margin="0,0,20,0"
+                                                Visibility="Collapsed"
+                                                ToolTip="Cache is being updated..." />
+                </StackPanel>
             </Grid>
 
             <Border x:Name="_resultsContainer" BorderBrush="#60ffffff" BorderThickness="0,0.5,0,0">
