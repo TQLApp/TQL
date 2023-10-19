@@ -9,6 +9,7 @@ internal class Settings : INotifyPropertyChanged
 {
     public const int DefaultHistoryInRootResults = 90;
     public const int DefaultCacheUpdateInterval = 30;
+    public const int DefaultMainFontSize = 15;
 
     private readonly RegistryKey _key;
 
@@ -28,6 +29,12 @@ internal class Settings : INotifyPropertyChanged
     {
         get => GetInteger(nameof(CacheUpdateInterval));
         set => SetInteger(nameof(CacheUpdateInterval), value);
+    }
+
+    public int? MainFontSize
+    {
+        get => GetInteger(nameof(MainFontSize));
+        set => SetInteger(nameof(MainFontSize), value);
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;

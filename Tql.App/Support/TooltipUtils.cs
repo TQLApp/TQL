@@ -3,7 +3,7 @@ using Tql.App.Themes.Attached;
 
 namespace Tql.App.Support;
 
-internal static class TooltipUtil
+internal static class TooltipUtils
 {
     public static void SetPopoverToolTip(this FrameworkElement self, string? content)
     {

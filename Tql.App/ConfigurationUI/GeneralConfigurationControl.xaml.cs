@@ -27,6 +27,9 @@ internal partial class GeneralConfigurationControl : IConfigurationUI
 
         _cacheUpdateInterval.ConfigureAsNumericOnly(NumberStyles.None, false);
         _cacheUpdateInterval.Text = settings.CacheUpdateInterval?.ToString();
+
+        _mainFontSize.ConfigureAsNumericOnly(NumberStyles.None, false);
+        _mainFontSize.Text = settings.MainFontSize?.ToString();
     }
 
     public SaveStatus Save()
@@ -35,6 +38,8 @@ internal partial class GeneralConfigurationControl : IConfigurationUI
             _settings.HistoryInRootResults = historyInRootResults;
         if (int.TryParse(_cacheUpdateInterval.Text, out int cacheUpdateInterval))
             _settings.CacheUpdateInterval = cacheUpdateInterval;
+        if (int.TryParse(_mainFontSize.Text, out int mainFontSize))
+            _settings.MainFontSize = mainFontSize;
 
         _showOnScreenManager.SetScreenIndex(_showOnScreen.SelectedIndex);
 

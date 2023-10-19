@@ -54,7 +54,6 @@
 
                 <TextBox x:Name="_search"
                          Style="{StaticResource HintedTextBox}"
-                         FontSize="15pt"
                          Margin="6,14,14,14"
                          Foreground="White"
                          Background="Transparent"
@@ -97,7 +96,6 @@
             
                 <ListBox x:Name="_results"
                          SelectionMode="Single"
-                         FontSize="15pt"
                          Background="Transparent"
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                          BorderThickness="0"

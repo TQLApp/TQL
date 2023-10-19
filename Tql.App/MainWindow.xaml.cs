@@ -91,6 +91,20 @@ internal partial class MainWindow
         SetupShortcut();
 
         _notifyIcon = SetupNotifyIcon();
+
+        ResetFontSize();
+
+        settings.AttachPropertyChanged(nameof(settings.MainFontSize), (_, _) => ResetFontSize());
+    }
+
+    private void ResetFontSize()
+    {
+        var fontSize = _settings.MainFontSize ?? Settings.DefaultMainFontSize;
+
+        _listBoxRowHeight = double.NaN;
+
+        _search.FontSize = WpfUtils.PointsToPixels(fontSize);
+        _results.FontSize = WpfUtils.PointsToPixels(fontSize);
     }
 
     private void OpenSettings()
