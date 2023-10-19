@@ -47,6 +47,7 @@ internal partial class MainWindow
         CacheManagerManager cacheManagerManager,
         IUI ui
     )
+        : base(settings)
     {
         _settings = settings;
         _serviceProvider = serviceProvider;

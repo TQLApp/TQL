@@ -30,6 +30,10 @@ internal partial class GeneralConfigurationControl : IConfigurationUI
 
         _mainFontSize.ConfigureAsNumericOnly(NumberStyles.None, false);
         _mainFontSize.Text = settings.MainFontSize?.ToString();
+
+        _mainWindowTint.SelectedColor = BlurWindow.ParseMainWindowTint(
+            settings.MainWindowTint ?? Settings.DefaultMainWindowTint
+        );
     }
 
     public SaveStatus Save()
@@ -45,6 +49,22 @@ internal partial class GeneralConfigurationControl : IConfigurationUI
 
         _settings.ShowOnScreen = _showOnScreenManager.ToString();
 
+        var mainWindowTint = _mainWindowTint.SelectedColor.HasValue
+            ? BlurWindow.PrintMainWindowTint(_mainWindowTint.SelectedColor.Value)
+            : null;
+
+        if (mainWindowTint == Settings.DefaultMainWindowTint)
+            mainWindowTint = null;
+
+        _settings.MainWindowTint = mainWindowTint;
+
         return SaveStatus.Success;
+    }
+
+    private void _mainWindowTintReset_Click(object sender, RoutedEventArgs e)
+    {
+        _mainWindowTint.SelectedColor = BlurWindow.ParseMainWindowTint(
+            Settings.DefaultMainWindowTint
+        );
     }
 }

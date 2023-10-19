@@ -60,6 +60,11 @@
         "resolved": "2.1.4",
         "contentHash": "TnTa28ktP/drRXnnXChHANq2WoF8af9DLu3VBtyPn3RYjxwDzuYhGrSvAN2CrmE+RyNaN1v81kf6rYbp0a4UaQ=="
       },
+      "Extended.Wpf.Toolkit": {
+        "type": "Transitive",
+        "resolved": "4.5.1",
+        "contentHash": "Z0AL4oOORLZsKUediAaXOVt+nQI8owUcv05RDuoup0JaS96cqN/2zeIVr2TLX5oDK6VOrm1NkJKV1zrQCj3Deg=="
+      },
       "JetBrains.Annotations": {
         "type": "Transitive",
         "resolved": "2023.2.0",
@@ -966,6 +971,7 @@
         "type": "Project",
         "dependencies": {
           "Dapper": "[2.1.4, )",
+          "Extended.Wpf.Toolkit": "[4.5.1, )",
           "Markdig": "[0.33.0, )",
           "Microsoft.Extensions.Hosting": "[7.0.1, )",
           "Microsoft.Extensions.Logging": "[7.0.0, )",

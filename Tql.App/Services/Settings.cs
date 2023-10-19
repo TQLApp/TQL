@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using System.CodeDom;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Tql.Abstractions;
@@ -10,6 +11,7 @@ internal class Settings : INotifyPropertyChanged
     public const int DefaultHistoryInRootResults = 90;
     public const int DefaultCacheUpdateInterval = 30;
     public const int DefaultMainFontSize = 15;
+    public const string DefaultMainWindowTint = "#40000000";
 
     private readonly RegistryKey _key;
 
@@ -35,6 +37,12 @@ internal class Settings : INotifyPropertyChanged
     {
         get => GetInteger(nameof(MainFontSize));
         set => SetInteger(nameof(MainFontSize), value);
+    }
+
+    public string? MainWindowTint
+    {
+        get => GetString(nameof(MainWindowTint));
+        set => SetString(nameof(MainWindowTint), value);
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
