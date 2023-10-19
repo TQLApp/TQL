@@ -20,7 +20,6 @@ internal class AzureCacheManager : ICacheManager<AzureData>
     private readonly AzureDevOpsApi _api;
     private readonly HttpClient _httpClient;
 
-    public TimeSpan Expiration => TimeSpan.FromHours(0.5);
     public int Version => 1;
 
     public AzureCacheManager(

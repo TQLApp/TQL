@@ -1,11 +1,14 @@
 ﻿using Microsoft.Win32;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using Tql.Abstractions;
 
 namespace Tql.App.Services;
 
-internal class Settings
+internal class Settings : INotifyPropertyChanged
 {
     public const int DefaultHistoryInRootResults = 90;
+    public const int DefaultCacheUpdateInterval = 30;
 
     private readonly RegistryKey _key;
 
@@ -21,6 +24,14 @@ internal class Settings
         set => SetInteger(nameof(HistoryInRootResults), value);
     }
 
+    public int? CacheUpdateInterval
+    {
+        get => GetInteger(nameof(CacheUpdateInterval));
+        set => SetInteger(nameof(CacheUpdateInterval), value);
+    }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
     public Settings(IStore store)
     {
         _key = store.CreateBaseKey();
@@ -34,6 +45,8 @@ internal class Settings
             _key.DeleteValue(name);
         else
             _key.SetValue(name, value);
+
+        RaisePropertyChanged(name);
     }
 
     private bool? GetBoolean(string name) =>
@@ -63,5 +76,12 @@ internal class Settings
             _key.DeleteValue(name);
         else
             _key.SetValue(name, value);
+
+        RaisePropertyChanged(name);
+    }
+
+    private void RaisePropertyChanged([CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

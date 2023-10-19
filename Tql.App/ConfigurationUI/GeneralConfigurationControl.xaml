@@ -25,9 +25,9 @@
             <Label Content="History in root results:"/>
             <TextBox x:Name="_historyInRootResults"
                      Margin="3"
-                     VerticalAlignment="Center"
                      Grid.Column="1" />
             <TextBlock Margin="3"
+                       TextWrapping="Wrap"
                        Grid.Column="1"
                        Grid.Row="1">
                 Determines the number of days of history that's loaded into the root results.
@@ -39,6 +39,32 @@
                       Margin="3"
                       Grid.Row="2"
                       Grid.Column="1"/>
+
+            <Label Content="Cache update interval:"
+                   Grid.Row="3"/>
+            <Grid
+                Grid.Column="1"
+                Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <TextBox x:Name="_cacheUpdateInterval"
+                         Margin="3"/>
+                <TextBlock Grid.Column="1"
+                           Margin="3">
+                    minutes
+                </TextBlock>
+            </Grid>
+            <TextBlock Margin="3"
+                       TextWrapping="Wrap"
+                       Grid.Column="1"
+                       Grid.Row="4">
+                Determines how often the cache is updated. Some plugins will cache
+                data for performance. This setting will set the number of minutes
+                after which the cache will be updated.
+            </TextBlock>
         </Grid>
     </GroupBox>
 </UserControl>

@@ -24,12 +24,17 @@ internal partial class GeneralConfigurationControl : IConfigurationUI
 
         _historyInRootResults.ConfigureAsNumericOnly(NumberStyles.None, false);
         _historyInRootResults.Text = settings.HistoryInRootResults?.ToString();
+
+        _cacheUpdateInterval.ConfigureAsNumericOnly(NumberStyles.None, false);
+        _cacheUpdateInterval.Text = settings.CacheUpdateInterval?.ToString();
     }
 
     public SaveStatus Save()
     {
         if (int.TryParse(_historyInRootResults.Text, out int historyInRootResults))
             _settings.HistoryInRootResults = historyInRootResults;
+        if (int.TryParse(_cacheUpdateInterval.Text, out int cacheUpdateInterval))
+            _settings.CacheUpdateInterval = cacheUpdateInterval;
 
         _showOnScreenManager.SetScreenIndex(_showOnScreen.SelectedIndex);
 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Tql.Abstractions;
 using Tql.App.Services.Database;
+using Tql.App.Support;
 
 namespace Tql.App.Services;
 
@@ -14,6 +15,7 @@ internal class Cache<T> : ICache<T>
     private DateTime _updated;
     private readonly object _syncRoot = new();
     private bool _creating;
+    private TimeSpan _expiration;
 
     public bool IsAvailable => _tcs.Task.IsCompleted;
 
@@ -23,7 +25,8 @@ internal class Cache<T> : ICache<T>
         ILogger<Cache<T>> logger,
         ICacheManager<T> cacheManager,
         IDb db,
-        CacheManagerManager cacheManagerManager
+        CacheManagerManager cacheManagerManager,
+        Settings settings
     )
     {
         _logger = logger;
@@ -31,12 +34,26 @@ internal class Cache<T> : ICache<T>
         _db = db;
         _cacheManagerManager = cacheManagerManager;
 
+        _expiration = GetExpiration();
+
+        settings.AttachPropertyChanged(
+            nameof(settings.CacheUpdateInterval),
+            (_, _) => _expiration = GetExpiration()
+        );
+
         cacheManagerManager.Register(this);
 
         LoadFromDb();
 
         if (!IsAvailable)
             Create(true);
+
+        TimeSpan GetExpiration()
+        {
+            return TimeSpan.FromMinutes(
+                settings.CacheUpdateInterval ?? Settings.DefaultCacheUpdateInterval
+            );
+        }
     }
 
     private void LoadFromDb()
@@ -156,7 +173,7 @@ internal class Cache<T> : ICache<T>
         lock (_syncRoot)
         {
             // Recreate the cache if it's out of date.
-            if (!_creating && IsAvailable && _updated < DateTime.UtcNow - _cacheManager.Expiration)
+            if (!_creating && IsAvailable && _updated < DateTime.UtcNow - _expiration)
                 Invalidate();
 
             return _tcs.Task;
