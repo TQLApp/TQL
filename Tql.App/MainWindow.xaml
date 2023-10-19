@@ -73,7 +73,8 @@
 
                 <support:DancingDotsUserControl x:Name="_dancingDots"
                                                 Grid.Column="2"
-                                                Margin="0,0,20,19"
+                                                VerticalAlignment="Center"
+                                                Margin="0,4,20,0"
                                                 Visibility="Collapsed"
                                                 ToolTip="Searching..." />
 
