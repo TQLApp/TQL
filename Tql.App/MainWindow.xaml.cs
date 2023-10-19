@@ -62,8 +62,13 @@ internal partial class MainWindow
         _runImage.Source = Images.Run;
         _categoryImage.Source = Images.Category;
 
-        _clear.Source = Images.Backspace;
-        _clear.AttachOnClickHandler((_, _) => _search.Text = null);
+        _clearImage.Source = Images.Backspace;
+        _clearImage.AttachOnClickHandler(() => _search.Text = null);
+
+        _helpImage.Source = Images.Help;
+        _helpImage.AttachOnClickHandler(OpenHelp);
+        _settingsImage.Source = Images.Settings;
+        _settingsImage.AttachOnClickHandler(OpenSettings);
 
         if (!double.IsNaN(_listBoxRowHeight))
             RecalculateListBoxHeight();
@@ -78,6 +83,11 @@ internal partial class MainWindow
         var window = _serviceProvider.GetRequiredService<ConfigurationUI.ConfigurationWindow>();
         window.Owner = this;
         window.ShowDialog();
+    }
+
+    private void OpenHelp()
+    {
+        _ui.OpenUrl(Constants.HelpUrl);
     }
 
     private void CacheManagerManager_LoadingChanged(object sender, EventArgs e)
@@ -263,7 +273,7 @@ internal partial class MainWindow
     {
         _pendingEnter = false;
         _searchManager?.SearchChanged(_search.Text);
-        _clear.Visibility = _search.Text.IsEmpty() ? Visibility.Collapsed : Visibility.Visible;
+        _clearImage.Visibility = _search.Text.IsEmpty() ? Visibility.Collapsed : Visibility.Visible;
     }
 
     private void _search_PreviewKeyDown(object sender, KeyEventArgs e) =>

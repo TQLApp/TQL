@@ -72,7 +72,7 @@
 
                 <StackPanel Orientation="Horizontal"
                             Grid.Column="2">
-                    <Image x:Name="_clear"
+                    <Image x:Name="_clearImage"
                            Height="16"
                            Width="16"
                            Margin="0,0,20,0"
@@ -159,8 +159,12 @@
             </Border>
 
             <Border BorderBrush="#60ffffff" BorderThickness="0,0.5,0,0" Padding="20,8,20,10" Background="#10ffffff">
-                <StackPanel Orientation="Horizontal">
-                    <StackPanel.Resources>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.Resources>
                         <Style TargetType="TextBlock">
                             <Setter Property="FontSize" Value="10pt"/>
                             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -177,31 +181,38 @@
                             <Setter Property="Padding" Value="6,0,6,1" />
                             <Setter Property="Margin" Value="0,2,0,0" />
                         </Style>
-                    </StackPanel.Resources>
+                    </Grid.Resources>
+                    
+                    <StackPanel Orientation="Horizontal">
+                        <Border Style="{StaticResource ButtonBorder}">
+                            <TextBlock>Alt</TextBlock>
+                        </Border>
+                        <Border Style="{StaticResource ButtonBorder}">
+                            <TextBlock>Back</TextBlock>
+                        </Border>
+                        <TextBlock Margin="8,0,20,0">Open TQL</TextBlock>
                 
-                    <Border Style="{StaticResource ButtonBorder}">
-                        <TextBlock>Alt</TextBlock>
-                    </Border>
-                    <Border Style="{StaticResource ButtonBorder}">
-                        <TextBlock>Back</TextBlock>
-                    </Border>
-                    <TextBlock Margin="8,0,20,0">Open TQL</TextBlock>
+                        <Border Style="{StaticResource ButtonBorder}">
+                            <TextBlock>Enter</TextBlock>
+                        </Border>
+                        <TextBlock Margin="8,0,4,0">Launch</TextBlock>
+                        <Image x:Name="_runImage" Height="15" Width="15" />
+                        <TextBlock Margin="4,0,20,0">matches</TextBlock>
                 
-                    <Border Style="{StaticResource ButtonBorder}">
-                        <TextBlock>Enter</TextBlock>
-                    </Border>
-                    <TextBlock Margin="8,0,4,0">Launch</TextBlock>
-                    <Image x:Name="_runImage" Height="15" Width="15" />
-                    <TextBlock Margin="4,0,20,0">matches</TextBlock>
-                
-                    <Border Style="{StaticResource ButtonBorder}">
-                        <TextBlock>Tab</TextBlock>
-                    </Border>
-                    <TextBlock Margin="8,0,6,0">Open</TextBlock>
-                    <Image x:Name="_categoryImage" Height="15" Width="15" />
-                    <TextBlock Margin="4,0,20,0">matches</TextBlock>
+                        <Border Style="{StaticResource ButtonBorder}">
+                            <TextBlock>Tab</TextBlock>
+                        </Border>
+                        <TextBlock Margin="8,0,6,0">Open</TextBlock>
+                        <Image x:Name="_categoryImage" Height="15" Width="15" />
+                        <TextBlock Margin="4,0,20,0">matches</TextBlock>
 
-                </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        <Image x:Name="_settingsImage" Height="16" Width="16" Margin="12,0,0,0" />
+                        <Image x:Name="_helpImage" Height="16" Width="16" Margin="12,0,0,0" />
+                    </StackPanel>
+                </Grid>
             </Border>
         
         </StackPanel>

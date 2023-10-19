@@ -19,7 +19,7 @@ partial class MainWindow
 
         notifyIcon.ContextMenu = new System.Windows.Forms.ContextMenu();
 
-        notifyIcon.ContextMenu.MenuItems.Add("Search\tAlt+Back", (_, _) => DoShow());
+        notifyIcon.ContextMenu.MenuItems.Add("&Search\tAlt+Back", (_, _) => DoShow());
         notifyIcon.ContextMenu.MenuItems.Add("-");
 #if DEBUG
         notifyIcon.ContextMenu.MenuItems.Add(
@@ -27,9 +27,11 @@ partial class MainWindow
             (_, _) => InvalidateAllCaches()
         );
 #endif
-        notifyIcon.ContextMenu.MenuItems.Add("Settings", (_, _) => OpenSettings());
+        notifyIcon.ContextMenu.MenuItems.Add("S&ettings", (_, _) => OpenSettings());
         notifyIcon.ContextMenu.MenuItems.Add("-");
-        notifyIcon.ContextMenu.MenuItems.Add("Exit", (_, _) => Close());
+        notifyIcon.ContextMenu.MenuItems.Add("&Help", (_, _) => OpenHelp());
+        notifyIcon.ContextMenu.MenuItems.Add("-");
+        notifyIcon.ContextMenu.MenuItems.Add("E&xit", (_, _) => Close());
 
         notifyIcon.Click += (_, e) =>
         {

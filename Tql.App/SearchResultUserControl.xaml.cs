@@ -75,7 +75,7 @@ internal partial class SearchResultUserControl
                 AddIcon(Images.Run, "Match can be launched");
             if (searchResult.Match is ICopyableMatch)
                 AddIcon(Images.Copy, "Copy a link to the match to the clipboard")
-                    .AttachOnClickHandler((_, _) => OnCopyClicked());
+                    .AttachOnClickHandler(OnCopyClicked);
             if (searchResult.Match is ISearchableMatch)
                 AddIcon(Images.Category, "Match contains sub items");
         }
@@ -98,7 +98,7 @@ internal partial class SearchResultUserControl
             };
 
             dismiss.Visibility = Visibility.Collapsed;
-            dismiss.AttachOnClickHandler((_, _) => OnRemoveHistoryClicked());
+            dismiss.AttachOnClickHandler(OnRemoveHistoryClicked);
         }
 
         _separator.Visibility =

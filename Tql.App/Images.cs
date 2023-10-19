@@ -19,4 +19,6 @@ internal static class Images
     public static readonly DrawingImage Category = LoadImage("Apps List.svg");
     public static readonly DrawingImage Copy = LoadImage("Copy.svg");
     public static readonly DrawingImage Backspace = LoadImage("Backspace.svg");
+    public static readonly DrawingImage Help = LoadImage("Help.svg");
+    public static readonly DrawingImage Settings = LoadImage("Settings.svg");
 }

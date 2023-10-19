@@ -2,6 +2,11 @@
 
 internal static class FrameworkElementUtils
 {
+    public static void AttachOnClickHandler(this FrameworkElement self, Action action)
+    {
+        self.AttachOnClickHandler((_, _) => action());
+    }
+
     public static void AttachOnClickHandler(
         this FrameworkElement self,
         Action<object, MouseButtonEventArgs> action
