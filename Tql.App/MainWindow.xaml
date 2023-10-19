@@ -12,6 +12,7 @@
                     Width="800"
                     SizeToContent="Height"
                     ShowInTaskbar="False"
+                    Foreground="White"
                     Background="Transparent"
                     Closed="Window_Closed"
                     PreviewKeyDown="Window_PreviewKeyDown"

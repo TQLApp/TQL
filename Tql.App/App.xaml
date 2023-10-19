@@ -37,9 +37,9 @@
             </Style>
 
             <Style x:Key="PopoverToolTip" TargetType="ToolTip">
-                <Setter Property="Background" Value="Black"/>
+                <Setter Property="Background" Value="#333333"/>
                 <Setter Property="BorderBrush" Value="#404040"/>
-                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="Foreground" Value="#f0f0f0"/>
                 <Setter Property="MaxWidth" Value="300"/>
                 <Setter Property="OverridesDefaultStyle" Value="true"/>
                 <Setter Property="HasDropShadow" Value="True"/>
@@ -60,10 +60,10 @@
                                             <DrawingImage.Drawing>
                                                 <DrawingGroup>
                                                     <DrawingGroup.Children>
-                                                        <GeometryDrawing Geometry="M 1,0 L 2,1 L 0,1 Z">
-                                                            <GeometryDrawing.Brush>
-                                                                <SolidColorBrush Color="Black" />
-                                                            </GeometryDrawing.Brush>
+                                                        <GeometryDrawing Geometry="M 1,0 L 2,1 L 0,1 Z" Brush="#333333">
+                                                            <GeometryDrawing.Pen>
+                                                                <Pen Brush="#404040" Thickness="0.1"/>
+                                                            </GeometryDrawing.Pen>
                                                         </GeometryDrawing>
                                                     </DrawingGroup.Children>
                                                 </DrawingGroup>
@@ -82,20 +82,20 @@
                                             <TextBlock
                                                 Text="{TemplateBinding ap:ToolTipHeaderHelper.Value}"
                                                 FontWeight="Bold"
+                                                Foreground="#f0f0f0"
                                                 Margin="14,7" />
                                         </Border>
-                                        
+
                                         <ContentPresenter Margin="14,7" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="1">
                                             <ContentPresenter.Resources>
-                                                <Style TargetType="{x:Type TextBlock}">
+                                                <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
                                                     <Setter Property="TextWrapping" Value="Wrap"/>
                                                     <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
                                                     <Setter Property="TextAlignment" Value="Left"/>
-                                                    <Setter Property="Foreground" Value="{DynamicResource ABrush.Foreground.Static}"/>
+                                                    <Setter Property="Foreground" Value="#f0f0f0"/>
                                                 </Style>
                                             </ContentPresenter.Resources>
                                         </ContentPresenter>
-
                                     </Grid>
                                 </Border>
                             </Grid>

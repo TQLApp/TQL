@@ -1,16 +1,16 @@
 ﻿using System.Net.Http;
 using System.Reflection;
+using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Win32;
 using Tql.Abstractions;
 using Tql.App.ConfigurationUI;
 using Tql.App.Search;
 using Tql.App.Services;
 using Tql.App.Services.Database;
 using Tql.App.Services.Updates;
-using Tql.App.Themes;
+using Tql.App.Support;
 using Tql.Plugins.Azure;
 using Tql.Plugins.AzureDevOps;
 using Tql.Plugins.GitHub;
@@ -26,8 +26,6 @@ public partial class App
     private void Application_Startup(object sender, StartupEventArgs e)
     {
         System.Windows.Forms.Application.EnableVisualStyles();
-
-        SetMode();
 
         var plugins = GetPlugins().ToImmutableArray();
 
@@ -45,6 +43,8 @@ public partial class App
         }
 
         _host = builder.Build();
+
+        SetTheme(_host.Services.GetRequiredService<Settings>());
 
         var logger = _host.Services.GetRequiredService<ILogger<App>>();
 
@@ -76,6 +76,18 @@ public partial class App
 #endif
     }
 
+    private void SetTheme(Settings settings)
+    {
+        DoSetTheme();
+
+        settings.AttachPropertyChanged(nameof(settings.Theme), (_, _) => DoSetTheme());
+
+        void DoSetTheme()
+        {
+            ThemeManager.SetTheme(ThemeManager.ParseTheme(settings.Theme));
+        }
+    }
+
     private void RegisterConfigurationUIPages()
     {
         var configurationManager = (ConfigurationManager)
@@ -87,6 +99,7 @@ public partial class App
         );
     }
 
+    [UsedImplicitly]
     private bool TryStartUpdate(ILogger<App> logger)
     {
         try
@@ -105,20 +118,6 @@ public partial class App
         }
 
         return false;
-    }
-
-    private void SetMode()
-    {
-        using var key = Registry.CurrentUser.OpenSubKey(
-            @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize"
-        );
-
-        var isLight = (key?.GetValue("AppsUseLightTheme") as int?) == 1;
-
-        if (isLight)
-            ThemesController.SetTheme(ThemeType.LightTheme);
-        else
-            ThemesController.SetTheme(ThemeType.SoftDark);
     }
 
     private IEnumerable<ITqlPlugin> GetPlugins()

@@ -34,6 +34,9 @@ internal partial class GeneralConfigurationControl : IConfigurationUI
         _mainWindowTint.SelectedColor = BlurWindow.ParseMainWindowTint(
             settings.MainWindowTint ?? Settings.DefaultMainWindowTint
         );
+
+        _theme.ItemsSource = Enum.GetValues(typeof(Theme));
+        _theme.SelectedValue = ThemeManager.ParseTheme(settings.Theme);
     }
 
     public SaveStatus Save()
@@ -57,6 +60,9 @@ internal partial class GeneralConfigurationControl : IConfigurationUI
             mainWindowTint = null;
 
         _settings.MainWindowTint = mainWindowTint;
+
+        var theme = (Theme)_theme.SelectedValue;
+        _settings.Theme = theme == Theme.System ? null : theme.ToString();
 
         return SaveStatus.Success;
     }

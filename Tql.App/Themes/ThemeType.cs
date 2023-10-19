@@ -2,6 +2,7 @@
 {
     public enum ThemeType
     {
+        None,
         SoftDark,
         RedBlackTheme,
         DeepDark,

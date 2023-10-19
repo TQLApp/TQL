@@ -45,6 +45,12 @@ internal class Settings : INotifyPropertyChanged
         set => SetString(nameof(MainWindowTint), value);
     }
 
+    public string? Theme
+    {
+        get => GetString(nameof(Theme));
+        set => SetString(nameof(Theme), value);
+    }
+
     public event PropertyChangedEventHandler? PropertyChanged;
 
     public Settings(IStore store)
@@ -54,15 +60,7 @@ internal class Settings : INotifyPropertyChanged
 
     private string? GetString(string name) => _key.GetValue(name) as string;
 
-    private void SetString(string name, string? value)
-    {
-        if (value == null)
-            _key.DeleteValue(name);
-        else
-            _key.SetValue(name, value);
-
-        RaisePropertyChanged(name);
-    }
+    private void SetString(string name, string? value) => SetValue(name, value);
 
     private bool? GetBoolean(string name) =>
         GetInteger(name) switch
@@ -85,10 +83,12 @@ internal class Settings : INotifyPropertyChanged
 
     private int? GetInteger(string name) => _key.GetValue(name) as int?;
 
-    private void SetInteger(string name, int? value)
+    private void SetInteger(string name, int? value) => SetValue(name, value);
+
+    private void SetValue(string name, object? value)
     {
         if (value == null)
-            _key.DeleteValue(name);
+            _key.DeleteValue(name, false);
         else
             _key.SetValue(name, value);
 

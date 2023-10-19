@@ -40,6 +40,9 @@ namespace Tql.App.Themes
 
         public static void SetTheme(ThemeType theme)
         {
+            if (CurrentTheme == theme || theme == ThemeType.None)
+                return;
+
             string themeName = theme.GetName();
             if (string.IsNullOrEmpty(themeName))
             {

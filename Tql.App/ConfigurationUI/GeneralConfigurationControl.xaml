@@ -107,6 +107,19 @@
                             Margin="3"
                             Content="Reset"/>
                 </Grid>
+
+                <Label Content="Theme:"
+                       Grid.Row="7" />
+                <ComboBox x:Name="_theme"
+                          Margin="3"
+                          Grid.Row="7"
+                          Grid.Column="1"/>
+                <TextBlock Margin="3"
+                           TextWrapping="Wrap"
+                           Grid.Column="1"
+                           Grid.Row="8">
+                    Changing the theme requires you to restart the application.
+                </TextBlock>
             </Grid>
         </ScrollViewer>
     </GroupBox>
