@@ -48,7 +48,9 @@ internal class GitHubApi
         {
             if (!_clients.TryGetValue(id, out var client))
             {
-                client = new GitHubClient(new ProductHeaderValue("Techie's Quick Launcher"));
+                var appVersion = GetType().Assembly.GetName().Version;
+
+                client = new GitHubClient(new ProductHeaderValue("TQL", appVersion.ToString()));
 
                 var connection = _connectionManager.Connections.Single(p => p.Id == id);
 
