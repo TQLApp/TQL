@@ -159,6 +159,8 @@ internal class TelemetryService : IDisposable
 
     private class TelemetrySink : ITelemetry
     {
+        public bool IsEnabled => false;
+
         public void AddProperty(string name, string value) { }
 
         public void Dispose() { }
@@ -166,6 +168,7 @@ internal class TelemetryService : IDisposable
 
     private abstract class TelemetryImpl : ITelemetry
     {
+        public bool IsEnabled => true;
         protected List<(string Name, string Value)> Properties { get; } = new();
 
         public void AddProperty(string name, string value)

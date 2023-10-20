@@ -123,7 +123,7 @@ internal class SearchManager : IDisposable
     {
         using (var telemetry = _telemetryService.CreateEvent("Enter Category"))
         {
-            match.TypeId.InitializeTelemetry(telemetry);
+            match.InitializeTelemetry(telemetry);
         }
 
         Stack = Stack.Add(match);
@@ -176,14 +176,14 @@ internal class SearchManager : IDisposable
         {
             Context?.Dispose();
 
-            var typeId = Stack.LastOrDefault()?.TypeId;
+            var category = Stack.LastOrDefault();
 
-            typeId?.InitializeTelemetry(telemetry);
+            category?.InitializeTelemetry(telemetry);
 
             var context = new SearchContext(
                 _serviceProvider,
                 _search,
-                typeId,
+                category?.TypeId,
                 _history,
                 _contextContext
             );

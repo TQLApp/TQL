@@ -3,11 +3,20 @@ using Tql.App.Services.Telemetry;
 
 namespace Tql.App.Support;
 
-internal static class TypeIdExtensions
+internal static class MatchExtensions
 {
-    public static void InitializeTelemetry(this MatchTypeId self, ITelemetry telemetry)
+    public static void InitializeTelemetry(this IMatch self, ITelemetry telemetry)
     {
-        telemetry.AddProperty(nameof(self.Id), self.Id.ToString());
-        telemetry.AddProperty(nameof(self.PluginId), self.PluginId.ToString());
+        if (!telemetry.IsEnabled)
+            return;
+
+        var type = self.GetType();
+        var assemblyName = type.Assembly.GetName();
+
+        telemetry.AddProperty("Type", type.FullName!);
+        telemetry.AddProperty("Assembly", assemblyName.Name);
+        telemetry.AddProperty("Version", assemblyName.Version.ToString());
+        telemetry.AddProperty(nameof(self.TypeId.Id), self.TypeId.Id.ToString());
+        telemetry.AddProperty(nameof(self.TypeId.PluginId), self.TypeId.PluginId.ToString());
     }
 }

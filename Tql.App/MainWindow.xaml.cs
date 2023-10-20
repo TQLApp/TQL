@@ -474,7 +474,7 @@ internal partial class MainWindow
     {
         using var telemetry = _telemetryService.CreateDependency("Run");
 
-        match.TypeId.InitializeTelemetry(telemetry);
+        match.InitializeTelemetry(telemetry);
 
         MarkAsAccessed(searchResult);
 
@@ -509,7 +509,7 @@ internal partial class MainWindow
     {
         using (var telemetry = _telemetryService.CreateEvent("Copy Item"))
         {
-            match.TypeId.InitializeTelemetry(telemetry);
+            match.InitializeTelemetry(telemetry);
         }
 
         MarkAsAccessed(searchResult);
@@ -549,7 +549,7 @@ internal partial class MainWindow
         {
             using (var telemetry = _telemetryService.CreateEvent("History Created"))
             {
-                match.TypeId.InitializeTelemetry(telemetry);
+                match.InitializeTelemetry(telemetry);
             }
 
             access.AddHistory(
@@ -583,7 +583,7 @@ internal partial class MainWindow
 
         using (var telemetry = _telemetryService.CreateEvent("History Deleted"))
         {
-            searchResult.Match.TypeId.InitializeTelemetry(telemetry);
+            searchResult.Match.InitializeTelemetry(telemetry);
         }
 
         using (var access = _db.Access())
