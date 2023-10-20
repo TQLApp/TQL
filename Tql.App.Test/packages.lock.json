@@ -78,6 +78,14 @@
           "System.Memory": "4.5.4"
         }
       },
+      "Microsoft.ApplicationInsights": {
+        "type": "Transitive",
+        "resolved": "2.21.0",
+        "contentHash": "btZEDWAFNo9CoYliMCriSMTX3ruRGZTtYw4mo2XyyfLlowFicYVM2Xszi5evDG95QRYV7MbbH3D2RqVwfZlJHw==",
+        "dependencies": {
+          "System.Diagnostics.DiagnosticSource": "5.0.0"
+        }
+      },
       "Microsoft.AspNet.WebApi.Client": {
         "type": "Transitive",
         "resolved": "5.2.7",
@@ -973,6 +981,7 @@
           "Dapper": "[2.1.4, )",
           "Extended.Wpf.Toolkit": "[4.5.1, )",
           "Markdig": "[0.33.0, )",
+          "Microsoft.ApplicationInsights": "[2.21.0, )",
           "Microsoft.Extensions.Hosting": "[7.0.1, )",
           "Microsoft.Extensions.Logging": "[7.0.0, )",
           "System.Data.SQLite.Core": "[1.0.118, )",

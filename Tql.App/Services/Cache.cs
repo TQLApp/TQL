@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Tql.Abstractions;
 using Tql.App.Services.Database;
+using Tql.App.Services.Telemetry;
 using Tql.App.Support;
 
 namespace Tql.App.Services;
@@ -11,6 +12,7 @@ internal class Cache<T> : ICache<T>
     private readonly ICacheManager<T> _cacheManager;
     private readonly IDb _db;
     private readonly CacheManagerManager _cacheManagerManager;
+    private readonly TelemetryService _telemetryService;
     private TaskCompletionSource<T> _tcs = new();
     private DateTime _updated;
     private readonly object _syncRoot = new();
@@ -26,13 +28,15 @@ internal class Cache<T> : ICache<T>
         ICacheManager<T> cacheManager,
         IDb db,
         CacheManagerManager cacheManagerManager,
-        Settings settings
+        Settings settings,
+        TelemetryService telemetryService
     )
     {
         _logger = logger;
         _cacheManager = cacheManager;
         _db = db;
         _cacheManagerManager = cacheManagerManager;
+        _telemetryService = telemetryService;
 
         _expiration = GetExpiration();
 
@@ -97,6 +101,11 @@ internal class Cache<T> : ICache<T>
 
         Task.Run(async () =>
         {
+            using var telemetry = _telemetryService.CreateDependency("Cache Update");
+
+            telemetry.AddProperty("Type", typeof(T).FullName!);
+            telemetry.AddProperty("Version", _cacheManager.Version.ToString());
+
             _logger.LogInformation("Recreating cache");
 
             try
@@ -149,6 +158,8 @@ internal class Cache<T> : ICache<T>
                         _logger.LogError(ex, "Raising cache updated failed");
                     }
                 });
+
+                telemetry.IsSuccess = true;
             }
             catch (Exception ex)
             {

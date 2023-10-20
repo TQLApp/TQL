@@ -10,6 +10,8 @@ internal partial class GeneralConfigurationControl : IConfigurationUI
 {
     private readonly Settings _settings;
     private readonly ShowOnScreenManager _showOnScreenManager;
+    private readonly bool? _loadedEnableMetricsTelemetry;
+    private readonly bool? _loadedEnableExceptionTelemetry;
 
     public GeneralConfigurationControl(Settings settings)
     {
@@ -37,6 +39,13 @@ internal partial class GeneralConfigurationControl : IConfigurationUI
 
         _theme.ItemsSource = Enum.GetValues(typeof(Theme));
         _theme.SelectedValue = ThemeManager.ParseTheme(settings.Theme);
+
+        _loadedEnableMetricsTelemetry =
+            settings.EnableMetricsTelemetry ?? Settings.DefaultEnableMetricsTelemetry;
+        _trackMetrics.IsChecked = _loadedEnableMetricsTelemetry;
+        _loadedEnableExceptionTelemetry =
+            settings.EnableExceptionTelemetry ?? Settings.DefaultEnableExceptionTelemetry;
+        _trackErrors.IsChecked = _loadedEnableExceptionTelemetry;
     }
 
     public SaveStatus Save()
@@ -63,6 +72,11 @@ internal partial class GeneralConfigurationControl : IConfigurationUI
 
         var theme = (Theme)_theme.SelectedValue;
         _settings.Theme = theme == Theme.System ? null : theme.ToString();
+
+        if (_trackMetrics.IsChecked != _loadedEnableMetricsTelemetry)
+            _settings.EnableMetricsTelemetry = _trackMetrics.IsChecked;
+        if (_trackErrors.IsChecked != _loadedEnableExceptionTelemetry)
+            _settings.EnableExceptionTelemetry = _trackErrors.IsChecked;
 
         return SaveStatus.Success;
     }

@@ -98,8 +98,7 @@ internal class UpdateChecker : IDisposable
 
     private Version GetAppVersion()
     {
-        var appVersion = GetType().Assembly.GetName().Version;
-        return appVersion;
+        return GetType().Assembly.GetName().Version;
     }
 
     private void InitializeRequest(HttpRequestMessage request)

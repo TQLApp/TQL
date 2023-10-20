@@ -1,5 +1,4 @@
 ﻿using Microsoft.Win32;
-using System.CodeDom;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Tql.Abstractions;
@@ -12,6 +11,14 @@ internal class Settings : INotifyPropertyChanged
     public const int DefaultCacheUpdateInterval = 30;
     public const int DefaultMainFontSize = 15;
     public const string DefaultMainWindowTint = "#40000000";
+
+    // This is enabled by default because it does not track PII information.
+    public const bool DefaultEnableMetricsTelemetry = true;
+
+    // This is disabled by default because it may track PII information. It's
+    // very difficult to control PII information in exceptions. They can very
+    // easily include e.g. user names in paths.
+    public const bool DefaultEnableExceptionTelemetry = false;
 
     private readonly RegistryKey _key;
 
@@ -49,6 +56,30 @@ internal class Settings : INotifyPropertyChanged
     {
         get => GetString(nameof(Theme));
         set => SetString(nameof(Theme), value);
+    }
+
+    public string? DeviceId
+    {
+        get => GetString(nameof(DeviceId));
+        set => SetString(nameof(DeviceId), value);
+    }
+
+    public string? UserId
+    {
+        get => GetString(nameof(UserId));
+        set => SetString(nameof(UserId), value);
+    }
+
+    public bool? EnableMetricsTelemetry
+    {
+        get => GetBoolean(nameof(EnableMetricsTelemetry));
+        set => SetBoolean(nameof(EnableMetricsTelemetry), value);
+    }
+
+    public bool? EnableExceptionTelemetry
+    {
+        get => GetBoolean(nameof(EnableExceptionTelemetry));
+        set => SetBoolean(nameof(EnableExceptionTelemetry), value);
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;

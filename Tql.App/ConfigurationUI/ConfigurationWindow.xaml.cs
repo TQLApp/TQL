@@ -31,7 +31,7 @@ internal partial class ConfigurationWindow
 
     private void _pages_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
     {
-        _container.Child = (UIElement?)((TreeViewItem?)e.NewValue)?.Tag;
+        _container.Content = (UIElement?)((TreeViewItem?)e.NewValue)?.Tag;
     }
 
     private void _acceptButton_Click(object sender, RoutedEventArgs e)

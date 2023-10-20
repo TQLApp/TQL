@@ -9,6 +9,7 @@ using Tql.App.ConfigurationUI;
 using Tql.App.Search;
 using Tql.App.Services;
 using Tql.App.Services.Database;
+using Tql.App.Services.Telemetry;
 using Tql.App.Services.Updates;
 using Tql.App.Support;
 using Tql.Plugins.Azure;
@@ -159,6 +160,7 @@ public partial class App
         builder.AddSingleton<IClipboard, ClipboardImpl>();
         builder.AddSingleton<HttpClient>();
         builder.AddSingleton<UpdateChecker>();
+        builder.AddSingleton<TelemetryService>();
 
         builder.AddTransient<MainWindow>();
         builder.AddTransient<ConfigurationWindow>();

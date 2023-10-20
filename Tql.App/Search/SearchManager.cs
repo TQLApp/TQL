@@ -3,6 +3,8 @@ using Microsoft.Extensions.Logging;
 using Tql.Abstractions;
 using Tql.App.Services;
 using Tql.App.Services.Database;
+using Tql.App.Services.Telemetry;
+using Tql.App.Support;
 
 namespace Tql.App.Search;
 
@@ -13,6 +15,7 @@ internal class SearchManager : IDisposable
     private readonly IDb _db;
     private readonly IPluginManager _pluginManager;
     private readonly IServiceProvider _serviceProvider;
+    private readonly TelemetryService _telemetryService;
     private volatile History? _history;
     private readonly SynchronizationContext _synchronizationContext =
         SynchronizationContext.Current;
@@ -38,7 +41,8 @@ internal class SearchManager : IDisposable
         Settings settings,
         IDb db,
         IPluginManager pluginManager,
-        IServiceProvider serviceProvider
+        IServiceProvider serviceProvider,
+        TelemetryService telemetryService
     )
     {
         _logger = logger;
@@ -46,6 +50,7 @@ internal class SearchManager : IDisposable
         _db = db;
         _pluginManager = pluginManager;
         _serviceProvider = serviceProvider;
+        _telemetryService = telemetryService;
 
         LoadHistory();
     }
@@ -57,6 +62,12 @@ internal class SearchManager : IDisposable
         ThreadPool.QueueUserWorkItem(_ =>
         {
             _logger.LogInformation("Loading history");
+
+            using var telemetry = _telemetryService.CreateDependency(
+                "Database",
+                "SQLite",
+                "LoadHistory"
+            );
 
             try
             {
@@ -97,6 +108,8 @@ internal class SearchManager : IDisposable
 
                 _history = new History(matches);
 
+                telemetry.IsSuccess = true;
+
                 _synchronizationContext.Post(_ => DoSearch(), null);
             }
             catch (Exception ex)
@@ -108,6 +121,11 @@ internal class SearchManager : IDisposable
 
     public void Push(ISearchableMatch match)
     {
+        using (var telemetry = _telemetryService.CreateEvent("Enter Category"))
+        {
+            match.TypeId.InitializeTelemetry(telemetry);
+        }
+
         Stack = Stack.Add(match);
 
         ClearResults();
@@ -152,14 +170,20 @@ internal class SearchManager : IDisposable
 
         _logger.LogInformation("Performing search for '{Search}'", _search);
 
+        using var telemetry = _telemetryService.CreateRequest("Search");
+
         try
         {
             Context?.Dispose();
 
+            var typeId = Stack.LastOrDefault()?.TypeId;
+
+            typeId?.InitializeTelemetry(telemetry);
+
             var context = new SearchContext(
                 _serviceProvider,
                 _search,
-                Stack.LastOrDefault()?.TypeId,
+                typeId,
                 _history,
                 _contextContext
             );
@@ -178,10 +202,14 @@ internal class SearchManager : IDisposable
             Results = results?.ToImmutableArray() ?? ImmutableArray<SearchResult>.Empty;
 
             OnSearchResultsChanged();
+
+            telemetry.AddProperty(nameof(Results), Results.Length.ToString());
+            telemetry.IsSuccess = true;
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failure while performing search");
+            _telemetryService.TrackException(ex);
         }
     }
 

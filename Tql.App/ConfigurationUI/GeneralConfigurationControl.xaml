@@ -7,11 +7,11 @@
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <GroupBox Header="Connections">
-        <ScrollViewer Padding="4">
+    <StackPanel Orientation="Vertical">
+
+        <GroupBox Header="Connections" Padding="4">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -47,14 +47,13 @@
 
                 <Label Content="Cache update interval:"
                        Grid.Row="3"/>
-                <Grid
-                    Grid.Column="1"
-                    Grid.Row="3">
+                <Grid Grid.Column="1"
+                      Grid.Row="3">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                
+
                     <TextBox x:Name="_cacheUpdateInterval"
                              Margin="3"/>
                     <TextBlock Grid.Column="1"
@@ -73,14 +72,13 @@
 
                 <Label Content="Search result font size:"
                        Grid.Row="5"/>
-                <Grid
-                    Grid.Column="1"
-                    Grid.Row="5">
+                <Grid Grid.Column="1"
+                      Grid.Row="5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                
+
                     <TextBox x:Name="_mainFontSize"
                              Margin="3"/>
                     <TextBlock Grid.Column="1"
@@ -91,9 +89,8 @@
 
                 <Label Content="Main window tint:"
                        Grid.Row="6" />
-                <Grid
-                    Grid.Row="6"
-                    Grid.Column="1">
+                <Grid Grid.Row="6"
+                      Grid.Column="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
@@ -121,6 +118,44 @@
                     Changing the theme requires you to restart the application.
                 </TextBlock>
             </Grid>
-        </ScrollViewer>
-    </GroupBox>
+        </GroupBox>
+
+        <GroupBox Header="Telemetry" Padding="4">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <CheckBox x:Name="_trackMetrics"
+                         Margin="3">
+                    Track anonymous metrics
+                </CheckBox>
+                <TextBlock Margin="3"
+                           TextWrapping="Wrap"
+                           Grid.Row="1">
+                    Only tracks anonymous performance and usage metrics.
+                </TextBlock>
+
+                <CheckBox x:Name="_trackErrors"
+                          Margin="3"
+                          Grid.Row="2">
+                    Track errors
+                </CheckBox>
+                <TextBlock Margin="3"
+                           TextWrapping="Wrap"
+                           Grid.Row="3">
+                    Errors may capture PII (personally identifiable information) data like your
+                    user name because of system information that's included automatically
+                    when tracking errors.
+                </TextBlock>
+            </Grid>
+        </GroupBox>
+
+    </StackPanel>
 </UserControl>

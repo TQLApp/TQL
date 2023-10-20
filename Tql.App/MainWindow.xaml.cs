@@ -5,6 +5,7 @@ using Tql.App.Interop;
 using Tql.App.Search;
 using Tql.App.Services;
 using Tql.App.Services.Database;
+using Tql.App.Services.Telemetry;
 using Tql.App.Support;
 
 namespace Tql.App;
@@ -30,12 +31,14 @@ internal partial class MainWindow
     private readonly ILogger<MainWindow> _logger;
     private readonly IDb _db;
     private readonly CacheManagerManager _cacheManagerManager;
+    private readonly TelemetryService _telemetryService;
     private KeyboardHook? _keyboardHook;
     private SearchManager? _searchManager;
     private readonly UI _ui;
     private double _listBoxRowHeight = double.NaN;
     private bool _pendingEnter;
     private SearchResult? _mouseDownSearchResult;
+    private IPageViewTelemetry? _pageView;
 
     private SearchResult? SelectedSearchResult => (SearchResult?)_results.SelectedItem;
 
@@ -45,7 +48,8 @@ internal partial class MainWindow
         ILogger<MainWindow> logger,
         IDb db,
         CacheManagerManager cacheManagerManager,
-        IUI ui
+        IUI ui,
+        TelemetryService telemetryService
     )
         : base(settings)
     {
@@ -54,6 +58,7 @@ internal partial class MainWindow
         _logger = logger;
         _db = db;
         _cacheManagerManager = cacheManagerManager;
+        _telemetryService = telemetryService;
         _ui = (UI)ui;
 
         cacheManagerManager.LoadingChanged += CacheManagerManager_LoadingChanged;
@@ -172,6 +177,8 @@ internal partial class MainWindow
 
     public void DoShow()
     {
+        _pageView = _telemetryService.CreatePageView("Search");
+
         RepositionScreen();
 
         _search.Text = "";
@@ -304,6 +311,9 @@ internal partial class MainWindow
             _searchManager.Dispose();
             _searchManager = null;
         }
+
+        _pageView?.Dispose();
+        _pageView = null;
     }
 
     private void _search_TextChanged(object sender, TextChangedEventArgs e)
@@ -462,11 +472,17 @@ internal partial class MainWindow
 
     private async void RunItem(IRunnableMatch match, SearchResult searchResult)
     {
+        using var telemetry = _telemetryService.CreateDependency("Run");
+
+        match.TypeId.InitializeTelemetry(telemetry);
+
         MarkAsAccessed(searchResult);
 
         try
         {
             await match.Run(_serviceProvider, this);
+
+            telemetry.IsSuccess = true;
         }
         catch (Exception ex)
         {
@@ -491,6 +507,11 @@ internal partial class MainWindow
 
     private async void CopyItem(ICopyableMatch match, SearchResult searchResult)
     {
+        using (var telemetry = _telemetryService.CreateEvent("Copy Item"))
+        {
+            match.TypeId.InitializeTelemetry(telemetry);
+        }
+
         MarkAsAccessed(searchResult);
 
         try
@@ -526,6 +547,11 @@ internal partial class MainWindow
         }
         else
         {
+            using (var telemetry = _telemetryService.CreateEvent("History Created"))
+            {
+                match.TypeId.InitializeTelemetry(telemetry);
+            }
+
             access.AddHistory(
                 new HistoryEntity
                 {
@@ -554,6 +580,11 @@ internal partial class MainWindow
         var searchResult = SelectedSearchResult;
         if (searchResult?.HistoryId == null)
             return;
+
+        using (var telemetry = _telemetryService.CreateEvent("History Deleted"))
+        {
+            searchResult.Match.TypeId.InitializeTelemetry(telemetry);
+        }
 
         using (var access = _db.Access())
         {
