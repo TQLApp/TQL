@@ -539,7 +539,9 @@ internal partial class MainWindow
         if (searchResult.Match is not ISerializableMatch match)
             return;
 
-        var parentTypeId = _searchManager?.Stack.LastOrDefault()?.TypeId.Id;
+        var parent = _searchManager?.Stack.LastOrDefault();
+        var parentTypeId = parent?.TypeId.Id;
+        var parentJson = (parent as ISerializableMatch)?.Serialize();
         var json = match.Serialize();
 
         using var access = _db.Access();
@@ -564,6 +566,7 @@ internal partial class MainWindow
                 {
                     PluginId = match.TypeId.PluginId,
                     ParentTypeId = parentTypeId,
+                    ParentJson = parentJson,
                     TypeId = match.TypeId.Id,
                     Json = json
                 }

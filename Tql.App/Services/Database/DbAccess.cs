@@ -49,11 +49,15 @@ internal partial class Db
         public void AddHistory(HistoryEntity history)
         {
             Execute(
-                "insert into History(PluginId, ParentTypeId, TypeId, Json, LastAccess, AccessCount) values (@PluginId, @ParentTypeId, @TypeId, @Json, @LastAccess, 1)",
+                """
+                insert into History(PluginId, ParentTypeId, ParentJson, TypeId, Json, LastAccess, AccessCount)
+                values (@PluginId, @ParentTypeId, @ParentJson, @TypeId, @Json, @LastAccess, 1)
+                """,
                 new
                 {
                     history.PluginId,
                     history.ParentTypeId,
+                    history.ParentJson,
                     history.TypeId,
                     history.Json,
                     LastAccess = DateTime.UtcNow

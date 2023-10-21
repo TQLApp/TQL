@@ -3,4 +3,4 @@
 	Value text not null,
 	Version integer not null,
 	Updated text not null collate nocase
-)
+);

@@ -199,7 +199,7 @@ internal class SearchManager : IDisposable
             if (context != Context)
                 return;
 
-            Results = results?.ToImmutableArray() ?? ImmutableArray<SearchResult>.Empty;
+            Results = results ?? ImmutableArray<SearchResult>.Empty;
 
             OnSearchResultsChanged();
 
@@ -213,7 +213,7 @@ internal class SearchManager : IDisposable
         }
     }
 
-    private IEnumerable<SearchResult>? GetRootSearchResults()
+    private ImmutableArray<SearchResult>? GetRootSearchResults()
     {
         var context = Context;
         if (context == null)
@@ -223,7 +223,12 @@ internal class SearchManager : IDisposable
         // 100 items of the history.
 
         if (context.Search.Length == 0)
-            return context.History?.Items.Select(p => context.GetSearchResult(p.Match)).Take(100);
+        {
+            return context.History?.Items
+                .Select(p => context.GetSearchResult(p.Match))
+                .Take(100)
+                .ToImmutableArray();
+        }
 
         // Get the root items from all plugins.
 
@@ -239,7 +244,7 @@ internal class SearchManager : IDisposable
         );
 
         if (context.History == null)
-            return rootItems;
+            return rootItems.ToImmutableArray();
 
         // Filter the history and get the associated states.
 
@@ -251,16 +256,16 @@ internal class SearchManager : IDisposable
         // Sort exact matches of the history above the root items, and
         // fuzzy matches below them.
 
-        var result = new List<SearchResult>();
+        var result = ImmutableArray.CreateBuilder<SearchResult>();
 
         result.AddRange(history.Where(p => p.Penalty < 0));
         result.AddRange(rootItems.Where(p => !p.HistoryId.HasValue));
         result.AddRange(history.Where(p => p.Penalty >= 0));
 
-        return result;
+        return result.ToImmutable();
     }
 
-    private async Task<IEnumerable<SearchResult>?> GetSubSearchResults()
+    private async Task<ImmutableArray<SearchResult>?> GetSubSearchResults()
     {
         var context = Context;
         if (context == null)
@@ -283,9 +288,12 @@ internal class SearchManager : IDisposable
 
         try
         {
-            var result = await task;
+            var result = (await task).Select(context.GetSearchResult).ToImmutableArray();
 
-            return result.Select(context.GetSearchResult);
+            if (context.Search.IsEmpty() && result.Length == 0)
+                return GetPreliminaryResults();
+            else
+                return result;
         }
         finally
         {
@@ -299,26 +307,38 @@ internal class SearchManager : IDisposable
 
     private void ShowPreliminaryResults()
     {
+        var results = GetPreliminaryResults();
+        if (results != null)
+        {
+            Results = results.Value;
+
+            OnSearchResultsChanged();
+        }
+    }
+
+    private ImmutableArray<SearchResult>? GetPreliminaryResults()
+    {
         var context = Context;
         if (context == null || _history == null)
-            return;
+            return null;
 
-        var parentTypeId = Stack.Last().TypeId;
+        var parent = Stack.Last();
+        var parentTypeId = parent.TypeId;
+        var parentJson = (parent as ISerializableMatch)?.Serialize();
 
-        Results = context
+        return context
             .Filter(
                 _history.Items
                     .Where(
                         p =>
                             p.History.PluginId == parentTypeId.PluginId
                             && p.History.ParentTypeId == parentTypeId.Id
+                            && p.History.ParentJson == parentJson
                     )
                     .Select(p => p.Match)
             )
             .Select(context.GetSearchResult)
             .ToImmutableArray();
-
-        OnSearchResultsChanged();
     }
 
     public void SuspendSearch()
