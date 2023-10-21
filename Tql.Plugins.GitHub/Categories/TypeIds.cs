@@ -25,4 +25,7 @@ internal static class TypeIds
 
     public static readonly MatchTypeId Users = CreateId("f6714e76-8784-429e-a67d-e332e7b55b97");
     public static readonly MatchTypeId User = CreateId("10f03c08-66f5-49c1-909f-277925a5888e");
+
+    public static readonly MatchTypeId Gists = CreateId("660f3739-c1fb-4e59-af2d-608b743dcc7c");
+    public static readonly MatchTypeId Gist = CreateId("948f5282-6bb8-4122-8c5f-ff2a1929d2c1");
 }

@@ -36,4 +36,8 @@ internal static class Images
         typeof(Images),
         "Resources.User.svg"
     );
+    public static readonly ImageSource Gist = ImageFactory.FromEmbeddedResource(
+        typeof(Images),
+        "Resources.Gist.svg"
+    );
 }

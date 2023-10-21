@@ -7,16 +7,16 @@ namespace Tql.Plugins.GitHub.Categories;
 
 internal class UsersMatch : ISearchableMatch, ISerializableMatch
 {
-    private readonly Guid _id;
+    private readonly RootItemDto _dto;
     private readonly GitHubApi _api;
 
     public string Text { get; }
     public ImageSource Icon => Images.User;
     public MatchTypeId TypeId => TypeIds.Users;
 
-    public UsersMatch(string text, Guid id, GitHubApi api)
+    public UsersMatch(string text, RootItemDto dto, GitHubApi api)
     {
-        _id = id;
+        _dto = dto;
         _api = api;
 
         Text = text;
@@ -33,19 +33,19 @@ internal class UsersMatch : ISearchableMatch, ISerializableMatch
 
         await context.DebounceDelay(cancellationToken);
 
-        var client = await _api.GetClient(_id);
+        var client = await _api.GetClient(_dto.Id);
 
         var response = await client.Search.SearchUsers(new SearchUsersRequest(text));
 
         cancellationToken.ThrowIfCancellationRequested();
 
         return response.Items.Select(
-            p => new UserMatch(new UserMatchDto(_id, p.Login, p.HtmlUrl), _api)
+            p => new UserMatch(new UserMatchDto(_dto.Id, p.Login, p.HtmlUrl), _api)
         );
     }
 
     public string Serialize()
     {
-        return JsonSerializer.Serialize(new RootItemDto(_id));
+        return JsonSerializer.Serialize(_dto);
     }
 }

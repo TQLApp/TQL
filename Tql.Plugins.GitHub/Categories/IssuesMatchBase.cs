@@ -1,5 +1,6 @@
 ﻿using Octokit;
 using Tql.Abstractions;
+using Tql.Plugins.GitHub.Data;
 using Tql.Plugins.GitHub.Services;
 using Tql.Plugins.GitHub.Support;
 
@@ -7,19 +8,27 @@ namespace Tql.Plugins.GitHub.Categories;
 
 internal abstract class IssuesMatchBase : ISearchableMatch, ISerializableMatch
 {
-    private readonly Guid _id;
+    private readonly RootItemDto _dto;
     private readonly GitHubApi _api;
     private readonly IssueTypeQualifier _type;
+    private readonly ICache<GitHubData> _cache;
 
     public string Text { get; }
     public ImageSource Icon => Images.Issue;
     public abstract MatchTypeId TypeId { get; }
 
-    protected IssuesMatchBase(string text, Guid id, GitHubApi api, IssueTypeQualifier type)
+    protected IssuesMatchBase(
+        string text,
+        RootItemDto dto,
+        GitHubApi api,
+        ICache<GitHubData> cache,
+        IssueTypeQualifier type
+    )
     {
-        _id = id;
+        _dto = dto;
         _api = api;
         _type = type;
+        _cache = cache;
 
         Text = text;
     }
@@ -35,10 +44,13 @@ internal abstract class IssuesMatchBase : ISearchableMatch, ISerializableMatch
 
         await context.DebounceDelay(cancellationToken);
 
-        var client = await _api.GetClient(_id);
+        var client = await _api.GetClient(_dto.Id);
 
         var response = await client.Search.SearchIssues(
-            new SearchIssuesRequest(text) { Type = _type }
+            new SearchIssuesRequest(await GitHubUtils.GetSearchPrefix(_dto, _cache) + text)
+            {
+                Type = _type
+            }
         );
 
         cancellationToken.ThrowIfCancellationRequested();
@@ -47,7 +59,7 @@ internal abstract class IssuesMatchBase : ISearchableMatch, ISerializableMatch
             p =>
                 CreateIssue(
                     new IssueMatchDto(
-                        _id,
+                        _dto.Id,
                         GitHubUtils.GetRepositoryName(p.HtmlUrl),
                         p.Number,
                         p.Title,
@@ -60,7 +72,7 @@ internal abstract class IssuesMatchBase : ISearchableMatch, ISerializableMatch
 
     public string Serialize()
     {
-        return JsonSerializer.Serialize(new RootItemDto(_id));
+        return JsonSerializer.Serialize(_dto);
     }
 
     protected abstract IssueMatchBase CreateIssue(IssueMatchDto dto);

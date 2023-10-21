@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Tql.Abstractions;
 using Tql.Plugins.GitHub.Categories;
 using Tql.Plugins.GitHub.ConfigurationUI;
+using Tql.Plugins.GitHub.Data;
 using Tql.Plugins.GitHub.Services;
 using Tql.Plugins.GitHub.Support;
 using Tql.Utilities;
@@ -29,6 +30,7 @@ public class GitHubPlugin : ITqlPlugin
     {
         services.AddSingleton<GitHubApi>();
         services.AddSingleton<ConnectionManager>();
+        services.AddSingleton<ICacheManager<GitHubData>, GitHubCacheManager>();
 
         services.AddTransient<ConfigurationControl>();
 
@@ -50,11 +52,30 @@ public class GitHubPlugin : ITqlPlugin
     {
         var connectionManager = _serviceProvider!.GetRequiredService<ConnectionManager>();
 
-        return from connection in connectionManager.Connections
-            let json = JsonSerializer.Serialize(new RootItemDto(connection.Id))
-            from matchType in _matchTypeManager!.MatchTypes
-            where matchType.GetType().GetCustomAttribute<RootMatchTypeAttribute>() != null
-            select matchType.Deserialize(json);
+        foreach (var connection in connectionManager.Connections)
+        {
+            foreach (var matchType in _matchTypeManager!.MatchTypes)
+            {
+                var attribute = matchType.GetType().GetCustomAttribute<RootMatchTypeAttribute>();
+                if (attribute == null)
+                    continue;
+
+                var json = JsonSerializer.Serialize(
+                    new RootItemDto(connection.Id, RootItemScope.Global)
+                );
+
+                yield return matchType.Deserialize(json)!;
+
+                if (attribute.SupportsUserScope)
+                {
+                    json = JsonSerializer.Serialize(
+                        new RootItemDto(connection.Id, RootItemScope.User)
+                    );
+
+                    yield return matchType.Deserialize(json)!;
+                }
+            }
+        }
     }
 
     public IMatch? DeserializeMatch(Guid typeId, string json)
