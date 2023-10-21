@@ -326,19 +326,19 @@ internal class SearchManager : IDisposable
         var parentTypeId = parent.TypeId;
         var parentJson = (parent as ISerializableMatch)?.Serialize();
 
-        return context
-            .Filter(
-                _history.Items
-                    .Where(
-                        p =>
-                            p.History.PluginId == parentTypeId.PluginId
-                            && p.History.ParentTypeId == parentTypeId.Id
-                            && p.History.ParentJson == parentJson
-                    )
-                    .Select(p => p.Match)
+        var items = _history.Items
+            .Where(
+                p =>
+                    p.History.PluginId == parentTypeId.PluginId
+                    && p.History.ParentTypeId == parentTypeId.Id
+                    && p.History.ParentJson == parentJson
             )
-            .Select(context.GetSearchResult)
-            .ToImmutableArray();
+            .Select(p => p.Match);
+
+        if (!context.Search.IsEmpty())
+            items = context.Filter(items);
+
+        return items.Select(context.GetSearchResult).ToImmutableArray();
     }
 
     public void SuspendSearch()
