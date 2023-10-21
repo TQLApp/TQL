@@ -164,6 +164,7 @@ public partial class App
 
         builder.AddTransient<MainWindow>();
         builder.AddTransient<ConfigurationWindow>();
+        builder.AddTransient<FeedbackWindow>();
         builder.AddTransient<SearchManager>();
         builder.AddTransient<GeneralConfigurationControl>();
     }

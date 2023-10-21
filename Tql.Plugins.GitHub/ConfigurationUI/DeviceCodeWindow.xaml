@@ -61,7 +61,8 @@
                         Grid.Column="2"
                         Height="22"
                         Width="22"
-                        Padding="0" Click="_copy_Click">
+                        Padding="0"
+                        Click="_copy_Click">
                     <Image x:Name="_copyImage"
                            Height="14"
                            Width="14"/>

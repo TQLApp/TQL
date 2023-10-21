@@ -72,7 +72,7 @@ internal partial class MainWindow
         _clearImage.AttachOnClickHandler(DoShow);
 
         _feedbackImage.Source = Images.CommentNote;
-        _feedbackImage.AttachOnClickHandler(OpenHelp);
+        _feedbackImage.AttachOnClickHandler(OpenFeedback);
         _feedbackImage.SetPopoverToolTip(
             "Leave feedback for the developers",
             "Leave ideas, features suggestions or bug reports for the developers."
@@ -116,6 +116,13 @@ internal partial class MainWindow
     private void OpenSettings()
     {
         var window = _serviceProvider.GetRequiredService<ConfigurationUI.ConfigurationWindow>();
+        window.Owner = this;
+        window.ShowDialog();
+    }
+
+    private void OpenFeedback()
+    {
+        var window = _serviceProvider.GetRequiredService<FeedbackWindow>();
         window.Owner = this;
         window.ShowDialog();
     }

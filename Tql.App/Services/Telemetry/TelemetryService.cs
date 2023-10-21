@@ -103,35 +103,6 @@ internal class TelemetryService : IDisposable
         _client.TrackException(exception);
     }
 
-    public void TrackFeedback(FeedbackTelemetry feedback)
-    {
-        // This is not gated. The user is taking an active step to report
-        // something. There's an implicit understanding that this data
-        // will be published somewhere.
-
-        var @event = new EventTelemetry { Name = "Feedback" };
-
-        @event.Properties.Add(nameof(feedback.Type), feedback.Type.ToString());
-
-        if (feedback.EmailAddress != null)
-            @event.Properties.Add(nameof(feedback.EmailAddress), feedback.EmailAddress);
-
-        @event.Properties.Add(nameof(feedback.Message), feedback.Message);
-
-        if (feedback.SystemInformation != null)
-            @event.Properties.Add(nameof(feedback.SystemInformation), feedback.SystemInformation);
-
-        if (feedback.EnabledPlugins != null)
-        {
-            @event.Properties.Add(
-                nameof(feedback.EnabledPlugins),
-                string.Join("; ", feedback.EnabledPlugins)
-            );
-        }
-
-        _client.TrackEvent(@event);
-    }
-
     public void TrackEvent(string name)
     {
         if (!_enableMetrics)
