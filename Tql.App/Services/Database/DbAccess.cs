@@ -67,11 +67,16 @@ internal partial class Db
             history.Id = _owner._connection.LastInsertRowId;
         }
 
-        public void MarkHistoryAsAccessed(long id)
+        public void MarkHistoryAsAccessed(long id, string? parentJson)
         {
             Execute(
-                "update History set LastAccess = @LastAccess, AccessCount = AccessCount + 1 where Id = @id",
-                new { id, LastAccess = DateTime.UtcNow }
+                "update History set LastAccess = @LastAccess, ParentJson = @parentJson, AccessCount = AccessCount + 1 where Id = @id",
+                new
+                {
+                    id,
+                    LastAccess = DateTime.UtcNow,
+                    parentJson
+                }
             );
         }
 

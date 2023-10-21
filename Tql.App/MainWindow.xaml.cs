@@ -552,7 +552,10 @@ internal partial class MainWindow
 
         if (historyId.HasValue)
         {
-            access.MarkHistoryAsAccessed(historyId.Value);
+            // TODO: This is a temporary solution. It's to migrate the ParentJson
+            // of the history if the one returned by the plugin changes.
+            // There's an outstanding item to do this better.
+            access.MarkHistoryAsAccessed(historyId.Value, parentJson);
         }
         else
         {
