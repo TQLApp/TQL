@@ -6,6 +6,9 @@ internal static class TypeIds
 {
     private static MatchTypeId CreateId(string id) => new(Guid.Parse(id), JiraPlugin.Id);
 
+    public static readonly MatchTypeId Boards = CreateId("b984b4ae-0a4d-4b77-bc95-db675a6c96e9");
+    public static readonly MatchTypeId Board = CreateId("c65a79b2-c42e-4fbe-a8f0-3eb37eba42e9");
+
     public static readonly MatchTypeId Dashboards = CreateId(
         "c370eeb4-1481-4bb0-941a-de7ec1998480"
     );

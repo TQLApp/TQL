@@ -81,12 +81,12 @@ internal class JiraClient
         return await ExecuteJsonRequest<ImmutableArray<JiraProjectDto>>(request, cancellationToken);
     }
 
-    public Task<ImmutableArray<JiraProjectV3Dto>> GetProjectsV3(
+    public Task<ImmutableArray<JiraBoardV3Dto>> GetBoardsV3(
         int? maxResults = null,
         CancellationToken cancellationToken = default
     ) =>
-        GetPagedV3<JiraProjectV3Dto>(
-            $"{_baseUrl}/rest/api/3/project/search",
+        GetPagedV3<JiraBoardV3Dto>(
+            $"{_baseUrl}/rest/agile/1.0/board",
             maxResults,
             cancellationToken
         );
@@ -269,4 +269,18 @@ internal record JiraPageBeanV3Dto<T>(
     [property: JsonPropertyName("values")] ImmutableArray<T> Values
 );
 
-internal record JiraProjectV3Dto();
+internal record JiraBoardV3Dto(
+    [property: JsonPropertyName("id")] int Id,
+    [property: JsonPropertyName("name")] string Name,
+    [property: JsonPropertyName("type")] string Type,
+    [property: JsonPropertyName("location")] JiraBoardLocationV3Dto Location
+);
+
+internal record JiraBoardLocationV3Dto(
+    [property: JsonPropertyName("displayName")] string DisplayName,
+    [property: JsonPropertyName("projectName")] string ProjectName,
+    [property: JsonPropertyName("projectKey")] string ProjectKey,
+    [property: JsonPropertyName("projectTypeKey")] string ProjectTypeKey,
+    [property: JsonPropertyName("avatarURI")] string AvatarUri,
+    [property: JsonPropertyName("name")] string Name
+);

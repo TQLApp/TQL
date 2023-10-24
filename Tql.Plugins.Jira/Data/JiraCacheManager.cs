@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using Microsoft.Extensions.Logging;
+using System.Globalization;
 using Tql.Abstractions;
 using Tql.Plugins.Jira.Services;
 
@@ -8,13 +9,19 @@ internal class JiraCacheManager : ICacheManager<JiraData>
 {
     private readonly ConnectionManager _connectionManager;
     private readonly JiraApi _api;
+    private readonly ILogger<JiraCacheManager> _logger;
 
     public int Version => 1;
 
-    public JiraCacheManager(ConnectionManager connectionManager, JiraApi api)
+    public JiraCacheManager(
+        ConnectionManager connectionManager,
+        JiraApi api,
+        ILogger<JiraCacheManager> logger
+    )
     {
         _connectionManager = connectionManager;
         _api = api;
+        _logger = logger;
     }
 
     public async Task<JiraData> Create()
@@ -49,7 +56,29 @@ internal class JiraCacheManager : ICacheManager<JiraData>
             )
         ).ToImmutableArray();
 
-        return new JiraConnection(connection.Url, dashboards, projects);
+        var boards = ImmutableArray<JiraBoard>.Empty;
+
+        try
+        {
+            boards = (
+                from board in await client.GetBoardsV3()
+                select new JiraBoard(
+                    board.Id,
+                    board.Name,
+                    board.Type,
+                    board.Location.Name,
+                    board.Location.ProjectKey,
+                    board.Location.ProjectTypeKey,
+                    board.Location.AvatarUri
+                )
+            ).ToImmutableArray();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Failed to load boards");
+        }
+
+        return new JiraConnection(connection.Url, dashboards, projects, boards);
     }
 
     private string SelectAvatarUrl(JiraProjectDto project)
