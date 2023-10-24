@@ -1,25 +1,19 @@
-﻿using SharpVectors.Net;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text.Json.Serialization;
-using Tql.Abstractions;
+﻿using Tql.Abstractions;
 using Tql.Plugins.Jira.Services;
-using Tql.Plugins.Jira.Support;
 
 namespace Tql.Plugins.Jira.Data;
 
 internal class JiraCacheManager : ICacheManager<JiraData>
 {
     private readonly ConnectionManager _connectionManager;
-    private readonly HttpClient _httpClient;
+    private readonly JiraApi _api;
 
     public int Version => 1;
 
-    public JiraCacheManager(ConnectionManager connectionManager, HttpClient httpClient)
+    public JiraCacheManager(ConnectionManager connectionManager, JiraApi api)
     {
         _connectionManager = connectionManager;
-        _httpClient = httpClient;
+        _api = api;
     }
 
     public async Task<JiraData> Create()
@@ -36,56 +30,17 @@ internal class JiraCacheManager : ICacheManager<JiraData>
 
     private async Task<JiraConnection> CreateConnection(Connection connection)
     {
-        var client = connection.CreateClient();
+        var client = _api.GetClient(connection);
 
-        var dashboards = await GetDashboards(connection);
+        var dashboards = await GetDashboards(client);
 
         return new JiraConnection(connection.Url, dashboards);
     }
 
-    private async Task<ImmutableArray<JiraDashboard>> GetDashboards(Connection connection)
+    private async Task<ImmutableArray<JiraDashboard>> GetDashboards(JiraClient client)
     {
-        var results = ImmutableArray.CreateBuilder<JiraDashboard>();
-        var maxResults = 1000;
+        var dashboards = await client.GetDashboards();
 
-        for (var offset = 0; ; offset++)
-        {
-            using var request = new HttpRequestMessage(
-                HttpMethod.Get,
-                $"{connection.Url.TrimEnd('/')}/rest/api/2/dashboard?maxResults={maxResults}&startAt={offset * maxResults}"
-            );
-
-            request.Headers.Authorization = new AuthenticationHeaderValue(
-                "Bearer",
-                Encryption.Unprotect(connection.ProtectedPatToken)
-            );
-
-            using var response = await _httpClient.SendAsync(request);
-
-            var json = await response.Content.ReadAsStringAsync();
-
-            var dto = JsonSerializer.Deserialize<JiraDashboardsDto>(json)!;
-
-            maxResults = dto.MaxResults;
-
-            results.AddRange(dto.Dashboards.Select(p => new JiraDashboard(p.Id, p.Name, p.View)));
-
-            if (dto.Total <= maxResults * (offset + 1))
-                return results.ToImmutable();
-        }
+        return dashboards.Select(p => new JiraDashboard(p.Id, p.Name, p.View)).ToImmutableArray();
     }
 }
-
-internal record JiraDashboardsDto(
-    [property: JsonPropertyName("startAt")] int StartAt,
-    [property: JsonPropertyName("maxResults")] int MaxResults,
-    [property: JsonPropertyName("total")] int Total,
-    [property: JsonPropertyName("dashboards")] ImmutableArray<JiraDashboardDto> Dashboards
-);
-
-internal record JiraDashboardDto(
-    [property: JsonPropertyName("id")] string Id,
-    [property: JsonPropertyName("name")] string Name,
-    [property: JsonPropertyName("self")] string Self,
-    [property: JsonPropertyName("view")] string View
-);

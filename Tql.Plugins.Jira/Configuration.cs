@@ -13,4 +13,10 @@ internal record Configuration(ImmutableArray<Connection> Connections)
     public string ToJson() => JsonSerializer.Serialize(this);
 }
 
-internal record Connection(Guid Id, string Name, string Url, byte[] ProtectedPatToken);
+internal record Connection(
+    Guid Id,
+    string Name,
+    string Url,
+    string? UserName,
+    byte[] ProtectedPassword
+);

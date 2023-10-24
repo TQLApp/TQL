@@ -1,6 +1,8 @@
 ﻿using Tql.Abstractions;
+using Tql.App.Services;
 using Tql.Plugins.Jira.Services;
 using Tql.Plugins.Jira.Support;
+using Button = System.Windows.Controls.Button;
 
 namespace Tql.Plugins.Jira.ConfigurationUI;
 
@@ -8,15 +10,17 @@ internal partial class ConfigurationControl : IConfigurationUI
 {
     private readonly IConfigurationManager _configurationManager;
     private readonly IUI _ui;
+    private readonly JiraApi _api;
     private Guid? _id;
     private bool _dirty;
 
     private new ConfigurationDto DataContext => (ConfigurationDto)base.DataContext;
 
-    public ConfigurationControl(IConfigurationManager configurationManager, IUI ui)
+    public ConfigurationControl(IConfigurationManager configurationManager, IUI ui, JiraApi api)
     {
         _configurationManager = configurationManager;
         _ui = ui;
+        _api = api;
 
         InitializeComponent();
 
@@ -45,12 +49,33 @@ internal partial class ConfigurationControl : IConfigurationUI
         {
             Name = _name.Text,
             Url = url,
-            PatToken = _patToken.Password
+            UserName = _userName.Text,
+            Password = _password.Password
         };
     }
 
     public async Task<SaveStatus> Save()
     {
+        if (_update.IsEnabled)
+        {
+            switch (
+                _ui.ShowConfirmation(
+                    this,
+                    "Do you want to add a new item?",
+                    buttons: DialogCommonButtons.Yes
+                        | DialogCommonButtons.No
+                        | DialogCommonButtons.Cancel
+                )
+            )
+            {
+                case DialogResult.Yes:
+                    _update.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                    break;
+                case DialogResult.Cancel:
+                    return SaveStatus.Failure;
+            }
+        }
+
         if (!_dirty)
             return SaveStatus.Success;
 
@@ -60,7 +85,7 @@ internal partial class ConfigurationControl : IConfigurationUI
         {
             try
             {
-                _ = await connection.CreateClient().Users.GetMyselfAsync();
+                await _api.GetClient(connection).GetDashboards(1);
             }
             catch (Exception ex)
             {
@@ -106,7 +131,8 @@ internal partial class ConfigurationControl : IConfigurationUI
     {
         _name.Text = null;
         _url.Text = null;
-        _patToken.Password = null;
+        _userName.Text = null;
+        _password.Password = null;
         _id = null;
     }
 
@@ -118,7 +144,8 @@ internal partial class ConfigurationControl : IConfigurationUI
         {
             _name.Text = connectionDto.Name;
             _url.Text = connectionDto.Url;
-            _patToken.Password = connectionDto.PatToken;
+            _userName.Text = connectionDto.UserName;
+            _password.Password = connectionDto.Password;
             _id = connectionDto.Id;
         }
 
@@ -129,9 +156,11 @@ internal partial class ConfigurationControl : IConfigurationUI
 
     private void _url_TextChanged(object sender, TextChangedEventArgs e) => UpdateEnabled();
 
-    private void _patToken_PasswordChanged(object sender, RoutedEventArgs e) => UpdateEnabled();
+    private void _userName_TextChanged(object sender, TextChangedEventArgs e) => UpdateEnabled();
 
-    private void _patTokenDocumentation_Click(object sender, RoutedEventArgs e)
+    private void _password_PasswordChanged(object sender, RoutedEventArgs e) => UpdateEnabled();
+
+    private void _passwordDocumentation_Click(object sender, RoutedEventArgs e)
     {
         _ui.OpenUrl(
             "https://confluence.atlassian.com/enterprise/using-personal-access-tokens-1026032365.html#UsingPersonalAccessTokens-CreatingPATsintheapplication"

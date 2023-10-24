@@ -18,7 +18,8 @@ internal class ConfigurationDto
                     {
                         Name = p.Name,
                         Url = p.Url,
-                        ProtectedPatToken = p.ProtectedPatToken
+                        UserName = p.UserName,
+                        ProtectedPassword = p.ProtectedPassword
                     }
             )
         );
@@ -30,7 +31,9 @@ internal class ConfigurationDto
     {
         return new Configuration(
             Connections
-                .Select(p => new Connection(p.Id, p.Name!, p.Url!, p.ProtectedPatToken!))
+                .Select(
+                    p => new Connection(p.Id, p.Name!, p.Url!, p.UserName, p.ProtectedPassword!)
+                )
                 .ToImmutableArray()
         );
     }
@@ -41,12 +44,13 @@ internal class ConnectionDto
     public Guid Id { get; }
     public string? Name { get; set; }
     public string? Url { get; set; }
-    public byte[]? ProtectedPatToken { get; set; }
+    public string? UserName { get; set; }
+    public byte[]? ProtectedPassword { get; set; }
 
-    public string? PatToken
+    public string? Password
     {
-        get => Encryption.Unprotect(ProtectedPatToken);
-        set => ProtectedPatToken = Encryption.Protect(value);
+        get => Encryption.Unprotect(ProtectedPassword);
+        set => ProtectedPassword = Encryption.Protect(value);
     }
 
     public ConnectionDto(Guid id)
@@ -58,6 +62,6 @@ internal class ConnectionDto
     {
         return !string.IsNullOrWhiteSpace(Name)
             && !string.IsNullOrWhiteSpace(Url)
-            && ProtectedPatToken != null;
+            && ProtectedPassword != null;
     }
 }

@@ -15,12 +15,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="Resources\Dashboard.svg" />
+	  <None Remove="Resources\Dashboards.svg" />
+	  <None Remove="Resources\Issues.svg" />
 	  <None Remove="Resources\Jira.svg" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Atlassian.SDK" Version="13.0.0" />
 		<PackageReference Include="NeoSmart.AsyncLock" Version="3.2.1" />
 		<PackageReference Include="System.Text.Json" Version="7.0.3" />
 	</ItemGroup>

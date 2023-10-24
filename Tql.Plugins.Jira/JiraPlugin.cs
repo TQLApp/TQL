@@ -29,6 +29,8 @@ public class JiraPlugin : ITqlPlugin
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddSingleton<ConnectionManager>();
+        services.AddSingleton<IconCacheManager>();
+        services.AddSingleton<JiraApi>();
         services.AddSingleton<ICacheManager<JiraData>, JiraCacheManager>();
 
         services.AddTransient<ConfigurationControl>();
