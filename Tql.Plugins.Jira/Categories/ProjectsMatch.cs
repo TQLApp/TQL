@@ -66,7 +66,8 @@ internal class ProjectsMatch : CachedMatch<JiraData>, ISerializableMatch
         return from project in projects
             select new ProjectMatch(
                 new ProjectMatchDto(_url, project.Key, project.Name, project.AvatarUrl),
-                _iconCacheManager
+                _iconCacheManager,
+                _api
             );
     }
 

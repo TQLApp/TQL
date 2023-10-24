@@ -52,7 +52,12 @@ internal class IssuesMatch : ISearchableMatch, ISerializableMatch
             {
                 var issue = await client.GetIssue(text.ToUpper(), cancellationToken);
 
-                return await CreateMatches(new[] { issue }, client);
+                return await IssueUtils.CreateMatches(
+                    _url,
+                    new[] { issue },
+                    client,
+                    _iconCacheManager
+                );
             }
             catch
             {
@@ -66,28 +71,7 @@ internal class IssuesMatch : ISearchableMatch, ISerializableMatch
             cancellationToken
         );
 
-        return await CreateMatches(issues, client);
-    }
-
-    private async Task<IEnumerable<IMatch>> CreateMatches(
-        IEnumerable<JiraIssueDto> issues,
-        JiraClient client
-    )
-    {
-        var result = issues
-            .Select(
-                p => new IssueMatchDto(_url, p.Key, p.Fields.Summary, p.Fields.IssueType.IconUrl)
-            )
-            .ToList();
-
-        // Seed the icon cache.
-
-        foreach (var icon in result.Select(p => p.IssueTypeIconUrl).Distinct())
-        {
-            await _iconCacheManager.LoadIcon(client, icon);
-        }
-
-        return result.Select(p => new IssueMatch(p, _iconCacheManager));
+        return await IssueUtils.CreateMatches(_url, issues, client, _iconCacheManager);
     }
 
     public string Serialize()

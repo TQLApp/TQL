@@ -8,7 +8,7 @@ internal class BoardMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
 {
     private readonly BoardMatchDto _dto;
 
-    public string Text => $"{_dto.Name} {_dto.MatchType}";
+    public string Text => $"{_dto.Name} - {_dto.MatchType}";
     public ImageSource Icon { get; }
     public MatchTypeId TypeId => TypeIds.Board;
 

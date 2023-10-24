@@ -1,9 +1,6 @@
 ﻿using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Security.Policy;
 using System.Text.Json.Serialization;
-using System.Threading;
-using System.Windows.Input;
 using Tql.Plugins.Jira.Support;
 
 namespace Tql.Plugins.Jira.Services;
