@@ -101,6 +101,8 @@ internal partial class MainWindow
         ResetFontSize();
 
         settings.AttachPropertyChanged(nameof(settings.MainFontSize), (_, _) => ResetFontSize());
+
+        _ui.UINotificationsChanged += (_, _) => ReloadNotifications();
     }
 
     private void ResetFontSize()
@@ -193,7 +195,8 @@ internal partial class MainWindow
         _pendingEnter = false;
 
         _results.ItemsSource = null;
-        _resultsContainer.Visibility = Visibility.Collapsed;
+
+        SetResultsVisibility(Visibility.Collapsed);
 
         _searchManager = _serviceProvider.GetRequiredService<SearchManager>();
         _searchManager.SearchResultsChanged += _searchManager_SearchResultsChanged;
@@ -206,6 +209,8 @@ internal partial class MainWindow
 
         UpdateClearVisibility();
 
+        ReloadNotifications();
+
         // Force recalculation of the height of the window.
 
         UpdateLayout();
@@ -215,6 +220,11 @@ internal partial class MainWindow
         Activate();
 
         _search.Focus();
+    }
+
+    private void ReloadNotifications()
+    {
+        _notificationBars.ItemsSource = _ui.UINotifications;
     }
 
     private void Window_SourceInitialized(object sender, EventArgs e)
@@ -239,11 +249,11 @@ internal partial class MainWindow
         if (_searchManager == null || _searchManager.Results.Length == 0)
         {
             _results.ItemsSource = null;
-            _resultsContainer.Visibility = Visibility.Collapsed;
+            SetResultsVisibility(Visibility.Collapsed);
             return;
         }
 
-        _resultsContainer.Visibility = Visibility.Visible;
+        SetResultsVisibility(Visibility.Visible);
 
         _results.ItemsSource = _searchManager.Results;
 
@@ -260,6 +270,12 @@ internal partial class MainWindow
         }
 
         _pendingEnter = false;
+    }
+
+    private void SetResultsVisibility(Visibility visibility)
+    {
+        _results.Visibility = visibility;
+        _resultsSeparator.Visibility = visibility;
     }
 
     private void _searchManager_StackChanged(object sender, EventArgs e)
@@ -648,5 +664,23 @@ internal partial class MainWindow
             CopyItem(match, searchResult);
 
         _search.Focus();
+    }
+
+    private void NotificationBarUserControl_Activated(object sender, UINotificationEventArgs e)
+    {
+        e.Notification.Activate?.Invoke();
+
+        _ui.RemoveNotificationBar(e.Notification.Key);
+
+        ReloadNotifications();
+    }
+
+    private void NotificationBarUserControl_Dismissed(object sender, UINotificationEventArgs e)
+    {
+        e.Notification.Dismiss?.Invoke();
+
+        _ui.RemoveNotificationBar(e.Notification.Key);
+
+        ReloadNotifications();
     }
 }

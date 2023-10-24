@@ -32,29 +32,41 @@ internal class AzureDevOpsApi
         {
             try
             {
-                if (!_connections.ContainsKey(collectionUri))
-                    _connections[collectionUri] = await AttemptConnect();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogWarning(ex, "Connect failed, retrying");
-
-                // Clear any cached credentials.
-
-                using (
-                    var key = Registry.CurrentUser.OpenSubKey(
-                        @"Software\Microsoft\VSCommon\14.0\ClientServices\TokenStorage\Tql",
-                        true
-                    )
-                )
+                try
                 {
-                    key?.DeleteSubKeyTree(collectionUri);
+                    if (!_connections.ContainsKey(collectionUri))
+                        _connections[collectionUri] = await AttemptConnect();
                 }
+                catch (Exception ex) when (CredentialsExist(collectionUri))
+                {
+                    _logger.LogWarning(ex, "Connect failed, retrying");
 
-                // Remove first because the connect attempt may still throw.
-                _connections.Remove(collectionUri);
+                    // Clear any cached credentials.
 
-                _connections[collectionUri] = await AttemptConnect();
+                    using (
+                        var key = Registry.CurrentUser.OpenSubKey(
+                            @"Software\Microsoft\VSCommon\14.0\ClientServices\TokenStorage\Tql",
+                            true
+                        )
+                    )
+                    {
+                        key?.DeleteSubKeyTree(collectionUri, false);
+                    }
+
+                    // Remove first because the connect attempt may still throw.
+                    _connections.Remove(collectionUri);
+
+                    _connections[collectionUri] = await AttemptConnect();
+                }
+            }
+            catch
+            {
+                _ui.ShowNotificationBar(
+                    $"{AzureDevOpsPlugin.Id}/ConnectionFailed/{collectionUri}",
+                    $"Unable to connect to {collectionUri}. Click here to reconnect.",
+                    () => RetryConnect(collectionUri)
+                );
+                throw;
             }
 
             return await _connections[collectionUri].GetClientAsync<T>();
@@ -88,6 +100,27 @@ internal class AzureDevOpsApi
                 return connection;
             }
         }
+    }
+
+    private async void RetryConnect(string collectionUri)
+    {
+        try
+        {
+            await GetClient<ProjectHttpClient>(collectionUri);
+        }
+        catch
+        {
+            // Ignore.
+        }
+    }
+
+    private static bool CredentialsExist(string collectionUri)
+    {
+        using var key = Registry.CurrentUser.OpenSubKey(
+            $@"Software\Microsoft\VSCommon\14.0\ClientServices\TokenStorage\Tql\{collectionUri}"
+        );
+
+        return key != null;
     }
 
     private class DialogHost : IDialogHost

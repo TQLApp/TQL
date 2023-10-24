@@ -6,6 +6,7 @@ namespace Tql.Abstractions;
 public interface IUI
 {
     Task PerformInteractiveAuthentication(IInteractiveAuthentication interactiveAuthentication);
+
     void OpenUrl(string url);
 
     DialogResult ShowConfirmation(
@@ -23,4 +24,13 @@ public interface IUI
         DialogIcon icon = DialogIcon.Error,
         DialogCommonButtons buttons = DialogCommonButtons.OK
     );
+
+    void ShowNotificationBar(
+        string key,
+        string message,
+        Action? activate = null,
+        Action? dismiss = null
+    );
+
+    void RemoveNotificationBar(string key);
 }

@@ -15,7 +15,7 @@ internal class JiraPeopleDirectory : IPeopleDirectory
         _connection = connection;
         _api = api;
 
-        Id = Encryption.Hash($"{JiraPlugin.Id}\\{connection.Id}");
+        Id = Encryption.Hash($"{JiraPlugin.Id}/{connection.Id}");
         Name = $"JIRA - {connection.Name}";
     }
 

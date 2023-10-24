@@ -13,6 +13,14 @@ internal class UI : IUI
     private readonly ILogger<UI> _logger;
     private SynchronizationContext? _synchronizationContext;
     private MainWindow? _mainWindow;
+    private volatile List<UINotification> _notifications = new();
+    private readonly object _syncRoot = new();
+
+    // This uses the safe publication pattern.
+    // ReSharper disable once InconsistentlySynchronizedField
+    public ImmutableArray<UINotification> UINotifications => _notifications.ToImmutableArray();
+
+    public event EventHandler? UINotificationsChanged;
 
     public UI(ILogger<UI> logger)
     {
@@ -106,4 +114,36 @@ internal class UI : IUI
             (TaskDialogCommonButtons)buttons
         );
     }
+
+    public void ShowNotificationBar(string key, string message, Action? activate, Action? dismiss)
+    {
+        lock (_syncRoot)
+        {
+            var notifications = _notifications.ToList();
+
+            notifications.RemoveAll(p => p.Key == key);
+            notifications.Add(new UINotification(key, message, activate, dismiss));
+
+            _notifications = notifications;
+        }
+
+        _synchronizationContext?.Post(_ => OnUINotificationsChanged(), null);
+    }
+
+    public void RemoveNotificationBar(string key)
+    {
+        lock (_syncRoot)
+        {
+            var notifications = _notifications.ToList();
+
+            notifications.RemoveAll(p => p.Key == key);
+
+            _notifications = notifications;
+        }
+
+        _synchronizationContext?.Post(_ => OnUINotificationsChanged(), null);
+    }
+
+    protected virtual void OnUINotificationsChanged() =>
+        UINotificationsChanged?.Invoke(this, EventArgs.Empty);
 }

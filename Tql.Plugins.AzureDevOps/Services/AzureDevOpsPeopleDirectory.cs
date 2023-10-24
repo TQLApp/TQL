@@ -15,7 +15,7 @@ internal class AzureDevOpsPeopleDirectory : IPeopleDirectory
 
     public AzureDevOpsPeopleDirectory(Connection connection, AzureDevOpsApi api)
     {
-        Id = Encryption.Hash($"{AzureDevOpsPlugin.Id}\\{connection.Url}");
+        Id = Encryption.Hash($"{AzureDevOpsPlugin.Id}/{connection.Url}");
         Name = $"Azure DevOps - {connection.Name}";
 
         _connection = connection;

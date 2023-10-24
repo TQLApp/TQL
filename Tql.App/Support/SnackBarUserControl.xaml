@@ -4,15 +4,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:support="clr-namespace:Tql.App.Support"
+             xmlns:local="clr-namespace:Tql.App.Support"
              IsVisibleChanged="UserControl_IsVisibleChanged">
     <UserControl.Resources>
-        <support:HeightToRadiusConverter x:Key="HeightToRadiusConverter"/>
+        <local:HeightToRadiusConverter x:Key="HeightToRadiusConverter"/>
     </UserControl.Resources>
     
     <Border Background="#e0000000"
             CornerRadius="{Binding ActualHeight, RelativeSource={RelativeSource Self}, Converter={StaticResource HeightToRadiusConverter}}">
-        <TextBlock Text="{Binding Text, RelativeSource={RelativeSource AncestorType=support:SnackBarUserControl}}"
+        <TextBlock Text="{Binding Text, RelativeSource={RelativeSource AncestorType=local:SnackBarUserControl}}"
                    FontSize="14pt"
                    Foreground="#b0ffffff"
                    Padding="28,5,28,8"/>
