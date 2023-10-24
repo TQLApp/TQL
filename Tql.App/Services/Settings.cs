@@ -86,7 +86,7 @@ internal class Settings : INotifyPropertyChanged
 
     public Settings(IStore store)
     {
-        _key = store.CreateBaseKey();
+        _key = ((Store)store).CreateBaseKey();
     }
 
     private string? GetString(string name) => _key.GetValue(name) as string;

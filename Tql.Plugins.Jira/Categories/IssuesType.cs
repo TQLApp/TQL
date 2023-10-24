@@ -36,7 +36,6 @@ internal class IssuesType : IMatchType
             MatchUtils.GetMatchLabel("JIRA Issue", _connectionManager, dto.Url),
             dto.Url,
             _api,
-            _connectionManager,
             _iconCacheManager
         );
     }

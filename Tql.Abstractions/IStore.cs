@@ -4,9 +4,9 @@ namespace Tql.Abstractions;
 
 public interface IStore
 {
-    string UserSettingsFolder { get; }
+    RegistryKey OpenKey(Guid pluginId);
 
-    RegistryKey CreateBaseKey();
+    string GetDataFolder(Guid pluginId);
 
-    RegistryKey CreatePluginKey(Guid pluginId);
+    string GetCacheFolder(Guid pluginId);
 }

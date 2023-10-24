@@ -4,18 +4,18 @@ using Tql.Plugins.Jira.Services;
 
 namespace Tql.Plugins.Jira.Categories;
 
-internal class IssueMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
+internal class ProjectMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
 {
-    private readonly IssueMatchDto _dto;
+    private readonly ProjectMatchDto _dto;
 
-    public string Text => $"{_dto.Key} {_dto.Summary}";
+    public string Text => $"{_dto.Name} Project";
     public ImageSource Icon { get; }
-    public MatchTypeId TypeId => TypeIds.Issue;
+    public MatchTypeId TypeId => TypeIds.Project;
 
-    public IssueMatch(IssueMatchDto dto, IconCacheManager iconCacheManager)
+    public ProjectMatch(ProjectMatchDto dto, IconCacheManager iconCacheManager)
     {
         _dto = dto;
-        Icon = iconCacheManager.GetIcon(dto.IssueTypeIconUrl) ?? Images.Issues;
+        Icon = iconCacheManager.GetIcon(dto.AvatarUrl) ?? Images.Projects;
     }
 
     public Task Run(IServiceProvider serviceProvider, Window owner)
@@ -38,7 +38,7 @@ internal class IssueMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
     }
 }
 
-internal record IssueMatchDto(string Url, string Key, string Summary, string IssueTypeIconUrl)
+internal record ProjectMatchDto(string Url, string Key, string Name, string AvatarUrl)
 {
     public string GetUrl() => $"{Url.TrimEnd('/')}/browse/{Uri.EscapeDataString(Key)}";
 };

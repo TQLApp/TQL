@@ -103,7 +103,7 @@ internal class GitHubApi
     {
         try
         {
-            using var key = _store.CreatePluginKey(GitHubPlugin.Id);
+            using var key = _store.OpenKey(GitHubPlugin.Id);
             using var subKey = key.OpenSubKey("Credentials");
 
             if (subKey?.GetValue(id.ToString()) is string protectedCredentials)
@@ -137,7 +137,7 @@ internal class GitHubApi
             ProtectedData.Protect(stream.ToArray(), null, DataProtectionScope.CurrentUser)
         );
 
-        using var key = _store.CreatePluginKey(GitHubPlugin.Id);
+        using var key = _store.OpenKey(GitHubPlugin.Id);
         using var subKey = key.CreateSubKey("Credentials")!;
 
         subKey.SetValue(id.ToString(), protectedCredentials);

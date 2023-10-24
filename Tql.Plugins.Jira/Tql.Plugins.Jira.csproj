@@ -18,6 +18,7 @@
 	  <None Remove="Resources\Dashboards.svg" />
 	  <None Remove="Resources\Issues.svg" />
 	  <None Remove="Resources\Jira.svg" />
+	  <None Remove="Resources\Projects.svg" />
 	</ItemGroup>
 
 	<ItemGroup>

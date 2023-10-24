@@ -8,7 +8,7 @@ internal class DashboardMatch : IRunnableMatch, ISerializableMatch, ICopyableMat
     private readonly DashboardMatchDto _dto;
 
     public string Text => $"{_dto.Name} Dashboard";
-    public ImageSource Icon => Images.Dashboard;
+    public ImageSource Icon => Images.Dashboards;
     public MatchTypeId TypeId => TypeIds.Dashboard;
 
     public DashboardMatch(DashboardMatchDto dto)
@@ -36,4 +36,4 @@ internal class DashboardMatch : IRunnableMatch, ISerializableMatch, ICopyableMat
     }
 }
 
-internal record DashboardMatchDto(string Url, string Id, string Name, string View);
+internal record DashboardMatchDto(string Url, string Name, string View);

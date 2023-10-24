@@ -7,11 +7,12 @@ namespace Tql.App.Services;
 
 internal class Store : IStore
 {
-    public string UserSettingsFolder { get; }
+    public string DataFolder { get; }
+    public string CacheFolder { get; }
 
     public Store()
     {
-        UserSettingsFolder = Path.Combine(
+        DataFolder = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
 #if DEBUG
             "TQL - Debug"
@@ -20,7 +21,11 @@ internal class Store : IStore
 #endif
         );
 
-        Directory.CreateDirectory(UserSettingsFolder);
+        Directory.CreateDirectory(DataFolder);
+
+        CacheFolder = Path.Combine(DataFolder, "Cache");
+
+        Directory.CreateDirectory(CacheFolder);
     }
 
     public RegistryKey CreateBaseKey()
@@ -34,10 +39,28 @@ internal class Store : IStore
         )!;
     }
 
-    public RegistryKey CreatePluginKey(Guid pluginId)
+    public RegistryKey OpenKey(Guid pluginId)
     {
         using var key = CreateBaseKey();
 
         return key.CreateSubKey($"Plugins\\{pluginId}")!;
+    }
+
+    public string GetDataFolder(Guid pluginId)
+    {
+        var path = Path.Combine(DataFolder, "Plugins", pluginId.ToString());
+
+        Directory.CreateDirectory(path);
+
+        return path;
+    }
+
+    public string GetCacheFolder(Guid pluginId)
+    {
+        var path = Path.Combine(CacheFolder, "Plugins", pluginId.ToString());
+
+        Directory.CreateDirectory(path);
+
+        return path;
     }
 }

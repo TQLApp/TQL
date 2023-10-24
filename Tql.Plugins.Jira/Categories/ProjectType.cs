@@ -4,19 +4,22 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.Jira.Categories;
 
-internal class IssueType : IMatchType
+internal class ProjectType : IMatchType
 {
     private readonly IconCacheManager _iconCacheManager;
 
-    public Guid Id => TypeIds.Issue.Id;
+    public Guid Id => TypeIds.Project.Id;
 
-    public IssueType(IconCacheManager iconCacheManager)
+    public ProjectType(IconCacheManager iconCacheManager)
     {
         _iconCacheManager = iconCacheManager;
     }
 
     public IMatch Deserialize(string json)
     {
-        return new IssueMatch(JsonSerializer.Deserialize<IssueMatchDto>(json)!, _iconCacheManager);
+        return new ProjectMatch(
+            JsonSerializer.Deserialize<ProjectMatchDto>(json)!,
+            _iconCacheManager
+        );
     }
 }

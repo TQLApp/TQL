@@ -113,7 +113,7 @@ internal class ConfigurationManager : IConfigurationManager
     }
 
     private string GetConfigurationFileName() =>
-        Path.Combine(_store.UserSettingsFolder, "Configuration.json");
+        Path.Combine(((Store)_store).DataFolder, "Configuration.json");
 
     protected virtual void OnConfigurationChanged(ConfigurationChangedEventArgs e) =>
         ConfigurationChanged?.Invoke(this, e);

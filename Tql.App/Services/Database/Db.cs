@@ -19,7 +19,7 @@ internal partial class Db : IDb, IDisposable
     {
         SetupDapper();
 
-        var fileName = Path.Combine(store.UserSettingsFolder, "Tql.db");
+        var fileName = Path.Combine(((Store)store).DataFolder, "Tql.db");
         bool exists = File.Exists(fileName);
 
         _connection = new SQLiteConnection($"data source={fileName}");

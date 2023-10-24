@@ -1,4 +1,5 @@
-﻿using Tql.Abstractions;
+﻿using System.Globalization;
+using Tql.Abstractions;
 using Tql.Plugins.Jira.Services;
 
 namespace Tql.Plugins.Jira.Data;
@@ -32,15 +33,34 @@ internal class JiraCacheManager : ICacheManager<JiraData>
     {
         var client = _api.GetClient(connection);
 
-        var dashboards = await GetDashboards(client);
+        var dashboards = (
+            from dashboard in await client.GetDashboards()
+            select new JiraDashboard(dashboard.Id, dashboard.Name, dashboard.View)
+        ).ToImmutableArray();
 
-        return new JiraConnection(connection.Url, dashboards);
+        var projects = (
+            from project in await client.GetProjects()
+            select new JiraProject(
+                project.Id,
+                project.Key,
+                project.Name,
+                SelectAvatarUrl(project),
+                project.ProjectTypeKey
+            )
+        ).ToImmutableArray();
+
+        return new JiraConnection(connection.Url, dashboards, projects);
     }
 
-    private async Task<ImmutableArray<JiraDashboard>> GetDashboards(JiraClient client)
+    private string SelectAvatarUrl(JiraProjectDto project)
     {
-        var dashboards = await client.GetDashboards();
+        return project.AvatarUrls
+            .Select(p => (Size: GetSize(p.Key), Url: p.Value))
+            .OrderByDescending(p => p.Size)
+            .First()
+            .Url;
 
-        return dashboards.Select(p => new JiraDashboard(p.Id, p.Name, p.View)).ToImmutableArray();
+        int GetSize(string key) =>
+            int.Parse(key.Substring(0, key.IndexOf('x')), CultureInfo.InvariantCulture);
     }
 }

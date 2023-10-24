@@ -45,7 +45,6 @@ internal class WorkItemsMatch : ISearchableMatch, ISerializableMatch
             return Array.Empty<IMatch>();
 
         var isId = int.TryParse(text, out int workItemId);
-
         if (isId)
             context.SuppressPreliminaryResults();
 
