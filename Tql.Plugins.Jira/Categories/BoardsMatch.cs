@@ -11,7 +11,7 @@ internal class BoardsMatch : CachedMatch<JiraData>, ISerializableMatch
 {
     private readonly string _url;
     private readonly IconCacheManager _iconCacheManager;
-    private readonly JiraApi _api;
+    private readonly ConfigurationManager _configurationManager;
     private readonly ILogger<BoardsMatch> _logger;
 
     public override string Text { get; }
@@ -23,14 +23,14 @@ internal class BoardsMatch : CachedMatch<JiraData>, ISerializableMatch
         string url,
         ICache<JiraData> cache,
         IconCacheManager iconCacheManager,
-        JiraApi api,
+        ConfigurationManager configurationManager,
         ILogger<BoardsMatch> logger
     )
         : base(cache)
     {
         _url = url;
         _iconCacheManager = iconCacheManager;
-        _api = api;
+        _configurationManager = configurationManager;
         _logger = logger;
 
         Text = text;
@@ -44,7 +44,7 @@ internal class BoardsMatch : CachedMatch<JiraData>, ISerializableMatch
 
         TaskUtils.RunBackground(async () =>
         {
-            var client = _api.GetClient(_url);
+            var client = _configurationManager.GetClient(_url);
 
             foreach (var board in boards)
             {

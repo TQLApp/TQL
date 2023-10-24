@@ -1,5 +1,4 @@
 ﻿using Tql.Plugins.GitHub.Categories;
-using Tql.Plugins.GitHub.Services;
 
 namespace Tql.Plugins.GitHub.Support;
 

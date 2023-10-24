@@ -14,18 +14,22 @@ internal class ProjectMatch
 {
     private readonly ProjectMatchDto _dto;
     private readonly IconCacheManager _iconCacheManager;
-    private readonly JiraApi _api;
+    private readonly ConfigurationManager _configurationManager;
 
     public string Text => $"{_dto.Name} Project";
     public ImageSource Icon { get; }
     public MatchTypeId TypeId => TypeIds.Project;
     public string SearchHint => "Find issues";
 
-    public ProjectMatch(ProjectMatchDto dto, IconCacheManager iconCacheManager, JiraApi api)
+    public ProjectMatch(
+        ProjectMatchDto dto,
+        IconCacheManager iconCacheManager,
+        ConfigurationManager configurationManager
+    )
     {
         _dto = dto;
         _iconCacheManager = iconCacheManager;
-        _api = api;
+        _configurationManager = configurationManager;
 
         Icon = iconCacheManager.GetIcon(dto.AvatarUrl) ?? Images.Projects;
     }
@@ -60,9 +64,9 @@ internal class ProjectMatch
 
         await context.DebounceDelay(cancellationToken);
 
-        var client = _api.GetClient(_dto.Url);
+        var client = _configurationManager.GetClient(_dto.Url);
 
-        var issues = await client.GetIssues(
+        var issues = await client.SearchIssues(
             $"project = \"{_dto.Key}\" and text ~ \"{text.Replace("\"", "\\\"")}*\"",
             100,
             cancellationToken

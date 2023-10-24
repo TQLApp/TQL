@@ -7,14 +7,14 @@ namespace Tql.Plugins.Jira.Categories;
 internal class ProjectType : IMatchType
 {
     private readonly IconCacheManager _iconCacheManager;
-    private readonly JiraApi _api;
+    private readonly ConfigurationManager _configurationManager;
 
     public Guid Id => TypeIds.Project.Id;
 
-    public ProjectType(IconCacheManager iconCacheManager, JiraApi api)
+    public ProjectType(IconCacheManager iconCacheManager, ConfigurationManager configurationManager)
     {
         _iconCacheManager = iconCacheManager;
-        _api = api;
+        _configurationManager = configurationManager;
     }
 
     public IMatch Deserialize(string json)
@@ -22,7 +22,7 @@ internal class ProjectType : IMatchType
         return new ProjectMatch(
             JsonSerializer.Deserialize<ProjectMatchDto>(json)!,
             _iconCacheManager,
-            _api
+            _configurationManager
         );
     }
 }

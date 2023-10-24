@@ -13,7 +13,6 @@ internal class BoardsType : IMatchType
     private readonly ICache<JiraData> _cache;
     private readonly ConfigurationManager _configurationManager;
     private readonly IconCacheManager _iconCacheManager;
-    private readonly JiraApi _api;
     private readonly ILogger<BoardsMatch> _matchLogger;
 
     public Guid Id => TypeIds.Boards.Id;
@@ -22,14 +21,12 @@ internal class BoardsType : IMatchType
         ICache<JiraData> cache,
         ConfigurationManager configurationManager,
         IconCacheManager iconCacheManager,
-        JiraApi api,
         ILogger<BoardsMatch> matchLogger
     )
     {
         _cache = cache;
         _configurationManager = configurationManager;
         _iconCacheManager = iconCacheManager;
-        _api = api;
         _matchLogger = matchLogger;
     }
 
@@ -46,7 +43,7 @@ internal class BoardsType : IMatchType
             dto.Url,
             _cache,
             _iconCacheManager,
-            _api,
+            _configurationManager,
             _matchLogger
         );
     }

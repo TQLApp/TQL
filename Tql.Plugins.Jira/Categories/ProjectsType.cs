@@ -13,7 +13,6 @@ internal class ProjectsType : IMatchType
     private readonly ICache<JiraData> _cache;
     private readonly ConfigurationManager _configurationManager;
     private readonly IconCacheManager _iconCacheManager;
-    private readonly JiraApi _api;
     private readonly ILogger<ProjectsMatch> _matchLogger;
 
     public Guid Id => TypeIds.Projects.Id;
@@ -29,7 +28,6 @@ internal class ProjectsType : IMatchType
         _cache = cache;
         _configurationManager = configurationManager;
         _iconCacheManager = iconCacheManager;
-        _api = api;
         _matchLogger = matchLogger;
     }
 
@@ -46,7 +44,7 @@ internal class ProjectsType : IMatchType
             dto.Url,
             _cache,
             _iconCacheManager,
-            _api,
+            _configurationManager,
             _matchLogger
         );
     }

@@ -121,7 +121,7 @@ internal class JiraClient
         }
     }
 
-    public async Task<ImmutableArray<JiraIssueDto>> GetIssues(
+    public async Task<ImmutableArray<JiraIssueDto>> SearchIssues(
         string jql,
         int? maxResults = default,
         CancellationToken cancellationToken = default
@@ -189,6 +189,34 @@ internal class JiraClient
         );
 
         return await ExecuteJsonRequest<JiraIssueDto>(request, cancellationToken);
+    }
+
+    public async Task<ImmutableArray<JiraUserDto>> SearchUsers(
+        string search,
+        CancellationToken cancellationToken = default
+    )
+    {
+        using var request = new HttpRequestMessage(
+            HttpMethod.Get,
+            $"{_baseUrl}/rest/api/2/user/search?username={Uri.EscapeDataString(search)}"
+        );
+
+        return await ExecuteJsonRequest<ImmutableArray<JiraUserDto>>(request, cancellationToken);
+    }
+
+    public async Task<ImmutableArray<JiraUserV3Dto>> SearchUsersV3(
+        string search,
+        int? maxResults = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var url = $"{_baseUrl}/rest/api/3/user/search?query={Uri.EscapeDataString(search)}";
+        if (maxResults.HasValue)
+            url += $"&maxResults={maxResults}";
+
+        using var request = new HttpRequestMessage(HttpMethod.Get, url);
+
+        return await ExecuteJsonRequest<ImmutableArray<JiraUserV3Dto>>(request, cancellationToken);
     }
 
     private async Task<T> ExecuteJsonRequest<T>(
@@ -280,4 +308,14 @@ internal record JiraBoardLocationV3Dto(
     [property: JsonPropertyName("projectTypeKey")] string ProjectTypeKey,
     [property: JsonPropertyName("avatarURI")] string AvatarUri,
     [property: JsonPropertyName("name")] string Name
+);
+
+internal record JiraUserDto(
+    [property: JsonPropertyName("displayName")] string DisplayName,
+    [property: JsonPropertyName("emailAddress")] string EmailAddress
+);
+
+internal record JiraUserV3Dto(
+    [property: JsonPropertyName("displayName")] string DisplayName,
+    [property: JsonPropertyName("emailAddress")] string EmailAddress
 );

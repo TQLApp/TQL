@@ -1,6 +1,4 @@
-﻿using Tql.Plugins.Jira.Services;
-
-namespace Tql.Plugins.Jira.Support;
+﻿namespace Tql.Plugins.Jira.Support;
 
 internal static class MatchUtils
 {

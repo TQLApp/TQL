@@ -1,6 +1,4 @@
-﻿using Tql.Plugins.AzureDevOps.Services;
-
-namespace Tql.Plugins.AzureDevOps.Support;
+﻿namespace Tql.Plugins.AzureDevOps.Support;
 
 internal static class MatchUtils
 {

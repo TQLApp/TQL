@@ -8,19 +8,13 @@ namespace Tql.Plugins.Jira.Categories;
 [RootMatchType]
 internal class IssuesType : IMatchType
 {
-    private readonly JiraApi _api;
     private readonly ConfigurationManager _configurationManager;
     private readonly IconCacheManager _iconCacheManager;
 
     public Guid Id => TypeIds.Issues.Id;
 
-    public IssuesType(
-        JiraApi api,
-        ConfigurationManager configurationManager,
-        IconCacheManager iconCacheManager
-    )
+    public IssuesType(ConfigurationManager configurationManager, IconCacheManager iconCacheManager)
     {
-        _api = api;
         _configurationManager = configurationManager;
         _iconCacheManager = iconCacheManager;
     }
@@ -36,7 +30,7 @@ internal class IssuesType : IMatchType
         return new IssuesMatch(
             MatchUtils.GetMatchLabel("JIRA Issue", configuration, dto.Url),
             dto.Url,
-            _api,
+            _configurationManager,
             _iconCacheManager
         );
     }

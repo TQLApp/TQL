@@ -13,17 +13,22 @@ internal class IssuesMatch : ISearchableMatch, ISerializableMatch
         new(@"^[A-Z][A-Z]+-\d+$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
     private readonly string _url;
-    private readonly JiraApi _api;
+    private readonly ConfigurationManager _configurationManager;
     private readonly IconCacheManager _iconCacheManager;
 
     public string Text { get; }
     public ImageSource Icon => Images.Issues;
     public MatchTypeId TypeId => TypeIds.Issues;
 
-    public IssuesMatch(string text, string url, JiraApi api, IconCacheManager iconCacheManager)
+    public IssuesMatch(
+        string text,
+        string url,
+        ConfigurationManager configurationManager,
+        IconCacheManager iconCacheManager
+    )
     {
         _url = url;
-        _api = api;
+        _configurationManager = configurationManager;
         _iconCacheManager = iconCacheManager;
 
         Text = text;
@@ -44,7 +49,7 @@ internal class IssuesMatch : ISearchableMatch, ISerializableMatch
 
         await context.DebounceDelay(cancellationToken);
 
-        var client = _api.GetClient(_url);
+        var client = _configurationManager.GetClient(_url);
 
         if (maybeKey)
         {
@@ -65,7 +70,7 @@ internal class IssuesMatch : ISearchableMatch, ISerializableMatch
             }
         }
 
-        var issues = await client.GetIssues(
+        var issues = await client.SearchIssues(
             $"text ~ \"{text.Replace("\"", "\\\"")}*\"",
             100,
             cancellationToken

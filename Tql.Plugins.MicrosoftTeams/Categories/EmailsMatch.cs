@@ -1,5 +1,4 @@
 ﻿using Tql.Abstractions;
-using Tql.Plugins.MicrosoftTeams.Services;
 
 namespace Tql.Plugins.MicrosoftTeams.Categories;
 
