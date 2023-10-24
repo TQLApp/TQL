@@ -8,7 +8,7 @@ internal class BoardMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
 {
     private readonly BoardMatchDto _dto;
 
-    public string Text => $"{_dto.Name} Board";
+    public string Text => $"{_dto.Name} {_dto.MatchType}";
     public ImageSource Icon { get; }
     public MatchTypeId TypeId => TypeIds.Board;
 
@@ -44,9 +44,32 @@ internal record BoardMatchDto(
     string Name,
     string ProjectKey,
     string ProjectTypeKey,
-    string AvatarUrl
+    string AvatarUrl,
+    BoardMatchType MatchType
 )
 {
-    public string GetUrl() =>
-        $"{Url.TrimEnd('/')}/jira/{Uri.EscapeDataString(ProjectTypeKey)}/projects/{Uri.EscapeDataString(ProjectKey)}/boards/{Id}";
+    public string GetUrl()
+    {
+        var url =
+            $"{Url.TrimEnd('/')}/jira/{Uri.EscapeDataString(ProjectTypeKey)}/projects/{Uri.EscapeDataString(ProjectKey)}/boards/{Id}";
+
+        switch (MatchType)
+        {
+            case BoardMatchType.Backlog:
+                url += "/backlog";
+                break;
+            case BoardMatchType.Timeline:
+                url += "/timeline";
+                break;
+        }
+
+        return url;
+    }
 };
+
+internal enum BoardMatchType
+{
+    Backlog,
+    Board,
+    Timeline
+}

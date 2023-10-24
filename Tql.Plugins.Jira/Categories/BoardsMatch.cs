@@ -40,30 +40,31 @@ internal class BoardsMatch : CachedMatch<JiraData>, ISerializableMatch
     {
         // Download the Board avatars in the background.
 
-        var Boards = data.GetConnection(_url).Boards;
+        var boards = data.GetConnection(_url).Boards;
 
         TaskUtils.RunBackground(async () =>
         {
             var client = _api.GetClient(_url);
 
-            foreach (var Board in Boards)
+            foreach (var board in boards)
             {
                 try
                 {
-                    await _iconCacheManager.LoadIcon(client, Board.AvatarUrl);
+                    await _iconCacheManager.LoadIcon(client, board.AvatarUrl);
                 }
                 catch (Exception ex)
                 {
                     _logger.LogWarning(
                         ex,
                         "Failed to download Board avatar '{Url}'",
-                        Board.AvatarUrl
+                        board.AvatarUrl
                     );
                 }
             }
         });
 
-        return from board in Boards
+        return from matchType in EnumEx.GetValues<BoardMatchType>()
+            from board in boards
             select new BoardMatch(
                 new BoardMatchDto(
                     _url,
@@ -71,7 +72,8 @@ internal class BoardsMatch : CachedMatch<JiraData>, ISerializableMatch
                     board.Name,
                     board.ProjectKey,
                     board.ProjectTypeKey,
-                    board.AvatarUrl
+                    board.AvatarUrl,
+                    matchType
                 ),
                 _iconCacheManager
             );
