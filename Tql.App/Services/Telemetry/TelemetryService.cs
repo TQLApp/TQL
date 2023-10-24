@@ -25,6 +25,8 @@ internal class TelemetryService : IDisposable
         LoadSettings(settings);
 
         _configuration = TelemetryConfiguration.CreateDefault();
+        _configuration.TelemetryProcessorChainBuilder.Use(next => new PIITelemetryProcessor(next));
+        _configuration.TelemetryProcessorChainBuilder.Build();
 #if DEBUG
         _configuration.ConnectionString = Constants.ApplicationInsightsDevelopmentConnectionString;
         _configuration.TelemetryChannel.DeveloperMode = true;
