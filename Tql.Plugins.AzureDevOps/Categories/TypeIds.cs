@@ -17,9 +17,6 @@ internal static class TypeIds
     );
     public static readonly MatchTypeId Dashboard = CreateId("c1779024-b674-4244-9a97-771a9c18ffc4");
 
-    public static readonly MatchTypeId Emails = CreateId("f1d9c46b-6297-4156-abed-09bf4f44d7cc");
-    public static readonly MatchTypeId Email = CreateId("bee10761-ed35-4acf-8899-fc243869d10c");
-
     public static readonly MatchTypeId News = CreateId("2e9aece7-2741-4559-8b81-3964be627c81");
     public static readonly MatchTypeId New = CreateId("1149d624-9dcf-4fc5-bdf5-41f2bdfd2217");
 
@@ -37,23 +34,6 @@ internal static class TypeIds
     );
     public static readonly MatchTypeId RepositoryFilePath = CreateId(
         "07461529-2c9a-4bda-be99-a94b8640fe7d"
-    );
-
-    public static readonly MatchTypeId TeamsCalls = CreateId(
-        "369e9586-29a5-4d1b-8df0-7d341050066d"
-    );
-    public static readonly MatchTypeId TeamsCall = CreateId("cc8d4d3a-2d37-4c61-87cf-17c9385c104d");
-
-    public static readonly MatchTypeId TeamsChats = CreateId(
-        "23abe171-b81d-4985-a78a-dc22c4e5ec3b"
-    );
-    public static readonly MatchTypeId TeamsChat = CreateId("d0dc927b-0240-4a33-a875-bec8ecd74139");
-
-    public static readonly MatchTypeId TeamsVideos = CreateId(
-        "7bd64918-24c9-4342-b893-eb9292e628de"
-    );
-    public static readonly MatchTypeId TeamsVideo = CreateId(
-        "cf0b3b9f-8085-4be7-a8ae-cef9b6d03b0e"
     );
 
     public static readonly MatchTypeId WorkItems = CreateId("3d57f05c-fbdd-4383-b305-3f48b2f018d2");

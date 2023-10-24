@@ -16,6 +16,7 @@ using Tql.Plugins.Azure;
 using Tql.Plugins.AzureDevOps;
 using Tql.Plugins.GitHub;
 using Tql.Plugins.Jira;
+using Tql.Plugins.MicrosoftTeams;
 using ConfigurationManager = Tql.App.Services.ConfigurationManager;
 
 namespace Tql.App;
@@ -130,7 +131,8 @@ public partial class App
             typeof(AzureDevOpsPlugin).Assembly,
             typeof(AzurePlugin).Assembly,
             typeof(GitHubPlugin).Assembly,
-            typeof(JiraPlugin).Assembly
+            typeof(JiraPlugin).Assembly,
+            typeof(MicrosoftTeamsPlugin).Assembly
         };
 
         foreach (var assembly in assemblies)
@@ -163,6 +165,7 @@ public partial class App
         builder.AddSingleton<HttpClient>();
         builder.AddSingleton<UpdateChecker>();
         builder.AddSingleton<TelemetryService>();
+        builder.AddSingleton<IPeopleDirectoryManager, PeopleDirectoryManager>();
 
         builder.AddTransient<MainWindow>();
         builder.AddTransient<ConfigurationWindow>();

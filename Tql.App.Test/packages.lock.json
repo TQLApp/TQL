@@ -995,7 +995,8 @@
           "Tql.Plugins.Azure": "[1.0.0, )",
           "Tql.Plugins.AzureDevOps": "[1.0.0, )",
           "Tql.Plugins.GitHub": "[1.0.0, )",
-          "Tql.Plugins.Jira": "[1.0.0, )"
+          "Tql.Plugins.Jira": "[1.0.0, )",
+          "Tql.Plugins.MicrosoftTeams": "[1.0.0, )"
         }
       },
       "tql.interop": {
@@ -1034,6 +1035,14 @@
         }
       },
       "tql.plugins.jira": {
+        "type": "Project",
+        "dependencies": {
+          "NeoSmart.AsyncLock": "[3.2.1, )",
+          "System.Text.Json": "[7.0.3, )",
+          "Tql.Utilities": "[1.0.0, )"
+        }
+      },
+      "tql.plugins.microsoftteams": {
         "type": "Project",
         "dependencies": {
           "NeoSmart.AsyncLock": "[3.2.1, )",

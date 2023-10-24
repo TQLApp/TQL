@@ -28,7 +28,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tql.Plugins.Azure.Resources
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tql.Plugins.GitHub", "Tql.Plugins.GitHub\Tql.Plugins.GitHub.csproj", "{AEA1E75D-5444-4496-B27A-E5794FC1ED90}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tql.Plugins.Jira", "Tql.Plugins.Jira\Tql.Plugins.Jira.csproj", "{1C729906-D7AD-4AFF-A885-6DDE561438E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tql.Plugins.Jira", "Tql.Plugins.Jira\Tql.Plugins.Jira.csproj", "{1C729906-D7AD-4AFF-A885-6DDE561438E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tql.Plugins.MicrosoftTeams", "Tql.Plugins.MicrosoftTeams\Tql.Plugins.MicrosoftTeams.csproj", "{DF829FD0-CB9D-4229-B010-AB31851ADC2A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -76,6 +78,10 @@ Global
 		{1C729906-D7AD-4AFF-A885-6DDE561438E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C729906-D7AD-4AFF-A885-6DDE561438E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C729906-D7AD-4AFF-A885-6DDE561438E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF829FD0-CB9D-4229-B010-AB31851ADC2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF829FD0-CB9D-4229-B010-AB31851ADC2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF829FD0-CB9D-4229-B010-AB31851ADC2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF829FD0-CB9D-4229-B010-AB31851ADC2A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -91,6 +97,7 @@ Global
 		{F334EB1B-05E6-47FF-B88C-806F2288E3E8} = {E67CF545-0D68-469F-BD58-DAC8EDCE4562}
 		{AEA1E75D-5444-4496-B27A-E5794FC1ED90} = {E67CF545-0D68-469F-BD58-DAC8EDCE4562}
 		{1C729906-D7AD-4AFF-A885-6DDE561438E6} = {E67CF545-0D68-469F-BD58-DAC8EDCE4562}
+		{DF829FD0-CB9D-4229-B010-AB31851ADC2A} = {E67CF545-0D68-469F-BD58-DAC8EDCE4562}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {473D3E4B-C738-47D6-8D01-1D80FA3D6F49}

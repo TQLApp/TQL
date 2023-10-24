@@ -1024,6 +1024,14 @@
           "Tql.Utilities": "[1.0.0, )"
         }
       },
+      "tql.plugins.microsoftteams": {
+        "type": "Project",
+        "dependencies": {
+          "NeoSmart.AsyncLock": "[3.2.1, )",
+          "System.Text.Json": "[7.0.3, )",
+          "Tql.Utilities": "[1.0.0, )"
+        }
+      },
       "tql.utilities": {
         "type": "Project",
         "dependencies": {
