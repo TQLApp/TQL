@@ -25,13 +25,11 @@
                         <GridViewColumn
                                 DisplayMemberBinding="{Binding Path=Name}"
                                 Width="200"
-                                Header="Name"
-                                />
+                                Header="Name" />
                         <GridViewColumn
                                 DisplayMemberBinding="{Binding Path=Url}"
                                 Width="200"
-                                Header="URL"
-                                />
+                                Header="URL" />
                     </GridView>
                 </ListView.View>
             </ListView>

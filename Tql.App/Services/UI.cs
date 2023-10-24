@@ -1,6 +1,10 @@
 ﻿using System.Diagnostics;
+using System.Windows.Forms;
 using Microsoft.Extensions.Logging;
 using Tql.Abstractions;
+using Tql.App.Support;
+using Tql.Interop;
+using Application = System.Windows.Application;
 
 namespace Tql.App.Services;
 
@@ -67,5 +71,39 @@ internal class UI : IUI
     public void Shutdown()
     {
         _synchronizationContext?.Post(_ => Application.Current.Shutdown(), null);
+    }
+
+    public DialogResult ShowConfirmation(
+        UIElement owner,
+        string title,
+        string? subtitle = null,
+        DialogCommonButtons buttons = DialogCommonButtons.Yes | DialogCommonButtons.No,
+        DialogIcon icon = DialogIcon.Warning
+    )
+    {
+        return TaskDialogEx.Confirm(
+            owner,
+            title,
+            subtitle,
+            (TaskDialogCommonButtons)buttons,
+            (TaskDialogIcon)icon
+        );
+    }
+
+    public DialogResult ShowError(
+        UIElement owner,
+        string title,
+        Exception exception,
+        DialogIcon icon = DialogIcon.Error,
+        DialogCommonButtons buttons = DialogCommonButtons.OK
+    )
+    {
+        return TaskDialogEx.Error(
+            owner,
+            title,
+            exception,
+            (TaskDialogIcon)icon,
+            (TaskDialogCommonButtons)buttons
+        );
     }
 }

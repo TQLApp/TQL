@@ -5,6 +5,7 @@
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:utilities="clr-namespace:Tql.Utilities;assembly=Tql.Utilities"
+                    xmlns:ap="clr-namespace:Tql.App.Themes.Attached"
                     mc:Ignorable="d"
                     Title="Techie's Quick Launcher - Configuration"
                     Height="450" Width="800"
@@ -22,6 +23,7 @@
         </Grid.ColumnDefinitions>
         <TreeView x:Name="_pages"
                   Margin="3"
+                  ap:TreeViewHelper.ShowLines="false"
                   SelectedItemChanged="_pages_SelectedItemChanged" />
         <ScrollViewer x:Name="_container"
                       Width="Auto"

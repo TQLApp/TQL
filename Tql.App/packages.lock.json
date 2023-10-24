@@ -89,6 +89,15 @@
           "Stub.System.Data.SQLite.Core.NetFramework": "[1.0.118]"
         }
       },
+      "Atlassian.SDK": {
+        "type": "Transitive",
+        "resolved": "13.0.0",
+        "contentHash": "6bmvMumb/WZdsLtAM+sJVh8tjr34CrkbuAAt+3GaVzf6dv7rRd0y5uT5MNRY8ZgxCgq3N9WT1fQM37fR+z7tdA==",
+        "dependencies": {
+          "Newtonsoft.Json": "10.0.3",
+          "RestSharp": "106.12.0"
+        }
+      },
       "Azure.Core": {
         "type": "Transitive",
         "resolved": "1.35.0",
@@ -629,6 +638,11 @@
         "resolved": "8.1.1",
         "contentHash": "qrRUuJSkmCht+kG4Gf01jtbzNhYbUssy99VsUYlk9d/Z3vFCRpLn7Iulh3V3OWhpWaeHfHUKTMx9VbOB1uoo/A=="
       },
+      "RestSharp": {
+        "type": "Transitive",
+        "resolved": "106.12.0",
+        "contentHash": "irOsQHe5nTJB0BKxGQnTX1dsgCPl5dLTxvL7gbl98JiFPiHMN4wpFyUG/66ZpaFCsIrPKh6XwozWXlwYe9JwYQ=="
+      },
       "SharpVectors.Wpf": {
         "type": "Transitive",
         "resolved": "1.8.2",
@@ -1012,6 +1026,15 @@
           "HtmlAgilityPack": "[1.11.54, )",
           "NeoSmart.AsyncLock": "[3.2.1, )",
           "Octokit": "[8.1.1, )",
+          "System.Text.Json": "[7.0.3, )",
+          "Tql.Utilities": "[1.0.0, )"
+        }
+      },
+      "tql.plugins.jira": {
+        "type": "Project",
+        "dependencies": {
+          "Atlassian.SDK": "[13.0.0, )",
+          "NeoSmart.AsyncLock": "[3.2.1, )",
           "System.Text.Json": "[7.0.3, )",
           "Tql.Utilities": "[1.0.0, )"
         }

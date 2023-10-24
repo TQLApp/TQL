@@ -34,15 +34,24 @@ internal partial class ConfigurationWindow
         _container.Content = (UIElement?)((TreeViewItem?)e.NewValue)?.Tag;
     }
 
-    private void _acceptButton_Click(object sender, RoutedEventArgs e)
+    private async void _acceptButton_Click(object sender, RoutedEventArgs e)
     {
-        foreach (TreeViewItem page in _pages.Items)
-        {
-            var status = ((IConfigurationUI)page.Tag).Save();
-            if (status == SaveStatus.Failure)
-                return;
-        }
+        IsEnabled = false;
 
-        DialogResult = true;
+        try
+        {
+            foreach (TreeViewItem page in _pages.Items)
+            {
+                var status = await ((IConfigurationUI)page.Tag).Save();
+                if (status == SaveStatus.Failure)
+                    return;
+            }
+
+            DialogResult = true;
+        }
+        finally
+        {
+            IsEnabled = true;
+        }
     }
 }

@@ -4031,8 +4031,8 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
 
-                        <Rectangle x:Name="HorLn" Margin="9,1,0,0" Height="1" Stroke="{DynamicResource ABrush.Tone7.Border.Static}" StrokeDashCap="Square" StrokeDashArray="0,3" StrokeDashOffset="1" SnapsToDevicePixels="True"/>
-                        <Rectangle x:Name="VerLn" Width="1" Stroke="{DynamicResource ABrush.Tone7.Border.Static}" StrokeDashCap="Square" StrokeDashArray="0,3" Margin="0,0,1,0" Grid.RowSpan="2" SnapsToDevicePixels="true" Fill="{DynamicResource ABrush.Tone7.Border.Static}"/>
+                        <Rectangle x:Name="HorLn" Margin="9,1,0,0" Height="1" Stroke="{DynamicResource ABrush.Tone7.Border.Static}" StrokeDashCap="Square" StrokeDashArray="0,3" StrokeDashOffset="1" SnapsToDevicePixels="True" Visibility="{Binding (ap:TreeViewHelper.ShowLines), RelativeSource={RelativeSource AncestorType={x:Type TreeView}}, Converter={StaticResource B2VConverter}}"/>
+                        <Rectangle x:Name="VerLn" Width="1" Stroke="{DynamicResource ABrush.Tone7.Border.Static}" StrokeDashCap="Square" StrokeDashArray="0,3" Margin="0,0,1,0" Grid.RowSpan="2" SnapsToDevicePixels="true" Fill="{DynamicResource ABrush.Tone7.Border.Static}" Visibility="{Binding (ap:TreeViewHelper.ShowLines), RelativeSource={RelativeSource AncestorType={x:Type TreeView}}, Converter={StaticResource B2VConverter}}"/>
 
                         <ToggleButton x:Name="Expander" ClickMode="Press"
                                       IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"
@@ -4054,7 +4054,7 @@
                         </Trigger>
                         <Trigger Property="HasItems" Value="false">
                             <Setter Property="Visibility" TargetName="Expander" Value="Hidden"/>
-                            <Setter Property="Visibility" TargetName="HorLn" Value="Visible"/>
+                            <Setter Property="Visibility" TargetName="HorLn" Value="{Binding (ap:TreeViewHelper.ShowLines), RelativeSource={RelativeSource AncestorType={x:Type TreeView}}, Converter={StaticResource B2VConverter}}"/>
                             <Setter Property="Grid.RowSpan" TargetName="VerLn" Value="2"/>
                             <Setter Property="Grid.Row" TargetName="VerLn" Value="0"/>
                         </Trigger>
@@ -4177,6 +4177,7 @@
         <Setter Property="ScrollViewer.PanningMode" Value="Both"/>
         <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="ap:TreeViewHelper.ShowLines" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TreeView}">

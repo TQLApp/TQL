@@ -1,24 +1,26 @@
 ﻿using Tql.Abstractions;
-using Tql.Plugins.AzureDevOps.Data;
+using Tql.Plugins.Jira.Services;
 
-namespace Tql.Plugins.AzureDevOps.ConfigurationUI;
+namespace Tql.Plugins.Jira.ConfigurationUI;
 
 internal partial class ConfigurationControl : IConfigurationUI
 {
     private readonly IConfigurationManager _configurationManager;
-    private readonly ICache<AzureData> _cache;
+    private readonly IUI _ui;
+    private Guid? _id;
+    private bool _dirty;
 
     private new ConfigurationDto DataContext => (ConfigurationDto)base.DataContext;
 
-    public ConfigurationControl(IConfigurationManager configurationManager, ICache<AzureData> cache)
+    public ConfigurationControl(IConfigurationManager configurationManager, IUI ui)
     {
         _configurationManager = configurationManager;
-        _cache = cache;
+        _ui = ui;
 
         InitializeComponent();
 
         var configuration = Configuration.FromJson(
-            configurationManager.GetConfiguration(AzureDevOpsPlugin.Id)
+            configurationManager.GetConfiguration(JiraPlugin.Id)
         );
 
         base.DataContext = ConfigurationDto.FromConfiguration(configuration);
@@ -32,18 +34,39 @@ internal partial class ConfigurationControl : IConfigurationUI
         _update.IsEnabled = CreateConnectionDto().GetIsValid();
     }
 
-    private ConnectionDto CreateConnectionDto() => new() { Name = _name.Text, Url = _url.Text };
+    private ConnectionDto CreateConnectionDto() =>
+        new(_id ?? Guid.NewGuid())
+        {
+            Name = _name.Text,
+            Url = _url.Text,
+            PatToken = _patToken.Password
+        };
 
-    public Task<SaveStatus> Save()
+    public async Task<SaveStatus> Save()
     {
-        _configurationManager.SetConfiguration(
-            AzureDevOpsPlugin.Id,
-            DataContext.ToConfiguration().ToJson()
-        );
+        if (!_dirty)
+            return SaveStatus.Success;
 
-        _cache.Invalidate();
+        var configuration = DataContext.ToConfiguration();
 
-        return Task.FromResult(SaveStatus.Success);
+        foreach (var connection in configuration.Connections)
+        {
+            try
+            {
+                var client = JiraApi.CreateClient(connection);
+
+                _ = await client.Users.GetMyselfAsync();
+            }
+            catch (Exception ex)
+            {
+                _ui.ShowError(this, $"Failed to connect to {connection.Name}", ex);
+                return SaveStatus.Failure;
+            }
+        }
+
+        _configurationManager.SetConfiguration(JiraPlugin.Id, configuration.ToJson());
+
+        return SaveStatus.Success;
     }
 
     private void _add_Click(object sender, RoutedEventArgs e)
@@ -56,6 +79,10 @@ internal partial class ConfigurationControl : IConfigurationUI
     private void _delete_Click(object sender, RoutedEventArgs e)
     {
         DataContext.Connections.Remove((ConnectionDto)_connections.SelectedItem);
+
+        _dirty = true;
+
+        ClearEdit();
     }
 
     private void _update_Click(object sender, RoutedEventArgs e)
@@ -65,6 +92,8 @@ internal partial class ConfigurationControl : IConfigurationUI
         else
             DataContext.Connections.Add(CreateConnectionDto());
 
+        _dirty = true;
+
         ClearEdit();
     }
 
@@ -72,6 +101,8 @@ internal partial class ConfigurationControl : IConfigurationUI
     {
         _name.Text = null;
         _url.Text = null;
+        _patToken.Password = null;
+        _id = null;
     }
 
     private void _connections_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -82,6 +113,8 @@ internal partial class ConfigurationControl : IConfigurationUI
         {
             _name.Text = connectionDto.Name;
             _url.Text = connectionDto.Url;
+            _patToken.Password = connectionDto.PatToken;
+            _id = connectionDto.Id;
         }
 
         UpdateEnabled();
@@ -90,4 +123,13 @@ internal partial class ConfigurationControl : IConfigurationUI
     private void _name_TextChanged(object sender, TextChangedEventArgs e) => UpdateEnabled();
 
     private void _url_TextChanged(object sender, TextChangedEventArgs e) => UpdateEnabled();
+
+    private void _patToken_PasswordChanged(object sender, RoutedEventArgs e) => UpdateEnabled();
+
+    private void _patTokenDocumentation_Click(object sender, RoutedEventArgs e)
+    {
+        _ui.OpenUrl(
+            "https://confluence.atlassian.com/enterprise/using-personal-access-tokens-1026032365.html#UsingPersonalAccessTokens-CreatingPATsintheapplication"
+        );
+    }
 }

@@ -48,7 +48,7 @@ internal partial class GeneralConfigurationControl : IConfigurationUI
         _trackErrors.IsChecked = _loadedEnableExceptionTelemetry;
     }
 
-    public SaveStatus Save()
+    public Task<SaveStatus> Save()
     {
         if (int.TryParse(_historyInRootResults.Text, out int historyInRootResults))
             _settings.HistoryInRootResults = historyInRootResults;
@@ -78,7 +78,7 @@ internal partial class GeneralConfigurationControl : IConfigurationUI
         if (_trackErrors.IsChecked != _loadedEnableExceptionTelemetry)
             _settings.EnableExceptionTelemetry = _trackErrors.IsChecked;
 
-        return SaveStatus.Success;
+        return Task.FromResult(SaveStatus.Success);
     }
 
     private void _mainWindowTintReset_Click(object sender, RoutedEventArgs e)

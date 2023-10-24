@@ -32,14 +32,14 @@ internal partial class ConfigurationControl : IConfigurationUI
 
     private ConnectionDto CreateConnectionDto() => new(_id ?? Guid.NewGuid()) { Name = _name.Text };
 
-    public SaveStatus Save()
+    public Task<SaveStatus> Save()
     {
         _configurationManager.SetConfiguration(
             AzurePlugin.Id,
             DataContext.ToConfiguration().ToJson()
         );
 
-        return SaveStatus.Success;
+        return Task.FromResult(SaveStatus.Success);
     }
 
     private void _add_Click(object sender, RoutedEventArgs e)

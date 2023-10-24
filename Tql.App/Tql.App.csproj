@@ -52,6 +52,7 @@
 		<ProjectReference Include="..\Tql.Plugins.AzureDevOps\Tql.Plugins.AzureDevOps.csproj" />
 		<ProjectReference Include="..\Tql.Plugins.Azure\Tql.Plugins.Azure.csproj" />
 		<ProjectReference Include="..\Tql.Plugins.GitHub\Tql.Plugins.GitHub.csproj" />
+		<ProjectReference Include="..\Tql.Plugins.Jira\Tql.Plugins.Jira.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -5,7 +5,7 @@
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:support="clr-namespace:Tql.App.Support"
-                    xmlns:attached="clr-namespace:Tql.App.Themes.Attached"
+                    xmlns:ap="clr-namespace:Tql.App.Themes.Attached"
                     xmlns:app="clr-namespace:Tql.App"
                     mc:Ignorable="d"
                     Title="Techie's Quick Launcher"
@@ -64,7 +64,7 @@
                          AcceptsTab="True"
                          AcceptsReturn="True"
                          Grid.Column="1"
-                         attached:TextHinting.ShowWhenFocused="True">
+                         ap:TextHinting.ShowWhenFocused="True">
                     <TextBox.CaretBrush>
                         <SolidColorBrush Color="Silver"/>
                     </TextBox.CaretBrush>

@@ -2,5 +2,5 @@
 
 public interface IConfigurationUI
 {
-    SaveStatus Save();
+    Task<SaveStatus> Save();
 }

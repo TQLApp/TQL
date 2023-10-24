@@ -15,6 +15,7 @@ using Tql.App.Support;
 using Tql.Plugins.Azure;
 using Tql.Plugins.AzureDevOps;
 using Tql.Plugins.GitHub;
+using Tql.Plugins.Jira;
 using ConfigurationManager = Tql.App.Services.ConfigurationManager;
 
 namespace Tql.App;
@@ -128,7 +129,8 @@ public partial class App
         {
             typeof(AzureDevOpsPlugin).Assembly,
             typeof(AzurePlugin).Assembly,
-            typeof(GitHubPlugin).Assembly
+            typeof(GitHubPlugin).Assembly,
+            typeof(JiraPlugin).Assembly
         };
 
         foreach (var assembly in assemblies)
