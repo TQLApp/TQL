@@ -497,6 +497,20 @@
           "Newtonsoft.Json": "13.0.2"
         }
       },
+      "Microsoft.TeamFoundationServer.ExtendedClient": {
+        "type": "Transitive",
+        "resolved": "19.227.0-preview",
+        "contentHash": "jot41NdYP+kqdrjsNC26jGYYFiwIqiY+asgb5eSAJ389ohiV3tcWWLnQ6InghnMQqFslvJ5U/gzCiLyDBM2/yw==",
+        "dependencies": {
+          "Microsoft.AspNet.WebApi.Client": "5.2.7",
+          "Microsoft.AspNet.WebApi.Core": "5.2.7",
+          "Microsoft.TeamFoundationServer.Client": "[19.227.0-preview]",
+          "Microsoft.VisualStudio.Services.Client": "[19.227.0-preview]",
+          "Microsoft.VisualStudio.Services.InteractiveClient": "[19.227.0-preview]",
+          "Newtonsoft.Json": "13.0.2",
+          "System.IdentityModel.Tokens.Jwt": "6.30.1"
+        }
+      },
       "Microsoft.VisualStudio.Services.Client": {
         "type": "Transitive",
         "resolved": "19.227.0-preview",
@@ -997,9 +1011,8 @@
       "tql.plugins.azuredevops": {
         "type": "Project",
         "dependencies": {
-          "Microsoft.TeamFoundationServer.Client": "[19.227.0-preview, )",
+          "Microsoft.TeamFoundationServer.ExtendedClient": "[19.227.0-preview, )",
           "Microsoft.VisualStudio.Services.ExtensionManagement.WebApi": "[19.227.0-preview, )",
-          "Microsoft.VisualStudio.Services.InteractiveClient": "[19.227.0-preview, )",
           "Microsoft.VisualStudio.Services.Search.Client": "[19.227.0-preview, )",
           "NeoSmart.AsyncLock": "[3.2.1, )",
           "System.Text.Json": "[7.0.3, )",
