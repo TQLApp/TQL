@@ -11,8 +11,12 @@ internal class IssuesType : IssuesTypeBase
 {
     public override Guid Id => TypeIds.Issues.Id;
 
-    public IssuesType(ConnectionManager connectionManager, GitHubApi api, ICache<GitHubData> cache)
-        : base(connectionManager, api, cache, IssueTypeQualifier.Issue) { }
+    public IssuesType(
+        ConfigurationManager configurationManager,
+        GitHubApi api,
+        ICache<GitHubData> cache
+    )
+        : base(configurationManager, api, cache, IssueTypeQualifier.Issue) { }
 
     protected override IssuesMatchBase CreateMatch(
         string text,

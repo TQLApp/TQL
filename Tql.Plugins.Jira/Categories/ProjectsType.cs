@@ -11,7 +11,7 @@ namespace Tql.Plugins.Jira.Categories;
 internal class ProjectsType : IMatchType
 {
     private readonly ICache<JiraData> _cache;
-    private readonly ConnectionManager _connectionManager;
+    private readonly ConfigurationManager _configurationManager;
     private readonly IconCacheManager _iconCacheManager;
     private readonly JiraApi _api;
     private readonly ILogger<ProjectsMatch> _matchLogger;
@@ -20,14 +20,14 @@ internal class ProjectsType : IMatchType
 
     public ProjectsType(
         ICache<JiraData> cache,
-        ConnectionManager connectionManager,
+        ConfigurationManager configurationManager,
         IconCacheManager iconCacheManager,
         JiraApi api,
         ILogger<ProjectsMatch> matchLogger
     )
     {
         _cache = cache;
-        _connectionManager = connectionManager;
+        _configurationManager = configurationManager;
         _iconCacheManager = iconCacheManager;
         _api = api;
         _matchLogger = matchLogger;
@@ -36,12 +36,13 @@ internal class ProjectsType : IMatchType
     public IMatch? Deserialize(string json)
     {
         var dto = JsonSerializer.Deserialize<RootItemDto>(json)!;
+        var configuration = _configurationManager.Configuration;
 
-        if (!_connectionManager.Connections.Any(p => p.Url == dto.Url))
+        if (!configuration.Connections.Any(p => p.Url == dto.Url))
             return null;
 
         return new ProjectsMatch(
-            MatchUtils.GetMatchLabel("JIRA Project", _connectionManager, dto.Url),
+            MatchUtils.GetMatchLabel("JIRA Project", configuration, dto.Url),
             dto.Url,
             _cache,
             _iconCacheManager,

@@ -5,17 +5,17 @@ namespace Tql.Plugins.Jira.Services;
 internal class JiraApi
 {
     private readonly HttpClient _httpClient;
-    private readonly ConnectionManager _connectionManager;
+    private readonly ConfigurationManager _configurationManager;
 
-    public JiraApi(HttpClient httpClient, ConnectionManager connectionManager)
+    public JiraApi(HttpClient httpClient, ConfigurationManager configurationManager)
     {
         _httpClient = httpClient;
-        _connectionManager = connectionManager;
+        _configurationManager = configurationManager;
     }
 
     public JiraClient GetClient(string url)
     {
-        var connection = _connectionManager.Connections.Single(p => p.Url == url);
+        var connection = _configurationManager.Configuration.Connections.Single(p => p.Url == url);
         return GetClient(connection);
     }
 

@@ -2,10 +2,14 @@
 
 internal record Configuration(ImmutableArray<Connection> Connections)
 {
+    public static readonly Configuration Empty = new Configuration(
+        ImmutableArray<Connection>.Empty
+    );
+
     public static Configuration FromJson(string? configuration)
     {
         if (configuration == null)
-            return new Configuration(ImmutableArray<Connection>.Empty);
+            return Empty;
 
         return JsonSerializer.Deserialize<Configuration>(configuration)!;
     }

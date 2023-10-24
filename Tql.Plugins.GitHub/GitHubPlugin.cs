@@ -29,7 +29,7 @@ public class GitHubPlugin : ITqlPlugin
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddSingleton<GitHubApi>();
-        services.AddSingleton<ConnectionManager>();
+        services.AddSingleton<ConfigurationManager>();
         services.AddSingleton<ICacheManager<GitHubData>, GitHubCacheManager>();
 
         services.AddTransient<ConfigurationControl>();
@@ -50,9 +50,9 @@ public class GitHubPlugin : ITqlPlugin
 
     public IEnumerable<IMatch> GetMatches()
     {
-        var connectionManager = _serviceProvider!.GetRequiredService<ConnectionManager>();
+        var connectionManager = _serviceProvider!.GetRequiredService<ConfigurationManager>();
 
-        foreach (var connection in connectionManager.Connections)
+        foreach (var connection in connectionManager.Configuration.Connections)
         {
             foreach (var matchType in _matchTypeManager!.MatchTypes)
             {

@@ -2,14 +2,16 @@
 
 namespace Tql.Plugins.AzureDevOps.Services;
 
-internal class ConnectionManager
+internal class ConfigurationManager
 {
     private readonly IPeopleDirectoryManager _peopleDirectoryManager;
     private readonly AzureDevOpsApi _api;
 
-    public ImmutableArray<Connection> Connections { get; private set; }
+    private volatile Configuration _configuration = Configuration.Empty;
 
-    public ConnectionManager(
+    public Configuration Configuration => _configuration;
+
+    public ConfigurationManager(
         IConfigurationManager configurationManager,
         IPeopleDirectoryManager peopleDirectoryManager,
         AzureDevOpsApi api
@@ -18,7 +20,7 @@ internal class ConnectionManager
         _peopleDirectoryManager = peopleDirectoryManager;
         _api = api;
 
-        configurationManager.ConfigurationChanged += (s, e) =>
+        configurationManager.ConfigurationChanged += (_, e) =>
         {
             if (e.PluginId == AzureDevOpsPlugin.Id)
                 LoadConnections(e.Configuration);
@@ -33,7 +35,7 @@ internal class ConnectionManager
         if (json != null)
             configuration = JsonSerializer.Deserialize<Configuration>(json);
 
-        Connections = configuration?.Connections ?? ImmutableArray<Connection>.Empty;
+        _configuration = configuration ?? Configuration.Empty;
 
         UpdatePeopleDirectoryManager();
     }
@@ -47,7 +49,7 @@ internal class ConnectionManager
             _peopleDirectoryManager.Remove(directory);
         }
 
-        foreach (var connection in Connections)
+        foreach (var connection in _configuration.Connections)
         {
             _peopleDirectoryManager.Add(new AzureDevOpsPeopleDirectory(connection, _api));
         }

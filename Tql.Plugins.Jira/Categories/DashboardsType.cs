@@ -10,25 +10,26 @@ namespace Tql.Plugins.Jira.Categories;
 internal class DashboardsType : IMatchType
 {
     private readonly ICache<JiraData> _cache;
-    private readonly ConnectionManager _connectionManager;
+    private readonly ConfigurationManager _configurationManager;
 
     public Guid Id => TypeIds.Dashboards.Id;
 
-    public DashboardsType(ICache<JiraData> cache, ConnectionManager connectionManager)
+    public DashboardsType(ICache<JiraData> cache, ConfigurationManager configurationManager)
     {
         _cache = cache;
-        _connectionManager = connectionManager;
+        _configurationManager = configurationManager;
     }
 
     public IMatch? Deserialize(string json)
     {
         var dto = JsonSerializer.Deserialize<RootItemDto>(json)!;
+        var configuration = _configurationManager.Configuration;
 
-        if (!_connectionManager.Connections.Any(p => p.Url == dto.Url))
+        if (!configuration.Connections.Any(p => p.Url == dto.Url))
             return null;
 
         return new DashboardsMatch(
-            MatchUtils.GetMatchLabel("JIRA Dashboard", _connectionManager, dto.Url),
+            MatchUtils.GetMatchLabel("JIRA Dashboard", configuration, dto.Url),
             dto.Url,
             _cache
         );

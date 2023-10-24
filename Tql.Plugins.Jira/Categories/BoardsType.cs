@@ -11,7 +11,7 @@ namespace Tql.Plugins.Jira.Categories;
 internal class BoardsType : IMatchType
 {
     private readonly ICache<JiraData> _cache;
-    private readonly ConnectionManager _connectionManager;
+    private readonly ConfigurationManager _configurationManager;
     private readonly IconCacheManager _iconCacheManager;
     private readonly JiraApi _api;
     private readonly ILogger<BoardsMatch> _matchLogger;
@@ -20,14 +20,14 @@ internal class BoardsType : IMatchType
 
     public BoardsType(
         ICache<JiraData> cache,
-        ConnectionManager connectionManager,
+        ConfigurationManager configurationManager,
         IconCacheManager iconCacheManager,
         JiraApi api,
         ILogger<BoardsMatch> matchLogger
     )
     {
         _cache = cache;
-        _connectionManager = connectionManager;
+        _configurationManager = configurationManager;
         _iconCacheManager = iconCacheManager;
         _api = api;
         _matchLogger = matchLogger;
@@ -36,12 +36,13 @@ internal class BoardsType : IMatchType
     public IMatch? Deserialize(string json)
     {
         var dto = JsonSerializer.Deserialize<RootItemDto>(json)!;
+        var configuration = _configurationManager.Configuration;
 
-        if (!_connectionManager.Connections.Any(p => p.Url == dto.Url))
+        if (!configuration.Connections.Any(p => p.Url == dto.Url))
             return null;
 
         return new BoardsMatch(
-            MatchUtils.GetMatchLabel("JIRA Board", _connectionManager, dto.Url),
+            MatchUtils.GetMatchLabel("JIRA Board", configuration, dto.Url),
             dto.Url,
             _cache,
             _iconCacheManager,

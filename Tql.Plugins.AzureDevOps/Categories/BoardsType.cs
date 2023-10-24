@@ -10,25 +10,26 @@ namespace Tql.Plugins.AzureDevOps.Categories;
 internal class BoardsType : IMatchType
 {
     private readonly ICache<AzureData> _cache;
-    private readonly ConnectionManager _connectionManager;
+    private readonly ConfigurationManager _configurationManager;
 
     public Guid Id => TypeIds.Boards.Id;
 
-    public BoardsType(ICache<AzureData> cache, ConnectionManager connectionManager)
+    public BoardsType(ICache<AzureData> cache, ConfigurationManager configurationManager)
     {
         _cache = cache;
-        _connectionManager = connectionManager;
+        _configurationManager = configurationManager;
     }
 
     public IMatch? Deserialize(string json)
     {
         var dto = JsonSerializer.Deserialize<RootItemDto>(json)!;
+        var configuration = _configurationManager.Configuration;
 
-        if (!_connectionManager.Connections.Any(p => p.Url == dto.Url))
+        if (!configuration.Connections.Any(p => p.Url == dto.Url))
             return null;
 
         return new BoardsMatch(
-            MatchUtils.GetMatchLabel("Azure Board", _connectionManager, dto.Url),
+            MatchUtils.GetMatchLabel("Azure Board", configuration, dto.Url),
             dto.Url,
             _cache
         );

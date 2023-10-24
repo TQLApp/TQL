@@ -12,11 +12,11 @@ internal class PullRequestsType : IssuesTypeBase
     public override Guid Id => TypeIds.PullRequests.Id;
 
     public PullRequestsType(
-        ConnectionManager connectionManager,
+        ConfigurationManager configurationManager,
         GitHubApi api,
         ICache<GitHubData> cache
     )
-        : base(connectionManager, api, cache, IssueTypeQualifier.PullRequest) { }
+        : base(configurationManager, api, cache, IssueTypeQualifier.PullRequest) { }
 
     protected override IssuesMatchBase CreateMatch(
         string text,

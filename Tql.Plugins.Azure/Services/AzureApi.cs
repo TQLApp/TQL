@@ -12,15 +12,15 @@ internal class AzureApi
 {
     private readonly ILogger<AzureApi> _logger;
     private readonly IUI _ui;
-    private readonly ConnectionManager _connectionManager;
+    private readonly ConfigurationManager _configurationManager;
     private readonly AsyncLock _lock = new();
     private readonly Dictionary<Guid, ArmClient> _clients = new();
 
-    public AzureApi(ILogger<AzureApi> logger, IUI ui, ConnectionManager connectionManager)
+    public AzureApi(ILogger<AzureApi> logger, IUI ui, ConfigurationManager configurationManager)
     {
         _logger = logger;
         _ui = ui;
-        _connectionManager = connectionManager;
+        _configurationManager = configurationManager;
     }
 
     public async Task<ArmClient> GetClient(Guid id)
@@ -29,7 +29,9 @@ internal class AzureApi
         {
             if (!_clients.TryGetValue(id, out var client))
             {
-                var connection = _connectionManager.Connections.Single(p => p.Id == id);
+                var connection = _configurationManager.Configuration.Connections.Single(
+                    p => p.Id == id
+                );
 
                 var tokenCachePersistenceOptions = new TokenCachePersistenceOptions
                 {

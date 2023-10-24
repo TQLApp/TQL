@@ -5,15 +5,11 @@ namespace Tql.Plugins.GitHub.Support;
 
 internal static class MatchUtils
 {
-    public static string GetMatchLabel(
-        string label,
-        ConnectionManager connectionManager,
-        RootItemDto dto
-    )
+    public static string GetMatchLabel(string label, Configuration configuration, RootItemDto dto)
     {
-        if (connectionManager.Connections.Length > 1)
+        if (configuration.Connections.Length > 1)
         {
-            var connection = connectionManager.Connections.Single(p => p.Id == dto.Id);
+            var connection = configuration.Connections.Single(p => p.Id == dto.Id);
 
             label = $"{label} ({connection.Name})";
         }

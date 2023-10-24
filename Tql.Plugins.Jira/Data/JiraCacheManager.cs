@@ -7,19 +7,19 @@ namespace Tql.Plugins.Jira.Data;
 
 internal class JiraCacheManager : ICacheManager<JiraData>
 {
-    private readonly ConnectionManager _connectionManager;
+    private readonly ConfigurationManager _configurationManager;
     private readonly JiraApi _api;
     private readonly ILogger<JiraCacheManager> _logger;
 
     public int Version => 1;
 
     public JiraCacheManager(
-        ConnectionManager connectionManager,
+        ConfigurationManager configurationManager,
         JiraApi api,
         ILogger<JiraCacheManager> logger
     )
     {
-        _connectionManager = connectionManager;
+        _configurationManager = configurationManager;
         _api = api;
         _logger = logger;
     }
@@ -28,7 +28,7 @@ internal class JiraCacheManager : ICacheManager<JiraData>
     {
         var results = ImmutableArray.CreateBuilder<JiraConnection>();
 
-        foreach (var connection in _connectionManager.Connections)
+        foreach (var connection in _configurationManager.Configuration.Connections)
         {
             results.Add(await CreateConnection(connection));
         }

@@ -10,25 +10,26 @@ namespace Tql.Plugins.AzureDevOps.Categories;
 internal class PipelinesType : IMatchType
 {
     private readonly ICache<AzureData> _cache;
-    private readonly ConnectionManager _connectionManager;
+    private readonly ConfigurationManager _configurationManager;
 
     public Guid Id => TypeIds.Pipelines.Id;
 
-    public PipelinesType(ICache<AzureData> cache, ConnectionManager connectionManager)
+    public PipelinesType(ICache<AzureData> cache, ConfigurationManager configurationManager)
     {
         _cache = cache;
-        _connectionManager = connectionManager;
+        _configurationManager = configurationManager;
     }
 
     public IMatch? Deserialize(string json)
     {
         var dto = JsonSerializer.Deserialize<RootItemDto>(json)!;
+        var configuration = _configurationManager.Configuration;
 
-        if (!_connectionManager.Connections.Any(p => p.Url == dto.Url))
+        if (!configuration.Connections.Any(p => p.Url == dto.Url))
             return null;
 
         return new PipelinesMatch(
-            MatchUtils.GetMatchLabel("Azure Pipeline", _connectionManager, dto.Url),
+            MatchUtils.GetMatchLabel("Azure Pipeline", configuration, dto.Url),
             dto.Url,
             _cache
         );

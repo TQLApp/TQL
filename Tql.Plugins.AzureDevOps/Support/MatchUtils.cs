@@ -4,15 +4,11 @@ namespace Tql.Plugins.AzureDevOps.Support;
 
 internal static class MatchUtils
 {
-    public static string GetMatchLabel(
-        string label,
-        ConnectionManager connectionManager,
-        string url
-    )
+    public static string GetMatchLabel(string label, Configuration configuration, string url)
     {
-        if (connectionManager.Connections.Length > 1)
+        if (configuration.Connections.Length > 1)
         {
-            var connection = connectionManager.Connections.Single(p => p.Url == url);
+            var connection = configuration.Connections.Single(p => p.Url == url);
 
             return $"{label} ({connection.Name})";
         }

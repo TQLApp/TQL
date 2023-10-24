@@ -9,7 +9,7 @@ namespace Tql.Plugins.GitHub.Categories;
 
 internal abstract class IssuesTypeBase : IMatchType
 {
-    private readonly ConnectionManager _connectionManager;
+    private readonly ConfigurationManager _configurationManager;
     private readonly GitHubApi _api;
     private readonly IssueTypeQualifier _type;
     private readonly ICache<GitHubData> _cache;
@@ -17,13 +17,13 @@ internal abstract class IssuesTypeBase : IMatchType
     public abstract Guid Id { get; }
 
     protected IssuesTypeBase(
-        ConnectionManager connectionManager,
+        ConfigurationManager configurationManager,
         GitHubApi api,
         ICache<GitHubData> cache,
         IssueTypeQualifier type
     )
     {
-        _connectionManager = connectionManager;
+        _configurationManager = configurationManager;
         _api = api;
         _cache = cache;
         _type = type;
@@ -32,14 +32,15 @@ internal abstract class IssuesTypeBase : IMatchType
     public IMatch? Deserialize(string json)
     {
         var dto = JsonSerializer.Deserialize<RootItemDto>(json)!;
+        var configuration = _configurationManager.Configuration;
 
-        if (!_connectionManager.Connections.Any(p => p.Id == dto.Id))
+        if (!configuration.Connections.Any(p => p.Id == dto.Id))
             return null;
 
         return CreateMatch(
             MatchUtils.GetMatchLabel(
                 $"GitHub {(_type == IssueTypeQualifier.Issue ? "Issue" : "Pull Request")}",
-                _connectionManager,
+                configuration,
                 dto
             ),
             dto,

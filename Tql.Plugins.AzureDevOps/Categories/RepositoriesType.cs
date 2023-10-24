@@ -10,25 +10,26 @@ namespace Tql.Plugins.AzureDevOps.Categories;
 internal class RepositoriesType : IMatchType
 {
     private readonly ICache<AzureData> _cache;
-    private readonly ConnectionManager _connectionManager;
+    private readonly ConfigurationManager _configurationManager;
 
     public Guid Id => TypeIds.Repositories.Id;
 
-    public RepositoriesType(ICache<AzureData> cache, ConnectionManager connectionManager)
+    public RepositoriesType(ICache<AzureData> cache, ConfigurationManager configurationManager)
     {
         _cache = cache;
-        _connectionManager = connectionManager;
+        _configurationManager = configurationManager;
     }
 
     public IMatch? Deserialize(string json)
     {
         var dto = JsonSerializer.Deserialize<RootItemDto>(json)!;
+        var configuration = _configurationManager.Configuration;
 
-        if (!_connectionManager.Connections.Any(p => p.Url == dto.Url))
+        if (!configuration.Connections.Any(p => p.Url == dto.Url))
             return null;
 
         return new RepositoriesMatch(
-            MatchUtils.GetMatchLabel("Azure Repository", _connectionManager, dto.Url),
+            MatchUtils.GetMatchLabel("Azure Repository", configuration, dto.Url),
             dto.Url,
             _cache
         );

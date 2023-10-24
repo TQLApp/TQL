@@ -21,7 +21,7 @@ internal class GitHubApi
 
     private readonly ILogger<GitHubApi> _logger;
     private readonly IUI _ui;
-    private readonly ConnectionManager _connectionManager;
+    private readonly ConfigurationManager _configurationManager;
     private readonly IStore _store;
     private readonly HttpClient _httpClient;
     private readonly AsyncLock _lock = new();
@@ -30,14 +30,14 @@ internal class GitHubApi
     public GitHubApi(
         ILogger<GitHubApi> logger,
         IUI ui,
-        ConnectionManager connectionManager,
+        ConfigurationManager configurationManager,
         IStore store,
         HttpClient httpClient
     )
     {
         _logger = logger;
         _ui = ui;
-        _connectionManager = connectionManager;
+        _configurationManager = configurationManager;
         _store = store;
         _httpClient = httpClient;
     }
@@ -52,7 +52,9 @@ internal class GitHubApi
 
                 client = new GitHubClient(new ProductHeaderValue("TQL", appVersion.ToString()));
 
-                var connection = _connectionManager.Connections.Single(p => p.Id == id);
+                var connection = _configurationManager.Configuration.Connections.Single(
+                    p => p.Id == id
+                );
 
                 var credentials = ReadCredentials(id);
 

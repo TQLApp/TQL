@@ -10,7 +10,7 @@ namespace Tql.Plugins.GitHub.Categories;
 [RootMatchType(SupportsUserScope = true)]
 internal class GistsType : IMatchType
 {
-    private readonly ConnectionManager _connectionManager;
+    private readonly ConfigurationManager _configurationManager;
     private readonly GitHubApi _api;
     private readonly ICache<GitHubData> _cache;
     private readonly HttpClient _httpClient;
@@ -18,13 +18,13 @@ internal class GistsType : IMatchType
     public Guid Id => TypeIds.Gists.Id;
 
     public GistsType(
-        ConnectionManager connectionManager,
+        ConfigurationManager configurationManager,
         GitHubApi api,
         ICache<GitHubData> cache,
         HttpClient httpClient
     )
     {
-        _connectionManager = connectionManager;
+        _configurationManager = configurationManager;
         _api = api;
         _cache = cache;
         _httpClient = httpClient;
@@ -33,12 +33,13 @@ internal class GistsType : IMatchType
     public IMatch? Deserialize(string json)
     {
         var dto = JsonSerializer.Deserialize<RootItemDto>(json)!;
+        var configuration = _configurationManager.Configuration;
 
-        if (!_connectionManager.Connections.Any(p => p.Id == dto.Id))
+        if (!configuration.Connections.Any(p => p.Id == dto.Id))
             return null;
 
         return new GistsMatch(
-            MatchUtils.GetMatchLabel("GitHub Gist", _connectionManager, dto),
+            MatchUtils.GetMatchLabel("GitHub Gist", configuration, dto),
             dto,
             _api,
             _cache,

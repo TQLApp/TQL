@@ -28,7 +28,7 @@ public class AzurePlugin : ITqlPlugin
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddSingleton<AzureApi>();
-        services.AddSingleton<ConnectionManager>();
+        services.AddSingleton<ConfigurationManager>();
 
         services.AddTransient<ConfigurationControl>();
 
@@ -48,9 +48,9 @@ public class AzurePlugin : ITqlPlugin
 
     public IEnumerable<IMatch> GetMatches()
     {
-        var connectionManager = _serviceProvider!.GetRequiredService<ConnectionManager>();
+        var connectionManager = _serviceProvider!.GetRequiredService<ConfigurationManager>();
 
-        return from connection in connectionManager.Connections
+        return from connection in connectionManager.Configuration.Connections
             let json = JsonSerializer.Serialize(new RootItemDto(connection.Id))
             from matchType in _matchTypeManager!.MatchTypes
             where matchType.GetType().GetCustomAttribute<RootMatchTypeAttribute>() != null
