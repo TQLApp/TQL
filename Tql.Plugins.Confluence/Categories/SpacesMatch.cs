@@ -66,7 +66,8 @@ internal class SpacesMatch : CachedMatch<ConfluenceData>, ISerializableMatch
         return from space in spaces
             select new SpaceMatch(
                 new SpaceMatchDto(_url, space.Key, space.Name, space.Url, space.Icon),
-                _iconCacheManager
+                _iconCacheManager,
+                _configurationManager
             );
     }
 

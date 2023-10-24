@@ -1,6 +1,7 @@
 ﻿using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json.Serialization;
+using System.Threading;
 using Tql.Plugins.Confluence.Support;
 
 namespace Tql.Plugins.Confluence.Services;
@@ -33,30 +34,52 @@ internal class ConfluenceClient
         }
     }
 
-    public async Task<ImmutableArray<ConfluenceSpaceDto>> GetSpaces(
+    public Task<ImmutableArray<ConfluenceSpaceDto>> GetSpaces(
+        int? limit = default,
+        CancellationToken cancellationToken = default
+    ) =>
+        GetPagedQuery<ConfluenceSpaceDto>(
+            $"{_baseUrl}/rest/api/space?expand=icon",
+            limit,
+            cancellationToken
+        );
+
+    public Task<ImmutableArray<ConfluenceSiteSearchDto>> SiteSearch(
+        string cql,
+        int? limit = default,
+        CancellationToken cancellationToken = default
+    ) =>
+        GetPagedQuery<ConfluenceSiteSearchDto>(
+            $"{_baseUrl}/rest/api/search?cql={Uri.EscapeDataString(cql)}&includeArchivedSpaces=false&excerpt=none",
+            limit,
+            cancellationToken
+        );
+
+    private async Task<ImmutableArray<T>> GetPagedQuery<T>(
+        string url,
         int? limit = default,
         CancellationToken cancellationToken = default
     )
     {
-        var results = ImmutableArray.CreateBuilder<ConfluenceSpaceDto>();
+        var results = ImmutableArray.CreateBuilder<T>();
         var requestedLimit = limit;
         limit ??= 1000;
 
         for (var offset = 0; ; offset++)
         {
-            using var request = new HttpRequestMessage(
-                HttpMethod.Get,
-                $"{_baseUrl}/rest/api/space?expand=icon&limit={limit}&start={offset * limit}"
-            );
+            var thisUrl =
+                url + (url.Contains('?') ? "&" : "?") + $"limit={limit}&start={offset * limit}";
 
-            var dto = await ExecuteJsonRequest<ConfluenceSpacesResponseDto>(
+            using var request = new HttpRequestMessage(HttpMethod.Get, thisUrl);
+
+            var dto = await ExecuteJsonRequest<ConfluencePageBeanDto<T>>(
                 request,
                 cancellationToken
             );
 
             limit = dto.Limit;
 
-            results.AddRange(dto.Dashboards);
+            results.AddRange(dto.Results);
 
             if (
                 (requestedLimit.HasValue && results.Count >= requestedLimit.Value)
@@ -99,11 +122,11 @@ internal class ConfluenceClient
     }
 }
 
-internal record ConfluenceSpacesResponseDto(
+internal record ConfluencePageBeanDto<T>(
     [property: JsonPropertyName("start")] int Start,
     [property: JsonPropertyName("limit")] int Limit,
     [property: JsonPropertyName("size")] int Size,
-    [property: JsonPropertyName("results")] ImmutableArray<ConfluenceSpaceDto> Dashboards
+    [property: JsonPropertyName("results")] ImmutableArray<T> Results
 );
 
 internal record ConfluenceSpaceDto(
@@ -116,3 +139,23 @@ internal record ConfluenceSpaceDto(
 internal record ConfluenceSpaceIconDto([property: JsonPropertyName("path")] string Path);
 
 internal record ConfluenceSpaceLinksDto([property: JsonPropertyName("webui")] string WebUI);
+
+internal record ConfluenceSiteSearchDto(
+    [property: JsonPropertyName("title")] string Title,
+    [property: JsonPropertyName("url")] string Url,
+    [property: JsonPropertyName("resultGlobalContainer")]
+        ConfluenceSiteSearchGlobalContainerDto? ResultGlobalContainer,
+    [property: JsonPropertyName("content")] ConfluenceSiteSearchContentDto? Content
+);
+
+internal record ConfluenceSiteSearchGlobalContainerDto(
+    [property: JsonPropertyName("title")] string Title
+);
+
+internal record ConfluenceSiteSearchContentDto(
+    [property: JsonPropertyName("_links")] ConfluenceSiteSearchContentLinksDto Links
+);
+
+internal record ConfluenceSiteSearchContentLinksDto(
+    [property: JsonPropertyName("tinyui")] string TinyUI
+);

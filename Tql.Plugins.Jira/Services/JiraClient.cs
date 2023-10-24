@@ -298,7 +298,7 @@ internal record JiraBoardV3Dto(
     [property: JsonPropertyName("id")] int Id,
     [property: JsonPropertyName("name")] string Name,
     [property: JsonPropertyName("type")] string Type,
-    [property: JsonPropertyName("location")] JiraBoardLocationV3Dto Location
+    [property: JsonPropertyName("location")] JiraBoardLocationV3Dto? Location
 );
 
 internal record JiraBoardLocationV3Dto(

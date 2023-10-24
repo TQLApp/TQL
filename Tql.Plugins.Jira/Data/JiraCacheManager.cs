@@ -60,27 +60,19 @@ internal class JiraCacheManager : ICacheManager<JiraData>
             )
         ).ToImmutableArray();
 
-        var boards = ImmutableArray<JiraBoard>.Empty;
-
-        try
-        {
-            boards = (
-                from board in await client.GetBoardsV3()
-                select new JiraBoard(
-                    board.Id,
-                    board.Name,
-                    board.Type,
-                    board.Location.Name,
-                    board.Location.ProjectKey,
-                    board.Location.ProjectTypeKey,
-                    board.Location.AvatarUri
-                )
-            ).ToImmutableArray();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogWarning(ex, "Failed to load boards");
-        }
+        var boards = (
+            from board in await client.GetBoardsV3()
+            where board.Location != null
+            select new JiraBoard(
+                board.Id,
+                board.Name,
+                board.Type,
+                board.Location.Name,
+                board.Location.ProjectKey,
+                board.Location.ProjectTypeKey,
+                board.Location.AvatarUri
+            )
+        ).ToImmutableArray();
 
         return new JiraConnection(connection.Url, dashboards, projects, boards);
     }
