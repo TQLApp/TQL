@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFramework>net48</TargetFramework>
@@ -12,17 +12,10 @@
 
 	<ItemGroup>
 		<EmbeddedResource Include="Resources\**\*" />
+		<None Remove="Resources\**\*" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <None Remove="Resources\Boards.svg" />
-	  <None Remove="Resources\Dashboards.svg" />
-	  <None Remove="Resources\Issues.svg" />
-	  <None Remove="Resources\Jira.svg" />
-	  <None Remove="Resources\Projects.svg" />
-	</ItemGroup>
-
-	<ItemGroup>
+  <ItemGroup>
 		<PackageReference Include="NeoSmart.AsyncLock" Version="3.2.1" />
 		<PackageReference Include="System.Text.Json" Version="7.0.3" />
 	</ItemGroup>

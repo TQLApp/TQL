@@ -11,6 +11,8 @@ internal class ConfigurationManager
 
     public Configuration Configuration => _configuration;
 
+    public event EventHandler? Changed;
+
     public ConfigurationManager(
         IConfigurationManager configurationManager,
         IPeopleDirectoryManager peopleDirectoryManager,
@@ -23,7 +25,10 @@ internal class ConfigurationManager
         configurationManager.ConfigurationChanged += (_, e) =>
         {
             if (e.PluginId == AzureDevOpsPlugin.Id)
+            {
                 LoadConnections(e.Configuration);
+                OnChanged();
+            }
         };
 
         LoadConnections(configurationManager.GetConfiguration(AzureDevOpsPlugin.Id));
@@ -54,4 +59,6 @@ internal class ConfigurationManager
             _peopleDirectoryManager.Add(new AzureDevOpsPeopleDirectory(connection, _api));
         }
     }
+
+    protected virtual void OnChanged() => Changed?.Invoke(this, EventArgs.Empty);
 }

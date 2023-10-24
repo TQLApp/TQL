@@ -11,9 +11,10 @@
 
 	<ItemGroup>
 		<EmbeddedResource Include="Resources\**\*" />
-	</ItemGroup>
+    <None Remove="Resources\**\*" />
+  </ItemGroup>
 
-	<ItemGroup>
+  <ItemGroup>
 		<None Remove="Categories\ResourceGroupQuery.txt" />
 		<None Remove="Categories\ResourceQuery.txt" />
 		<None Remove="Categories\Resources.json.gz" />

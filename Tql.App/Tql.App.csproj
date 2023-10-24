@@ -13,26 +13,20 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Remove="Resources\**\*" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<Resource Include="Resources\**\*" />
-	</ItemGroup>
+    <None Remove="Resources\**\*" />
+  </ItemGroup>
 
-	<ItemGroup>
+  <ItemGroup>
 		<Reference Include="PresentationFramework.Aero2" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<None Remove="Services\Database\Migrations\*.sql" />
-	</ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Services\Database\Migrations\*.sql" />
+    <None Remove="Services\Database\Migrations\*.sql" />
+  </ItemGroup>
 
-	<ItemGroup>
-		<EmbeddedResource Include="Services\Database\Migrations\*.sql" />
-	</ItemGroup>
-
-	<ItemGroup>
+  <ItemGroup>
 		<Resource Include="mainicon.ico" />
 	</ItemGroup>
 
@@ -51,6 +45,7 @@
 		<ProjectReference Include="..\Tql.Interop\Tql.Interop.csproj" />
 		<ProjectReference Include="..\Tql.Plugins.AzureDevOps\Tql.Plugins.AzureDevOps.csproj" />
 		<ProjectReference Include="..\Tql.Plugins.Azure\Tql.Plugins.Azure.csproj" />
+		<ProjectReference Include="..\Tql.Plugins.Confluence\Tql.Plugins.Confluence.csproj" />
 		<ProjectReference Include="..\Tql.Plugins.GitHub\Tql.Plugins.GitHub.csproj" />
 		<ProjectReference Include="..\Tql.Plugins.Jira\Tql.Plugins.Jira.csproj" />
 		<ProjectReference Include="..\Tql.Plugins.MicrosoftTeams\Tql.Plugins.MicrosoftTeams.csproj" />

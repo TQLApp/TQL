@@ -994,6 +994,7 @@
           "Tql.Interop": "[1.0.0, )",
           "Tql.Plugins.Azure": "[1.0.0, )",
           "Tql.Plugins.AzureDevOps": "[1.0.0, )",
+          "Tql.Plugins.Confluence": "[1.0.0, )",
           "Tql.Plugins.GitHub": "[1.0.0, )",
           "Tql.Plugins.Jira": "[1.0.0, )",
           "Tql.Plugins.MicrosoftTeams": "[1.0.0, )"
@@ -1019,6 +1020,14 @@
           "Microsoft.VisualStudio.Services.ExtensionManagement.WebApi": "[19.227.0-preview, )",
           "Microsoft.VisualStudio.Services.InteractiveClient": "[19.227.0-preview, )",
           "Microsoft.VisualStudio.Services.Search.Client": "[19.227.0-preview, )",
+          "NeoSmart.AsyncLock": "[3.2.1, )",
+          "System.Text.Json": "[7.0.3, )",
+          "Tql.Utilities": "[1.0.0, )"
+        }
+      },
+      "tql.plugins.confluence": {
+        "type": "Project",
+        "dependencies": {
           "NeoSmart.AsyncLock": "[3.2.1, )",
           "System.Text.Json": "[7.0.3, )",
           "Tql.Utilities": "[1.0.0, )"

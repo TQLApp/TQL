@@ -14,6 +14,7 @@ using Tql.App.Services.Updates;
 using Tql.App.Support;
 using Tql.Plugins.Azure;
 using Tql.Plugins.AzureDevOps;
+using Tql.Plugins.Confluence;
 using Tql.Plugins.GitHub;
 using Tql.Plugins.Jira;
 using Tql.Plugins.MicrosoftTeams;
@@ -132,6 +133,7 @@ public partial class App
             typeof(AzurePlugin).Assembly,
             typeof(GitHubPlugin).Assembly,
             typeof(JiraPlugin).Assembly,
+            typeof(ConfluencePlugin).Assembly,
             typeof(MicrosoftTeamsPlugin).Assembly
         };
 

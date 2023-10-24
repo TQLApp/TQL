@@ -13,7 +13,7 @@ internal class Cache<T> : ICache<T>
     private readonly IDb _db;
     private readonly CacheManagerManager _cacheManagerManager;
     private readonly TelemetryService _telemetryService;
-    private TaskCompletionSource<T> _tcs = new();
+    private volatile TaskCompletionSource<T> _tcs = new();
     private DateTime _updated;
     private readonly object _syncRoot = new();
     private bool _creating;
@@ -51,6 +51,13 @@ internal class Cache<T> : ICache<T>
 
         if (!IsAvailable)
             Create(true);
+
+        _cacheManager.CacheExpired += (_, e) =>
+        {
+            if (e.Force)
+                _tcs = new TaskCompletionSource<T>();
+            Create(e.Force);
+        };
 
         TimeSpan GetExpiration()
         {

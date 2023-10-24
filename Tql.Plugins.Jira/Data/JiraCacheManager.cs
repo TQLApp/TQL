@@ -13,6 +13,8 @@ internal class JiraCacheManager : ICacheManager<JiraData>
 
     public int Version => 1;
 
+    public event EventHandler<CacheExpiredEventArgs>? CacheExpired;
+
     public JiraCacheManager(
         ConfigurationManager configurationManager,
         JiraApi api,
@@ -22,6 +24,8 @@ internal class JiraCacheManager : ICacheManager<JiraData>
         _configurationManager = configurationManager;
         _api = api;
         _logger = logger;
+
+        configurationManager.Changed += (_, _) => OnCacheExpired(new CacheExpiredEventArgs(true));
     }
 
     public async Task<JiraData> Create()
@@ -92,4 +96,6 @@ internal class JiraCacheManager : ICacheManager<JiraData>
         int GetSize(string key) =>
             int.Parse(key.Substring(0, key.IndexOf('x')), CultureInfo.InvariantCulture);
     }
+
+    protected virtual void OnCacheExpired(CacheExpiredEventArgs e) => CacheExpired?.Invoke(this, e);
 }

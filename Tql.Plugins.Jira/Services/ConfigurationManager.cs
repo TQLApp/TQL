@@ -10,6 +10,8 @@ internal class ConfigurationManager
 
     public Configuration Configuration => _configuration;
 
+    public event EventHandler? Changed;
+
     public ConfigurationManager(
         IConfigurationManager configurationManager,
         IPeopleDirectoryManager peopleDirectoryManager,
@@ -22,7 +24,10 @@ internal class ConfigurationManager
         configurationManager.ConfigurationChanged += (s, e) =>
         {
             if (e.PluginId == JiraPlugin.Id)
+            {
                 LoadConnections(e.Configuration);
+                OnChanged();
+            }
         };
 
         LoadConnections(configurationManager.GetConfiguration(JiraPlugin.Id));
@@ -56,4 +61,6 @@ internal class ConfigurationManager
             _peopleDirectoryManager.Add(new JiraPeopleDirectory(connection, _api));
         }
     }
+
+    protected virtual void OnChanged() => Changed?.Invoke(this, EventArgs.Empty);
 }

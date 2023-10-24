@@ -10,14 +10,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Remove="Resources\**\*" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<EmbeddedResource Include="Resources\**\*" />
-	</ItemGroup>
+    <None Remove="Resources\**\*" />
+  </ItemGroup>
 
-	<ItemGroup>
+  <ItemGroup>
 		<PackageReference Include="Microsoft.TeamFoundationServer.Client" Version="19.227.0-preview" />
 		<PackageReference Include="Microsoft.VisualStudio.Services.InteractiveClient" Version="19.227.0-preview" />
 		<PackageReference Include="Microsoft.VisualStudio.Services.ExtensionManagement.WebApi" Version="19.227.0-preview" />
