@@ -36,13 +36,19 @@ internal partial class ConfigurationWindow
 
     private async void _acceptButton_Click(object sender, RoutedEventArgs e)
     {
-        IsEnabled = false;
-
         try
         {
             foreach (TreeViewItem page in _pages.Items)
             {
-                var status = await ((IConfigurationUI)page.Tag).Save();
+                var task = ((IConfigurationUI)page.Tag).Save();
+
+                // Only disable the window if any of the save operations
+                // actually start an asynchronous task.
+
+                if (!task.IsCompleted)
+                    IsEnabled = false;
+
+                var status = await task;
                 if (status == SaveStatus.Failure)
                     return;
             }

@@ -1,47 +1,19 @@
 ﻿using Atlassian.Jira;
 using Atlassian.Jira.Remote;
-using NeoSmart.AsyncLock;
 using RestSharp;
 using RestSharp.Authenticators;
-using Tql.Plugins.Jira.Support;
 
-namespace Tql.Plugins.Jira.Services;
+namespace Tql.Plugins.Jira.Support;
 
-internal class JiraApi
+internal static class ConnectionExtensions
 {
-    private readonly ConnectionManager _connectionManager;
-    private readonly AsyncLock _lock = new();
-    private readonly Dictionary<Guid, Atlassian.Jira.Jira> _clients = new();
-
-    public JiraApi(ConnectionManager connectionManager)
-    {
-        _connectionManager = connectionManager;
-    }
-
-    public async Task<Atlassian.Jira.Jira> GetClient(Guid id)
-    {
-        using (await _lock.LockAsync())
-        {
-            if (!_clients.TryGetValue(id, out var client))
-            {
-                var connection = _connectionManager.Connections.Single(p => p.Id == id);
-
-                client = CreateClient(connection);
-
-                _clients[id] = client;
-            }
-
-            return client;
-        }
-    }
-
-    public static Atlassian.Jira.Jira CreateClient(Connection connection)
+    public static Atlassian.Jira.Jira CreateClient(this Connection self)
     {
         return Atlassian.Jira.Jira.CreateRestClient(
             new MyJiraRestClient(
-                connection.Url,
+                self.Url,
                 new HttpBearerAuthenticator(
-                    Encryption.Unprotect(connection.ProtectedPatToken)
+                    Encryption.Unprotect(self.ProtectedPatToken)
                         ?? throw new InvalidOperationException("Could not read PAT token")
                 )
             )

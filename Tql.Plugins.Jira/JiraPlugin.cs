@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Tql.Abstractions;
 using Tql.Plugins.Jira.Categories;
 using Tql.Plugins.Jira.ConfigurationUI;
+using Tql.Plugins.Jira.Data;
 using Tql.Plugins.Jira.Services;
 using Tql.Plugins.Jira.Support;
 using Tql.Utilities;
@@ -27,8 +28,8 @@ public class JiraPlugin : ITqlPlugin
 
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddSingleton<JiraApi>();
         services.AddSingleton<ConnectionManager>();
+        services.AddSingleton<ICacheManager<JiraData>, JiraCacheManager>();
 
         services.AddTransient<ConfigurationControl>();
 
@@ -51,7 +52,7 @@ public class JiraPlugin : ITqlPlugin
         var connectionManager = _serviceProvider!.GetRequiredService<ConnectionManager>();
 
         return from connection in connectionManager.Connections
-            let json = JsonSerializer.Serialize(new RootItemDto(connection.Id))
+            let json = JsonSerializer.Serialize(new RootItemDto(connection.Url))
             from matchType in _matchTypeManager!.MatchTypes
             where matchType.GetType().GetCustomAttribute<RootMatchTypeAttribute>() != null
             select matchType.Deserialize(json);

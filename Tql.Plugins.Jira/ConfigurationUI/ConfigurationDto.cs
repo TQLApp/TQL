@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Security.Cryptography;
 using Tql.Plugins.Jira.Support;
 
 namespace Tql.Plugins.Jira.ConfigurationUI;

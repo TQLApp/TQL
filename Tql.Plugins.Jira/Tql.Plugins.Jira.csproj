@@ -15,6 +15,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Dashboard.svg" />
 	  <None Remove="Resources\Jira.svg" />
 	</ItemGroup>
 

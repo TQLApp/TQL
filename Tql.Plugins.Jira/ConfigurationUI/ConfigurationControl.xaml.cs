@@ -1,5 +1,6 @@
 ﻿using Tql.Abstractions;
 using Tql.Plugins.Jira.Services;
+using Tql.Plugins.Jira.Support;
 
 namespace Tql.Plugins.Jira.ConfigurationUI;
 
@@ -34,13 +35,19 @@ internal partial class ConfigurationControl : IConfigurationUI
         _update.IsEnabled = CreateConnectionDto().GetIsValid();
     }
 
-    private ConnectionDto CreateConnectionDto() =>
-        new(_id ?? Guid.NewGuid())
+    private ConnectionDto CreateConnectionDto()
+    {
+        var url = _url.Text;
+        if (!url.IsEmpty() && !url.EndsWith("/"))
+            url += "/";
+
+        return new ConnectionDto(_id ?? Guid.NewGuid())
         {
             Name = _name.Text,
-            Url = _url.Text,
+            Url = url,
             PatToken = _patToken.Password
         };
+    }
 
     public async Task<SaveStatus> Save()
     {
@@ -53,9 +60,7 @@ internal partial class ConfigurationControl : IConfigurationUI
         {
             try
             {
-                var client = JiraApi.CreateClient(connection);
-
-                _ = await client.Users.GetMyselfAsync();
+                _ = await connection.CreateClient().Users.GetMyselfAsync();
             }
             catch (Exception ex)
             {
