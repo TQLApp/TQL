@@ -33,37 +33,68 @@ internal class AzureApi
                     p => p.Id == id
                 );
 
-                var tokenCachePersistenceOptions = new TokenCachePersistenceOptions
+                try
                 {
-                    Name = $"Tql_{id}"
-                };
-
-                var credential = new ChainedTokenCredential(
-                    new SharedTokenCacheCredential(
-                        new SharedTokenCacheCredentialOptions(tokenCachePersistenceOptions)
-                    ),
-                    new UICredential(
-                        new InteractiveBrowserCredential(
-                            new InteractiveBrowserCredentialOptions
-                            {
-                                TokenCachePersistenceOptions = tokenCachePersistenceOptions,
-                            }
-                        ),
-                        _ui,
-                        $"Azure - {connection.Name}"
-                    )
-                );
-
-                client = new ArmClient(credential);
-
-                // Force authentication.
-                await client.GetDefaultSubscriptionAsync();
+                    client = await CreateClient(connection);
+                }
+                catch
+                {
+                    _ui.ShowNotificationBar(
+                        $"{AzurePlugin.Id}/ConnectionFailed/{id}",
+                        $"Unable to connect to Azure - {connection.Name}. Click here to reconnect.",
+                        () => RetryConnect(id)
+                    );
+                    throw;
+                }
 
                 _clients[id] = client;
             }
 
             return client;
         }
+    }
+
+    private async void RetryConnect(Guid id)
+    {
+        try
+        {
+            await GetClient(id);
+        }
+        catch
+        {
+            // Ignore.
+        }
+    }
+
+    private async Task<ArmClient> CreateClient(Connection connection)
+    {
+        var tokenCachePersistenceOptions = new TokenCachePersistenceOptions
+        {
+            Name = $"Tql_{connection.Id}"
+        };
+
+        var credential = new ChainedTokenCredential(
+            new SharedTokenCacheCredential(
+                new SharedTokenCacheCredentialOptions(tokenCachePersistenceOptions)
+            ),
+            new UICredential(
+                new InteractiveBrowserCredential(
+                    new InteractiveBrowserCredentialOptions
+                    {
+                        TokenCachePersistenceOptions = tokenCachePersistenceOptions,
+                    }
+                ),
+                _ui,
+                $"Azure - {connection.Name}"
+            )
+        );
+
+        var client = new ArmClient(credential);
+
+        // Force authentication.
+        await client.GetDefaultSubscriptionAsync();
+
+        return client;
     }
 
     private class UICredential : TokenCredential

@@ -5,14 +5,24 @@ namespace Tql.App.ConfigurationUI;
 
 internal partial class ConfigurationWindow
 {
+    private readonly IServiceProvider _serviceProvider;
+    private readonly IConfigurationManager _configurationManager;
+    public Guid? StartupPage { get; set; }
+
     public ConfigurationWindow(
         IServiceProvider serviceProvider,
         IConfigurationManager configurationManager
     )
     {
-        InitializeComponent();
+        _serviceProvider = serviceProvider;
+        _configurationManager = configurationManager;
 
-        var factories = ((ConfigurationManager)configurationManager).ConfigurationUIFactories;
+        InitializeComponent();
+    }
+
+    private void Window_Loaded(object sender, RoutedEventArgs e)
+    {
+        var factories = ((ConfigurationManager)_configurationManager).ConfigurationUIFactories;
 
         foreach (
             var factory in factories
@@ -20,12 +30,19 @@ internal partial class ConfigurationWindow
                 .ThenBy(p => p.Factory.Title, StringComparer.CurrentCultureIgnoreCase)
         )
         {
-            var ui = (UIElement)factory.Factory.CreateControl(serviceProvider);
+            var ui = (UIElement)factory.Factory.CreateControl(_serviceProvider);
 
-            _pages.Items.Add(new TreeViewItem { Header = factory.Factory.Title, Tag = ui });
+            _pages.Items.Add(
+                new TreeViewItem
+                {
+                    Header = factory.Factory.Title,
+                    Tag = ui,
+                    IsSelected = StartupPage == factory.Factory.Id
+                }
+            );
         }
 
-        if (_pages.Items.Count > 0)
+        if (_pages.Items.Count > 0 && _pages.SelectedItem == null)
             ((TreeViewItem)_pages.Items[0]!).IsSelected = true;
     }
 

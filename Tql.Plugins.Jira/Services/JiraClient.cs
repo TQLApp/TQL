@@ -1,6 +1,7 @@
 ﻿using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json.Serialization;
+using Tql.Abstractions;
 using Tql.Plugins.Jira.Support;
 
 namespace Tql.Plugins.Jira.Services;
@@ -8,12 +9,16 @@ namespace Tql.Plugins.Jira.Services;
 internal class JiraClient
 {
     private readonly HttpClient _httpClient;
+    private readonly Connection _connection;
+    private readonly IUI _ui;
     private readonly AuthenticationHeaderValue _authentication;
     private readonly string _baseUrl;
 
-    public JiraClient(HttpClient httpClient, Connection connection)
+    public JiraClient(HttpClient httpClient, Connection connection, IUI ui)
     {
         _httpClient = httpClient;
+        _connection = connection;
+        _ui = ui;
 
         _baseUrl = connection.Url.TrimEnd('/');
 
@@ -173,6 +178,8 @@ internal class JiraClient
 
         using var response = await _httpClient.SendAsync(request);
 
+        ShowUnauthorizedNotification(response);
+
         response.EnsureSuccessStatusCode();
 
         return await action(response.Content);
@@ -228,11 +235,30 @@ internal class JiraClient
 
         using var response = await _httpClient.SendAsync(request, cancellationToken);
 
+        ShowUnauthorizedNotification(response);
+
         response.EnsureSuccessStatusCode();
 
         var json = await response.Content.ReadAsStringAsync();
 
         return JsonSerializer.Deserialize<T>(json)!;
+    }
+
+    private void ShowUnauthorizedNotification(HttpResponseMessage response)
+    {
+        if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+        {
+            _ui.ShowNotificationBar(
+                $"{JiraPlugin.Id}/ConnectionFailed/{_connection.Id}",
+                $"Unable to connect to JIRA - {_connection.Name}. Click here to open the "
+                    + $"JIRA settings screen and validate your credentials.",
+                () => _ui.OpenConfiguration(JiraPlugin.ConfigurationUIId)
+            );
+        }
+        else
+        {
+            _ui.RemoveNotificationBar($"{JiraPlugin.Id}/ConnectionFailed/{_connection.Id}");
+        }
     }
 }
 

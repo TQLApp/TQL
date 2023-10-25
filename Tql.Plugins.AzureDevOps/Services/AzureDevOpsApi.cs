@@ -95,6 +95,7 @@ internal class AzureDevOpsApi
                 // Force authentication.
 
                 var client = await connection.GetClientAsync<ProjectHttpClient>();
+
                 await client.GetProjects();
 
                 return connection;

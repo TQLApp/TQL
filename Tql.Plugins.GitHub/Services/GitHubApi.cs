@@ -48,50 +48,22 @@ internal class GitHubApi
         {
             if (!_clients.TryGetValue(id, out var client))
             {
-                var appVersion = GetType().Assembly.GetName().Version;
-
-                client = new GitHubClient(new ProductHeaderValue("TQL", appVersion.ToString()));
-
                 var connection = _configurationManager.Configuration.Connections.Single(
                     p => p.Id == id
                 );
 
-                var credentials = ReadCredentials(id);
-
-                // Only use the token if the scope is the same.
-
-                if (credentials is { Scope: Scope })
+                try
                 {
-                    client.Credentials = new Credentials(
-                        credentials.AccessToken,
-                        AuthenticationType.Bearer
-                    );
-
-                    try
-                    {
-                        await client.User.Current();
-                    }
-                    catch
-                    {
-                        client.Credentials = Credentials.Anonymous;
-                    }
+                    client = await CreateClient(connection);
                 }
-
-                if (client.Credentials.AuthenticationType != AuthenticationType.Bearer)
+                catch
                 {
-                    await _ui.PerformInteractiveAuthentication(
-                        new InteractiveAuthentication(
-                            $"GitHub - {connection.Name}",
-                            client,
-                            _httpClient,
-                            _ui
-                        )
+                    _ui.ShowNotificationBar(
+                        $"{GitHubPlugin.Id}/ConnectionFailed/{id}",
+                        $"Unable to connect to GitHub - {connection.Name}. Click here to reconnect.",
+                        () => RetryConnect(id)
                     );
-
-                    if (client.Credentials.AuthenticationType != AuthenticationType.Bearer)
-                        throw new GitHubAuthenticationException("Authentication failed");
-
-                    WriteCredentials(id, new CredentialsDto(client.Credentials.Password, Scope));
+                    throw;
                 }
 
                 _clients[id] = client;
@@ -99,6 +71,65 @@ internal class GitHubApi
 
             return client;
         }
+    }
+
+    private async void RetryConnect(Guid id)
+    {
+        try
+        {
+            await GetClient(id);
+        }
+        catch
+        {
+            // Ignore.
+        }
+    }
+
+    private async Task<GitHubClient> CreateClient(Connection connection)
+    {
+        var appVersion = GetType().Assembly.GetName().Version;
+
+        var client = new GitHubClient(new ProductHeaderValue("TQL", appVersion.ToString()));
+
+        var credentials = ReadCredentials(connection.Id);
+
+        // Only use the token if the scope is the same.
+
+        if (credentials is { Scope: Scope })
+        {
+            client.Credentials = new Credentials(
+                credentials.AccessToken,
+                AuthenticationType.Bearer
+            );
+
+            try
+            {
+                await client.User.Current();
+            }
+            catch
+            {
+                client.Credentials = Credentials.Anonymous;
+            }
+        }
+
+        if (client.Credentials.AuthenticationType != AuthenticationType.Bearer)
+        {
+            await _ui.PerformInteractiveAuthentication(
+                new InteractiveAuthentication(
+                    $"GitHub - {connection.Name}",
+                    client,
+                    _httpClient,
+                    _ui
+                )
+            );
+
+            if (client.Credentials.AuthenticationType != AuthenticationType.Bearer)
+                throw new GitHubAuthenticationException("Authentication failed");
+
+            WriteCredentials(connection.Id, new CredentialsDto(client.Credentials.Password, Scope));
+        }
+
+        return client;
     }
 
     private CredentialsDto? ReadCredentials(Guid id)

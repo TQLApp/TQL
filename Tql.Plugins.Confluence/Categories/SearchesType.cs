@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using Tql.Abstractions;
-using Tql.Plugins.Confluence.Data;
+﻿using Tql.Abstractions;
 using Tql.Plugins.Confluence.Services;
 using Tql.Plugins.Confluence.Support;
 using Tql.Utilities;

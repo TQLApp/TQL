@@ -184,6 +184,8 @@ public partial class App
     private record ConfigurationUIFactory<T>(string Title) : IConfigurationUIFactory
         where T : IConfigurationUI
     {
+        public Guid Id => Guid.Parse("25e2d329-8a21-43ee-9a9b-fba641a38e2b");
+
         public IConfigurationUI CreateControl(IServiceProvider serviceProvider)
         {
             return serviceProvider.GetRequiredService<T>();

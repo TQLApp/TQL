@@ -33,4 +33,6 @@ public interface IUI
     );
 
     void RemoveNotificationBar(string key);
+
+    void OpenConfiguration(Guid id);
 }

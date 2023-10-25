@@ -14,6 +14,9 @@ namespace Tql.Plugins.Confluence;
 public class ConfluencePlugin : ITqlPlugin
 {
     public static readonly Guid Id = Guid.Parse("69a50b56-17f3-498b-bba6-3611a9c8cbb4");
+    public static readonly Guid ConfigurationUIId = Guid.Parse(
+        "a1caf338-3721-4b26-8ce9-e0142a7af25f"
+    );
 
     private readonly MatchTypeManagerBuilder _matchTypeManagerBuilder;
     private MatchTypeManager? _matchTypeManager;
@@ -67,6 +70,7 @@ public class ConfluencePlugin : ITqlPlugin
 
     private class ConfigurationUIFactory : IConfigurationUIFactory
     {
+        public Guid Id => ConfigurationUIId;
         public string Title => "Confluence";
 
         public IConfigurationUI CreateControl(IServiceProvider serviceProvider)

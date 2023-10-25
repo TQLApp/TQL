@@ -21,6 +21,7 @@ internal class UI : IUI
     public ImmutableArray<UINotification> UINotifications => _notifications.ToImmutableArray();
 
     public event EventHandler? UINotificationsChanged;
+    public event EventHandler<ConfigurationUIEventArgs>? ConfigurationUIRequested;
 
     public UI(ILogger<UI> logger)
     {
@@ -136,7 +137,8 @@ internal class UI : IUI
         {
             var notifications = _notifications.ToList();
 
-            notifications.RemoveAll(p => p.Key == key);
+            if (notifications.RemoveAll(p => p.Key == key) == 0)
+                return;
 
             _notifications = notifications;
         }
@@ -144,6 +146,14 @@ internal class UI : IUI
         _synchronizationContext?.Post(_ => OnUINotificationsChanged(), null);
     }
 
+    public void OpenConfiguration(Guid id)
+    {
+        OnConfigurationUIRequested(new ConfigurationUIEventArgs(id));
+    }
+
     protected virtual void OnUINotificationsChanged() =>
         UINotificationsChanged?.Invoke(this, EventArgs.Empty);
+
+    protected virtual void OnConfigurationUIRequested(ConfigurationUIEventArgs e) =>
+        ConfigurationUIRequested?.Invoke(this, e);
 }

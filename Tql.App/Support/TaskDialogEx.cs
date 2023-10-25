@@ -47,7 +47,7 @@ public static class TaskDialogEx
 
         taskDialog.AllowDialogCancellation = true;
         taskDialog.CommonButtons = buttons;
-        taskDialog.Width = 400;
+        taskDialog.Width = 300;
 
         taskDialog.ExpandedControlText = "Show exception details";
         taskDialog.ExpandedInformation = exception.PrintStackTrace();

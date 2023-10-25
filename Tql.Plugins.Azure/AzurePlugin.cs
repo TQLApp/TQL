@@ -13,6 +13,9 @@ namespace Tql.Plugins.Azure;
 public class AzurePlugin : ITqlPlugin
 {
     public static readonly Guid Id = Guid.Parse("51ebb93a-4d72-4231-adf0-4985f377a1b7");
+    public static readonly Guid ConfigurationUIId = Guid.Parse(
+        "83bee2a3-4797-4ef9-a32a-ad9a3108a0a8"
+    );
 
     private readonly MatchTypeManagerBuilder _matchTypeManagerBuilder;
     private MatchTypeManager? _matchTypeManager;
@@ -64,6 +67,7 @@ public class AzurePlugin : ITqlPlugin
 
     private class ConfigurationUIFactory : IConfigurationUIFactory
     {
+        public Guid Id => ConfigurationUIId;
         public string Title => "Azure Portal";
 
         public IConfigurationUI CreateControl(IServiceProvider serviceProvider)

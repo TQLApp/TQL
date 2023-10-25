@@ -83,7 +83,7 @@ internal partial class MainWindow
         _helpImage.SetPopoverToolTip("Help & documentation");
 
         _settingsImage.Source = Images.Settings;
-        _settingsImage.AttachOnClickHandler(OpenSettings);
+        _settingsImage.AttachOnClickHandler(() => OpenSettings());
         _settingsImage.SetPopoverToolTip("Settings");
 
         _spinner.SetPopoverToolTip(
@@ -103,6 +103,7 @@ internal partial class MainWindow
         settings.AttachPropertyChanged(nameof(settings.MainFontSize), (_, _) => ResetFontSize());
 
         _ui.UINotificationsChanged += (_, _) => ReloadNotifications();
+        _ui.ConfigurationUIRequested += (_, e) => OpenSettings(e.Id);
     }
 
     private void ResetFontSize()
@@ -115,10 +116,11 @@ internal partial class MainWindow
         _results.FontSize = WpfUtils.PointsToPixels(fontSize);
     }
 
-    private void OpenSettings()
+    private void OpenSettings(Guid? id = null)
     {
         var window = _serviceProvider.GetRequiredService<ConfigurationUI.ConfigurationWindow>();
         window.Owner = this;
+        window.StartupPage = id;
         window.ShowDialog();
     }
 
@@ -668,19 +670,19 @@ internal partial class MainWindow
 
     private void NotificationBarUserControl_Activated(object sender, UINotificationEventArgs e)
     {
-        e.Notification.Activate?.Invoke();
-
         _ui.RemoveNotificationBar(e.Notification.Key);
 
         ReloadNotifications();
+
+        e.Notification.Activate?.Invoke();
     }
 
     private void NotificationBarUserControl_Dismissed(object sender, UINotificationEventArgs e)
     {
-        e.Notification.Dismiss?.Invoke();
-
         _ui.RemoveNotificationBar(e.Notification.Key);
 
         ReloadNotifications();
+
+        e.Notification.Dismiss?.Invoke();
     }
 }

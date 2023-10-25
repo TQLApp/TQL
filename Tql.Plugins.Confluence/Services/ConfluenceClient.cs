@@ -1,7 +1,7 @@
 ﻿using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json.Serialization;
-using System.Threading;
+using Tql.Abstractions;
 using Tql.Plugins.Confluence.Support;
 
 namespace Tql.Plugins.Confluence.Services;
@@ -9,12 +9,16 @@ namespace Tql.Plugins.Confluence.Services;
 internal class ConfluenceClient
 {
     private readonly HttpClient _httpClient;
+    private readonly Connection _connection;
+    private readonly IUI _ui;
     private readonly AuthenticationHeaderValue _authentication;
     private readonly string _baseUrl;
 
-    public ConfluenceClient(HttpClient httpClient, Connection connection)
+    public ConfluenceClient(HttpClient httpClient, Connection connection, IUI ui)
     {
         _httpClient = httpClient;
+        _connection = connection;
+        _ui = ui;
 
         _baseUrl = connection.Url.TrimEnd('/');
 
@@ -100,6 +104,8 @@ internal class ConfluenceClient
 
         using var response = await _httpClient.SendAsync(request);
 
+        ShowUnauthorizedNotification(response);
+
         response.EnsureSuccessStatusCode();
 
         return await action(response.Content);
@@ -114,11 +120,30 @@ internal class ConfluenceClient
 
         using var response = await _httpClient.SendAsync(request, cancellationToken);
 
+        ShowUnauthorizedNotification(response);
+
         response.EnsureSuccessStatusCode();
 
         var json = await response.Content.ReadAsStringAsync();
 
         return JsonSerializer.Deserialize<T>(json)!;
+    }
+
+    private void ShowUnauthorizedNotification(HttpResponseMessage response)
+    {
+        if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+        {
+            _ui.ShowNotificationBar(
+                $"{ConfluencePlugin.Id}/ConnectionFailed/{_connection.Id}",
+                $"Unable to connect to Confluence - {_connection.Name}. Click here to open the "
+                    + $"Confluence settings screen and validate your credentials.",
+                () => _ui.OpenConfiguration(ConfluencePlugin.ConfigurationUIId)
+            );
+        }
+        else
+        {
+            _ui.RemoveNotificationBar($"{ConfluencePlugin.Id}/ConnectionFailed/{_connection.Id}");
+        }
     }
 }
 

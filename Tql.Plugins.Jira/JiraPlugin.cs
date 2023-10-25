@@ -14,6 +14,9 @@ namespace Tql.Plugins.Jira;
 public class JiraPlugin : ITqlPlugin
 {
     public static readonly Guid Id = Guid.Parse("18760188-f7b1-448d-94ba-646b85b55d98");
+    public static readonly Guid ConfigurationUIId = Guid.Parse(
+        "97f80138-0b44-4ffc-b5c2-2a40f1070e17"
+    );
 
     private readonly MatchTypeManagerBuilder _matchTypeManagerBuilder;
     private MatchTypeManager? _matchTypeManager;
@@ -67,6 +70,7 @@ public class JiraPlugin : ITqlPlugin
 
     private class ConfigurationUIFactory : IConfigurationUIFactory
     {
+        public Guid Id => ConfigurationUIId;
         public string Title => "JIRA";
 
         public IConfigurationUI CreateControl(IServiceProvider serviceProvider)

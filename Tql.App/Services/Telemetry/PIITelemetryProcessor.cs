@@ -1,5 +1,4 @@
 ﻿using Microsoft.ApplicationInsights.Extensibility;
-using Microsoft.ApplicationInsights.Extensibility.Implementation;
 
 namespace Tql.App.Services.Telemetry;
 

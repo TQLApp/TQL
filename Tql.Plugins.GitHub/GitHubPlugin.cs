@@ -14,6 +14,9 @@ namespace Tql.Plugins.GitHub;
 public class GitHubPlugin : ITqlPlugin
 {
     public static readonly Guid Id = Guid.Parse("028ffb5f-5d9f-4ee1-91fd-47f192d16e20");
+    public static readonly Guid ConfigurationUIId = Guid.Parse(
+        "35954273-99ae-473c-9386-2dc220a12c45"
+    );
 
     private readonly MatchTypeManagerBuilder _matchTypeManagerBuilder;
     private MatchTypeManager? _matchTypeManager;
@@ -85,6 +88,7 @@ public class GitHubPlugin : ITqlPlugin
 
     private class ConfigurationUIFactory : IConfigurationUIFactory
     {
+        public Guid Id => ConfigurationUIId;
         public string Title => "GitHub";
 
         public IConfigurationUI CreateControl(IServiceProvider serviceProvider)

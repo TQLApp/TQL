@@ -1,5 +1,4 @@
 ﻿using Tql.Abstractions;
-using Tql.Plugins.Confluence.Services;
 using Tql.Utilities;
 
 namespace Tql.Plugins.Confluence.Categories;
