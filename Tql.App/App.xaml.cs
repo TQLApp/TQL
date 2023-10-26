@@ -57,8 +57,6 @@ public partial class App
 
         logger.LogInformation("Initializing plugins");
 
-        RegisterConfigurationUIPages();
-
         ((UI)_host.Services.GetRequiredService<IUI>()).SetSynchronizationContext(
             SynchronizationContext.Current
         );
@@ -86,17 +84,6 @@ public partial class App
         {
             ThemeManager.SetTheme(ThemeManager.ParseTheme(settings.Theme));
         }
-    }
-
-    private void RegisterConfigurationUIPages()
-    {
-        var configurationManager = (ConfigurationManager)
-            _host!.Services.GetRequiredService<IConfigurationManager>();
-
-        configurationManager.RegisterConfigurationUIFactory(
-            new ConfigurationUIFactory<GeneralConfigurationControl>("General"),
-            -1
-        );
     }
 
     [UsedImplicitly]
@@ -182,16 +169,5 @@ public partial class App
     private void Application_Exit(object sender, ExitEventArgs e)
     {
         _host?.Dispose();
-    }
-
-    private record ConfigurationUIFactory<T>(string Title) : IConfigurationUIFactory
-        where T : IConfigurationUI
-    {
-        public Guid Id => Guid.Parse("25e2d329-8a21-43ee-9a9b-fba641a38e2b");
-
-        public IConfigurationUI CreateControl(IServiceProvider serviceProvider)
-        {
-            return serviceProvider.GetRequiredService<T>();
-        }
     }
 }

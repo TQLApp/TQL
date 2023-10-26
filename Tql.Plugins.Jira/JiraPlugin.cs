@@ -14,7 +14,7 @@ namespace Tql.Plugins.Jira;
 public class JiraPlugin : ITqlPlugin
 {
     public static readonly Guid Id = Guid.Parse("18760188-f7b1-448d-94ba-646b85b55d98");
-    public static readonly Guid ConfigurationUIId = Guid.Parse(
+    public static readonly Guid ConfigurationPageId = Guid.Parse(
         "97f80138-0b44-4ffc-b5c2-2a40f1070e17"
     );
 
@@ -23,6 +23,7 @@ public class JiraPlugin : ITqlPlugin
     private IServiceProvider? _serviceProvider;
 
     Guid ITqlPlugin.Id => Id;
+    public string Title => "JIRA";
 
     public JiraPlugin()
     {
@@ -45,10 +46,6 @@ public class JiraPlugin : ITqlPlugin
     {
         _serviceProvider = serviceProvider;
 
-        var configurationManager = serviceProvider.GetRequiredService<IConfigurationManager>();
-
-        configurationManager.RegisterConfigurationUIFactory(new ConfigurationUIFactory());
-
         _matchTypeManager = _matchTypeManagerBuilder.Build(serviceProvider);
     }
 
@@ -68,14 +65,8 @@ public class JiraPlugin : ITqlPlugin
         return _matchTypeManager?.Deserialize(typeId, json);
     }
 
-    private class ConfigurationUIFactory : IConfigurationUIFactory
+    public IEnumerable<IConfigurationPage> GetConfigurationPages()
     {
-        public Guid Id => ConfigurationUIId;
-        public string Title => "JIRA";
-
-        public IConfigurationUI CreateControl(IServiceProvider serviceProvider)
-        {
-            return serviceProvider.GetRequiredService<ConfigurationControl>();
-        }
+        yield return _serviceProvider!.GetRequiredService<ConfigurationControl>();
     }
 }

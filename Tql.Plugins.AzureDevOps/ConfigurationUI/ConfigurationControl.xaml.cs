@@ -3,12 +3,15 @@ using Tql.Plugins.AzureDevOps.Data;
 
 namespace Tql.Plugins.AzureDevOps.ConfigurationUI;
 
-internal partial class ConfigurationControl : IConfigurationUI
+internal partial class ConfigurationControl : IConfigurationPage
 {
     private readonly IConfigurationManager _configurationManager;
     private readonly ICache<AzureData> _cache;
 
     private new ConfigurationDto DataContext => (ConfigurationDto)base.DataContext;
+
+    public Guid PageId => AzureDevOpsPlugin.ConfigurationPageId;
+    public string Title => "General";
 
     public ConfigurationControl(IConfigurationManager configurationManager, ICache<AzureData> cache)
     {

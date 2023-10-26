@@ -6,7 +6,7 @@ using Button = System.Windows.Controls.Button;
 
 namespace Tql.Plugins.Confluence.ConfigurationUI;
 
-internal partial class ConfigurationControl : IConfigurationUI
+internal partial class ConfigurationControl : IConfigurationPage
 {
     private readonly IConfigurationManager _configurationManager;
     private readonly IUI _ui;
@@ -15,6 +15,9 @@ internal partial class ConfigurationControl : IConfigurationUI
     private bool _dirty;
 
     private new ConfigurationDto DataContext => (ConfigurationDto)base.DataContext;
+
+    public Guid PageId => ConfluencePlugin.ConfigurationPageId;
+    public string Title => "General";
 
     public ConfigurationControl(
         IConfigurationManager configurationManager,

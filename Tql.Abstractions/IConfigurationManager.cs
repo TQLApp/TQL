@@ -7,6 +7,4 @@ public interface IConfigurationManager
     string? GetConfiguration(Guid pluginId);
 
     void SetConfiguration(Guid pluginId, string? configuration);
-
-    void RegisterConfigurationUIFactory(IConfigurationUIFactory factory);
 }

@@ -1,5 +1,4 @@
-﻿using System.Windows.Forms;
-using Tql.App.Interop;
+﻿using Tql.App.Interop;
 
 namespace Tql.App.Services;
 

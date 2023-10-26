@@ -13,7 +13,7 @@ namespace Tql.Plugins.Azure;
 public class AzurePlugin : ITqlPlugin
 {
     public static readonly Guid Id = Guid.Parse("51ebb93a-4d72-4231-adf0-4985f377a1b7");
-    public static readonly Guid ConfigurationUIId = Guid.Parse(
+    public static readonly Guid ConfigurationPageId = Guid.Parse(
         "83bee2a3-4797-4ef9-a32a-ad9a3108a0a8"
     );
 
@@ -22,6 +22,7 @@ public class AzurePlugin : ITqlPlugin
     private IServiceProvider? _serviceProvider;
 
     Guid ITqlPlugin.Id => Id;
+    public string Title => "Azure Portal";
 
     public AzurePlugin()
     {
@@ -42,10 +43,6 @@ public class AzurePlugin : ITqlPlugin
     {
         _serviceProvider = serviceProvider;
 
-        var configurationManager = serviceProvider.GetRequiredService<IConfigurationManager>();
-
-        configurationManager.RegisterConfigurationUIFactory(new ConfigurationUIFactory());
-
         _matchTypeManager = _matchTypeManagerBuilder.Build(serviceProvider);
     }
 
@@ -65,14 +62,8 @@ public class AzurePlugin : ITqlPlugin
         return _matchTypeManager?.Deserialize(typeId, json);
     }
 
-    private class ConfigurationUIFactory : IConfigurationUIFactory
+    public IEnumerable<IConfigurationPage> GetConfigurationPages()
     {
-        public Guid Id => ConfigurationUIId;
-        public string Title => "Azure Portal";
-
-        public IConfigurationUI CreateControl(IServiceProvider serviceProvider)
-        {
-            return serviceProvider.GetRequiredService<ConfigurationControl>();
-        }
+        yield return _serviceProvider!.GetRequiredService<ConfigurationControl>();
     }
 }

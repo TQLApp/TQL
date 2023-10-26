@@ -67,10 +67,10 @@ internal class JiraCacheManager : ICacheManager<JiraData>
                 board.Id,
                 board.Name,
                 board.Type,
-                board.Location.Name,
-                board.Location.ProjectKey,
-                board.Location.ProjectTypeKey,
-                board.Location.AvatarUri
+                board.Location!.Name,
+                board.Location!.ProjectKey,
+                board.Location!.ProjectTypeKey,
+                board.Location!.AvatarUri
             )
         ).ToImmutableArray();
 

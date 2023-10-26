@@ -2,9 +2,12 @@
 
 namespace Tql.Plugins.MicrosoftTeams.ConfigurationUI;
 
-internal partial class ConfigurationControl : IConfigurationUI
+internal partial class ConfigurationControl : IConfigurationPage
 {
     private readonly IConfigurationManager _configurationManager;
+
+    public Guid PageId => MicrosoftTeamsPlugin.ConfigurationPageId;
+    public string Title => "General";
 
     public ConfigurationControl(
         IConfigurationManager configurationManager,

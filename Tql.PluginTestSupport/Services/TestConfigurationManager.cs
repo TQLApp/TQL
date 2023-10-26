@@ -22,8 +22,6 @@ internal class TestConfigurationManager : IConfigurationManager
         OnConfigurationChanged(new ConfigurationChangedEventArgs(pluginId, configuration));
     }
 
-    public void RegisterConfigurationUIFactory(IConfigurationUIFactory factory) { }
-
     protected virtual void OnConfigurationChanged(ConfigurationChangedEventArgs e) =>
         ConfigurationChanged?.Invoke(this, e);
 }

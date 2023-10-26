@@ -252,7 +252,7 @@ internal class JiraClient
                 $"{JiraPlugin.Id}/ConnectionFailed/{_connection.Id}",
                 $"Unable to connect to JIRA - {_connection.Name}. Click here to open the "
                     + $"JIRA settings screen and validate your credentials.",
-                () => _ui.OpenConfiguration(JiraPlugin.ConfigurationUIId)
+                () => _ui.OpenConfiguration(JiraPlugin.ConfigurationPageId)
             );
         }
         else

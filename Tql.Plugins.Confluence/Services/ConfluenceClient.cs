@@ -137,7 +137,7 @@ internal class ConfluenceClient
                 $"{ConfluencePlugin.Id}/ConnectionFailed/{_connection.Id}",
                 $"Unable to connect to Confluence - {_connection.Name}. Click here to open the "
                     + $"Confluence settings screen and validate your credentials.",
-                () => _ui.OpenConfiguration(ConfluencePlugin.ConfigurationUIId)
+                () => _ui.OpenConfiguration(ConfluencePlugin.ConfigurationPageId)
             );
         }
         else

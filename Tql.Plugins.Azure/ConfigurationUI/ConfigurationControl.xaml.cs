@@ -2,12 +2,15 @@
 
 namespace Tql.Plugins.Azure.ConfigurationUI;
 
-internal partial class ConfigurationControl : IConfigurationUI
+internal partial class ConfigurationControl : IConfigurationPage
 {
     private readonly IConfigurationManager _configurationManager;
     private Guid? _id;
 
     private new ConfigurationDto DataContext => (ConfigurationDto)base.DataContext;
+
+    public Guid PageId => AzurePlugin.ConfigurationPageId;
+    public string Title => "General";
 
     public ConfigurationControl(IConfigurationManager configurationManager)
     {

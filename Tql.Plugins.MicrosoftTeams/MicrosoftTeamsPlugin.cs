@@ -13,7 +13,7 @@ namespace Tql.Plugins.MicrosoftTeams;
 public class MicrosoftTeamsPlugin : ITqlPlugin
 {
     public static readonly Guid Id = Guid.Parse("8f6c5e2c-455e-4eb0-badd-ed577fe03a3a");
-    public static readonly Guid ConfigurationUIId = Guid.Parse(
+    public static readonly Guid ConfigurationPageId = Guid.Parse(
         "0fc1ad1b-92d5-41e8-96a7-621b13402c0b"
     );
 
@@ -22,6 +22,7 @@ public class MicrosoftTeamsPlugin : ITqlPlugin
     private IServiceProvider? _serviceProvider;
 
     Guid ITqlPlugin.Id => Id;
+    public string Title => "Microsoft Teams";
 
     public MicrosoftTeamsPlugin()
     {
@@ -39,10 +40,6 @@ public class MicrosoftTeamsPlugin : ITqlPlugin
     public void Initialize(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
-
-        var configurationManager = serviceProvider.GetRequiredService<IConfigurationManager>();
-
-        configurationManager.RegisterConfigurationUIFactory(new ConfigurationUIFactory());
 
         _matchTypeManager = _matchTypeManagerBuilder.Build(serviceProvider);
     }
@@ -79,14 +76,8 @@ public class MicrosoftTeamsPlugin : ITqlPlugin
         return _matchTypeManager?.Deserialize(typeId, json);
     }
 
-    private class ConfigurationUIFactory : IConfigurationUIFactory
+    public IEnumerable<IConfigurationPage> GetConfigurationPages()
     {
-        public Guid Id => ConfigurationUIId;
-        public string Title => "Microsoft Teams";
-
-        public IConfigurationUI CreateControl(IServiceProvider serviceProvider)
-        {
-            return serviceProvider.GetRequiredService<ConfigurationControl>();
-        }
+        yield return _serviceProvider!.GetRequiredService<ConfigurationControl>();
     }
 }

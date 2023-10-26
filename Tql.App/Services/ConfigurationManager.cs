@@ -10,18 +10,6 @@ internal class ConfigurationManager : IConfigurationManager
     private readonly IStore _store;
     private readonly object _syncRoot = new();
     private readonly Dictionary<Guid, string> _configuration = new();
-    private readonly List<ConfigurationUIFactory> _configurationUIFactories = new();
-
-    public ImmutableArray<ConfigurationUIFactory> ConfigurationUIFactories
-    {
-        get
-        {
-            lock (_syncRoot)
-            {
-                return _configurationUIFactories.ToImmutableArray();
-            }
-        }
-    }
 
     public event EventHandler<ConfigurationChangedEventArgs>? ConfigurationChanged;
 
@@ -69,19 +57,6 @@ internal class ConfigurationManager : IConfigurationManager
         OnConfigurationChanged(new ConfigurationChangedEventArgs(pluginId, configuration));
     }
 
-    public void RegisterConfigurationUIFactory(IConfigurationUIFactory factory)
-    {
-        RegisterConfigurationUIFactory(factory, 0);
-    }
-
-    public void RegisterConfigurationUIFactory(IConfigurationUIFactory factory, int order)
-    {
-        lock (_syncRoot)
-        {
-            _configurationUIFactories.Add(new ConfigurationUIFactory(factory, order));
-        }
-    }
-
     private void LoadConfiguration()
     {
         var fileName = GetConfigurationFileName();
@@ -118,5 +93,3 @@ internal class ConfigurationManager : IConfigurationManager
     protected virtual void OnConfigurationChanged(ConfigurationChangedEventArgs e) =>
         ConfigurationChanged?.Invoke(this, e);
 }
-
-internal record ConfigurationUIFactory(IConfigurationUIFactory Factory, int Order);

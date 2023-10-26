@@ -14,7 +14,7 @@ namespace Tql.Plugins.AzureDevOps;
 public class AzureDevOpsPlugin : ITqlPlugin
 {
     public static readonly Guid Id = Guid.Parse("36828080-c1f0-4759-8dff-2b764a44b62e");
-    public static readonly Guid ConfigurationUIId = Guid.Parse(
+    public static readonly Guid ConfigurationPageId = Guid.Parse(
         "12e42adb-7f02-40fe-b8ba-2938b49b3d81"
     );
 
@@ -23,6 +23,7 @@ public class AzureDevOpsPlugin : ITqlPlugin
     private IServiceProvider? _serviceProvider;
 
     Guid ITqlPlugin.Id => Id;
+    public string Title => "Azure DevOps";
 
     public AzureDevOpsPlugin()
     {
@@ -45,10 +46,6 @@ public class AzureDevOpsPlugin : ITqlPlugin
     {
         _serviceProvider = serviceProvider;
 
-        var configurationManager = serviceProvider.GetRequiredService<IConfigurationManager>();
-
-        configurationManager.RegisterConfigurationUIFactory(new ConfigurationUIFactory());
-
         _matchTypeManager = _matchTypeManagerBuilder.Build(serviceProvider);
     }
 
@@ -68,14 +65,8 @@ public class AzureDevOpsPlugin : ITqlPlugin
         return _matchTypeManager?.Deserialize(typeId, json);
     }
 
-    private class ConfigurationUIFactory : IConfigurationUIFactory
+    public IEnumerable<IConfigurationPage> GetConfigurationPages()
     {
-        public Guid Id => ConfigurationUIId;
-        public string Title => "Azure DevOps";
-
-        public IConfigurationUI CreateControl(IServiceProvider serviceProvider)
-        {
-            return serviceProvider.GetRequiredService<ConfigurationControl>();
-        }
+        yield return _serviceProvider!.GetRequiredService<ConfigurationControl>();
     }
 }

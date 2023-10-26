@@ -6,7 +6,7 @@ using Tql.App.Support;
 
 namespace Tql.App.ConfigurationUI;
 
-internal partial class GeneralConfigurationControl : IConfigurationUI
+internal partial class GeneralConfigurationControl : IConfigurationPage
 {
     private readonly Settings _settings;
     private readonly IUI _ui;
@@ -14,6 +14,9 @@ internal partial class GeneralConfigurationControl : IConfigurationUI
     private readonly ShowOnScreenManager _showOnScreenManager;
     private readonly bool? _loadedEnableMetricsTelemetry;
     private readonly bool? _loadedEnableExceptionTelemetry;
+
+    public Guid PageId => Guid.Parse("df92b623-a629-465a-bddf-8f36ef6d4fdd");
+    public string Title => "General";
 
     public GeneralConfigurationControl(Settings settings, IUI ui, HotKeyService hotKeyService)
     {

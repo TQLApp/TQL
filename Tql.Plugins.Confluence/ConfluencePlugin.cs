@@ -14,7 +14,7 @@ namespace Tql.Plugins.Confluence;
 public class ConfluencePlugin : ITqlPlugin
 {
     public static readonly Guid Id = Guid.Parse("69a50b56-17f3-498b-bba6-3611a9c8cbb4");
-    public static readonly Guid ConfigurationUIId = Guid.Parse(
+    public static readonly Guid ConfigurationPageId = Guid.Parse(
         "a1caf338-3721-4b26-8ce9-e0142a7af25f"
     );
 
@@ -23,6 +23,7 @@ public class ConfluencePlugin : ITqlPlugin
     private IServiceProvider? _serviceProvider;
 
     Guid ITqlPlugin.Id => Id;
+    public string Title => "Confluence";
 
     public ConfluencePlugin()
     {
@@ -45,10 +46,6 @@ public class ConfluencePlugin : ITqlPlugin
     {
         _serviceProvider = serviceProvider;
 
-        var configurationManager = serviceProvider.GetRequiredService<IConfigurationManager>();
-
-        configurationManager.RegisterConfigurationUIFactory(new ConfigurationUIFactory());
-
         _matchTypeManager = _matchTypeManagerBuilder.Build(serviceProvider);
     }
 
@@ -68,14 +65,8 @@ public class ConfluencePlugin : ITqlPlugin
         return _matchTypeManager?.Deserialize(typeId, json);
     }
 
-    private class ConfigurationUIFactory : IConfigurationUIFactory
+    public IEnumerable<IConfigurationPage> GetConfigurationPages()
     {
-        public Guid Id => ConfigurationUIId;
-        public string Title => "Confluence";
-
-        public IConfigurationUI CreateControl(IServiceProvider serviceProvider)
-        {
-            return serviceProvider.GetRequiredService<ConfigurationControl>();
-        }
+        yield return _serviceProvider!.GetRequiredService<ConfigurationControl>();
     }
 }

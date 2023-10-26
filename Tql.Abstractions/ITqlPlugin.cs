@@ -5,6 +5,7 @@ namespace Tql.Abstractions;
 public interface ITqlPlugin
 {
     Guid Id { get; }
+    string Title { get; }
 
     void ConfigureServices(IServiceCollection services);
 
@@ -13,4 +14,6 @@ public interface ITqlPlugin
     IMatch? DeserializeMatch(Guid typeId, string json);
 
     IEnumerable<IMatch> GetMatches();
+
+    IEnumerable<IConfigurationPage> GetConfigurationPages();
 }

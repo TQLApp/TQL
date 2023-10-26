@@ -14,7 +14,7 @@ namespace Tql.Plugins.GitHub;
 public class GitHubPlugin : ITqlPlugin
 {
     public static readonly Guid Id = Guid.Parse("028ffb5f-5d9f-4ee1-91fd-47f192d16e20");
-    public static readonly Guid ConfigurationUIId = Guid.Parse(
+    public static readonly Guid ConfigurationPageId = Guid.Parse(
         "35954273-99ae-473c-9386-2dc220a12c45"
     );
 
@@ -23,6 +23,7 @@ public class GitHubPlugin : ITqlPlugin
     private IServiceProvider? _serviceProvider;
 
     Guid ITqlPlugin.Id => Id;
+    public string Title => "GitHub";
 
     public GitHubPlugin()
     {
@@ -43,10 +44,6 @@ public class GitHubPlugin : ITqlPlugin
     public void Initialize(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
-
-        var configurationManager = serviceProvider.GetRequiredService<IConfigurationManager>();
-
-        configurationManager.RegisterConfigurationUIFactory(new ConfigurationUIFactory());
 
         _matchTypeManager = _matchTypeManagerBuilder.Build(serviceProvider);
     }
@@ -86,14 +83,8 @@ public class GitHubPlugin : ITqlPlugin
         return _matchTypeManager?.Deserialize(typeId, json);
     }
 
-    private class ConfigurationUIFactory : IConfigurationUIFactory
+    public IEnumerable<IConfigurationPage> GetConfigurationPages()
     {
-        public Guid Id => ConfigurationUIId;
-        public string Title => "GitHub";
-
-        public IConfigurationUI CreateControl(IServiceProvider serviceProvider)
-        {
-            return serviceProvider.GetRequiredService<ConfigurationControl>();
-        }
+        yield return _serviceProvider!.GetRequiredService<ConfigurationControl>();
     }
 }
