@@ -12,7 +12,7 @@
     <Description>Techie's Quick Launcher plugin for Confluence by Atlassian.</Description>
   </PropertyGroup>
 
-  <Import Project="..\TqlPlugin.targets" />
+  <Import Project="..\TqlPackage.targets" />
 
   <ItemGroup>
     <EmbeddedResource Include="Resources\**\*" />

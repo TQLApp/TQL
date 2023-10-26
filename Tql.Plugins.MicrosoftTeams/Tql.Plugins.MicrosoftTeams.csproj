@@ -11,7 +11,7 @@
     <Description>Techie's Quick Launcher plugin for Microsoft Teams. To use this plugin, you need to have at least one plugin installed that exposes a people directory, e.g. the JIRA or Azure DevOps plugins.</Description>
   </PropertyGroup>
 
-  <Import Project="..\TqlPlugin.targets" />
+  <Import Project="..\TqlPackage.targets" />
 
   <ItemGroup>
     <EmbeddedResource Include="Resources\**\*" />

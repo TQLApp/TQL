@@ -8,8 +8,11 @@
 		<UseWPF>true</UseWPF>
 		<UseWindowsForms>true</UseWindowsForms>
 		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Product>TQL Plugin Utilities</Product>
+    <Description>Utilities to simplify plugin development for Techie's Quick Launcher.</Description>
   </PropertyGroup>
+
+  <Import Project="..\TqlPackage.targets" />
 
   <ItemGroup>
 		<PackageReference Include="JetBrains.Annotations" Version="2023.2.0" />

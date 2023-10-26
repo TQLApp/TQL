@@ -12,7 +12,7 @@
     <Description>Demo plugin for Techie's Quick Launcher.</Description>
   </PropertyGroup>
 
-  <Import Project="..\TqlPlugin.targets" />
+  <Import Project="..\TqlPackage.targets" />
 
   <ItemGroup>
     <EmbeddedResource Include="Resources\**\*" />

@@ -20,7 +20,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App", "App", "{094A034F-EBB
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{E67CF545-0D68-469F-BD58-DAC8EDCE4562}"
 	ProjectSection(SolutionItems) = preProject
-		TqlPlugin.targets = TqlPlugin.targets
+		TqlPackage.targets = TqlPackage.targets
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tql.App.Test", "Tql.App.Test\Tql.App.Test.csproj", "{F03E8683-F9DF-47A1-807A-E46F6CC817E8}"
@@ -43,7 +43,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tql.Plugins.GitHub.Test", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tql.Plugins.Demo", "Tql.Plugins.Demo\Tql.Plugins.Demo.csproj", "{CD857478-20C7-4BA9-8CB7-886FDFD62D0B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tql.DebugApp", "Tql.DebugApp\Tql.DebugApp.csproj", "{FF29F203-71D5-43B5-91F2-4260194B7B1F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tql.DebugApp", "Tql.DebugApp\Tql.DebugApp.csproj", "{FF29F203-71D5-43B5-91F2-4260194B7B1F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -8,8 +8,11 @@
 		<UseWPF>true</UseWPF>
 		<UseWindowsForms>true</UseWindowsForms>
 		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
-		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-	</PropertyGroup>
+    <Product>TQL Plugin Abstractions</Product>
+    <Description>Abstractions for building plugins for Techie's Quick Launcher.</Description>
+  </PropertyGroup>
+
+  <Import Project="..\TqlPackage.targets" />
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
