@@ -277,23 +277,35 @@ internal class SearchManager : IDisposable
         var task = Stack.Last().Search(context, _search, context.CancellationToken);
         var completedInline = task.IsCompleted;
 
-        if (!completedInline)
-        {
-            _isSearchingCount++;
-            OnIsSearchingChanged();
-
-            if (!context.IsPreliminaryResultsSuppressed)
-                ShowPreliminaryResults();
-        }
-
         try
         {
-            var result = (await task).Select(context.GetSearchResult).ToImmutableArray();
+            if (!completedInline)
+            {
+                _isSearchingCount++;
+                OnIsSearchingChanged();
 
-            if (context.Search.IsEmpty() && result.Length == 0)
-                return GetPreliminaryResults();
-            else
-                return result;
+                if (!context.IsPreliminaryResultsSuppressed)
+                    ShowPreliminaryResults();
+            }
+
+            var result = (await task).Select(context.GetSearchResult).ToList();
+
+            if (result.Count == 0)
+            {
+                if (context.Search.IsEmpty())
+                    return GetPreliminaryResults();
+                return ImmutableArray<SearchResult>.Empty;
+            }
+
+            // Regardless of how the plugin has ordered the search
+            // results, we want the favorited items to appear at the top.
+
+            var ordered = ImmutableArray.CreateBuilder<SearchResult>();
+
+            ordered.AddRange(result.Where(p => p.HistoryId.HasValue));
+            ordered.AddRange(result.Where(p => !p.HistoryId.HasValue));
+
+            return ordered.ToImmutable();
         }
         finally
         {
