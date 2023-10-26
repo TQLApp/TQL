@@ -10,3 +10,4 @@ using System.Runtime.CompilerServices;
 )]
 
 [assembly: InternalsVisibleTo("Tql.App.Test")]
+[assembly: InternalsVisibleTo("Tql.PluginTestSupport")]

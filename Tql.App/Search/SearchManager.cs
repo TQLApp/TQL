@@ -180,13 +180,7 @@ internal class SearchManager : IDisposable
 
             category?.InitializeTelemetry(telemetry);
 
-            var context = new SearchContext(
-                _serviceProvider,
-                _search,
-                category?.TypeId,
-                _history,
-                _contextContext
-            );
+            var context = new SearchContext(_serviceProvider, _search, _history, _contextContext);
 
             Context = context;
 
@@ -235,7 +229,7 @@ internal class SearchManager : IDisposable
         var rootItems = context
             .Filter(_pluginManager.Plugins.SelectMany(p => p.GetMatches()))
             .Select(context.GetSearchResult)
-            .Where(p => p.Penalty <= 0)
+            .Where(p => !p.IsFuzzyMatch)
             .ToList();
 
         Debug.Assert(

@@ -15,4 +15,4 @@ internal record Configuration(ImmutableArray<Connection> Connections)
     public string ToJson() => JsonSerializer.Serialize(this);
 }
 
-internal record Connection(Guid Id, string Name);
+internal record Connection(Guid Id, string Name, string? PatToken = null);

@@ -35,11 +35,7 @@ public partial class App
 
         var builder = Host.CreateApplicationBuilder(e.Args);
 
-        ConfigureServices(builder.Services);
-
-        builder.Services.AddSingleton<IPluginManager>(new PluginManager(plugins));
-
-        builder.Services.Add(ServiceDescriptor.Singleton(typeof(ICache<>), typeof(Cache<>)));
+        ConfigureServices(builder.Services, plugins);
 
         foreach (var plugin in plugins)
         {
@@ -155,7 +151,10 @@ public partial class App
         }
     }
 
-    private static void ConfigureServices(IServiceCollection builder)
+    private static void ConfigureServices(
+        IServiceCollection builder,
+        ImmutableArray<ITqlPlugin> plugins
+    )
     {
         builder.AddSingleton<IStore, Store>();
         builder.AddSingleton<IDb, Db>();
@@ -169,6 +168,9 @@ public partial class App
         builder.AddSingleton<TelemetryService>();
         builder.AddSingleton<IPeopleDirectoryManager, PeopleDirectoryManager>();
         builder.AddSingleton<HotKeyService>();
+        builder.AddSingleton<IPluginManager>(new PluginManager(plugins));
+
+        builder.Add(ServiceDescriptor.Singleton(typeof(ICache<>), typeof(Cache<>)));
 
         builder.AddTransient<MainWindow>();
         builder.AddTransient<ConfigurationWindow>();

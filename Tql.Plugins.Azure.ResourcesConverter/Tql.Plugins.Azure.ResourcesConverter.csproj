@@ -12,7 +12,7 @@
 	<ItemGroup>
 		<PackageReference Include="AsyncEnumerator" Version="4.0.2" />
 		<PackageReference Include="HtmlAgilityPack" Version="1.11.54" />
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	</ItemGroup>
 
 	<ItemGroup>

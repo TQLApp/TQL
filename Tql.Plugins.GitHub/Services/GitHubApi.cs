@@ -91,6 +91,14 @@ internal class GitHubApi
 
         var client = new GitHubClient(new ProductHeaderValue("TQL", appVersion.ToString()));
 
+        // PAT tokens are only used by unit tests.
+
+        if (connection.PatToken != null)
+        {
+            client.Credentials = new Credentials(connection.PatToken, AuthenticationType.Bearer);
+            return client;
+        }
+
         var credentials = ReadCredentials(connection.Id);
 
         // Only use the token if the scope is the same.

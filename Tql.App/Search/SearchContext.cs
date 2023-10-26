@@ -13,7 +13,6 @@ internal class SearchContext : ISearchContext, IDisposable
     private readonly ThreadLocal<Levenshtein> _levenshtein;
     private readonly CharDistribution _distribution;
     private readonly string _lowerSimplifiedSearch;
-    private readonly MatchTypeId? _parentTypeId;
 
     public IServiceProvider ServiceProvider { get; }
     public IDictionary<string, object> Context { get; }
@@ -26,12 +25,10 @@ internal class SearchContext : ISearchContext, IDisposable
     public SearchContext(
         IServiceProvider serviceProvider,
         string search,
-        MatchTypeId? parentTypeId,
         History? history,
         IDictionary<string, object> context
     )
     {
-        _parentTypeId = parentTypeId;
         ServiceProvider = serviceProvider;
         Search = search;
         History = history;
