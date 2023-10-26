@@ -52,6 +52,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Compile Update="ConfigurationUI\PluginsConfigurationControl.xaml.cs">
+		  <SubType>Code</SubType>
+		</Compile>
 		<Compile Update="ConfigurationUI\GeneralConfigurationControl.xaml.cs">
 		  <SubType>Code</SubType>
 		</Compile>

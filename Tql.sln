@@ -34,9 +34,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tql.Plugins.MicrosoftTeams"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tql.Plugins.Confluence", "Tql.Plugins.Confluence\Tql.Plugins.Confluence.csproj", "{0A274981-B8C5-47D6-9AC8-295149B9A5DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tql.PluginTestSupport", "Tql.PluginTestSupport\Tql.PluginTestSupport.csproj", "{C4F2211F-22B3-4983-89FC-F65A386D197D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tql.PluginTestSupport", "Tql.PluginTestSupport\Tql.PluginTestSupport.csproj", "{C4F2211F-22B3-4983-89FC-F65A386D197D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tql.Plugins.GitHub.Test", "Tql.Plugins.GitHub.Test\Tql.Plugins.GitHub.Test.csproj", "{CCCC5456-D907-474E-86F3-A00F1732E254}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tql.Plugins.Demo", "Tql.Plugins.Demo\Tql.Plugins.Demo.csproj", "{CD857478-20C7-4BA9-8CB7-886FDFD62D0B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -100,6 +102,10 @@ Global
 		{CCCC5456-D907-474E-86F3-A00F1732E254}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CCCC5456-D907-474E-86F3-A00F1732E254}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CCCC5456-D907-474E-86F3-A00F1732E254}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD857478-20C7-4BA9-8CB7-886FDFD62D0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD857478-20C7-4BA9-8CB7-886FDFD62D0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD857478-20C7-4BA9-8CB7-886FDFD62D0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD857478-20C7-4BA9-8CB7-886FDFD62D0B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -119,6 +125,7 @@ Global
 		{0A274981-B8C5-47D6-9AC8-295149B9A5DF} = {E67CF545-0D68-469F-BD58-DAC8EDCE4562}
 		{C4F2211F-22B3-4983-89FC-F65A386D197D} = {094A034F-EBB5-42F1-A87B-633A3117042F}
 		{CCCC5456-D907-474E-86F3-A00F1732E254} = {E67CF545-0D68-469F-BD58-DAC8EDCE4562}
+		{CD857478-20C7-4BA9-8CB7-886FDFD62D0B} = {E67CF545-0D68-469F-BD58-DAC8EDCE4562}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {473D3E4B-C738-47D6-8D01-1D80FA3D6F49}

@@ -164,6 +164,7 @@ public partial class App
         builder.AddTransient<FeedbackWindow>();
         builder.AddTransient<SearchManager>();
         builder.AddTransient<GeneralConfigurationControl>();
+        builder.AddTransient<PluginsConfigurationControl>();
     }
 
     private void Application_Exit(object sender, ExitEventArgs e)

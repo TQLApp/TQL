@@ -41,7 +41,7 @@ internal partial class ConfigurationWindow
                 AddCategory(plugin.Title, pages);
         }
 
-        if (_pages.SelectedItem == null)
+        if (StartupPage == null)
         {
             rootNode.ExpandSubtree();
 
@@ -78,6 +78,7 @@ internal partial class ConfigurationWindow
     private IEnumerable<IConfigurationPage> GetAppConfigurationPages()
     {
         yield return _serviceProvider.GetRequiredService<GeneralConfigurationControl>();
+        yield return _serviceProvider.GetRequiredService<PluginsConfigurationControl>();
     }
 
     private void _pages_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)

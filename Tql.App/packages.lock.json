@@ -1051,6 +1051,12 @@
           "Tql.Utilities": "[1.0.0, )"
         }
       },
+      "tql.plugins.demo": {
+        "type": "Project",
+        "dependencies": {
+          "Tql.Utilities": "[1.0.0, )"
+        }
+      },
       "tql.plugins.github": {
         "type": "Project",
         "dependencies": {
