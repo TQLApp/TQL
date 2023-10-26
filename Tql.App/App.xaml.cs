@@ -1,6 +1,6 @@
-﻿using System.Net.Http;
+﻿using System.Diagnostics;
+using System.Net.Http;
 using System.Reflection;
-using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -9,15 +9,10 @@ using Tql.App.ConfigurationUI;
 using Tql.App.Search;
 using Tql.App.Services;
 using Tql.App.Services.Database;
+using Tql.App.Services.Packages;
 using Tql.App.Services.Telemetry;
 using Tql.App.Services.Updates;
 using Tql.App.Support;
-using Tql.Plugins.Azure;
-using Tql.Plugins.AzureDevOps;
-using Tql.Plugins.Confluence;
-using Tql.Plugins.GitHub;
-using Tql.Plugins.Jira;
-using Tql.Plugins.MicrosoftTeams;
 using ConfigurationManager = Tql.App.Services.ConfigurationManager;
 
 namespace Tql.App;
@@ -27,15 +22,38 @@ public partial class App
     private IHost? _host;
     private MainWindow? _mainWindow;
 
+    public static bool RestartRequested { get; set; }
+    public static ImmutableArray<Assembly>? DebugAssemblies { get; set; }
+    public static bool IsDebugMode { get; set; }
+
     private void Application_Startup(object sender, StartupEventArgs e)
     {
         System.Windows.Forms.Application.EnableVisualStyles();
 
-        var plugins = GetPlugins().ToImmutableArray();
+        var store = new Store();
+        var packageStoreManager = new PackageStoreManager(store);
+
+        packageStoreManager.PerformCleanup();
+
+        ImmutableArray<ITqlPlugin> plugins;
+        if (DebugAssemblies.HasValue)
+            plugins = GetDebugPlugins().ToImmutableArray();
+        else
+            plugins = packageStoreManager.GetPlugins();
 
         var builder = Host.CreateApplicationBuilder(e.Args);
 
-        ConfigureServices(builder.Services, plugins);
+        var inMemoryLoggerProvider = new InMemoryLoggerProvider();
+
+        builder.Logging.AddProvider(inMemoryLoggerProvider);
+
+        ConfigureServices(
+            builder.Services,
+            store,
+            packageStoreManager,
+            plugins,
+            inMemoryLoggerProvider
+        );
 
         foreach (var plugin in plugins)
         {
@@ -48,12 +66,13 @@ public partial class App
 
         var logger = _host.Services.GetRequiredService<ILogger<App>>();
 
-#if !DEBUG
-        logger.LogInformation("Checking for updates");
+        if (!IsDebugMode)
+        {
+            logger.LogInformation("Checking for updates");
 
-        if (TryStartUpdate(logger))
-            return;
-#endif
+            if (TryStartUpdate(logger))
+                return;
+        }
 
         logger.LogInformation("Initializing plugins");
 
@@ -69,9 +88,13 @@ public partial class App
 
         _mainWindow = _host.Services.GetRequiredService<MainWindow>();
 
-#if DEBUG
-        _mainWindow.DoShow();
-#endif
+        if (IsDebugMode)
+        {
+            _mainWindow.DoShow();
+            _host.Services
+                .GetRequiredService<IUI>()
+                .OpenConfiguration(Guid.Parse("96260cfa-5814-4ed4-ac69-fcc63e4f4571"));
+        }
     }
 
     private void SetTheme(Settings settings)
@@ -86,7 +109,6 @@ public partial class App
         }
     }
 
-    [UsedImplicitly]
     private bool TryStartUpdate(ILogger<App> logger)
     {
         try
@@ -107,20 +129,9 @@ public partial class App
         return false;
     }
 
-    private IEnumerable<ITqlPlugin> GetPlugins()
+    private IEnumerable<ITqlPlugin> GetDebugPlugins()
     {
-        // TODO: Make extensible.
-        var assemblies = new[]
-        {
-            typeof(AzureDevOpsPlugin).Assembly,
-            typeof(AzurePlugin).Assembly,
-            typeof(GitHubPlugin).Assembly,
-            typeof(JiraPlugin).Assembly,
-            typeof(ConfluencePlugin).Assembly,
-            typeof(MicrosoftTeamsPlugin).Assembly
-        };
-
-        foreach (var assembly in assemblies)
+        foreach (var assembly in DebugAssemblies!.Value)
         {
             foreach (var type in assembly.ExportedTypes)
             {
@@ -140,10 +151,13 @@ public partial class App
 
     private static void ConfigureServices(
         IServiceCollection builder,
-        ImmutableArray<ITqlPlugin> plugins
+        Store store,
+        PackageStoreManager packageStoreManager,
+        ImmutableArray<ITqlPlugin> plugins,
+        InMemoryLoggerProvider inMemoryLoggerProvider
     )
     {
-        builder.AddSingleton<IStore, Store>();
+        builder.AddSingleton<IStore>(store);
         builder.AddSingleton<IDb, Db>();
         builder.AddSingleton<Settings>();
         builder.AddSingleton<IConfigurationManager, ConfigurationManager>();
@@ -156,6 +170,9 @@ public partial class App
         builder.AddSingleton<IPeopleDirectoryManager, PeopleDirectoryManager>();
         builder.AddSingleton<HotKeyService>();
         builder.AddSingleton<IPluginManager>(new PluginManager(plugins));
+        builder.AddSingleton<PackageManager>();
+        builder.AddSingleton(packageStoreManager);
+        builder.AddSingleton(inMemoryLoggerProvider);
 
         builder.Add(ServiceDescriptor.Singleton(typeof(ICache<>), typeof(Cache<>)));
 
@@ -165,10 +182,14 @@ public partial class App
         builder.AddTransient<SearchManager>();
         builder.AddTransient<GeneralConfigurationControl>();
         builder.AddTransient<PluginsConfigurationControl>();
+        builder.AddTransient<PackageSourcesConfigurationControl>();
     }
 
     private void Application_Exit(object sender, ExitEventArgs e)
     {
         _host?.Dispose();
+
+        if (RestartRequested)
+            Process.Start(Assembly.GetEntryAssembly()!.Location);
     }
 }

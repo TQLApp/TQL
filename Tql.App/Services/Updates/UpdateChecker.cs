@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using Tql.Abstractions;
+using Tql.App.Services.Packages;
 using Tql.App.Support;
 using Path = System.IO.Path;
 
@@ -17,22 +18,34 @@ internal class UpdateChecker : IDisposable
     private readonly IUI _ui;
     private readonly ILogger<UpdateChecker> _logger;
     private readonly HttpClient _httpClient;
+    private readonly PackageManager _packageManager;
     private readonly Timer _timer;
 
-    public UpdateChecker(IUI ui, ILogger<UpdateChecker> logger, HttpClient httpClient)
+    public UpdateChecker(
+        IUI ui,
+        ILogger<UpdateChecker> logger,
+        HttpClient httpClient,
+        PackageManager packageManager
+    )
     {
         _ui = ui;
         _logger = logger;
         _httpClient = httpClient;
+        _packageManager = packageManager;
         _timer = new Timer(TimerCallback, null, UpdateCheckInterval, UpdateCheckInterval);
     }
 
     public bool TryStartUpdate()
     {
-        return Task.Run(TryStartUpdateAsync).GetAwaiter().GetResult();
+        return TaskUtils.RunSynchronously(TryStartUpdateAsync);
     }
 
     private async Task<bool> TryStartUpdateAsync()
+    {
+        return await TryStartApplicationUpdate() || await TryStartPluginUpdate();
+    }
+
+    private async Task<bool> TryStartApplicationUpdate()
     {
         var request = new HttpRequestMessage(
             HttpMethod.Get,
@@ -94,6 +107,20 @@ internal class UpdateChecker : IDisposable
         Install(target);
 
         return true;
+    }
+
+    private async Task<bool> TryStartPluginUpdate()
+    {
+        var updatesAvailable = await _packageManager.UpdatePlugins();
+
+        if (updatesAvailable)
+        {
+            _logger.LogInformation("One or more plugins were updated; restarting");
+
+            App.RestartRequested = true;
+        }
+
+        return updatesAvailable;
     }
 
     private Version GetAppVersion()
@@ -179,6 +206,6 @@ internal class UpdateChecker : IDisposable
 
     public void Dispose()
     {
-        // TODO release managed resources here
+        _timer.Dispose();
     }
 }

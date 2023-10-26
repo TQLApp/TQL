@@ -53,7 +53,9 @@ partial class MainWindow
         System.Drawing.Icon LoadIcon()
         {
             using var stream = Application
-                .GetResourceStream(new Uri("/mainicon.ico", UriKind.Relative))!
+                .GetResourceStream(
+                    new Uri("pack://application:,,,/Tql.App;component/mainicon.ico")
+                )!
                 .Stream;
 
             return new System.Drawing.Icon(stream);

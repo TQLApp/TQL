@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
@@ -8,7 +8,11 @@
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <Product>TQL Demo Plugin</Product>
+    <Description>Demo plugin for Techie's Quick Launcher.</Description>
   </PropertyGroup>
+
+  <Import Project="..\TqlPlugin.targets" />
 
   <ItemGroup>
     <EmbeddedResource Include="Resources\**\*" />

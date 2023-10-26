@@ -13,7 +13,7 @@
     </UserControl.Resources>
     <Image x:Name="_image"
            RenderTransformOrigin="0.5,0.5"
-           Source="pack://application:,,,/Resources/Spinner.png">
+           Source="pack://application:,,,/Tql.App;component/Resources/Spinner.png">
         <Image.Triggers>
             <EventTrigger RoutedEvent="FrameworkElement.Loaded">
                 <EventTrigger.Actions>

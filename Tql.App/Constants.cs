@@ -1,4 +1,5 @@
 ﻿using JetBrains.Annotations;
+using NuGet.Frameworks;
 
 namespace Tql.App;
 
@@ -20,4 +21,17 @@ internal static class Constants
     [UsedImplicitly]
     public const string ApplicationInsightsConnectionString =
         "InstrumentationKey=b24fa90c-fa1d-4b19-836b-66202920fa50;IngestionEndpoint=https://westeurope-5.in.applicationinsights.azure.com/;LiveEndpoint=https://westeurope.livediagnostics.monitor.azure.com/";
+
+    public const string PackageSource =
+        "https://pvginkel.pkgs.visualstudio.com/Launcher/_packaging/TQLPlugins/nuget/v3/index.json";
+
+    public static readonly Guid PackageManagerConfigurationId = Guid.Parse(
+        "8dd1ea3b-d412-43c3-b5a4-a36bb7d52189"
+    );
+    public static readonly Guid PackageManagerPageId = Guid.Parse(
+        "4474c041-702c-415a-8531-5460dc1b9db1"
+    );
+
+    public static NuGetFramework ApplicationFrameworkVersion =
+        new(FrameworkConstants.FrameworkIdentifiers.Net, new Version(4, 8));
 }

@@ -19,6 +19,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App", "App", "{094A034F-EBB
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{E67CF545-0D68-469F-BD58-DAC8EDCE4562}"
+	ProjectSection(SolutionItems) = preProject
+		TqlPlugin.targets = TqlPlugin.targets
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tql.App.Test", "Tql.App.Test\Tql.App.Test.csproj", "{F03E8683-F9DF-47A1-807A-E46F6CC817E8}"
 EndProject
@@ -38,7 +41,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tql.PluginTestSupport", "Tq
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tql.Plugins.GitHub.Test", "Tql.Plugins.GitHub.Test\Tql.Plugins.GitHub.Test.csproj", "{CCCC5456-D907-474E-86F3-A00F1732E254}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tql.Plugins.Demo", "Tql.Plugins.Demo\Tql.Plugins.Demo.csproj", "{CD857478-20C7-4BA9-8CB7-886FDFD62D0B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tql.Plugins.Demo", "Tql.Plugins.Demo\Tql.Plugins.Demo.csproj", "{CD857478-20C7-4BA9-8CB7-886FDFD62D0B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tql.DebugApp", "Tql.DebugApp\Tql.DebugApp.csproj", "{FF29F203-71D5-43B5-91F2-4260194B7B1F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -106,6 +111,10 @@ Global
 		{CD857478-20C7-4BA9-8CB7-886FDFD62D0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD857478-20C7-4BA9-8CB7-886FDFD62D0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD857478-20C7-4BA9-8CB7-886FDFD62D0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF29F203-71D5-43B5-91F2-4260194B7B1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF29F203-71D5-43B5-91F2-4260194B7B1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF29F203-71D5-43B5-91F2-4260194B7B1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF29F203-71D5-43B5-91F2-4260194B7B1F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -126,6 +135,7 @@ Global
 		{C4F2211F-22B3-4983-89FC-F65A386D197D} = {094A034F-EBB5-42F1-A87B-633A3117042F}
 		{CCCC5456-D907-474E-86F3-A00F1732E254} = {E67CF545-0D68-469F-BD58-DAC8EDCE4562}
 		{CD857478-20C7-4BA9-8CB7-886FDFD62D0B} = {E67CF545-0D68-469F-BD58-DAC8EDCE4562}
+		{FF29F203-71D5-43B5-91F2-4260194B7B1F} = {094A034F-EBB5-42F1-A87B-633A3117042F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {473D3E4B-C738-47D6-8D01-1D80FA3D6F49}

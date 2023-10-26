@@ -7,7 +7,12 @@
 		<LangVersion>latest</LangVersion>
 		<UseWPF>true</UseWPF>
 		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
-	</PropertyGroup>
+    <NoWarn>NU5104</NoWarn>
+    <Product>TQL Azure DevOps Plugin</Product>
+    <Description>Techie's Quick Launcher plugin for Azure DevOps.</Description>
+  </PropertyGroup>
+
+  <Import Project="..\TqlPlugin.targets" />
 
 	<ItemGroup>
 		<EmbeddedResource Include="Resources\**\*" />

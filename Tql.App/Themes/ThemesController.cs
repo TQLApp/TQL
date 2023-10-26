@@ -52,11 +52,15 @@ namespace Tql.App.Themes
             CurrentTheme = theme;
             ThemeDictionary = new ResourceDictionary()
             {
-                Source = new Uri($"Themes/ColourDictionaries/{themeName}.xaml", UriKind.Relative)
+                Source = new Uri(
+                    $"pack://application:,,,/Tql.App;component/Themes/ColourDictionaries/{themeName}.xaml"
+                )
             };
             ControlColours = new ResourceDictionary()
             {
-                Source = new Uri("Themes/ControlColours.xaml", UriKind.Relative)
+                Source = new Uri(
+                    "pack://application:,,,/Tql.App;component/Themes/ControlColours.xaml"
+                )
             };
             RefreshControls();
         }

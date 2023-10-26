@@ -7,7 +7,11 @@
 		<LangVersion>latest</LangVersion>
 		<UseWPF>true</UseWPF>
 		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
-	</PropertyGroup>
+    <Product>TQL Azure Plugin</Product>
+    <Description>Techie's Quick Launcher plugin for Azure.</Description>
+  </PropertyGroup>
+
+  <Import Project="..\TqlPlugin.targets" />
 
 	<ItemGroup>
 		<EmbeddedResource Include="Resources\**\*" />

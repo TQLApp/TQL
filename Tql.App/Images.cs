@@ -7,7 +7,9 @@ internal static class Images
     private static DrawingImage LoadImage(string resourceName)
     {
         using var stream = Application
-            .GetResourceStream(new Uri($"/Resources/{resourceName}", UriKind.Relative))!
+            .GetResourceStream(
+                new Uri($"pack://application:,,,/Tql.App;component/Resources/{resourceName}")
+            )!
             .Stream;
 
         return ImageFactory.CreateSvgImage(stream!);
@@ -26,4 +28,6 @@ internal static class Images
     public static readonly DrawingImage Undo = LoadImage("Undo.svg");
     public static readonly DrawingImage Pin = LoadImage("Pin.svg");
     public static readonly DrawingImage PinOff = LoadImage("Pin Off.svg");
+    public static readonly DrawingImage NuGet = LoadImage("NuGet.svg");
+    public static readonly DrawingImage CheckmarkCircle = LoadImage("Checkmark Circle.svg");
 }

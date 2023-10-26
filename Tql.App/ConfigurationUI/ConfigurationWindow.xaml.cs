@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Collections;
+using Microsoft.Extensions.DependencyInjection;
 using Tql.Abstractions;
 using Tql.App.Services;
 
@@ -79,6 +80,7 @@ internal partial class ConfigurationWindow
     {
         yield return _serviceProvider.GetRequiredService<GeneralConfigurationControl>();
         yield return _serviceProvider.GetRequiredService<PluginsConfigurationControl>();
+        yield return _serviceProvider.GetRequiredService<PackageSourcesConfigurationControl>();
     }
 
     private void _pages_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -100,6 +102,14 @@ internal partial class ConfigurationWindow
         else
         {
             _container.Content = uiElement;
+
+            if (uiElement is IConfigurationPage configurationPage)
+            {
+                _container.VerticalScrollBarVisibility =
+                    configurationPage.PageMode == ConfigurationPageMode.Scroll
+                        ? ScrollBarVisibility.Auto
+                        : ScrollBarVisibility.Disabled;
+            }
         }
     }
 
@@ -107,9 +117,12 @@ internal partial class ConfigurationWindow
     {
         try
         {
-            foreach (TreeViewItem page in _pages.Items)
+            foreach (var page in GetAllTreeViewItems(_pages.Items))
             {
-                var task = ((IConfigurationPage)page.Tag).Save();
+                if (page.Tag is not IConfigurationPage configurationPage)
+                    continue;
+
+                var task = configurationPage.Save();
 
                 // Only disable the window if any of the save operations
                 // actually start an asynchronous task.
@@ -127,6 +140,19 @@ internal partial class ConfigurationWindow
         finally
         {
             IsEnabled = true;
+        }
+    }
+
+    private IEnumerable<TreeViewItem> GetAllTreeViewItems(IEnumerable items)
+    {
+        foreach (TreeViewItem item in items)
+        {
+            yield return item;
+
+            foreach (var child in GetAllTreeViewItems(item.Items))
+            {
+                yield return child;
+            }
         }
     }
 }

@@ -9,7 +9,7 @@
                     Title="Techie's Quick Launcher"
                     WindowStartupLocation="CenterScreen"
                     ResizeMode="NoResize"
-                    Icon="pack://application:,,,/mainicon.ico"
+                    Icon="pack://application:,,,/Tql.App;component/mainicon.ico"
                     Height="175" Width="400">
     <Grid Margin="9">
         <Grid.ColumnDefinitions>
@@ -21,7 +21,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Image Source="pack://application:,,,/Resources/Radar.png"
+        <Image Source="pack://application:,,,/Tql.App;component/Resources/Radar.png"
                Height="64"
                Margin="0,0,10,0"
                VerticalAlignment="Top"/>

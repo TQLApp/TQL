@@ -17,6 +17,7 @@ internal partial class GeneralConfigurationControl : IConfigurationPage
 
     public Guid PageId => Guid.Parse("df92b623-a629-465a-bddf-8f36ef6d4fdd");
     public string Title => "General";
+    public ConfigurationPageMode PageMode => ConfigurationPageMode.Scroll;
 
     public GeneralConfigurationControl(Settings settings, IUI ui, HotKeyService hotKeyService)
     {

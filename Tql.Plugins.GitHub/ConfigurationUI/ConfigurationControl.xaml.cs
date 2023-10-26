@@ -11,6 +11,7 @@ internal partial class ConfigurationControl : IConfigurationPage
 
     public Guid PageId => GitHubPlugin.ConfigurationPageId;
     public string Title => "General";
+    public ConfigurationPageMode PageMode => ConfigurationPageMode.AutoSize;
 
     public ConfigurationControl(IConfigurationManager configurationManager)
     {

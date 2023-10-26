@@ -15,6 +15,7 @@ internal partial class ConfigurationControl : IConfigurationPage
     private bool _dirty;
 
     private new ConfigurationDto DataContext => (ConfigurationDto)base.DataContext;
+    public ConfigurationPageMode PageMode => ConfigurationPageMode.AutoSize;
 
     public Guid PageId => JiraPlugin.ConfigurationPageId;
     public string Title => "General";

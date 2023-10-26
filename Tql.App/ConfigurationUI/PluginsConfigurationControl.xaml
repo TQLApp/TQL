@@ -4,30 +4,119 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:packages="clr-namespace:Tql.App.Services.Packages"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+             Loaded="UserControl_Loaded">
     <GroupBox Header="Plugins" Padding="4">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
             
-            <StackPanel Orientation="Horizontal">
                 <RadioButton x:Name="_browseTab"
                              Content="Browse" 
                              Margin="3"
                              Style="{StaticResource {x:Type ToggleButton}}"
+                             VerticalAlignment="Center"
                              Checked="_browseTab_Checked"/>
                 <RadioButton x:Name="_installedTab"
                              Content="Installed"
                              Margin="3"
                              Style="{StaticResource {x:Type ToggleButton}}"
+                             Grid.Column="1"
+                             VerticalAlignment="Center"
                              Checked="_installedTab_Checked"/>
-            </StackPanel>
 
-            <ListBox x:Name="_plugins">
-                
+                <TextBlock x:Name="_restartLabel"
+                           VerticalAlignment="Center"
+                           Margin="3"
+                           Visibility="Hidden"
+                           Grid.Column="3">
+                    Restart Techie's Quick Launcher needs to complete the installation
+                </TextBlock>
+                <Button x:Name="_restart"
+                        Margin="3"
+                        Content="Restart"
+                        Visibility="Hidden"
+                        Grid.Column="4"
+                        Click="_restart_Click"/>
+            </Grid>
+
+            <ListBox x:Name="_browser"
+                     Margin="3"
+                     Grid.Row="1"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="packages:Package">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Image Source="{Binding Icon, Mode=OneWay}"
+                                   Width="32"
+                                   Height="32"
+                                   Margin="3"/>
+                            <Image Source="{DynamicResource ResourceKey=CheckmarkCircle}"
+                                   Visibility="{Binding IsInstalled, Converter={StaticResource B2VConverter}}"
+                                   Width="9"
+                                   Height="9"
+                                   Margin="24,24,3,3" />
+
+                            <StackPanel Orientation="Vertical"
+                                        Grid.Column="1">
+                                <TextBlock Margin="3">
+                                    <Run FontWeight="Bold" Text="{Binding Identity.Id, Mode=OneWay}" />
+                                    by
+                                    <Run Text="{Binding Authors, Mode=OneWay}" />
+                                </TextBlock>
+
+                                <TextBlock Margin="3"
+                                           TextWrapping="Wrap">
+                                    <Run Text="{Binding Description, Mode=OneWay}" />
+                                </TextBlock>
+
+                                <TextBlock Margin="3">
+                                    <Run Text="{Binding Identity.Version, Mode=OneWay}"/>,
+                                    <Run Text="{Binding DownloadCount, Mode=OneWay}"/>
+                                    downloads
+                                </TextBlock>
+
+                            </StackPanel>
+
+                            <StackPanel Orientation="Vertical"
+                                        Visibility="{Binding IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}, Converter={StaticResource B2VConverter}}"
+                                        Grid.Column="2">
+                                <Button Content="Install"
+                                        Margin="3"
+                                        Visibility="{Binding IsInstalled, Converter={StaticResource IB2VConverter}}"
+                                        Click="_install_Click"/>
+                                <Button Content="Remove"
+                                        Margin="3"
+                                        Visibility="{Binding IsInstalled, Converter={StaticResource B2VConverter}}"
+                                        Click="_remove_Click"/>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
             </ListBox>
         </Grid>
     </GroupBox>

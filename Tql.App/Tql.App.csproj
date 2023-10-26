@@ -37,21 +37,19 @@
 		<PackageReference Include="Microsoft.ApplicationInsights" Version="2.21.0" />
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
+		<PackageReference Include="NuGet.PackageManagement" Version="6.7.0" />
 		<PackageReference Include="System.Data.SQLite.Core" Version="1.0.118" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Tql.Abstractions\Tql.Abstractions.csproj" />
 		<ProjectReference Include="..\Tql.Interop\Tql.Interop.csproj" />
-		<ProjectReference Include="..\Tql.Plugins.AzureDevOps\Tql.Plugins.AzureDevOps.csproj" />
-		<ProjectReference Include="..\Tql.Plugins.Azure\Tql.Plugins.Azure.csproj" />
-		<ProjectReference Include="..\Tql.Plugins.Confluence\Tql.Plugins.Confluence.csproj" />
-		<ProjectReference Include="..\Tql.Plugins.GitHub\Tql.Plugins.GitHub.csproj" />
-		<ProjectReference Include="..\Tql.Plugins.Jira\Tql.Plugins.Jira.csproj" />
-		<ProjectReference Include="..\Tql.Plugins.MicrosoftTeams\Tql.Plugins.MicrosoftTeams.csproj" />
+		<ProjectReference Include="..\Tql.Utilities\Tql.Utilities.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<Compile Update="ConfigurationUI\PackageSourcesConfigurationControl.xaml.cs">
+		  <SubType>Code</SubType>
+		</Compile>
 		<Compile Update="ConfigurationUI\PluginsConfigurationControl.xaml.cs">
 		  <SubType>Code</SubType>
 		</Compile>

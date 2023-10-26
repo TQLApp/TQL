@@ -8,7 +8,11 @@
 		<UseWPF>true</UseWPF>
 		<UseWindowsForms>true</UseWindowsForms>
 		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
-	</PropertyGroup>
+    <Product>TQL JIRA Plugin</Product>
+    <Description>Techie's Quick Launcher plugin for JIRA by Atlassian.</Description>
+  </PropertyGroup>
+
+  <Import Project="..\TqlPlugin.targets" />
 
 	<ItemGroup>
 		<EmbeddedResource Include="Resources\**\*" />

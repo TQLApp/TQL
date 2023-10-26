@@ -10,7 +10,7 @@
                     Title="Techie's Quick Launcher - Configuration"
                     Height="450" Width="800"
                     WindowStartupLocation="CenterScreen"
-                    Icon="pack://application:,,,/mainicon.ico"
+                    Icon="pack://application:,,,/Tql.App;component/mainicon.ico"
                     Loaded="Window_Loaded">
     <Grid Margin="9">
         <Grid.RowDefinitions>

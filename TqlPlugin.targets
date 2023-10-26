@@ -1,0 +1,11 @@
+<Project>
+
+  <PropertyGroup>
+    <Version>0.1.2</Version>
+    <Authors>Pieter van Ginkel</Authors>
+    <Copyright>Copyright © 2023 Pieter van Ginkel</Copyright>
+    <PackageTags>tql-plugin</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+  
+</Project>

@@ -1,0 +1,101 @@
+﻿<UserControl x:Class="Tql.App.ConfigurationUI.PackageSourcesConfigurationControl"
+             x:ClassModifier="internal"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:configurationUi="clr-namespace:Tql.App.ConfigurationUI"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" d:DataContext="{d:DesignInstance Type=configurationUi:PackageManagerConfigurationDto}">
+    <GroupBox Header="Package Sources" Padding="4">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Right">
+                <Button x:Name="_add"
+                        Content="Add"
+                        Margin="3"
+                        Click="_add_Click" />
+                <Button x:Name="_delete"
+                        Content="Delete"
+                        Margin="3"
+                        Click="_delete_Click" />
+            </StackPanel>
+            
+            <ListView x:Name="_sources"
+                      ItemsSource="{Binding Sources}"
+                      Grid.Row="1"
+                      SelectionMode="Single"
+                      Margin="3"
+                      SelectionChanged="_sources_SelectionChanged">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Url}"
+                                        Width="400"
+                                        Header="URL" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            
+            <Grid Grid.Row="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                
+                <Label Content="URL:"/>
+                <TextBox x:Name="_url"
+                         Grid.Column="1"
+                         Margin="3"
+                         TextChanged="_url_TextChanged" />
+                
+                <Label Content="User name:"
+                       Grid.Row="1"/>
+                <TextBox x:Name="_userName"
+                         Grid.Row="1"
+                         Grid.Column="1"
+                         Margin="3"
+                         TextChanged="_userName_TextChanged" />
+                
+                <Label Content="Password:"
+                       Grid.Row="2" />
+                <PasswordBox x:Name="_password"
+                             Grid.Row="2"
+                             Grid.Column="1"
+                             Margin="3"
+                             PasswordChanged="_password_PasswordChanged" />
+                
+                <TextBlock Margin="4"
+                           Grid.Row="3"
+                           Grid.Column="1"
+                           TextWrapping="Wrap">
+                    If you're using a PAT token to connect to an Azure DevOps private artifacts
+                    feed, enter it into the password field and enter the user name part of your
+                    email address into the user name field.
+                </TextBlock>
+
+                <StackPanel Grid.Column="2"
+                            Orientation="Vertical"
+                            Grid.RowSpan="999">
+                    <Button x:Name="_update"
+                            Content="Update"
+                            Margin="3"
+                            Click="_update_Click" />
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </GroupBox>
+</UserControl>
