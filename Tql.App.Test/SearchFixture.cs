@@ -30,6 +30,13 @@ public class SearchFixture
         AssertMatch("", "Azure Repository", "Azure Repository");
     }
 
+    [TestCase("abc", "abcde", ">abc<de", 0)]
+    [TestCase("abc", "ab cde", ">ab< >c<de", 1)]
+    public void TestWordBreak(string search, string text, string expected, int penalty)
+    {
+        AssertMatch(search, text, expected, penalty);
+    }
+
     private void AssertMatch(string search, string text, string? expected, int? penalty = null)
     {
         var searchResult = GetSearchResult(search, text);

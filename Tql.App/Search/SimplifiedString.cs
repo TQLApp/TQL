@@ -4,13 +4,12 @@ namespace Tql.App.Search;
 
 internal class SimplifiedString
 {
-    private readonly List<int> _positions;
-
     public string Text { get; }
+    public ImmutableArray<int> Positions { get; }
 
     public SimplifiedString(CharDistribution distribution, string input)
     {
-        _positions = new List<int>(input.Length);
+        var positions = ImmutableArray.CreateBuilder<int>(input.Length);
 
         var sb = StringBuilderCache.Acquire();
 
@@ -21,17 +20,18 @@ internal class SimplifiedString
             if (distribution.Matches(c))
             {
                 sb.Append(c);
-                _positions.Add(i);
+                positions.Add(i);
             }
         }
 
+        Positions = positions.ToImmutable();
         Text = StringBuilderCache.GetStringAndRelease(sb);
     }
 
     public TextRange GetRangeFromInput(int offset, int length)
     {
-        int start = _positions[offset];
-        int end = _positions[offset + length - 1];
+        int start = Positions[offset];
+        int end = Positions[offset + length - 1];
 
         return new TextRange(start, end - start + 1);
     }

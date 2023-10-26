@@ -16,12 +16,38 @@ internal static class TextMatching
             return null;
 
         // Now translate the matches back using the simplified string mapper.
+        // We split text ranges that have a word boundary in them.
 
-        return new TextMatch(
-            shortest
-                .Select(p => simplifiedText.GetRangeFromInput(p.Offset, p.Length))
-                .ToImmutableArray()
-        );
+        var builder = ImmutableArray.CreateBuilder<TextRange>();
+
+        foreach (var range in shortest)
+        {
+            var start = range.Offset;
+            var length = range.Length;
+
+            outer:
+            while (length > 0)
+            {
+                var partStart = simplifiedText.Positions[start];
+
+                for (var partLength = 1; partLength < length; partLength++)
+                {
+                    var position = simplifiedText.Positions[start + partLength];
+                    if (position != partStart + partLength)
+                    {
+                        builder.Add(new TextRange(partStart, partLength));
+                        start += partLength;
+                        length -= partLength;
+                        goto outer;
+                    }
+                }
+
+                builder.Add(new TextRange(partStart, length));
+                break;
+            }
+        }
+
+        return new TextMatch(builder.ToImmutable());
     }
 
     public static IEnumerable<TextRange>? Find(string search, string item)
