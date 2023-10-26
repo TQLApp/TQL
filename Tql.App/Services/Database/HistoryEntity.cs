@@ -10,4 +10,5 @@ internal class HistoryEntity
     public string? Json { get; set; }
     public DateTime? LastAccess { get; set; }
     public int? AccessCount { get; set; }
+    public int? IsPinned { get; set; }
 }

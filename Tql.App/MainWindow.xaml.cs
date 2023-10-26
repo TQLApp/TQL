@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Tql.Abstractions;
-using Tql.App.Interop;
 using Tql.App.Search;
 using Tql.App.Services;
 using Tql.App.Services.Database;
@@ -198,7 +197,7 @@ internal partial class MainWindow
 
     public void DoShow()
     {
-        _pageView = _telemetryService.CreatePageView("Search");
+        _pageView ??= _telemetryService.CreatePageView("Search");
 
         RepositionScreen();
 
@@ -209,6 +208,8 @@ internal partial class MainWindow
         _results.ItemsSource = null;
 
         SetResultsVisibility(Visibility.Collapsed);
+
+        DisposeSearchManager();
 
         _searchManager = _serviceProvider.GetRequiredService<SearchManager>();
         _searchManager.SearchResultsChanged += _searchManager_SearchResultsChanged;
@@ -338,6 +339,14 @@ internal partial class MainWindow
 
         Visibility = Visibility.Hidden;
 
+        DisposeSearchManager();
+
+        _pageView?.Dispose();
+        _pageView = null;
+    }
+
+    private void DisposeSearchManager()
+    {
         if (_searchManager != null)
         {
             _searchManager.SearchResultsChanged -= _searchManager_SearchResultsChanged;
@@ -346,9 +355,6 @@ internal partial class MainWindow
             _searchManager.Dispose();
             _searchManager = null;
         }
-
-        _pageView?.Dispose();
-        _pageView = null;
     }
 
     private void _search_TextChanged(object sender, TextChangedEventArgs e)
@@ -562,10 +568,10 @@ internal partial class MainWindow
         }
     }
 
-    private void MarkAsAccessed(SearchResult searchResult)
+    private long? MarkAsAccessed(SearchResult searchResult)
     {
         if (searchResult.Match is not ISerializableMatch match)
-            return;
+            return null;
 
         var parent = _searchManager?.Stack.LastOrDefault();
         var parentTypeId = parent?.TypeId.Id;
@@ -603,6 +609,8 @@ internal partial class MainWindow
                 }
             );
         }
+
+        return historyId;
     }
 
     private void PopItem()
@@ -632,9 +640,7 @@ internal partial class MainWindow
             access.DeleteHistory(searchResult.HistoryId.Value);
         }
 
-        _searchManager?.DeleteHistory(searchResult.HistoryId.Value);
-
-        _search.Focus();
+        ReloadResults();
     }
 
     private void SearchResultUserControl_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -674,6 +680,44 @@ internal partial class MainWindow
         var searchResult = SelectedSearchResult;
         if (searchResult?.Match is ICopyableMatch match)
             CopyItem(match, searchResult);
+
+        _search.Focus();
+    }
+
+    private void SearchResultUserControl_PinClicked(object sender, EventArgs e) => SetPinned(true);
+
+    private void SearchResultUserControl_UnpinClicked(object sender, EventArgs e) =>
+        SetPinned(false);
+
+    private void SetPinned(bool pinned)
+    {
+        var searchResult = SelectedSearchResult;
+        if (searchResult == null)
+            return;
+
+        if (!searchResult.HistoryId.HasValue && !pinned)
+            return;
+
+        var historyId = searchResult.HistoryId ?? MarkAsAccessed(searchResult);
+        if (historyId == null)
+            return;
+
+        using (var telemetry = _telemetryService.CreateEvent(pinned ? "Pinned" : "Unpinned"))
+        {
+            searchResult.Match.InitializeTelemetry(telemetry);
+        }
+
+        using (var access = _db.Access())
+        {
+            access.SetHistoryPinned(historyId.Value, pinned);
+        }
+
+        ReloadResults();
+    }
+
+    private void ReloadResults()
+    {
+        _searchManager?.ReloadHistory();
 
         _search.Focus();
     }

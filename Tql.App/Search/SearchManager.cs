@@ -163,6 +163,11 @@ internal class SearchManager : IDisposable
         DoSearch();
     }
 
+    public void ReloadHistory()
+    {
+        LoadHistory();
+    }
+
     public async void DoSearch()
     {
         if (_suspendSearch > 0)
@@ -218,10 +223,12 @@ internal class SearchManager : IDisposable
 
         if (context.Search.Length == 0)
         {
-            return context.History?.Items
-                .Select(p => context.GetSearchResult(p.Match))
-                .Take(100)
-                .ToImmutableArray();
+            if (context.History == null)
+                return null;
+
+            return GetSortedSearchResults(
+                context.History.Items.Select(p => context.GetSearchResult(p.Match)).Take(100)
+            );
         }
 
         // Get the root items from all plugins.
@@ -238,7 +245,7 @@ internal class SearchManager : IDisposable
         );
 
         if (context.History == null)
-            return rootItems.ToImmutableArray();
+            return GetSortedSearchResults(rootItems);
 
         // Filter the history and get the associated states.
 
@@ -247,16 +254,42 @@ internal class SearchManager : IDisposable
             .Select(context.GetSearchResult)
             .ToList();
 
-        // Sort exact matches of the history above the root items, and
-        // fuzzy matches below them.
+        // Group fuzzy and non fuzzy matches, and pinned and not pinned.
 
-        var result = ImmutableArray.CreateBuilder<SearchResult>();
+        var sorter = new BucketSorter<SearchResult>(5);
 
-        result.AddRange(history.Where(p => p.Penalty < 0));
-        result.AddRange(rootItems.Where(p => !p.HistoryId.HasValue));
-        result.AddRange(history.Where(p => p.Penalty >= 0));
+        foreach (var item in history)
+        {
+            int bucket;
+            if (!item.IsFuzzyMatch)
+                bucket = item.IsPinned ? 0 : 1;
+            else
+                bucket = item.IsPinned ? 3 : 4;
 
-        return result.ToImmutable();
+            sorter.Add(item, bucket);
+        }
+
+        foreach (var item in rootItems)
+        {
+            if (!item.HistoryId.HasValue)
+                sorter.Add(item, 2);
+        }
+
+        return sorter.ToImmutableArray();
+    }
+
+    private static ImmutableArray<SearchResult> GetSortedSearchResults(
+        IEnumerable<SearchResult> items
+    )
+    {
+        var sorter = new BucketSorter<SearchResult>(2);
+
+        foreach (var item in items)
+        {
+            sorter.Add(item, item.IsPinned ? 0 : 1);
+        }
+
+        return sorter.ToImmutableArray();
     }
 
     private async Task<ImmutableArray<SearchResult>?> GetSubSearchResults()
@@ -296,8 +329,9 @@ internal class SearchManager : IDisposable
 
             var ordered = ImmutableArray.CreateBuilder<SearchResult>();
 
-            ordered.AddRange(result.Where(p => p.HistoryId.HasValue));
-            ordered.AddRange(result.Where(p => !p.HistoryId.HasValue));
+            ordered.AddRange(result.Where(p => p.IsPinned));
+            ordered.AddRange(result.Where(p => !p.IsPinned && p.HistoryId.HasValue));
+            ordered.AddRange(result.Where(p => !(p.IsPinned || p.HistoryId.HasValue)));
 
             return ordered.ToImmutable();
         }
@@ -361,13 +395,6 @@ internal class SearchManager : IDisposable
 
         if (_suspendSearch == 0 && performSearch)
             DoSearch();
-    }
-
-    public void DeleteHistory(long historyId)
-    {
-        _history?.Items.RemoveAll(p => p.History.Id == historyId);
-
-        DoSearch();
     }
 
     protected virtual void OnSearchResultsChanged() =>

@@ -188,6 +188,7 @@ internal class SearchContext : ISearchContext, IDisposable
             textMatch,
             history?.Id,
             history?.LastAccess,
+            (history?.IsPinned ?? 0) != 0,
             penalty
         );
     }

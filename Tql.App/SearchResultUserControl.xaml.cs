@@ -12,9 +12,12 @@ internal partial class SearchResultUserControl
     private new SearchResult? DataContext => (SearchResult?)base.DataContext;
     private bool IsListBoxItemSelectedOrMouseOver =>
         _listBoxItem != null && (_listBoxItem.IsMouseOver || _listBoxItem.IsSelected);
+    private bool IsListBoxItemMouseOver => _listBoxItem is { IsMouseOver: true };
 
     public event EventHandler? RemoveHistoryClicked;
     public event EventHandler? CopyClicked;
+    public event EventHandler? PinClicked;
+    public event EventHandler? UnpinClicked;
 
     public SearchResultUserControl()
     {
@@ -94,6 +97,45 @@ internal partial class SearchResultUserControl
             }
         }
 
+        if (
+            searchResult.Match is ISerializableMatch
+            && (searchResult.IsPinned || IsListBoxItemMouseOver)
+        )
+        {
+            var pin = AddIcon(
+                Images.Pin,
+                "Pin search result",
+                "Pin the search result to have them sorted to the top of the list."
+            );
+            var pinOff = AddIcon(Images.PinOff, content: "Unpin search result");
+
+            if (searchResult.IsPinned)
+            {
+                pin.Visibility = Visibility.Visible;
+                pinOff.Visibility = Visibility.Collapsed;
+
+                pin.MouseEnter += (_, _) =>
+                {
+                    pin.Visibility = Visibility.Collapsed;
+                    pinOff.Visibility = Visibility.Visible;
+                };
+
+                pinOff.MouseLeave += (_, _) =>
+                {
+                    pinOff.Visibility = Visibility.Collapsed;
+                    pin.Visibility = Visibility.Visible;
+                };
+
+                pinOff.AttachOnClickHandler(OnUnpinClicked);
+            }
+            else if (IsListBoxItemMouseOver)
+            {
+                pinOff.Visibility = Visibility.Collapsed;
+
+                pin.AttachOnClickHandler(OnPinClicked);
+            }
+        }
+
         if (searchResult.HistoryId.HasValue)
         {
             var star = AddIcon(Images.Star);
@@ -141,4 +183,8 @@ internal partial class SearchResultUserControl
         RemoveHistoryClicked?.Invoke(this, EventArgs.Empty);
 
     protected virtual void OnCopyClicked() => CopyClicked?.Invoke(this, EventArgs.Empty);
+
+    protected virtual void OnPinClicked() => PinClicked?.Invoke(this, EventArgs.Empty);
+
+    protected virtual void OnUnpinClicked() => UnpinClicked?.Invoke(this, EventArgs.Empty);
 }

@@ -24,4 +24,6 @@ internal static class Images
     public static readonly DrawingImage CommentNote = LoadImage("Comment Note.svg");
     public static readonly DrawingImage Astronaut = LoadImage("Astronaut.svg");
     public static readonly DrawingImage Undo = LoadImage("Undo.svg");
+    public static readonly DrawingImage Pin = LoadImage("Pin.svg");
+    public static readonly DrawingImage PinOff = LoadImage("Pin Off.svg");
 }

@@ -10,4 +10,5 @@ internal interface IDbAccess : IDisposable
     void MarkHistoryAsAccessed(long id, string? parentJson);
     long? FindHistory(Guid pluginId, Guid typeId, string json);
     void DeleteHistory(long id);
+    void SetHistoryPinned(long id, bool pinned);
 }

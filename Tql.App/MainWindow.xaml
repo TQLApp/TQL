@@ -125,7 +125,9 @@
                         <app:SearchResultUserControl DataContext="{Binding}"
                                                      RemoveHistoryClicked="SearchResultUserControl_RemoveHistoryClicked"
                                                      CopyClicked="SearchResultUserControl_CopyClicked"
-                                                     SizeChanged="SearchResultUserControl_SizeChanged"/>
+                                                     SizeChanged="SearchResultUserControl_SizeChanged"
+                                                     PinClicked="SearchResultUserControl_PinClicked"
+                                                     UnpinClicked="SearchResultUserControl_UnpinClicked"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
 

@@ -50,8 +50,8 @@ internal partial class Db
         {
             Execute(
                 """
-                insert into History(PluginId, ParentTypeId, ParentJson, TypeId, Json, LastAccess, AccessCount)
-                values (@PluginId, @ParentTypeId, @ParentJson, @TypeId, @Json, @LastAccess, 1)
+                insert into History(PluginId, ParentTypeId, ParentJson, TypeId, Json, IsPinned, LastAccess, AccessCount)
+                values (@PluginId, @ParentTypeId, @ParentJson, @TypeId, @Json, @IsPinned, @LastAccess, 1)
                 """,
                 new
                 {
@@ -60,6 +60,7 @@ internal partial class Db
                     history.ParentJson,
                     history.TypeId,
                     history.Json,
+                    IsPinned = history.IsPinned.GetValueOrDefault() != 0 ? (int?)1 : null,
                     LastAccess = DateTime.UtcNow
                 }
             );
@@ -97,6 +98,14 @@ internal partial class Db
         public void DeleteHistory(long id)
         {
             Execute("delete from History where Id = @id", new { id });
+        }
+
+        public void SetHistoryPinned(long id, bool pinned)
+        {
+            Execute(
+                "update History set IsPinned = @IsPinned where Id = @id",
+                new { id, IsPinned = pinned ? (int?)1 : null }
+            );
         }
 
         private IEnumerable<T> Query<T>(string sql, object? param = null) =>

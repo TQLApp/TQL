@@ -15,5 +15,6 @@ internal record SearchResult(
     TextMatch? TextMatch,
     long? HistoryId,
     DateTime? LastAccessed,
+    bool IsPinned,
     int? Penalty
 );
