@@ -196,11 +196,20 @@
                     </Grid.Resources>
                     
                     <StackPanel Orientation="Horizontal">
-                        <Border Style="{StaticResource ButtonBorder}">
+                        <Border x:Name="_hotKeyWin" Style="{StaticResource ButtonBorder}">
+                            <TextBlock>Win</TextBlock>
+                        </Border>
+                        <Border x:Name="_hotKeyControl" Style="{StaticResource ButtonBorder}">
+                            <TextBlock>Ctrl</TextBlock>
+                        </Border>
+                        <Border x:Name="_hotKeyAlt" Style="{StaticResource ButtonBorder}">
                             <TextBlock>Alt</TextBlock>
                         </Border>
+                        <Border x:Name="_hotKeyShift" Style="{StaticResource ButtonBorder}">
+                            <TextBlock>Shift</TextBlock>
+                        </Border>
                         <Border Style="{StaticResource ButtonBorder}">
-                            <TextBlock>Back</TextBlock>
+                            <TextBlock x:Name="_hotKeyName" />
                         </Border>
                         <TextBlock Margin="8,0,20,0">Open TQL</TextBlock>
                 

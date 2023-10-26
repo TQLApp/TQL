@@ -48,6 +48,11 @@ internal class ShowOnScreenManager
                 return configuration.Screen;
         }
 
+        return GetPrimaryScreenIndex();
+    }
+
+    public int GetPrimaryScreenIndex()
+    {
         return GetAllScreens().ToList().IndexOf(Screen.PrimaryScreen);
     }
 

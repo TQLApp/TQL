@@ -32,7 +32,6 @@ internal partial class MainWindow
     private readonly IDb _db;
     private readonly CacheManagerManager _cacheManagerManager;
     private readonly TelemetryService _telemetryService;
-    private KeyboardHook? _keyboardHook;
     private SearchManager? _searchManager;
     private readonly UI _ui;
     private double _listBoxRowHeight = double.NaN;
@@ -49,7 +48,8 @@ internal partial class MainWindow
         IDb db,
         CacheManagerManager cacheManagerManager,
         IUI ui,
-        TelemetryService telemetryService
+        TelemetryService telemetryService,
+        HotKeyService hotKeyService
     )
         : base(settings)
     {
@@ -94,16 +94,34 @@ internal partial class MainWindow
         if (!double.IsNaN(_listBoxRowHeight))
             RecalculateListBoxHeight();
 
-        SetupShortcut();
-
         _notifyIcon = SetupNotifyIcon();
 
         ResetFontSize();
 
         settings.AttachPropertyChanged(nameof(settings.MainFontSize), (_, _) => ResetFontSize());
+        settings.AttachPropertyChanged(nameof(settings.HotKey), (_, _) => RenderHotKey());
 
         _ui.UINotificationsChanged += (_, _) => ReloadNotifications();
         _ui.ConfigurationUIRequested += (_, e) => OpenSettings(e.Id);
+
+        hotKeyService.Pressed += (_, _) => DoShow();
+
+        RenderHotKey();
+    }
+
+    private void RenderHotKey()
+    {
+        var hotKey = HotKey.FromSettings(_settings);
+
+        _hotKeyWin.Visibility = hotKey.Win ? Visibility.Visible : Visibility.Collapsed;
+        _hotKeyControl.Visibility = hotKey.Control ? Visibility.Visible : Visibility.Collapsed;
+        _hotKeyAlt.Visibility = hotKey.Alt ? Visibility.Visible : Visibility.Collapsed;
+        _hotKeyShift.Visibility = hotKey.Shift ? Visibility.Visible : Visibility.Collapsed;
+
+        var keyLabel = HotKey.AvailableKeys.Single(p => p.Key == hotKey.Key).Label;
+
+        _hotKeyName.Inlines.Clear();
+        _hotKeyName.Inlines.Add(keyLabel);
     }
 
     private void ResetFontSize()
@@ -151,16 +169,8 @@ internal partial class MainWindow
         );
     }
 
-    private void _keyboardHook_KeyPressed(object? sender, HotkeyPressedEventArgs e)
-    {
-        DoShow();
-    }
-
     private void Window_Closed(object sender, EventArgs e)
     {
-        _keyboardHook?.Dispose();
-        _keyboardHook = null;
-
         _notifyIcon.Dispose();
     }
 

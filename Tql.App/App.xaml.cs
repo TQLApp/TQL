@@ -168,6 +168,7 @@ public partial class App
         builder.AddSingleton<UpdateChecker>();
         builder.AddSingleton<TelemetryService>();
         builder.AddSingleton<IPeopleDirectoryManager, PeopleDirectoryManager>();
+        builder.AddSingleton<HotKeyService>();
 
         builder.AddTransient<MainWindow>();
         builder.AddTransient<ConfigurationWindow>();

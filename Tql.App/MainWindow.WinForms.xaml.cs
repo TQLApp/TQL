@@ -66,13 +66,6 @@ partial class MainWindow
         _cacheManagerManager.InvalidateAllCaches();
     }
 
-    private void SetupShortcut()
-    {
-        _keyboardHook = new KeyboardHook();
-        _keyboardHook.RegisterHotKey(ModifierKeys.Alt, Keys.Back);
-        _keyboardHook.KeyPressed += _keyboardHook_KeyPressed;
-    }
-
     private void RepositionScreen()
     {
         var source = PresentationSource.FromVisual(this);

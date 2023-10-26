@@ -22,6 +22,12 @@ internal class Settings : INotifyPropertyChanged
 
     private readonly RegistryKey _key;
 
+    public string? HotKey
+    {
+        get => GetString(nameof(HotKey));
+        set => SetString(nameof(HotKey), value);
+    }
+
     public string? ShowOnScreen
     {
         get => GetString(nameof(ShowOnScreen));

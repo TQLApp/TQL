@@ -7,11 +7,22 @@
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Style x:Key="ButtonBorder" TargetType="Border">
+            <Setter Property="BorderBrush" Value="#50ffffff" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="3" />
+            <Setter Property="Background" Value="#20ffffff" />
+            <Setter Property="Padding" Value="6,0,6,1" />
+        </Style>
+    </UserControl.Resources>
     <StackPanel Orientation="Vertical">
 
         <GroupBox Header="Connections" Padding="4">
             <Grid>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -25,30 +36,89 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <Label Content="History in root results:"/>
-                <TextBox x:Name="_historyInRootResults"
-                         Margin="3"
-                         Grid.Column="1" />
+                <Label Content="Hot key:"/>
+                <StackPanel Orientation="Horizontal"
+                            Grid.Column="1">
+                    <StackPanel.Resources>
+                        <Style TargetType="ToggleButton" BasedOn="{StaticResource {x:Type ToggleButton}}">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="BorderBrush" Value="Transparent"/>
+                            <Setter Property="BorderThickness" Value="0"/>
+                            <Setter Property="Padding" Value="0"/>
+                        </Style>
+                    </StackPanel.Resources>
+                    <ToggleButton x:Name="_hotKeyWindows"
+                                  Margin="3">
+                        <Border Style="{StaticResource ButtonBorder}">
+                            <TextBlock>Win</TextBlock>
+                        </Border>
+                    </ToggleButton>
+                    <ToggleButton x:Name="_hotKeyControl"
+                                  Margin="3">
+                        <Border Style="{StaticResource ButtonBorder}">
+                            <TextBlock>Ctrl</TextBlock>
+                        </Border>
+                    </ToggleButton>
+                    <ToggleButton x:Name="_hotKeyAlt"
+                                  Margin="3">
+                        <Border Style="{StaticResource ButtonBorder}">
+                            <TextBlock>Alt</TextBlock>
+                        </Border>
+                    </ToggleButton>
+                    <ToggleButton x:Name="_hotKeyShift"
+                                  Margin="3">
+                        <Border Style="{StaticResource ButtonBorder}">
+                            <TextBlock>Shift</TextBlock>
+                        </Border>
+                    </ToggleButton>
+                    <ComboBox x:Name="_hotKeyKey"
+                              Margin="3"/>
+                </StackPanel>
+                <Image x:Name="_resetHotKey"
+                       Grid.Column="2"
+                       Margin="3"/>
                 <TextBlock Margin="3"
                            TextWrapping="Wrap"
                            Grid.Column="1"
                            Grid.Row="1">
+                    Specify the hot key used to bring up the app.
+                </TextBlock>
+
+                <Label Content="History in root results:"
+                       Grid.Row="2"/>
+                <TextBox x:Name="_historyInRootResults"
+                         Margin="3"
+                         Grid.Column="1"
+                         Grid.Row="2" />
+                <Image x:Name="_resetHistoryInRootResults"
+                       Grid.Row="2"
+                       Grid.Column="2"
+                       Margin="3"/>
+                <TextBlock Margin="3"
+                           TextWrapping="Wrap"
+                           Grid.Column="1"
+                           Grid.Row="3">
                     Determines the number of days of history that's loaded into the root results.
                 </TextBlock>
 
                 <Label Content="Show on screen:"
-                       Grid.Row="2" />
+                       Grid.Row="4" />
                 <ComboBox x:Name="_showOnScreen"
                           Margin="3"
-                          Grid.Row="2"
+                          Grid.Row="4"
                           Grid.Column="1"/>
+                <Image x:Name="_resetShowOnScreen"
+                       Grid.Row="4"
+                       Grid.Column="2"
+                       Margin="3"/>
 
                 <Label Content="Cache update interval:"
-                       Grid.Row="3"/>
+                       Grid.Row="5"/>
                 <Grid Grid.Column="1"
-                      Grid.Row="3">
+                      Grid.Row="5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
@@ -61,19 +131,23 @@
                         minutes
                     </TextBlock>
                 </Grid>
+                <Image x:Name="_resetCacheUpdateInterval"
+                       Grid.Row="5"
+                       Grid.Column="2"
+                       Margin="3"/>
                 <TextBlock Margin="3"
                            TextWrapping="Wrap"
                            Grid.Column="1"
-                           Grid.Row="4">
+                           Grid.Row="6">
                     Determines how often the cache is updated. Some plugins will cache
                     data for performance. This setting will set the number of minutes
                     after which the cache will be updated.
                 </TextBlock>
 
                 <Label Content="Search result font size:"
-                       Grid.Row="5"/>
+                       Grid.Row="7"/>
                 <Grid Grid.Column="1"
-                      Grid.Row="5">
+                      Grid.Row="7">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
@@ -86,10 +160,14 @@
                         points
                     </TextBlock>
                 </Grid>
+                <Image x:Name="_resetMainFontSize"
+                       Grid.Row="7"
+                       Grid.Column="2"
+                       Margin="3"/>
 
                 <Label Content="Main window tint:"
-                       Grid.Row="6" />
-                <Grid Grid.Row="6"
+                       Grid.Row="8" />
+                <Grid Grid.Row="8"
                       Grid.Column="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -104,17 +182,25 @@
                             Margin="3"
                             Content="Reset"/>
                 </Grid>
+                <Image x:Name="_resetMainWindowTint"
+                       Grid.Row="8"
+                       Grid.Column="2"
+                       Margin="3"/>
 
                 <Label Content="Theme:"
-                       Grid.Row="7" />
+                       Grid.Row="9" />
                 <ComboBox x:Name="_theme"
                           Margin="3"
-                          Grid.Row="7"
+                          Grid.Row="9"
                           Grid.Column="1"/>
+                <Image x:Name="_resetTheme"
+                       Grid.Row="9"
+                       Grid.Column="2"
+                       Margin="3"/>
                 <TextBlock Margin="3"
                            TextWrapping="Wrap"
                            Grid.Column="1"
-                           Grid.Row="8">
+                           Grid.Row="10">
                     Changing the theme requires you to restart the application.
                 </TextBlock>
             </Grid>
@@ -130,12 +216,16 @@
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
                 <CheckBox x:Name="_trackMetrics"
                          Margin="3">
                     Track anonymous metrics
                 </CheckBox>
+                <Image x:Name="_resetTrackMetrics"
+                       Grid.Column="1"
+                       Margin="3"/>
                 <TextBlock Margin="3"
                            TextWrapping="Wrap"
                            Grid.Row="1">
@@ -147,6 +237,10 @@
                           Grid.Row="2">
                     Track errors
                 </CheckBox>
+                <Image x:Name="_resetTrackErrors"
+                       Grid.Row="2"
+                       Grid.Column="1"
+                       Margin="3"/>
                 <TextBlock Margin="3"
                            TextWrapping="Wrap"
                            Grid.Row="3">

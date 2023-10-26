@@ -21,7 +21,7 @@ internal static class Images
     public static readonly DrawingImage Backspace = LoadImage("Backspace.svg");
     public static readonly DrawingImage Help = LoadImage("Help.svg");
     public static readonly DrawingImage Settings = LoadImage("Settings.svg");
-    public static readonly DrawingImage Feedback = LoadImage("Feedback.svg");
     public static readonly DrawingImage CommentNote = LoadImage("Comment Note.svg");
     public static readonly DrawingImage Astronaut = LoadImage("Astronaut.svg");
+    public static readonly DrawingImage Undo = LoadImage("Undo.svg");
 }
