@@ -9,6 +9,7 @@ using NuGet.Protocol;
 using NuGet.Protocol.Core.Types;
 using NuGet.Resolver;
 using System.IO;
+using System.Text.RegularExpressions;
 using Tql.App.Support;
 using Path = System.IO.Path;
 
@@ -63,7 +64,8 @@ internal class NuGetClient : IDisposable
     }
 
     public async Task<ImmutableArray<IPackageSearchMetadata>> SearchPackages(
-        string searchTerm,
+        string nuGetOrgSearchTerm,
+        string otherSearchTerm,
         bool includePrerelease,
         bool includeDelisted,
         int maxResults,
@@ -74,6 +76,8 @@ internal class NuGetClient : IDisposable
 
         foreach (var remoteNuGetFeed in _remoteSourceRepositories)
         {
+            var searchTerm = IsNuGetOrgFeed(remoteNuGetFeed) ? nuGetOrgSearchTerm : otherSearchTerm;
+
             var searchResource = await remoteNuGetFeed.GetResourceAsync<PackageSearchResource>(
                 cancellationToken
             );
@@ -116,6 +120,13 @@ internal class NuGetClient : IDisposable
         }
 
         return packages.ToImmutable();
+    }
+
+    private bool IsNuGetOrgFeed(SourceRepository sourceRepository)
+    {
+        var host = sourceRepository.PackageSource.SourceUri.Host;
+
+        return Regex.IsMatch(host, @"\bnuget.org$");
     }
 
     public async Task<ImmutableArray<IPackageSearchMetadata>> GetPackageMetadata(

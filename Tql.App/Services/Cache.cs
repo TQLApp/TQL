@@ -8,8 +8,6 @@ namespace Tql.App.Services;
 
 internal class Cache<T> : ICache<T>
 {
-    private static readonly TimeSpan FailedRetryInterval = TimeSpan.FromMinutes(5);
-
     private readonly ILogger<Cache<T>> _logger;
     private readonly ICacheManager<T> _cacheManager;
     private readonly IDb _db;

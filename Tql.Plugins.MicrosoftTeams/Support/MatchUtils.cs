@@ -1,5 +1,4 @@
-﻿using System.Net.Configuration;
-using Tql.Abstractions;
+﻿using Tql.Abstractions;
 using Tql.Plugins.MicrosoftTeams.Services;
 
 namespace Tql.Plugins.MicrosoftTeams.Support;

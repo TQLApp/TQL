@@ -196,7 +196,7 @@ internal partial class MainWindow
             .OfType<Window>()
             .Any(p => p.Owner == this);
 
-        if (!haveChildWindow)
+        if (!haveChildWindow && !_ui.IsShowingTaskDialog)
             DoHide();
     }
 

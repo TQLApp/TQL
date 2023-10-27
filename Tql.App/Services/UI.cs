@@ -12,9 +12,12 @@ internal class UI : IUI
 {
     private readonly ILogger<UI> _logger;
     private SynchronizationContext? _synchronizationContext;
-    private MainWindow? _mainWindow;
     private volatile List<UINotification> _notifications = new();
     private readonly object _syncRoot = new();
+    private int _taskDialogShown;
+
+    public MainWindow? MainWindow { get; private set; }
+    public bool IsShowingTaskDialog => _taskDialogShown > 0;
 
     // This uses the safe publication pattern.
     // ReSharper disable once InconsistentlySynchronizedField
@@ -44,7 +47,7 @@ internal class UI : IUI
             {
                 var window = new InteractiveAuthenticationWindow(interactiveAuthentication)
                 {
-                    Owner = _mainWindow
+                    Owner = MainWindow
                 };
 
                 window.ShowDialog();
@@ -74,7 +77,7 @@ internal class UI : IUI
 
     public void SetMainWindow(MainWindow? mainWindow)
     {
-        _mainWindow = mainWindow;
+        MainWindow = mainWindow;
     }
 
     public void Shutdown()
@@ -90,13 +93,22 @@ internal class UI : IUI
         DialogIcon icon = DialogIcon.Warning
     )
     {
-        return TaskDialogEx.Confirm(
-            owner,
-            title,
-            subtitle,
-            (TaskDialogCommonButtons)buttons,
-            (TaskDialogIcon)icon
-        );
+        _taskDialogShown++;
+
+        try
+        {
+            return TaskDialogEx.Confirm(
+                owner,
+                title,
+                subtitle,
+                (TaskDialogCommonButtons)buttons,
+                (TaskDialogIcon)icon
+            );
+        }
+        finally
+        {
+            _taskDialogShown--;
+        }
     }
 
     public DialogResult ShowError(
@@ -107,13 +119,22 @@ internal class UI : IUI
         DialogCommonButtons buttons = DialogCommonButtons.OK
     )
     {
-        return TaskDialogEx.Error(
-            owner,
-            title,
-            exception,
-            (TaskDialogIcon)icon,
-            (TaskDialogCommonButtons)buttons
-        );
+        _taskDialogShown++;
+
+        try
+        {
+            return TaskDialogEx.Error(
+                owner,
+                title,
+                exception,
+                (TaskDialogIcon)icon,
+                (TaskDialogCommonButtons)buttons
+            );
+        }
+        finally
+        {
+            _taskDialogShown--;
+        }
     }
 
     public void ShowNotificationBar(string key, string message, Action? activate, Action? dismiss)

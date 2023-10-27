@@ -249,9 +249,7 @@ internal class PackageManager
     {
         using var client = GetClient();
 
-        // Final version: $"tags:{TagName}",
-
-        var packages = await client.SearchPackages("Tql", false, false, 1000);
+        var packages = await client.SearchPackages($"tags:{TagName}", "Tql", false, false, 1000);
 
         return packages.Where(p => HasTag(p, TagName)).ToList();
     }

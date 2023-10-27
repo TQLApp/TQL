@@ -10,12 +10,15 @@ namespace Tql.App.Search;
 
 internal class SearchManager : IDisposable
 {
+    private static readonly Guid ErrorBannerId = Guid.Parse("e052f500-360f-4a90-8590-23ceb3554d1f");
+
     private readonly ILogger<SearchManager> _logger;
     private readonly Settings _settings;
     private readonly IDb _db;
     private readonly IPluginManager _pluginManager;
     private readonly IServiceProvider _serviceProvider;
     private readonly TelemetryService _telemetryService;
+    private readonly IUI _ui;
     private volatile History? _history;
     private readonly SynchronizationContext _synchronizationContext =
         SynchronizationContext.Current;
@@ -42,7 +45,8 @@ internal class SearchManager : IDisposable
         IDb db,
         IPluginManager pluginManager,
         IServiceProvider serviceProvider,
-        TelemetryService telemetryService
+        TelemetryService telemetryService,
+        IUI ui
     )
     {
         _logger = logger;
@@ -51,6 +55,9 @@ internal class SearchManager : IDisposable
         _pluginManager = pluginManager;
         _serviceProvider = serviceProvider;
         _telemetryService = telemetryService;
+        _ui = ui;
+
+        _ui.RemoveNotificationBar(ErrorBannerId.ToString());
 
         LoadHistory();
     }
@@ -220,6 +227,12 @@ internal class SearchManager : IDisposable
         {
             _logger.LogError(ex, "Failure while performing search");
             _telemetryService.TrackException(ex);
+
+            _ui.ShowNotificationBar(
+                ErrorBannerId.ToString(),
+                $"Search failed with the following error message: {ex.Message}",
+                () => _ui.ShowError(((UI)_ui).MainWindow!, "Search failed with an error", ex)
+            );
         }
     }
 
