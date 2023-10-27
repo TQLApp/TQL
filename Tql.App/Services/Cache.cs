@@ -8,6 +8,8 @@ namespace Tql.App.Services;
 
 internal class Cache<T> : ICache<T>
 {
+    private static readonly TimeSpan FailedRetryInterval = TimeSpan.FromMinutes(5);
+
     private readonly ILogger<Cache<T>> _logger;
     private readonly ICacheManager<T> _cacheManager;
     private readonly IDb _db;
@@ -208,8 +210,12 @@ internal class Cache<T> : ICache<T>
     {
         lock (_syncRoot)
         {
-            // Recreate the cache if it's out of date.
-            if (!_creating && IsAvailable && _updated < DateTime.UtcNow - _expiration)
+            // Recreate the cache if it's out of date or if the cache update failed.
+            if (
+                !_creating
+                && IsAvailable
+                && (_tcs.Task.IsFaulted || _updated < DateTime.UtcNow - _expiration)
+            )
                 Invalidate();
 
             return _tcs.Task;
