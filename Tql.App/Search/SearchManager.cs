@@ -88,7 +88,18 @@ internal class SearchManager : IDisposable
                 {
                     if (plugins.TryGetValue(entity.PluginId!.Value, out var plugin))
                     {
-                        var match = plugin.DeserializeMatch(entity.TypeId!.Value, entity.Json!);
+                        IMatch? match;
+
+                        try
+                        {
+                            match = plugin.DeserializeMatch(entity.TypeId!.Value, entity.Json!);
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogWarning(ex, "Failed to deserialize match");
+                            continue;
+                        }
+
                         if (match != null)
                         {
                             var json = ((ISerializableMatch)match).Serialize();

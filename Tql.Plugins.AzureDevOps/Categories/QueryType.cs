@@ -8,16 +8,26 @@ internal class QueryType : IMatchType
 {
     private readonly AzureDevOpsApi _api;
     private readonly AzureWorkItemIconManager _iconManager;
+    private readonly ConfigurationManager _configurationManager;
     public Guid Id => TypeIds.Query.Id;
 
-    public QueryType(AzureDevOpsApi api, AzureWorkItemIconManager iconManager)
+    public QueryType(
+        AzureDevOpsApi api,
+        AzureWorkItemIconManager iconManager,
+        ConfigurationManager configurationManager
+    )
     {
         _api = api;
         _iconManager = iconManager;
+        _configurationManager = configurationManager;
     }
 
-    public IMatch Deserialize(string json)
+    public IMatch? Deserialize(string json)
     {
-        return new QueryMatch(JsonSerializer.Deserialize<QueryMatchDto>(json)!, _api, _iconManager);
+        var dto = JsonSerializer.Deserialize<QueryMatchDto>(json)!;
+        if (!_configurationManager.Configuration.HasConnection(dto.Url))
+            return null;
+
+        return new QueryMatch(dto, _api, _iconManager);
     }
 }

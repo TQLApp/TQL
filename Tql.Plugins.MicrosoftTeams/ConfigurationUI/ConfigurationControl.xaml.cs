@@ -1,5 +1,4 @@
 ﻿using JetBrains.Annotations;
-using System.IO;
 using Tql.Abstractions;
 
 namespace Tql.Plugins.MicrosoftTeams.ConfigurationUI;

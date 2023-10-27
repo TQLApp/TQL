@@ -1,14 +1,26 @@
 ﻿using Tql.Abstractions;
+using Tql.Plugins.Confluence.Services;
 using Tql.Utilities;
 
 namespace Tql.Plugins.Confluence.Categories;
 
 internal class SearchType : IMatchType
 {
+    private readonly ConfigurationManager _configurationManager;
+
     public Guid Id => TypeIds.Search.Id;
 
-    public IMatch Deserialize(string json)
+    public SearchType(ConfigurationManager configurationManager)
     {
-        return new SearchMatch(JsonSerializer.Deserialize<SearchMatchDto>(json)!);
+        _configurationManager = configurationManager;
+    }
+
+    public IMatch? Deserialize(string json)
+    {
+        var dto = JsonSerializer.Deserialize<SearchMatchDto>(json)!;
+        if (!_configurationManager.Configuration.HasConnection(dto.Url))
+            return null;
+
+        return new SearchMatch(dto);
     }
 }

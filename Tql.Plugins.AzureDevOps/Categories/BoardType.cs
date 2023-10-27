@@ -1,14 +1,26 @@
 ﻿using Tql.Abstractions;
+using Tql.Plugins.AzureDevOps.Services;
 using Tql.Utilities;
 
 namespace Tql.Plugins.AzureDevOps.Categories;
 
 internal class BoardType : IMatchType
 {
+    private readonly ConfigurationManager _configurationManager;
+
     public Guid Id => TypeIds.Board.Id;
 
-    public IMatch Deserialize(string json)
+    public BoardType(ConfigurationManager configurationManager)
     {
-        return new BoardMatch(JsonSerializer.Deserialize<BoardMatchDto>(json)!);
+        _configurationManager = configurationManager;
+    }
+
+    public IMatch? Deserialize(string json)
+    {
+        var dto = JsonSerializer.Deserialize<BoardMatchDto>(json)!;
+        if (!_configurationManager.Configuration.HasConnection(dto.Url))
+            return null;
+
+        return new BoardMatch(dto);
     }
 }

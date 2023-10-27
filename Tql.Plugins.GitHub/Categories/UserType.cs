@@ -7,16 +7,22 @@ namespace Tql.Plugins.GitHub.Categories;
 internal class UserType : IMatchType
 {
     private readonly GitHubApi _api;
+    private readonly ConfigurationManager _configurationManager;
 
     public Guid Id => TypeIds.User.Id;
 
-    public UserType(GitHubApi api)
+    public UserType(GitHubApi api, ConfigurationManager configurationManager)
     {
         _api = api;
+        _configurationManager = configurationManager;
     }
 
-    public IMatch Deserialize(string json)
+    public IMatch? Deserialize(string json)
     {
-        return new UserMatch(JsonSerializer.Deserialize<UserMatchDto>(json)!, _api);
+        var dto = JsonSerializer.Deserialize<UserMatchDto>(json)!;
+        if (!_configurationManager.Configuration.HasConnection(dto.ConnectionId))
+            return null;
+
+        return new UserMatch(dto, _api);
     }
 }

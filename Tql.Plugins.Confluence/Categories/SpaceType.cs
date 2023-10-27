@@ -17,12 +17,12 @@ internal class SpaceType : IMatchType
         _configurationManager = configurationManager;
     }
 
-    public IMatch Deserialize(string json)
+    public IMatch? Deserialize(string json)
     {
-        return new SpaceMatch(
-            JsonSerializer.Deserialize<SpaceMatchDto>(json)!,
-            _iconCacheManager,
-            _configurationManager
-        );
+        var dto = JsonSerializer.Deserialize<SpaceMatchDto>(json)!;
+        if (!_configurationManager.Configuration.HasConnection(dto.Url))
+            return null;
+
+        return new SpaceMatch(dto, _iconCacheManager, _configurationManager);
     }
 }

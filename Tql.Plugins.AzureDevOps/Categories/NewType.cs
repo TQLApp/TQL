@@ -7,15 +7,22 @@ namespace Tql.Plugins.AzureDevOps.Categories;
 internal class NewType : IMatchType
 {
     private readonly AzureWorkItemIconManager _iconManager;
+    private readonly ConfigurationManager _configurationManager;
+
     public Guid Id => TypeIds.New.Id;
 
-    public NewType(AzureWorkItemIconManager iconManager)
+    public NewType(AzureWorkItemIconManager iconManager, ConfigurationManager configurationManager)
     {
         _iconManager = iconManager;
+        _configurationManager = configurationManager;
     }
 
-    public IMatch Deserialize(string json)
+    public IMatch? Deserialize(string json)
     {
-        return new NewMatch(JsonSerializer.Deserialize<NewMatchDto>(json)!, _iconManager);
+        var dto = JsonSerializer.Deserialize<NewMatchDto>(json)!;
+        if (!_configurationManager.Configuration.HasConnection(dto.Url))
+            return null;
+
+        return new NewMatch(dto, _iconManager);
     }
 }

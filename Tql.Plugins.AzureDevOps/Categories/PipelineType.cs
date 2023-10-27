@@ -1,14 +1,26 @@
 ﻿using Tql.Abstractions;
+using Tql.Plugins.AzureDevOps.Services;
 using Tql.Utilities;
 
 namespace Tql.Plugins.AzureDevOps.Categories;
 
 internal class PipelineType : IMatchType
 {
+    private readonly ConfigurationManager _configurationManager;
+
     public Guid Id => TypeIds.Pipeline.Id;
 
-    public IMatch Deserialize(string json)
+    public PipelineType(ConfigurationManager configurationManager)
     {
-        return new PipelineMatch(JsonSerializer.Deserialize<PipelineMatchDto>(json)!);
+        _configurationManager = configurationManager;
+    }
+
+    public IMatch? Deserialize(string json)
+    {
+        var dto = JsonSerializer.Deserialize<PipelineMatchDto>(json)!;
+        if (!_configurationManager.Configuration.HasConnection(dto.Url))
+            return null;
+
+        return new PipelineMatch(dto);
     }
 }

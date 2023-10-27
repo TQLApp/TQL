@@ -25,7 +25,7 @@ internal class BacklogsType : IMatchType
         var dto = JsonSerializer.Deserialize<RootItemDto>(json)!;
         var configuration = _configurationManager.Configuration;
 
-        if (!configuration.Connections.Any(p => p.Url == dto.Url))
+        if (!configuration.HasConnection(dto.Url))
             return null;
 
         return new BacklogsMatch(

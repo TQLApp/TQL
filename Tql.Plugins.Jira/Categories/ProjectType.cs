@@ -17,12 +17,12 @@ internal class ProjectType : IMatchType
         _configurationManager = configurationManager;
     }
 
-    public IMatch Deserialize(string json)
+    public IMatch? Deserialize(string json)
     {
-        return new ProjectMatch(
-            JsonSerializer.Deserialize<ProjectMatchDto>(json)!,
-            _iconCacheManager,
-            _configurationManager
-        );
+        var dto = JsonSerializer.Deserialize<ProjectMatchDto>(json)!;
+        if (!_configurationManager.Configuration.HasConnection(dto.Url))
+            return null;
+
+        return new ProjectMatch(dto, _iconCacheManager, _configurationManager);
     }
 }

@@ -13,6 +13,8 @@ internal record Configuration(ConfigurationMode Mode, ImmutableArray<string> Dir
     }
 
     public string ToJson() => JsonSerializer.Serialize(this);
+
+    public bool HasDirectory(string id) => DirectoryIds.Contains(id);
 }
 
 internal enum ConfigurationMode

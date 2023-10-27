@@ -13,6 +13,8 @@ internal record Configuration(ImmutableArray<Connection> Connections)
     }
 
     public string ToJson() => JsonSerializer.Serialize(this);
+
+    public bool HasConnection(string url) => Connections.Any(p => p.Url == url);
 }
 
 internal record Connection(

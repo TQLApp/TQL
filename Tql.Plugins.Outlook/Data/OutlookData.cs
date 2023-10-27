@@ -1,5 +1,4 @@
-﻿using Tql.Abstractions;
-using Tql.Plugins.Outlook.Services;
+﻿using Tql.Plugins.Outlook.Services;
 
 namespace Tql.Plugins.Outlook.Data;
 

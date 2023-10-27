@@ -35,7 +35,7 @@ internal class GistsType : IMatchType
         var dto = JsonSerializer.Deserialize<RootItemDto>(json)!;
         var configuration = _configurationManager.Configuration;
 
-        if (!configuration.Connections.Any(p => p.Id == dto.Id))
+        if (!configuration.HasConnection(dto.Id))
             return null;
 
         return new GistsMatch(

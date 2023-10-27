@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using Tql.App.Services;
 using Tql.App.Support;
 using Application = System.Windows.Application;

@@ -7,16 +7,22 @@ namespace Tql.Plugins.Jira.Categories;
 internal class IssueType : IMatchType
 {
     private readonly IconCacheManager _iconCacheManager;
+    private readonly ConfigurationManager _configurationManager;
 
     public Guid Id => TypeIds.Issue.Id;
 
-    public IssueType(IconCacheManager iconCacheManager)
+    public IssueType(IconCacheManager iconCacheManager, ConfigurationManager configurationManager)
     {
         _iconCacheManager = iconCacheManager;
+        _configurationManager = configurationManager;
     }
 
-    public IMatch Deserialize(string json)
+    public IMatch? Deserialize(string json)
     {
-        return new IssueMatch(JsonSerializer.Deserialize<IssueMatchDto>(json)!, _iconCacheManager);
+        var dto = JsonSerializer.Deserialize<IssueMatchDto>(json)!;
+        if (!_configurationManager.Configuration.HasConnection(dto.Url))
+            return null;
+
+        return new IssueMatch(dto, _iconCacheManager);
     }
 }
