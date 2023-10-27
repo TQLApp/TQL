@@ -1,5 +1,8 @@
 ﻿#nullable disable
 
+// ReSharper disable NotAccessedOutParameterVariable
+// ReSharper disable UseArrayEmptyMethod
+
 /*
  * Copyright © 2007 KevinGre
  *

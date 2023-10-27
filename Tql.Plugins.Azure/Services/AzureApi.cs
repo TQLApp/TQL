@@ -3,8 +3,8 @@ using Azure.Core;
 using Azure.Identity;
 using Azure.ResourceManager;
 using Microsoft.Extensions.Logging;
-using NeoSmart.AsyncLock;
 using Tql.Abstractions;
+using Tql.Utilities;
 
 namespace Tql.Plugins.Azure.Services;
 

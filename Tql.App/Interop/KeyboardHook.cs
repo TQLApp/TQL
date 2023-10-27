@@ -60,7 +60,7 @@ public sealed class KeyboardHook : IDisposable
         #endregion
     }
 
-    private Window _window = new Window();
+    private Window _window = new();
     private int _currentId;
 
     public KeyboardHook()

@@ -4,6 +4,10 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Security;
 
+// ReSharper disable UnusedMember.Local
+// ReSharper disable UnusedMember.Global
+// ReSharper disable InconsistentNaming
+
 namespace Tql.App.Interop;
 
 [SuppressUnmanagedCodeSecurity]
@@ -121,7 +125,7 @@ public class Dwm
     }
 
     // Values designating how Flip3D treats a given window.
-    enum DWMFLIP3DWINDOWPOLICY : uint
+    public enum DWMFLIP3DWINDOWPOLICY : uint
     {
         Default, // Hide or include the window in Flip3D based on window style and visibility.
         ExcludeBelow, // Display the window under Flip3D and disabled.
@@ -287,14 +291,14 @@ public class Dwm
     public static bool IsCompositionEnabled()
     {
         int pfEnabled = 0;
-        int result = DwmIsCompositionEnabled(ref pfEnabled);
-        return (pfEnabled == 1) ? true : false;
+        DwmIsCompositionEnabled(ref pfEnabled);
+        return pfEnabled == 1;
     }
 
     public static bool IsNonClientRenderingEnabled(IntPtr hWnd)
     {
         int gwaEnabled = 0;
-        int result = DwmGetWindowAttribute(
+        DwmGetWindowAttribute(
             hWnd,
             DWMWINDOWATTRIBUTE.NCRenderingEnabled,
             ref gwaEnabled,

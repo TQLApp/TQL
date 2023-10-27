@@ -9,7 +9,7 @@ internal static class VssHttpClientBaseExtensions
     public static HttpClient GetClient(this VssHttpClientBase self)
     {
         return (HttpClient)
-            self.GetType()!
+            self.GetType()
                 .GetProperty("Client", BindingFlags.Instance | BindingFlags.NonPublic)!
                 .GetValue(self);
     }

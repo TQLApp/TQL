@@ -9,7 +9,7 @@ internal class DemoesType : IMatchType
 {
     public Guid Id => TypeIds.Demoes.Id;
 
-    public IMatch? Deserialize(string json)
+    public IMatch Deserialize(string json)
     {
         return new DemoesMatch();
     }

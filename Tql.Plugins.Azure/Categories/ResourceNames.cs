@@ -5,6 +5,8 @@ using SharpVectors.Converters;
 using SharpVectors.Renderers.Wpf;
 using Tql.Plugins.Azure.Support;
 
+// ReSharper disable NotAccessedPositionalProperty.Local
+
 namespace Tql.Plugins.Azure.Categories;
 
 internal static class ResourceNames

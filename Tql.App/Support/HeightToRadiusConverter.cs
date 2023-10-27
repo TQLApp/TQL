@@ -13,7 +13,7 @@ internal class HeightToRadiusConverter : IValueConverter
         return value;
     }
 
-    public object? ConvertBack(
+    public object ConvertBack(
         object? value,
         Type targetType,
         object? parameter,

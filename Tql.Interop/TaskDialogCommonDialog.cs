@@ -1,4 +1,6 @@
-﻿/*
+﻿// ReSharper disable UnusedMember.Global
+
+/*
  * Copyright © 2007 KevinGre
  *
  * Design Notes:-

@@ -9,7 +9,7 @@ namespace Tql.Interop;
 
 public class ActivationContext : IDisposable
 {
-    private static readonly object _syncRoot = new object();
+    private static readonly object _syncRoot = new();
 
     private IntPtr _cookie;
     private static NativeMethods.ACTCTX _enableThemingActivationContext;

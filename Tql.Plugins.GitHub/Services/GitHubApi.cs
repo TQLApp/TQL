@@ -4,10 +4,10 @@ using System.Security.Cryptography;
 using System.Text.Json.Serialization;
 using System.Windows.Interop;
 using Microsoft.Extensions.Logging;
-using NeoSmart.AsyncLock;
 using Octokit;
 using Tql.Abstractions;
 using Tql.Plugins.GitHub.ConfigurationUI;
+using Tql.Utilities;
 using IWin32Window = System.Windows.Forms.IWin32Window;
 using ProductHeaderValue = Octokit.ProductHeaderValue;
 

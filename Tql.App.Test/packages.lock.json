@@ -515,6 +515,14 @@
           "System.Runtime.CompilerServices.Unsafe": "4.5.3"
         }
       },
+      "System.Net.Http": {
+        "type": "Transitive",
+        "resolved": "4.3.4",
+        "contentHash": "aOa2d51SEbmM+H+Csw7yJOuNZoHkrP2XnAurye5HWYgGVVU54YZDvsLUYRv6h18X3sPnjNCANmN7ZhIPiqMcjA==",
+        "dependencies": {
+          "System.Security.Cryptography.X509Certificates": "4.3.0"
+        }
+      },
       "System.Numerics.Vectors": {
         "type": "Transitive",
         "resolved": "4.5.0",
@@ -555,6 +563,15 @@
         "type": "Transitive",
         "resolved": "4.3.0",
         "contentHash": "7bDIyVFNL/xKeFHjhobUAQqSpJq9YTOpbEs6mR233Et01STBMXNAc/V+BM6dwYGc95gVh/Zf+iVXWzj3mE8DWg=="
+      },
+      "System.Security.Cryptography.X509Certificates": {
+        "type": "Transitive",
+        "resolved": "4.3.0",
+        "contentHash": "t2Tmu6Y2NtJ2um0RtcuhP7ZdNNxXEgUm2JeoA/0NvlMjAhKCnM1NX07TDl3244mVp3QU6LPEhT3HTtH1uF7IYw==",
+        "dependencies": {
+          "System.Security.Cryptography.Algorithms": "4.3.0",
+          "System.Security.Cryptography.Encoding": "4.3.0"
+        }
       },
       "System.Text.Encodings.Web": {
         "type": "Transitive",
@@ -614,7 +631,7 @@
           "NuGet.PackageManagement": "[6.7.0, )",
           "System.Data.SQLite.Core": "[1.0.118, )",
           "Tql.Interop": "[1.0.0, )",
-          "Tql.Utilities": "[1.0.0, )"
+          "Tql.Utilities": "[0.2.0, )"
         }
       },
       "tql.interop": {
@@ -625,8 +642,9 @@
         "dependencies": {
           "JetBrains.Annotations": "[2023.2.0, )",
           "SharpVectors.Wpf": "[1.8.2, )",
+          "System.Net.Http": "[4.3.4, )",
           "System.Text.Json": "[7.0.3, )",
-          "Tql.Abstractions": "[1.0.0, )"
+          "Tql.Abstractions": "[0.2.0, )"
         }
       }
     }

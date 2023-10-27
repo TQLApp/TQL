@@ -1,69 +1,68 @@
-namespace Tql.App.Themes.Attached
+// ReSharper disable UnusedMember.Global
+
+namespace Tql.App.Themes.Attached;
+
+public class PasswordBoxHelper
 {
-    public class PasswordBoxHelper
+    public static readonly DependencyProperty ListenToLengthProperty =
+        DependencyProperty.RegisterAttached(
+            "ListenToLength",
+            typeof(bool),
+            typeof(PasswordBoxHelper),
+            new FrameworkPropertyMetadata(false, PropertyChangedCallback)
+        );
+
+    private static void PropertyChangedCallback(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e
+    )
     {
-        public static readonly DependencyProperty ListenToLengthProperty =
-            DependencyProperty.RegisterAttached(
-                "ListenToLength",
-                typeof(bool),
-                typeof(PasswordBoxHelper),
-                new FrameworkPropertyMetadata(false, PropertyChangedCallback)
-            );
-
-        private static void PropertyChangedCallback(
-            DependencyObject d,
-            DependencyPropertyChangedEventArgs e
-        )
+        if (d is PasswordBox box)
         {
-            if (d is PasswordBox box)
+            box.PasswordChanged -= BoxOnPasswordChanged;
+            if (e.NewValue != null && (bool)e.NewValue)
             {
-                box.PasswordChanged -= BoxOnPasswordChanged;
-                if (e.NewValue != null && (bool)e.NewValue)
-                {
-                    box.PasswordChanged += BoxOnPasswordChanged;
-                }
-            }
-            else
-            {
-                throw new Exception(
-                    "DependencyObject is not a password box. It is '"
-                        + (d == null ? "null" : d.GetType().Name)
-                        + '\''
-                );
+                box.PasswordChanged += BoxOnPasswordChanged;
             }
         }
-
-        public static readonly DependencyProperty InputLengthProperty =
-            DependencyProperty.RegisterAttached(
-                "InputLength",
-                typeof(int),
-                typeof(PasswordBoxHelper),
-                new FrameworkPropertyMetadata(0)
+        else
+        {
+            throw new Exception(
+                $"DependencyObject is not a password box. It is '{d.GetType().Name}'"
             );
-
-        public static bool GetListenToLength(PasswordBox box)
-        {
-            return (bool)box.GetValue(ListenToLengthProperty);
         }
+    }
 
-        public static void SetListenToLength(PasswordBox box, bool value)
-        {
-            box.SetValue(ListenToLengthProperty, value);
-        }
+    public static readonly DependencyProperty InputLengthProperty =
+        DependencyProperty.RegisterAttached(
+            "InputLength",
+            typeof(int),
+            typeof(PasswordBoxHelper),
+            new FrameworkPropertyMetadata(0)
+        );
 
-        public static int GetInputLength(PasswordBox box)
-        {
-            return (int)box.GetValue(InputLengthProperty);
-        }
+    public static bool GetListenToLength(PasswordBox box)
+    {
+        return (bool)box.GetValue(ListenToLengthProperty);
+    }
 
-        public static void SetInputLength(PasswordBox box, int value)
-        {
-            box.SetValue(InputLengthProperty, value);
-        }
+    public static void SetListenToLength(PasswordBox box, bool value)
+    {
+        box.SetValue(ListenToLengthProperty, value);
+    }
 
-        private static void BoxOnPasswordChanged(object sender, RoutedEventArgs e)
-        {
-            SetInputLength((PasswordBox)sender, ((PasswordBox)sender).SecurePassword.Length);
-        }
+    public static int GetInputLength(PasswordBox box)
+    {
+        return (int)box.GetValue(InputLengthProperty);
+    }
+
+    public static void SetInputLength(PasswordBox box, int value)
+    {
+        box.SetValue(InputLengthProperty, value);
+    }
+
+    private static void BoxOnPasswordChanged(object sender, RoutedEventArgs e)
+    {
+        SetInputLength((PasswordBox)sender, ((PasswordBox)sender).SecurePassword.Length);
     }
 }

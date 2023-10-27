@@ -7,8 +7,8 @@ using Microsoft.VisualStudio.Services.Common;
 using Microsoft.VisualStudio.Services.Common.TokenStorage;
 using Microsoft.VisualStudio.Services.WebApi;
 using Microsoft.Win32;
-using NeoSmart.AsyncLock;
 using Tql.Abstractions;
+using Tql.Utilities;
 
 namespace Tql.Plugins.AzureDevOps.Services;
 

@@ -72,9 +72,7 @@ namespace Tql.App.Themes
 
         public static SolidColorBrush GetBrush(string name)
         {
-            return GetResource(name) is SolidColorBrush brush
-                ? brush
-                : new SolidColorBrush(Colors.White);
+            return GetResource(name) as SolidColorBrush ?? new SolidColorBrush(Colors.White);
         }
     }
 }
