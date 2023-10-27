@@ -20,7 +20,9 @@ internal class OutlookClient : IDisposable
 
     public OutlookClient()
     {
-        _application = new Application();
+        // Only get an actively running Outlook. This prevents the welcome
+        // dialog from coming up on machines that don't have Outlook setup.
+        _application = (Application)Marshal.GetActiveObject("Outlook.Application");
 
         _ns = _application.GetNamespace("mapi");
         _ns.Logon(Missing.Value, Missing.Value, false, true);
