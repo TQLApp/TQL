@@ -26,9 +26,9 @@
     <Color x:Key="AColour.Tone1.Border.Static"                 R="221" G="221" B="221" A="255"/>
     <Color x:Key="AColour.Tone2.Background.Static"             R="227" G="227" B="227" A="255"/>
     <Color x:Key="AColour.Tone2.Border.Static"                 R="217" G="217" B="217" A="255"/>
-    <Color x:Key="AColour.Tone3.Background.Static"             R="222" G="222" B="222" A="255"/>
+    <Color x:Key="AColour.Tone3.Background.Static"             R="255" G="255" B="255" A="255"/>
     <Color x:Key="AColour.Tone3.Border.Static"                 R="202" G="202" B="202" A="255"/>
-    <Color x:Key="AColour.Tone4.Background.Static"             R="219" G="219" B="219" A="255"/>
+    <Color x:Key="AColour.Tone4.Background.Static"             R="245" G="245" B="245" A="255"/>
     <Color x:Key="AColour.Tone4.Border.Static"                 R="212" G="212" B="212" A="255"/>
     <Color x:Key="AColour.Tone4.Background.MouseOver"          R="202" G="202" B="202" A="255"/>
     <Color x:Key="AColour.Tone4.Border.MouseOver"              R="192" G="192" B="192" A="255"/>
@@ -40,7 +40,7 @@
     <Color x:Key="AColour.Tone4.Border.Selected.Inactive"      R="201" G="201" B="201" A="255"/>
     <Color x:Key="AColour.Tone4.Background.Disabled"           R="175" G="175" B="175" A="255"/>
     <Color x:Key="AColour.Tone4.Border.Disabled"               R="165" G="165" B="165" A="255"/>
-    <Color x:Key="AColour.Tone5.Background.Static"             R="214" G="214" B="214" A="255"/>
+    <Color x:Key="AColour.Tone5.Background.Static"             R="235" G="235" B="235" A="255"/>
     <Color x:Key="AColour.Tone5.Border.Static"                 R="204" G="204" B="204" A="255"/>
     <Color x:Key="AColour.Tone5.Background.MouseOver"          R="191" G="191" B="191" A="255"/>
     <Color x:Key="AColour.Tone5.Border.MouseOver"              R="181" G="181" B="181" A="255"/>
