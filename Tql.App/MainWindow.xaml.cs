@@ -135,6 +135,9 @@ internal partial class MainWindow
 
     private void OpenSettings(Guid? id = null)
     {
+        if (!IsVisible)
+            DoShow();
+
         var window = _serviceProvider.GetRequiredService<ConfigurationUI.ConfigurationWindow>();
         window.Owner = this;
         window.StartupPage = id;
