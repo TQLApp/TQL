@@ -310,31 +310,34 @@ internal partial class MainWindow
         if (_searchManager == null)
             return;
 
+        var searchHint = default(string);
+
         if (_searchManager.Stack.Length == 0)
         {
             _stack.Visibility = Visibility.Collapsed;
-            return;
         }
-
-        _stack.Visibility = Visibility.Visible;
-
-        _stackContainer.Children.Clear();
-
-        foreach (var match in _searchManager.Stack)
+        else
         {
-            if (_stackContainer.Children.Count > 0)
+            _stack.Visibility = Visibility.Visible;
+
+            _stackContainer.Children.Clear();
+
+            foreach (var match in _searchManager.Stack)
             {
+                if (_stackContainer.Children.Count > 0)
+                {
+                    _stackContainer.Children.Add(
+                        new TextBlock(new Run(" » ")) { FontSize = _search.FontSize }
+                    );
+                }
+
                 _stackContainer.Children.Add(
-                    new TextBlock(new Run(" » ")) { FontSize = _search.FontSize }
+                    SearchResultUtils.RenderMatch(match, null, false, _search.FontSize)
                 );
             }
 
-            _stackContainer.Children.Add(
-                SearchResultUtils.RenderMatch(match, null, false, _search.FontSize)
-            );
+            searchHint = (_searchManager.Stack.Last() as IHasSearchHint)?.SearchHint;
         }
-
-        var searchHint = (_searchManager.Stack.Last() as IHasSearchHint)?.SearchHint;
 
         // The HintedTextBox style expects the hint in the Tag.
         _search.Tag = searchHint;
