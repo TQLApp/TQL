@@ -43,20 +43,7 @@ partial class MainWindow
         notifyIcon.ContextMenu.MenuItems.Add("-");
         notifyIcon.ContextMenu.MenuItems.Add("E&xit", (_, _) => Close());
 
-        notifyIcon.Click += (_, e) =>
-        {
-            if (
-                e is System.Windows.Forms.MouseEventArgs mouseEventArgs
-                && mouseEventArgs.Button != MouseButtons.Left
-            )
-                return;
-
-            notifyIcon
-                .GetType()
-                .GetMethod("ShowContextMenu", BindingFlags.Instance | BindingFlags.NonPublic)!
-                .Invoke(notifyIcon, Array.Empty<object>());
-        };
-        notifyIcon.DoubleClick += (_, _) => DoShow();
+        notifyIcon.Click += (_, e) => DoShow();
 
         return notifyIcon;
 
