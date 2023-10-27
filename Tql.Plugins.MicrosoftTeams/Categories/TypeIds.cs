@@ -6,9 +6,6 @@ internal static class TypeIds
 {
     private static MatchTypeId CreateId(string id) => new(Guid.Parse(id), MicrosoftTeamsPlugin.Id);
 
-    public static readonly MatchTypeId Emails = CreateId("f1d9c46b-6297-4156-abed-09bf4f44d7cc");
-    public static readonly MatchTypeId Email = CreateId("bee10761-ed35-4acf-8899-fc243869d10c");
-
     public static readonly MatchTypeId TeamsCalls = CreateId(
         "369e9586-29a5-4d1b-8df0-7d341050066d"
     );

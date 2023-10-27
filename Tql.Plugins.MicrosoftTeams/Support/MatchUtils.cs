@@ -7,14 +7,14 @@ internal static class MatchUtils
 {
     public static string GetMatchLabel(
         string label,
+        ConfigurationManager configurationManager,
         IPeopleDirectoryManager peopleDirectoryManager,
         string id
     )
     {
-        var directories = peopleDirectoryManager.Directories;
-        if (directories.Length > 1)
+        if (configurationManager.Configuration.DirectoryIds.Length > 1)
         {
-            var connection = directories.Single(p => p.Id == id);
+            var connection = peopleDirectoryManager.Directories.Single(p => p.Id == id);
 
             return $"{label} ({connection.Name})";
         }

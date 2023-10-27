@@ -11,6 +11,7 @@ dotnet nuget push --source "TQLPlugins" --api-key az  --skip-duplicate "..\Tql.P
 dotnet nuget push --source "TQLPlugins" --api-key az  --skip-duplicate "..\Tql.Plugins.GitHub\bin\Release\*.nupkg"
 dotnet nuget push --source "TQLPlugins" --api-key az  --skip-duplicate "..\Tql.Plugins.Jira\bin\Release\*.nupkg"
 dotnet nuget push --source "TQLPlugins" --api-key az  --skip-duplicate "..\Tql.Plugins.MicrosoftTeams\bin\Release\*.nupkg"
+dotnet nuget push --source "TQLPlugins" --api-key az  --skip-duplicate "..\Tql.Plugins.Outlook\bin\Release\*.nupkg"
 
 pause
 

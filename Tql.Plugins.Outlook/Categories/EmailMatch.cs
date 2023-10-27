@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Tql.Abstractions;
 
-namespace Tql.Plugins.MicrosoftTeams.Categories;
+namespace Tql.Plugins.Outlook.Categories;
 
 internal class EmailMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
 {

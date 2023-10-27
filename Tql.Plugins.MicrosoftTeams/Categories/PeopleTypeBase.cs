@@ -34,7 +34,7 @@ internal abstract class PeopleTypeBase : IMatchType
             return null;
 
         return CreateMatch(
-            MatchUtils.GetMatchLabel(Label, _peopleDirectoryManager, dto.Id),
+            MatchUtils.GetMatchLabel(Label, _configurationManager, _peopleDirectoryManager, dto.Id),
             directory
         );
     }

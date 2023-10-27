@@ -27,24 +27,39 @@ internal abstract class PersonMatchBase : ISearchableMatch, ISerializableMatch
 
         await context.DebounceDelay(cancellationToken);
 
+        // The semantics for the people directory are that if it's willing
+        // to answer an empty search, it promises it's fast and it's
+        // supposed to have this data cached. We prefer the cached result
+        // set because this allows use to leverage the search functionality
+        // built into TQL.
+
+        var allPeople = await _peopleDirectory.Find("", cancellationToken);
+        if (allPeople.Length > 0)
+            return context.Filter(GetDtos(allPeople).Select(CreateMatch));
+
         var people = await _peopleDirectory.Find(text, cancellationToken);
 
+        return GetDtos(people)
+            .Select(CreateMatch)
+            .OrderBy(p => p.Text, StringComparer.CurrentCultureIgnoreCase);
+    }
+
+    private IEnumerable<PersonDto> GetDtos(ImmutableArray<IPerson> people)
+    {
         var duplicateDisplayNames = people
             .GroupBy(p => p.DisplayName, StringComparer.CurrentCultureIgnoreCase)
             .Where(p => p.Count() > 1)
             .Select(p => p.Key)
             .ToHashSet(StringComparer.CurrentCultureIgnoreCase);
 
-        return people
-            .Select(p =>
-            {
-                var displayName = p.DisplayName;
-                if (duplicateDisplayNames.Contains(displayName))
-                    displayName += $" - {p.EmailAddress}";
+        return people.Select(p =>
+        {
+            var displayName = p.DisplayName;
+            if (duplicateDisplayNames.Contains(displayName))
+                displayName += $" - {p.EmailAddress}";
 
-                return CreateMatch(new PersonDto(_peopleDirectory.Id, displayName, p.EmailAddress));
-            })
-            .OrderBy(p => p.Text, StringComparer.CurrentCultureIgnoreCase);
+            return new PersonDto(_peopleDirectory.Id, displayName, p.EmailAddress);
+        });
     }
 
     protected abstract IMatch CreateMatch(PersonDto dto);

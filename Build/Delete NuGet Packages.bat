@@ -11,6 +11,7 @@ del "..\Tql.Plugins.Demo\bin\Release\*.nupkg"
 del "..\Tql.Plugins.GitHub\bin\Release\*.nupkg"
 del "..\Tql.Plugins.Jira\bin\Release\*.nupkg"
 del "..\Tql.Plugins.MicrosoftTeams\bin\Release\*.nupkg"
+del "..\Tql.Plugins.Outlook\bin\Release\*.nupkg"
 
 pause
 

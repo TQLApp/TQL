@@ -29,6 +29,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Tql.App\Tql.App.csproj" />
+    <ProjectReference Include="..\Tql.Plugins.Outlook\Tql.Plugins.Outlook.csproj" />
   </ItemGroup>
 
 </Project>

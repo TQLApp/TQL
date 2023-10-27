@@ -8,7 +8,7 @@
     <UseWPF>true</UseWPF>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <Product>TQL Microsoft Teams Plugin</Product>
-    <Description>Techie's Quick Launcher plugin for Microsoft Teams. To use this plugin, you need to have at least one plugin installed that exposes a people directory, e.g. the JIRA or Azure DevOps plugins.</Description>
+    <Description>Techie's Quick Launcher plugin for Microsoft Teams. To use this plugin, you need to have at least one plugin installed that exposes a people directory, e.g. the, Outlook, JIRA or Azure DevOps plugins.</Description>
   </PropertyGroup>
 
   <Import Project="..\TqlPackage.targets" />

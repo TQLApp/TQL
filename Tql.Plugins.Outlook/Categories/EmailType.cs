@@ -1,7 +1,7 @@
 ﻿using Tql.Abstractions;
 using Tql.Utilities;
 
-namespace Tql.Plugins.MicrosoftTeams.Categories;
+namespace Tql.Plugins.Outlook.Categories;
 
 internal class EmailType : IMatchType
 {

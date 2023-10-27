@@ -6,6 +6,7 @@ using Tql.Plugins.Confluence;
 using Tql.Plugins.GitHub;
 using Tql.Plugins.Jira;
 using Tql.Plugins.MicrosoftTeams;
+using Tql.Plugins.Outlook;
 
 namespace Tql.DebugApp;
 
@@ -20,7 +21,8 @@ public static class Program
             typeof(GitHubPlugin).Assembly,
             typeof(JiraPlugin).Assembly,
             typeof(ConfluencePlugin).Assembly,
-            typeof(MicrosoftTeamsPlugin).Assembly
+            typeof(MicrosoftTeamsPlugin).Assembly,
+            typeof(OutlookPlugin).Assembly
         );
 
         App.App.IsDebugMode = true;

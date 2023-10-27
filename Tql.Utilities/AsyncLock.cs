@@ -49,7 +49,7 @@ public class AsyncLock : IDisposable
         {
             if (!_disposed)
             {
-                _owner.Dispose();
+                _owner._semaphore.Release();
                 _disposed = true;
             }
         }

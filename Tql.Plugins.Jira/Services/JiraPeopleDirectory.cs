@@ -24,6 +24,9 @@ internal class JiraPeopleDirectory : IPeopleDirectory
         CancellationToken cancellationToken = default
     )
     {
+        if (search.IsWhiteSpace())
+            return ImmutableArray<IPerson>.Empty;
+
         var client = _api.GetClient(_connection);
 
         try
