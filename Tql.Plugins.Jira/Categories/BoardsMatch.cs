@@ -10,6 +10,7 @@ namespace Tql.Plugins.Jira.Categories;
 internal class BoardsMatch : CachedMatch<JiraData>, ISerializableMatch
 {
     private readonly string _url;
+    private readonly ICache<JiraData> _cache;
     private readonly IconCacheManager _iconCacheManager;
     private readonly ConfigurationManager _configurationManager;
     private readonly ILogger<BoardsMatch> _logger;
@@ -29,6 +30,7 @@ internal class BoardsMatch : CachedMatch<JiraData>, ISerializableMatch
         : base(cache)
     {
         _url = url;
+        _cache = cache;
         _iconCacheManager = iconCacheManager;
         _configurationManager = configurationManager;
         _logger = logger;
@@ -75,7 +77,8 @@ internal class BoardsMatch : CachedMatch<JiraData>, ISerializableMatch
                     board.AvatarUrl,
                     matchType
                 ),
-                _iconCacheManager
+                _iconCacheManager,
+                _cache
             );
     }
 

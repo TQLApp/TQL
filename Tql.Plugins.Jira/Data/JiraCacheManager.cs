@@ -11,7 +11,7 @@ internal class JiraCacheManager : ICacheManager<JiraData>
     private readonly JiraApi _api;
     private readonly ILogger<JiraCacheManager> _logger;
 
-    public int Version => 1;
+    public int Version => 2;
 
     public event EventHandler<CacheExpiredEventArgs>? CacheExpired;
 
@@ -56,7 +56,9 @@ internal class JiraCacheManager : ICacheManager<JiraData>
                 project.Key,
                 project.Name,
                 SelectAvatarUrl(project),
-                project.ProjectTypeKey
+                project.ProjectTypeKey,
+                project.Simplified,
+                project.Style
             )
         ).ToImmutableArray();
 

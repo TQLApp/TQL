@@ -19,7 +19,9 @@ internal record JiraProject(
     string Key,
     string Name,
     string AvatarUrl,
-    string ProjectTypeKey
+    string ProjectTypeKey,
+    bool IsSimplified,
+    string Style
 );
 
 internal record JiraBoard(

@@ -1,6 +1,7 @@
 ﻿using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json.Serialization;
+using System.Threading;
 using Tql.Abstractions;
 using Tql.Plugins.Jira.Support;
 
@@ -310,7 +311,9 @@ internal record JiraProjectDto(
     [property: JsonPropertyName("key")] string Key,
     [property: JsonPropertyName("name")] string Name,
     [property: JsonPropertyName("avatarUrls")] ImmutableDictionary<string, string> AvatarUrls,
-    [property: JsonPropertyName("projectTypeKey")] string ProjectTypeKey
+    [property: JsonPropertyName("projectTypeKey")] string ProjectTypeKey,
+    [property: JsonPropertyName("style")] string Style,
+    [property: JsonPropertyName("simplified")] bool Simplified
 );
 
 internal record JiraPageBeanV3Dto<T>(
