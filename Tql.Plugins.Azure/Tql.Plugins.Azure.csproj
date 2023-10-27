@@ -33,7 +33,6 @@
 	<ItemGroup>
 		<PackageReference Include="Azure.Identity" Version="1.10.3" />
 		<PackageReference Include="Azure.ResourceManager.ResourceGraph" Version="1.0.1" />
-		<PackageReference Include="System.Text.Json" Version="7.0.3" />
 	</ItemGroup>
 
 	<ItemGroup>
