@@ -42,8 +42,8 @@ internal static class SearchResultUtils
         var icon = new Image
         {
             Source = match.Icon,
-            Width = 18,
-            Height = 18,
+            Width = 19,
+            Height = 19,
             Margin = new Thickness(0, 0, 6, 0),
             VerticalAlignment = VerticalAlignment.Center
         };
