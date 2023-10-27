@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.IO;
 using System.Net.Http;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +15,7 @@ using Tql.App.Services.Telemetry;
 using Tql.App.Services.Updates;
 using Tql.App.Support;
 using ConfigurationManager = Tql.App.Services.ConfigurationManager;
+using Path = System.IO.Path;
 
 namespace Tql.App;
 
@@ -51,6 +53,19 @@ public partial class App
             plugins = packageStoreManager.GetPlugins();
 
         var builder = Host.CreateApplicationBuilder(e.Args);
+
+        var logDirectory = Path.Combine(store.DataFolder, "Log");
+        Directory.CreateDirectory(logDirectory);
+
+        builder.Logging.AddFile(
+            Path.Combine(logDirectory, "Log.log"),
+            options =>
+            {
+                options.FileSizeLimitBytes = 1 * 1024 * 1024;
+                options.MaxRollingFiles = 5;
+                options.Append = true;
+            }
+        );
 
         var inMemoryLoggerProvider = new InMemoryLoggerProvider();
 
