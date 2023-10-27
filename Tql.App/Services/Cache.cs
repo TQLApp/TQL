@@ -115,11 +115,11 @@ internal class Cache<T> : ICache<T>
 
             _logger.LogInformation("Recreating cache");
 
+            var now = DateTime.UtcNow;
+
             try
             {
                 var data = await _cacheManager.Create();
-
-                var now = DateTime.UtcNow;
 
                 using (var access = _db.Access())
                 {
@@ -171,6 +171,24 @@ internal class Cache<T> : ICache<T>
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Failed to recreate cache");
+
+                lock (_syncRoot)
+                {
+                    if (initialLoad)
+                    {
+                        _tcs.SetException(ex);
+                    }
+                    else
+                    {
+                        var tcs = new TaskCompletionSource<T>();
+
+                        tcs.SetException(ex);
+
+                        _tcs = tcs;
+                    }
+
+                    _updated = now;
+                }
             }
             finally
             {
