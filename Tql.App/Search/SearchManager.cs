@@ -237,9 +237,10 @@ internal class SearchManager : IDisposable
             if (context.History == null)
                 return null;
 
-            return GetSortedSearchResults(
-                context.History.Items.Select(p => context.GetSearchResult(p.Match)).Take(100)
-            );
+            return context.History.Items
+                .Select(p => context.GetSearchResult(p.Match))
+                .Take(100)
+                .ToImmutableArray();
         }
 
         // Get the root items from all plugins.
@@ -256,51 +257,48 @@ internal class SearchManager : IDisposable
         );
 
         if (context.History == null)
-            return GetSortedSearchResults(rootItems);
-
-        // Filter the history and get the associated states.
-
-        var history = context
-            .Filter(context.History.Items.Select(p => p.Match))
-            .Select(context.GetSearchResult)
-            .ToList();
-
-        // Group fuzzy and non fuzzy matches, and pinned and not pinned.
-
-        var sorter = new BucketSorter<SearchResult>(5);
-
-        foreach (var item in history)
         {
-            int bucket;
-            if (!item.IsFuzzyMatch)
-                bucket = item.IsPinned ? 0 : 1;
-            else
-                bucket = item.IsPinned ? 3 : 4;
+            var sorter = new BucketSorter<SearchResult>(2);
 
-            sorter.Add(item, bucket);
+            foreach (var item in (IEnumerable<SearchResult>)rootItems)
+            {
+                sorter.Add(item, item.IsPinned ? 0 : 1);
+            }
+
+            return sorter.ToImmutableArray();
         }
-
-        foreach (var item in rootItems)
+        else
         {
-            if (!item.HistoryId.HasValue)
-                sorter.Add(item, 2);
+            // Filter the history and get the associated states.
+
+            var history = context
+                .Filter(context.History.Items.Select(p => p.Match))
+                .Select(context.GetSearchResult)
+                .ToList();
+
+            // Group fuzzy and non fuzzy matches, and pinned and not pinned.
+
+            var sorter = new BucketSorter<SearchResult>(5);
+
+            foreach (var item in history)
+            {
+                int bucket;
+                if (!item.IsFuzzyMatch)
+                    bucket = item.IsPinned ? 0 : 1;
+                else
+                    bucket = item.IsPinned ? 3 : 4;
+
+                sorter.Add(item, bucket);
+            }
+
+            foreach (var item in rootItems)
+            {
+                if (!item.HistoryId.HasValue)
+                    sorter.Add(item, 2);
+            }
+
+            return sorter.ToImmutableArray();
         }
-
-        return sorter.ToImmutableArray();
-    }
-
-    private static ImmutableArray<SearchResult> GetSortedSearchResults(
-        IEnumerable<SearchResult> items
-    )
-    {
-        var sorter = new BucketSorter<SearchResult>(2);
-
-        foreach (var item in items)
-        {
-            sorter.Add(item, item.IsPinned ? 0 : 1);
-        }
-
-        return sorter.ToImmutableArray();
     }
 
     private async Task<ImmutableArray<SearchResult>?> GetSubSearchResults()
