@@ -223,6 +223,7 @@ internal class SearchManager : IDisposable
             telemetry.AddProperty(nameof(Results), Results.Length.ToString());
             telemetry.IsSuccess = true;
         }
+        catch (OperationCanceledException) { } // Ignore.
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failure while performing search");
