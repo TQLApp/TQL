@@ -1,4 +1,6 @@
-﻿using Tql.Abstractions;
+﻿using JetBrains.Annotations;
+using System.IO;
+using Tql.Abstractions;
 
 namespace Tql.Plugins.MicrosoftTeams.ConfigurationUI;
 
@@ -24,18 +26,14 @@ internal partial class ConfigurationControl : IConfigurationPage
         );
 
         _allDirectories.IsChecked = configuration.Mode == ConfigurationMode.All;
+        _selectedDirectories.IsChecked = configuration.Mode == ConfigurationMode.Selected;
 
-        foreach (var directory in peopleDirectoryManager.Directories)
-        {
-            _directories.Items.Add(
-                new ListBoxItem
-                {
-                    Content = directory.Name,
-                    Tag = directory,
-                    IsSelected = configuration.DirectoryIds.Contains(directory.Id)
-                }
-            );
-        }
+        _directories.ItemsSource = peopleDirectoryManager.Directories
+            .OrderBy(p => p.Name, StringComparer.CurrentCultureIgnoreCase)
+            .Select(
+                p => new DirectoryItem(p) { IsSelected = configuration.DirectoryIds.Contains(p.Id) }
+            )
+            .ToList();
 
         UpdateEnabled();
     }
@@ -47,9 +45,10 @@ internal partial class ConfigurationControl : IConfigurationPage
 
     public Task<SaveStatus> Save()
     {
-        var directoryIds = _directories.Items
-            .Cast<ListBoxItem>()
-            .Select(p => ((IPeopleDirectory)p.Tag).Id)
+        var directoryIds = _directories.ItemsSource
+            .Cast<DirectoryItem>()
+            .Where(p => p.IsSelected)
+            .Select(p => p.Directory.Id)
             .ToImmutableArray();
 
         var configuration = new Configuration(
@@ -68,4 +67,10 @@ internal partial class ConfigurationControl : IConfigurationPage
 
     private void _selectedDirectories_Unchecked(object sender, RoutedEventArgs e) =>
         UpdateEnabled();
+
+    private record DirectoryItem(IPeopleDirectory Directory)
+    {
+        [UsedImplicitly]
+        public bool IsSelected { get; set; }
+    }
 }

@@ -27,8 +27,8 @@
                             <Setter.Value>
                                 <ControlTemplate TargetType="ListBoxItem">
                                     <CheckBox Margin="5,2"
-                                              IsChecked="{TemplateBinding IsSelected}">
-                                        <ContentPresenter />
+                                              IsChecked="{Binding IsSelected}">
+                                        <TextBlock Text="{Binding Directory.Name}"/>
                                     </CheckBox>
                                 </ControlTemplate>
                             </Setter.Value>
