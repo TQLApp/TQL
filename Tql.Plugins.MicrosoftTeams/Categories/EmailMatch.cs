@@ -8,7 +8,7 @@ internal class EmailMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
     private readonly PersonDto _dto;
 
     public string Text => _dto.DisplayName;
-    public ImageSource Icon => Images.Teams;
+    public ImageSource Icon => Images.Outlook;
     public MatchTypeId TypeId => TypeIds.Email;
 
     public EmailMatch(PersonDto dto)
