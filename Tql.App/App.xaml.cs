@@ -21,6 +21,7 @@ public partial class App
 {
     private IHost? _host;
     private MainWindow? _mainWindow;
+    private WindowMessageIPC? _ipc;
 
     public static bool RestartRequested { get; set; }
     public static ImmutableArray<Assembly>? DebugAssemblies { get; set; }
@@ -28,6 +29,14 @@ public partial class App
 
     private void Application_Startup(object sender, StartupEventArgs e)
     {
+        _ipc = new WindowMessageIPC();
+
+        if (!_ipc.IsFirstRunner)
+        {
+            Shutdown(0);
+            return;
+        }
+
         System.Windows.Forms.Application.EnableVisualStyles();
 
         var store = new Store();
@@ -87,6 +96,8 @@ public partial class App
         logger.LogInformation("Startup complete");
 
         _mainWindow = _host.Services.GetRequiredService<MainWindow>();
+
+        _ipc.Received += (_, _) => _mainWindow.DoShow();
 
         if (IsDebugMode)
             _mainWindow.DoShow();
@@ -183,6 +194,7 @@ public partial class App
     private void Application_Exit(object sender, ExitEventArgs e)
     {
         _host?.Dispose();
+        _ipc?.Dispose();
 
         if (RestartRequested)
             Process.Start(Assembly.GetEntryAssembly()!.Location);
