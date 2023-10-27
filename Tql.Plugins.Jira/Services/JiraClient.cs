@@ -226,6 +226,18 @@ internal class JiraClient
         return await ExecuteJsonRequest<ImmutableArray<JiraUserV3Dto>>(request, cancellationToken);
     }
 
+    public async Task<JiraXBoardConfigDto> GetXBoardConfig(
+        int boardId,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var url = $"{_baseUrl}/rest/greenhopper/1.0/xboard/config?rapidViewId={boardId}";
+
+        using var request = new HttpRequestMessage(HttpMethod.Get, url);
+
+        return await ExecuteJsonRequest<JiraXBoardConfigDto>(request, cancellationToken);
+    }
+
     private async Task<T> ExecuteJsonRequest<T>(
         HttpRequestMessage request,
         CancellationToken cancellationToken
@@ -346,4 +358,24 @@ internal record JiraUserDto(
 internal record JiraUserV3Dto(
     [property: JsonPropertyName("displayName")] string DisplayName,
     [property: JsonPropertyName("emailAddress")] string EmailAddress
+);
+
+internal record JiraXBoardConfigDto(
+    [property: JsonPropertyName("currentViewConfig")]
+        JiraXBoardCurrentViewConfigDto CurrentViewConfig
+);
+
+internal record JiraXBoardCurrentViewConfigDto(
+    [property: JsonPropertyName("id")] int Id,
+    [property: JsonPropertyName("name")] string Name,
+    [property: JsonPropertyName("quickFilters")]
+        ImmutableArray<JiraXBoardQuickFilterDto> QuickFilters,
+    [property: JsonPropertyName("isIssueListBacklog")] bool IsIssueListBacklog
+);
+
+internal record JiraXBoardQuickFilterDto(
+    [property: JsonPropertyName("id")] int Id,
+    [property: JsonPropertyName("name")] string Name,
+    [property: JsonPropertyName("query")] string Query,
+    [property: JsonPropertyName("description")] string Description
 );

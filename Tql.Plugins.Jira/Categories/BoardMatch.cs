@@ -5,19 +5,28 @@ using Tql.Plugins.Jira.Services;
 
 namespace Tql.Plugins.Jira.Categories;
 
-internal class BoardMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
+internal class BoardMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, ISearchableMatch
 {
     private readonly BoardMatchDto _dto;
+    private readonly IconCacheManager _iconCacheManager;
     private readonly ICache<JiraData> _cache;
+    private readonly ConfigurationManager _configurationManager;
 
-    public string Text => $"{_dto.Name} - {_dto.MatchType}";
+    public string Text => $"{_dto.Name}/{_dto.MatchType}";
     public ImageSource Icon { get; }
     public MatchTypeId TypeId => TypeIds.Board;
 
-    public BoardMatch(BoardMatchDto dto, IconCacheManager iconCacheManager, ICache<JiraData> cache)
+    public BoardMatch(
+        BoardMatchDto dto,
+        IconCacheManager iconCacheManager,
+        ICache<JiraData> cache,
+        ConfigurationManager configurationManager
+    )
     {
         _dto = dto;
+        _iconCacheManager = iconCacheManager;
         _cache = cache;
+        _configurationManager = configurationManager;
 
         Icon = iconCacheManager.GetIcon(dto.AvatarUrl) ?? Images.Boards;
     }
@@ -41,28 +50,31 @@ internal class BoardMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
     {
         var cache = await _cache.Get();
 
-        var project = cache
-            .GetConnection(_dto.Url)
-            .Projects.Single(
-                p => string.Equals(p.Key, _dto.ProjectKey, StringComparison.OrdinalIgnoreCase)
-            );
+        return BoardUtils.GetUrl(cache, _dto);
+    }
 
-        var url = $"{_dto.Url.TrimEnd('/')}/jira/{Uri.EscapeDataString(_dto.ProjectTypeKey)}";
-        if (string.Equals(project.Style, "classic", StringComparison.OrdinalIgnoreCase))
-            url += "/c";
-        url += $"/projects/{Uri.EscapeDataString(_dto.ProjectKey)}/boards/{_dto.Id}";
+    public async Task<IEnumerable<IMatch>> Search(
+        ISearchContext context,
+        string text,
+        CancellationToken cancellationToken
+    )
+    {
+        var cache = await _cache.Get();
+        var connection = cache.GetConnection(_dto.Url);
 
-        switch (_dto.MatchType)
-        {
-            case BoardMatchType.Backlog:
-                url += "/backlog";
-                break;
-            case BoardMatchType.Timeline:
-                url += "/timeline";
-                break;
-        }
+        var board = connection.Boards.Single(p => p.Id == _dto.Id);
 
-        return url;
+        return context.Filter(
+            board.QuickFilters.Select(
+                p =>
+                    new BoardQuickFilterMatch(
+                        new BoardQuickFilterMatchDto(_dto, p.Id, p.Name),
+                        _iconCacheManager,
+                        _cache,
+                        _configurationManager
+                    )
+            )
+        );
     }
 }
 

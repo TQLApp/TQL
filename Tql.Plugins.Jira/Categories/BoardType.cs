@@ -30,6 +30,6 @@ internal class BoardType : IMatchType
         if (!_configurationManager.Configuration.HasConnection(dto.Url))
             return null;
 
-        return new BoardMatch(dto, _iconCacheManager, _cache);
+        return new BoardMatch(dto, _iconCacheManager, _cache, _configurationManager);
     }
 }

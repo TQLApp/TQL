@@ -8,6 +8,9 @@ internal static class TypeIds
 
     public static readonly MatchTypeId Boards = CreateId("b984b4ae-0a4d-4b77-bc95-db675a6c96e9");
     public static readonly MatchTypeId Board = CreateId("c65a79b2-c42e-4fbe-a8f0-3eb37eba42e9");
+    public static readonly MatchTypeId BoardQuickFilter = CreateId(
+        "61b6a48e-175f-4bb2-9106-369f29ac3511"
+    );
 
     public static readonly MatchTypeId Dashboards = CreateId(
         "c370eeb4-1481-4bb0-941a-de7ec1998480"

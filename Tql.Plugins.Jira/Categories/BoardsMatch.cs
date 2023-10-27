@@ -65,21 +65,29 @@ internal class BoardsMatch : CachedMatch<JiraData>, ISerializableMatch
             }
         });
 
-        return from matchType in EnumEx.GetValues<BoardMatchType>()
-            from board in boards
-            select new BoardMatch(
-                new BoardMatchDto(
-                    _url,
-                    board.Id,
-                    board.Name,
-                    board.ProjectKey,
-                    board.ProjectTypeKey,
-                    board.AvatarUrl,
-                    matchType
-                ),
-                _iconCacheManager,
-                _cache
-            );
+        foreach (var matchType in EnumEx.GetValues<BoardMatchType>())
+        {
+            foreach (var board in boards)
+            {
+                if (matchType == BoardMatchType.Backlog && !board.IsIssueListBacklog)
+                    continue;
+
+                yield return new BoardMatch(
+                    new BoardMatchDto(
+                        _url,
+                        board.Id,
+                        board.Name,
+                        board.ProjectKey,
+                        board.ProjectTypeKey,
+                        board.AvatarUrl,
+                        matchType
+                    ),
+                    _iconCacheManager,
+                    _cache,
+                    _configurationManager
+                );
+            }
+        }
     }
 
     public string Serialize()

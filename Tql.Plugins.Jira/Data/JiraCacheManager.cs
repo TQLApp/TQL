@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using System.Globalization;
+﻿using System.Globalization;
 using Tql.Abstractions;
 using Tql.Plugins.Jira.Services;
 
@@ -9,21 +8,15 @@ internal class JiraCacheManager : ICacheManager<JiraData>
 {
     private readonly ConfigurationManager _configurationManager;
     private readonly JiraApi _api;
-    private readonly ILogger<JiraCacheManager> _logger;
 
-    public int Version => 2;
+    public int Version => 3;
 
     public event EventHandler<CacheExpiredEventArgs>? CacheExpired;
 
-    public JiraCacheManager(
-        ConfigurationManager configurationManager,
-        JiraApi api,
-        ILogger<JiraCacheManager> logger
-    )
+    public JiraCacheManager(ConfigurationManager configurationManager, JiraApi api)
     {
         _configurationManager = configurationManager;
         _api = api;
-        _logger = logger;
 
         configurationManager.Changed += (_, _) => OnCacheExpired(new CacheExpiredEventArgs(true));
     }
@@ -62,21 +55,34 @@ internal class JiraCacheManager : ICacheManager<JiraData>
             )
         ).ToImmutableArray();
 
-        var boards = (
-            from board in await client.GetBoardsV3()
-            where board.Location != null
-            select new JiraBoard(
-                board.Id,
-                board.Name,
-                board.Type,
-                board.Location!.Name,
-                board.Location!.ProjectKey,
-                board.Location!.ProjectTypeKey,
-                board.Location!.AvatarUri
-            )
-        ).ToImmutableArray();
+        var boards = ImmutableArray.CreateBuilder<JiraBoard>();
 
-        return new JiraConnection(connection.Url, dashboards, projects, boards);
+        foreach (var board in await client.GetBoardsV3())
+        {
+            var location = board.Location;
+            if (location == null)
+                continue;
+
+            var boardConfig = await client.GetXBoardConfig(board.Id);
+
+            boards.Add(
+                new JiraBoard(
+                    board.Id,
+                    board.Name,
+                    board.Type,
+                    location.Name,
+                    location.ProjectKey,
+                    location.ProjectTypeKey,
+                    location.AvatarUri,
+                    boardConfig.CurrentViewConfig.IsIssueListBacklog,
+                    boardConfig.CurrentViewConfig.QuickFilters
+                        .Select(p => new JiraQuickFilter(p.Id, p.Name, p.Query))
+                        .ToImmutableArray()
+                )
+            );
+        }
+
+        return new JiraConnection(connection.Url, dashboards, projects, boards.ToImmutable());
     }
 
     private string SelectAvatarUrl(JiraProjectDto project)

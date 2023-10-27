@@ -31,5 +31,9 @@ internal record JiraBoard(
     string LocationName,
     string ProjectKey,
     string ProjectTypeKey,
-    string AvatarUrl
+    string AvatarUrl,
+    bool IsIssueListBacklog,
+    ImmutableArray<JiraQuickFilter> QuickFilters
 );
+
+internal record JiraQuickFilter(int Id, string Name, string Query);
