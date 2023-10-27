@@ -256,7 +256,7 @@ internal class SearchManager : IDisposable
             "Root items should be serializable"
         );
 
-        if (context.History == null)
+        if (context.History == null || context.Search.IsWhiteSpace())
         {
             var sorter = new BucketSorter<SearchResult>(2);
 
