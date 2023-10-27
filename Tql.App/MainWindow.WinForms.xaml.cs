@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using System.Windows.Forms;
 using Tql.App.Services;
+using Tql.App.Support;
 using Application = System.Windows.Application;
 
 namespace Tql.App;
@@ -19,7 +20,16 @@ partial class MainWindow
 
         notifyIcon.ContextMenu = new System.Windows.Forms.ContextMenu();
 
-        notifyIcon.ContextMenu.MenuItems.Add("&Search\tAlt+Back", (_, _) => DoShow());
+        var hotKeyMenuItem = notifyIcon.ContextMenu.MenuItems.Add(
+            GetHotKeyMenuItemLabel(),
+            (_, _) => DoShow()
+        );
+
+        _settings.AttachPropertyChanged(
+            nameof(_settings.HotKey),
+            (_, _) => hotKeyMenuItem.Text = GetHotKeyMenuItemLabel()
+        );
+
         notifyIcon.ContextMenu.MenuItems.Add("-");
 #if DEBUG
         notifyIcon.ContextMenu.MenuItems.Add(
@@ -60,6 +70,26 @@ partial class MainWindow
 
             return new System.Drawing.Icon(stream);
         }
+    }
+
+    private string GetHotKeyMenuItemLabel()
+    {
+        var hotKey = HotKey.FromSettings(_settings);
+
+        var sb = StringBuilderCache.Acquire();
+
+        if (hotKey.Win)
+            sb.Append("Win+");
+        if (hotKey.Control)
+            sb.Append("Ctrl+");
+        if (hotKey.Alt)
+            sb.Append("Alt+");
+        if (hotKey.Shift)
+            sb.Append("Shift+");
+
+        sb.Append(HotKey.AvailableKeys.Single(p => p.Key == hotKey.Key).Label);
+
+        return $"&Search\t{StringBuilderCache.GetStringAndRelease(sb)}";
     }
 
     private void InvalidateAllCaches()
