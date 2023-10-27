@@ -89,12 +89,7 @@ public partial class App
         _mainWindow = _host.Services.GetRequiredService<MainWindow>();
 
         if (IsDebugMode)
-        {
             _mainWindow.DoShow();
-            _host.Services
-                .GetRequiredService<IUI>()
-                .OpenConfiguration(Guid.Parse("96260cfa-5814-4ed4-ac69-fcc63e4f4571"));
-        }
     }
 
     private void SetTheme(Settings settings)
