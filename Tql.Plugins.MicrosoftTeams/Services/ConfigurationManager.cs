@@ -6,10 +6,21 @@ internal class ConfigurationManager
 {
     private readonly IPeopleDirectoryManager _peopleDirectoryManager;
     private volatile Configuration _configuration = Configuration.Empty;
-    private volatile HashSet<string> _directoryIds = new();
+    private readonly object _syncRoot = new();
+    private ImmutableArray<string> _directoryIds = ImmutableArray<string>.Empty;
 
     public Configuration Configuration => _configuration;
-    public ImmutableArray<string> DirectoryIds => _directoryIds.ToImmutableArray();
+
+    public ImmutableArray<string> DirectoryIds
+    {
+        get
+        {
+            lock (_syncRoot)
+            {
+                return _directoryIds;
+            }
+        }
+    }
 
     public ConfigurationManager(
         IConfigurationManager configurationManager,
@@ -17,6 +28,7 @@ internal class ConfigurationManager
     )
     {
         _peopleDirectoryManager = peopleDirectoryManager;
+
         configurationManager.ConfigurationChanged += (s, e) =>
         {
             if (e.PluginId == MicrosoftTeamsPlugin.Id)
@@ -26,7 +38,13 @@ internal class ConfigurationManager
         LoadConnections(configurationManager.GetConfiguration(MicrosoftTeamsPlugin.Id));
     }
 
-    public bool HasDirectory(string id) => _directoryIds.Contains(id);
+    public bool HasDirectory(string id)
+    {
+        lock (_syncRoot)
+        {
+            return _directoryIds.Contains(id);
+        }
+    }
 
     private void LoadConnections(string? json)
     {
@@ -34,17 +52,22 @@ internal class ConfigurationManager
         if (json != null)
             configuration = JsonSerializer.Deserialize<Configuration>(json);
 
-        _configuration = configuration ?? Configuration.Empty;
+        configuration ??= Configuration.Empty;
 
-        if (_configuration.Mode == ConfigurationMode.All)
+        _configuration = configuration;
+
+        lock (_syncRoot)
         {
-            _directoryIds = new HashSet<string>(
-                _peopleDirectoryManager.Directories.Select(p => p.Id)
-            );
-        }
-        else
-        {
-            _directoryIds = new HashSet<string>(_configuration.DirectoryIds);
+            if (configuration.Mode == ConfigurationMode.All)
+            {
+                _directoryIds = _peopleDirectoryManager.Directories
+                    .Select(p => p.Id)
+                    .ToImmutableArray();
+            }
+            else
+            {
+                _directoryIds = configuration.DirectoryIds.ToImmutableArray();
+            }
         }
     }
 }
