@@ -1,4 +1,5 @@
-﻿using Tql.Abstractions;
+﻿using System.Net.Configuration;
+using Tql.Abstractions;
 using Tql.Plugins.MicrosoftTeams.Services;
 
 namespace Tql.Plugins.MicrosoftTeams.Support;
@@ -12,7 +13,7 @@ internal static class MatchUtils
         string id
     )
     {
-        if (configurationManager.Configuration.DirectoryIds.Length > 1)
+        if (configurationManager.DirectoryIds.Length > 1)
         {
             var connection = peopleDirectoryManager.Directories.Single(p => p.Id == id);
 
@@ -28,12 +29,7 @@ internal static class MatchUtils
         string id
     )
     {
-        var configuration = configurationManager.Configuration;
-
-        if (
-            configuration.Mode == ConfigurationMode.Selected
-            && !configuration.DirectoryIds.Contains(id)
-        )
+        if (!configurationManager.HasDirectory(id))
             return null;
 
         return peopleDirectoryManager.Directories.SingleOrDefault(p => p.Id == id);

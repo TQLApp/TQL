@@ -18,7 +18,7 @@ internal class TeamsVideoType : IMatchType
     public IMatch? Deserialize(string json)
     {
         var dto = JsonSerializer.Deserialize<PersonDto>(json)!;
-        if (!_configurationManager.Configuration.HasDirectory(dto.DirectoryId))
+        if (!_configurationManager.HasDirectory(dto.DirectoryId))
             return null;
 
         return new TeamsVideoMatch(dto);

@@ -46,25 +46,9 @@ public class MicrosoftTeamsPlugin : ITqlPlugin
 
     public IEnumerable<IMatch> GetMatches()
     {
-        var configuration = _serviceProvider!
-            .GetRequiredService<ConfigurationManager>()
-            .Configuration;
+        var configurationManager = _serviceProvider!.GetRequiredService<ConfigurationManager>();
 
-        IEnumerable<string> directoryIds;
-
-        if (configuration.Mode == ConfigurationMode.Selected)
-        {
-            directoryIds = configuration.DirectoryIds;
-        }
-        else
-        {
-            var peopleDirectoryManager =
-                _serviceProvider!.GetRequiredService<IPeopleDirectoryManager>();
-
-            directoryIds = peopleDirectoryManager.Directories.Select(p => p.Id);
-        }
-
-        return from directoryId in directoryIds
+        return from directoryId in configurationManager.DirectoryIds
             let json = JsonSerializer.Serialize(new RootItemDto(directoryId))
             from matchType in _matchTypeManager!.MatchTypes
             where matchType.GetType().GetCustomAttribute<RootMatchTypeAttribute>() != null
