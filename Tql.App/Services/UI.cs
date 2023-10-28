@@ -80,9 +80,16 @@ internal class UI : IUI
         MainWindow = mainWindow;
     }
 
-    public void Shutdown()
+    public void Shutdown(RestartMode mode)
     {
-        _synchronizationContext?.Post(_ => Application.Current.Shutdown(), null);
+        _synchronizationContext?.Post(
+            _ =>
+            {
+                App.RestartMode = mode;
+                Application.Current.Shutdown();
+            },
+            null
+        );
     }
 
     public DialogResult ShowConfirmation(

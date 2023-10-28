@@ -101,6 +101,7 @@
           Description="$(var.ProductDescription)"
           Target="[MyBinFolder]Tql.App.exe"
           WorkingDirectory="INSTALLFOLDER"
+          Arguments="/silent"
         />
         <RemoveFile
           Id="StartupShortcutCleanup"

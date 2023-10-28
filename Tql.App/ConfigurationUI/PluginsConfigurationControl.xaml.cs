@@ -1,4 +1,5 @@
 ﻿using Tql.Abstractions;
+using Tql.App.Services;
 using Tql.App.Services.Packages;
 
 namespace Tql.App.ConfigurationUI;
@@ -7,6 +8,7 @@ internal partial class PluginsConfigurationControl : IConfigurationPage
 {
     private readonly PackageManager _packageManager;
     private readonly IServiceProvider _serviceProvider;
+    private readonly IUI _ui;
 
     public Guid PageId => Guid.Parse("96260cfa-5814-4ed4-ac69-fcc63e4f4571");
     public string Title => "Plugins";
@@ -14,11 +16,13 @@ internal partial class PluginsConfigurationControl : IConfigurationPage
 
     public PluginsConfigurationControl(
         PackageManager packageManager,
-        IServiceProvider serviceProvider
+        IServiceProvider serviceProvider,
+        IUI ui
     )
     {
         _packageManager = packageManager;
         _serviceProvider = serviceProvider;
+        _ui = ui;
 
         InitializeComponent();
 
@@ -105,9 +109,7 @@ internal partial class PluginsConfigurationControl : IConfigurationPage
 
     private void _restart_Click(object sender, RoutedEventArgs e)
     {
-        App.RestartRequested = true;
-
-        Application.Current.Shutdown();
+        ((UI)_ui).Shutdown(RestartMode.Restart);
     }
 
     private enum Tab

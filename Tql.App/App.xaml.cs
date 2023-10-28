@@ -25,7 +25,7 @@ public partial class App
     private MainWindow? _mainWindow;
     private WindowMessageIPC? _ipc;
 
-    public static bool RestartRequested { get; set; }
+    public static RestartMode RestartMode { get; set; } = RestartMode.Shutdown;
     public static ImmutableArray<Assembly>? DebugAssemblies { get; set; }
     public static bool IsDebugMode { get; set; }
 
@@ -114,7 +114,7 @@ public partial class App
 
         _ipc.Received += (_, _) => _mainWindow.DoShow();
 
-        if (IsDebugMode)
+        if (!e.Args.Contains("/silent"))
             _mainWindow.DoShow();
     }
 
@@ -211,7 +211,16 @@ public partial class App
         _host?.Dispose();
         _ipc?.Dispose();
 
-        if (RestartRequested)
-            Process.Start(Assembly.GetEntryAssembly()!.Location);
+        if (RestartMode is RestartMode.Restart or RestartMode.SilentRestart)
+        {
+            var startInfo = new ProcessStartInfo
+            {
+                FileName = Assembly.GetEntryAssembly()!.Location
+            };
+            if (RestartMode == RestartMode.SilentRestart)
+                startInfo.Arguments = "/silent";
+
+            Process.Start(startInfo);
+        }
     }
 }
