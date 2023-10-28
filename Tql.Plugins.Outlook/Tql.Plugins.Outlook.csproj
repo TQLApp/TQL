@@ -1,41 +1,33 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net48</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <LangVersion>latest</LangVersion>
-    <UseWPF>true</UseWPF>
-    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
-    <Product>TQL Microsoft Outlook</Product>
-    <Description>Techie's Quick Launcher plugin for Outlook. This plugin allows you to search for contacts in your Outlook and you can send emails directly from this plugin.</Description>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net48</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<LangVersion>latest</LangVersion>
+		<UseWPF>true</UseWPF>
+		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+		<Product>TQL Microsoft Outlook</Product>
+		<Description>Techie's Quick Launcher plugin for Outlook. This plugin allows you to search for contacts in your Outlook and you can send emails directly from this plugin.</Description>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <COMReference Include="Microsoft.Office.Interop.Outlook">
-      <WrapperTool>tlbimp</WrapperTool>
-      <VersionMinor>6</VersionMinor>
-      <VersionMajor>9</VersionMajor>
-      <Guid>00062fff-0000-0000-c000-000000000046</Guid>
-      <Lcid>0</Lcid>
-      <Isolated>false</Isolated>
-      <EmbedInteropTypes>true</EmbedInteropTypes>
-    </COMReference>
-  </ItemGroup>
+	<Import Project="..\TqlPackage.targets" />
 
-  <Import Project="..\TqlPackage.targets" />
+	<ItemGroup>
+		<EmbeddedResource Include="Resources\**\*" />
+		<None Remove="Resources\**\*" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\**\*" />
-    <None Remove="Resources\**\*" />
-  </ItemGroup>
+	<ItemGroup>
+	  <PackageReference Include="Microsoft.Office.Interop.Outlook" Version="15.0.4797.1004" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Tql.Utilities\Tql.Utilities.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Tql.Utilities\Tql.Utilities.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
+	<ItemGroup>
+		<Reference Include="Microsoft.CSharp" />
+	</ItemGroup>
 
 </Project>

@@ -463,6 +463,11 @@
           "System.Text.Json": "4.7.2"
         }
       },
+      "Microsoft.Office.Interop.Outlook": {
+        "type": "Transitive",
+        "resolved": "15.0.4797.1004",
+        "contentHash": "17tdFXg/TGnbmSC9YNkIrB6P3vTSemOMI/TaUaZWQmRE1dMjHIVmBPffQhXasH/te4weHiFk8EEXUCi/NsGbuA=="
+      },
       "Microsoft.TeamFoundation.DistributedTask.Common.Contracts": {
         "type": "Transitive",
         "resolved": "19.227.0-preview",
@@ -913,7 +918,7 @@
           "NuGet.PackageManagement": "[6.7.0, )",
           "System.Data.SQLite.Core": "[1.0.118, )",
           "Tql.Interop": "[1.0.0, )",
-          "Tql.Utilities": "[0.2.0, )"
+          "Tql.Utilities": "[0.3.0, )"
         }
       },
       "tql.interop": {
@@ -924,7 +929,7 @@
         "dependencies": {
           "Azure.Identity": "[1.10.3, )",
           "Azure.ResourceManager.ResourceGraph": "[1.0.1, )",
-          "Tql.Utilities": "[0.2.0, )"
+          "Tql.Utilities": "[0.3.0, )"
         }
       },
       "tql.plugins.azuredevops": {
@@ -933,13 +938,13 @@
           "Microsoft.TeamFoundationServer.ExtendedClient": "[19.227.0-preview, )",
           "Microsoft.VisualStudio.Services.ExtensionManagement.WebApi": "[19.227.0-preview, )",
           "Microsoft.VisualStudio.Services.Search.Client": "[19.227.0-preview, )",
-          "Tql.Utilities": "[0.2.0, )"
+          "Tql.Utilities": "[0.3.0, )"
         }
       },
       "tql.plugins.confluence": {
         "type": "Project",
         "dependencies": {
-          "Tql.Utilities": "[0.2.0, )"
+          "Tql.Utilities": "[0.3.0, )"
         }
       },
       "tql.plugins.github": {
@@ -947,25 +952,26 @@
         "dependencies": {
           "HtmlAgilityPack": "[1.11.54, )",
           "Octokit": "[8.1.1, )",
-          "Tql.Utilities": "[0.2.0, )"
+          "Tql.Utilities": "[0.3.0, )"
         }
       },
       "tql.plugins.jira": {
         "type": "Project",
         "dependencies": {
-          "Tql.Utilities": "[0.2.0, )"
+          "Tql.Utilities": "[0.3.0, )"
         }
       },
       "tql.plugins.microsoftteams": {
         "type": "Project",
         "dependencies": {
-          "Tql.Utilities": "[0.2.0, )"
+          "Tql.Utilities": "[0.3.0, )"
         }
       },
       "tql.plugins.outlook": {
         "type": "Project",
         "dependencies": {
-          "Tql.Utilities": "[0.2.0, )"
+          "Microsoft.Office.Interop.Outlook": "[15.0.4797.1004, )",
+          "Tql.Utilities": "[0.3.0, )"
         }
       },
       "tql.utilities": {
@@ -975,7 +981,7 @@
           "SharpVectors.Wpf": "[1.8.2, )",
           "System.Net.Http": "[4.3.4, )",
           "System.Text.Json": "[7.0.3, )",
-          "Tql.Abstractions": "[0.2.0, )"
+          "Tql.Abstractions": "[0.3.0, )"
         }
       }
     },
