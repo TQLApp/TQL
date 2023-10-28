@@ -209,6 +209,12 @@ internal partial class MainWindow
 
     public void DoShow()
     {
+        if (IsVisible)
+        {
+            _searchManager?.DoSearch();
+            return;
+        }
+
         _pageView ??= _telemetryService.CreatePageView("Search");
 
         RepositionScreen();
