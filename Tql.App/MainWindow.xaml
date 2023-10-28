@@ -17,7 +17,8 @@
                     Closed="Window_Closed"
                     PreviewKeyDown="Window_PreviewKeyDown"
                     Deactivated="Window_Deactivated"
-                    SourceInitialized="Window_SourceInitialized">
+                    SourceInitialized="Window_SourceInitialized"
+                    IsVisibleChanged="Window_IsVisibleChanged">
     <Window.Resources>
         <Style TargetType="TextBlock">
             <Setter Property="Foreground" Value="White"/>

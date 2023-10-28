@@ -762,4 +762,16 @@ internal partial class MainWindow
 
         e.Notification.Dismiss?.Invoke();
     }
+
+    private void Window_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+    {
+        // This is here for debugging only. There's a strange scenario where
+        // the main window pops up looking wrong. Likely it's uninitialized.
+
+        if ((bool)e.NewValue && _searchManager == null)
+        {
+            _logger.LogError("Main window got visible unexpectedly");
+            _logger.LogError(Environment.StackTrace);
+        }
+    }
 }
