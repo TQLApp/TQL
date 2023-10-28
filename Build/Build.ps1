@@ -24,6 +24,8 @@ Function Copy-Output([string]$From, [string]$Target)
     Write-Host "Copying $From"
 
     Copy-Item "$Global:Root\$From\bin\Release\net48" -Destination $Target -Recurse
+    
+    Get-ChildItem $Target
 }
 
 Function Ensure-WiX
@@ -82,6 +84,8 @@ Function Create-MSI
         -File "heat.exe" `
         -ArgumentList "dir . -nologo -v -dr MyBinFolder -srd -cg MyAppComponents -gg -sfrag -scom -sreg -out ..\AppFiles.wxs" `
         -WorkingDirectory "$Global:Distrib\SourceDir"
+
+    Get-Content "$Global:Distrib\AppFiles.wxs"
 
     Write-Host "Compiling Tql.wxs"
 
