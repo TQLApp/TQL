@@ -150,6 +150,12 @@
       <ComponentRef Id="MyStartupShortcuts" />
     </Feature>
 
+    <!--
+      Always reinstall all files. This allows us to downgrade
+      DLL versions. See https://stackoverflow.com/questions/6870405.
+    -->
+    <Property Id="REINSTALLMODE" Value="amus" />
+
     <!-- 
       Default the launch the application. The user may disable this,
       but it ensures that the app gets re-launched on silent upgrades.
