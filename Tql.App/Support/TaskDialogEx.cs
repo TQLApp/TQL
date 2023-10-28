@@ -1,6 +1,7 @@
 ﻿using System.Windows.Forms;
 using System.Windows.Interop;
 using Tql.Interop;
+using Clipboard = System.Windows.Forms.Clipboard;
 
 namespace Tql.App.Support;
 
@@ -43,6 +44,8 @@ public static class TaskDialogEx
         TaskDialogCommonButtons buttons = TaskDialogCommonButtons.OK
     )
     {
+        var exceptionInformation = exception.PrintStackTrace();
+
         var taskDialog = CreateDialog(title, exception.Message, icon);
 
         taskDialog.AllowDialogCancellation = true;
@@ -50,9 +53,19 @@ public static class TaskDialogEx
         taskDialog.Width = 300;
 
         taskDialog.ExpandedControlText = "Show exception details";
-        taskDialog.ExpandedInformation = exception.PrintStackTrace();
+        taskDialog.ExpandedInformation = exceptionInformation;
 
-        return (DialogResult)taskDialog.Show(GetOwner(owner));
+        taskDialog.Buttons = new[] { new TaskDialogButton(101, "Copy to Clipboard") };
+
+        var result = taskDialog.Show(GetOwner(owner));
+
+        if (result == 101)
+        {
+            Clipboard.SetText(exceptionInformation);
+            result = (int)DialogResult.OK;
+        }
+
+        return (DialogResult)result;
     }
 
     private static IntPtr GetOwner(UIElement owner)

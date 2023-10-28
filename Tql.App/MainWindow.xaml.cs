@@ -61,6 +61,7 @@ internal partial class MainWindow
         _ui = (UI)ui;
 
         cacheManagerManager.LoadingChanged += CacheManagerManager_LoadingChanged;
+        cacheManagerManager.CacheChanged += CacheManagerManager_CacheChanged;
 
         InitializeComponent();
 
@@ -158,19 +159,25 @@ internal partial class MainWindow
 
     private void CacheManagerManager_LoadingChanged(object sender, EventArgs e)
     {
-        Dispatcher.BeginInvoke(
-            new Action(() => UpdateCacheManagerSpinner((CacheManagerManager)sender))
-        );
+        Dispatcher.BeginInvoke(new Action(UpdateCacheManagerSpinner));
     }
 
-    private void UpdateCacheManagerSpinner(CacheManagerManager cacheManagerManager)
+    private void UpdateCacheManagerSpinner()
     {
-        var isLoading = cacheManagerManager.IsLoading;
+        _spinner.Visibility = _cacheManagerManager.IsLoading
+            ? Visibility.Visible
+            : Visibility.Collapsed;
+    }
 
-        _spinner.Visibility = isLoading ? Visibility.Visible : Visibility.Collapsed;
+    private void CacheManagerManager_CacheChanged(object sender, EventArgs e)
+    {
+        Dispatcher.BeginInvoke(new Action(Invoke));
 
-        if (!isLoading && IsVisible)
-            _searchManager?.DoSearch();
+        void Invoke()
+        {
+            if (IsVisible)
+                _searchManager?.DoSearch();
+        }
     }
 
     private void Window_Closed(object sender, EventArgs e)
@@ -229,7 +236,7 @@ internal partial class MainWindow
 
         ReloadNotifications();
 
-        UpdateCacheManagerSpinner(_cacheManagerManager);
+        UpdateCacheManagerSpinner();
 
         // Force recalculation of the height of the window.
 

@@ -11,6 +11,7 @@ internal class CacheManagerManager
     public bool IsLoading => _loading > 0;
 
     public event EventHandler? LoadingChanged;
+    public event EventHandler? CacheChanged;
 
     public void Register<T>(ICache<T> cache)
     {
@@ -39,8 +40,12 @@ internal class CacheManagerManager
         OnLoadingChanged();
     }
 
-    protected virtual void OnLoadingChanged()
+    public void RaiseCacheChanged()
     {
-        LoadingChanged?.Invoke(this, EventArgs.Empty);
+        OnCacheChanged();
     }
+
+    protected virtual void OnLoadingChanged() => LoadingChanged?.Invoke(this, EventArgs.Empty);
+
+    protected virtual void OnCacheChanged() => CacheChanged?.Invoke(this, EventArgs.Empty);
 }

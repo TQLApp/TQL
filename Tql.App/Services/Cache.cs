@@ -13,13 +13,23 @@ internal class Cache<T> : ICache<T>
     private readonly IDb _db;
     private readonly CacheManagerManager _cacheManagerManager;
     private readonly TelemetryService _telemetryService;
-    private volatile TaskCompletionSource<T> _tcs = new();
+    private TaskCompletionSource<T> _tcs = new();
+    private bool _isFaulted;
     private DateTime _updated;
     private readonly object _syncRoot = new();
     private bool _creating;
     private TimeSpan _expiration;
 
-    public bool IsAvailable => _tcs.Task.IsCompleted;
+    public bool IsAvailable
+    {
+        get
+        {
+            lock (_syncRoot)
+            {
+                return _tcs.Task.IsCompleted;
+            }
+        }
+    }
 
     public event EventHandler<CacheEventArgs<T>>? Updated;
 
@@ -55,7 +65,13 @@ internal class Cache<T> : ICache<T>
         _cacheManager.CacheExpired += (_, e) =>
         {
             if (e.Force)
-                _tcs = new TaskCompletionSource<T>();
+            {
+                lock (_syncRoot)
+                {
+                    _tcs = new TaskCompletionSource<T>();
+                }
+            }
+
             Create(e.Force);
         };
 
@@ -115,6 +131,7 @@ internal class Cache<T> : ICache<T>
 
             _logger.LogInformation("Recreating cache");
 
+            var raiseCacheChanged = false;
             var now = DateTime.UtcNow;
 
             try
@@ -136,6 +153,8 @@ internal class Cache<T> : ICache<T>
 
                 lock (_syncRoot)
                 {
+                    _isFaulted = false;
+
                     if (initialLoad)
                     {
                         _tcs.SetResult(data);
@@ -150,6 +169,7 @@ internal class Cache<T> : ICache<T>
                     }
 
                     _updated = now;
+                    raiseCacheChanged = true;
                 }
 
                 ThreadPool.QueueUserWorkItem(_ =>
@@ -174,20 +194,24 @@ internal class Cache<T> : ICache<T>
 
                 lock (_syncRoot)
                 {
+                    _isFaulted = true;
+
+                    // On initial load, the TCS holding the cache will
+                    // still be waiting for activation. If we don't
+                    // activate it here (by faulting it), all searches
+                    // depending on this cache will just get stuck.
+                    //
+                    // We however don't have to activate the task when
+                    // it's not an initial load. On cache refreshes, we
+                    // just leave the old cache in place.
+
                     if (initialLoad)
                     {
                         _tcs.SetException(ex);
+
+                        _updated = now;
+                        raiseCacheChanged = true;
                     }
-                    else
-                    {
-                        var tcs = new TaskCompletionSource<T>();
-
-                        tcs.SetException(ex);
-
-                        _tcs = tcs;
-                    }
-
-                    _updated = now;
                 }
             }
             finally
@@ -199,6 +223,9 @@ internal class Cache<T> : ICache<T>
 
                 _cacheManagerManager.StopLoading();
 
+                if (raiseCacheChanged)
+                    _cacheManagerManager.RaiseCacheChanged();
+
                 _logger.LogInformation("Recreating cache complete");
             }
         });
@@ -209,10 +236,11 @@ internal class Cache<T> : ICache<T>
         lock (_syncRoot)
         {
             // Recreate the cache if it's out of date or if the cache update failed.
+
             if (
                 !_creating
                 && IsAvailable
-                && (_tcs.Task.IsFaulted || _updated < DateTime.UtcNow - _expiration)
+                && (_isFaulted || _updated < DateTime.UtcNow - _expiration)
             )
                 Invalidate();
 
