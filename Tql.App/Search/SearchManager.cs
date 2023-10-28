@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.IdentityModel.Metadata;
 using Microsoft.Extensions.Logging;
 using Tql.Abstractions;
 using Tql.App.Services;
@@ -195,6 +196,8 @@ internal class SearchManager : IDisposable
 
         using var telemetry = _telemetryService.CreateRequest("Search");
 
+        var context = default(SearchContext);
+
         try
         {
             Context?.Dispose();
@@ -203,7 +206,7 @@ internal class SearchManager : IDisposable
 
             category?.InitializeTelemetry(telemetry);
 
-            var context = new SearchContext(_serviceProvider, _search, _history, _contextContext);
+            context = new SearchContext(_serviceProvider, _search, _history, _contextContext);
 
             Context = context;
 
@@ -223,17 +226,36 @@ internal class SearchManager : IDisposable
             telemetry.AddProperty(nameof(Results), Results.Length.ToString());
             telemetry.IsSuccess = true;
         }
-        catch (OperationCanceledException) { } // Ignore.
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failure while performing search");
-            _telemetryService.TrackException(ex);
+            bool logError;
+            if (context == null)
+            {
+                // Something went wrong before we even created the context.
+                logError = true;
+            }
+            else if (context != Context)
+            {
+                // Something went wrong after we stopped caring about the result.
+                logError = false;
+            }
+            else
+            {
+                // Otherwise, the cancellation requested status of the cancellation token is leading.
+                logError = !context.CancellationToken.IsCancellationRequested;
+            }
 
-            _ui.ShowNotificationBar(
-                ErrorBannerId.ToString(),
-                $"Search failed with the following error message: {ex.Message}",
-                () => _ui.ShowError(((UI)_ui).MainWindow!, "Search failed with an error", ex)
-            );
+            if (logError)
+            {
+                _logger.LogError(ex, "Failure while performing search");
+                _telemetryService.TrackException(ex);
+
+                _ui.ShowNotificationBar(
+                    ErrorBannerId.ToString(),
+                    $"Search failed with the following error message: {ex.Message}",
+                    () => _ui.ShowError(((UI)_ui).MainWindow!, "Search failed with an error", ex)
+                );
+            }
         }
     }
 
