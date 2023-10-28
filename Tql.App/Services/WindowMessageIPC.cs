@@ -5,12 +5,18 @@ namespace Tql.App.Services;
 
 internal class WindowMessageIPC : IDisposable
 {
+    private const string MessageName =
 #if DEBUG
-    private const string MessageName = "$TQL.IPC^WM$#DEBUG";
-    private const string WindowName = "$TQL.IPC$#DEBUG";
+        "$TQL.IPC^WM$#DEBUG";
 #else
-    private const string MessageName = "$TQL.IPC^WM$";
-    private const string WindowClassName = "$TQL.IPC$";
+        "$TQL.IPC^WM$";
+#endif
+
+    private const string WindowName =
+#if DEBUG
+        "$TQL.IPC$#DEBUG";
+#else
+        "$TQL.IPC$";
 #endif
 
     private readonly Window? _window;
