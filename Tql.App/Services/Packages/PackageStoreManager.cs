@@ -3,6 +3,7 @@ using System.Reflection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
 using Tql.Abstractions;
+using Tql.App.Support;
 using Path = System.IO.Path;
 
 namespace Tql.App.Services.Packages;
@@ -14,7 +15,10 @@ internal class PackageStoreManager
     private readonly Store _store;
     private readonly ILogger<PackageStoreManager> _logger;
     private readonly object _syncRoot = new();
-    private readonly List<string> _packageFolders = new();
+    private readonly Dictionary<string, Assembly> _loadedAssemblies =
+        new(StringComparer.OrdinalIgnoreCase);
+    private readonly Dictionary<string, string> _packageAssemblies =
+        new(StringComparer.OrdinalIgnoreCase);
 
     public string PackagesFolder { get; }
 
@@ -34,25 +38,39 @@ internal class PackageStoreManager
     {
         _logger.LogDebug("Attempting to resolve '{AssemblyName}'", args.Name);
 
-        var assemblyName = args.Name.Split(',').First().Trim();
-
         lock (_syncRoot)
         {
-            foreach (var packageFolder in _packageFolders)
-            {
-                foreach (var extension in AssemblyExtensions)
-                {
-                    var fileName = Path.Combine(packageFolder, assemblyName + extension);
-                    if (File.Exists(fileName))
-                    {
-                        _logger.LogDebug(
-                            "Resolved to package folder '{PackageFolder}'",
-                            packageFolder
-                        );
+            var assemblyName = args.Name.Split(',').First().Trim();
 
-                        return Assembly.LoadFile(fileName);
-                    }
-                }
+            var loadedAssembly = AppDomain.CurrentDomain
+                .GetAssemblies()
+                .Select(p => (AssemblyName: p.GetName(), Assembly: p))
+                .Where(
+                    p =>
+                        string.Equals(
+                            p.AssemblyName.Name,
+                            assemblyName,
+                            StringComparison.OrdinalIgnoreCase
+                        )
+                )
+                .OrderByDescending(p => p.AssemblyName.Version)
+                .FirstOrDefault();
+
+            if (loadedAssembly.Assembly != null)
+            {
+                _logger.LogDebug(
+                    "Using already loaded assembly '{AssemblyName}'",
+                    loadedAssembly.AssemblyName
+                );
+
+                return loadedAssembly.Assembly;
+            }
+
+            if (_packageAssemblies.TryGetValue(assemblyName, out var fileName))
+            {
+                _logger.LogDebug("Resolved assembly to '{FileName}'", fileName);
+
+                return Assembly.LoadFile(fileName);
             }
         }
 
@@ -107,26 +125,75 @@ internal class PackageStoreManager
 
     public ImmutableArray<ITqlPlugin> GetPlugins()
     {
-        var plugins = ImmutableArray.CreateBuilder<ITqlPlugin>();
+        _logger.LogInformation("Discovering plugins");
+
+        var assemblyExtensions = new HashSet<string>(
+            AssemblyExtensions,
+            StringComparer.OrdinalIgnoreCase
+        );
+
+        var pluginAssemblyFileNames = new List<string>();
+        var packageAssemblies = new List<(AssemblyName AssemblyName, string FileName)>();
 
         foreach (var packageRef in GetInstalledPackages())
         {
-            _logger.LogInformation("Loading package '{Package}'", packageRef);
+            var packageFolder = Path.Combine(PackagesFolder, packageRef.ToString());
+
+            _logger.LogInformation("Loading assemblies of package '{Package}'", packageRef);
+
+            foreach (var fileName in Directory.GetFiles(packageFolder))
+            {
+                if (assemblyExtensions.Contains(Path.GetExtension(fileName)))
+                {
+                    try
+                    {
+                        var assemblyName = AssemblyName.GetAssemblyName(fileName);
+
+                        packageAssemblies.Add((assemblyName, fileName));
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogWarning(
+                            ex,
+                            "Failed to get assembly name for '{FileName}'",
+                            fileName
+                        );
+                    }
+                }
+            }
+
+            pluginAssemblyFileNames.Add(Path.Combine(packageFolder, packageRef.Id + ".dll"));
+        }
+
+        lock (_syncRoot)
+        {
+            foreach (
+                var entry in packageAssemblies
+                    .GroupBy(p => p.AssemblyName.Name)
+                    .Select(
+                        p =>
+                            (
+                                AssemblyName: p.Key,
+                                FileName: p.OrderByDescending(p1 => p1.AssemblyName.Version)
+                                    .Select(p1 => p1.FileName)
+                                    .First()
+                            )
+                    )
+            )
+            {
+                _packageAssemblies.Add(entry.AssemblyName, entry.FileName);
+            }
+        }
+
+        var plugins = ImmutableArray.CreateBuilder<ITqlPlugin>();
+
+        foreach (var fileName in pluginAssemblyFileNames)
+        {
+            _logger.LogInformation("Loading plugins from '{FileName}'", fileName);
 
             try
             {
-                var packageFolder = Path.Combine(PackagesFolder, packageRef.ToString());
-
-                lock (_syncRoot)
-                {
-                    // We insert the latest package folder at the top
-                    // because this prefers loading new assemblies from that folder.
-                    _packageFolders.Insert(0, packageFolder);
-                }
-
-                var assemblyFileName = Path.Combine(packageFolder, packageRef.Id + ".dll");
-
-                var assembly = Assembly.LoadFile(assemblyFileName);
+                var assembly = Assembly.LoadFile(fileName);
 
                 foreach (var type in assembly.ExportedTypes)
                 {
@@ -148,7 +215,7 @@ internal class PackageStoreManager
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to load plugin '{Package}'", packageRef);
+                _logger.LogError(ex, "Failed to load plugin from '{Package}'", fileName);
             }
         }
 
