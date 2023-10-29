@@ -22,11 +22,29 @@
     <Window.Resources>
         <Style TargetType="TextBlock">
             <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect ShadowDepth="0" 
+                                      BlurRadius="3" 
+                                      Color="#666666" 
+                                      Opacity="1"/>
+                </Setter.Value>
+            </Setter>
         </Style>
         <Style TargetType="Run">
             <Setter Property="Foreground" Value="White"/>
         </Style>
         <Style TargetType="ScrollBar" BasedOn="{StaticResource TransparentScrollBar}"/>
+        <Style TargetType="Image">
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect ShadowDepth="0" 
+                                      BlurRadius="3" 
+                                      Color="#666666" 
+                                      Opacity="1"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
     <Grid>
     
