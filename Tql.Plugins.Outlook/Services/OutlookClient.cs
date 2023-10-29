@@ -86,7 +86,7 @@ internal class OutlookClient : IDisposable
                 {
                     var exchangeUser = addressEntry.GetExchangeUser();
 
-                    if (exchangeUser != null)
+                    if (exchangeUser != null && MayBeEmailAddress(exchangeUser.PrimarySmtpAddress))
                         yield return new Person(exchangeUser.Name, exchangeUser.PrimarySmtpAddress);
                 }
 
