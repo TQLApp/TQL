@@ -194,16 +194,16 @@ internal class Cache<T> : ICache<T>
 
                 lock (_syncRoot)
                 {
+                    var wasFaulted = _isFaulted;
                     _isFaulted = true;
 
-                    // On initial load, the TCS holding the cache will
-                    // still be waiting for activation. If we don't
-                    // activate it here (by faulting it), all searches
-                    // depending on this cache will just get stuck.
+                    // On initial load, the TCS holding the cache will still be waiting
+                    // for activation. If we don't activate it here (by faulting it), all
+                    // searches depending on this cache will just get stuck.
                     //
-                    // We however don't have to activate the task when
-                    // it's not an initial load. On cache refreshes, we
-                    // just leave the old cache in place.
+                    // We only replace the TCS on cache refreshes if the cache already was
+                    // faulted. This is to ensure that the user sees the last error message.
+                    // He may be trying to fix the error but encountering a new one.
 
                     if (initialLoad)
                     {
@@ -211,6 +211,18 @@ internal class Cache<T> : ICache<T>
 
                         _updated = now;
                         raiseCacheChanged = true;
+                    }
+                    else if (wasFaulted)
+                    {
+                        var tcs = new TaskCompletionSource<T>();
+
+                        tcs.SetException(ex);
+
+                        _tcs = tcs;
+
+                        // Don't raise cache changed. If the user is searching, and getting
+                        // the cache raises the error, the search will get retried
+                        // indefinitely.
                     }
                 }
             }
