@@ -29,7 +29,7 @@ internal class SpaceMatch
         _dto = dto;
         _configurationManager = configurationManager;
 
-        Icon = iconCacheManager.GetIcon(dto.Icon) ?? Images.Confluence;
+        Icon = iconCacheManager.GetIcon(new IconKey(dto.Url, dto.Icon)) ?? Images.Confluence;
     }
 
     public Task Run(IServiceProvider serviceProvider, Window owner)

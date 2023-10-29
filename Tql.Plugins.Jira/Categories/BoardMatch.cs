@@ -28,7 +28,7 @@ internal class BoardMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, 
         _cache = cache;
         _configurationManager = configurationManager;
 
-        Icon = iconCacheManager.GetIcon(dto.AvatarUrl) ?? Images.Boards;
+        Icon = iconCacheManager.GetIcon(new IconKey(dto.Url, dto.AvatarUrl)) ?? Images.Boards;
     }
 
     public async Task Run(IServiceProvider serviceProvider, Window owner)

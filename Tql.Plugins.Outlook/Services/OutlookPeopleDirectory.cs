@@ -1,6 +1,7 @@
 ﻿using Tql.Abstractions;
 using Tql.Plugins.Outlook.Data;
 using Tql.Plugins.Outlook.Support;
+using Tql.Utilities;
 
 namespace Tql.Plugins.Outlook.Services;
 
@@ -8,7 +9,7 @@ internal class OutlookPeopleDirectory : IPeopleDirectory
 {
     private readonly ICache<OutlookData> _cache;
 
-    public string Id => Encryption.Hash(OutlookPlugin.Id.ToString());
+    public string Id => Encryption.Sha1Hash(OutlookPlugin.Id.ToString());
     public string Name => "Outlook";
 
     public OutlookPeopleDirectory(ICache<OutlookData> cache)

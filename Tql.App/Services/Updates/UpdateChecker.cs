@@ -7,6 +7,7 @@ using System.Net.Http.Headers;
 using Tql.Abstractions;
 using Tql.App.Services.Packages;
 using Tql.App.Support;
+using Tql.Utilities;
 using Path = System.IO.Path;
 
 namespace Tql.App.Services.Updates;

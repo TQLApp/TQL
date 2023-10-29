@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.Services.Graph.Client;
 using Tql.Abstractions;
 using Tql.Plugins.AzureDevOps.Support;
+using Tql.Utilities;
 
 namespace Tql.Plugins.AzureDevOps.Services;
 
@@ -15,7 +16,7 @@ internal class AzureDevOpsPeopleDirectory : IPeopleDirectory
 
     public AzureDevOpsPeopleDirectory(Connection connection, AzureDevOpsApi api)
     {
-        Id = Encryption.Hash($"{AzureDevOpsPlugin.Id}/{connection.Url}");
+        Id = Encryption.Sha1Hash($"{AzureDevOpsPlugin.Id}/{connection.Url}");
         Name = $"Azure DevOps - {connection.Name}";
 
         _connection = connection;

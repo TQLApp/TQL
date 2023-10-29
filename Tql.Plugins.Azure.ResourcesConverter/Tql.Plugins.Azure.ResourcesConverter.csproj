@@ -16,6 +16,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\Tql.Utilities\Tql.Utilities.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <Reference Include="System.Net.Http" />
 	</ItemGroup>
 

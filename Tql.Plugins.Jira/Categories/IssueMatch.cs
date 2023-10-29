@@ -15,7 +15,8 @@ internal class IssueMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
     public IssueMatch(IssueMatchDto dto, IconCacheManager iconCacheManager)
     {
         _dto = dto;
-        Icon = iconCacheManager.GetIcon(dto.IssueTypeIconUrl) ?? Images.Issues;
+        Icon =
+            iconCacheManager.GetIcon(new IconKey(dto.Url, dto.IssueTypeIconUrl)) ?? Images.Issues;
     }
 
     public Task Run(IServiceProvider serviceProvider, Window owner)

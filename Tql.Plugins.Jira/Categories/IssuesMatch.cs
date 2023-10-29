@@ -57,12 +57,7 @@ internal class IssuesMatch : ISearchableMatch, ISerializableMatch
             {
                 var issue = await client.GetIssue(text.ToUpper(), cancellationToken);
 
-                return await IssueUtils.CreateMatches(
-                    _url,
-                    new[] { issue },
-                    client,
-                    _iconCacheManager
-                );
+                return IssueUtils.CreateMatches(_url, new[] { issue }, _iconCacheManager);
             }
             catch
             {
@@ -76,7 +71,7 @@ internal class IssuesMatch : ISearchableMatch, ISerializableMatch
             cancellationToken
         );
 
-        return await IssueUtils.CreateMatches(_url, issues, client, _iconCacheManager);
+        return IssueUtils.CreateMatches(_url, issues, _iconCacheManager);
     }
 
     public string Serialize()

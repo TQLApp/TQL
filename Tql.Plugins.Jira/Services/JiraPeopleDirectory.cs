@@ -1,5 +1,6 @@
 ﻿using Tql.Abstractions;
 using Tql.Plugins.Jira.Support;
+using Tql.Utilities;
 
 namespace Tql.Plugins.Jira.Services;
 
@@ -15,7 +16,7 @@ internal class JiraPeopleDirectory : IPeopleDirectory
         _connection = connection;
         _api = api;
 
-        Id = Encryption.Hash($"{JiraPlugin.Id}/{connection.Id}");
+        Id = Encryption.Sha1Hash($"{JiraPlugin.Id}/{connection.Id}");
         Name = $"JIRA - {connection.Name}";
     }
 

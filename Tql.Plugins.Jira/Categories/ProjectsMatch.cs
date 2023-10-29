@@ -2,7 +2,6 @@
 using Tql.Abstractions;
 using Tql.Plugins.Jira.Data;
 using Tql.Plugins.Jira.Services;
-using Tql.Plugins.Jira.Support;
 using Tql.Utilities;
 
 namespace Tql.Plugins.Jira.Categories;
@@ -38,30 +37,7 @@ internal class ProjectsMatch : CachedMatch<JiraData>, ISerializableMatch
 
     protected override IEnumerable<IMatch> Create(JiraData data)
     {
-        // Download the project avatars in the background.
-
         var projects = data.GetConnection(_url).Projects;
-
-        TaskUtils.RunBackground(async () =>
-        {
-            var client = _configurationManager.GetClient(_url);
-
-            foreach (var project in projects)
-            {
-                try
-                {
-                    await _iconCacheManager.LoadIcon(client, project.AvatarUrl);
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogWarning(
-                        ex,
-                        "Failed to download project avatar '{Url}'",
-                        project.AvatarUrl
-                    );
-                }
-            }
-        });
 
         return from project in projects
             select new ProjectMatch(

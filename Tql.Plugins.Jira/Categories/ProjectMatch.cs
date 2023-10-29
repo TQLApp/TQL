@@ -31,7 +31,7 @@ internal class ProjectMatch
         _iconCacheManager = iconCacheManager;
         _configurationManager = configurationManager;
 
-        Icon = iconCacheManager.GetIcon(dto.AvatarUrl) ?? Images.Projects;
+        Icon = iconCacheManager.GetIcon(new IconKey(dto.Url, dto.AvatarUrl)) ?? Images.Projects;
     }
 
     public Task Run(IServiceProvider serviceProvider, Window owner)
@@ -72,7 +72,7 @@ internal class ProjectMatch
             cancellationToken
         );
 
-        return await IssueUtils.CreateMatches(_dto.Url, issues, client, _iconCacheManager);
+        return IssueUtils.CreateMatches(_dto.Url, issues, _iconCacheManager);
     }
 }
 

@@ -2,7 +2,7 @@
 using System.Net.Http.Headers;
 using System.Text.Json.Serialization;
 using Tql.Abstractions;
-using Tql.Plugins.Confluence.Support;
+using Tql.Utilities;
 
 namespace Tql.Plugins.Confluence.Services;
 

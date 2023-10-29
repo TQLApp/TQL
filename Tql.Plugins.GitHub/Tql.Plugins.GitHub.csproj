@@ -29,10 +29,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Reference Include="System.Security" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<Compile Update="ConfigurationUI\ConfigurationControl.xaml.cs">
 			<SubType>Code</SubType>
 		</Compile>

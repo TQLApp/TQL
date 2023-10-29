@@ -2,7 +2,6 @@
 using NuGet.Configuration;
 using System.Net.Http;
 using NuGet.Protocol.Core.Types;
-using Tql.App.Support;
 using Tql.Utilities;
 using Path = System.IO.Path;
 using System.IO;

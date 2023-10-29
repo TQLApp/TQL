@@ -1,6 +1,5 @@
 ﻿using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Security.Cryptography;
 using System.Text.Json.Serialization;
 using System.Windows.Interop;
 using Microsoft.Extensions.Logging;
@@ -149,15 +148,13 @@ internal class GitHubApi
 
             if (subKey?.GetValue(id.ToString()) is string protectedCredentials)
             {
-                var credentialsBytes = ProtectedData.Unprotect(
-                    Convert.FromBase64String(protectedCredentials),
-                    null,
-                    DataProtectionScope.CurrentUser
+                var credentials = Encryption.Unprotect(
+                    Convert.FromBase64String(protectedCredentials)
                 );
+                if (credentials == null)
+                    return null;
 
-                using var stream = new MemoryStream(credentialsBytes);
-
-                return JsonSerializer.Deserialize<CredentialsDto>(stream);
+                return JsonSerializer.Deserialize<CredentialsDto>(credentials);
             }
         }
         catch (Exception ex)
@@ -170,13 +167,9 @@ internal class GitHubApi
 
     private void WriteCredentials(Guid id, CredentialsDto credentialsDto)
     {
-        using var stream = new MemoryStream();
+        var json = JsonSerializer.Serialize(credentialsDto);
 
-        JsonSerializer.Serialize(stream, credentialsDto);
-
-        var protectedCredentials = Convert.ToBase64String(
-            ProtectedData.Protect(stream.ToArray(), null, DataProtectionScope.CurrentUser)
-        );
+        var protectedCredentials = Convert.ToBase64String(Encryption.Protect(json)!);
 
         using var key = _store.OpenKey(GitHubPlugin.Id);
         using var subKey = key.CreateSubKey("Credentials")!;

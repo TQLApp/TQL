@@ -1,5 +1,4 @@
-﻿using Tql.Abstractions;
-using Tql.Plugins.Jira.Data;
+﻿using Tql.Plugins.Jira.Data;
 
 namespace Tql.Plugins.Jira.Categories;
 

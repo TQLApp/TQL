@@ -25,4 +25,8 @@
 		<ProjectReference Include="..\Tql.Abstractions\Tql.Abstractions.csproj" />
 	</ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="System.Security" />
+  </ItemGroup>
+
 </Project>

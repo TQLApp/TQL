@@ -2,7 +2,6 @@
 using Tql.Abstractions;
 using Tql.Plugins.Confluence.Data;
 using Tql.Plugins.Confluence.Services;
-using Tql.Plugins.Confluence.Support;
 using Tql.Utilities;
 
 namespace Tql.Plugins.Confluence.Categories;
@@ -41,27 +40,6 @@ internal class SpacesMatch : CachedMatch<ConfluenceData>, ISerializableMatch
         // Download the project avatars in the background.
 
         var spaces = data.GetConnection(_url).Spaces;
-
-        TaskUtils.RunBackground(async () =>
-        {
-            var client = _configurationManager.GetClient(_url);
-
-            foreach (var project in spaces)
-            {
-                try
-                {
-                    await _iconCacheManager.LoadIcon(client, project.Icon);
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogWarning(
-                        ex,
-                        "Failed to download project avatar '{Url}'",
-                        project.Icon
-                    );
-                }
-            }
-        });
 
         return from space in spaces
             select new SpaceMatch(

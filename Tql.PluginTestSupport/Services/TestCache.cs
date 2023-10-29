@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Text.Json;
 using Tql.Abstractions;
-using Tql.PluginTestSupport.Support;
+using Tql.Utilities;
 
 namespace Tql.PluginTestSupport.Services;
 
@@ -31,7 +31,7 @@ internal class TestCache<T> : ICache<T>
 
         return Path.Combine(
             "Cache",
-            Encryption.Hash(typeof(T).FullName!) + "-v" + _cacheManager.Version
+            Encryption.Sha1Hash(typeof(T).FullName!) + "-v" + _cacheManager.Version
         );
     }
 

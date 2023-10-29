@@ -4,6 +4,7 @@ using Dasync.Collections;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
+using Tql.Utilities;
 using Formatting = Newtonsoft.Json.Formatting;
 
 namespace Tql.Plugins.Azure.ResourcesConverter;
@@ -15,17 +16,21 @@ internal class Converter
         var assetTypes = ConvertResources();
         var icons = await ConvertRequireConfig();
 
-        using var stream = File.Create("..\\..\\..\\..\\Tql.Plugins.Azure\\Categories\\Resources.json.gz");
+        using var stream = File.Create(
+            "..\\..\\..\\..\\Tql.Plugins.Azure\\Categories\\Resources.json.gz"
+        );
         using var gzStream = new GZipStream(stream, CompressionLevel.Optimal);
         using var writer = new StreamWriter(gzStream);
         using var json = new JsonTextWriter(writer);
 
-        var serializer = JsonSerializer.Create(new JsonSerializerSettings
-        {
-            NullValueHandling = NullValueHandling.Ignore,
-            Formatting = Formatting.Indented,
-            ContractResolver = new CamelCasePropertyNamesContractResolver()
-        });
+        var serializer = JsonSerializer.Create(
+            new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                Formatting = Formatting.Indented,
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            }
+        );
 
         serializer.Serialize(json, new AssetCollection(assetTypes, icons));
     }
@@ -132,7 +137,7 @@ internal class Converter
         await assets.ParallelForEachAsync(
             async (asset) =>
             {
-                var hash = Encryption.Hash(asset);
+                var hash = Encryption.Sha1Hash(asset);
                 var cacheFileName = Path.Combine(cachePath, hash);
 
                 if (!File.Exists(cacheFileName))

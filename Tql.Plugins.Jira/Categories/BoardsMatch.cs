@@ -44,27 +44,6 @@ internal class BoardsMatch : CachedMatch<JiraData>, ISerializableMatch
 
         var boards = data.GetConnection(_url).Boards;
 
-        TaskUtils.RunBackground(async () =>
-        {
-            var client = _configurationManager.GetClient(_url);
-
-            foreach (var board in boards)
-            {
-                try
-                {
-                    await _iconCacheManager.LoadIcon(client, board.AvatarUrl);
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogWarning(
-                        ex,
-                        "Failed to download Board avatar '{Url}'",
-                        board.AvatarUrl
-                    );
-                }
-            }
-        });
-
         foreach (var matchType in EnumEx.GetValues<BoardMatchType>())
         {
             foreach (var board in boards)

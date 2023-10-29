@@ -35,7 +35,9 @@ internal class BoardQuickFilterMatch
         _cache = cache;
         _configurationManager = configurationManager;
 
-        Icon = iconCacheManager.GetIcon(dto.Board.AvatarUrl) ?? Images.Boards;
+        Icon =
+            iconCacheManager.GetIcon(new IconKey(dto.Board.Url, dto.Board.AvatarUrl))
+            ?? Images.Boards;
     }
 
     public async Task Run(IServiceProvider serviceProvider, Window owner)
@@ -86,7 +88,7 @@ internal class BoardQuickFilterMatch
             cancellationToken
         );
 
-        return await IssueUtils.CreateMatches(_dto.Board.Url, issues, client, _iconCacheManager);
+        return IssueUtils.CreateMatches(_dto.Board.Url, issues, _iconCacheManager);
     }
 }
 
