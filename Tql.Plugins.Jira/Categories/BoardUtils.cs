@@ -4,16 +4,13 @@ namespace Tql.Plugins.Jira.Categories;
 
 internal static class BoardUtils
 {
-    public static string GetUrl(JiraData cache, BoardMatchDto dto)
+    public static string GetUrl(BoardMatchDto dto)
     {
-        var project = cache
-            .GetConnection(dto.Url)
-            .Projects.Single(
-                p => string.Equals(p.Key, dto.ProjectKey, StringComparison.OrdinalIgnoreCase)
-            );
-
         var url = $"{dto.Url.TrimEnd('/')}/jira/{Uri.EscapeDataString(dto.ProjectTypeKey)}";
-        if (string.Equals(project.Style, "classic", StringComparison.OrdinalIgnoreCase))
+        if (
+            dto.ProjectType == BoardProjectType.ClassicKanban
+            || dto.ProjectType == BoardProjectType.ClassicScrum
+        )
             url += "/c";
         url += $"/projects/{Uri.EscapeDataString(dto.ProjectKey)}/boards/{dto.Id}";
 
@@ -28,5 +25,21 @@ internal static class BoardUtils
         }
 
         return url;
+    }
+
+    public static string GetLabel(BoardMatchDto dto)
+    {
+        if (dto.MatchType == BoardMatchType.Board)
+        {
+            switch (dto.ProjectType)
+            {
+                case BoardProjectType.ClassicKanban:
+                    return "Kanban board";
+                case BoardProjectType.ClassicScrum:
+                    return "Active sprints";
+            }
+        }
+
+        return dto.MatchType.ToString();
     }
 }

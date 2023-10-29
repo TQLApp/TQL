@@ -370,7 +370,8 @@ internal record JiraXBoardCurrentViewConfigDto(
     [property: JsonPropertyName("name")] string Name,
     [property: JsonPropertyName("quickFilters")]
         ImmutableArray<JiraXBoardQuickFilterDto> QuickFilters,
-    [property: JsonPropertyName("isIssueListBacklog")] bool IsIssueListBacklog
+    [property: JsonPropertyName("isIssueListBacklog")] bool IsIssueListBacklog,
+    [property: JsonPropertyName("sprintSupportEnabled")] bool SprintSupportEnabled
 );
 
 internal record JiraXBoardQuickFilterDto(

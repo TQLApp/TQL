@@ -33,6 +33,7 @@ internal record JiraBoard(
     string ProjectTypeKey,
     string AvatarUrl,
     bool IsIssueListBacklog,
+    bool IsSprintSupportEnabled,
     ImmutableArray<JiraQuickFilter> QuickFilters
 );
 

@@ -12,7 +12,7 @@ internal class BoardMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, 
     private readonly ICache<JiraData> _cache;
     private readonly ConfigurationManager _configurationManager;
 
-    public string Text => $"{_dto.Name}/{_dto.MatchType}";
+    public string Text => $"{_dto.Name}/{BoardUtils.GetLabel(_dto)}";
     public ImageSource Icon { get; }
     public MatchTypeId TypeId => TypeIds.Board;
 
@@ -31,9 +31,11 @@ internal class BoardMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, 
         Icon = iconCacheManager.GetIcon(new IconKey(dto.Url, dto.AvatarUrl)) ?? Images.Boards;
     }
 
-    public async Task Run(IServiceProvider serviceProvider, Window owner)
+    public Task Run(IServiceProvider serviceProvider, Window owner)
     {
-        serviceProvider.GetRequiredService<IUI>().OpenUrl(await GetUrl());
+        serviceProvider.GetRequiredService<IUI>().OpenUrl(BoardUtils.GetUrl(_dto));
+
+        return Task.CompletedTask;
     }
 
     public string Serialize()
@@ -41,16 +43,11 @@ internal class BoardMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, 
         return JsonSerializer.Serialize(_dto);
     }
 
-    public async Task Copy(IServiceProvider serviceProvider)
+    public Task Copy(IServiceProvider serviceProvider)
     {
-        serviceProvider.GetRequiredService<IClipboard>().CopyUri(Text, await GetUrl());
-    }
+        serviceProvider.GetRequiredService<IClipboard>().CopyUri(Text, BoardUtils.GetUrl(_dto));
 
-    private async Task<string> GetUrl()
-    {
-        var cache = await _cache.Get();
-
-        return BoardUtils.GetUrl(cache, _dto);
+        return Task.CompletedTask;
     }
 
     public async Task<IEnumerable<IMatch>> Search(
@@ -84,9 +81,17 @@ internal record BoardMatchDto(
     string Name,
     string ProjectKey,
     string ProjectTypeKey,
+    BoardProjectType ProjectType,
     string AvatarUrl,
     BoardMatchType MatchType
 );
+
+internal enum BoardProjectType
+{
+    TeamManaged,
+    ClassicScrum,
+    ClassicKanban
+}
 
 internal enum BoardMatchType
 {

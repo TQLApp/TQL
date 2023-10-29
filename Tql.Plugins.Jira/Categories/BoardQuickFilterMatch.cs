@@ -18,7 +18,7 @@ internal class BoardQuickFilterMatch
     private readonly ICache<JiraData> _cache;
     private readonly ConfigurationManager _configurationManager;
 
-    public string Text => $"{_dto.Board.Name}/{_dto.Board.MatchType}/{_dto.Name}";
+    public string Text => $"{_dto.Board.Name}/{BoardUtils.GetLabel(_dto.Board)}/{_dto.Name}";
     public ImageSource Icon { get; }
     public MatchTypeId TypeId => TypeIds.BoardQuickFilter;
     public string SearchHint => "Find issues";
@@ -40,9 +40,11 @@ internal class BoardQuickFilterMatch
             ?? Images.Boards;
     }
 
-    public async Task Run(IServiceProvider serviceProvider, Window owner)
+    public Task Run(IServiceProvider serviceProvider, Window owner)
     {
-        serviceProvider.GetRequiredService<IUI>().OpenUrl(await GetUrl());
+        serviceProvider.GetRequiredService<IUI>().OpenUrl(GetUrl());
+
+        return Task.CompletedTask;
     }
 
     public string Serialize()
@@ -50,18 +52,16 @@ internal class BoardQuickFilterMatch
         return JsonSerializer.Serialize(_dto);
     }
 
-    public async Task Copy(IServiceProvider serviceProvider)
+    public Task Copy(IServiceProvider serviceProvider)
     {
-        serviceProvider.GetRequiredService<IClipboard>().CopyUri(Text, await GetUrl());
+        serviceProvider.GetRequiredService<IClipboard>().CopyUri(Text, GetUrl());
+
+        return Task.CompletedTask;
     }
 
-    private async Task<string> GetUrl()
+    private string GetUrl()
     {
-        var cache = await _cache.Get();
-
-        var url = BoardUtils.GetUrl(cache, _dto.Board);
-
-        return $"{url}?quickFilter={_dto.Id}";
+        return $"{BoardUtils.GetUrl(_dto.Board)}?quickFilter={_dto.Id}";
     }
 
     public async Task<IEnumerable<IMatch>> Search(

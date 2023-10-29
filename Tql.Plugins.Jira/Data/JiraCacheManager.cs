@@ -75,6 +75,7 @@ internal class JiraCacheManager : ICacheManager<JiraData>
                     location.ProjectTypeKey,
                     location.AvatarUri,
                     boardConfig.CurrentViewConfig.IsIssueListBacklog,
+                    boardConfig.CurrentViewConfig.SprintSupportEnabled,
                     boardConfig.CurrentViewConfig.QuickFilters
                         .Select(p => new JiraQuickFilter(p.Id, p.Name, p.Query))
                         .ToImmutableArray()

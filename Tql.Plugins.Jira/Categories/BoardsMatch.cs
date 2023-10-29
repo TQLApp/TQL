@@ -40,9 +40,9 @@ internal class BoardsMatch : CachedMatch<JiraData>, ISerializableMatch
 
     protected override IEnumerable<IMatch> Create(JiraData data)
     {
-        // Download the Board avatars in the background.
+        var connection = data.GetConnection(_url);
 
-        var boards = data.GetConnection(_url).Boards;
+        var boards = connection.Boards;
 
         foreach (var matchType in EnumEx.GetValues<BoardMatchType>())
         {
@@ -51,6 +51,22 @@ internal class BoardsMatch : CachedMatch<JiraData>, ISerializableMatch
                 if (matchType == BoardMatchType.Backlog && !board.IsIssueListBacklog)
                     continue;
 
+                var project = connection.Projects.Single(
+                    p => string.Equals(p.Key, board.ProjectKey, StringComparison.OrdinalIgnoreCase)
+                );
+
+                BoardProjectType projectType;
+                if (string.Equals(project.Style, "classic", StringComparison.OrdinalIgnoreCase))
+                {
+                    projectType = board.IsSprintSupportEnabled
+                        ? BoardProjectType.ClassicScrum
+                        : BoardProjectType.ClassicKanban;
+                }
+                else
+                {
+                    projectType = BoardProjectType.TeamManaged;
+                }
+
                 yield return new BoardMatch(
                     new BoardMatchDto(
                         _url,
@@ -58,6 +74,7 @@ internal class BoardsMatch : CachedMatch<JiraData>, ISerializableMatch
                         board.Name,
                         board.ProjectKey,
                         board.ProjectTypeKey,
+                        projectType,
                         board.AvatarUrl,
                         matchType
                     ),
