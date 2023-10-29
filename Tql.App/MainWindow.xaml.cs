@@ -143,6 +143,9 @@ internal partial class MainWindow
         window.Owner = this;
         window.StartupPage = id;
         window.ShowDialog();
+
+        // The settings may have impacted the current search results.
+        _searchManager?.DoSearch();
     }
 
     private void OpenFeedback()
