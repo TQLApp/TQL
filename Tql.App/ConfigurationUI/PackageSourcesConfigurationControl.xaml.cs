@@ -35,6 +35,8 @@ internal partial class PackageSourcesConfigurationControl : IConfigurationPage
         UpdateEnabled();
     }
 
+    public void Initialize(IConfigurationPageContext context) { }
+
     private void UpdateEnabled()
     {
         _delete.IsEnabled = _sources.SelectedItem != null;

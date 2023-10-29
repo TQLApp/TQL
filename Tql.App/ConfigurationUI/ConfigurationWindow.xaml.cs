@@ -10,6 +10,7 @@ internal partial class ConfigurationWindow
     private readonly IServiceProvider _serviceProvider;
     private readonly IConfigurationManager _configurationManager;
     private readonly IPluginManager _pluginManager;
+    private Context? _currentContext;
 
     public Guid? StartupPage { get; set; }
 
@@ -58,11 +59,15 @@ internal partial class ConfigurationWindow
         {
             var isSelected = StartupPage == page.PageId;
 
+            var context = new Context(page);
+
+            page.Initialize(context);
+
             node.Items.Add(
                 new TreeViewItem
                 {
                     Header = page.Title,
-                    Tag = page,
+                    Tag = context,
                     IsSelected = isSelected
                 }
             );
@@ -85,32 +90,42 @@ internal partial class ConfigurationWindow
 
     private void _pages_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
     {
+        if (_currentContext != null)
+            _currentContext.IsVisible = false;
+
         var treeViewItem = (TreeViewItem?)e.NewValue;
         if (treeViewItem == null)
         {
+            _currentContext = null;
             _container.Content = null;
             return;
         }
 
-        var uiElement = (UIElement?)treeViewItem.Tag;
+        var context = (Context)treeViewItem.Tag;
 
-        if (uiElement == null && treeViewItem.Items.Count > 0)
+        if (context == null)
         {
-            treeViewItem.IsExpanded = true;
-            ((TreeViewItem)treeViewItem.Items[0]).IsSelected = true;
+            _container.Content = null;
+
+            if (treeViewItem.Items.Count > 0)
+            {
+                treeViewItem.IsExpanded = true;
+                ((TreeViewItem)treeViewItem.Items[0]).IsSelected = true;
+            }
         }
         else
         {
-            _container.Content = uiElement;
+            context.IsVisible = true;
 
-            if (uiElement is IConfigurationPage configurationPage)
-            {
-                _container.VerticalScrollBarVisibility =
-                    configurationPage.PageMode == ConfigurationPageMode.Scroll
-                        ? ScrollBarVisibility.Auto
-                        : ScrollBarVisibility.Disabled;
-            }
+            _container.Content = context.Page;
+
+            _container.VerticalScrollBarVisibility =
+                context.Page.PageMode == ConfigurationPageMode.Scroll
+                    ? ScrollBarVisibility.Auto
+                    : ScrollBarVisibility.Disabled;
         }
+
+        _currentContext = context;
     }
 
     private async void _acceptButton_Click(object sender, RoutedEventArgs e)
@@ -119,10 +134,10 @@ internal partial class ConfigurationWindow
         {
             foreach (var page in GetAllTreeViewItems(_pages.Items))
             {
-                if (page.Tag is not IConfigurationPage configurationPage)
+                if (page.Tag is not Context context)
                     continue;
 
-                var task = configurationPage.Save();
+                var task = context.Page.Save();
 
                 // Only disable the window if any of the save operations
                 // actually start an asynchronous task.
@@ -154,5 +169,49 @@ internal partial class ConfigurationWindow
                 yield return child;
             }
         }
+    }
+
+    private void Window_Closed(object sender, EventArgs e)
+    {
+        foreach (var treeViewItem in GetAllTreeViewItems(_pages.Items))
+        {
+            if (treeViewItem.Tag is Context context)
+                context.RaiseClosed();
+        }
+    }
+
+    private class Context : IConfigurationPageContext
+    {
+        private bool _isVisible;
+
+        public IConfigurationPage Page { get; }
+
+        public bool IsVisible
+        {
+            get => _isVisible;
+            set
+            {
+                if (_isVisible != value)
+                {
+                    _isVisible = value;
+                    OnIsVisibleChanged();
+                }
+            }
+        }
+
+        public event EventHandler? IsVisibleChanged;
+        public event EventHandler? Closed;
+
+        public Context(IConfigurationPage page)
+        {
+            Page = page;
+        }
+
+        public void RaiseClosed() => OnClosed();
+
+        protected virtual void OnIsVisibleChanged() =>
+            IsVisibleChanged?.Invoke(this, EventArgs.Empty);
+
+        protected virtual void OnClosed() => Closed?.Invoke(this, EventArgs.Empty);
     }
 }

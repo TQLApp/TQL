@@ -37,6 +37,8 @@ internal partial class ConfigurationControl : IConfigurationPage
         UpdateEnabled();
     }
 
+    public void Initialize(IConfigurationPageContext context) { }
+
     private void UpdateEnabled()
     {
         _delete.IsEnabled = _connections.SelectedItem != null;

@@ -71,7 +71,9 @@ public partial class App
 
         _host = builder.Build();
 
-        SetTheme(_host.Services.GetRequiredService<Settings>());
+        ThemeManager.SetTheme(
+            ThemeManager.ParseTheme(_host.Services.GetRequiredService<Settings>().Theme)
+        );
 
         var logger = _host.Services.GetRequiredService<ILogger<App>>();
 
@@ -161,18 +163,6 @@ public partial class App
         };
 
         return (loggerFactory, inMemoryLoggerProvider);
-    }
-
-    private void SetTheme(Settings settings)
-    {
-        DoSetTheme();
-
-        settings.AttachPropertyChanged(nameof(settings.Theme), (_, _) => DoSetTheme());
-
-        void DoSetTheme()
-        {
-            ThemeManager.SetTheme(ThemeManager.ParseTheme(settings.Theme));
-        }
     }
 
     private bool TryStartUpdate(ILogger<App> logger)

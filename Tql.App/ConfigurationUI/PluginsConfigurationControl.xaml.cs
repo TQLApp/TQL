@@ -33,6 +33,15 @@ internal partial class PluginsConfigurationControl : IConfigurationPage
         SetSelectedTab(Tab.Browse);
     }
 
+    public void Initialize(IConfigurationPageContext context)
+    {
+        context.IsVisibleChanged += (_, _) =>
+        {
+            if (context.IsVisible)
+                _ = ReloadPackages();
+        };
+    }
+
     private void SetSelectedTab(Tab tab)
     {
         _browseTab.IsChecked = tab == Tab.Browse;
@@ -50,11 +59,6 @@ internal partial class PluginsConfigurationControl : IConfigurationPage
 
     private void _installedTab_Checked(object sender, RoutedEventArgs e) =>
         SetSelectedTab(Tab.Installed);
-
-    private async void UserControl_Loaded(object sender, RoutedEventArgs e)
-    {
-        await ReloadPackages();
-    }
 
     private async Task ReloadPackages()
     {

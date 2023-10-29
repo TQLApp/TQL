@@ -37,6 +37,8 @@ internal partial class ConfigurationControl : IConfigurationPage
         UpdateEnabled();
     }
 
+    public void Initialize(IConfigurationPageContext context) { }
+
     private void UpdateEnabled()
     {
         _directories.IsEnabled = _selectedDirectories.IsChecked.GetValueOrDefault();

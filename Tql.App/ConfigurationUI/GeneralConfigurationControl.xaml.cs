@@ -14,6 +14,7 @@ internal partial class GeneralConfigurationControl : IConfigurationPage
     private readonly ShowOnScreenManager _showOnScreenManager;
     private readonly bool? _loadedEnableMetricsTelemetry;
     private readonly bool? _loadedEnableExceptionTelemetry;
+    private bool _requireRestart;
 
     public Guid PageId => Guid.Parse("df92b623-a629-465a-bddf-8f36ef6d4fdd");
     public string Title => "General";
@@ -84,6 +85,25 @@ internal partial class GeneralConfigurationControl : IConfigurationPage
             _resetTrackErrors,
             () => _trackErrors.IsChecked = Settings.DefaultEnableExceptionTelemetry
         );
+    }
+
+    public void Initialize(IConfigurationPageContext context)
+    {
+        context.Closed += (_, _) =>
+        {
+            if (_requireRestart)
+            {
+                _ui.ShowConfirmation(
+                    this,
+                    "Restart required",
+                    "You've changed settings that require a restart of the application.",
+                    DialogCommonButtons.OK,
+                    DialogIcon.Information
+                );
+
+                ((UI)_ui).Shutdown(RestartMode.Restart);
+            }
+        };
     }
 
     private void ConfigureResetButton(Image image, Action action)
@@ -175,7 +195,12 @@ internal partial class GeneralConfigurationControl : IConfigurationPage
         _settings.MainWindowTint = mainWindowTint;
 
         var theme = (Theme)_theme.SelectedValue;
-        _settings.Theme = theme == Theme.System ? null : theme.ToString();
+        var newTheme = theme == Theme.System ? null : theme.ToString();
+        if (_settings.Theme != newTheme)
+        {
+            _settings.Theme = newTheme;
+            _requireRestart = true;
+        }
 
         if (_trackMetrics.IsChecked != _loadedEnableMetricsTelemetry)
             _settings.EnableMetricsTelemetry = _trackMetrics.IsChecked;
