@@ -1,5 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System.Collections;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Windows.Media.Effects;
 using Tql.Abstractions;
 using Tql.App.Search;
 using Tql.App.Services;
@@ -65,6 +69,8 @@ internal partial class MainWindow
 
         InitializeComponent();
 
+        ApplyTextOuterGlow();
+
         _runImage.Source = Images.Run;
         _categoryImage.Source = Images.Category;
 
@@ -107,6 +113,25 @@ internal partial class MainWindow
         hotKeyService.Pressed += (_, _) => DoShow();
 
         RenderHotKey();
+    }
+
+    private void ApplyTextOuterGlow()
+    {
+        ApplySetting();
+
+        _settings.AttachPropertyChanged(
+            nameof(_settings.TextOuterGlowSize),
+            (_, _) => ApplySetting()
+        );
+
+        void ApplySetting()
+        {
+            var textOuterGlowSize =
+                _settings.TextOuterGlowSize ?? Settings.DefaultTextOuterGlowSize;
+
+            Resources.Remove("TextOuterGlowBlurRadius");
+            Resources.Add("TextOuterGlowBlurRadius", (double)textOuterGlowSize);
+        }
     }
 
     private void RenderHotKey()

@@ -20,6 +20,8 @@ internal class Settings : INotifyPropertyChanged
     // easily include e.g. user names in paths.
     public const bool DefaultEnableExceptionTelemetry = false;
 
+    public const int DefaultTextOuterGlowSize = 3;
+
     private readonly RegistryKey _key;
 
     public string? HotKey
@@ -86,6 +88,12 @@ internal class Settings : INotifyPropertyChanged
     {
         get => GetBoolean(nameof(EnableExceptionTelemetry));
         set => SetBoolean(nameof(EnableExceptionTelemetry), value);
+    }
+
+    public int? TextOuterGlowSize
+    {
+        get => GetInteger(nameof(TextOuterGlowSize));
+        set => SetInteger(nameof(TextOuterGlowSize), value);
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;

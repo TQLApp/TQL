@@ -70,6 +70,12 @@ internal partial class GeneralConfigurationControl : IConfigurationPage
             () => _theme.SelectedValue = ThemeManager.ParseTheme(null)
         );
 
+        _outerGlow.Value = _settings.TextOuterGlowSize ?? Settings.DefaultTextOuterGlowSize;
+        ConfigureResetButton(
+            _resetOuterGlow,
+            () => _outerGlow.Value = Settings.DefaultTextOuterGlowSize
+        );
+
         _loadedEnableMetricsTelemetry =
             settings.EnableMetricsTelemetry ?? Settings.DefaultEnableMetricsTelemetry;
         _trackMetrics.IsChecked = _loadedEnableMetricsTelemetry;
@@ -201,6 +207,8 @@ internal partial class GeneralConfigurationControl : IConfigurationPage
             _settings.Theme = newTheme;
             _requireRestart = true;
         }
+
+        _settings.TextOuterGlowSize = (int)_outerGlow.Value;
 
         if (_trackMetrics.IsChecked != _loadedEnableMetricsTelemetry)
             _settings.EnableMetricsTelemetry = _trackMetrics.IsChecked;

@@ -25,7 +25,7 @@
             <Setter Property="Effect">
                 <Setter.Value>
                     <DropShadowEffect ShadowDepth="0" 
-                                      BlurRadius="3" 
+                                      BlurRadius="{DynamicResource TextOuterGlowBlurRadius}" 
                                       Color="#666666" 
                                       Opacity="0.5"/>
                 </Setter.Value>
@@ -39,9 +39,9 @@
             <Setter Property="Effect">
                 <Setter.Value>
                     <DropShadowEffect ShadowDepth="0" 
-                                      BlurRadius="3" 
+                                      BlurRadius="{DynamicResource TextOuterGlowBlurRadius}" 
                                       Color="#666666" 
-                                      Opacity="1"/>
+                                      Opacity="0.5"/>
                 </Setter.Value>
             </Setter>
         </Style>

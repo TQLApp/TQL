@@ -32,6 +32,8 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -202,6 +204,26 @@
                            Grid.Column="1"
                            Grid.Row="10">
                     Changing the theme requires you to restart the application.
+                </TextBlock>
+
+                <Label Content="Outer glow:"
+                       Grid.Row="11" />
+                <Slider x:Name="_outerGlow"
+                        Margin="3"
+                        Minimum="0"
+                        Maximum="10"
+                        Grid.Row="11"
+                        Grid.Column="1" SmallChange="1" />
+                <Image x:Name="_resetOuterGlow"
+                       Grid.Row="11"
+                       Grid.Column="2"
+                       Margin="3"/>
+                <TextBlock Margin="3"
+                           TextWrapping="Wrap"
+                           Grid.Column="1"
+                           Grid.Row="12">
+                    Applies an outer glow to the text and images on the search window.
+                    This can increase readability.
                 </TextBlock>
             </Grid>
         </GroupBox>
