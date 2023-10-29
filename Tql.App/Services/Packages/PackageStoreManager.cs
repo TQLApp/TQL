@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
 using Tql.Abstractions;
 using Path = System.IO.Path;
@@ -12,14 +13,16 @@ internal class PackageStoreManager
     private static readonly string[] AssemblyExtensions = { ".dll", ".exe" };
 
     private readonly Store _store;
+    private readonly ILogger<PackageStoreManager> _logger;
     private readonly object _syncRoot = new();
     private readonly List<string> _packageFolders = new();
 
     public string PackagesFolder { get; }
 
-    public PackageStoreManager(Store store)
+    public PackageStoreManager(Store store, ILogger<PackageStoreManager> logger)
     {
         _store = store;
+        _logger = logger;
 
         PackagesFolder = Path.Combine(store.DataFolder, "Packages");
 
@@ -30,6 +33,8 @@ internal class PackageStoreManager
 
     private Assembly? CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
     {
+        _logger.LogDebug("Attempting to resolve '{AssemblyName}'", args.Name);
+
         var assemblyName = args.Name.Split(',').First().Trim();
 
         lock (_syncRoot)
@@ -40,7 +45,14 @@ internal class PackageStoreManager
                 {
                     var fileName = Path.Combine(packageFolder, assemblyName + extension);
                     if (File.Exists(fileName))
+                    {
+                        _logger.LogDebug(
+                            "Resolved to package folder '{PackageFolder}'",
+                            packageFolder
+                        );
+
                         return Assembly.LoadFile(fileName);
+                    }
                 }
             }
         }
@@ -85,6 +97,11 @@ internal class PackageStoreManager
 
         foreach (var package in actual.Where(p => !expected.Contains(p)))
         {
+            _logger.LogInformation(
+                "Deleting unused package folder for package '{Package}'",
+                package
+            );
+
             Directory.Delete(Path.Combine(PackagesFolder, package), true);
         }
     }
@@ -95,6 +112,8 @@ internal class PackageStoreManager
 
         foreach (var packageRef in GetInstalledPackages())
         {
+            _logger.LogInformation("Loading package '{Package}'", packageRef);
+
             try
             {
                 var packageFolder = Path.Combine(PackagesFolder, packageRef.ToString());
@@ -123,14 +142,14 @@ internal class PackageStoreManager
                         );
                     }
 
+                    _logger.LogInformation("Discovered plugin type '{Type}'", type);
+
                     plugins.Add((ITqlPlugin)Activator.CreateInstance(type)!);
                 }
             }
             catch (Exception ex)
             {
-                Trace.TraceError($"Failed to load plugin '{packageRef}'");
-                Trace.TraceError(ex.Message);
-                Trace.TraceError(ex.StackTrace);
+                _logger.LogError(ex, "Failed to load plugin '{Package}'", packageRef);
             }
         }
 

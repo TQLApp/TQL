@@ -42,7 +42,12 @@ public partial class App
         System.Windows.Forms.Application.EnableVisualStyles();
 
         var store = new Store();
-        var packageStoreManager = new PackageStoreManager(store);
+        var (loggerFactory, inMemoryLoggerProvider) = SetupLogging(store);
+
+        var packageStoreManager = new PackageStoreManager(
+            store,
+            loggerFactory.CreateLogger<PackageStoreManager>()
+        );
 
         packageStoreManager.PerformCleanup();
 
@@ -54,30 +59,10 @@ public partial class App
 
         var builder = Host.CreateApplicationBuilder(e.Args);
 
-        var logDirectory = Path.Combine(store.DataFolder, "Log");
-        Directory.CreateDirectory(logDirectory);
+        builder.Services.AddSingleton(loggerFactory);
+        builder.Services.AddSingleton(inMemoryLoggerProvider);
 
-        builder.Logging.AddFile(
-            Path.Combine(logDirectory, "Log.log"),
-            options =>
-            {
-                options.FileSizeLimitBytes = 1 * 1024 * 1024;
-                options.MaxRollingFiles = 5;
-                options.Append = true;
-            }
-        );
-
-        var inMemoryLoggerProvider = new InMemoryLoggerProvider();
-
-        builder.Logging.AddProvider(inMemoryLoggerProvider);
-
-        ConfigureServices(
-            builder.Services,
-            store,
-            packageStoreManager,
-            plugins,
-            inMemoryLoggerProvider
-        );
+        ConfigureServices(builder.Services, store, packageStoreManager, plugins);
 
         foreach (var plugin in plugins)
         {
@@ -116,6 +101,61 @@ public partial class App
 
         if (!e.Args.Contains("/silent"))
             _mainWindow.DoShow();
+    }
+
+    private (ILoggerFactory, InMemoryLoggerProvider) SetupLogging(Store store)
+    {
+        var logDirectory = Path.Combine(store.DataFolder, "Log");
+        Directory.CreateDirectory(logDirectory);
+
+        var inMemoryLoggerProvider = new InMemoryLoggerProvider();
+
+        var loggerFactory = LoggerFactory.Create(builder =>
+        {
+            builder.AddConsole();
+
+            if (IsDebugMode)
+                builder.AddDebug();
+
+            builder.AddFile(
+                Path.Combine(logDirectory, "Log.log"),
+                options =>
+                {
+                    options.FileSizeLimitBytes = 1 * 1024 * 1024;
+                    options.MaxRollingFiles = 5;
+                    options.Append = true;
+                }
+            );
+
+            builder.AddProvider(inMemoryLoggerProvider);
+        });
+
+        var logger = loggerFactory.CreateLogger<App>();
+
+        logger.LogInformation("Starting application");
+
+        AppDomain.CurrentDomain.UnhandledException += (_, e) =>
+        {
+            logger.LogCritical((Exception)e.ExceptionObject, "Unhandled AppDomain exception");
+        };
+
+        DispatcherUnhandledException += (_, e) =>
+        {
+            logger.LogCritical(e.Exception, "Unhandled dispatcher exception");
+
+            if (!IsDebugMode)
+                e.Handled = true;
+        };
+
+        TaskScheduler.UnobservedTaskException += (_, e) =>
+        {
+            logger.LogCritical(e.Exception, "Unobserved task exception");
+
+            if (!IsDebugMode)
+                e.SetObserved();
+        };
+
+        return (loggerFactory, inMemoryLoggerProvider);
     }
 
     private void SetTheme(Settings settings)
@@ -174,8 +214,7 @@ public partial class App
         IServiceCollection builder,
         Store store,
         PackageStoreManager packageStoreManager,
-        ImmutableArray<ITqlPlugin> plugins,
-        InMemoryLoggerProvider inMemoryLoggerProvider
+        ImmutableArray<ITqlPlugin> plugins
     )
     {
         builder.AddSingleton<IStore>(store);
@@ -193,7 +232,6 @@ public partial class App
         builder.AddSingleton<IPluginManager>(new PluginManager(plugins));
         builder.AddSingleton<PackageManager>();
         builder.AddSingleton(packageStoreManager);
-        builder.AddSingleton(inMemoryLoggerProvider);
 
         builder.Add(ServiceDescriptor.Singleton(typeof(ICache<>), typeof(Cache<>)));
 

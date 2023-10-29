@@ -4,6 +4,7 @@ using System.Diagnostics;
 using Microsoft.ApplicationInsights.DataContracts;
 using Tql.App.Support;
 using JetBrains.Annotations;
+using Microsoft.ApplicationInsights.Extensibility.Implementation;
 
 namespace Tql.App.Services.Telemetry;
 
@@ -23,6 +24,8 @@ internal class TelemetryService : IDisposable
         var deviceId = (settings.DeviceId ??= Guid.NewGuid().ToString());
 
         LoadSettings(settings);
+
+        TelemetryDebugWriter.IsTracingDisabled = true;
 
         _configuration = TelemetryConfiguration.CreateDefault();
         _configuration.TelemetryProcessorChainBuilder.Use(next => new PIITelemetryProcessor(next));
