@@ -368,16 +368,23 @@ internal class SearchManager : IDisposable
                 return ImmutableArray<SearchResult>.Empty;
             }
 
-            // Regardless of how the plugin has ordered the search
-            // results, we want the favorited items to appear at the top.
+            // Sort pinned above the rest always. If the match didn't call the
+            // Filter method, sort favorites above everything else. Otherwise
+            // trust the penalty algorithm to do the right thing.
 
-            var ordered = ImmutableArray.CreateBuilder<SearchResult>();
+            var ordered = new BucketSorter<SearchResult>(3);
 
-            ordered.AddRange(result.Where(p => p.IsPinned));
-            ordered.AddRange(result.Where(p => !p.IsPinned && p.HistoryId.HasValue));
-            ordered.AddRange(result.Where(p => !(p.IsPinned || p.HistoryId.HasValue)));
+            foreach (var item in result)
+            {
+                if (item.IsPinned)
+                    ordered.Add(item, 0);
+                else if (!context.IsFiltered && item.HistoryId.HasValue)
+                    ordered.Add(item, 1);
+                else
+                    ordered.Add(item, 2);
+            }
 
-            return ordered.ToImmutable();
+            return ordered.ToImmutableArray();
         }
         finally
         {
@@ -420,7 +427,7 @@ internal class SearchManager : IDisposable
             .Select(p => p.Match);
 
         if (!context.Search.IsEmpty())
-            items = context.Filter(items);
+            items = context.Filter(items, internalCall: true);
 
         return items.Select(context.GetSearchResult).ToImmutableArray();
     }

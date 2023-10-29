@@ -21,6 +21,7 @@ internal class SearchContext : ISearchContext, IDisposable
     public string SimplifiedSearch { get; }
     public CancellationToken CancellationToken => _cts.Token;
     public bool IsPreliminaryResultsSuppressed { get; private set; }
+    public bool IsFiltered { get; private set; }
 
     public SearchContext(
         IServiceProvider serviceProvider,
@@ -56,8 +57,13 @@ internal class SearchContext : ISearchContext, IDisposable
     public Task DebounceDelay(CancellationToken cancellationToken) =>
         Task.Delay(TimeSpan.FromMilliseconds(200), cancellationToken);
 
-    public IEnumerable<IMatch> Filter(IEnumerable<IMatch> matches)
+    public IEnumerable<IMatch> Filter(IEnumerable<IMatch> matches) => Filter(matches, false);
+
+    public IEnumerable<IMatch> Filter(IEnumerable<IMatch> matches, bool internalCall)
     {
+        if (!internalCall)
+            IsFiltered = true;
+
         var results = new List<SearchResult>();
 
         Parallel.ForEach(
