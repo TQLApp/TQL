@@ -112,10 +112,11 @@ public partial class App
 
         var loggerFactory = LoggerFactory.Create(builder =>
         {
-            builder.AddConsole();
-
             if (IsDebugMode)
+            {
+                builder.AddConsole();
                 builder.AddDebug();
+            }
 
             builder.AddFile(
                 Path.Combine(logDirectory, "Log.log"),
@@ -128,6 +129,10 @@ public partial class App
             );
 
             builder.AddProvider(inMemoryLoggerProvider);
+
+#if DEBUG
+            builder.SetMinimumLevel(LogLevel.Debug);
+#endif
         });
 
         var logger = loggerFactory.CreateLogger<App>();
