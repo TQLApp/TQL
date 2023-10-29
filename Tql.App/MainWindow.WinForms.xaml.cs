@@ -2,6 +2,7 @@
 using Tql.App.Services;
 using Tql.App.Support;
 using Application = System.Windows.Application;
+using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
 
 namespace Tql.App;
 
@@ -42,7 +43,11 @@ partial class MainWindow
         notifyIcon.ContextMenu.MenuItems.Add("-");
         notifyIcon.ContextMenu.MenuItems.Add("E&xit", (_, _) => Close());
 
-        notifyIcon.Click += (_, e) => DoShow();
+        notifyIcon.Click += (_, e) =>
+        {
+            if (e is MouseEventArgs { Button: MouseButtons.Left })
+                DoShow();
+        };
 
         return notifyIcon;
 
