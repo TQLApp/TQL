@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using SharpVectors.Scripting;
 using Tql.Abstractions;
 using Tql.Plugins.Jira.Data;
 using Tql.Plugins.Jira.Services;
@@ -51,9 +52,17 @@ internal class BoardsMatch : CachedMatch<JiraData>, ISerializableMatch
                 if (matchType == BoardMatchType.Backlog && !board.IsIssueListBacklog)
                     continue;
 
-                var project = connection.Projects.Single(
+                var project = connection.Projects.SingleOrDefault(
                     p => string.Equals(p.Key, board.ProjectKey, StringComparison.OrdinalIgnoreCase)
                 );
+                if (project == null)
+                {
+                    _logger.LogWarning(
+                        "No project found with key '{ProjectKey}'",
+                        board.ProjectKey
+                    );
+                    continue;
+                }
 
                 BoardProjectType projectType;
                 if (string.Equals(project.Style, "classic", StringComparison.OrdinalIgnoreCase))
