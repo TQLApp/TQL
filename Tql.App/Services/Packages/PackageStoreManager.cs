@@ -3,7 +3,6 @@ using System.Reflection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
 using Tql.Abstractions;
-using Tql.App.Support;
 using Path = System.IO.Path;
 
 namespace Tql.App.Services.Packages;

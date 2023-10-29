@@ -1,6 +1,4 @@
-﻿using Tql.Plugins.Jira.Data;
-
-namespace Tql.Plugins.Jira.Categories;
+﻿namespace Tql.Plugins.Jira.Categories;
 
 internal static class BoardUtils
 {

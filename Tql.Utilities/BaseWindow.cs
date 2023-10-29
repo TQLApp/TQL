@@ -1,6 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using System.Windows.Interop;
 using System.Windows.Media;
+using Color = System.Windows.Media.Color;
 
 namespace Tql.Utilities;
 
@@ -19,10 +20,28 @@ public class BaseWindow : Window
     {
         base.OnSourceInitialized(e);
 
-        var interop = new WindowInteropHelper(this);
+        var isBackgroundLight = true;
+        if (Background is SolidColorBrush brush)
+            isBackgroundLight = IsColorLight(brush.Color);
 
-        var value = 1;
-        DwmSetWindowAttribute(interop.Handle, DWMWA_NCRENDERING_POLICY, ref value, sizeof(int));
+        if (!isBackgroundLight)
+        {
+            var interop = new WindowInteropHelper(this);
+
+            var value = 1;
+            DwmSetWindowAttribute(
+                interop.Handle,
+                DWMWA_USE_IMMERSIVE_DARK_MODE,
+                ref value,
+                sizeof(int)
+            );
+        }
+    }
+
+    // Taken from https://learn.microsoft.com/en-us/windows/apps/desktop/modernize/apply-windows-themes.
+    private static bool IsColorLight(Color clr)
+    {
+        return (((5 * clr.G) + (2 * clr.R) + clr.B) > (8 * 128));
     }
 
     [DllImport("dwmapi.dll")]
@@ -33,5 +52,5 @@ public class BaseWindow : Window
         int attrSize
     );
 
-    private const uint DWMWA_NCRENDERING_POLICY = 20;
+    private const uint DWMWA_USE_IMMERSIVE_DARK_MODE = 20;
 }
