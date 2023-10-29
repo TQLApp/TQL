@@ -12,7 +12,9 @@ internal class ConfigurationDto
         var result = new ConfigurationDto();
 
         result.Connections.AddRange(
-            configuration.Connections.Select(p => new ConnectionDto(p.Id) { Name = p.Name })
+            configuration.Connections.Select(
+                p => new ConnectionDto(p.Id) { Name = p.Name, TenantId = p.TenantId }
+            )
         );
 
         return result;
@@ -21,7 +23,7 @@ internal class ConfigurationDto
     public Configuration ToConfiguration()
     {
         return new Configuration(
-            Connections.Select(p => new Connection(p.Id, p.Name!)).ToImmutableArray()
+            Connections.Select(p => new Connection(p.Id, p.Name!, p.TenantId!)).ToImmutableArray()
         );
     }
 }
@@ -30,6 +32,7 @@ internal class ConnectionDto
 {
     public Guid Id { get; }
     public string? Name { get; set; }
+    public string? TenantId { get; set; }
 
     public ConnectionDto(Guid id)
     {
@@ -38,6 +41,6 @@ internal class ConnectionDto
 
     public bool GetIsValid()
     {
-        return !string.IsNullOrWhiteSpace(Name);
+        return !string.IsNullOrWhiteSpace(Name) && !string.IsNullOrWhiteSpace(TenantId);
     }
 }

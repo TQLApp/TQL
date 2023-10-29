@@ -34,7 +34,8 @@ internal partial class ConfigurationControl : IConfigurationPage
         _update.IsEnabled = CreateConnectionDto().GetIsValid();
     }
 
-    private ConnectionDto CreateConnectionDto() => new(_id ?? Guid.NewGuid()) { Name = _name.Text };
+    private ConnectionDto CreateConnectionDto() =>
+        new(_id ?? Guid.NewGuid()) { Name = _name.Text, TenantId = _tenantId.Text };
 
     public Task<SaveStatus> Save()
     {
@@ -73,6 +74,7 @@ internal partial class ConfigurationControl : IConfigurationPage
     private void ClearEdit()
     {
         _name.Text = null;
+        _tenantId.Text = null;
         _id = null;
     }
 
@@ -83,6 +85,7 @@ internal partial class ConfigurationControl : IConfigurationPage
         if (connectionDto != null)
         {
             _name.Text = connectionDto.Name;
+            _tenantId.Text = connectionDto.TenantId;
             _id = connectionDto.Id;
         }
 
@@ -90,4 +93,6 @@ internal partial class ConfigurationControl : IConfigurationPage
     }
 
     private void _name_TextChanged(object sender, TextChangedEventArgs e) => UpdateEnabled();
+
+    private void _tenantId_TextChanged(object sender, TextChangedEventArgs e) => UpdateEnabled();
 }

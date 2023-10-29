@@ -17,4 +17,4 @@ internal record Configuration(ImmutableArray<Connection> Connections)
     public bool HasConnection(Guid id) => Connections.Any(p => p.Id == id);
 }
 
-internal record Connection(Guid Id, string Name);
+internal record Connection(Guid Id, string Name, string TenantId);

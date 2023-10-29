@@ -76,12 +76,16 @@ internal class AzureApi
         var credential = new ChainedTokenCredential(
             new SharedTokenCacheCredential(
                 new SharedTokenCacheCredentialOptions(tokenCachePersistenceOptions)
+                {
+                    TenantId = connection.TenantId
+                }
             ),
             new UICredential(
                 new InteractiveBrowserCredential(
                     new InteractiveBrowserCredentialOptions
                     {
                         TokenCachePersistenceOptions = tokenCachePersistenceOptions,
+                        TenantId = connection.TenantId
                     }
                 ),
                 _ui,
