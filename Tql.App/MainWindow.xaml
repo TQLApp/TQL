@@ -42,6 +42,7 @@
 
                 <Border x:Name="_stack"
                     Margin="0,8,3,8"
+                    Padding="10,5"
                     CornerRadius="4"
                     BorderThickness="1"
                     MaxWidth="300"
@@ -49,7 +50,6 @@
                     Background="#40ffffff">
                     <StackPanel x:Name="_stackContainer"
                             Orientation="Horizontal"
-                            Margin="10,5"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Right"/>
                 </Border>

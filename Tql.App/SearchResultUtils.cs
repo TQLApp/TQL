@@ -36,7 +36,8 @@ internal static class SearchResultUtils
         TextMatch? textMatch,
         bool isFuzzyMatch,
         double? fontSize = null,
-        bool wrapTextInMarquee = false
+        bool wrapTextInMarquee = false,
+        double? maxWidth = null
     )
     {
         var icon = new Image
@@ -84,11 +85,21 @@ internal static class SearchResultUtils
 
         if (offset < text.Length)
         {
-            var part = text.Substring(offset);
-            textBlock.Inlines.Add(new Run(part));
+            if (offset == 0)
+            {
+                textBlock.Text = text;
+            }
+            else
+            {
+                var part = text.Substring(offset);
+                textBlock.Inlines.Add(new Run(part));
+            }
         }
 
         var grid = new Grid();
+
+        if (maxWidth.HasValue)
+            grid.MaxWidth = maxWidth.Value;
 
         grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
         grid.ColumnDefinitions.Add(
@@ -97,9 +108,21 @@ internal static class SearchResultUtils
 
         grid.Children.Add(icon);
 
+        var textBlockWrapper = (UIElement)textBlock;
+
+        if (maxWidth.HasValue)
+        {
+            textBlock.TextTrimming = TextTrimming.CharacterEllipsis;
+            textBlockWrapper = new TextBlockTrimmer
+            {
+                EllipsisPosition = EllipsisPosition.Start,
+                Content = textBlock
+            };
+        }
+
         if (wrapTextInMarquee)
         {
-            var marquee = new MarqueeControl { Content = textBlock };
+            var marquee = new MarqueeControl { Content = textBlockWrapper };
 
             grid.Children.Add(marquee);
 
@@ -107,9 +130,9 @@ internal static class SearchResultUtils
         }
         else
         {
-            grid.Children.Add(textBlock);
+            grid.Children.Add(textBlockWrapper);
 
-            Grid.SetColumn(textBlock, 1);
+            Grid.SetColumn(textBlockWrapper, 1);
         }
 
         return grid;

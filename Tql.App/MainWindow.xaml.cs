@@ -212,6 +212,10 @@ internal partial class MainWindow
         if (IsVisible)
         {
             _searchManager?.DoSearch();
+
+            Activate();
+
+            _search.Focus();
             return;
         }
 
@@ -345,7 +349,19 @@ internal partial class MainWindow
                 }
 
                 _stackContainer.Children.Add(
-                    SearchResultUtils.RenderMatch(match, null, false, _search.FontSize)
+                    SearchResultUtils.RenderMatch(
+                        match,
+                        null,
+                        false,
+                        _search.FontSize,
+                        maxWidth: _stack.MaxWidth
+                            - (
+                                _stack.Padding.Left
+                                + _stack.Padding.Right
+                                + _stack.BorderThickness.Left
+                                + _stack.BorderThickness.Right
+                            )
+                    )
                 );
             }
 
