@@ -7,7 +7,7 @@ internal class DashboardMatch : IRunnableMatch, ISerializableMatch, ICopyableMat
 {
     private readonly DashboardMatchDto _dto;
 
-    public string Text => $"{_dto.ProjectName}/{_dto.DashboardName} Dashboard";
+    public string Text => $"{_dto.ProjectName} › {_dto.DashboardName} Dashboard";
     public ImageSource Icon => Images.Dashboards;
     public MatchTypeId TypeId => TypeIds.Dashboard;
 

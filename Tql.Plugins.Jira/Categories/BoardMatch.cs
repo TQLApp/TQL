@@ -12,7 +12,7 @@ internal class BoardMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, 
     private readonly ICache<JiraData> _cache;
     private readonly ConfigurationManager _configurationManager;
 
-    public string Text => $"{_dto.Name}/{BoardUtils.GetLabel(_dto)}";
+    public string Text => $"{_dto.Name} › {BoardUtils.GetLabel(_dto)}";
     public ImageSource Icon { get; }
     public MatchTypeId TypeId => TypeIds.Board;
 

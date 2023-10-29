@@ -7,7 +7,7 @@ internal class BacklogMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
 {
     private readonly BacklogMatchDto _dto;
 
-    public string Text => $"{_dto.ProjectName}/{_dto.TeamName} {_dto.BacklogName} Backlog";
+    public string Text => $"{_dto.ProjectName} › {_dto.TeamName} {_dto.BacklogName} Backlog";
     public ImageSource Icon => Images.Boards;
     public MatchTypeId TypeId => TypeIds.Backlog;
 

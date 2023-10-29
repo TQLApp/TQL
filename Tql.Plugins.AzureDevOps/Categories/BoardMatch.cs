@@ -7,7 +7,7 @@ internal class BoardMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
 {
     private readonly BoardMatchDto _dto;
 
-    public string Text => $"{_dto.ProjectName}/{_dto.TeamName} {_dto.BoardName} Board";
+    public string Text => $"{_dto.ProjectName} › {_dto.TeamName} {_dto.BoardName} Board";
     public ImageSource Icon => Images.Boards;
     public MatchTypeId TypeId => TypeIds.Board;
 

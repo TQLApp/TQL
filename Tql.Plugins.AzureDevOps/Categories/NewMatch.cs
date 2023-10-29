@@ -11,8 +11,8 @@ internal class NewMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
     public string Text =>
         _dto.Type switch
         {
-            NewMatchType.WorkItem => $"{_dto.ProjectName}/New {_dto.Name}",
-            NewMatchType.Query => $"{_dto.ProjectName}/New Query",
+            NewMatchType.WorkItem => $"{_dto.ProjectName} › New {_dto.Name}",
+            NewMatchType.Query => $"{_dto.ProjectName} › New Query",
             _ => throw new ArgumentOutOfRangeException()
         };
 

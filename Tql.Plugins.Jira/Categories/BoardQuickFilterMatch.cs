@@ -18,7 +18,7 @@ internal class BoardQuickFilterMatch
     private readonly ICache<JiraData> _cache;
     private readonly ConfigurationManager _configurationManager;
 
-    public string Text => $"{_dto.Board.Name}/{BoardUtils.GetLabel(_dto.Board)}/{_dto.Name}";
+    public string Text => $"{_dto.Board.Name} › {BoardUtils.GetLabel(_dto.Board)} › {_dto.Name}";
     public ImageSource Icon { get; }
     public MatchTypeId TypeId => TypeIds.BoardQuickFilter;
     public string SearchHint => "Find issues";

@@ -17,7 +17,7 @@ internal class RepositoryMatch
 {
     private readonly RepositoryMatchDto _dto;
 
-    public string Text => $"{_dto.ProjectName}/{_dto.RepositoryName}";
+    public string Text => $"{_dto.ProjectName} › {_dto.RepositoryName}";
     public ImageSource Icon => Images.Repositories;
     public MatchTypeId TypeId => TypeIds.Repository;
     public string SearchHint => "Find files";

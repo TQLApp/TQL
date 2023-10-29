@@ -8,7 +8,7 @@ internal class WorkItemMatch : IRunnableMatch, ISerializableMatch, ICopyableMatc
 {
     private readonly WorkItemMatchDto _dto;
 
-    public string Text => $"{_dto.ProjectName}/{_dto.Type} {_dto.Id}: {_dto.Title}";
+    public string Text => $"{_dto.ProjectName} › {_dto.Type} {_dto.Id}: {_dto.Title}";
     public ImageSource Icon { get; }
     public MatchTypeId TypeId => TypeIds.WorkItem;
 
