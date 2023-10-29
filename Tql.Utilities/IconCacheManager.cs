@@ -9,6 +9,9 @@ namespace Tql.Utilities;
 public abstract class IconCacheManager<T>
     where T : notnull
 {
+    // ReSharper disable once StaticMemberInGenericType
+    private static readonly TimeSpan CacheExpiration = TimeSpan.FromDays(1);
+
     private readonly ILogger _logger;
     private readonly IconCacheManagerConfiguration _configuration;
     private readonly object _syncRoot = new();
@@ -39,15 +42,23 @@ public abstract class IconCacheManager<T>
 
         lock (_syncRoot)
         {
-            if (!_cache.TryGetValue(key, out var cache))
+            if (!_cache.TryGetValue(key, out var cache) || cache.Expiration < DateTime.Now)
             {
-                if (!TryLoadFromDisk(key, out cache))
-                {
-                    QueueLoadIcon(key);
-                    cache = new Cache();
-                }
+                var (imageSource, requireReload) = LoadFromDisk(key);
 
-                _cache.Add(key, cache!);
+                if (requireReload)
+                    QueueLoadIcon(key);
+
+                // Refresh the cached icons regularly.
+
+                var cacheExpiration =
+                    _configuration.Expiration < CacheExpiration
+                        ? CacheExpiration
+                        : _configuration.Expiration;
+
+                cache = new Cache(DateTime.Now + cacheExpiration) { ImageSource = imageSource };
+
+                _cache[key] = cache;
             }
 
             return cache?.ImageSource;
@@ -84,22 +95,16 @@ public abstract class IconCacheManager<T>
         }
     }
 
-    private bool TryLoadFromDisk(T key, out Cache? cache)
+    private (ImageSource? ImageSource, bool RequireReload) LoadFromDisk(T key)
     {
-        cache = null;
-
         var fileName = GetCacheIconFileName(key);
 
-        var isCacheValid = File.Exists(fileName);
+        if (!File.Exists(fileName))
+            return (null, true);
 
-        if (isCacheValid)
-        {
-            var writeTime = File.GetLastWriteTime(fileName);
-            isCacheValid = writeTime > DateTime.Now - _configuration.Expiration;
-        }
+        var writeTime = File.GetLastWriteTime(fileName);
 
-        if (!isCacheValid)
-            return false;
+        bool isExpired = writeTime < DateTime.Now - _configuration.Expiration;
 
         try
         {
@@ -110,15 +115,15 @@ public abstract class IconCacheManager<T>
                 dto = JsonSerializer.Deserialize<IconData>(stream)!;
             }
 
-            cache = new Cache { ImageSource = CreateImage(dto) };
+            var imageSource = CreateImage(dto);
 
-            return true;
+            return (imageSource, isExpired);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to load icon from cache");
 
-            return false;
+            return (null, true);
         }
     }
 
@@ -143,7 +148,13 @@ public abstract class IconCacheManager<T>
 
     private class Cache
     {
+        public DateTime Expiration { get; }
         public ImageSource? ImageSource { get; set; }
+
+        public Cache(DateTime expiration)
+        {
+            Expiration = expiration;
+        }
     }
 }
 
