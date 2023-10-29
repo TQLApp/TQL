@@ -19,9 +19,16 @@ internal class OutlookClient : IDisposable
 
     public OutlookClient()
     {
-        // Only get an actively running Outlook. This prevents the welcome
-        // dialog from coming up on machines that don't have Outlook setup.
-        _application = (Application)Marshal.GetActiveObject("Outlook.Application");
+        try
+        {
+            // Only get an actively running Outlook. This prevents the welcome
+            // dialog from coming up on machines that don't have Outlook setup.
+            _application = (Application)Marshal.GetActiveObject("Outlook.Application");
+        }
+        catch (System.Exception ex)
+        {
+            throw new OutlookCacheUpdateException("Outlook isn't running", ex);
+        }
 
         _ns = _application.GetNamespace("mapi");
         _ns.Logon(Missing.Value, Missing.Value, false, true);
