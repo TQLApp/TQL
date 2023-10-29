@@ -32,6 +32,7 @@ internal record JiraBoard(
     string ProjectKey,
     string ProjectTypeKey,
     string AvatarUrl,
+    string FilterId,
     bool IsIssueListBacklog,
     bool IsSprintSupportEnabled,
     ImmutableArray<JiraQuickFilter> QuickFilters

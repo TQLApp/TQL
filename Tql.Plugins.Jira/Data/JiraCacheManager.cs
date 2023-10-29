@@ -9,7 +9,7 @@ internal class JiraCacheManager : ICacheManager<JiraData>
     private readonly ConfigurationManager _configurationManager;
     private readonly JiraApi _api;
 
-    public int Version => 3;
+    public int Version => 4;
 
     public event EventHandler<CacheExpiredEventArgs>? CacheExpired;
 
@@ -63,7 +63,8 @@ internal class JiraCacheManager : ICacheManager<JiraData>
             if (location == null)
                 continue;
 
-            var boardConfig = await client.GetXBoardConfig(board.Id);
+            var boardConfig = await client.GetBoardsConfigurationV3(board.Id);
+            var xBoardConfig = await client.GetXBoardConfig(board.Id);
 
             boards.Add(
                 new JiraBoard(
@@ -74,9 +75,10 @@ internal class JiraCacheManager : ICacheManager<JiraData>
                     location.ProjectKey,
                     location.ProjectTypeKey,
                     location.AvatarUri,
-                    boardConfig.CurrentViewConfig.IsIssueListBacklog,
-                    boardConfig.CurrentViewConfig.SprintSupportEnabled,
-                    boardConfig.CurrentViewConfig.QuickFilters
+                    boardConfig.Filter.Id,
+                    xBoardConfig.CurrentViewConfig.IsIssueListBacklog,
+                    xBoardConfig.CurrentViewConfig.SprintSupportEnabled,
+                    xBoardConfig.CurrentViewConfig.QuickFilters
                         .Select(p => new JiraQuickFilter(p.Id, p.Name, p.Query))
                         .ToImmutableArray()
                 )

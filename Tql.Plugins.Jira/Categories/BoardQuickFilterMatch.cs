@@ -83,7 +83,7 @@ internal class BoardQuickFilterMatch
         var client = _configurationManager.GetClient(_dto.Board.Url);
 
         var issues = await client.SearchIssues(
-            $"project = \"{board.ProjectKey}\" and {quickFilter.Query} and text ~ \"{text.Replace("\"", "\\\"")}*\"",
+            $"filter = \"{board.FilterId}\" and {quickFilter.Query} and text ~ \"{text.Replace("\"", "\\\"")}*\"",
             100,
             cancellationToken
         );

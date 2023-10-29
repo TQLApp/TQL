@@ -93,6 +93,19 @@ internal class JiraClient
             cancellationToken
         );
 
+    public async Task<JiraBoardConfigurationV3Dto> GetBoardsConfigurationV3(
+        int boardId,
+        CancellationToken cancellationToken = default
+    )
+    {
+        using var request = new HttpRequestMessage(
+            HttpMethod.Get,
+            $"{_baseUrl}/rest/agile/1.0/board/{boardId}/configuration"
+        );
+
+        return await ExecuteJsonRequest<JiraBoardConfigurationV3Dto>(request, cancellationToken);
+    }
+
     private async Task<ImmutableArray<T>> GetPagedV3<T>(
         string url,
         int? maxResults,
@@ -380,3 +393,10 @@ internal record JiraXBoardQuickFilterDto(
     [property: JsonPropertyName("query")] string Query,
     [property: JsonPropertyName("description")] string Description
 );
+
+internal record JiraBoardConfigurationV3Dto(
+    [property: JsonPropertyName("id")] int Id,
+    [property: JsonPropertyName("filter")] JiraBoardConfigurationFilterV3Dto Filter
+);
+
+internal record JiraBoardConfigurationFilterV3Dto([property: JsonPropertyName("id")] string Id);
