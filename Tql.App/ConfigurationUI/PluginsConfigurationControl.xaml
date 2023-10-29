@@ -43,7 +43,7 @@
                            Margin="3"
                            Visibility="Hidden"
                            Grid.Column="3">
-                    Restart Techie's Quick Launcher needs to complete the installation
+                    Restart Techie's Quick Launcher to complete the installation
                 </TextBlock>
                 <Button x:Name="_restart"
                         Margin="3"
