@@ -74,12 +74,14 @@
                             <Image Source="{Binding Icon, Mode=OneWay}"
                                    Width="32"
                                    Height="32"
-                                   Margin="3"/>
+                                   Margin="3"
+                                   VerticalAlignment="Top"/>
                             <Image Source="{DynamicResource ResourceKey=CheckmarkCircle}"
                                    Visibility="{Binding IsInstalled, Converter={StaticResource B2VConverter}}"
                                    Width="9"
                                    Height="9"
-                                   Margin="24,24,3,3" />
+                                   Margin="24,24,3,3"
+                                   VerticalAlignment="Top"/>
 
                             <StackPanel Orientation="Vertical"
                                         Grid.Column="1">
@@ -103,7 +105,7 @@
                             </StackPanel>
 
                             <StackPanel Orientation="Vertical"
-                                        Visibility="{Binding IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}, Converter={StaticResource B2VConverter}}"
+                                        Visibility="{Binding IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}, Converter={StaticResource B2VHConverter}}"
                                         Grid.Column="2">
                                 <Button Content="Install"
                                         Margin="3"

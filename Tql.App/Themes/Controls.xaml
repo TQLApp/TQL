@@ -2644,7 +2644,9 @@
     </Style>
 
     <BooleanToVisibilityConverter x:Key="B2VConverter"/>
+    <support:BooleanToVisibilityHiddenConverter x:Key="B2VHConverter"/>
     <support:InvertedBooleanToVisibilityConverter x:Key="IB2VConverter"/>
+    <support:InvertedBooleanToVisibilityHiddenConverter x:Key="IB2VHConverter"/>
     
     <Style x:Key="RowHeaderGripperStyle" TargetType="{x:Type Thumb}">
         <Setter Property="Height" Value="8"/>
