@@ -27,7 +27,7 @@
                     <DropShadowEffect ShadowDepth="0" 
                                       BlurRadius="3" 
                                       Color="#666666" 
-                                      Opacity="1"/>
+                                      Opacity="0.5"/>
                 </Setter.Value>
             </Setter>
         </Style>
