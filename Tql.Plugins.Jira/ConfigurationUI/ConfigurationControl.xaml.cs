@@ -2,6 +2,7 @@
 using Tql.App.Services;
 using Tql.Plugins.Jira.Services;
 using Tql.Plugins.Jira.Support;
+using Tql.Utilities;
 using Button = System.Windows.Controls.Button;
 
 namespace Tql.Plugins.Jira.ConfigurationUI;

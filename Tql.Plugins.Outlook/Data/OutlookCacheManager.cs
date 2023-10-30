@@ -30,4 +30,6 @@ internal class OutlookCacheManager : ICacheManager<OutlookData>
 
         return Task.FromResult(new OutlookData(unique));
     }
+
+    protected virtual void OnCacheExpired(CacheExpiredEventArgs e) => CacheExpired?.Invoke(this, e);
 }

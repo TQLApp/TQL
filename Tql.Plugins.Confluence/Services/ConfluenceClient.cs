@@ -95,7 +95,7 @@ internal class ConfluenceClient
 
     public async Task<T> DownloadFile<T>(string url, Func<HttpContent, Task<T>> action)
     {
-        if (url.IndexOf("://", StringComparison.Ordinal) == -1)
+        if (!url.Contains("://", StringComparison.Ordinal))
             url = $"{_baseUrl}/{url.TrimStart('/')}";
 
         using var request = new HttpRequestMessage(HttpMethod.Get, url);

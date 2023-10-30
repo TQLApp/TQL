@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Tql.Abstractions;
+using Tql.Utilities;
 
 namespace Tql.Plugins.Confluence.Categories;
 
@@ -42,7 +43,7 @@ internal record SearchMatchDto(string Url, string? ContainerTitle, string Title,
     public string GetUrl()
     {
         var url = ViewUrl;
-        if (url.IndexOf("://", StringComparison.Ordinal) == -1)
+        if (!url.Contains("://", StringComparison.Ordinal))
             url = $"{Url.TrimEnd('/')}/{ViewUrl.TrimStart('/')}";
         return url;
     }

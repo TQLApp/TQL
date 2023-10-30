@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using Tql.Abstractions;
 using Tql.Plugins.Outlook.Support;
+using Tql.Utilities;
 
 namespace Tql.Plugins.Outlook.Categories;
 

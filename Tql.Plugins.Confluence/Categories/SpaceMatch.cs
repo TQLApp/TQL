@@ -2,6 +2,7 @@
 using Tql.Abstractions;
 using Tql.Plugins.Confluence.Services;
 using Tql.Plugins.Confluence.Support;
+using Tql.Utilities;
 
 namespace Tql.Plugins.Confluence.Categories;
 
@@ -79,7 +80,7 @@ internal record SpaceMatchDto(string Url, string Key, string Name, string ViewUr
     public string GetUrl()
     {
         var url = ViewUrl;
-        if (url.IndexOf("://", StringComparison.Ordinal) == -1)
+        if (!url.Contains("://", StringComparison.Ordinal))
             url = $"{Url.TrimEnd('/')}/{ViewUrl.TrimStart('/')}";
         return url;
     }

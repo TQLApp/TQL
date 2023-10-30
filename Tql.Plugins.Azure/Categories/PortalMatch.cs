@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Tql.Abstractions;
 using Tql.Plugins.Azure.Support;
+using Tql.Utilities;
 
 namespace Tql.Plugins.Azure.Categories;
 

@@ -118,7 +118,7 @@ internal class Converter
                 if (haveSvg)
                 {
                     var url = entry.Key;
-                    if (url.IndexOf("://", StringComparison.Ordinal) == -1)
+                    if (!url.Contains("://", StringComparison.Ordinal))
                         url = "https://portal.azure.com/" + url.TrimStart('/');
                     url += ".js";
 

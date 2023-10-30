@@ -28,9 +28,7 @@ internal class OutlookPeopleDirectory : IPeopleDirectory
             return cache.People.CastArray<IPerson>();
 
         return cache.People
-            .Where(
-                p => p.DisplayName.IndexOf(search, StringComparison.CurrentCultureIgnoreCase) != -1
-            )
+            .Where(p => p.DisplayName.Contains(search, StringComparison.CurrentCultureIgnoreCase))
             .ToImmutableArray<IPerson>();
     }
 }
