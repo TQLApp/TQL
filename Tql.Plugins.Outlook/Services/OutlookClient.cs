@@ -1,4 +1,5 @@
-﻿using Microsoft.Office.Interop.Outlook;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Office.Interop.Outlook;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
@@ -8,6 +9,8 @@ namespace Tql.Plugins.Outlook.Services;
 
 internal class OutlookClient : IDisposable
 {
+    private readonly ILogger<OutlookClient> _logger;
+
     // This is a very liberal pattern for matching email addresses. It's
     // only used to discard obviously invalid ones, so it does not need
     // to be fully compliant.
@@ -17,8 +20,10 @@ internal class OutlookClient : IDisposable
     private readonly Application _application;
     private readonly NameSpace _ns;
 
-    public OutlookClient()
+    public OutlookClient(ILogger<OutlookClient> logger)
     {
+        _logger = logger;
+
         try
         {
             // Only get an actively running Outlook. This prevents the welcome
@@ -46,11 +51,11 @@ internal class OutlookClient : IDisposable
                 if (item is ContactItem contact)
                 {
                     if (MayBeEmailAddress(contact.Email1Address))
-                        yield return new Person(contact.FullName, contact.Email1Address);
+                        yield return CreatePerson(contact.FullName, contact.Email1Address);
                     if (MayBeEmailAddress(contact.Email2Address))
-                        yield return new Person(contact.FullName, contact.Email2Address);
+                        yield return CreatePerson(contact.FullName, contact.Email2Address);
                     if (MayBeEmailAddress(contact.Email3Address))
-                        yield return new Person(contact.FullName, contact.Email3Address);
+                        yield return CreatePerson(contact.FullName, contact.Email3Address);
                 }
 
                 Marshal.ReleaseComObject(item);
@@ -73,7 +78,17 @@ internal class OutlookClient : IDisposable
 
         try
         {
-            var addressEntry = addressEntries.GetFirst();
+            AddressEntry addressEntry;
+
+            try
+            {
+                addressEntry = addressEntries.GetFirst();
+            }
+            catch (System.Exception ex)
+            {
+                _logger.LogInformation(ex, "Global address list is not available");
+                yield break;
+            }
 
             while (addressEntry != null)
             {
@@ -87,7 +102,10 @@ internal class OutlookClient : IDisposable
                     var exchangeUser = addressEntry.GetExchangeUser();
 
                     if (exchangeUser != null && MayBeEmailAddress(exchangeUser.PrimarySmtpAddress))
-                        yield return new Person(exchangeUser.Name, exchangeUser.PrimarySmtpAddress);
+                        yield return CreatePerson(
+                            exchangeUser.Name,
+                            exchangeUser.PrimarySmtpAddress
+                        );
                 }
 
                 var nextAddressEntry = addressEntries.GetNext();
@@ -102,6 +120,11 @@ internal class OutlookClient : IDisposable
             Marshal.ReleaseComObject(addressEntries);
             Marshal.ReleaseComObject(addressList);
         }
+    }
+
+    private Person CreatePerson(string? displayName, string emailAddress)
+    {
+        return new Person(displayName ?? emailAddress, emailAddress);
     }
 
     public void Dispose()
