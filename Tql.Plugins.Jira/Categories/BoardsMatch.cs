@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using SharpVectors.Scripting;
 using Tql.Abstractions;
 using Tql.Plugins.Jira.Data;
 using Tql.Plugins.Jira.Services;

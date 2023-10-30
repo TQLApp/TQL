@@ -1,9 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System.Collections;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Windows.Media.Effects;
 using Tql.Abstractions;
 using Tql.App.Search;
 using Tql.App.Services;
@@ -75,7 +71,7 @@ internal partial class MainWindow
         _categoryImage.Source = Images.Category;
 
         _clearImage.Source = Images.Backspace;
-        _clearImage.AttachOnClickHandler(DoShow);
+        _clearImage.AttachOnClickHandler(() => DoShow(true));
 
         _feedbackImage.Source = Images.CommentNote;
         _feedbackImage.AttachOnClickHandler(OpenFeedback);
@@ -235,9 +231,11 @@ internal partial class MainWindow
             DoHide();
     }
 
-    public void DoShow()
+    public void DoShow() => DoShow(false);
+
+    private void DoShow(bool force)
     {
-        if (IsVisible)
+        if (IsVisible && !force)
         {
             _searchManager?.DoSearch();
 
