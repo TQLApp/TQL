@@ -47,7 +47,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tql.DebugApp", "Tql.DebugAp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tql.Plugins.Outlook", "Tql.Plugins.Outlook\Tql.Plugins.Outlook.csproj", "{0B52F552-CBE0-423E-8EEC-EF2E8D5FAF91}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tql.Plugins.Demo.Test", "Tql.Plugins.Demo.Test\Tql.Plugins.Demo.Test.csproj", "{493C14D2-0DAF-4167-BC04-2023DF55AB45}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tql.Plugins.Demo.Test", "Tql.Plugins.Demo.Test\Tql.Plugins.Demo.Test.csproj", "{493C14D2-0DAF-4167-BC04-2023DF55AB45}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tql.Benchmarks", "Tql.Benchmarks\Tql.Benchmarks.csproj", "{E5226BB4-2336-40E5-8A8F-9B3F241AA459}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -127,6 +129,10 @@ Global
 		{493C14D2-0DAF-4167-BC04-2023DF55AB45}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{493C14D2-0DAF-4167-BC04-2023DF55AB45}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{493C14D2-0DAF-4167-BC04-2023DF55AB45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5226BB4-2336-40E5-8A8F-9B3F241AA459}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5226BB4-2336-40E5-8A8F-9B3F241AA459}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5226BB4-2336-40E5-8A8F-9B3F241AA459}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5226BB4-2336-40E5-8A8F-9B3F241AA459}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -150,6 +156,7 @@ Global
 		{FF29F203-71D5-43B5-91F2-4260194B7B1F} = {094A034F-EBB5-42F1-A87B-633A3117042F}
 		{0B52F552-CBE0-423E-8EEC-EF2E8D5FAF91} = {E67CF545-0D68-469F-BD58-DAC8EDCE4562}
 		{493C14D2-0DAF-4167-BC04-2023DF55AB45} = {E67CF545-0D68-469F-BD58-DAC8EDCE4562}
+		{E5226BB4-2336-40E5-8A8F-9B3F241AA459} = {094A034F-EBB5-42F1-A87B-633A3117042F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {473D3E4B-C738-47D6-8D01-1D80FA3D6F49}
