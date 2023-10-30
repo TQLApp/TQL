@@ -113,31 +113,6 @@ internal class SearchContext : ISearchContext, IDisposable
         return results.Select(p => p.Match);
     }
 
-    public IEnumerable<string> Prefilter(IEnumerable<string> matches)
-    {
-        if (_lowerSimplifiedSearch.Length == 0)
-            return matches;
-
-        return matches.Where(IsPartialMatch);
-    }
-
-    private bool IsPartialMatch(string match)
-    {
-        var offset = 0;
-
-        foreach (char c in SimplifyText(match).ToLower())
-        {
-            if (_lowerSimplifiedSearch[offset] == c)
-            {
-                offset++;
-                if (offset >= _lowerSimplifiedSearch.Length)
-                    return true;
-            }
-        }
-
-        return false;
-    }
-
     public SearchResult GetSearchResult(IMatch match)
     {
         return _results.GetOrAdd(match, CreateSearchResult);

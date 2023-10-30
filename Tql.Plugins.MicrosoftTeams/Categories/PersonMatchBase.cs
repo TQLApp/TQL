@@ -6,6 +6,8 @@ namespace Tql.Plugins.MicrosoftTeams.Categories;
 
 internal abstract class PersonMatchBase : ISearchableMatch, ISerializableMatch
 {
+    private const int MaxResults = 100;
+
     private readonly IPeopleDirectory _peopleDirectory;
 
     public abstract string Text { get; }
@@ -36,13 +38,19 @@ internal abstract class PersonMatchBase : ISearchableMatch, ISerializableMatch
 
         var allPeople = await _peopleDirectory.Find("", cancellationToken);
         if (allPeople.Length > 0)
-            return context.Filter(GetDtos(allPeople).Select(CreateMatch));
+        {
+            return await Task.Run(
+                () => context.Filter(GetDtos(allPeople).Select(CreateMatch)).Take(MaxResults),
+                cancellationToken
+            );
+        }
 
         var people = await _peopleDirectory.Find(text, cancellationToken);
 
         return GetDtos(people)
-            .Select(CreateMatch)
-            .OrderBy(p => p.Text, StringComparer.CurrentCultureIgnoreCase);
+            .OrderBy(p => p.DisplayName, StringComparer.CurrentCultureIgnoreCase)
+            .Take(MaxResults)
+            .Select(CreateMatch);
     }
 
     private IEnumerable<PersonDto> GetDtos(ImmutableArray<IPerson> people)

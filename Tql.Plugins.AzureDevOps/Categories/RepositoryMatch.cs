@@ -15,6 +15,8 @@ internal class RepositoryMatch
         ICopyableMatch,
         IHasSearchHint
 {
+    private const int MaxResults = 100;
+
     private readonly RepositoryMatchDto _dto;
 
     public string Text => $"{_dto.ProjectName} › {_dto.RepositoryName}";
@@ -42,14 +44,14 @@ internal class RepositoryMatch
 
         return await Task.Run(
             () =>
-                context.Filter(
-                    context
-                        .Prefilter(filePaths)
-                        .Select(
+                context
+                    .Filter(
+                        filePaths.Select(
                             p =>
                                 new RepositoryFilePathMatch(new RepositoryFilePathMatchDto(_dto, p))
                         )
-                ),
+                    )
+                    .Take(MaxResults),
             cancellationToken
         );
     }

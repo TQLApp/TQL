@@ -7,6 +7,8 @@ namespace Tql.Plugins.Outlook.Categories;
 
 internal class EmailsMatch : ISearchableMatch, ISerializableMatch
 {
+    private const int MaxResults = 100;
+
     private readonly IPeopleDirectory _peopleDirectory;
 
     public string Text => "Email";
@@ -36,7 +38,10 @@ internal class EmailsMatch : ISearchableMatch, ISerializableMatch
             "The Outlook people directory should return all results on an empty search string"
         );
 
-        return context.Filter(GetDtos(people).Select(p => new EmailMatch(p)));
+        return await Task.Run(
+            () => context.Filter(GetDtos(people).Select(p => new EmailMatch(p))).Take(MaxResults),
+            cancellationToken
+        );
     }
 
     private IEnumerable<PersonDto> GetDtos(ImmutableArray<IPerson> people)
