@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Windows.Media;
+﻿using System.Windows.Media;
 using Tql.Abstractions;
 using Tql.Plugins.Demo.Services;
 
@@ -35,25 +34,14 @@ internal class PerformanceTestFixture : BaseFixture
     [TestCase("rayseanicho")]
     public void PerformanceTest(string search)
     {
-        var stopwatch = Stopwatch.StartNew();
-        int count = CreateSearchContext(search).Filter(_people).Count();
-        File.AppendAllText(
-            @"c:\users\pvgin\downloads\log.txt",
-            $"{search}: {count} {stopwatch.ElapsedMilliseconds}\r\n"
-        );
+        _ = CreateSearchContext(search).Filter(_people).Count();
     }
 
     private class PersonMatch : IMatch
     {
-        private static readonly MatchTypeId MatchTypeId =
-            new(
-                Guid.Parse("7f3051ae-9784-4eb7-8bf9-9e7ab2f67eb8"),
-                Guid.Parse("d7e702ae-89a8-43c4-bfd6-1cd2b0f7c627")
-            );
-
         public string Text { get; }
-        public ImageSource Icon => null!;
-        public MatchTypeId TypeId => MatchTypeId;
+        public ImageSource Icon => throw new NotSupportedException();
+        public MatchTypeId TypeId => throw new NotSupportedException();
 
         public PersonMatch(string text)
         {
