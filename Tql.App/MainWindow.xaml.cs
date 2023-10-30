@@ -487,7 +487,9 @@ internal partial class MainWindow
                 break;
 
             case Key.Escape:
-                if (_searchManager?.Stack.Length > 0)
+                if (_search.Text.Length > 0)
+                    _search.Text = null;
+                else if (_searchManager?.Stack.Length > 0)
                     PopItem();
                 else if (inSearch)
                     DoHide();
