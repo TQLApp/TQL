@@ -18,7 +18,8 @@ internal class BoardQuickFilterMatch
     private readonly ICache<JiraData> _cache;
     private readonly ConfigurationManager _configurationManager;
 
-    public string Text => $"{_dto.Board.Name} › {BoardUtils.GetLabel(_dto.Board)} › {_dto.Name}";
+    public string Text =>
+        $"{_dto.Board.Name} › {MatchUtils.GetBoardLabel(_dto.Board)} › {_dto.Name}";
     public ImageSource Icon { get; }
     public MatchTypeId TypeId => TypeIds.BoardQuickFilter;
     public string SearchHint => "Find issues";
@@ -61,7 +62,7 @@ internal class BoardQuickFilterMatch
 
     private string GetUrl()
     {
-        var url = BoardUtils.GetUrl(_dto.Board);
+        var url = MatchUtils.GetBoardUrl(_dto.Board);
         if (_dto.Id.HasValue)
             url += $"?quickFilter={_dto.Id}";
         return url;

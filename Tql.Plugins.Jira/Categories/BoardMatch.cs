@@ -2,6 +2,7 @@
 using Tql.Abstractions;
 using Tql.Plugins.Jira.Data;
 using Tql.Plugins.Jira.Services;
+using Tql.Plugins.Jira.Support;
 
 namespace Tql.Plugins.Jira.Categories;
 
@@ -12,7 +13,7 @@ internal class BoardMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, 
     private readonly ICache<JiraData> _cache;
     private readonly ConfigurationManager _configurationManager;
 
-    public string Text => $"{_dto.Name} › {BoardUtils.GetLabel(_dto)}";
+    public string Text => $"{_dto.Name} › {MatchUtils.GetBoardLabel(_dto)}";
     public ImageSource Icon { get; }
     public MatchTypeId TypeId => TypeIds.Board;
 
@@ -27,13 +28,12 @@ internal class BoardMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, 
         _iconCacheManager = iconCacheManager;
         _cache = cache;
         _configurationManager = configurationManager;
-
         Icon = iconCacheManager.GetIcon(new IconKey(dto.Url, dto.AvatarUrl)) ?? Images.Boards;
     }
 
     public Task Run(IServiceProvider serviceProvider, Window owner)
     {
-        serviceProvider.GetRequiredService<IUI>().OpenUrl(BoardUtils.GetUrl(_dto));
+        serviceProvider.GetRequiredService<IUI>().OpenUrl(MatchUtils.GetBoardUrl(_dto));
 
         return Task.CompletedTask;
     }
@@ -45,7 +45,9 @@ internal class BoardMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, 
 
     public Task Copy(IServiceProvider serviceProvider)
     {
-        serviceProvider.GetRequiredService<IClipboard>().CopyUri(Text, BoardUtils.GetUrl(_dto));
+        serviceProvider
+            .GetRequiredService<IClipboard>()
+            .CopyUri(Text, MatchUtils.GetBoardUrl(_dto));
 
         return Task.CompletedTask;
     }

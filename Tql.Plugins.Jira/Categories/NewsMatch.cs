@@ -8,6 +8,7 @@ namespace Tql.Plugins.Jira.Categories;
 internal class NewsMatch : CachedMatch<JiraData>, ISerializableMatch
 {
     private readonly string _url;
+    private readonly ICache<JiraData> _cache;
     private readonly IconCacheManager _iconCacheManager;
 
     public override string Text { get; }
@@ -23,6 +24,7 @@ internal class NewsMatch : CachedMatch<JiraData>, ISerializableMatch
         : base(cache)
     {
         _url = url;
+        _cache = cache;
         _iconCacheManager = iconCacheManager;
 
         Text = text;
@@ -30,19 +32,39 @@ internal class NewsMatch : CachedMatch<JiraData>, ISerializableMatch
 
     protected override IEnumerable<IMatch> Create(JiraData data)
     {
-        return from project in data.GetConnection(_url).Projects
-            from issueType in project.IssueTypes
-            select new NewMatch(
+        foreach (var project in data.GetConnection(_url).Projects)
+        {
+            yield return new NewMatch(
                 new NewMatchDto(
                     _url,
                     project.Name,
                     project.Id,
-                    issueType.Name,
-                    issueType.Id,
-                    issueType.IconUrl
+                    NewMatchType.Query,
+                    "Query",
+                    null,
+                    null
                 ),
-                _iconCacheManager
+                _iconCacheManager,
+                _cache
             );
+
+            foreach (var issueType in project.IssueTypes)
+            {
+                yield return new NewMatch(
+                    new NewMatchDto(
+                        _url,
+                        project.Name,
+                        project.Id,
+                        NewMatchType.Issue,
+                        issueType.Name,
+                        issueType.Id,
+                        issueType.IconUrl
+                    ),
+                    _iconCacheManager,
+                    _cache
+                );
+            }
+        }
     }
 
     public string Serialize()
