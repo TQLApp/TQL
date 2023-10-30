@@ -336,9 +336,9 @@ internal record JiraProjectDto(
     [property: JsonPropertyName("name")] string Name,
     [property: JsonPropertyName("avatarUrls")] ImmutableDictionary<string, string> AvatarUrls,
     [property: JsonPropertyName("projectTypeKey")] string ProjectTypeKey,
-    [property: JsonPropertyName("style")] string Style,
+    [property: JsonPropertyName("style")] string? Style,
     [property: JsonPropertyName("simplified")] bool Simplified,
-    [property: JsonPropertyName("issueTypes")] ImmutableArray<JiraProjectIssueTypeDto> IssueTypes
+    [property: JsonPropertyName("issueTypes")] ImmutableArray<JiraProjectIssueTypeDto>? IssueTypes
 );
 
 internal record JiraProjectIssueTypeDto(

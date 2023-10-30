@@ -42,23 +42,33 @@ internal class JiraCacheManager : ICacheManager<JiraData>
             select new JiraDashboard(dashboard.Id, dashboard.Name, dashboard.View)
         ).ToImmutableArray();
 
-        var projects = (
-            from project in await client.GetProjects()
-            select new JiraProject(
-                project.Id,
-                project.Key,
-                project.Name,
-                SelectAvatarUrl(project),
-                project.ProjectTypeKey,
-                project.Simplified,
-                project.Style,
-                project.IssueTypes
+        var projects = ImmutableArray.CreateBuilder<JiraProject>();
+
+        foreach (var project in await client.GetProjects())
+        {
+            var issueTypes = ImmutableArray<JiraIssueType>.Empty;
+            if (project.IssueTypes != null)
+            {
+                issueTypes = project.IssueTypes.Value
                     .Select(
                         p => new JiraIssueType(p.Id, p.Description, p.IconUrl, p.Name, p.SubTask)
                     )
-                    .ToImmutableArray()
-            )
-        ).ToImmutableArray();
+                    .ToImmutableArray();
+            }
+
+            projects.Add(
+                new JiraProject(
+                    project.Id,
+                    project.Key,
+                    project.Name,
+                    SelectAvatarUrl(project),
+                    project.ProjectTypeKey,
+                    project.Simplified,
+                    project.Style,
+                    issueTypes
+                )
+            );
+        }
 
         var boards = ImmutableArray.CreateBuilder<JiraBoard>();
 
@@ -90,7 +100,12 @@ internal class JiraCacheManager : ICacheManager<JiraData>
             );
         }
 
-        return new JiraConnection(connection.Url, dashboards, projects, boards.ToImmutable());
+        return new JiraConnection(
+            connection.Url,
+            dashboards,
+            projects.ToImmutable(),
+            boards.ToImmutable()
+        );
     }
 
     private string SelectAvatarUrl(JiraProjectDto project)

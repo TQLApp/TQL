@@ -21,7 +21,7 @@ internal record JiraProject(
     string AvatarUrl,
     string ProjectTypeKey,
     bool IsSimplified,
-    string Style,
+    string? Style,
     ImmutableArray<JiraIssueType> IssueTypes
 );
 
