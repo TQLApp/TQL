@@ -61,7 +61,10 @@ internal class BoardQuickFilterMatch
 
     private string GetUrl()
     {
-        return $"{BoardUtils.GetUrl(_dto.Board)}?quickFilter={_dto.Id}";
+        var url = BoardUtils.GetUrl(_dto.Board);
+        if (_dto.Id.HasValue)
+            url += $"?quickFilter={_dto.Id}";
+        return url;
     }
 
     public async Task<IEnumerable<IMatch>> Search(
@@ -78,18 +81,20 @@ internal class BoardQuickFilterMatch
         var cache = await _cache.Get();
         var connection = cache.GetConnection(_dto.Board.Url);
         var board = connection.Boards.Single(p => p.Id == _dto.Board.Id);
-        var quickFilter = board.QuickFilters.Single(p => p.Id == _dto.Id);
 
         var client = _configurationManager.GetClient(_dto.Board.Url);
 
-        var issues = await client.SearchIssues(
-            $"filter = \"{board.FilterId}\" and {quickFilter.Query} and text ~ \"{text.Replace("\"", "\\\"")}*\"",
-            100,
-            cancellationToken
-        );
+        var query = $"filter = \"{board.FilterId}\" and text ~ \"{text.Replace("\"", "\\\"")}*\"";
+        if (_dto.Id.HasValue)
+        {
+            var quickFilter = board.QuickFilters.Single(p => p.Id == _dto.Id);
+            query += $" and {quickFilter.Query}";
+        }
+
+        var issues = await client.SearchIssues(query, 100, cancellationToken);
 
         return IssueUtils.CreateMatches(_dto.Board.Url, issues, _iconCacheManager);
     }
 }
 
-internal record BoardQuickFilterMatchDto(BoardMatchDto Board, int Id, string Name);
+internal record BoardQuickFilterMatchDto(BoardMatchDto Board, int? Id, string Name);

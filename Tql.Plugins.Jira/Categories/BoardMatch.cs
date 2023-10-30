@@ -61,7 +61,17 @@ internal class BoardMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, 
 
         var board = connection.Boards.Single(p => p.Id == _dto.Id);
 
-        return context.Filter(
+        var matches = new List<BoardQuickFilterMatch>
+        {
+            new(
+                new BoardQuickFilterMatchDto(_dto, null, "All Issues"),
+                _iconCacheManager,
+                _cache,
+                _configurationManager
+            )
+        };
+
+        matches.AddRange(
             board.QuickFilters.Select(
                 p =>
                     new BoardQuickFilterMatch(
@@ -72,6 +82,8 @@ internal class BoardMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, 
                     )
             )
         );
+
+        return context.Filter(matches);
     }
 }
 
