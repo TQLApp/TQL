@@ -83,7 +83,8 @@
                          AcceptsTab="True"
                          AcceptsReturn="True"
                          Grid.Column="1"
-                         ap:TextHinting.ShowWhenFocused="True">
+                         ap:TextHinting.ShowWhenFocused="True"
+                         ap:TextHinting.Foreground="White">
                     <TextBox.CaretBrush>
                         <SolidColorBrush Color="Silver"/>
                     </TextBox.CaretBrush>

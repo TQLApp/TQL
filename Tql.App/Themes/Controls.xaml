@@ -1666,11 +1666,11 @@
                                    Margin="3 0 0 0"
                                    Padding="{TemplateBinding Padding}"
                                    VerticalAlignment="Center"
-                                   HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
-                                   Foreground="{DynamicResource ABrush.Foreground.Disabled}">
+                                   HorizontalAlignment="{TemplateBinding HorizontalAlignment}">
                             <TextBlock.Style>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Setter Property="Foreground" Value="{Binding (ap:TextHinting.Foreground), RelativeSource={RelativeSource TemplatedParent}}" />
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource TemplatedParent}}" Value="">
                                             <Setter Property="Visibility" Value="Visible"/>
@@ -1684,6 +1684,9 @@
                                                 <Setter Property="Visibility" Value="Collapsed"/>
                                             </MultiDataTrigger.Setters>
                                         </MultiDataTrigger>
+                                        <DataTrigger Binding="{Binding (ap:TextHinting.Foreground), RelativeSource={RelativeSource TemplatedParent}}" Value="{x:Null}">
+                                            <Setter Property="Foreground" Value="{DynamicResource ABrush.Foreground.Disabled}"/>
+                                        </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </TextBlock.Style>

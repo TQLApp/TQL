@@ -17,22 +17,37 @@ namespace Tql.App.Themes.Attached
 
         public static void SetShowWhenFocused(Control control, bool value)
         {
-            if (control is TextBoxBase || control is PasswordBox)
-            {
-                control.SetValue(ShowWhenFocusedProperty, value);
-            }
+            if (control is not (TextBoxBase or PasswordBox))
+                throw new ArgumentException("Control was not a textbox", nameof(control));
 
-            throw new ArgumentException("Control was not a textbox", nameof(control));
+            control.SetValue(ShowWhenFocusedProperty, value);
         }
 
         public static bool GetShowWhenFocused(Control control)
         {
-            if (control is TextBoxBase || control is PasswordBox)
-            {
-                return (bool)control.GetValue(ShowWhenFocusedProperty);
-            }
+            if (control is not (TextBoxBase or PasswordBox))
+                throw new ArgumentException("Control was not a textbox", nameof(control));
 
-            throw new ArgumentException("Control was not a textbox", nameof(control));
+            return (bool)control.GetValue(ShowWhenFocusedProperty);
+        }
+
+        public static readonly DependencyProperty ForegroundProperty =
+            DependencyProperty.RegisterAttached("Foreground", typeof(Brush), typeof(TextHinting));
+
+        public static void SetForeground(Control control, Brush value)
+        {
+            if (control is not (TextBoxBase or PasswordBox))
+                throw new ArgumentException("Control was not a textbox", nameof(control));
+
+            control.SetValue(ForegroundProperty, value);
+        }
+
+        public static Brush GetForeground(Control control)
+        {
+            if (control is not (TextBoxBase or PasswordBox))
+                throw new ArgumentException("Control was not a textbox", nameof(control));
+
+            return (Brush)control.GetValue(ForegroundProperty);
         }
     }
 }
