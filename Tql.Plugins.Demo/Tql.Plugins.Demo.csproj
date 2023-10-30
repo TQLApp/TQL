@@ -20,11 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Services\PersonNames.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Services\PersonNames.json" />
+    <PackageReference Include="Bogus" Version="34.0.2" />
   </ItemGroup>
 
   <ItemGroup>

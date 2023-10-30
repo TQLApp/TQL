@@ -2,6 +2,12 @@
   "version": 1,
   "dependencies": {
     ".NETFramework,Version=v4.8": {
+      "Bogus": {
+        "type": "Direct",
+        "requested": "[34.0.2, )",
+        "resolved": "34.0.2",
+        "contentHash": "2KQAuMn3fLAQ2r6jeiffZnpv0bi3GCW3iRB2v1KeHIEBu8MNTh9dBlLTZwGvM0pr+9doKkU8L5JgCURmTmT88A=="
+      },
       "JetBrains.Annotations": {
         "type": "Transitive",
         "resolved": "2023.2.0",
@@ -173,7 +179,7 @@
           "SharpVectors.Wpf": "[1.8.2, )",
           "System.Net.Http": "[4.3.4, )",
           "System.Text.Json": "[7.0.3, )",
-          "Tql.Abstractions": "[0.2.0, )"
+          "Tql.Abstractions": "[0.4.2, )"
         }
       }
     }

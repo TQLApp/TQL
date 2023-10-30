@@ -1,40 +1,27 @@
-﻿using System.Text.Json;
+﻿using Bogus;
 
 namespace Tql.Plugins.Demo.Services;
 
 internal static class PersonNames
 {
-    public static PersonNamesDto Load()
+    public static IEnumerable<Person> Generate() => Generate(new Random());
+
+    public static IEnumerable<Person> Generate(Random random)
     {
-        using var stream = typeof(PersonNames).Assembly.GetManifestResourceStream(
-            $"{typeof(PersonNames).FullName}.json"
-        )!;
+        Randomizer.Seed = random;
 
-        return JsonSerializer.Deserialize<PersonNamesDto>(stream)!;
-    }
+        var faker = new Faker<Person>().CustomInstantiator(
+            p => new Person(p.Name.FirstName(), p.Name.LastName())
+        );
 
-    public static IEnumerable<(string Name, string Surname)> Generate() => Generate(new Random());
+        var seen = new HashSet<Person>();
 
-    public static IEnumerable<(string Name, string Surname)> Generate(Random random)
-    {
-        var dto = Load();
-        var seen = new HashSet<(string, string)>();
-
-        while (true)
+        foreach (var person in faker.GenerateForever())
         {
-            var surname = dto.Surnames[random.Next(0, dto.Surnames.Length)];
-            var name =
-                random.Next() % 2 == 0
-                    ? dto.MaleNames[random.Next(0, dto.MaleNames.Length)]
-                    : dto.FemaleNames[random.Next(0, dto.FemaleNames.Length)];
-
-            var fullName = (name, surname);
-            if (seen.Add(fullName))
-                yield return fullName;
+            if (seen.Add(person))
+                yield return person;
         }
-
-        // This iterator never returns on purpose. The idea is you use Take to
-        // take the number of names you like.
-        // ReSharper disable once IteratorNeverReturns
     }
 }
+
+internal record Person(string Name, string Surname);
