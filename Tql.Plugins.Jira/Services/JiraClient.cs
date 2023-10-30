@@ -77,7 +77,7 @@ internal class JiraClient
     {
         using var request = new HttpRequestMessage(
             HttpMethod.Get,
-            $"{_baseUrl}/rest/api/2/project"
+            $"{_baseUrl}/rest/api/2/project?expand=issueTypes"
         );
 
         return await ExecuteJsonRequest<ImmutableArray<JiraProjectDto>>(request, cancellationToken);
@@ -337,7 +337,18 @@ internal record JiraProjectDto(
     [property: JsonPropertyName("avatarUrls")] ImmutableDictionary<string, string> AvatarUrls,
     [property: JsonPropertyName("projectTypeKey")] string ProjectTypeKey,
     [property: JsonPropertyName("style")] string Style,
-    [property: JsonPropertyName("simplified")] bool Simplified
+    [property: JsonPropertyName("simplified")] bool Simplified,
+    [property: JsonPropertyName("issueTypes")] ImmutableArray<JiraProjectIssueTypeDto> IssueTypes
+);
+
+internal record JiraProjectIssueTypeDto(
+    [property: JsonPropertyName("id")] string Id,
+    [property: JsonPropertyName("description")] string Description,
+    [property: JsonPropertyName("iconUrl")] string IconUrl,
+    [property: JsonPropertyName("name")] string Name,
+    [property: JsonPropertyName("subTask")] bool SubTask,
+    [property: JsonPropertyName("avatarId")] int AvatarId,
+    [property: JsonPropertyName("hierarchyLevel")] int HierarchyLevel
 );
 
 internal record JiraPageBeanV3Dto<T>(

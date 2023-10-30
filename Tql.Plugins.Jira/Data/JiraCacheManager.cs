@@ -9,7 +9,7 @@ internal class JiraCacheManager : ICacheManager<JiraData>
     private readonly ConfigurationManager _configurationManager;
     private readonly JiraApi _api;
 
-    public int Version => 4;
+    public int Version => 5;
 
     public event EventHandler<CacheExpiredEventArgs>? CacheExpired;
 
@@ -51,7 +51,12 @@ internal class JiraCacheManager : ICacheManager<JiraData>
                 SelectAvatarUrl(project),
                 project.ProjectTypeKey,
                 project.Simplified,
-                project.Style
+                project.Style,
+                project.IssueTypes
+                    .Select(
+                        p => new JiraIssueType(p.Id, p.Description, p.IconUrl, p.Name, p.SubTask)
+                    )
+                    .ToImmutableArray()
             )
         ).ToImmutableArray();
 

@@ -21,7 +21,16 @@ internal record JiraProject(
     string AvatarUrl,
     string ProjectTypeKey,
     bool IsSimplified,
-    string Style
+    string Style,
+    ImmutableArray<JiraIssueType> IssueTypes
+);
+
+internal record JiraIssueType(
+    string Id,
+    string Description,
+    string IconUrl,
+    string Name,
+    bool IsSubTask
 );
 
 internal record JiraBoard(
