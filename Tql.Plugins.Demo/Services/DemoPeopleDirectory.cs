@@ -7,7 +7,7 @@ namespace Tql.Plugins.Demo.Services;
 
 internal class DemoPeopleDirectory : IPeopleDirectory
 {
-    private static readonly Regex WhitespaceRe = new Regex(@"\w+", RegexOptions.Compiled);
+    private static readonly Regex WhitespaceRe = new(@"\s+", RegexOptions.Compiled);
 
     private readonly ImmutableArray<IPerson> _people;
 
