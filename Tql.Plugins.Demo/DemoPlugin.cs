@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Tql.Abstractions;
 using Tql.Plugins.Demo.Categories;
+using Tql.Plugins.Demo.Services;
 using Tql.Utilities;
 
 namespace Tql.Plugins.Demo;
@@ -30,6 +31,10 @@ public class DemoPlugin : ITqlPlugin
     public void Initialize(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
+
+        serviceProvider
+            .GetRequiredService<IPeopleDirectoryManager>()
+            .Add(new DemoPeopleDirectory());
 
         _matchTypeManager = _matchTypeManagerBuilder.Build(serviceProvider);
     }

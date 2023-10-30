@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net48</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<LangVersion>latest</LangVersion>
+		<UseWPF>true</UseWPF>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Tql.Plugins.Demo\Tql.Plugins.Demo.csproj" />
+		<ProjectReference Include="..\Tql.PluginTestSupport\Tql.PluginTestSupport.csproj" />
+	</ItemGroup>
+
+</Project>

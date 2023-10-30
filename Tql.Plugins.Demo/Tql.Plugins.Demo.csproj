@@ -20,6 +20,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Services\PersonNames.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Services\PersonNames.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Tql.Utilities\Tql.Utilities.csproj" />
   </ItemGroup>
 

@@ -22,6 +22,7 @@
     <ProjectReference Include="..\Tql.Plugins.AzureDevOps\Tql.Plugins.AzureDevOps.csproj" />
     <ProjectReference Include="..\Tql.Plugins.Azure\Tql.Plugins.Azure.csproj" />
     <ProjectReference Include="..\Tql.Plugins.Confluence\Tql.Plugins.Confluence.csproj" />
+    <ProjectReference Include="..\Tql.Plugins.Demo\Tql.Plugins.Demo.csproj" />
     <ProjectReference Include="..\Tql.Plugins.GitHub\Tql.Plugins.GitHub.csproj" />
     <ProjectReference Include="..\Tql.Plugins.Jira\Tql.Plugins.Jira.csproj" />
     <ProjectReference Include="..\Tql.Plugins.MicrosoftTeams\Tql.Plugins.MicrosoftTeams.csproj" />

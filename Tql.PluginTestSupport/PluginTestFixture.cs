@@ -91,7 +91,7 @@ public abstract class PluginTestFixture
         List<SearchResult> items;
         var lastSearch = searches[0];
 
-        using (var context = new SearchContext(Services, lastSearch, null, contextMap))
+        using (var context = (SearchContext)CreateSearchContext(lastSearch, contextMap))
         {
             // Get the root items from all plugins.
 
@@ -129,7 +129,7 @@ public abstract class PluginTestFixture
 
             lastSearch = search;
 
-            using (var context = new SearchContext(Services, lastSearch, null, contextMap))
+            using (var context = (SearchContext)CreateSearchContext(lastSearch, contextMap))
             {
                 var matches = await searchable!.Search(context, lastSearch, default);
 
@@ -138,5 +138,13 @@ public abstract class PluginTestFixture
         }
 
         return items.Select(p => p.Match).ToImmutableArray();
+    }
+
+    public ISearchContext CreateSearchContext(
+        string search,
+        Dictionary<string, object>? contextMap = null
+    )
+    {
+        return new SearchContext(Services, search, null, contextMap ?? new());
     }
 }

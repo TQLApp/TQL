@@ -3,6 +3,7 @@ using System.Collections.Immutable;
 using Tql.Plugins.Azure;
 using Tql.Plugins.AzureDevOps;
 using Tql.Plugins.Confluence;
+using Tql.Plugins.Demo;
 using Tql.Plugins.GitHub;
 using Tql.Plugins.Jira;
 using Tql.Plugins.MicrosoftTeams;
@@ -22,7 +23,8 @@ public static class Program
             typeof(JiraPlugin).Assembly,
             typeof(ConfluencePlugin).Assembly,
             typeof(MicrosoftTeamsPlugin).Assembly,
-            typeof(OutlookPlugin).Assembly
+            typeof(OutlookPlugin).Assembly,
+            typeof(DemoPlugin).Assembly
         );
 
         App.App.IsDebugMode = true;
