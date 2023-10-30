@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualStudio.Services.Common;
 using Microsoft.VisualStudio.Services.Graph.Client;
 using Tql.Abstractions;
-using Tql.Plugins.AzureDevOps.Support;
 using Tql.Utilities;
 
 namespace Tql.Plugins.AzureDevOps.Services;

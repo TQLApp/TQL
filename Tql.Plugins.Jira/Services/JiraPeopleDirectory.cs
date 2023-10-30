@@ -1,5 +1,4 @@
 ﻿using Tql.Abstractions;
-using Tql.Plugins.Jira.Support;
 using Tql.Utilities;
 
 namespace Tql.Plugins.Jira.Services;

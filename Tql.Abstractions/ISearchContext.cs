@@ -8,7 +8,9 @@ public interface ISearchContext
 
     Task DebounceDelay(CancellationToken cancellationToken);
 
-    IEnumerable<IMatch> Filter(IEnumerable<IMatch> matches);
+    IEnumerable<IMatch> Filter(IEnumerable<IMatch> matches, int? maxResults = null);
+
+    Task<IEnumerable<IMatch>> FilterAsync(IEnumerable<IMatch> matches, int? maxResults = null);
 
     void SuppressPreliminaryResults();
 }

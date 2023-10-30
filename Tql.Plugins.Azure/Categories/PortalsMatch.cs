@@ -3,7 +3,6 @@ using Azure.ResourceManager.ResourceGraph.Models;
 using Azure.ResourceManager.Resources;
 using Tql.Abstractions;
 using Tql.Plugins.Azure.Services;
-using Tql.Plugins.Azure.Support;
 using Tql.Utilities;
 
 namespace Tql.Plugins.Azure.Categories;
@@ -68,7 +67,7 @@ internal class PortalsMatch : ISearchableMatch, ISerializableMatch
 
         await Task.WhenAll(tasks);
 
-        return context.Filter(tasks.SelectMany(p => p.Result));
+        return await context.FilterAsync(tasks.SelectMany(p => p.Result));
     }
 
     private async Task<List<IMatch>> RunQuery(

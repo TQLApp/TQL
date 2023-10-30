@@ -4,7 +4,6 @@ using Microsoft.VisualStudio.Services.Search.WebApi.Contracts.WorkItem;
 using Tql.Abstractions;
 using Tql.Plugins.AzureDevOps.Data;
 using Tql.Plugins.AzureDevOps.Services;
-using Tql.Plugins.AzureDevOps.Support;
 using Tql.Utilities;
 
 namespace Tql.Plugins.AzureDevOps.Categories;

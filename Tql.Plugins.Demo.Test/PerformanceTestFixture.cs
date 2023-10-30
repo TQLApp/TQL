@@ -2,7 +2,6 @@
 using System.Windows.Media;
 using Tql.Abstractions;
 using Tql.Plugins.Demo.Services;
-using Tql.PluginTestSupport;
 
 namespace Tql.Plugins.Demo.Test;
 

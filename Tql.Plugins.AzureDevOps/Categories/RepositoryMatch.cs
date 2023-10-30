@@ -42,17 +42,11 @@ internal class RepositoryMatch
 
         var filePaths = await cache;
 
-        return await Task.Run(
-            () =>
-                context
-                    .Filter(
-                        filePaths.Select(
-                            p =>
-                                new RepositoryFilePathMatch(new RepositoryFilePathMatchDto(_dto, p))
-                        )
-                    )
-                    .Take(MaxResults),
-            cancellationToken
+        return await context.FilterAsync(
+            filePaths.Select(
+                p => new RepositoryFilePathMatch(new RepositoryFilePathMatchDto(_dto, p))
+            ),
+            MaxResults
         );
     }
 

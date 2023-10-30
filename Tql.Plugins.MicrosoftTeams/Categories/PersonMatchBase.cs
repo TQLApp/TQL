@@ -1,5 +1,4 @@
 ﻿using Tql.Abstractions;
-using Tql.Plugins.MicrosoftTeams.Support;
 using Tql.Utilities;
 
 namespace Tql.Plugins.MicrosoftTeams.Categories;
@@ -38,12 +37,7 @@ internal abstract class PersonMatchBase : ISearchableMatch, ISerializableMatch
 
         var allPeople = await _peopleDirectory.Find("", cancellationToken);
         if (allPeople.Length > 0)
-        {
-            return await Task.Run(
-                () => context.Filter(GetDtos(allPeople).Select(CreateMatch)).Take(MaxResults),
-                cancellationToken
-            );
-        }
+            return await context.FilterAsync(GetDtos(allPeople).Select(CreateMatch), MaxResults);
 
         var people = await _peopleDirectory.Find(text, cancellationToken);
 

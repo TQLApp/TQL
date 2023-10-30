@@ -3,7 +3,6 @@ using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 using Tql.Abstractions;
 using Tql.Plugins.AzureDevOps.Services;
-using Tql.Plugins.AzureDevOps.Support;
 using Tql.Utilities;
 
 namespace Tql.Plugins.AzureDevOps.Categories;
@@ -59,7 +58,7 @@ internal class QueryMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, 
         var matches = await cache;
 
         if (!text.IsWhiteSpace())
-            return context.Filter(matches);
+            return await context.FilterAsync(matches);
 
         return matches;
     }

@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using Tql.Abstractions;
-using Tql.Plugins.Outlook.Support;
 using Tql.Utilities;
 
 namespace Tql.Plugins.Outlook.Categories;
@@ -38,9 +37,8 @@ internal class EmailsMatch : ISearchableMatch, ISerializableMatch
             "The Outlook people directory should return all results on an empty search string"
         );
 
-        return await Task.Run(
-            () => context.Filter(GetDtos(people).Select(p => new EmailMatch(p))).Take(MaxResults),
-            cancellationToken
+        return (
+            await context.FilterAsync(GetDtos(people).Select(p => new EmailMatch(p)), MaxResults)
         );
     }
 

@@ -3,7 +3,6 @@ using System.IO.Compression;
 using System.Xml.Linq;
 using SharpVectors.Converters;
 using SharpVectors.Renderers.Wpf;
-using Tql.Plugins.Azure.Support;
 using Tql.Utilities;
 
 // ReSharper disable NotAccessedPositionalProperty.Local

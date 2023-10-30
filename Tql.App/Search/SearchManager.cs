@@ -428,7 +428,7 @@ internal class SearchManager : IDisposable
             .Select(p => p.Match);
 
         if (!context.Search.IsEmpty())
-            items = context.Filter(items, internalCall: true);
+            items = context.Filter(items, null, internalCall: true);
 
         return items.Select(context.GetSearchResult).ToImmutableArray();
     }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Runtime.Remoting.Messaging;
 using Tql.Abstractions;
 using Tql.App.Services.Database;
 using Tql.App.Support;
@@ -57,9 +58,34 @@ internal class SearchContext : ISearchContext, IDisposable
     public Task DebounceDelay(CancellationToken cancellationToken) =>
         Task.Delay(TimeSpan.FromMilliseconds(200), cancellationToken);
 
-    public IEnumerable<IMatch> Filter(IEnumerable<IMatch> matches) => Filter(matches, false);
+    public Task<IEnumerable<IMatch>> FilterAsync(
+        IEnumerable<IMatch> matches,
+        int? maxResults = null
+    )
+    {
+        // Create a copy of the list so we don't enumerate it on the background thread.
+        var matchList = matches.ToList();
 
-    public IEnumerable<IMatch> Filter(IEnumerable<IMatch> matches, bool internalCall)
+        return Task.Run(() => DoFilter(matchList, maxResults, false), CancellationToken);
+    }
+
+    public IEnumerable<IMatch> Filter(IEnumerable<IMatch> matches, int? maxResults = null) =>
+        Filter(matches, maxResults, false);
+
+    public IEnumerable<IMatch> Filter(
+        IEnumerable<IMatch> matches,
+        int? maxResults,
+        bool internalCall
+    )
+    {
+        return DoFilter(matches, maxResults, internalCall);
+    }
+
+    private IEnumerable<IMatch> DoFilter(
+        IEnumerable<IMatch> matches,
+        int? maxResults,
+        bool internalCall
+    )
     {
         if (!internalCall)
             IsFiltered = true;
@@ -82,33 +108,10 @@ internal class SearchContext : ISearchContext, IDisposable
             }
         );
 
-        results.Sort(
-            (a, b) =>
-            {
-                int result = a.Penalty!.Value.CompareTo(b.Penalty!.Value);
-                if (result != 0)
-                    return result;
+        results.Sort(SearchResultComparer.Instance);
 
-                if (a.TextMatch?.Ranges.Length > 0 && b.TextMatch?.Ranges.Length > 0)
-                {
-                    result = a.TextMatch!.Ranges[0].Offset.CompareTo(b.TextMatch!.Ranges[0].Offset);
-                    if (result != 0)
-                        return result;
-                }
-
-                result = string.Compare(
-                    a.SimpleText,
-                    b.SimpleText,
-                    StringComparison.CurrentCultureIgnoreCase
-                );
-                if (result != 0)
-                    return result;
-
-                return -a.LastAccessed
-                    .GetValueOrDefault()
-                    .CompareTo(b.LastAccessed.GetValueOrDefault());
-            }
-        );
+        if (maxResults.HasValue)
+            return results.Take(maxResults.Value).Select(p => p.Match);
 
         return results.Select(p => p.Match);
     }
@@ -218,5 +221,36 @@ internal class SearchContext : ISearchContext, IDisposable
     {
         _cts.Cancel();
         _cts.Dispose();
+    }
+
+    private class SearchResultComparer : IComparer<SearchResult>
+    {
+        public static readonly SearchResultComparer Instance = new();
+
+        public int Compare(SearchResult a, SearchResult b)
+        {
+            int result = a.Penalty!.Value.CompareTo(b.Penalty!.Value);
+            if (result != 0)
+                return result;
+
+            if (a.TextMatch?.Ranges.Length > 0 && b.TextMatch?.Ranges.Length > 0)
+            {
+                result = a.TextMatch!.Ranges[0].Offset.CompareTo(b.TextMatch!.Ranges[0].Offset);
+                if (result != 0)
+                    return result;
+            }
+
+            result = string.Compare(
+                a.SimpleText,
+                b.SimpleText,
+                StringComparison.CurrentCultureIgnoreCase
+            );
+            if (result != 0)
+                return result;
+
+            return -a.LastAccessed
+                .GetValueOrDefault()
+                .CompareTo(b.LastAccessed.GetValueOrDefault());
+        }
     }
 }
