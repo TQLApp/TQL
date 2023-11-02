@@ -9,7 +9,8 @@
     xmlns:local="clr-namespace:Tql.Plugins.Jira.ConfigurationUI"
     mc:Ignorable="d"
     d:DesignHeight="450"
-    d:DesignWidth="800" d:DataContext="{d:DesignInstance local:ConfigurationDto}">
+    d:DesignWidth="800"
+    d:DataContext="{d:DesignInstance local:ConfigurationDto}">
     <GroupBox
         Header="{x:Static app:Labels.ConfigurationControl_Connections}"
         Padding="4">
@@ -71,7 +72,8 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <Label Content="{x:Static app:Labels.ConfigurationControl_NameLabel}" />
+                <Label
+                    Content="{x:Static app:Labels.ConfigurationControl_NameLabel}" />
                 <TextBox
                     x:Name="_name"
                     Grid.Column="1"
@@ -106,7 +108,8 @@
                     <Hyperlink
                         x:Name="_passwordDocumentation"
                         Click="_passwordDocumentation_Click">
-                        <Run Text="{x:Static app:Labels.ConfigurationControl_Documentation}"/>
+                        <Run
+                            Text="{x:Static app:Labels.ConfigurationControl_Documentation}" />
                     </Hyperlink>
                 </TextBlock>
 
@@ -126,7 +129,7 @@
                     Grid.Column="1"
                     Grid.ColumnSpan="2"
                     TextWrapping="Wrap"
-                    Text="{x:Static app:Labels.ConfigurationControl_BasicCredentialsDocumentation}"/>
+                    Text="{x:Static app:Labels.ConfigurationControl_BasicCredentialsDocumentation}" />
 
                 <StackPanel
                     Grid.Column="3"

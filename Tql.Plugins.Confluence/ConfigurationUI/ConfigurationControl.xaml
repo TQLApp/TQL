@@ -129,7 +129,7 @@
                     Grid.Column="1"
                     Grid.ColumnSpan="2"
                     TextWrapping="Wrap"
-                    Text="{x:Static app:Labels.ConfigurationControl_BasicCredentialsDocumentation}"/>
+                    Text="{x:Static app:Labels.ConfigurationControl_BasicCredentialsDocumentation}" />
 
                 <StackPanel
                     Grid.Column="3"

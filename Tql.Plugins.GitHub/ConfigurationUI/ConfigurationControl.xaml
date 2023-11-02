@@ -9,7 +9,8 @@
     xmlns:local="clr-namespace:Tql.Plugins.GitHub.ConfigurationUI"
     mc:Ignorable="d"
     d:DesignHeight="450"
-    d:DesignWidth="800" d:DataContext="{d:DesignInstance local:ConfigurationDto}">
+    d:DesignWidth="800"
+    d:DataContext="{d:DesignInstance local:ConfigurationDto}">
     <GroupBox
         Header="{x:Static app:Labels.ConfigurationControl_Connections}"
         Padding="4">
@@ -63,7 +64,8 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <Label Content="{x:Static app:Labels.ConfigurationControl_NameLabel}" />
+                <Label
+                    Content="{x:Static app:Labels.ConfigurationControl_NameLabel}" />
                 <TextBox
                     x:Name="_name"
                     Grid.Column="1"

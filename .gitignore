@@ -3,3 +3,5 @@
 /*/obj
 /nuget.config
 *.user
+/node_modules
+/package-lock.json
