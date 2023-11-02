@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using Tql.Abstractions;
+﻿using Tql.Abstractions;
 using Tql.Plugins.Confluence.Data;
 using Tql.Plugins.Confluence.Services;
 using Tql.Plugins.Confluence.Support;
@@ -13,21 +12,18 @@ internal class SpacesType : IMatchType
     private readonly ICache<ConfluenceData> _cache;
     private readonly ConfigurationManager _configurationManager;
     private readonly IconCacheManager _iconCacheManager;
-    private readonly ILogger<SpacesMatch> _spacesLogger;
 
     public Guid Id => TypeIds.Spaces.Id;
 
     public SpacesType(
         ICache<ConfluenceData> cache,
         ConfigurationManager configurationManager,
-        IconCacheManager iconCacheManager,
-        ILogger<SpacesMatch> spacesLogger
+        IconCacheManager iconCacheManager
     )
     {
         _cache = cache;
         _configurationManager = configurationManager;
         _iconCacheManager = iconCacheManager;
-        _spacesLogger = spacesLogger;
     }
 
     public IMatch? Deserialize(string json)
@@ -39,12 +35,11 @@ internal class SpacesType : IMatchType
             return null;
 
         return new SpacesMatch(
-            MatchUtils.GetMatchLabel("Confluence Space", configuration, dto.Url),
+            MatchUtils.GetMatchLabel(Labels.SpacesType_Label, configuration, dto.Url),
             dto.Url,
             _cache,
             _iconCacheManager,
-            _configurationManager,
-            _spacesLogger
+            _configurationManager
         );
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Tql.Plugins.Jira.Categories;
+using Tql.Utilities;
 
 namespace Tql.Plugins.Jira.Support;
 
@@ -10,7 +11,7 @@ internal static class MatchUtils
         {
             var connection = configuration.Connections.Single(p => p.Url == url);
 
-            return $"{label} ({connection.Name})";
+            return MatchText.ConnectionLabel(label, connection.Name);
         }
 
         return label;
@@ -53,19 +54,19 @@ internal static class MatchUtils
         return url;
     }
 
-    public static string GetBoardLabel(BoardMatchDto dto)
-    {
-        if (dto.MatchType == BoardMatchType.Board)
+    public static string GetBoardLabel(BoardMatchDto dto) =>
+        dto.MatchType switch
         {
-            switch (dto.ProjectType)
-            {
-                case BoardProjectType.ClassicKanban:
-                    return "Kanban board";
-                case BoardProjectType.ClassicScrum:
-                    return "Active sprints";
-            }
-        }
-
-        return dto.MatchType.ToString();
-    }
+            BoardMatchType.Backlog => Labels.MatchUtils_Backlog,
+            BoardMatchType.Board
+                => dto.ProjectType switch
+                {
+                    BoardProjectType.TeamManaged => Labels.MatchUtils_Board,
+                    BoardProjectType.ClassicScrum => Labels.MatchUtils_ActiveSprints,
+                    BoardProjectType.ClassicKanban => Labels.MatchUtils_KanbanBoard,
+                    _ => throw new ArgumentOutOfRangeException()
+                },
+            BoardMatchType.Timeline => Labels.MatchUtils_Timeline,
+            _ => throw new ArgumentOutOfRangeException()
+        };
 }

@@ -4,7 +4,7 @@ namespace Tql.Plugins.Demo.Categories;
 
 internal class DemoesMatch : ISearchableMatch, ISerializableMatch
 {
-    public string Text => "Demo Plugin";
+    public string Text => Labels.DemoesMatch_Label;
     public ImageSource Icon => Images.SpaceShuttle;
     public MatchTypeId TypeId => TypeIds.Demoes;
 

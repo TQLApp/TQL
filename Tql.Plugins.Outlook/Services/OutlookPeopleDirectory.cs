@@ -9,7 +9,7 @@ internal class OutlookPeopleDirectory : IPeopleDirectory
     private readonly ICache<OutlookData> _cache;
 
     public string Id => Encryption.Sha1Hash(OutlookPlugin.Id.ToString());
-    public string Name => "Outlook";
+    public string Name => Labels.OutlookPeopleDirectory_Label;
 
     public OutlookPeopleDirectory(ICache<OutlookData> cache)
     {

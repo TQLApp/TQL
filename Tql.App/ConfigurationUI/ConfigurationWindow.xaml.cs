@@ -29,7 +29,10 @@ internal partial class ConfigurationWindow
 
     private void Window_Loaded(object sender, RoutedEventArgs e)
     {
-        var rootNode = AddCategory("Application", GetAppConfigurationPages());
+        var rootNode = AddCategory(
+            Labels.ConfigurationCategory_Application,
+            GetAppConfigurationPages()
+        );
 
         foreach (
             var plugin in _pluginManager.Plugins.OrderBy(

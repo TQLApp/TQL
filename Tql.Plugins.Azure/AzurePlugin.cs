@@ -22,7 +22,7 @@ public class AzurePlugin : ITqlPlugin
     private IServiceProvider? _serviceProvider;
 
     Guid ITqlPlugin.Id => Id;
-    public string Title => "Azure Portal";
+    public string Title => Labels.AzurePlugin_Title;
 
     public AzurePlugin()
     {

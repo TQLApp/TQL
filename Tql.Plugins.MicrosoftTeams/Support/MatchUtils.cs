@@ -1,5 +1,6 @@
 ﻿using Tql.Abstractions;
 using Tql.Plugins.MicrosoftTeams.Services;
+using Tql.Utilities;
 
 namespace Tql.Plugins.MicrosoftTeams.Support;
 
@@ -16,7 +17,7 @@ internal static class MatchUtils
         {
             var connection = peopleDirectoryManager.Directories.Single(p => p.Id == id);
 
-            return $"{label} ({connection.Name})";
+            return MatchText.ConnectionLabel(label, connection.Name);
         }
 
         return label;

@@ -16,7 +16,7 @@ internal class JiraPeopleDirectory : IPeopleDirectory
         _api = api;
 
         Id = Encryption.Sha1Hash($"{JiraPlugin.Id}/{connection.Id}");
-        Name = $"JIRA - {connection.Name}";
+        Name = string.Format(Labels.JiraPeopleDirectory_Title, connection.Name);
     }
 
     public async Task<ImmutableArray<IPerson>> Find(

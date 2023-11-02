@@ -10,7 +10,7 @@ internal class EmailsMatch : ISearchableMatch, ISerializableMatch
 
     private readonly IPeopleDirectory _peopleDirectory;
 
-    public string Text => "Email";
+    public string Text => Labels.EmailsMatch_Label;
     public ImageSource Icon => Images.Outlook;
     public MatchTypeId TypeId => TypeIds.Emails;
 

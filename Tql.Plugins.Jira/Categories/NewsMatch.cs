@@ -40,7 +40,7 @@ internal class NewsMatch : CachedMatch<JiraData>, ISerializableMatch
                     project.Name,
                     project.Id,
                     NewMatchType.Query,
-                    "Query",
+                    Labels.NewsMatch_Query,
                     null,
                     null
                 ),

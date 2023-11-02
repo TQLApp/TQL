@@ -29,7 +29,7 @@ internal class PipelinesType : IMatchType
             return null;
 
         return new PipelinesMatch(
-            MatchUtils.GetMatchLabel("Azure Pipeline", configuration, dto.Url),
+            MatchUtils.GetMatchLabel(Labels.PipelinesType_Label, configuration, dto.Url),
             dto.Url,
             _cache
         );

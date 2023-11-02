@@ -35,7 +35,7 @@ internal class NewsType : IMatchType
             return null;
 
         return new NewsMatch(
-            MatchUtils.GetMatchLabel("Azure New", configuration, dto.Url),
+            MatchUtils.GetMatchLabel(Labels.NewsType_Label, configuration, dto.Url),
             dto.Url,
             _cache,
             _iconManager

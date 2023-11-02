@@ -1,48 +1,60 @@
-﻿<utilities:BaseWindow x:Class="Tql.App.Services.InteractiveAuthenticationWindow"
-                    x:ClassModifier="internal"
-                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                    xmlns:utilities="clr-namespace:Tql.Utilities;assembly=Tql.Utilities"
-                    mc:Ignorable="d"
-                    Title="Techie's Quick Launcher"
-                    WindowStartupLocation="CenterScreen"
-                    ResizeMode="NoResize"
-                    Icon="pack://application:,,,/Tql.App;component/mainicon.ico"
-                    Height="175" Width="400">
+﻿<utilities:BaseWindow
+    x:Class="Tql.App.Services.InteractiveAuthenticationWindow"
+    x:ClassModifier="internal"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:app="clr-namespace:Tql.App"
+    xmlns:utilities="clr-namespace:Tql.Utilities;assembly=Tql.Utilities"
+    mc:Ignorable="d"
+    Title="{x:Static app:Labels.ApplicationTitle}"
+    WindowStartupLocation="CenterScreen"
+    ResizeMode="NoResize"
+    Icon="pack://application:,,,/Tql.App;component/mainicon.ico"
+    Height="175"
+    Width="400">
     <Grid Margin="9">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Image Source="pack://application:,,,/Tql.App;component/Resources/Radar.png"
-               Height="64"
-               Margin="0,0,10,0"
-               VerticalAlignment="Top"/>
+        <Image
+            Source="pack://application:,,,/Tql.App;component/Resources/Radar.png"
+            Height="64"
+            Margin="0,0,10,0"
+            VerticalAlignment="Top" />
 
-        <StackPanel Orientation="Vertical"
-                    Grid.Column="1">
-            <TextBlock Margin="0,0,0,4" FontWeight="Bold">The following resource requires your credentials:</TextBlock>
+        <StackPanel
+            Orientation="Vertical"
+            Grid.Column="1">
+            <TextBlock
+                Margin="0,0,0,4"
+                FontWeight="Bold"
+                Text="{x:Static app:Labels.InteractiveAuthenticationWindow_TheFollowingResourceRequiresYourCredentialsLabel}" />
             <TextBlock x:Name="_plugin">PLUGIN</TextBlock>
         </StackPanel>
 
-        <StackPanel Orientation="Horizontal"
-                    Grid.Row="1"
-                    Grid.Column="1"
-                    HorizontalAlignment="Right">
-            <Button x:Name="_acceptButton" Content="OK"
-                    Margin="3"
-                    IsDefault="true"
-                    Click="_acceptButton_Click"/>
-            <Button Content="Cancel"
-                    Margin="3"
-                    IsCancel="true"/>
+        <StackPanel
+            Orientation="Horizontal"
+            Grid.Row="1"
+            Grid.Column="1"
+            HorizontalAlignment="Right">
+            <Button
+                x:Name="_acceptButton"
+                Content="{x:Static app:Labels.Button_OK}"
+                Margin="3"
+                IsDefault="true"
+                Click="_acceptButton_Click" />
+            <Button
+                Content="{x:Static app:Labels.Button_Cancel}"
+                Margin="3"
+                IsCancel="true" />
         </StackPanel>
     </Grid>
 </utilities:BaseWindow>

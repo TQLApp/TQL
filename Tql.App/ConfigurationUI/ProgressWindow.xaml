@@ -1,39 +1,44 @@
-﻿<utilities:BaseWindow x:Class="Tql.App.ConfigurationUI.ProgressWindow"
-                      x:ClassModifier="internal"
-                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                      xmlns:local="clr-namespace:Tql.App.ConfigurationUI"
-                      xmlns:utilities="clr-namespace:Tql.Utilities;assembly=Tql.Utilities"
-                      WindowStartupLocation="CenterOwner"
-                      ResizeMode="CanResize"
-                      mc:Ignorable="d"
-                      Title="Progress" Width="500" Height="300"
-                      Loaded="Window_Loaded"
-                      Unloaded="Window_Unloaded"
-                      Closing="Window_Closing">
-    <Grid Margin="4">
+﻿<utilities:BaseWindow
+    x:Class="Tql.App.ConfigurationUI.ProgressWindow"
+    x:ClassModifier="internal"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:app="clr-namespace:Tql.App"
+    xmlns:utilities="clr-namespace:Tql.Utilities;assembly=Tql.Utilities"
+    WindowStartupLocation="CenterOwner"
+    ResizeMode="CanResize"
+    mc:Ignorable="d"
+    Title="{x:Static app:Labels.ProgressWindow_Title}"
+    Width="500"
+    Height="300"
+    Loaded="Window_Loaded"
+    Unloaded="Window_Unloaded"
+    Closing="Window_Closing">
+    <Grid Margin="9">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBox x:Name="_log"
-                 IsReadOnly="true" 
-                 TextWrapping="Wrap"
-                 HorizontalScrollBarVisibility="Disabled"
-                 VerticalScrollBarVisibility="Auto"
-                 Margin="3"
-                 FontFamily="Consolas"/>
+        <TextBox
+            x:Name="_log"
+            IsReadOnly="true"
+            TextWrapping="Wrap"
+            HorizontalScrollBarVisibility="Disabled"
+            VerticalScrollBarVisibility="Auto"
+            Margin="3"
+            FontFamily="Consolas" />
 
-        <Button x:Name="_close"
-                Grid.Row="1"
-                IsDefault="true"
-                IsCancel="true"
-                Content="Close"
-                HorizontalAlignment="Right"
-                Margin="3"
-                IsEnabled="false" />
+        <Button
+            x:Name="_close"
+            Grid.Row="1"
+            IsDefault="true"
+            IsCancel="true"
+            Content="Close"
+            HorizontalAlignment="Right"
+            Margin="3"
+            IsEnabled="false" />
     </Grid>
 </utilities:BaseWindow>

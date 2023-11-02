@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Tql.Abstractions;
 using Tql.Plugins.AzureDevOps.Services;
+using Tql.Utilities;
 
 namespace Tql.Plugins.AzureDevOps.Categories;
 
@@ -11,8 +12,12 @@ internal class NewMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
     public string Text =>
         _dto.Type switch
         {
-            NewMatchType.WorkItem => $"{_dto.ProjectName} › New {_dto.Name}",
-            NewMatchType.Query => $"{_dto.ProjectName} › New Query",
+            NewMatchType.WorkItem
+                => MatchText.Path(
+                    _dto.ProjectName,
+                    string.Format(Labels.NewMatch_NewIssueType, _dto.Name)
+                ),
+            NewMatchType.Query => MatchText.Path(_dto.ProjectName, Labels.NewMatch_NewQuery),
             _ => throw new ArgumentOutOfRangeException()
         };
 

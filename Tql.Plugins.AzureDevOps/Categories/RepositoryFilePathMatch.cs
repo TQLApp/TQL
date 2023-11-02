@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Tql.Abstractions;
+using Tql.Utilities;
 
 namespace Tql.Plugins.AzureDevOps.Categories;
 
@@ -7,7 +8,9 @@ internal class RepositoryFilePathMatch : IRunnableMatch, ISerializableMatch, ICo
 {
     private readonly RepositoryFilePathMatchDto _dto;
 
-    public string Text => _dto.FilePath;
+    public string Text =>
+        MatchText.Path(_dto.Repository.ProjectName, _dto.Repository.RepositoryName, _dto.FilePath);
+
     public ImageSource Icon => Images.Document;
     public MatchTypeId TypeId => TypeIds.RepositoryFilePath;
 

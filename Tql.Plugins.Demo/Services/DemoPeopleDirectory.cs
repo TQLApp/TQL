@@ -12,7 +12,7 @@ internal class DemoPeopleDirectory : IPeopleDirectory
     private readonly ImmutableArray<IPerson> _people;
 
     public string Id => Encryption.Sha1Hash(DemoPlugin.Id.ToString());
-    public string Name => "Demo";
+    public string Name => Labels.DemoPeopleDirectory_Label;
 
     public DemoPeopleDirectory()
     {
@@ -20,7 +20,7 @@ internal class DemoPeopleDirectory : IPeopleDirectory
             from name in PersonNames.Generate().Take(45_000)
             select new Person(
                 $"{name.Surname}, {name.Name}",
-                WhitespaceRe.Replace($"{name.Name}.{name.Surname}@outlook.com", "")
+                WhitespaceRe.Replace($"{name.Name}.{name.Surname}@example.com", "")
             )
         ).ToImmutableArray<IPerson>();
     }

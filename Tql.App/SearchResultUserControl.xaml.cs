@@ -78,21 +78,21 @@ internal partial class SearchResultUserControl
             {
                 AddIcon(
                     Images.Run,
-                    "Match can be launched",
-                    "This match is for something you can launch. Click on it, or press Enter to launch the match."
+                    Labels.SearchResultControl_MatchCanBeLaunched,
+                    Labels.SearchResultControl_MatchCanBeLaunchedHelpText
                 );
             }
             if (searchResult.Match is ICopyableMatch)
             {
-                AddIcon(Images.Copy, content: "Copy a link to the match to the clipboard.")
+                AddIcon(Images.Copy, content: Labels.SearchResultControl_CopyMatchLinkHelpText)
                     .AttachOnClickHandler(OnCopyClicked);
             }
             if (searchResult.Match is ISearchableMatch)
             {
                 AddIcon(
                     Images.Category,
-                    "Match contains sub items",
-                    "This match is a category and can it self be searched. Press Tab to enter the category to search in it."
+                    Labels.SearchResultControl_MatchContainsSubItems,
+                    Labels.SearchResultControl_MatchContainsSubItemsHelpText
                 );
             }
         }
@@ -104,10 +104,13 @@ internal partial class SearchResultUserControl
         {
             var pin = AddIcon(
                 Images.Pin,
-                "Pin search result",
-                "Pin the search result to have them sorted to the top of the list."
+                Labels.SearchResultControl_PinSearchResult,
+                Labels.SearchResultControl_PinSearchResultHelpText
             );
-            var pinOff = AddIcon(Images.PinOff, content: "Unpin search result");
+            var pinOff = AddIcon(
+                Images.PinOff,
+                content: Labels.SearchResultControl_UnpinSearchResultHelpText
+            );
 
             if (searchResult.IsPinned)
             {
@@ -139,7 +142,10 @@ internal partial class SearchResultUserControl
         if (searchResult.HistoryId.HasValue)
         {
             var star = AddIcon(Images.Star);
-            var dismiss = AddIcon(Images.Dismiss, content: "Remove match from the history");
+            var dismiss = AddIcon(
+                Images.Dismiss,
+                content: Labels.SearchResultControl_RemoveMatchFromHistoryHelpText
+            );
 
             star.MouseEnter += (_, _) =>
             {

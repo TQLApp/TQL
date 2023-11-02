@@ -16,7 +16,7 @@ internal partial class PackageSourcesConfigurationControl : IConfigurationPage
         (PackageManagerConfigurationDto)base.DataContext;
 
     public Guid PageId => Constants.PackageManagerPageId;
-    public string Title => "Package Sources";
+    public string Title => Labels.PackageSourcesConfiguration_PackageSources;
     public ConfigurationPageMode PageMode => ConfigurationPageMode.AutoSize;
 
     public PackageSourcesConfigurationControl(IConfigurationManager configurationManager, IUI ui)
@@ -60,7 +60,7 @@ internal partial class PackageSourcesConfigurationControl : IConfigurationPage
             switch (
                 _ui.ShowConfirmation(
                     this,
-                    "Do you want to add a new item?",
+                    Labels.Confirmation_AddNewItem,
                     buttons: DialogCommonButtons.Yes
                         | DialogCommonButtons.No
                         | DialogCommonButtons.Cancel

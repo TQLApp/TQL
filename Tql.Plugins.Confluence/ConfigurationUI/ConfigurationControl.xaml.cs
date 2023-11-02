@@ -17,7 +17,7 @@ internal partial class ConfigurationControl : IConfigurationPage
     private new ConfigurationDto DataContext => (ConfigurationDto)base.DataContext;
 
     public Guid PageId => ConfluencePlugin.ConfigurationPageId;
-    public string Title => "General";
+    public string Title => Labels.ConfigurationControl_General;
     public ConfigurationPageMode PageMode => ConfigurationPageMode.AutoSize;
 
     public ConfigurationControl(
@@ -71,7 +71,7 @@ internal partial class ConfigurationControl : IConfigurationPage
             switch (
                 _ui.ShowConfirmation(
                     this,
-                    "Do you want to add a new item?",
+                    Labels.Confirm_DoYouWantToAddNewItem,
                     buttons: DialogCommonButtons.Yes
                         | DialogCommonButtons.No
                         | DialogCommonButtons.Cancel
@@ -99,7 +99,11 @@ internal partial class ConfigurationControl : IConfigurationPage
             }
             catch (Exception ex)
             {
-                _ui.ShowError(this, $"Failed to connect to {connection.Name}", ex);
+                _ui.ShowError(
+                    this,
+                    string.Format(Labels.Alert_FailedToConnect, connection.Name),
+                    ex
+                );
                 return SaveStatus.Failure;
             }
         }

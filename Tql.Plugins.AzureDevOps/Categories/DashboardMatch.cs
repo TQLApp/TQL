@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Tql.Abstractions;
+using Tql.Utilities;
 
 namespace Tql.Plugins.AzureDevOps.Categories;
 
@@ -7,7 +8,12 @@ internal class DashboardMatch : IRunnableMatch, ISerializableMatch, ICopyableMat
 {
     private readonly DashboardMatchDto _dto;
 
-    public string Text => $"{_dto.ProjectName} › {_dto.DashboardName} Dashboard";
+    public string Text =>
+        MatchText.Path(
+            _dto.ProjectName,
+            string.Format(Labels.DashboardMatch_Label, _dto.DashboardName)
+        );
+
     public ImageSource Icon => Images.Dashboards;
     public MatchTypeId TypeId => TypeIds.Dashboard;
 

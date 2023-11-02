@@ -26,7 +26,7 @@ internal class SearchesType : IMatchType
             return null;
 
         return new SearchesMatch(
-            MatchUtils.GetMatchLabel("Confluence Search", configuration, dto.Url),
+            MatchUtils.GetMatchLabel(Labels.SearchesType_Label, configuration, dto.Url),
             dto.Url,
             _configurationManager
         );

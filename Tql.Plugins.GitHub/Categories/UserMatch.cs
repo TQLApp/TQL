@@ -19,7 +19,7 @@ internal class UserMatch
     public string Text => _dto.Login;
     public ImageSource Icon => Images.User;
     public MatchTypeId TypeId => TypeIds.User;
-    public string SearchHint => "Find repositories";
+    public string SearchHint => Labels.UserMatch_SearchHint;
 
     public UserMatch(UserMatchDto dto, GitHubApi api)
     {

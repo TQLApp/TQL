@@ -8,7 +8,7 @@ internal partial class ConfigurationControl : IConfigurationPage
     private readonly IConfigurationManager _configurationManager;
 
     public Guid PageId => MicrosoftTeamsPlugin.ConfigurationPageId;
-    public string Title => "General";
+    public string Title => Labels.ConfigurationControl_General;
     public ConfigurationPageMode PageMode => ConfigurationPageMode.AutoSize;
 
     public ConfigurationControl(

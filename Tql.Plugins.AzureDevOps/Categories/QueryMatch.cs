@@ -13,8 +13,8 @@ internal class QueryMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, 
     private readonly AzureDevOpsApi _api;
     private readonly AzureWorkItemIconManager _iconManager;
 
-    public string Text =>
-        System.IO.Path.Combine(_dto.ProjectName, _dto.Path.Trim('\\')).Replace('\\', '/');
+    public string Text => MatchText.Path(_dto.ProjectName, _dto.Path.Trim('\\').Replace('\\', '/'));
+
     public ImageSource Icon => Images.Boards;
     public MatchTypeId TypeId => TypeIds.Query;
 

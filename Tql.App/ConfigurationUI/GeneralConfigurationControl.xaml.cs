@@ -9,6 +9,14 @@ namespace Tql.App.ConfigurationUI;
 
 internal partial class GeneralConfigurationControl : IConfigurationPage
 {
+    private static readonly List<LabeledValue<Theme>> ThemeLabels =
+        new()
+        {
+            LabeledValue.Create(Labels.ThemeSystem, Theme.System),
+            LabeledValue.Create(Labels.ThemeLight, Theme.Light),
+            LabeledValue.Create(Labels.ThemeDark, Theme.Dark)
+        };
+
     private readonly Settings _settings;
     private readonly IUI _ui;
     private readonly HotKeyService _hotKeyService;
@@ -18,7 +26,7 @@ internal partial class GeneralConfigurationControl : IConfigurationPage
     private bool _requireRestart;
 
     public Guid PageId => Guid.Parse("df92b623-a629-465a-bddf-8f36ef6d4fdd");
-    public string Title => "General";
+    public string Title => Labels.GeneralConfiguration_General;
     public ConfigurationPageMode PageMode => ConfigurationPageMode.Scroll;
 
     public GeneralConfigurationControl(Settings settings, IUI ui, HotKeyService hotKeyService)
@@ -64,11 +72,12 @@ internal partial class GeneralConfigurationControl : IConfigurationPage
                 )
         );
 
-        _theme.ItemsSource = Enum.GetValues(typeof(Theme));
-        _theme.SelectedValue = ThemeManager.ParseTheme(settings.Theme);
+        _theme.ItemsSource = ThemeLabels;
+
+        _theme.SelectedValue = GetThemeLabel(ThemeManager.ParseTheme(settings.Theme));
         ConfigureResetButton(
             _resetTheme,
-            () => _theme.SelectedValue = ThemeManager.ParseTheme(null)
+            () => _theme.SelectedValue = GetThemeLabel(ThemeManager.ParseTheme(null))
         );
 
         _outerGlow.Value = _settings.TextOuterGlowSize ?? Settings.DefaultTextOuterGlowSize;
@@ -94,6 +103,8 @@ internal partial class GeneralConfigurationControl : IConfigurationPage
         );
     }
 
+    private object GetThemeLabel(Theme theme) => ThemeLabels.Single(p => p.Value == theme);
+
     public void Initialize(IConfigurationPageContext context)
     {
         context.Closed += (_, _) =>
@@ -102,8 +113,8 @@ internal partial class GeneralConfigurationControl : IConfigurationPage
             {
                 _ui.ShowConfirmation(
                     this,
-                    "Restart required",
-                    "You've changed settings that require a restart of the application.",
+                    Labels.GeneralConfiguration_RestartRequired,
+                    Labels.GeneralConfiguration_RestartRequiredHelpText,
                     DialogCommonButtons.OK,
                     DialogIcon.Information
                 );
@@ -164,9 +175,8 @@ internal partial class GeneralConfigurationControl : IConfigurationPage
         {
             _ui.ShowConfirmation(
                 this,
-                "Unable to set hot key",
-                "The hot key could not be configured. The combination might be "
-                    + "invalid or it may already be in use. Please use a different key combination and try again.",
+                Labels.GeneralConfiguration_UnableToSetHotKey,
+                Labels.GeneralConfiguration_UnableToSetHotKeyHelpText,
                 DialogCommonButtons.OK,
                 DialogIcon.Error
             );
@@ -201,7 +211,7 @@ internal partial class GeneralConfigurationControl : IConfigurationPage
 
         _settings.MainWindowTint = mainWindowTint;
 
-        var theme = (Theme)_theme.SelectedValue;
+        var theme = LabeledValue.GetValue<Theme>(_theme.SelectedValue);
         var newTheme = theme == Theme.System ? null : theme.ToString();
         if (_settings.Theme != newTheme)
         {
@@ -231,12 +241,5 @@ internal partial class GeneralConfigurationControl : IConfigurationPage
 
             _settings.HotKey = hotKey == HotKey.Default ? null : hotKey.ToJson();
         }
-    }
-
-    private void _mainWindowTintReset_Click(object sender, RoutedEventArgs e)
-    {
-        _mainWindowTint.SelectedColor = BlurWindow.ParseMainWindowTint(
-            Settings.DefaultMainWindowTint
-        );
     }
 }

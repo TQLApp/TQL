@@ -32,7 +32,7 @@ internal class OutlookClient : IDisposable
         }
         catch (System.Exception ex)
         {
-            throw new OutlookCacheUpdateException("Outlook isn't running", ex);
+            throw new OutlookCacheUpdateException(Labels.OutlookClient_OutlookIsNotRunning, ex);
         }
 
         _ns = _application.GetNamespace("mapi");

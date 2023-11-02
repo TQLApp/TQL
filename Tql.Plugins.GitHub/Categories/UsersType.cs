@@ -28,7 +28,7 @@ internal class UsersType : IMatchType
             return null;
 
         return new UsersMatch(
-            MatchUtils.GetMatchLabel("GitHub User", configuration, dto),
+            MatchUtils.GetMatchLabel(Labels.UsersType_Label, configuration, dto),
             dto,
             _api
         );

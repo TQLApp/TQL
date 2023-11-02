@@ -39,7 +39,12 @@ internal abstract class IssuesTypeBase : IMatchType
 
         return CreateMatch(
             MatchUtils.GetMatchLabel(
-                $"GitHub {(_type == IssueTypeQualifier.Issue ? "Issue" : "Pull Request")}",
+                _type == IssueTypeQualifier.Issue
+                    ? Labels.IssuesTypeBase_IssueLabel
+                    : Labels.IssuesTypeBase_PullRequestLabel,
+                _type == IssueTypeQualifier.Issue
+                    ? Labels.IssuesTypeBase_MyIssueLabel
+                    : Labels.IssuesTypeBase_MyPullRequestLabel,
                 configuration,
                 dto
             ),

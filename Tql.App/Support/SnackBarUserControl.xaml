@@ -1,20 +1,23 @@
-﻿<UserControl x:Class="Tql.App.Support.SnackBarUserControl"
-             x:ClassModifier="internal"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:Tql.App.Support"
-             IsVisibleChanged="UserControl_IsVisibleChanged">
+﻿<UserControl
+    x:Class="Tql.App.Support.SnackBarUserControl"
+    x:ClassModifier="internal"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Tql.App.Support"
+    IsVisibleChanged="UserControl_IsVisibleChanged">
     <UserControl.Resources>
-        <local:HeightToRadiusConverter x:Key="HeightToRadiusConverter"/>
+        <local:HeightToRadiusConverter x:Key="HeightToRadiusConverter" />
     </UserControl.Resources>
-    
-    <Border Background="#e0000000"
-            CornerRadius="{Binding ActualHeight, RelativeSource={RelativeSource Self}, Converter={StaticResource HeightToRadiusConverter}}">
-        <TextBlock Text="{Binding Text, RelativeSource={RelativeSource AncestorType=local:SnackBarUserControl}}"
-                   FontSize="14pt"
-                   Foreground="#b0ffffff"
-                   Padding="28,5,28,8"/>
+
+    <Border
+        Background="#e0000000"
+        CornerRadius="{Binding ActualHeight, RelativeSource={RelativeSource Self}, Converter={StaticResource HeightToRadiusConverter}}">
+        <TextBlock
+            Text="{Binding Text, RelativeSource={RelativeSource AncestorType=local:SnackBarUserControl}}"
+            FontSize="14pt"
+            Foreground="#b0ffffff"
+            Padding="28,5,28,8" />
     </Border>
 </UserControl>

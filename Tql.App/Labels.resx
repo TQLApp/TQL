@@ -1,0 +1,531 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Alert_AnUnexpectedErrorOccurred" xml:space="preserve">
+    <value>An unexpected error occurred</value>
+  </data>
+  <data name="Alert_CopyToClipboard" xml:space="preserve">
+    <value>Copy to Clipboard</value>
+  </data>
+  <data name="Alert_ShowExceptionDetails" xml:space="preserve">
+    <value>Show exception details</value>
+  </data>
+  <data name="ApplicationTitle" xml:space="preserve">
+    <value>Techie's Quick Launcher</value>
+  </data>
+  <data name="Button_Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="Button_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Button_Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="Button_Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Button_OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="Button_Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Button_Update" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="ConfigurationCategory_Application" xml:space="preserve">
+    <value>Application</value>
+  </data>
+  <data name="ConfigurationWindow_Title" xml:space="preserve">
+    <value>Techie's Quick Launcher - Configuration</value>
+  </data>
+  <data name="Confirmation_AddNewItem" xml:space="preserve">
+    <value>Do you want to add a new item?</value>
+  </data>
+  <data name="Error_CouldNotRegisterHotKey" xml:space="preserve">
+    <value>Couldn't register the hot key.</value>
+  </data>
+  <data name="ExceptionCausedBy" xml:space="preserve">
+    <value>=== Caused ===</value>
+  </data>
+  <data name="FeedbackWindow_CreateBugReport" xml:space="preserve">
+    <value>Create Bug Report</value>
+  </data>
+  <data name="FeedbackWindow_CreateFeatureRequest" xml:space="preserve">
+    <value>Create a Feature Request</value>
+  </data>
+  <data name="FeedbackWindow_TechnicalInformationForBugReport" xml:space="preserve">
+    <value>You can use the following technical information in your bug report if you like.</value>
+  </data>
+  <data name="FeedbackWindow_ThankYouForUsingApp" xml:space="preserve">
+    <value>Thank you for using Techie's Quick Launcher.</value>
+  </data>
+  <data name="FeedbackWindow_Title" xml:space="preserve">
+    <value>Feedback</value>
+  </data>
+  <data name="FeedbackWindow_YouCanLeaveFeedbackOnGitHub" xml:space="preserve">
+    <value>If you'd like to leave feedback, you can do so on our GitHub page. You're welcome to leave a bug report or a feature request. You need a GitHub account to do so.</value>
+  </data>
+  <data name="GeneralConfiguration_CacheUpdateIntervalHelpText" xml:space="preserve">
+    <value>Determines how often the cache is updated. Some plugins will cache data for performance. This setting will set the number of minutes after which the cache will be updated.</value>
+  </data>
+  <data name="GeneralConfiguration_CacheUpdateIntervalLabel" xml:space="preserve">
+    <value>Cache update interval:</value>
+  </data>
+  <data name="GeneralConfiguration_CacheUpdateIntervalMinutesLabel" xml:space="preserve">
+    <value>minutes</value>
+  </data>
+  <data name="GeneralConfiguration_Connections" xml:space="preserve">
+    <value>Connections</value>
+  </data>
+  <data name="GeneralConfiguration_HistoryInRootResultsHelpText" xml:space="preserve">
+    <value>Determines the number of days of history that's loaded into the root results.</value>
+  </data>
+  <data name="GeneralConfiguration_HistoryInRootResultsLabel" xml:space="preserve">
+    <value>History in root results:</value>
+  </data>
+  <data name="GeneralConfiguration_HotKeyLabel" xml:space="preserve">
+    <value>Hot key:</value>
+  </data>
+  <data name="GeneralConfiguration_HotKeyResetHelpText" xml:space="preserve">
+    <value>Specify the hot key used to bring up the app.</value>
+  </data>
+  <data name="GeneralConfiguration_MainWindowTintLabel" xml:space="preserve">
+    <value>Main window tint:</value>
+  </data>
+  <data name="GeneralConfiguration_OuterGlowRadiusHelpText" xml:space="preserve">
+    <value>Applies an outer glow to the text and images on the search window. This can increase readability.</value>
+  </data>
+  <data name="GeneralConfiguration_OuterGlowRadiusLabel" xml:space="preserve">
+    <value>Outer glow radius:</value>
+  </data>
+  <data name="GeneralConfiguration_RestartRequired" xml:space="preserve">
+    <value>Restart required</value>
+  </data>
+  <data name="GeneralConfiguration_RestartRequiredHelpText" xml:space="preserve">
+    <value>You've changed settings that require a restart of the application.</value>
+  </data>
+  <data name="GeneralConfiguration_SearchResultFontSizeLabel" xml:space="preserve">
+    <value>Search result font size:</value>
+  </data>
+  <data name="GeneralConfiguration_SearchResultFontSizePointsLabel" xml:space="preserve">
+    <value>points</value>
+  </data>
+  <data name="GeneralConfiguration_ShowOnScreenLabel" xml:space="preserve">
+    <value>Show on screen:</value>
+  </data>
+  <data name="GeneralConfiguration_Telemetry" xml:space="preserve">
+    <value>Telemetry</value>
+  </data>
+  <data name="GeneralConfiguration_ThemeHelpText" xml:space="preserve">
+    <value>Changing the theme requires you to restart the application.</value>
+  </data>
+  <data name="GeneralConfiguration_ThemeLabel" xml:space="preserve">
+    <value>Theme:</value>
+  </data>
+  <data name="GeneralConfiguration_General" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="GeneralConfiguration_TrackAnonymousMetricsHelpText" xml:space="preserve">
+    <value>Only tracks anonymous performance and usage metrics.</value>
+  </data>
+  <data name="GeneralConfiguration_TrackAnonymousMetricsLabel" xml:space="preserve">
+    <value>Track anonymous metrics</value>
+  </data>
+  <data name="GeneralConfiguration_TrackErrorsHelpText" xml:space="preserve">
+    <value>Errors may capture PII (personally identifiable information) data like your user name because of system information that's included automatically when tracking errors.</value>
+  </data>
+  <data name="GeneralConfiguration_TrackErrorsLabel" xml:space="preserve">
+    <value>Track errors</value>
+  </data>
+  <data name="GeneralConfiguration_UnableToSetHotKey" xml:space="preserve">
+    <value>Unable to set hot key</value>
+  </data>
+  <data name="GeneralConfiguration_UnableToSetHotKeyHelpText" xml:space="preserve">
+    <value>The hot key could not be configured. The combination might be invalid or it may already be in use. Please use a different key combination and try again.</value>
+  </data>
+  <data name="HotKeyAddKey" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="HotKeyAlt" xml:space="preserve">
+    <value>Alt</value>
+  </data>
+  <data name="HotKeyBackspaceKey" xml:space="preserve">
+    <value>Backspace</value>
+  </data>
+  <data name="HotKeyBrowserBackKey" xml:space="preserve">
+    <value>Browser Back</value>
+  </data>
+  <data name="HotKeyBrowserFavoritesKey" xml:space="preserve">
+    <value>Browser Favorites</value>
+  </data>
+  <data name="HotKeyBrowserForwardKey" xml:space="preserve">
+    <value>Browser Forward</value>
+  </data>
+  <data name="HotKeyBrowserRefreshKey" xml:space="preserve">
+    <value>Browser Refresh</value>
+  </data>
+  <data name="HotKeyBrowserSearchKey" xml:space="preserve">
+    <value>Browser Search</value>
+  </data>
+  <data name="HotKeyBrowserStartAndHomeKey" xml:space="preserve">
+    <value>Browser Start and Home</value>
+  </data>
+  <data name="HotKeyBrowserStopKey" xml:space="preserve">
+    <value>Browser Stop</value>
+  </data>
+  <data name="HotKeyClearKey" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="HotKeyControl" xml:space="preserve">
+    <value>Ctrl</value>
+  </data>
+  <data name="HotKeyDecimalKey" xml:space="preserve">
+    <value>Decimal</value>
+  </data>
+  <data name="HotKeyDelKey" xml:space="preserve">
+    <value>Del</value>
+  </data>
+  <data name="HotKeyDivideKey" xml:space="preserve">
+    <value>Divide</value>
+  </data>
+  <data name="HotKeyDownArrowKey" xml:space="preserve">
+    <value>Down Arrow</value>
+  </data>
+  <data name="HotKeyEndKey" xml:space="preserve">
+    <value>End</value>
+  </data>
+  <data name="HotKeyEnterKey" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="HotKeyEscKey" xml:space="preserve">
+    <value>Esc</value>
+  </data>
+  <data name="HotKeyExecuteKey" xml:space="preserve">
+    <value>Execute</value>
+  </data>
+  <data name="HotKeyHelpKey" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="HotKeyHomeKey" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="HotKeyInsKey" xml:space="preserve">
+    <value>Ins</value>
+  </data>
+  <data name="HotKeyLeftArrowKey" xml:space="preserve">
+    <value>Left Arrow</value>
+  </data>
+  <data name="HotKeyMultiplyKey" xml:space="preserve">
+    <value>Multiply</value>
+  </data>
+  <data name="HotKeyNextTrackKey" xml:space="preserve">
+    <value>Next Track</value>
+  </data>
+  <data name="HotKeyNumericPadKey" xml:space="preserve">
+    <value>Numeric pad {0}</value>
+  </data>
+  <data name="HotKeyPageDownKey" xml:space="preserve">
+    <value>Page Down</value>
+  </data>
+  <data name="HotKeyPageUpKey" xml:space="preserve">
+    <value>Page Up</value>
+  </data>
+  <data name="HotKeyPauseKey" xml:space="preserve">
+    <value>Pause</value>
+  </data>
+  <data name="HotKeyPlayPauseMediaKey" xml:space="preserve">
+    <value>Play/Pause Media</value>
+  </data>
+  <data name="HotKeyPreviousTrackKey" xml:space="preserve">
+    <value>Previous Track</value>
+  </data>
+  <data name="HotKeyPrintKey" xml:space="preserve">
+    <value>Print</value>
+  </data>
+  <data name="HotKeyPrintScreenKey" xml:space="preserve">
+    <value>Print Screen</value>
+  </data>
+  <data name="HotKeyRightArrowKey" xml:space="preserve">
+    <value>Right Arrow</value>
+  </data>
+  <data name="HotKeySelectKey" xml:space="preserve">
+    <value>Select</value>
+  </data>
+  <data name="HotKeySelectMediaKey" xml:space="preserve">
+    <value>Select Media</value>
+  </data>
+  <data name="HotKeySeparatorKey" xml:space="preserve">
+    <value>Separator</value>
+  </data>
+  <data name="HotKeyShift" xml:space="preserve">
+    <value>Shift</value>
+  </data>
+  <data name="HotKeySpacebarKey" xml:space="preserve">
+    <value>Spacebar</value>
+  </data>
+  <data name="HotKeyStartApplication1Key" xml:space="preserve">
+    <value>Start Application 1</value>
+  </data>
+  <data name="HotKeyStartApplication2Key" xml:space="preserve">
+    <value>Start Application 2</value>
+  </data>
+  <data name="HotKeyStartMailKey" xml:space="preserve">
+    <value>Start Mail</value>
+  </data>
+  <data name="HotKeyStopMediaKey" xml:space="preserve">
+    <value>Stop Media</value>
+  </data>
+  <data name="HotKeySubtractKey" xml:space="preserve">
+    <value>Subtract</value>
+  </data>
+  <data name="HotKeyTabKey" xml:space="preserve">
+    <value>Tab</value>
+  </data>
+  <data name="HotKeyUpArrowKey" xml:space="preserve">
+    <value>Up Arrow</value>
+  </data>
+  <data name="HotKeyVolumeDownKey" xml:space="preserve">
+    <value>Volume Down</value>
+  </data>
+  <data name="HotKeyVolumeMuteKey" xml:space="preserve">
+    <value>Volume Mute</value>
+  </data>
+  <data name="HotKeyVolumeUpKey" xml:space="preserve">
+    <value>Volume Up</value>
+  </data>
+  <data name="HotKeyWindows" xml:space="preserve">
+    <value>Win</value>
+  </data>
+  <data name="InteractiveAuthenticationWindow_FailedToAuthenticate" xml:space="preserve">
+    <value>Failed to authenticate</value>
+  </data>
+  <data name="InteractiveAuthenticationWindow_TheFollowingResourceRequiresYourCredentialsLabel" xml:space="preserve">
+    <value>The following resource requires your credentials:</value>
+  </data>
+  <data name="MainWindow_LaunchRunnablePostfix" xml:space="preserve">
+    <value>matches</value>
+  </data>
+  <data name="MainWindow_LaunchRunnablePrefix" xml:space="preserve">
+    <value>Launch</value>
+  </data>
+  <data name="MainWindow_OpenCategoryPostfix" xml:space="preserve">
+    <value>matches</value>
+  </data>
+  <data name="MainWindow_OpenCategoryPrefix" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="MainWindow_OpenTQL" xml:space="preserve">
+    <value>Open TQL</value>
+  </data>
+  <data name="MainWindow_SearchingToolTip" xml:space="preserve">
+    <value>Searching...</value>
+  </data>
+  <data name="PackageSourcesConfiguration_PackageSources" xml:space="preserve">
+    <value>Package Sources</value>
+  </data>
+  <data name="PackageSourcesConfiguration_PasswordHelpText" xml:space="preserve">
+    <value>If you're using a PAT token to connect to an Azure DevOps private artifacts feed, enter it into the password field and enter the user name part of your email address into the user name field.</value>
+  </data>
+  <data name="PackageSourcesConfiguration_PasswordLabel" xml:space="preserve">
+    <value>Password:</value>
+  </data>
+  <data name="PackageSourcesConfiguration_URL" xml:space="preserve">
+    <value>URL</value>
+  </data>
+  <data name="PackageSourcesConfiguration_URLLabel" xml:space="preserve">
+    <value>URL:</value>
+  </data>
+  <data name="PackageSourcesConfiguration_UserNameLabel" xml:space="preserve">
+    <value>User name:</value>
+  </data>
+  <data name="PluginsConfiguration_Browse" xml:space="preserve">
+    <value>Browse</value>
+  </data>
+  <data name="PluginsConfiguration_Installed" xml:space="preserve">
+    <value>Installed</value>
+  </data>
+  <data name="PluginsConfiguration_InstallLabel" xml:space="preserve">
+    <value>Install</value>
+  </data>
+  <data name="PluginsConfiguration_PluginBy" xml:space="preserve">
+    <value>by</value>
+  </data>
+  <data name="PluginsConfiguration_PluginDownloads" xml:space="preserve">
+    <value>downloads</value>
+  </data>
+  <data name="PluginsConfiguration_Plugins" xml:space="preserve">
+    <value>Plugins</value>
+  </data>
+  <data name="PluginsConfiguration_RemoveLabel" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="PluginsConfiguration_RestartHelpText" xml:space="preserve">
+    <value>Restart Techie's Quick Launcher to complete the installation</value>
+  </data>
+  <data name="PluginsConfiguration_RestartLabel" xml:space="preserve">
+    <value>Restart</value>
+  </data>
+  <data name="ProgressWindow_Title" xml:space="preserve">
+    <value>Progress</value>
+  </data>
+  <data name="SearchManager_SearchFailedWithError" xml:space="preserve">
+    <value>Search failed with an error</value>
+  </data>
+  <data name="SearchManager_SearchFailedWithErrorMessage" xml:space="preserve">
+    <value>Search failed with the following error message:</value>
+  </data>
+  <data name="SearchResultControl_CopyMatchLinkHelpText" xml:space="preserve">
+    <value>Copy a link to the match to the clipboard.</value>
+  </data>
+  <data name="SearchResultControl_MatchCanBeLaunched" xml:space="preserve">
+    <value>Match can be launched</value>
+  </data>
+  <data name="SearchResultControl_MatchCanBeLaunchedHelpText" xml:space="preserve">
+    <value>This match is for something you can launch. Click on it, or press Enter to launch the match.</value>
+  </data>
+  <data name="SearchResultControl_MatchContainsSubItems" xml:space="preserve">
+    <value>Match contains sub items</value>
+  </data>
+  <data name="SearchResultControl_MatchContainsSubItemsHelpText" xml:space="preserve">
+    <value>This match is a category and can it self be searched. Press Tab to enter the category to search in it.</value>
+  </data>
+  <data name="SearchResultControl_PinSearchResult" xml:space="preserve">
+    <value>Pin search result</value>
+  </data>
+  <data name="SearchResultControl_PinSearchResultHelpText" xml:space="preserve">
+    <value>Pin the search result to have them sorted to the top of the list.</value>
+  </data>
+  <data name="SearchResultControl_RemoveMatchFromHistoryHelpText" xml:space="preserve">
+    <value>Remove match from the history</value>
+  </data>
+  <data name="SearchResultControl_UnpinSearchResultHelpText" xml:space="preserve">
+    <value>Unpin search result</value>
+  </data>
+  <data name="ThemeDark" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="ThemeLight" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="ThemeSystem" xml:space="preserve">
+    <value>System</value>
+  </data>
+</root>

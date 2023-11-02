@@ -29,7 +29,7 @@ internal class RepositoriesType : IMatchType
             return null;
 
         return new RepositoriesMatch(
-            MatchUtils.GetMatchLabel("Azure Repository", configuration, dto.Url),
+            MatchUtils.GetMatchLabel(Labels.RepositoriesType_Label, configuration, dto.Url),
             dto.Url,
             _cache
         );

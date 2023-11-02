@@ -28,7 +28,7 @@ internal class PortalsType : IMatchType
             return null;
 
         return new PortalsMatch(
-            MatchUtils.GetMatchLabel("Azure Portal", configuration, dto.Id),
+            MatchUtils.GetMatchLabel(Labels.PortalsType_Label, configuration, dto.Id),
             dto.Id,
             _api
         );

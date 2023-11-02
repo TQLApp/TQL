@@ -23,7 +23,7 @@ public class ConfluencePlugin : ITqlPlugin
     private IServiceProvider? _serviceProvider;
 
     Guid ITqlPlugin.Id => Id;
-    public string Title => "Confluence";
+    public string Title => Labels.ConfluencePlugin_Label;
 
     public ConfluencePlugin()
     {

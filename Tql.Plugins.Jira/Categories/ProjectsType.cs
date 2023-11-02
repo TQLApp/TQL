@@ -40,7 +40,7 @@ internal class ProjectsType : IMatchType
             return null;
 
         return new ProjectsMatch(
-            MatchUtils.GetMatchLabel("JIRA Project", configuration, dto.Url),
+            MatchUtils.GetMatchLabel(Labels.ProjectsType_Label, configuration, dto.Url),
             dto.Url,
             _cache,
             _iconCacheManager,

@@ -16,6 +16,10 @@ internal partial class FeedbackWindow
         _icon.Source = Images.Astronaut;
         _copyImage.Source = Images.Copy;
 
+        // This is not translated. Bug reports and feature requests
+        // should all be in English. This technical information will also be
+        // only in English.
+
         var sb = new StringBuilder();
 
         sb.AppendLine($"Version: {GetType().Assembly.GetName().Version}");

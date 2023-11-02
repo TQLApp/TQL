@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Tql.Abstractions;
+using Tql.Utilities;
 
 namespace Tql.Plugins.AzureDevOps.Categories;
 
@@ -8,9 +9,11 @@ internal class PipelineMatch : IRunnableMatch, ISerializableMatch, ICopyableMatc
     private readonly PipelineMatchDto _dto;
 
     public string Text =>
-        System.IO.Path
-            .Combine(_dto.ProjectName, _dto.Path.Trim('\\'), _dto.Name)
-            .Replace('\\', '/');
+        MatchText.Path(
+            _dto.ProjectName,
+            System.IO.Path.Combine(_dto.Path.Trim('\\'), _dto.Name).Replace('\\', '/')
+        );
+
     public ImageSource Icon => Images.Pipelines;
     public MatchTypeId TypeId => TypeIds.Pipeline;
 

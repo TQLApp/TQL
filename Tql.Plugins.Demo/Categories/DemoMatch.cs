@@ -5,7 +5,7 @@ namespace Tql.Plugins.Demo.Categories;
 
 internal class DemoMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
 {
-    public string Text => "TQL Website";
+    public string Text => Labels.DemoMatch_Label;
     public ImageSource Icon => Images.SpaceShuttle;
     public MatchTypeId TypeId => TypeIds.Demo;
 

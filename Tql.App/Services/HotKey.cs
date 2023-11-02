@@ -22,7 +22,12 @@ internal record HotKey(bool Win, bool Control, bool Alt, bool Shift, Keys Key)
     }
 
     public static readonly ImmutableArray<(Keys Key, string Label)> AvailableKeys =
-        ImmutableArray.Create(
+        BuildAvailableKeys();
+
+    private static ImmutableArray<(Keys Key, string Label)> BuildAvailableKeys()
+    {
+        var standardKeys = new List<(Keys Key, string Label)>
+        {
             ((Keys)0x41, "A"),
             ((Keys)0x42, "B"),
             ((Keys)0x43, "C"),
@@ -59,16 +64,16 @@ internal record HotKey(bool Win, bool Control, bool Alt, bool Shift, Keys Key)
             ((Keys)0x37, "7"),
             ((Keys)0x38, "8"),
             ((Keys)0x39, "9"),
-            ((Keys)0x60, "Numericpad 0"),
-            ((Keys)0x61, "Numericpad 1"),
-            ((Keys)0x62, "Numericpad 2"),
-            ((Keys)0x63, "Numericpad 3"),
-            ((Keys)0x64, "Numericpad 4"),
-            ((Keys)0x65, "Numericpad 5"),
-            ((Keys)0x66, "Numericpad 6"),
-            ((Keys)0x67, "Numericpad 7"),
-            ((Keys)0x68, "Numericpad 8"),
-            ((Keys)0x69, "Numericpad 9"),
+            ((Keys)0x60, string.Format(Labels.HotKeyNumericPadKey, 0)),
+            ((Keys)0x61, string.Format(Labels.HotKeyNumericPadKey, 1)),
+            ((Keys)0x62, string.Format(Labels.HotKeyNumericPadKey, 2)),
+            ((Keys)0x63, string.Format(Labels.HotKeyNumericPadKey, 3)),
+            ((Keys)0x64, string.Format(Labels.HotKeyNumericPadKey, 4)),
+            ((Keys)0x65, string.Format(Labels.HotKeyNumericPadKey, 5)),
+            ((Keys)0x66, string.Format(Labels.HotKeyNumericPadKey, 6)),
+            ((Keys)0x67, string.Format(Labels.HotKeyNumericPadKey, 7)),
+            ((Keys)0x68, string.Format(Labels.HotKeyNumericPadKey, 8)),
+            ((Keys)0x69, string.Format(Labels.HotKeyNumericPadKey, 9)),
             ((Keys)0x70, "F1"),
             ((Keys)0x71, "F2"),
             ((Keys)0x72, "F3"),
@@ -92,54 +97,65 @@ internal record HotKey(bool Win, bool Control, bool Alt, bool Shift, Keys Key)
             ((Keys)0x84, "F21"),
             ((Keys)0x85, "F22"),
             ((Keys)0x86, "F23"),
-            ((Keys)0x87, "F24"),
-            ((Keys)0x6B, "Add"),
-            ((Keys)0x08, "Backspace"),
-            ((Keys)0xA6, "Browser Back"),
-            ((Keys)0xAB, "Browser Favorites"),
-            ((Keys)0xA7, "Browser Forward"),
-            ((Keys)0xA8, "Browser Refresh"),
-            ((Keys)0xAA, "Browser Search"),
-            ((Keys)0xAC, "Browser Start and Home"),
-            ((Keys)0xA9, "Browser Stop"),
-            ((Keys)0x0C, "Clear"),
-            ((Keys)0x6E, "Decimal"),
-            ((Keys)0x2E, "Del"),
-            ((Keys)0x6F, "Divide"),
-            ((Keys)0x28, "Down Arrow"),
-            ((Keys)0x23, "End"),
-            ((Keys)0x0D, "Enter"),
-            ((Keys)0x1B, "Esc"),
-            ((Keys)0x2B, "Execute"),
-            ((Keys)0x2F, "Help"),
-            ((Keys)0x24, "Home"),
-            ((Keys)0x2D, "Ins"),
-            ((Keys)0x25, "Left Arrow"),
-            ((Keys)0x6A, "Multiply"),
-            ((Keys)0xB0, "Next Track"),
-            ((Keys)0x22, "Page Down"),
-            ((Keys)0x21, "Page Up"),
-            ((Keys)0x13, "Pause"),
-            ((Keys)0xB3, "Play/Pause Media"),
-            ((Keys)0xB1, "Previous Track"),
-            ((Keys)0x2A, "Print"),
-            ((Keys)0x2C, "Print Screen"),
-            ((Keys)0x27, "Right Arrow"),
-            ((Keys)0x29, "Select"),
-            ((Keys)0xB5, "Select Media"),
-            ((Keys)0x6C, "Separator"),
-            ((Keys)0x20, "Spacebar"),
-            ((Keys)0xB6, "Start Application 1"),
-            ((Keys)0xB7, "Start Application 2"),
-            ((Keys)0xB4, "Start Mail"),
-            ((Keys)0xB2, "Stop Media"),
-            ((Keys)0x6D, "Subtract"),
-            ((Keys)0x09, "Tab"),
-            ((Keys)0x26, "Up Arrow"),
-            ((Keys)0xAE, "Volume Down"),
-            ((Keys)0xAD, "Volume Mute"),
-            ((Keys)0xAF, "Volume Up")
+            ((Keys)0x87, "F24")
+        };
+
+        var labeledKeys = new List<(Keys Key, string Label)>
+        {
+            ((Keys)0x6B, Labels.HotKeyAddKey),
+            ((Keys)0x08, Labels.HotKeyBackspaceKey),
+            ((Keys)0xA6, Labels.HotKeyBrowserBackKey),
+            ((Keys)0xAB, Labels.HotKeyBrowserFavoritesKey),
+            ((Keys)0xA7, Labels.HotKeyBrowserForwardKey),
+            ((Keys)0xA8, Labels.HotKeyBrowserRefreshKey),
+            ((Keys)0xAA, Labels.HotKeyBrowserSearchKey),
+            ((Keys)0xAC, Labels.HotKeyBrowserStartAndHomeKey),
+            ((Keys)0xA9, Labels.HotKeyBrowserStopKey),
+            ((Keys)0x0C, Labels.HotKeyClearKey),
+            ((Keys)0x6E, Labels.HotKeyDecimalKey),
+            ((Keys)0x2E, Labels.HotKeyDelKey),
+            ((Keys)0x6F, Labels.HotKeyDivideKey),
+            ((Keys)0x28, Labels.HotKeyDownArrowKey),
+            ((Keys)0x23, Labels.HotKeyEndKey),
+            ((Keys)0x0D, Labels.HotKeyEnterKey),
+            ((Keys)0x1B, Labels.HotKeyEscKey),
+            ((Keys)0x2B, Labels.HotKeyExecuteKey),
+            ((Keys)0x2F, Labels.HotKeyHelpKey),
+            ((Keys)0x24, Labels.HotKeyHomeKey),
+            ((Keys)0x2D, Labels.HotKeyInsKey),
+            ((Keys)0x25, Labels.HotKeyLeftArrowKey),
+            ((Keys)0x6A, Labels.HotKeyMultiplyKey),
+            ((Keys)0xB0, Labels.HotKeyNextTrackKey),
+            ((Keys)0x22, Labels.HotKeyPageDownKey),
+            ((Keys)0x21, Labels.HotKeyPageUpKey),
+            ((Keys)0x13, Labels.HotKeyPauseKey),
+            ((Keys)0xB3, Labels.HotKeyPlayPauseMediaKey),
+            ((Keys)0xB1, Labels.HotKeyPreviousTrackKey),
+            ((Keys)0x2A, Labels.HotKeyPrintKey),
+            ((Keys)0x2C, Labels.HotKeyPrintScreenKey),
+            ((Keys)0x27, Labels.HotKeyRightArrowKey),
+            ((Keys)0x29, Labels.HotKeySelectKey),
+            ((Keys)0xB5, Labels.HotKeySelectMediaKey),
+            ((Keys)0x6C, Labels.HotKeySeparatorKey),
+            ((Keys)0x20, Labels.HotKeySpacebarKey),
+            ((Keys)0xB6, Labels.HotKeyStartApplication1Key),
+            ((Keys)0xB7, Labels.HotKeyStartApplication2Key),
+            ((Keys)0xB4, Labels.HotKeyStartMailKey),
+            ((Keys)0xB2, Labels.HotKeyStopMediaKey),
+            ((Keys)0x6D, Labels.HotKeySubtractKey),
+            ((Keys)0x09, Labels.HotKeyTabKey),
+            ((Keys)0x26, Labels.HotKeyUpArrowKey),
+            ((Keys)0xAE, Labels.HotKeyVolumeDownKey),
+            ((Keys)0xAD, Labels.HotKeyVolumeMuteKey),
+            ((Keys)0xAF, Labels.HotKeyVolumeUpKey)
+        };
+
+        labeledKeys.Sort(
+            (a, b) => string.Compare(a.Label, b.Label, StringComparison.CurrentCultureIgnoreCase)
         );
+
+        return standardKeys.Concat(labeledKeys).ToImmutableArray();
+    }
 
     public string ToJson() => JsonSerializer.Serialize(this);
 }

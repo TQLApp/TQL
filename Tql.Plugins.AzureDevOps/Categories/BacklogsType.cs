@@ -29,7 +29,7 @@ internal class BacklogsType : IMatchType
             return null;
 
         return new BacklogsMatch(
-            MatchUtils.GetMatchLabel("Azure Backlog", configuration, dto.Url),
+            MatchUtils.GetMatchLabel(Labels.BacklogsType_Label, configuration, dto.Url),
             dto.Url,
             _cache
         );

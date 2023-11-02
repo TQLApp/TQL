@@ -8,7 +8,7 @@ namespace Tql.Plugins.MicrosoftTeams.Categories;
 internal class TeamsVideosType : PeopleTypeBase
 {
     public override Guid Id => TypeIds.TeamsVideos.Id;
-    protected override string Label => "Teams Video";
+    protected override string Label => Labels.TeamsVideosType_Label;
 
     public TeamsVideosType(
         ConfigurationManager configurationManager,

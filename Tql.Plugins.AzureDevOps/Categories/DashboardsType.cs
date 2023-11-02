@@ -29,7 +29,7 @@ internal class DashboardsType : IMatchType
             return null;
 
         return new DashboardsMatch(
-            MatchUtils.GetMatchLabel("Azure Dashboard", configuration, dto.Url),
+            MatchUtils.GetMatchLabel(Labels.DashboardsType_Label, configuration, dto.Url),
             dto.Url,
             _cache
         );

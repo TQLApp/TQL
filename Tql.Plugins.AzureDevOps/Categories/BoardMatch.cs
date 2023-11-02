@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Tql.Abstractions;
+using Tql.Utilities;
 
 namespace Tql.Plugins.AzureDevOps.Categories;
 
@@ -7,7 +8,13 @@ internal class BoardMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
 {
     private readonly BoardMatchDto _dto;
 
-    public string Text => $"{_dto.ProjectName} › {_dto.TeamName} {_dto.BoardName} Board";
+    public string Text =>
+        MatchText.Path(
+            _dto.ProjectName,
+            _dto.TeamName,
+            string.Format(Labels.BoardMatch_Label, _dto.BoardName)
+        );
+
     public ImageSource Icon => Images.Boards;
     public MatchTypeId TypeId => TypeIds.Board;
 

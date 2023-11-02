@@ -63,7 +63,7 @@ internal class AzureDevOpsApi
             {
                 _ui.ShowNotificationBar(
                     $"{AzureDevOpsPlugin.Id}/ConnectionFailed/{collectionUri}",
-                    $"Unable to connect to {collectionUri}. Click here to reconnect.",
+                    string.Format(Labels.AzureDevOpsApi_UnableToConnect, collectionUri),
                     () => RetryConnect(collectionUri)
                 );
                 throw;
@@ -73,7 +73,10 @@ internal class AzureDevOpsApi
 
             async Task<VssConnection> AttemptConnect()
             {
-                var dialogHost = new DialogHost(_ui, $"Azure DevOps at {collectionUri}");
+                var dialogHost = new DialogHost(
+                    _ui,
+                    string.Format(Labels.AzureDevOpsApi_AuthenticationResourceName, collectionUri)
+                );
 
                 var credentials = new VssClientCredentials(
                     new WindowsCredential(false),

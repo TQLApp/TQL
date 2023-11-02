@@ -22,7 +22,7 @@ public class MicrosoftTeamsPlugin : ITqlPlugin
     private IServiceProvider? _serviceProvider;
 
     Guid ITqlPlugin.Id => Id;
-    public string Title => "Microsoft Teams";
+    public string Title => Labels.MicrosoftTeamsPlugin_Label;
 
     public MicrosoftTeamsPlugin()
     {

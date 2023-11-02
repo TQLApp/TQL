@@ -35,7 +35,12 @@ internal class RepositoriesType : IMatchType
             return null;
 
         return new RepositoriesMatch(
-            MatchUtils.GetMatchLabel("GitHub Repository", configuration, dto),
+            MatchUtils.GetMatchLabel(
+                Labels.RepositoriesType_Label,
+                Labels.RepositoriesType_MyLabel,
+                configuration,
+                dto
+            ),
             dto,
             _api,
             _cache

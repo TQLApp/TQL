@@ -16,7 +16,7 @@ public class DemoPlugin : ITqlPlugin
     private IServiceProvider? _serviceProvider;
 
     Guid ITqlPlugin.Id => Id;
-    public string Title => "Demo Plugin";
+    public string Title => Labels.DemoPlugin_Label;
 
     public DemoPlugin()
     {

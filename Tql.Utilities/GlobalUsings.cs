@@ -6,3 +6,4 @@ global using System.Collections.Immutable;
 global using System.Threading.Tasks;
 global using System.Windows;
 global using System.Linq;
+global using System.Text;

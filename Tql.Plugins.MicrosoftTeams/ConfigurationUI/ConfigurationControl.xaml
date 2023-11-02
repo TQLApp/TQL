@@ -1,34 +1,48 @@
-﻿<UserControl x:Class="Tql.Plugins.MicrosoftTeams.ConfigurationUI.ConfigurationControl"
-             x:ClassModifier="internal"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <GroupBox Header="Directories" Padding="4">
+﻿<UserControl
+    x:Class="Tql.Plugins.MicrosoftTeams.ConfigurationUI.ConfigurationControl"
+    x:ClassModifier="internal"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:app="clr-namespace:Tql.Plugins.MicrosoftTeams"
+    mc:Ignorable="d"
+    d:DesignHeight="450"
+    d:DesignWidth="800">
+    <GroupBox
+        Header="{x:Static app:Labels.ConfigurationControl_Directories}"
+        Padding="4">
         <StackPanel Orientation="Vertical">
-            <RadioButton x:Name="_allDirectories"
-                         Content="Enable all directories"
-                         Margin="3"/>
-            <RadioButton x:Name="_selectedDirectories"
-                         Content="Enable these directories only:"
-                         Margin="3"
-                         Checked="_selectedDirectories_Checked"
-                         Unchecked="_selectedDirectories_Unchecked"/>
-            <ListBox x:Name="_directories"
-                     Margin="30,3,3,3"
-                     SelectionMode="Multiple">
+            <RadioButton
+                x:Name="_allDirectories"
+                Content="{x:Static app:Labels.ConfigurationControl_EnableAllDirectoriesLabel}"
+                Margin="3" />
+            <RadioButton
+                x:Name="_selectedDirectories"
+                Content="{x:Static app:Labels.ConfigurationControl_EnableTheseDirectoriesOnlyLabel}"
+                Margin="3"
+                Checked="_selectedDirectories_Checked"
+                Unchecked="_selectedDirectories_Unchecked" />
+            <ListBox
+                x:Name="_directories"
+                Margin="30,3,3,3"
+                SelectionMode="Multiple">
                 <ListBox.Resources>
                     <Style TargetType="ListBoxItem">
-                        <Setter Property="OverridesDefaultStyle" Value="true" />
-                        <Setter Property="SnapsToDevicePixels" Value="true" />
+                        <Setter
+                            Property="OverridesDefaultStyle"
+                            Value="true" />
+                        <Setter
+                            Property="SnapsToDevicePixels"
+                            Value="true" />
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="ListBoxItem">
-                                    <CheckBox Margin="5,2"
-                                              IsChecked="{Binding IsSelected}">
-                                        <TextBlock Text="{Binding Directory.Name}"/>
+                                    <CheckBox
+                                        Margin="5,2"
+                                        IsChecked="{Binding IsSelected}">
+                                        <TextBlock
+                                            Text="{Binding Directory.Name}" />
                                     </CheckBox>
                                 </ControlTemplate>
                             </Setter.Value>

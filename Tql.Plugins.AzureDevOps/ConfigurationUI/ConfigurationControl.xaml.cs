@@ -11,7 +11,7 @@ internal partial class ConfigurationControl : IConfigurationPage
     private new ConfigurationDto DataContext => (ConfigurationDto)base.DataContext;
 
     public Guid PageId => AzureDevOpsPlugin.ConfigurationPageId;
-    public string Title => "General";
+    public string Title => Labels.ConfigurationControl_General;
     public ConfigurationPageMode PageMode => ConfigurationPageMode.AutoSize;
 
     public ConfigurationControl(IConfigurationManager configurationManager, ICache<AzureData> cache)

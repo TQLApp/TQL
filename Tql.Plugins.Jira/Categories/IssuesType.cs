@@ -28,7 +28,7 @@ internal class IssuesType : IMatchType
             return null;
 
         return new IssuesMatch(
-            MatchUtils.GetMatchLabel("JIRA Issue", configuration, dto.Url),
+            MatchUtils.GetMatchLabel(Labels.IssuesType_Label, configuration, dto.Url),
             dto.Url,
             _configurationManager,
             _iconCacheManager

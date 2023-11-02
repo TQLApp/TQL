@@ -1,4 +1,6 @@
-﻿namespace Tql.Plugins.Azure.Support;
+﻿using Tql.Utilities;
+
+namespace Tql.Plugins.Azure.Support;
 
 internal static class MatchUtils
 {
@@ -8,7 +10,7 @@ internal static class MatchUtils
         {
             var connection = configuration.Connections.Single(p => p.Id == id);
 
-            return $"{label} ({connection.Name})";
+            return MatchText.ConnectionLabel(label, connection.Name);
         }
 
         return label;

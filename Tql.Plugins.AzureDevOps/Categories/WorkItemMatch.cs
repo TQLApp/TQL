@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Tql.Abstractions;
 using Tql.Plugins.AzureDevOps.Services;
+using Tql.Utilities;
 
 namespace Tql.Plugins.AzureDevOps.Categories;
 
@@ -8,7 +9,8 @@ internal class WorkItemMatch : IRunnableMatch, ISerializableMatch, ICopyableMatc
 {
     private readonly WorkItemMatchDto _dto;
 
-    public string Text => $"{_dto.ProjectName} › {_dto.Type} {_dto.Id}: {_dto.Title}";
+    public string Text => MatchText.Path(_dto.ProjectName, $"{_dto.Type} {_dto.Id}: {_dto.Title}");
+
     public ImageSource Icon { get; }
     public MatchTypeId TypeId => TypeIds.WorkItem;
 

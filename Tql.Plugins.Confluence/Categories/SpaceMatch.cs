@@ -15,10 +15,10 @@ internal class SpaceMatch
     private readonly SpaceMatchDto _dto;
     private readonly ConfigurationManager _configurationManager;
 
-    public string Text => $"{_dto.Name} Space";
+    public string Text => string.Format(Labels.SpaceMatch_Label, _dto.Name);
     public ImageSource Icon { get; }
     public MatchTypeId TypeId => TypeIds.Space;
-    public string SearchHint => "Find content";
+    public string SearchHint => Labels.SpaceMatch_SearchHint;
 
     public SpaceMatch(
         SpaceMatchDto dto,

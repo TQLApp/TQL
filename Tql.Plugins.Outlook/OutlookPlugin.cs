@@ -18,7 +18,7 @@ public class OutlookPlugin : ITqlPlugin
     private MatchTypeManager? _matchTypeManager;
 
     Guid ITqlPlugin.Id => Id;
-    public string Title => "Outlook";
+    public string Title => Labels.OutlookPlugin_Label;
 
     public OutlookPlugin()
     {

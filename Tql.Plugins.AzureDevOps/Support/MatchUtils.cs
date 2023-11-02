@@ -1,4 +1,6 @@
-﻿namespace Tql.Plugins.AzureDevOps.Support;
+﻿using Tql.Utilities;
+
+namespace Tql.Plugins.AzureDevOps.Support;
 
 internal static class MatchUtils
 {
@@ -8,7 +10,7 @@ internal static class MatchUtils
         {
             var connection = configuration.Connections.Single(p => p.Url == url);
 
-            return $"{label} ({connection.Name})";
+            return MatchText.ConnectionLabel(label, connection.Name);
         }
 
         return label;

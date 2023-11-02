@@ -39,7 +39,12 @@ internal class GistsType : IMatchType
             return null;
 
         return new GistsMatch(
-            MatchUtils.GetMatchLabel("GitHub Gist", configuration, dto),
+            MatchUtils.GetMatchLabel(
+                Labels.GistsType_Label,
+                Labels.GistsType_MyLabel,
+                configuration,
+                dto
+            ),
             dto,
             _api,
             _cache,

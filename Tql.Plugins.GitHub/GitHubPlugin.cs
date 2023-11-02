@@ -23,7 +23,7 @@ public class GitHubPlugin : ITqlPlugin
     private IServiceProvider? _serviceProvider;
 
     Guid ITqlPlugin.Id => Id;
-    public string Title => "GitHub";
+    public string Title => Labels.GitHubPlugin_Title;
 
     public GitHubPlugin()
     {

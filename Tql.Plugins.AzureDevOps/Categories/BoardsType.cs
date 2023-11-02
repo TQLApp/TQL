@@ -29,7 +29,7 @@ internal class BoardsType : IMatchType
             return null;
 
         return new BoardsMatch(
-            MatchUtils.GetMatchLabel("Azure Board", configuration, dto.Url),
+            MatchUtils.GetMatchLabel(Labels.BoardsType_Label, configuration, dto.Url),
             dto.Url,
             _cache
         );

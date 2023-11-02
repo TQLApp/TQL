@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using Tql.Abstractions;
+﻿using Tql.Abstractions;
 using Tql.Plugins.Confluence.Data;
 using Tql.Plugins.Confluence.Services;
 using Tql.Utilities;
@@ -11,7 +10,6 @@ internal class SpacesMatch : CachedMatch<ConfluenceData>, ISerializableMatch
     private readonly string _url;
     private readonly IconCacheManager _iconCacheManager;
     private readonly ConfigurationManager _configurationManager;
-    private readonly ILogger<SpacesMatch> _logger;
 
     public override string Text { get; }
     public override ImageSource Icon => Images.Confluence;
@@ -22,15 +20,13 @@ internal class SpacesMatch : CachedMatch<ConfluenceData>, ISerializableMatch
         string url,
         ICache<ConfluenceData> cache,
         IconCacheManager iconCacheManager,
-        ConfigurationManager configurationManager,
-        ILogger<SpacesMatch> logger
+        ConfigurationManager configurationManager
     )
         : base(cache)
     {
         _url = url;
         _iconCacheManager = iconCacheManager;
         _configurationManager = configurationManager;
-        _logger = logger;
 
         Text = text;
     }

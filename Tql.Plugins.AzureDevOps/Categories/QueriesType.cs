@@ -38,7 +38,7 @@ internal class QueriesType : IMatchType
             return null;
 
         return new QueriesMatch(
-            MatchUtils.GetMatchLabel("Azure Query", configuration, dto.Url),
+            MatchUtils.GetMatchLabel(Labels.QueriesType_Label, configuration, dto.Url),
             dto.Url,
             _cache,
             _api,

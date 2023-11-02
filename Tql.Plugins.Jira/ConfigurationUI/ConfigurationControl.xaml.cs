@@ -18,7 +18,7 @@ internal partial class ConfigurationControl : IConfigurationPage
     public ConfigurationPageMode PageMode => ConfigurationPageMode.AutoSize;
 
     public Guid PageId => JiraPlugin.ConfigurationPageId;
-    public string Title => "General";
+    public string Title => Labels.ConfigurationControl_General;
 
     public ConfigurationControl(IConfigurationManager configurationManager, IUI ui, JiraApi api)
     {

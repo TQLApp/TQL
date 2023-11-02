@@ -38,7 +38,7 @@ internal class WorkItemsType : IMatchType
             return null;
 
         return new WorkItemsMatch(
-            MatchUtils.GetMatchLabel("Azure Work Item", configuration, dto.Url),
+            MatchUtils.GetMatchLabel(Labels.WorkItemsType_Label, configuration, dto.Url),
             dto.Url,
             _cache,
             _api,

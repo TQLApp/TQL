@@ -271,18 +271,19 @@ internal class JiraClient
 
     private void ShowUnauthorizedNotification(HttpResponseMessage response)
     {
+        var notificationKey = $"{JiraPlugin.Id}/ConnectionFailed/{_connection.Id}";
+
         if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
         {
             _ui.ShowNotificationBar(
-                $"{JiraPlugin.Id}/ConnectionFailed/{_connection.Id}",
-                $"Unable to connect to JIRA - {_connection.Name}. Click here to open the "
-                    + $"JIRA settings screen and validate your credentials.",
+                notificationKey,
+                string.Format(Labels.JiraClient_UnableToConnectToJira, _connection.Name),
                 () => _ui.OpenConfiguration(JiraPlugin.ConfigurationPageId)
             );
         }
         else
         {
-            _ui.RemoveNotificationBar($"{JiraPlugin.Id}/ConnectionFailed/{_connection.Id}");
+            _ui.RemoveNotificationBar(notificationKey);
         }
     }
 }

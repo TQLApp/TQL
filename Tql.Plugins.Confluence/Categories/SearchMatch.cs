@@ -9,7 +9,11 @@ internal class SearchMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
     private readonly SearchMatchDto _dto;
 
     public string Text =>
-        _dto.ContainerTitle == null ? _dto.Title : $"{_dto.ContainerTitle}/{_dto.Title}";
+        MatchText.Path(
+            new[] { _dto.ContainerTitle, _dto.Title },
+            MatchPathOptions.RemoveEmptyEntries
+        );
+
     public ImageSource Icon => Images.Confluence;
     public MatchTypeId TypeId => TypeIds.Search;
 

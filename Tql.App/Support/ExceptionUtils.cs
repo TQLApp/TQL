@@ -17,7 +17,7 @@ internal static class ExceptionUtils
                 PrintException(exception.InnerException);
 
                 sb.AppendLine();
-                sb.AppendLine("=== Caused ===");
+                sb.AppendLine(Labels.ExceptionCausedBy);
                 sb.AppendLine();
             }
 

@@ -252,8 +252,13 @@ internal class SearchManager : IDisposable
 
                 _ui.ShowNotificationBar(
                     ErrorBannerId.ToString(),
-                    $"Search failed with the following error message: {ex.Message}",
-                    () => _ui.ShowError(((UI)_ui).MainWindow!, "Search failed with an error", ex)
+                    $"{Labels.SearchManager_SearchFailedWithErrorMessage} {ex.Message}",
+                    () =>
+                        _ui.ShowError(
+                            ((UI)_ui).MainWindow!,
+                            Labels.SearchManager_SearchFailedWithError,
+                            ex
+                        )
                 );
             }
         }

@@ -37,7 +37,7 @@ internal partial class InteractiveAuthenticationWindow
             {
                 var result = TaskDialogEx.Error(
                     this,
-                    "Failed to authenticate",
+                    Labels.InteractiveAuthenticationWindow_FailedToAuthenticate,
                     ex,
                     buttons: TaskDialogCommonButtons.Retry | TaskDialogCommonButtons.Cancel
                 );

@@ -3,6 +3,7 @@ using Tql.Abstractions;
 using Tql.Plugins.Jira.Data;
 using Tql.Plugins.Jira.Services;
 using Tql.Plugins.Jira.Support;
+using Tql.Utilities;
 
 namespace Tql.Plugins.Jira.Categories;
 
@@ -13,7 +14,7 @@ internal class BoardMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, 
     private readonly ICache<JiraData> _cache;
     private readonly ConfigurationManager _configurationManager;
 
-    public string Text => $"{_dto.Name} › {MatchUtils.GetBoardLabel(_dto)}";
+    public string Text => MatchText.Path(_dto.Name, MatchUtils.GetBoardLabel(_dto));
     public ImageSource Icon { get; }
     public MatchTypeId TypeId => TypeIds.Board;
 
@@ -66,7 +67,7 @@ internal class BoardMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, 
         var matches = new List<BoardQuickFilterMatch>
         {
             new(
-                new BoardQuickFilterMatchDto(_dto, null, "All Issues"),
+                new BoardQuickFilterMatchDto(_dto, null, Labels.BoardMatch_AllIssues),
                 _iconCacheManager,
                 _cache,
                 _configurationManager

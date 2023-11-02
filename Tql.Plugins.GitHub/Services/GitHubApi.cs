@@ -59,7 +59,7 @@ internal class GitHubApi
                 {
                     _ui.ShowNotificationBar(
                         $"{GitHubPlugin.Id}/ConnectionFailed/{id}",
-                        $"Unable to connect to GitHub - {connection.Name}. Click here to reconnect.",
+                        string.Format(Labels.GitHubApi_UnableToConnectToGitHub, connection.Name),
                         () => RetryConnect(id)
                     );
                     throw;
@@ -123,7 +123,7 @@ internal class GitHubApi
         {
             await _ui.PerformInteractiveAuthentication(
                 new InteractiveAuthentication(
-                    $"GitHub - {connection.Name}",
+                    string.Format(Labels.GitHubApi_AuthenticationResourceName, connection.Name),
                     client,
                     _httpClient,
                     _ui

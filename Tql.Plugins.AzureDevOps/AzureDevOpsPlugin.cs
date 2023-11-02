@@ -23,7 +23,7 @@ public class AzureDevOpsPlugin : ITqlPlugin
     private IServiceProvider? _serviceProvider;
 
     Guid ITqlPlugin.Id => Id;
-    public string Title => "Azure DevOps";
+    public string Title => Labels.AzureDevOpsPlugin_Title;
 
     public AzureDevOpsPlugin()
     {

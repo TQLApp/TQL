@@ -14,8 +14,6 @@ internal class PackageStoreManager
     private readonly Store _store;
     private readonly ILogger<PackageStoreManager> _logger;
     private readonly object _syncRoot = new();
-    private readonly Dictionary<string, Assembly> _loadedAssemblies =
-        new(StringComparer.OrdinalIgnoreCase);
     private readonly Dictionary<string, string> _packageAssemblies =
         new(StringComparer.OrdinalIgnoreCase);
 

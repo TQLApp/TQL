@@ -8,7 +8,7 @@ namespace Tql.Plugins.MicrosoftTeams.Categories;
 internal class TeamsChatsType : PeopleTypeBase
 {
     public override Guid Id => TypeIds.TeamsChats.Id;
-    protected override string Label => "Teams Chat";
+    protected override string Label => Labels.TeamsChatsType_Label;
 
     public TeamsChatsType(
         ConfigurationManager configurationManager,

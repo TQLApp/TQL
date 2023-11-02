@@ -20,10 +20,10 @@ internal class BoardQuickFilterMatch
     private readonly ConfigurationManager _configurationManager;
 
     public string Text =>
-        $"{_dto.Board.Name} › {MatchUtils.GetBoardLabel(_dto.Board)} › {_dto.Name}";
+        MatchText.Path(_dto.Board.Name, MatchUtils.GetBoardLabel(_dto.Board), _dto.Name);
     public ImageSource Icon { get; }
     public MatchTypeId TypeId => TypeIds.BoardQuickFilter;
-    public string SearchHint => "Find issues";
+    public string SearchHint => Labels.BoardQuickFilterMatch_SearchHint;
 
     public BoardQuickFilterMatch(
         BoardQuickFilterMatchDto dto,

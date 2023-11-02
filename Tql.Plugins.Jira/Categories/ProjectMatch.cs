@@ -16,10 +16,10 @@ internal class ProjectMatch
     private readonly IconCacheManager _iconCacheManager;
     private readonly ConfigurationManager _configurationManager;
 
-    public string Text => $"{_dto.Name} Project";
+    public string Text => string.Format(Labels.ProjectMatch_Label, _dto.Name);
     public ImageSource Icon { get; }
     public MatchTypeId TypeId => TypeIds.Project;
-    public string SearchHint => "Find issues";
+    public string SearchHint => Labels.ProjectMatch_SearchHint;
 
     public ProjectMatch(
         ProjectMatchDto dto,

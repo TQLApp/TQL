@@ -41,7 +41,7 @@ internal class AzureApi
                 {
                     _ui.ShowNotificationBar(
                         $"{AzurePlugin.Id}/ConnectionFailed/{id}",
-                        $"Unable to connect to Azure - {connection.Name}. Click here to reconnect.",
+                        string.Format(Labels.AzureApi_UnableToConnect, connection.Name),
                         () => RetryConnect(id)
                     );
                     throw;
@@ -89,7 +89,7 @@ internal class AzureApi
                     }
                 ),
                 _ui,
-                $"Azure - {connection.Name}"
+                string.Format(Labels.AzureApi_AuthenticationResourceName, connection.Name)
             )
         );
 

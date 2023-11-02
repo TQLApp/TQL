@@ -16,7 +16,7 @@ public static class TaskDialogEx
             MainInstruction = title,
             Content = subtitle,
             PositionRelativeToWindow = true,
-            WindowTitle = "Techie's Quick Launcher"
+            WindowTitle = Labels.ApplicationTitle
         };
     }
 
@@ -52,10 +52,10 @@ public static class TaskDialogEx
         taskDialog.CommonButtons = buttons;
         taskDialog.Width = 300;
 
-        taskDialog.ExpandedControlText = "Show exception details";
+        taskDialog.ExpandedControlText = Labels.Alert_ShowExceptionDetails;
         taskDialog.ExpandedInformation = exceptionInformation;
 
-        taskDialog.Buttons = new[] { new TaskDialogButton(101, "Copy to Clipboard") };
+        taskDialog.Buttons = new[] { new TaskDialogButton(101, Labels.Alert_CopyToClipboard) };
 
         var result = taskDialog.Show(GetOwner(owner));
 

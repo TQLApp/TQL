@@ -65,7 +65,9 @@ internal partial class ProgressWindow
         }
         catch (Exception ex)
         {
-            Dispatcher.BeginInvoke(() => _ui.ShowError(this, "An unexpected error occurred", ex));
+            Dispatcher.BeginInvoke(
+                () => _ui.ShowError(this, Labels.Alert_AnUnexpectedErrorOccurred, ex)
+            );
         }
         finally
         {

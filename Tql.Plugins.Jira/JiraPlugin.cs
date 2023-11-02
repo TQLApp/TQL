@@ -23,7 +23,7 @@ public class JiraPlugin : ITqlPlugin
     private IServiceProvider? _serviceProvider;
 
     Guid ITqlPlugin.Id => Id;
-    public string Title => "JIRA";
+    public string Title => Labels.JiraPlugin_Title;
 
     public JiraPlugin()
     {

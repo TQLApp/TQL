@@ -131,18 +131,19 @@ internal class ConfluenceClient
 
     private void ShowUnauthorizedNotification(HttpResponseMessage response)
     {
+        var notificationBarKey = $"{ConfluencePlugin.Id}/ConnectionFailed/{_connection.Id}";
+
         if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
         {
             _ui.ShowNotificationBar(
-                $"{ConfluencePlugin.Id}/ConnectionFailed/{_connection.Id}",
-                $"Unable to connect to Confluence - {_connection.Name}. Click here to open the "
-                    + $"Confluence settings screen and validate your credentials.",
+                notificationBarKey,
+                string.Format(Labels.ConfluenceClient_UnableToConnect, _connection.Name),
                 () => _ui.OpenConfiguration(ConfluencePlugin.ConfigurationPageId)
             );
         }
         else
         {
-            _ui.RemoveNotificationBar($"{ConfluencePlugin.Id}/ConnectionFailed/{_connection.Id}");
+            _ui.RemoveNotificationBar(notificationBarKey);
         }
     }
 }

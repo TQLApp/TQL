@@ -21,7 +21,7 @@ internal class RepositoryMatch
     public ImageSource Icon => Images.Repository;
     public MatchTypeId TypeId => TypeIds.Repository;
 
-    public string SearchHint => "Find issues";
+    public string SearchHint => Labels.RepositoryMatch_SearchHint;
 
     public RepositoryMatch(RepositoryMatchDto dto, GitHubApi api)
     {

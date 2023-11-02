@@ -3,6 +3,7 @@ using Tql.Abstractions;
 using Tql.Plugins.Jira.Data;
 using Tql.Plugins.Jira.Services;
 using Tql.Plugins.Jira.Support;
+using Tql.Utilities;
 
 namespace Tql.Plugins.Jira.Categories;
 
@@ -11,7 +12,7 @@ internal class NewMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
     private readonly NewMatchDto _dto;
     private readonly ICache<JiraData> _cache;
 
-    public string Text => $"{_dto.ProjectName} › {_dto.Name}";
+    public string Text => MatchText.Path(_dto.ProjectName, _dto.Name);
     public ImageSource Icon { get; }
     public MatchTypeId TypeId => TypeIds.New;
 

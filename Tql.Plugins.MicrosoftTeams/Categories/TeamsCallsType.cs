@@ -8,7 +8,7 @@ namespace Tql.Plugins.MicrosoftTeams.Categories;
 internal class TeamsCallsType : PeopleTypeBase
 {
     public override Guid Id => TypeIds.TeamsCalls.Id;
-    protected override string Label => "Teams Call";
+    protected override string Label => Labels.TeamsCallsType_Label;
 
     public TeamsCallsType(
         ConfigurationManager configurationManager,
