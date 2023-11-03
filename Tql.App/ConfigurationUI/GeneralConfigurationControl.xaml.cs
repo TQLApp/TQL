@@ -16,6 +16,13 @@ internal partial class GeneralConfigurationControl : IConfigurationPage
             LabeledValue.Create(Labels.ThemeLight, Theme.Light),
             LabeledValue.Create(Labels.ThemeDark, Theme.Dark)
         };
+    private static readonly List<LabeledValue<string?>> LanguageLabels =
+        new()
+        {
+            LabeledValue.Create(Labels.GeneralConfiguration_LanguageSystem, default(string)),
+            LabeledValue.Create(Labels.GeneralConfiguration_LanguageEnglish, (string?)"en"),
+            LabeledValue.Create(Labels.GeneralConfiguration_LanguageDutch, (string?)"nl")
+        };
 
     private readonly Settings _settings;
     private readonly IUI _ui;
@@ -101,6 +108,12 @@ internal partial class GeneralConfigurationControl : IConfigurationPage
             _resetTrackErrors,
             () => _trackErrors.IsChecked = Settings.DefaultEnableExceptionTelemetry
         );
+
+        _language.ItemsSource = LanguageLabels;
+        _language.SelectedItem =
+            LanguageLabels.SingleOrDefault(p => p.Value == _settings.Language)
+            ?? LanguageLabels.First();
+        ConfigureResetButton(_resetLanguage, () => _language.SelectedItem = LanguageLabels.First());
     }
 
     private object GetThemeLabel(Theme theme) => ThemeLabels.Single(p => p.Value == theme);
@@ -225,6 +238,13 @@ internal partial class GeneralConfigurationControl : IConfigurationPage
             _settings.EnableMetricsTelemetry = _trackMetrics.IsChecked;
         if (_trackErrors.IsChecked != _loadedEnableExceptionTelemetry)
             _settings.EnableExceptionTelemetry = _trackErrors.IsChecked;
+
+        var language = LabeledValue.GetValue<string?>(_language.SelectedValue);
+        if (_settings.Language != language)
+        {
+            _settings.Language = language;
+            _requireRestart = true;
+        }
 
         return Task.FromResult(SaveStatus.Success);
     }

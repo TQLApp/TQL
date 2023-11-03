@@ -96,6 +96,12 @@ internal class Settings : INotifyPropertyChanged
         set => SetInteger(nameof(TextOuterGlowSize), value);
     }
 
+    public string? Language
+    {
+        get => GetString(nameof(Language));
+        set => SetString(nameof(Language), value);
+    }
+
     public event PropertyChangedEventHandler? PropertyChanged;
 
     public Settings(IStore store)

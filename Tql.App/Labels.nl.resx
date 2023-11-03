@@ -693,4 +693,24 @@
     <value>Instellingen</value>
     <comment>Original: Settings</comment>
   </data>
+  <data name="GeneralConfiguration_LanguageDutch" xml:space="preserve">
+    <value>Nederlands</value>
+    <comment>Original: Dutch</comment>
+  </data>
+  <data name="GeneralConfiguration_LanguageEnglish" xml:space="preserve">
+    <value>Engels</value>
+    <comment>Original: English</comment>
+  </data>
+  <data name="GeneralConfiguration_LanguageHelpText" xml:space="preserve">
+    <value>Wijzigen van de taal vereist dat de applicatie herstart wordt.</value>
+    <comment>Original: Changing the language requires you to restart the application.</comment>
+  </data>
+  <data name="GeneralConfiguration_LanguageLabel" xml:space="preserve">
+    <value>Taal:</value>
+    <comment>Original: Language:</comment>
+  </data>
+  <data name="GeneralConfiguration_LanguageSystem" xml:space="preserve">
+    <value>Systeem</value>
+    <comment>Original: System</comment>
+  </data>
 </root>

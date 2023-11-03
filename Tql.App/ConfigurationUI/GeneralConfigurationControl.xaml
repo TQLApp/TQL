@@ -50,6 +50,8 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -127,15 +129,15 @@
                     Text="{x:Static app:Labels.GeneralConfiguration_HotKeyResetHelpText}" />
 
                 <Label
-                    Content="{x:Static app:Labels.GeneralConfiguration_HistoryIntervalLabel}"
+                    Content="{x:Static app:Labels.GeneralConfiguration_LanguageLabel}"
                     Grid.Row="2" />
-                <TextBox
-                    x:Name="_historyInRootResults"
+                <ComboBox
+                    x:Name="_language"
                     Margin="3"
                     Grid.Column="1"
                     Grid.Row="2" />
                 <Image
-                    x:Name="_resetHistoryInRootResults"
+                    x:Name="_resetLanguage"
                     Grid.Row="2"
                     Grid.Column="2"
                     Margin="3" />
@@ -144,28 +146,48 @@
                     TextWrapping="Wrap"
                     Grid.Column="1"
                     Grid.Row="3"
+                    Text="{x:Static app:Labels.GeneralConfiguration_LanguageHelpText}" />
+
+                <Label
+                    Content="{x:Static app:Labels.GeneralConfiguration_HistoryIntervalLabel}"
+                    Grid.Row="4" />
+                <TextBox
+                    x:Name="_historyInRootResults"
+                    Margin="3"
+                    Grid.Column="1"
+                    Grid.Row="4" />
+                <Image
+                    x:Name="_resetHistoryInRootResults"
+                    Grid.Row="4"
+                    Grid.Column="2"
+                    Margin="3" />
+                <TextBlock
+                    Margin="3"
+                    TextWrapping="Wrap"
+                    Grid.Column="1"
+                    Grid.Row="5"
                     Text="{x:Static app:Labels.GeneralConfiguration_HistoryInRootResultsHelpText}" />
 
                 <Label
                     Content="{x:Static app:Labels.GeneralConfiguration_ShowOnScreenLabel}"
-                    Grid.Row="4" />
+                    Grid.Row="6" />
                 <ComboBox
                     x:Name="_showOnScreen"
                     Margin="3"
-                    Grid.Row="4"
+                    Grid.Row="6"
                     Grid.Column="1" />
                 <Image
                     x:Name="_resetShowOnScreen"
-                    Grid.Row="4"
+                    Grid.Row="6"
                     Grid.Column="2"
                     Margin="3" />
 
                 <Label
                     Content="{x:Static app:Labels.GeneralConfiguration_CacheUpdateIntervalLabel}"
-                    Grid.Row="5" />
+                    Grid.Row="7" />
                 <Grid
                     Grid.Column="1"
-                    Grid.Row="5">
+                    Grid.Row="7">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
@@ -181,22 +203,22 @@
                 </Grid>
                 <Image
                     x:Name="_resetCacheUpdateInterval"
-                    Grid.Row="5"
+                    Grid.Row="7"
                     Grid.Column="2"
                     Margin="3" />
                 <TextBlock
                     Margin="3"
                     TextWrapping="Wrap"
                     Grid.Column="1"
-                    Grid.Row="6"
+                    Grid.Row="8"
                     Text="{x:Static app:Labels.GeneralConfiguration_CacheUpdateIntervalHelpText}" />
 
                 <Label
                     Content="{x:Static app:Labels.GeneralConfiguration_SearchResultFontSizeLabel}"
-                    Grid.Row="7" />
+                    Grid.Row="9" />
                 <Grid
                     Grid.Column="1"
-                    Grid.Row="7">
+                    Grid.Row="9">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
@@ -212,57 +234,34 @@
                 </Grid>
                 <Image
                     x:Name="_resetMainFontSize"
-                    Grid.Row="7"
+                    Grid.Row="9"
                     Grid.Column="2"
                     Margin="3" />
 
                 <Label
                     Content="{x:Static app:Labels.GeneralConfiguration_MainWindowTintLabel}"
-                    Grid.Row="8" />
+                    Grid.Row="10" />
                 <xctk:ColorPicker
                     x:Name="_mainWindowTint"
                     Margin="3"
-                    Grid.Row="8"
+                    Grid.Row="10"
                     Grid.Column="1" />
                 <Image
                     x:Name="_resetMainWindowTint"
-                    Grid.Row="8"
+                    Grid.Row="10"
                     Grid.Column="2"
                     Margin="3" />
 
                 <Label
                     Content="{x:Static app:Labels.GeneralConfiguration_ThemeLabel}"
-                    Grid.Row="9" />
+                    Grid.Row="11" />
                 <ComboBox
                     x:Name="_theme"
                     Margin="3"
-                    Grid.Row="9"
+                    Grid.Row="11"
                     Grid.Column="1" />
                 <Image
                     x:Name="_resetTheme"
-                    Grid.Row="9"
-                    Grid.Column="2"
-                    Margin="3" />
-                <TextBlock
-                    Margin="3"
-                    TextWrapping="Wrap"
-                    Grid.Column="1"
-                    Grid.Row="10"
-                    Text="{x:Static app:Labels.GeneralConfiguration_ThemeHelpText}" />
-
-                <Label
-                    Content="{x:Static app:Labels.GeneralConfiguration_OuterGlowRadiusLabel}"
-                    Grid.Row="11" />
-                <Slider
-                    x:Name="_outerGlow"
-                    Margin="3"
-                    Minimum="0"
-                    Maximum="10"
-                    Grid.Row="11"
-                    Grid.Column="1"
-                    SmallChange="1" />
-                <Image
-                    x:Name="_resetOuterGlow"
                     Grid.Row="11"
                     Grid.Column="2"
                     Margin="3" />
@@ -271,6 +270,29 @@
                     TextWrapping="Wrap"
                     Grid.Column="1"
                     Grid.Row="12"
+                    Text="{x:Static app:Labels.GeneralConfiguration_ThemeHelpText}" />
+
+                <Label
+                    Content="{x:Static app:Labels.GeneralConfiguration_OuterGlowRadiusLabel}"
+                    Grid.Row="13" />
+                <Slider
+                    x:Name="_outerGlow"
+                    Margin="3"
+                    Minimum="0"
+                    Maximum="10"
+                    Grid.Row="13"
+                    Grid.Column="1"
+                    SmallChange="1" />
+                <Image
+                    x:Name="_resetOuterGlow"
+                    Grid.Row="13"
+                    Grid.Column="2"
+                    Margin="3" />
+                <TextBlock
+                    Margin="3"
+                    TextWrapping="Wrap"
+                    Grid.Column="1"
+                    Grid.Row="14"
                     Text="{x:Static app:Labels.GeneralConfiguration_OuterGlowRadiusHelpText}" />
             </Grid>
         </GroupBox>

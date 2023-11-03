@@ -340,6 +340,51 @@ namespace Tql.App {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dutch.
+        /// </summary>
+        public static string GeneralConfiguration_LanguageDutch {
+            get {
+                return ResourceManager.GetString("GeneralConfiguration_LanguageDutch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to English.
+        /// </summary>
+        public static string GeneralConfiguration_LanguageEnglish {
+            get {
+                return ResourceManager.GetString("GeneralConfiguration_LanguageEnglish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changing the language requires you to restart the application..
+        /// </summary>
+        public static string GeneralConfiguration_LanguageHelpText {
+            get {
+                return ResourceManager.GetString("GeneralConfiguration_LanguageHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Language:.
+        /// </summary>
+        public static string GeneralConfiguration_LanguageLabel {
+            get {
+                return ResourceManager.GetString("GeneralConfiguration_LanguageLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System.
+        /// </summary>
+        public static string GeneralConfiguration_LanguageSystem {
+            get {
+                return ResourceManager.GetString("GeneralConfiguration_LanguageSystem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Main window tint:.
         /// </summary>
         public static string GeneralConfiguration_MainWindowTintLabel {

@@ -603,4 +603,19 @@
   <data name="MainWindow_Settings" xml:space="preserve">
     <value>Settings</value>
   </data>
+  <data name="GeneralConfiguration_LanguageDutch" xml:space="preserve">
+    <value>Dutch</value>
+  </data>
+  <data name="GeneralConfiguration_LanguageEnglish" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="GeneralConfiguration_LanguageHelpText" xml:space="preserve">
+    <value>Changing the language requires you to restart the application.</value>
+  </data>
+  <data name="GeneralConfiguration_LanguageLabel" xml:space="preserve">
+    <value>Language:</value>
+  </data>
+  <data name="GeneralConfiguration_LanguageSystem" xml:space="preserve">
+    <value>System</value>
+  </data>
 </root>

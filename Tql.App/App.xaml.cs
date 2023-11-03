@@ -1,7 +1,9 @@
 ﻿using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Net.Http;
 using System.Reflection;
+using System.Windows.Markup;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -71,9 +73,12 @@ public partial class App
 
         _host = builder.Build();
 
-        ThemeManager.SetTheme(
-            ThemeManager.ParseTheme(_host.Services.GetRequiredService<Settings>().Theme)
-        );
+        var settings = _host.Services.GetRequiredService<Settings>();
+
+        if (settings.Language != null)
+            SetCulture(CultureInfo.GetCultureInfo(settings.Language));
+
+        ThemeManager.SetTheme(ThemeManager.ParseTheme(settings.Theme));
 
         var logger = _host.Services.GetRequiredService<ILogger<App>>();
 
@@ -103,6 +108,17 @@ public partial class App
 
         if (!e.Args.Contains("/silent"))
             _mainWindow.DoShow();
+    }
+
+    private void SetCulture(CultureInfo culture)
+    {
+        Thread.CurrentThread.CurrentUICulture = culture;
+        CultureInfo.DefaultThreadCurrentUICulture = culture;
+
+        foreach (Window window in Current.Windows)
+        {
+            window.Language = XmlLanguage.GetLanguage(culture.IetfLanguageTag);
+        }
     }
 
     private (ILoggerFactory, InMemoryLoggerProvider) SetupLogging(Store store)
