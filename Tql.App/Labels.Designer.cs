@@ -169,7 +169,7 @@ namespace Tql.App {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Techie&apos;s Quick Launcher - Configuration.
+        ///   Looks up a localized string similar to Configuration.
         /// </summary>
         public static string ConfigurationWindow_Title {
             get {
@@ -304,7 +304,7 @@ namespace Tql.App {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Determines the number of days of history that&apos;s loaded into the root results..
+        ///   Looks up a localized string similar to Determines the number of days of history that&apos;s used..
         /// </summary>
         public static string GeneralConfiguration_HistoryInRootResultsHelpText {
             get {
@@ -313,11 +313,11 @@ namespace Tql.App {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to History in root results:.
+        ///   Looks up a localized string similar to History interval:.
         /// </summary>
-        public static string GeneralConfiguration_HistoryInRootResultsLabel {
+        public static string GeneralConfiguration_HistoryIntervalLabel {
             get {
-                return ResourceManager.GetString("GeneralConfiguration_HistoryInRootResultsLabel", resourceCulture);
+                return ResourceManager.GetString("GeneralConfiguration_HistoryIntervalLabel", resourceCulture);
             }
         }
         
@@ -592,7 +592,7 @@ namespace Tql.App {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ctrl.
+        ///   Looks up a localized string similar to Control.
         /// </summary>
         public static string HotKeyControl {
             get {
@@ -610,7 +610,7 @@ namespace Tql.App {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Del.
+        ///   Looks up a localized string similar to Delete.
         /// </summary>
         public static string HotKeyDelKey {
             get {
@@ -691,7 +691,7 @@ namespace Tql.App {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ins.
+        ///   Looks up a localized string similar to Insert.
         /// </summary>
         public static string HotKeyInsKey {
             get {
@@ -970,6 +970,33 @@ namespace Tql.App {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cache is being updated.
+        /// </summary>
+        public static string MainWindow_CacheIsBeingUpdated {
+            get {
+                return ResourceManager.GetString("MainWindow_CacheIsBeingUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The cache of one or more plugins is being updated..
+        /// </summary>
+        public static string MainWindow_CacheIsBeingUpdatedHelpText {
+            get {
+                return ResourceManager.GetString("MainWindow_CacheIsBeingUpdatedHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Help &amp; documentation.
+        /// </summary>
+        public static string MainWindow_HelpAndDocumentation {
+            get {
+                return ResourceManager.GetString("MainWindow_HelpAndDocumentation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to matches.
         /// </summary>
         public static string MainWindow_LaunchRunnablePostfix {
@@ -984,6 +1011,33 @@ namespace Tql.App {
         public static string MainWindow_LaunchRunnablePrefix {
             get {
                 return ResourceManager.GetString("MainWindow_LaunchRunnablePrefix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Leave feedback for the developers.
+        /// </summary>
+        public static string MainWindow_LeaveFeedback {
+            get {
+                return ResourceManager.GetString("MainWindow_LeaveFeedback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Leave ideas, features suggestions or bug reports for the developers..
+        /// </summary>
+        public static string MainWindow_LeaveFeedbackHelpText {
+            get {
+                return ResourceManager.GetString("MainWindow_LeaveFeedbackHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Link copied.
+        /// </summary>
+        public static string MainWindow_LinkCopied {
+            get {
+                return ResourceManager.GetString("MainWindow_LinkCopied", resourceCulture);
             }
         }
         
@@ -1024,6 +1078,15 @@ namespace Tql.App {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        public static string MainWindow_Settings {
+            get {
+                return ResourceManager.GetString("MainWindow_Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Package Sources.
         /// </summary>
         public static string PackageSourcesConfiguration_PackageSources {
@@ -1033,7 +1096,7 @@ namespace Tql.App {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If you&apos;re using a PAT token to connect to an Azure DevOps private artifacts feed, enter it into the password field and enter the user name part of your email address into the user name field..
+        ///   Looks up a localized string similar to If you&apos;re using a PAT token to connect to an Azure DevOps private artifact feed, enter it into the password field and enter the part of your email address before the @ into the user name field..
         /// </summary>
         public static string PackageSourcesConfiguration_PasswordHelpText {
             get {

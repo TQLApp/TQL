@@ -180,18 +180,18 @@ namespace Tql.Plugins.GitHub {
         /// <summary>
         ///   Looks up a localized string similar to GitHub - {0}.
         /// </summary>
-        public static string GitHubApi_AuthenticationResourceName {
+        public static string GitHubApi_ResourceName {
             get {
-                return ResourceManager.GetString("GitHubApi_AuthenticationResourceName", resourceCulture);
+                return ResourceManager.GetString("GitHubApi_ResourceName", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unable to connect to GitHub - {0}. Click here to reconnect..
+        ///   Looks up a localized string similar to Unable to connect to {0}. Click here to reconnect..
         /// </summary>
-        public static string GitHubApi_UnableToConnectToGitHub {
+        public static string GitHubApi_UnableToConnect {
             get {
-                return ResourceManager.GetString("GitHubApi_UnableToConnectToGitHub", resourceCulture);
+                return ResourceManager.GetString("GitHubApi_UnableToConnect", resourceCulture);
             }
         }
         

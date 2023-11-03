@@ -277,7 +277,11 @@ internal class JiraClient
         {
             _ui.ShowNotificationBar(
                 notificationKey,
-                string.Format(Labels.JiraClient_UnableToConnectToJira, _connection.Name),
+                string.Format(
+                    Labels.JiraClient_UnableToConnect,
+                    string.Format(Labels.JiraClient_ResourceName, _connection.Name),
+                    Labels.JiraPlugin_Title
+                ),
                 () => _ui.OpenConfiguration(JiraPlugin.ConfigurationPageId)
             );
         }

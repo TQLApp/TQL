@@ -117,8 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AzureDevOpsApi_AuthenticationResourceName" xml:space="preserve">
-    <value>Azure DevOps at {0}</value>
+  <data name="AzureDevOpsApi_ResourceName" xml:space="preserve">
+    <value>Azure DevOps - {0}</value>
   </data>
   <data name="AzureDevOpsApi_UnableToConnect" xml:space="preserve">
     <value>Unable to connect to {0}. Click here to reconnect.</value>

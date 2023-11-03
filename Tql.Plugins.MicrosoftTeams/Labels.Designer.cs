@@ -124,7 +124,7 @@ namespace Tql.Plugins.MicrosoftTeams {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Teams Video.
+        ///   Looks up a localized string similar to Teams Video Call.
         /// </summary>
         public static string TeamsVideosType_Label {
             get {

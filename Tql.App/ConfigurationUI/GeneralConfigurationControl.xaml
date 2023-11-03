@@ -127,7 +127,7 @@
                     Text="{x:Static app:Labels.GeneralConfiguration_HotKeyResetHelpText}" />
 
                 <Label
-                    Content="{x:Static app:Labels.GeneralConfiguration_HistoryInRootResultsLabel}"
+                    Content="{x:Static app:Labels.GeneralConfiguration_HistoryIntervalLabel}"
                     Grid.Row="2" />
                 <TextBox
                     x:Name="_historyInRootResults"

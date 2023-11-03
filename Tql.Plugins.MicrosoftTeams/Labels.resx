@@ -119,6 +119,7 @@
   </resheader>
   <data name="ConfigurationControl_Directories" xml:space="preserve">
     <value>Directories</value>
+    <comment>These are people directories, e.g. your Outlook contacts, users in JIRA and Azure DevOps, etc.</comment>
   </data>
   <data name="ConfigurationControl_EnableAllDirectoriesLabel" xml:space="preserve">
     <value>Enable all directories</value>
@@ -139,6 +140,6 @@
     <value>Teams Chat</value>
   </data>
   <data name="TeamsVideosType_Label" xml:space="preserve">
-    <value>Teams Video</value>
+    <value>Teams Video Call</value>
   </data>
 </root>

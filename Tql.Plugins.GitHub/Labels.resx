@@ -156,11 +156,11 @@
   <data name="GistsType_MyLabel" xml:space="preserve">
     <value>My GitHub Gist</value>
   </data>
-  <data name="GitHubApi_AuthenticationResourceName" xml:space="preserve">
+  <data name="GitHubApi_ResourceName" xml:space="preserve">
     <value>GitHub - {0}</value>
   </data>
-  <data name="GitHubApi_UnableToConnectToGitHub" xml:space="preserve">
-    <value>Unable to connect to GitHub - {0}. Click here to reconnect.</value>
+  <data name="GitHubApi_UnableToConnect" xml:space="preserve">
+    <value>Unable to connect to {0}. Click here to reconnect.</value>
   </data>
   <data name="GitHubPlugin_Title" xml:space="preserve">
     <value>GitHub</value>

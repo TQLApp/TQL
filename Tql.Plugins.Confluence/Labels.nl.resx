@@ -1,0 +1,208 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Alert_FailedToConnect" xml:space="preserve">
+    <value>Kon niet verbinden naar {0}</value>
+    <comment>Original: Failed to connect to {0}</comment>
+  </data>
+  <data name="Button_Add" xml:space="preserve">
+    <value>Nieuw</value>
+    <comment>Original: Add</comment>
+  </data>
+  <data name="Button_Delete" xml:space="preserve">
+    <value>Verwijder</value>
+    <comment>Original: Delete</comment>
+  </data>
+  <data name="Button_Update" xml:space="preserve">
+    <value>Toepassen</value>
+    <comment>Original: Update</comment>
+  </data>
+  <data name="ConfigurationControl_BasicCredentialsDocumentation" xml:space="preserve">
+    <value>Als je een API-token of je eigen wachtwoord gebruikt, moet je ook je gebruikersnaam invullen. Als je een PAT token gebruikt moet je je gebruikersnaam leeg laten.</value>
+    <comment>Original: If you're using an API token or your own password, you have to enter your username as well. If you're using a PAT token, leave the user name field empty.</comment>
+  </data>
+  <data name="ConfigurationControl_Connections" xml:space="preserve">
+    <value>Verbindingen</value>
+    <comment>Original: Connections</comment>
+  </data>
+  <data name="ConfigurationControl_Documentation" xml:space="preserve">
+    <value>Documentatie</value>
+    <comment>Original: Documentation</comment>
+  </data>
+  <data name="ConfigurationControl_General" xml:space="preserve">
+    <value>Algemeen</value>
+    <comment>Original: General</comment>
+  </data>
+  <data name="ConfigurationControl_Name" xml:space="preserve">
+    <value>Naam</value>
+    <comment>Original: Name</comment>
+  </data>
+  <data name="ConfigurationControl_NameLabel" xml:space="preserve">
+    <value>Naam:</value>
+    <comment>Original: Name:</comment>
+  </data>
+  <data name="ConfigurationControl_PasswordLabel" xml:space="preserve">
+    <value>Wachtwoord:</value>
+    <comment>Original: Password:</comment>
+  </data>
+  <data name="ConfigurationControl_URL" xml:space="preserve">
+    <value>URL</value>
+    <comment>Original: URL</comment>
+  </data>
+  <data name="ConfigurationControl_URLLabel" xml:space="preserve">
+    <value>URL:</value>
+    <comment>Original: URL:</comment>
+  </data>
+  <data name="ConfigurationControl_UserNameLabel" xml:space="preserve">
+    <value>Gebruikersnaam:</value>
+    <comment>Original: User name:</comment>
+  </data>
+  <data name="Confirm_DoYouWantToAddNewItem" xml:space="preserve">
+    <value>Wil je een nieuw item toevoegen?</value>
+    <comment>Original: Do you want to add a new item?</comment>
+  </data>
+  <data name="ConfluenceClient_ResourceName" xml:space="preserve">
+    <value>Confluence - {0}</value>
+    <comment>Original: Confluence - {0}</comment>
+  </data>
+  <data name="ConfluenceClient_UnableToConnect" xml:space="preserve">
+    <value>Kon niet verbinden met {0}. Klik hier om het {1} instellingen scherm te openen.</value>
+    <comment>Original: Unable to connect to {0}. Click here to open the settings {1} screen and validate your credentials.</comment>
+  </data>
+  <data name="ConfluencePlugin_Label" xml:space="preserve">
+    <value>Confluence</value>
+    <comment>Original: Confluence</comment>
+  </data>
+  <data name="SearchesType_Label" xml:space="preserve">
+    <value>Confluence Zoeken</value>
+    <comment>Original: Confluence Search</comment>
+  </data>
+  <data name="SpaceMatch_Label" xml:space="preserve">
+    <value>{0} Space</value>
+    <comment>Original: {0} Space</comment>
+  </data>
+  <data name="SpaceMatch_SearchHint" xml:space="preserve">
+    <value>Zoek naar inhoud</value>
+    <comment>Original: Find content</comment>
+  </data>
+  <data name="SpacesType_Label" xml:space="preserve">
+    <value>Confluence Space</value>
+    <comment>Original: Confluence Space</comment>
+  </data>
+</root>

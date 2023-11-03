@@ -115,7 +115,7 @@ namespace Tql.Plugins.Jira {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If you&apos;re using an API token or your own password, provide your user name and enter your password into the password field. If you&apos;re using a PAT token, leave the user name field empty..
+        ///   Looks up a localized string similar to If you&apos;re using an API token or your own password, you have to enter your username as well. If you&apos;re using a PAT token, leave the user name field empty..
         /// </summary>
         public static string ConfigurationControl_BasicCredentialsDocumentation {
             get {
@@ -232,11 +232,20 @@ namespace Tql.Plugins.Jira {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unable to connect to JIRA - {0}. Click here to open the JIRA settings screen and validate your credentials..
+        ///   Looks up a localized string similar to JIRA - {0}.
         /// </summary>
-        public static string JiraClient_UnableToConnectToJira {
+        public static string JiraClient_ResourceName {
             get {
-                return ResourceManager.GetString("JiraClient_UnableToConnectToJira", resourceCulture);
+                return ResourceManager.GetString("JiraClient_ResourceName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to connect to {0}. Click here to open the {1} settings screen and validate your credentials..
+        /// </summary>
+        public static string JiraClient_UnableToConnect {
+            get {
+                return ResourceManager.GetString("JiraClient_UnableToConnect", resourceCulture);
             }
         }
         

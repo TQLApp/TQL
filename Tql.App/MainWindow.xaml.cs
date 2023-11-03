@@ -77,21 +77,21 @@ internal partial class MainWindow
         _feedbackImage.Source = Images.CommentNote;
         _feedbackImage.AttachOnClickHandler(OpenFeedback);
         _feedbackImage.SetPopoverToolTip(
-            "Leave feedback for the developers",
-            "Leave ideas, features suggestions or bug reports for the developers."
+            Labels.MainWindow_LeaveFeedback,
+            Labels.MainWindow_LeaveFeedbackHelpText
         );
 
         _helpImage.Source = Images.Help;
         _helpImage.AttachOnClickHandler(OpenHelp);
-        _helpImage.SetPopoverToolTip("Help & documentation");
+        _helpImage.SetPopoverToolTip(Labels.MainWindow_HelpAndDocumentation);
 
         _settingsImage.Source = Images.Settings;
         _settingsImage.AttachOnClickHandler(() => OpenSettings());
-        _settingsImage.SetPopoverToolTip("Settings");
+        _settingsImage.SetPopoverToolTip(Labels.MainWindow_Settings);
 
         _spinner.SetPopoverToolTip(
-            "Cache is being updated",
-            "The cache of one or more plugins is being updated."
+            Labels.MainWindow_CacheIsBeingUpdated,
+            Labels.MainWindow_CacheIsBeingUpdatedHelpText
         );
 
         if (!double.IsNaN(_listBoxRowHeight))
@@ -627,7 +627,7 @@ internal partial class MainWindow
         {
             await match.Copy(_serviceProvider);
 
-            _snackbar.Text = "Link copied";
+            _snackbar.Text = Labels.MainWindow_LinkCopied;
             _snackbar.Visibility = Visibility.Visible;
         }
         catch (Exception ex)

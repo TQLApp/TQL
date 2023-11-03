@@ -154,7 +154,7 @@
     <value>Application</value>
   </data>
   <data name="ConfigurationWindow_Title" xml:space="preserve">
-    <value>Techie's Quick Launcher - Configuration</value>
+    <value>Configuration</value>
   </data>
   <data name="Confirmation_AddNewItem" xml:space="preserve">
     <value>Do you want to add a new item?</value>
@@ -179,6 +179,7 @@
   </data>
   <data name="FeedbackWindow_Title" xml:space="preserve">
     <value>Feedback</value>
+    <comment>In the context of creating a feature request or bug report on GitHub</comment>
   </data>
   <data name="FeedbackWindow_YouCanLeaveFeedbackOnGitHub" xml:space="preserve">
     <value>If you'd like to leave feedback, you can do so on our GitHub page. You're welcome to leave a bug report or a feature request. You need a GitHub account to do so.</value>
@@ -196,10 +197,10 @@
     <value>Connections</value>
   </data>
   <data name="GeneralConfiguration_HistoryInRootResultsHelpText" xml:space="preserve">
-    <value>Determines the number of days of history that's loaded into the root results.</value>
+    <value>Determines the number of days of history that's used.</value>
   </data>
-  <data name="GeneralConfiguration_HistoryInRootResultsLabel" xml:space="preserve">
-    <value>History in root results:</value>
+  <data name="GeneralConfiguration_HistoryIntervalLabel" xml:space="preserve">
+    <value>History interval:</value>
   </data>
   <data name="GeneralConfiguration_HotKeyLabel" xml:space="preserve">
     <value>Hot key:</value>
@@ -233,6 +234,7 @@
   </data>
   <data name="GeneralConfiguration_Telemetry" xml:space="preserve">
     <value>Telemetry</value>
+    <comment>This is in the context of performance metrics.</comment>
   </data>
   <data name="GeneralConfiguration_ThemeHelpText" xml:space="preserve">
     <value>Changing the theme requires you to restart the application.</value>
@@ -263,156 +265,207 @@
   </data>
   <data name="HotKeyAddKey" xml:space="preserve">
     <value>Add</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeyAlt" xml:space="preserve">
     <value>Alt</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeyBackspaceKey" xml:space="preserve">
     <value>Backspace</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeyBrowserBackKey" xml:space="preserve">
     <value>Browser Back</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeyBrowserFavoritesKey" xml:space="preserve">
     <value>Browser Favorites</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeyBrowserForwardKey" xml:space="preserve">
     <value>Browser Forward</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeyBrowserRefreshKey" xml:space="preserve">
     <value>Browser Refresh</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeyBrowserSearchKey" xml:space="preserve">
     <value>Browser Search</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeyBrowserStartAndHomeKey" xml:space="preserve">
     <value>Browser Start and Home</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeyBrowserStopKey" xml:space="preserve">
     <value>Browser Stop</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeyClearKey" xml:space="preserve">
     <value>Clear</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeyControl" xml:space="preserve">
-    <value>Ctrl</value>
+    <value>Control</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeyDecimalKey" xml:space="preserve">
     <value>Decimal</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeyDelKey" xml:space="preserve">
-    <value>Del</value>
+    <value>Delete</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeyDivideKey" xml:space="preserve">
     <value>Divide</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeyDownArrowKey" xml:space="preserve">
     <value>Down Arrow</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeyEndKey" xml:space="preserve">
     <value>End</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeyEnterKey" xml:space="preserve">
     <value>Enter</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeyEscKey" xml:space="preserve">
     <value>Esc</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeyExecuteKey" xml:space="preserve">
     <value>Execute</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeyHelpKey" xml:space="preserve">
     <value>Help</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeyHomeKey" xml:space="preserve">
     <value>Home</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeyInsKey" xml:space="preserve">
-    <value>Ins</value>
+    <value>Insert</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeyLeftArrowKey" xml:space="preserve">
     <value>Left Arrow</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeyMultiplyKey" xml:space="preserve">
     <value>Multiply</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeyNextTrackKey" xml:space="preserve">
     <value>Next Track</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeyNumericPadKey" xml:space="preserve">
     <value>Numeric pad {0}</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeyPageDownKey" xml:space="preserve">
     <value>Page Down</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeyPageUpKey" xml:space="preserve">
     <value>Page Up</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeyPauseKey" xml:space="preserve">
     <value>Pause</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeyPlayPauseMediaKey" xml:space="preserve">
     <value>Play/Pause Media</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeyPreviousTrackKey" xml:space="preserve">
     <value>Previous Track</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeyPrintKey" xml:space="preserve">
     <value>Print</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeyPrintScreenKey" xml:space="preserve">
     <value>Print Screen</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeyRightArrowKey" xml:space="preserve">
     <value>Right Arrow</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeySelectKey" xml:space="preserve">
     <value>Select</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeySelectMediaKey" xml:space="preserve">
     <value>Select Media</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeySeparatorKey" xml:space="preserve">
     <value>Separator</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeyShift" xml:space="preserve">
     <value>Shift</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeySpacebarKey" xml:space="preserve">
     <value>Spacebar</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeyStartApplication1Key" xml:space="preserve">
     <value>Start Application 1</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeyStartApplication2Key" xml:space="preserve">
     <value>Start Application 2</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeyStartMailKey" xml:space="preserve">
     <value>Start Mail</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeyStopMediaKey" xml:space="preserve">
     <value>Stop Media</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeySubtractKey" xml:space="preserve">
     <value>Subtract</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeyTabKey" xml:space="preserve">
     <value>Tab</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeyUpArrowKey" xml:space="preserve">
     <value>Up Arrow</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeyVolumeDownKey" xml:space="preserve">
     <value>Volume Down</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeyVolumeMuteKey" xml:space="preserve">
     <value>Volume Mute</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeyVolumeUpKey" xml:space="preserve">
     <value>Volume Up</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="HotKeyWindows" xml:space="preserve">
     <value>Win</value>
+    <comment>Refers to keys on the keyboard. The text shown on the keyboard users in the region normally have should always be preferred.</comment>
   </data>
   <data name="InteractiveAuthenticationWindow_FailedToAuthenticate" xml:space="preserve">
     <value>Failed to authenticate</value>
@@ -440,9 +493,10 @@
   </data>
   <data name="PackageSourcesConfiguration_PackageSources" xml:space="preserve">
     <value>Package Sources</value>
+    <comment>In the context of NuGet package source, or artifact feeds.</comment>
   </data>
   <data name="PackageSourcesConfiguration_PasswordHelpText" xml:space="preserve">
-    <value>If you're using a PAT token to connect to an Azure DevOps private artifacts feed, enter it into the password field and enter the user name part of your email address into the user name field.</value>
+    <value>If you're using a PAT token to connect to an Azure DevOps private artifact feed, enter it into the password field and enter the part of your email address before the @ into the user name field.</value>
   </data>
   <data name="PackageSourcesConfiguration_PasswordLabel" xml:space="preserve">
     <value>Password:</value>
@@ -527,5 +581,26 @@
   </data>
   <data name="ThemeSystem" xml:space="preserve">
     <value>System</value>
+  </data>
+  <data name="MainWindow_CacheIsBeingUpdated" xml:space="preserve">
+    <value>Cache is being updated</value>
+  </data>
+  <data name="MainWindow_CacheIsBeingUpdatedHelpText" xml:space="preserve">
+    <value>The cache of one or more plugins is being updated.</value>
+  </data>
+  <data name="MainWindow_HelpAndDocumentation" xml:space="preserve">
+    <value>Help &amp; documentation</value>
+  </data>
+  <data name="MainWindow_LeaveFeedback" xml:space="preserve">
+    <value>Leave feedback for the developers</value>
+  </data>
+  <data name="MainWindow_LeaveFeedbackHelpText" xml:space="preserve">
+    <value>Leave ideas, features suggestions or bug reports for the developers.</value>
+  </data>
+  <data name="MainWindow_LinkCopied" xml:space="preserve">
+    <value>Link copied</value>
+  </data>
+  <data name="MainWindow_Settings" xml:space="preserve">
+    <value>Settings</value>
   </data>
 </root>

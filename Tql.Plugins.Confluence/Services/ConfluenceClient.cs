@@ -137,7 +137,11 @@ internal class ConfluenceClient
         {
             _ui.ShowNotificationBar(
                 notificationBarKey,
-                string.Format(Labels.ConfluenceClient_UnableToConnect, _connection.Name),
+                string.Format(
+                    Labels.ConfluenceClient_UnableToConnect,
+                    string.Format(Labels.ConfluenceClient_ResourceName, _connection.Name),
+                    Labels.ConfluencePlugin_Label
+                ),
                 () => _ui.OpenConfiguration(ConfluencePlugin.ConfigurationPageId)
             );
         }

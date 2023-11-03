@@ -61,11 +61,11 @@ namespace Tql.Plugins.AzureDevOps {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Azure DevOps at {0}.
+        ///   Looks up a localized string similar to Azure DevOps - {0}.
         /// </summary>
-        public static string AzureDevOpsApi_AuthenticationResourceName {
+        public static string AzureDevOpsApi_ResourceName {
             get {
-                return ResourceManager.GetString("AzureDevOpsApi_AuthenticationResourceName", resourceCulture);
+                return ResourceManager.GetString("AzureDevOpsApi_ResourceName", resourceCulture);
             }
         }
         

@@ -1,0 +1,696 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Alert_AnUnexpectedErrorOccurred" xml:space="preserve">
+    <value>Er heeft zich een onverwachte fout plaatsgevonden</value>
+    <comment>Original: An unexpected error occurred</comment>
+  </data>
+  <data name="Alert_CopyToClipboard" xml:space="preserve">
+    <value>Kopieer naar Klembord</value>
+    <comment>Original: Copy to Clipboard</comment>
+  </data>
+  <data name="Alert_ShowExceptionDetails" xml:space="preserve">
+    <value>Toon fout details</value>
+    <comment>Original: Show exception details</comment>
+  </data>
+  <data name="ApplicationTitle" xml:space="preserve">
+    <value>Techie's Quick Launcher</value>
+    <comment>Original: Techie's Quick Launcher</comment>
+  </data>
+  <data name="Button_Add" xml:space="preserve">
+    <value>Nieuw</value>
+    <comment>Original: Add</comment>
+  </data>
+  <data name="Button_Cancel" xml:space="preserve">
+    <value>Annuleren</value>
+    <comment>Original: Cancel</comment>
+  </data>
+  <data name="Button_Close" xml:space="preserve">
+    <value>Sluiten</value>
+    <comment>Original: Close</comment>
+  </data>
+  <data name="Button_Delete" xml:space="preserve">
+    <value>Verwijder</value>
+    <comment>Original: Delete</comment>
+  </data>
+  <data name="Button_OK" xml:space="preserve">
+    <value>OK</value>
+    <comment>Original: OK</comment>
+  </data>
+  <data name="Button_Save" xml:space="preserve">
+    <value>Opslaan</value>
+    <comment>Original: Save</comment>
+  </data>
+  <data name="Button_Update" xml:space="preserve">
+    <value>Toepassen</value>
+    <comment>Original: Update</comment>
+  </data>
+  <data name="ConfigurationCategory_Application" xml:space="preserve">
+    <value>Applicatie</value>
+    <comment>Original: Application</comment>
+  </data>
+  <data name="ConfigurationWindow_Title" xml:space="preserve">
+    <value>Configuratie</value>
+    <comment>Original: Configuration</comment>
+  </data>
+  <data name="Confirmation_AddNewItem" xml:space="preserve">
+    <value>Wil je een nieuw item toevoegen?</value>
+    <comment>Original: Do you want to add a new item?</comment>
+  </data>
+  <data name="Error_CouldNotRegisterHotKey" xml:space="preserve">
+    <value>Kon sneltoets niet registreren.</value>
+    <comment>Original: Couldn't register the hot key.</comment>
+  </data>
+  <data name="ExceptionCausedBy" xml:space="preserve">
+    <value>=== Veroorzaakte ===</value>
+    <comment>Original: === Caused ===</comment>
+  </data>
+  <data name="FeedbackWindow_CreateBugReport" xml:space="preserve">
+    <value>Maak een Bug Melding</value>
+    <comment>Original: Create Bug Report</comment>
+  </data>
+  <data name="FeedbackWindow_CreateFeatureRequest" xml:space="preserve">
+    <value>Maak een Wijzigingsverzoek</value>
+    <comment>Original: Create a Feature Request</comment>
+  </data>
+  <data name="FeedbackWindow_TechnicalInformationForBugReport" xml:space="preserve">
+    <value>Je kunt de volgende technische gegevens gebruiken bij het maken van een bug melding.</value>
+    <comment>Original: You can use the following technical information in your bug report if you like.</comment>
+  </data>
+  <data name="FeedbackWindow_ThankYouForUsingApp" xml:space="preserve">
+    <value>Leuk dat je Techie's Quick Launcher gebruikt.</value>
+    <comment>Original: Thank you for using Techie's Quick Launcher.</comment>
+  </data>
+  <data name="FeedbackWindow_Title" xml:space="preserve">
+    <value>Terugkoppeling</value>
+    <comment>Original: Feedback</comment>
+  </data>
+  <data name="FeedbackWindow_YouCanLeaveFeedbackOnGitHub" xml:space="preserve">
+    <value>Je kunt terugkoppeling achterlaten op de GitHub pagina. Je kunt zowel een bug melding als een wijzigingsverzoek doen. Je hebt hier wel een GitHub account voor nodig.</value>
+    <comment>Original: If you'd like to leave feedback, you can do so on our GitHub page. You're welcome to leave a bug report or a feature request. You need a GitHub account to do so.</comment>
+  </data>
+  <data name="GeneralConfiguration_CacheUpdateIntervalHelpText" xml:space="preserve">
+    <value>Bepaalt hoe vaak de cache wordt bijgewerkt. Sommige plug-ins cachen data om de prestaties te verbeteren. Deze instelling bepaalt na hoeveel minuten de cache wordt ververst.</value>
+    <comment>Original: Determines how often the cache is updated. Some plugins will cache data for performance. This setting will set the number of minutes after which the cache will be updated.</comment>
+  </data>
+  <data name="GeneralConfiguration_CacheUpdateIntervalLabel" xml:space="preserve">
+    <value>Cache update interval:</value>
+    <comment>Original: Cache update interval:</comment>
+  </data>
+  <data name="GeneralConfiguration_CacheUpdateIntervalMinutesLabel" xml:space="preserve">
+    <value>minuten</value>
+    <comment>Original: minutes</comment>
+  </data>
+  <data name="GeneralConfiguration_Connections" xml:space="preserve">
+    <value>Verbindingen</value>
+    <comment>Original: Connections</comment>
+  </data>
+  <data name="GeneralConfiguration_HistoryInRootResultsHelpText" xml:space="preserve">
+    <value>Bepaalt hoeveel dagen aan historie wordt gebruikt.</value>
+    <comment>Original: Determines the number of days of history that's used.</comment>
+  </data>
+  <data name="GeneralConfiguration_HistoryIntervalLabel" xml:space="preserve">
+    <value>Historie periode:</value>
+    <comment>Original: History interval:</comment>
+  </data>
+  <data name="GeneralConfiguration_HotKeyLabel" xml:space="preserve">
+    <value>Snelkoppeling:</value>
+    <comment>Original: Hot key:</comment>
+  </data>
+  <data name="GeneralConfiguration_HotKeyResetHelpText" xml:space="preserve">
+    <value>Kies de snelkoppeling om de applicatie te openen.</value>
+    <comment>Original: Specify the hot key used to bring up the app.</comment>
+  </data>
+  <data name="GeneralConfiguration_MainWindowTintLabel" xml:space="preserve">
+    <value>Tint hoofdscherm:</value>
+    <comment>Original: Main window tint:</comment>
+  </data>
+  <data name="GeneralConfiguration_OuterGlowRadiusHelpText" xml:space="preserve">
+    <value>Past een buitenste gloed toe op de tekst en afbeeldingen in het zoekvenster. Dit kan de leesbaarheid verhogen.</value>
+    <comment>Original: Applies an outer glow to the text and images on the search window. This can increase readability.</comment>
+  </data>
+  <data name="GeneralConfiguration_OuterGlowRadiusLabel" xml:space="preserve">
+    <value>Buitenste gloed radius:</value>
+    <comment>Original: Outer glow radius:</comment>
+  </data>
+  <data name="GeneralConfiguration_RestartRequired" xml:space="preserve">
+    <value>Opnieuw opstarten is vereist</value>
+    <comment>Original: Restart required</comment>
+  </data>
+  <data name="GeneralConfiguration_RestartRequiredHelpText" xml:space="preserve">
+    <value>Je hebt instellingen gewijzigd die een herstart van de applicatie vereisen.</value>
+    <comment>Original: You've changed settings that require a restart of the application.</comment>
+  </data>
+  <data name="GeneralConfiguration_SearchResultFontSizeLabel" xml:space="preserve">
+    <value>Zoekresultaat lettertype grootte:</value>
+    <comment>Original: Search result font size:</comment>
+  </data>
+  <data name="GeneralConfiguration_SearchResultFontSizePointsLabel" xml:space="preserve">
+    <value>punten</value>
+    <comment>Original: points</comment>
+  </data>
+  <data name="GeneralConfiguration_ShowOnScreenLabel" xml:space="preserve">
+    <value>Toon op scherm:</value>
+    <comment>Original: Show on screen:</comment>
+  </data>
+  <data name="GeneralConfiguration_Telemetry" xml:space="preserve">
+    <value>Telemetrie</value>
+    <comment>Original: Telemetry</comment>
+  </data>
+  <data name="GeneralConfiguration_ThemeHelpText" xml:space="preserve">
+    <value>Wijzigen van het thema vereist dat de applicatie herstart wordt.</value>
+    <comment>Original: Changing the theme requires you to restart the application.</comment>
+  </data>
+  <data name="GeneralConfiguration_ThemeLabel" xml:space="preserve">
+    <value>Thema:</value>
+    <comment>Original: Theme:</comment>
+  </data>
+  <data name="GeneralConfiguration_General" xml:space="preserve">
+    <value>Algemeen</value>
+    <comment>Original: General</comment>
+  </data>
+  <data name="GeneralConfiguration_TrackAnonymousMetricsHelpText" xml:space="preserve">
+    <value>Registreer alleen anonieme prestatie- en gebruikersstatistieken.</value>
+    <comment>Original: Only tracks anonymous performance and usage metrics.</comment>
+  </data>
+  <data name="GeneralConfiguration_TrackAnonymousMetricsLabel" xml:space="preserve">
+    <value>Anonieme metrieken bijhouden</value>
+    <comment>Original: Track anonymous metrics</comment>
+  </data>
+  <data name="GeneralConfiguration_TrackErrorsHelpText" xml:space="preserve">
+    <value>Fouten kunnen PII (persoonlijk identificeerbare informatie) zoals uw gebruikersnaam vastleggen vanwege systeeminformatie die automatisch wordt meegenomen bij het registreren van fouten.</value>
+    <comment>Original: Errors may capture PII (personally identifiable information) data like your user name because of system information that's included automatically when tracking errors.</comment>
+  </data>
+  <data name="GeneralConfiguration_TrackErrorsLabel" xml:space="preserve">
+    <value>Foutmeldingen bijhouden</value>
+    <comment>Original: Track errors</comment>
+  </data>
+  <data name="GeneralConfiguration_UnableToSetHotKey" xml:space="preserve">
+    <value>Kon sneltoets niet registreren</value>
+    <comment>Original: Unable to set hot key</comment>
+  </data>
+  <data name="GeneralConfiguration_UnableToSetHotKeyHelpText" xml:space="preserve">
+    <value>De snelkoppeling kon niet toegepast worden. De toets combinatie is mogelijk niet geldig, of hij is al in gebruik. Selecteer een nieuwe toets combinatie en probeer het opnieuw.</value>
+    <comment>Original: The hot key could not be configured. The combination might be invalid or it may already be in use. Please use a different key combination and try again.</comment>
+  </data>
+  <data name="HotKeyAddKey" xml:space="preserve">
+    <value>Plus</value>
+    <comment>Original: Add</comment>
+  </data>
+  <data name="HotKeyAlt" xml:space="preserve">
+    <value>Alt</value>
+    <comment>Original: Alt</comment>
+  </data>
+  <data name="HotKeyBackspaceKey" xml:space="preserve">
+    <value>Backspace</value>
+    <comment>Original: Backspace</comment>
+  </data>
+  <data name="HotKeyBrowserBackKey" xml:space="preserve">
+    <value>Browser Terug</value>
+    <comment>Original: Browser Back</comment>
+  </data>
+  <data name="HotKeyBrowserFavoritesKey" xml:space="preserve">
+    <value>Browser Favorieten</value>
+    <comment>Original: Browser Favorites</comment>
+  </data>
+  <data name="HotKeyBrowserForwardKey" xml:space="preserve">
+    <value>Browser Vooruit</value>
+    <comment>Original: Browser Forward</comment>
+  </data>
+  <data name="HotKeyBrowserRefreshKey" xml:space="preserve">
+    <value>Browser Verversen</value>
+    <comment>Original: Browser Refresh</comment>
+  </data>
+  <data name="HotKeyBrowserSearchKey" xml:space="preserve">
+    <value>Browser Zoeken</value>
+    <comment>Original: Browser Search</comment>
+  </data>
+  <data name="HotKeyBrowserStartAndHomeKey" xml:space="preserve">
+    <value>Browser Start en Thuis</value>
+    <comment>Original: Browser Start and Home</comment>
+  </data>
+  <data name="HotKeyBrowserStopKey" xml:space="preserve">
+    <value>Browser Stop</value>
+    <comment>Original: Browser Stop</comment>
+  </data>
+  <data name="HotKeyClearKey" xml:space="preserve">
+    <value>Wissen</value>
+    <comment>Original: Clear</comment>
+  </data>
+  <data name="HotKeyControl" xml:space="preserve">
+    <value>Control</value>
+    <comment>Original: Control</comment>
+  </data>
+  <data name="HotKeyDecimalKey" xml:space="preserve">
+    <value>Decimaal</value>
+    <comment>Original: Decimal</comment>
+  </data>
+  <data name="HotKeyDelKey" xml:space="preserve">
+    <value>Delete</value>
+    <comment>Original: Delete</comment>
+  </data>
+  <data name="HotKeyDivideKey" xml:space="preserve">
+    <value>Delen</value>
+    <comment>Original: Divide</comment>
+  </data>
+  <data name="HotKeyDownArrowKey" xml:space="preserve">
+    <value>Pijl Omlaag</value>
+    <comment>Original: Down Arrow</comment>
+  </data>
+  <data name="HotKeyEndKey" xml:space="preserve">
+    <value>End</value>
+    <comment>Original: End</comment>
+  </data>
+  <data name="HotKeyEnterKey" xml:space="preserve">
+    <value>Enter</value>
+    <comment>Original: Enter</comment>
+  </data>
+  <data name="HotKeyEscKey" xml:space="preserve">
+    <value>Esc</value>
+    <comment>Original: Esc</comment>
+  </data>
+  <data name="HotKeyExecuteKey" xml:space="preserve">
+    <value>Uitvoeren</value>
+    <comment>Original: Execute</comment>
+  </data>
+  <data name="HotKeyHelpKey" xml:space="preserve">
+    <value>Help</value>
+    <comment>Original: Help</comment>
+  </data>
+  <data name="HotKeyHomeKey" xml:space="preserve">
+    <value>Home</value>
+    <comment>Original: Home</comment>
+  </data>
+  <data name="HotKeyInsKey" xml:space="preserve">
+    <value>Insert</value>
+    <comment>Original: Insert</comment>
+  </data>
+  <data name="HotKeyLeftArrowKey" xml:space="preserve">
+    <value>Pijl Links</value>
+    <comment>Original: Left Arrow</comment>
+  </data>
+  <data name="HotKeyMultiplyKey" xml:space="preserve">
+    <value>Maalnemen</value>
+    <comment>Original: Multiply</comment>
+  </data>
+  <data name="HotKeyNextTrackKey" xml:space="preserve">
+    <value>Volgend Nummer</value>
+    <comment>Original: Next Track</comment>
+  </data>
+  <data name="HotKeyNumericPadKey" xml:space="preserve">
+    <value>Numeriek {0}</value>
+    <comment>Original: Numeric pad {0}</comment>
+  </data>
+  <data name="HotKeyPageDownKey" xml:space="preserve">
+    <value>Pagina Omhoog</value>
+    <comment>Original: Page Down</comment>
+  </data>
+  <data name="HotKeyPageUpKey" xml:space="preserve">
+    <value>Pagina Omlaag</value>
+    <comment>Original: Page Up</comment>
+  </data>
+  <data name="HotKeyPauseKey" xml:space="preserve">
+    <value>Pauze</value>
+    <comment>Original: Pause</comment>
+  </data>
+  <data name="HotKeyPlayPauseMediaKey" xml:space="preserve">
+    <value>Media Afspelen/Pauze</value>
+    <comment>Original: Play/Pause Media</comment>
+  </data>
+  <data name="HotKeyPreviousTrackKey" xml:space="preserve">
+    <value>Vorig Nummer</value>
+    <comment>Original: Previous Track</comment>
+  </data>
+  <data name="HotKeyPrintKey" xml:space="preserve">
+    <value>Afdrukken</value>
+    <comment>Original: Print</comment>
+  </data>
+  <data name="HotKeyPrintScreenKey" xml:space="preserve">
+    <value>Print Screen</value>
+    <comment>Original: Print Screen</comment>
+  </data>
+  <data name="HotKeyRightArrowKey" xml:space="preserve">
+    <value>Pijl Rechts</value>
+    <comment>Original: Right Arrow</comment>
+  </data>
+  <data name="HotKeySelectKey" xml:space="preserve">
+    <value>Selecteer</value>
+    <comment>Original: Select</comment>
+  </data>
+  <data name="HotKeySelectMediaKey" xml:space="preserve">
+    <value>Selecteer Media</value>
+    <comment>Original: Select Media</comment>
+  </data>
+  <data name="HotKeySeparatorKey" xml:space="preserve">
+    <value>Scheidingsteken</value>
+    <comment>Original: Separator</comment>
+  </data>
+  <data name="HotKeyShift" xml:space="preserve">
+    <value>Shift</value>
+    <comment>Original: Shift</comment>
+  </data>
+  <data name="HotKeySpacebarKey" xml:space="preserve">
+    <value>Spatiebalk</value>
+    <comment>Original: Spacebar</comment>
+  </data>
+  <data name="HotKeyStartApplication1Key" xml:space="preserve">
+    <value>Start Applicatie 1</value>
+    <comment>Original: Start Application 1</comment>
+  </data>
+  <data name="HotKeyStartApplication2Key" xml:space="preserve">
+    <value>Start Applicatie 2</value>
+    <comment>Original: Start Application 2</comment>
+  </data>
+  <data name="HotKeyStartMailKey" xml:space="preserve">
+    <value>Start E-mail</value>
+    <comment>Original: Start Mail</comment>
+  </data>
+  <data name="HotKeyStopMediaKey" xml:space="preserve">
+    <value>Stop Media</value>
+    <comment>Original: Stop Media</comment>
+  </data>
+  <data name="HotKeySubtractKey" xml:space="preserve">
+    <value>Minus</value>
+    <comment>Original: Subtract</comment>
+  </data>
+  <data name="HotKeyTabKey" xml:space="preserve">
+    <value>Tab</value>
+    <comment>Original: Tab</comment>
+  </data>
+  <data name="HotKeyUpArrowKey" xml:space="preserve">
+    <value>Pijl Omhoog</value>
+    <comment>Original: Up Arrow</comment>
+  </data>
+  <data name="HotKeyVolumeDownKey" xml:space="preserve">
+    <value>Volume Omhoog</value>
+    <comment>Original: Volume Down</comment>
+  </data>
+  <data name="HotKeyVolumeMuteKey" xml:space="preserve">
+    <value>Volume Dempen</value>
+    <comment>Original: Volume Mute</comment>
+  </data>
+  <data name="HotKeyVolumeUpKey" xml:space="preserve">
+    <value>Volume Omlaag</value>
+    <comment>Original: Volume Up</comment>
+  </data>
+  <data name="HotKeyWindows" xml:space="preserve">
+    <value>Win</value>
+    <comment>Original: Win</comment>
+  </data>
+  <data name="InteractiveAuthenticationWindow_FailedToAuthenticate" xml:space="preserve">
+    <value>Kon niet authentiseren</value>
+    <comment>Original: Failed to authenticate</comment>
+  </data>
+  <data name="InteractiveAuthenticationWindow_TheFollowingResourceRequiresYourCredentialsLabel" xml:space="preserve">
+    <value>De volgende bron vereist uw inloggegevens:</value>
+    <comment>Original: The following resource requires your credentials:</comment>
+  </data>
+  <data name="MainWindow_LaunchRunnablePostfix" xml:space="preserve">
+    <value>resultaten</value>
+    <comment>Original: matches</comment>
+  </data>
+  <data name="MainWindow_LaunchRunnablePrefix" xml:space="preserve">
+    <value>Start</value>
+    <comment>Original: Launch</comment>
+  </data>
+  <data name="MainWindow_OpenCategoryPostfix" xml:space="preserve">
+    <value>resultaten</value>
+    <comment>Original: matches</comment>
+  </data>
+  <data name="MainWindow_OpenCategoryPrefix" xml:space="preserve">
+    <value>Open</value>
+    <comment>Original: Open</comment>
+  </data>
+  <data name="MainWindow_OpenTQL" xml:space="preserve">
+    <value>Open TQL</value>
+    <comment>Original: Open TQL</comment>
+  </data>
+  <data name="MainWindow_SearchingToolTip" xml:space="preserve">
+    <value>Zoeken…</value>
+    <comment>Original: Searching...</comment>
+  </data>
+  <data name="PackageSourcesConfiguration_PackageSources" xml:space="preserve">
+    <value>Pakketbronnen</value>
+    <comment>Original: Package Sources</comment>
+  </data>
+  <data name="PackageSourcesConfiguration_PasswordHelpText" xml:space="preserve">
+    <value>Als je een PAT token gebruikt naar een Azure DevOps privé artifact feed te verbinden, gebruik je dit als het wachtwoord en gebruik je het deel voor de @ in je email adres als de gebruikersnaam.</value>
+    <comment>Original: If you're using a PAT token to connect to an Azure DevOps private artifact feed, enter it into the password field and enter the part of your email address before the @ into the user name field.</comment>
+  </data>
+  <data name="PackageSourcesConfiguration_PasswordLabel" xml:space="preserve">
+    <value>Wachtwoord:</value>
+    <comment>Original: Password:</comment>
+  </data>
+  <data name="PackageSourcesConfiguration_URL" xml:space="preserve">
+    <value>URL</value>
+    <comment>Original: URL</comment>
+  </data>
+  <data name="PackageSourcesConfiguration_URLLabel" xml:space="preserve">
+    <value>URL:</value>
+    <comment>Original: URL:</comment>
+  </data>
+  <data name="PackageSourcesConfiguration_UserNameLabel" xml:space="preserve">
+    <value>Gebruikersnaam:</value>
+    <comment>Original: User name:</comment>
+  </data>
+  <data name="PluginsConfiguration_Browse" xml:space="preserve">
+    <value>Browse</value>
+    <comment>Original: Browse</comment>
+  </data>
+  <data name="PluginsConfiguration_Installed" xml:space="preserve">
+    <value>Geïnstalleerd</value>
+    <comment>Original: Installed</comment>
+  </data>
+  <data name="PluginsConfiguration_InstallLabel" xml:space="preserve">
+    <value>Installeer</value>
+    <comment>Original: Install</comment>
+  </data>
+  <data name="PluginsConfiguration_PluginBy" xml:space="preserve">
+    <value>door</value>
+    <comment>Original: by</comment>
+  </data>
+  <data name="PluginsConfiguration_PluginDownloads" xml:space="preserve">
+    <value>downloads</value>
+    <comment>Original: downloads</comment>
+  </data>
+  <data name="PluginsConfiguration_Plugins" xml:space="preserve">
+    <value>Invoegtoepassingen</value>
+    <comment>Original: Plugins</comment>
+  </data>
+  <data name="PluginsConfiguration_RemoveLabel" xml:space="preserve">
+    <value>Verwijderen</value>
+    <comment>Original: Remove</comment>
+  </data>
+  <data name="PluginsConfiguration_RestartHelpText" xml:space="preserve">
+    <value>Start Techie's Quick Launcher opnieuw op om de installatie te voltooien.</value>
+    <comment>Original: Restart Techie's Quick Launcher to complete the installation</comment>
+  </data>
+  <data name="PluginsConfiguration_RestartLabel" xml:space="preserve">
+    <value>Opnieuw Opstarten</value>
+    <comment>Original: Restart</comment>
+  </data>
+  <data name="ProgressWindow_Title" xml:space="preserve">
+    <value>Voortgang</value>
+    <comment>Original: Progress</comment>
+  </data>
+  <data name="SearchManager_SearchFailedWithError" xml:space="preserve">
+    <value>Zoeken is mislukt met een fout</value>
+    <comment>Original: Search failed with an error</comment>
+  </data>
+  <data name="SearchManager_SearchFailedWithErrorMessage" xml:space="preserve">
+    <value>Zoeken is mislukt met de volgende foutmelding:</value>
+    <comment>Original: Search failed with the following error message:</comment>
+  </data>
+  <data name="SearchResultControl_CopyMatchLinkHelpText" xml:space="preserve">
+    <value>Kopieer een link naar dit resultaat naar het klembord.</value>
+    <comment>Original: Copy a link to the match to the clipboard.</comment>
+  </data>
+  <data name="SearchResultControl_MatchCanBeLaunched" xml:space="preserve">
+    <value>Resultaat kan uitgevoerd worden</value>
+    <comment>Original: Match can be launched</comment>
+  </data>
+  <data name="SearchResultControl_MatchCanBeLaunchedHelpText" xml:space="preserve">
+    <value>Dit resultaat kun je uitvoeren door erop te klikken of op Enter te drukken.</value>
+    <comment>Original: This match is for something you can launch. Click on it, or press Enter to launch the match.</comment>
+  </data>
+  <data name="SearchResultControl_MatchContainsSubItems" xml:space="preserve">
+    <value>Resultaat heeft onderliggende resultaten</value>
+    <comment>Original: Match contains sub items</comment>
+  </data>
+  <data name="SearchResultControl_MatchContainsSubItemsHelpText" xml:space="preserve">
+    <value>Dit resultaat is een categorie waar in tezocht kan worden. Druk op Tab om de categorie te openen zodat je er in kunt zoeken.</value>
+    <comment>Original: This match is a category and can it self be searched. Press Tab to enter the category to search in it.</comment>
+  </data>
+  <data name="SearchResultControl_PinSearchResult" xml:space="preserve">
+    <value>Zoekresultaat vastzetten</value>
+    <comment>Original: Pin search result</comment>
+  </data>
+  <data name="SearchResultControl_PinSearchResultHelpText" xml:space="preserve">
+    <value>Zet het zoekresultaat vast om deze bovenaan in de lijst te sorteren.</value>
+    <comment>Original: Pin the search result to have them sorted to the top of the list.</comment>
+  </data>
+  <data name="SearchResultControl_RemoveMatchFromHistoryHelpText" xml:space="preserve">
+    <value>Verwijder dit resultaat uit de historie</value>
+    <comment>Original: Remove match from the history</comment>
+  </data>
+  <data name="SearchResultControl_UnpinSearchResultHelpText" xml:space="preserve">
+    <value>Zoekresultaat losmaken</value>
+    <comment>Original: Unpin search result</comment>
+  </data>
+  <data name="ThemeDark" xml:space="preserve">
+    <value>Donker</value>
+    <comment>Original: Dark</comment>
+  </data>
+  <data name="ThemeLight" xml:space="preserve">
+    <value>Licht</value>
+    <comment>Original: Light</comment>
+  </data>
+  <data name="ThemeSystem" xml:space="preserve">
+    <value>Systeem</value>
+    <comment>Original: System</comment>
+  </data>
+  <data name="MainWindow_CacheIsBeingUpdated" xml:space="preserve">
+    <value>Cache wordt bijgewerkt</value>
+    <comment>Original: Cache is being updated</comment>
+  </data>
+  <data name="MainWindow_CacheIsBeingUpdatedHelpText" xml:space="preserve">
+    <value>De cache van een of meer plugins wordt bijgewerkt.</value>
+    <comment>Original: The cache of one or more plugins is being updated.</comment>
+  </data>
+  <data name="MainWindow_HelpAndDocumentation" xml:space="preserve">
+    <value>Hulp &amp; documentatie</value>
+    <comment>Original: Help &amp; documentation</comment>
+  </data>
+  <data name="MainWindow_LeaveFeedback" xml:space="preserve">
+    <value>Geef terugkoppeling aan de ontwikkelaars</value>
+    <comment>Original: Leave feedback for the developers</comment>
+  </data>
+  <data name="MainWindow_LeaveFeedbackHelpText" xml:space="preserve">
+    <value>Laat de ontwikkelaars weten van ideeën, wijzigings verzoeken of bugs.</value>
+    <comment>Original: Leave ideas, features suggestions or bug reports for the developers.</comment>
+  </data>
+  <data name="MainWindow_LinkCopied" xml:space="preserve">
+    <value>Link is gekopieërd</value>
+    <comment>Original: Link copied</comment>
+  </data>
+  <data name="MainWindow_Settings" xml:space="preserve">
+    <value>Instellingen</value>
+    <comment>Original: Settings</comment>
+  </data>
+</root>

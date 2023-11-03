@@ -63,14 +63,14 @@ namespace Tql.Plugins.Azure {
         /// <summary>
         ///   Looks up a localized string similar to Azure - {0}.
         /// </summary>
-        public static string AzureApi_AuthenticationResourceName {
+        public static string AzureApi_ResourceName {
             get {
-                return ResourceManager.GetString("AzureApi_AuthenticationResourceName", resourceCulture);
+                return ResourceManager.GetString("AzureApi_ResourceName", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unable to connect to Azure - {0}. Click here to reconnect..
+        ///   Looks up a localized string similar to Unable to connect to {0}. Click here to reconnect..
         /// </summary>
         public static string AzureApi_UnableToConnect {
             get {

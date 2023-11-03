@@ -130,7 +130,7 @@
     <value>Update</value>
   </data>
   <data name="ConfigurationControl_BasicCredentialsDocumentation" xml:space="preserve">
-    <value>If you're using an API token or your own password, provide your user name and enter your password into the password field. If you're using a PAT token, leave the user name field empty.</value>
+    <value>If you're using an API token or your own password, you have to enter your username as well. If you're using a PAT token, leave the user name field empty.</value>
   </data>
   <data name="ConfigurationControl_Connections" xml:space="preserve">
     <value>Connections</value>
@@ -162,8 +162,11 @@
   <data name="Confirm_DoYouWantToAddNewItem" xml:space="preserve">
     <value>Do you want to add a new item?</value>
   </data>
+  <data name="ConfluenceClient_ResourceName" xml:space="preserve">
+    <value>Confluence - {0}</value>
+  </data>
   <data name="ConfluenceClient_UnableToConnect" xml:space="preserve">
-    <value>Unable to connect to Confluence - {0}. Click here to open the Confluence settings screen and validate your credentials.</value>
+    <value>Unable to connect to {0}. Click here to open the settings {1} screen and validate your credentials.</value>
   </data>
   <data name="ConfluencePlugin_Label" xml:space="preserve">
     <value>Confluence</value>
