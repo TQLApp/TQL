@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "Export": {
+      "commandName": "Project",
+      "commandLineArgs": "--export --filename ..\\..\\..\\..\\Strings.xlsx --locale nl"
+    },
+    "Import": {
+      "commandName": "Project",
+      "commandLineArgs": "--import --filename ..\\..\\..\\..\\Strings.xlsx --locale nl"
+    }
+  }
+}
