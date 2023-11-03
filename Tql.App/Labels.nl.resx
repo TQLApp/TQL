@@ -258,7 +258,7 @@
     <comment>Original: You've changed settings that require a restart of the application.</comment>
   </data>
   <data name="GeneralConfiguration_SearchResultFontSizeLabel" xml:space="preserve">
-    <value>Zoekresultaat lettertype grootte:</value>
+    <value>Resultaat lettertype grootte:</value>
     <comment>Original: Search result font size:</comment>
   </data>
   <data name="GeneralConfiguration_SearchResultFontSizePointsLabel" xml:space="preserve">
@@ -638,11 +638,11 @@
     <comment>Original: This match is a category and can it self be searched. Press Tab to enter the category to search in it.</comment>
   </data>
   <data name="SearchResultControl_PinSearchResult" xml:space="preserve">
-    <value>Zoekresultaat vastzetten</value>
+    <value>Resultaat vastzetten</value>
     <comment>Original: Pin search result</comment>
   </data>
   <data name="SearchResultControl_PinSearchResultHelpText" xml:space="preserve">
-    <value>Zet het zoekresultaat vast om deze bovenaan in de lijst te sorteren.</value>
+    <value>Zet het resultaat vast om deze bovenaan in de lijst te sorteren.</value>
     <comment>Original: Pin the search result to have them sorted to the top of the list.</comment>
   </data>
   <data name="SearchResultControl_RemoveMatchFromHistoryHelpText" xml:space="preserve">
@@ -650,7 +650,7 @@
     <comment>Original: Remove match from the history</comment>
   </data>
   <data name="SearchResultControl_UnpinSearchResultHelpText" xml:space="preserve">
-    <value>Zoekresultaat losmaken</value>
+    <value>Resultaat losmaken</value>
     <comment>Original: Unpin search result</comment>
   </data>
   <data name="ThemeDark" xml:space="preserve">
