@@ -195,9 +195,7 @@ internal class PackageManager
                 )
             )
             {
-                _logger.LogDebug("Copying '{FileName}'", fileName);
-
-                File.Copy(fileName, Path.Combine(targetPath, Path.GetFileName(fileName)), true);
+                CopyDirectory(Path.GetDirectoryName(fileName)!, targetPath);
             }
         }
 
@@ -207,6 +205,27 @@ internal class PackageManager
         );
 
         return true;
+    }
+
+    private void CopyDirectory(string source, string target)
+    {
+        _logger.LogDebug("Copying '{Directory}'", source);
+
+        foreach (var path in Directory.GetDirectories(source))
+        {
+            var targetPath = Path.Combine(target, Path.GetFileName(path));
+
+            Directory.CreateDirectory(targetPath);
+
+            CopyDirectory(path, targetPath);
+        }
+
+        foreach (var path in Directory.GetFiles(source))
+        {
+            _logger.LogDebug("Copying '{FileName}'", path);
+
+            File.Copy(path, Path.Combine(target, Path.GetFileName(path)), true);
+        }
     }
 
     public void RemovePackage(string packageId)

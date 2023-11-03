@@ -14,8 +14,7 @@ internal class PackageStoreManager
     private readonly Store _store;
     private readonly ILogger<PackageStoreManager> _logger;
     private readonly object _syncRoot = new();
-    private readonly Dictionary<string, string> _packageAssemblies =
-        new(StringComparer.OrdinalIgnoreCase);
+    private readonly Dictionary<AssemblyKey, string> _packageAssemblies = new();
 
     public string PackagesFolder { get; }
 
@@ -37,19 +36,12 @@ internal class PackageStoreManager
 
         lock (_syncRoot)
         {
-            var assemblyName = args.Name.Split(',').First().Trim();
+            var assemblyKey = AssemblyKey.FromName(new AssemblyName(args.Name));
 
             var loadedAssembly = AppDomain.CurrentDomain
                 .GetAssemblies()
                 .Select(p => (AssemblyName: p.GetName(), Assembly: p))
-                .Where(
-                    p =>
-                        string.Equals(
-                            p.AssemblyName.Name,
-                            assemblyName,
-                            StringComparison.OrdinalIgnoreCase
-                        )
-                )
+                .Where(p => AssemblyKey.FromName(p.AssemblyName).Equals(assemblyKey))
                 .OrderByDescending(p => p.AssemblyName.Version)
                 .FirstOrDefault();
 
@@ -63,7 +55,12 @@ internal class PackageStoreManager
                 return loadedAssembly.Assembly;
             }
 
-            if (_packageAssemblies.TryGetValue(assemblyName, out var fileName))
+            if (
+                args.Name
+                == "Tql.Plugins.GitHub.resources, Version=0.5.1.0, Culture=nl, PublicKeyToken=null"
+            ) { }
+
+            if (_packageAssemblies.TryGetValue(assemblyKey, out var fileName))
             {
                 _logger.LogDebug("Resolved assembly to '{FileName}'", fileName);
 
@@ -136,41 +133,58 @@ internal class PackageStoreManager
         {
             var packageFolder = Path.Combine(PackagesFolder, packageRef.ToString());
 
-            _logger.LogInformation("Loading assemblies of package '{Package}'", packageRef);
-
-            foreach (var fileName in Directory.GetFiles(packageFolder))
+            try
             {
-                if (assemblyExtensions.Contains(Path.GetExtension(fileName)))
-                {
-                    try
-                    {
-                        var assemblyName = AssemblyName.GetAssemblyName(fileName);
+                _logger.LogInformation("Loading assemblies of package '{Package}'", packageRef);
 
-                        packageAssemblies.Add((assemblyName, fileName));
-                    }
-                    catch (Exception ex)
+                foreach (
+                    var fileName in Directory.GetFiles(
+                        packageFolder,
+                        "*",
+                        SearchOption.AllDirectories
+                    )
+                )
+                {
+                    if (assemblyExtensions.Contains(Path.GetExtension(fileName)))
                     {
-                        _logger.LogWarning(
-                            ex,
-                            "Failed to get assembly name for '{FileName}'",
-                            fileName
-                        );
+                        try
+                        {
+                            var assemblyName = AssemblyName.GetAssemblyName(fileName);
+
+                            packageAssemblies.Add((assemblyName, fileName));
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogWarning(
+                                ex,
+                                "Failed to get assembly name for '{FileName}'",
+                                fileName
+                            );
+                        }
                     }
                 }
-            }
 
-            pluginAssemblyFileNames.Add(Path.Combine(packageFolder, packageRef.Id + ".dll"));
+                pluginAssemblyFileNames.Add(Path.Combine(packageFolder, packageRef.Id + ".dll"));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical(
+                    ex,
+                    "Failed to log assemblies from plugin folder '{PackageFolder}'",
+                    packageFolder
+                );
+            }
         }
 
         lock (_syncRoot)
         {
             foreach (
                 var entry in packageAssemblies
-                    .GroupBy(p => p.AssemblyName.Name)
+                    .GroupBy(p => new AssemblyKey(p.AssemblyName.Name, p.AssemblyName.CultureName))
                     .Select(
                         p =>
                             (
-                                AssemblyName: p.Key,
+                                AssemblyKey: p.Key,
                                 FileName: p.OrderByDescending(p1 => p1.AssemblyName.Version)
                                     .Select(p1 => p1.FileName)
                                     .First()
@@ -178,7 +192,7 @@ internal class PackageStoreManager
                     )
             )
             {
-                _packageAssemblies.Add(entry.AssemblyName, entry.FileName);
+                _packageAssemblies.Add(entry.AssemblyKey, entry.FileName);
             }
         }
 
@@ -238,5 +252,25 @@ internal class PackageStoreManager
         using var key = CreatePackagesKey();
 
         return key.GetValue(packageId) as string;
+    }
+}
+
+internal record struct AssemblyKey(string Name, string CultureName)
+{
+    public static AssemblyKey FromName(AssemblyName name) => new(name.Name, name.CultureName);
+
+    public readonly bool Equals(AssemblyKey other)
+    {
+        return string.Equals(Name, other.Name, StringComparison.OrdinalIgnoreCase)
+            && string.Equals(CultureName, other.CultureName, StringComparison.OrdinalIgnoreCase);
+    }
+
+    public override readonly int GetHashCode()
+    {
+        unchecked
+        {
+            return (StringComparer.OrdinalIgnoreCase.GetHashCode(Name) * 397)
+                ^ StringComparer.OrdinalIgnoreCase.GetHashCode(CultureName);
+        }
     }
 }
