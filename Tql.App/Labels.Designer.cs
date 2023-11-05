@@ -1132,6 +1132,51 @@ namespace Tql.App {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to E&amp;xit.
+        /// </summary>
+        public static string NotifyMenu_ExitLabel {
+            get {
+                return ResourceManager.GetString("NotifyMenu_ExitLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &amp;Help.
+        /// </summary>
+        public static string NotifyMenu_HelpLabel {
+            get {
+                return ResourceManager.GetString("NotifyMenu_HelpLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalidate All Caches.
+        /// </summary>
+        public static string NotifyMenu_InvalidateAllCachesLabel {
+            get {
+                return ResourceManager.GetString("NotifyMenu_InvalidateAllCachesLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &amp;Search.
+        /// </summary>
+        public static string NotifyMenu_SearchLabel {
+            get {
+                return ResourceManager.GetString("NotifyMenu_SearchLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to S&amp;ettings.
+        /// </summary>
+        public static string NotifyMenu_SettingsLabel {
+            get {
+                return ResourceManager.GetString("NotifyMenu_SettingsLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Package Sources.
         /// </summary>
         public static string PackageSourcesConfiguration_PackageSources {

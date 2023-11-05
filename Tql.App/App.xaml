@@ -69,9 +69,6 @@
                 <Setter
                     Property="TextBlock.TextWrapping"
                     Value="Wrap" />
-                <Setter
-                    Property="ToolTipService.ShowDuration"
-                    Value="15000" />
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="ToolTip">

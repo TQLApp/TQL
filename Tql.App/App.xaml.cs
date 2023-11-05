@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Tql.Abstractions;
 using Tql.App.ConfigurationUI;
+using Tql.App.QuickStart;
 using Tql.App.Search;
 using Tql.App.Services;
 using Tql.App.Services.Database;
@@ -243,6 +244,7 @@ public partial class App
         builder.AddSingleton<IPluginManager>(new PluginManager(plugins));
         builder.AddSingleton<PackageManager>();
         builder.AddSingleton(packageStoreManager);
+        builder.AddSingleton<QuickStartManager>();
 
         builder.Add(ServiceDescriptor.Singleton(typeof(ICache<>), typeof(Cache<>)));
 

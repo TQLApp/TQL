@@ -138,7 +138,7 @@
     <comment>Original: Delete</comment>
   </data>
   <data name="Button_Update" xml:space="preserve">
-    <value>Toepassen</value>
+    <value>Bijwerken</value>
     <comment>Original: Update</comment>
   </data>
   <data name="ConfigurationControl_BasicCredentialsDocumentation" xml:space="preserve">

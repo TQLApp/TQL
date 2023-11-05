@@ -60,6 +60,9 @@
 		<Compile Update="MainWindow.WinForms.xaml.cs">
 			<DependentUpon>MainWindow.xaml</DependentUpon>
 		</Compile>
+		<Compile Update="MainWindow.QuickStart.xaml.cs">
+			<DependentUpon>MainWindow.xaml</DependentUpon>
+		</Compile>
 		<Compile Update="Labels.Designer.cs">
 		  <DesignTime>True</DesignTime>
 		  <AutoGen>True</AutoGen>

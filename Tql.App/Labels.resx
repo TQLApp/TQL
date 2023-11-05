@@ -618,4 +618,19 @@
   <data name="GeneralConfiguration_LanguageSystem" xml:space="preserve">
     <value>System</value>
   </data>
+  <data name="NotifyMenu_ExitLabel" xml:space="preserve">
+    <value>E&amp;xit</value>
+  </data>
+  <data name="NotifyMenu_HelpLabel" xml:space="preserve">
+    <value>&amp;Help</value>
+  </data>
+  <data name="NotifyMenu_InvalidateAllCachesLabel" xml:space="preserve">
+    <value>Invalidate All Caches</value>
+  </data>
+  <data name="NotifyMenu_SearchLabel" xml:space="preserve">
+    <value>&amp;Search</value>
+  </data>
+  <data name="NotifyMenu_SettingsLabel" xml:space="preserve">
+    <value>S&amp;ettings</value>
+  </data>
 </root>

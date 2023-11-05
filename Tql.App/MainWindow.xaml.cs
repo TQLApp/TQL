@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Tql.Abstractions;
+using Tql.App.QuickStart;
 using Tql.App.Search;
 using Tql.App.Services;
 using Tql.App.Services.Database;
@@ -32,6 +33,7 @@ internal partial class MainWindow
     private readonly IDb _db;
     private readonly CacheManagerManager _cacheManagerManager;
     private readonly TelemetryService _telemetryService;
+    private readonly QuickStartManager _quickStart;
     private SearchManager? _searchManager;
     private readonly UI _ui;
     private double _listBoxRowHeight = double.NaN;
@@ -49,7 +51,8 @@ internal partial class MainWindow
         CacheManagerManager cacheManagerManager,
         IUI ui,
         TelemetryService telemetryService,
-        HotKeyService hotKeyService
+        HotKeyService hotKeyService,
+        QuickStartManager quickStart
     )
         : base(settings)
     {
@@ -59,6 +62,7 @@ internal partial class MainWindow
         _db = db;
         _cacheManagerManager = cacheManagerManager;
         _telemetryService = telemetryService;
+        _quickStart = quickStart;
         _ui = (UI)ui;
 
         cacheManagerManager.LoadingChanged += CacheManagerManager_LoadingChanged;
@@ -282,6 +286,8 @@ internal partial class MainWindow
         Show();
 
         Activate();
+
+        HandleQuickStart();
 
         _search.Focus();
     }

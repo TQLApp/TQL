@@ -102,6 +102,12 @@ internal class Settings : INotifyPropertyChanged
         set => SetString(nameof(Language), value);
     }
 
+    public string? QuickStart
+    {
+        get => GetString(nameof(QuickStart));
+        set => SetString(nameof(QuickStart), value);
+    }
+
     public event PropertyChangedEventHandler? PropertyChanged;
 
     public Settings(IStore store)

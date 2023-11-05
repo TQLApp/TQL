@@ -18,6 +18,7 @@ internal static class Images
     public static readonly DrawingImage Run = LoadImage("Person Running.svg");
     public static readonly DrawingImage Star = LoadImage("Star.svg");
     public static readonly DrawingImage Dismiss = LoadImage("Dismiss.svg");
+    public static readonly DrawingImage QuickStartDismiss = LoadImage("Quick Start Dismiss.svg");
     public static readonly DrawingImage Category = LoadImage("Apps List.svg");
     public static readonly DrawingImage Copy = LoadImage("Copy.svg");
     public static readonly DrawingImage Backspace = LoadImage("Backspace.svg");

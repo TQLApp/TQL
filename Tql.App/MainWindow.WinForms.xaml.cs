@@ -6,7 +6,7 @@ using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
 
 namespace Tql.App;
 
-partial class MainWindow
+internal partial class MainWindow
 {
     private readonly NotifyIcon _notifyIcon;
 
@@ -15,7 +15,7 @@ partial class MainWindow
         var notifyIcon = new NotifyIcon();
 
         notifyIcon.Icon = LoadIcon();
-        notifyIcon.Text = "Techie's Quick Launcher";
+        notifyIcon.Text = Labels.ApplicationTitle;
         notifyIcon.Visible = true;
 
         notifyIcon.ContextMenu = new System.Windows.Forms.ContextMenu();
@@ -33,15 +33,18 @@ partial class MainWindow
         notifyIcon.ContextMenu.MenuItems.Add("-");
 #if DEBUG
         notifyIcon.ContextMenu.MenuItems.Add(
-            "Invalidate All Caches",
+            Labels.NotifyMenu_InvalidateAllCachesLabel,
             (_, _) => InvalidateAllCaches()
         );
 #endif
-        notifyIcon.ContextMenu.MenuItems.Add("S&ettings", (_, _) => OpenSettings());
+        notifyIcon.ContextMenu.MenuItems.Add(
+            Labels.NotifyMenu_SettingsLabel,
+            (_, _) => OpenSettings()
+        );
         notifyIcon.ContextMenu.MenuItems.Add("-");
-        notifyIcon.ContextMenu.MenuItems.Add("&Help", (_, _) => OpenHelp());
+        notifyIcon.ContextMenu.MenuItems.Add(Labels.NotifyMenu_HelpLabel, (_, _) => OpenHelp());
         notifyIcon.ContextMenu.MenuItems.Add("-");
-        notifyIcon.ContextMenu.MenuItems.Add("E&xit", (_, _) => Close());
+        notifyIcon.ContextMenu.MenuItems.Add(Labels.NotifyMenu_ExitLabel, (_, _) => Close());
 
         notifyIcon.Click += (_, e) =>
         {
@@ -70,17 +73,17 @@ partial class MainWindow
         var sb = StringBuilderCache.Acquire();
 
         if (hotKey.Win)
-            sb.Append("Win+");
+            sb.Append(Labels.HotKeyWindows).Append('+');
         if (hotKey.Control)
-            sb.Append("Ctrl+");
+            sb.Append(Labels.HotKeyControl).Append('+');
         if (hotKey.Alt)
-            sb.Append("Alt+");
+            sb.Append(Labels.HotKeyAlt).Append('+');
         if (hotKey.Shift)
-            sb.Append("Shift+");
+            sb.Append(Labels.HotKeyShift).Append('+');
 
         sb.Append(HotKey.AvailableKeys.Single(p => p.Key == hotKey.Key).Label);
 
-        return $"&Search\t{StringBuilderCache.GetStringAndRelease(sb)}";
+        return $"{Labels.NotifyMenu_SearchLabel}\t{StringBuilderCache.GetStringAndRelease(sb)}";
     }
 
     private void InvalidateAllCaches()
