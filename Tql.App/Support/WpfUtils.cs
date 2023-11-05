@@ -2,7 +2,7 @@
 
 internal static class WpfUtils
 {
-    private const int NoiseTextureSize = 128;
+    private const int NoiseTextureSize = 256;
 
     public static double PointsToPixels(int points)
     {
@@ -11,6 +11,8 @@ internal static class WpfUtils
 
     public static Brush CreateAcrylicBrush(Window window)
     {
+        // See https://learn.microsoft.com/en-us/windows/apps/design/style/acrylic for info.
+
         var dpiScale = VisualTreeHelper.GetDpi(window);
 
         var dpiX = dpiScale.PixelsPerInchX;
@@ -19,12 +21,22 @@ internal static class WpfUtils
         var width = (int)(NoiseTextureSize * dpiX / 96);
         var height = (int)(NoiseTextureSize * dpiY / 96);
 
-        var bitmap = new WriteableBitmap(width, height, dpiX, dpiY, PixelFormats.Gray8, null);
         var pixels = new byte[width * height];
 
         new Random().NextBytes(pixels);
 
-        bitmap.WritePixels(new Int32Rect(0, 0, width, height), pixels, width, 0);
+        var bitmap = BitmapSource.Create(
+            width,
+            height,
+            dpiX,
+            dpiY,
+            PixelFormats.Gray8,
+            null,
+            pixels,
+            width
+        );
+
+        bitmap.Freeze();
 
         return new ImageBrush
         {
