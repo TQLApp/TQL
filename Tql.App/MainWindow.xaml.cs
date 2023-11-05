@@ -70,6 +70,8 @@ internal partial class MainWindow
 
         InitializeComponent();
 
+        Background = WpfUtils.CreateAcrylicBrush(this);
+
         ApplyTextOuterGlow();
 
         _runImage.Source = Images.Run;
