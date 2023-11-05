@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Configuration.EnvironmentVariables;
-using Tql.App.QuickStart;
+﻿using Tql.App.QuickStart;
 
 namespace Tql.App;
 

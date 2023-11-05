@@ -4,6 +4,7 @@ using System.IO;
 using System.Net.Http;
 using System.Reflection;
 using System.Windows.Markup;
+using CommandLine;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -31,9 +32,12 @@ public partial class App
     public static RestartMode RestartMode { get; set; } = RestartMode.Shutdown;
     public static ImmutableArray<Assembly>? DebugAssemblies { get; set; }
     public static bool IsDebugMode { get; set; }
+    internal static Options Options { get; private set; } = new();
 
     private void Application_Startup(object sender, StartupEventArgs e)
     {
+        Parser.Default.ParseArguments<Options>(FixupArgs(e.Args)).WithParsed(p => Options = p);
+
         _ipc = new WindowMessageIPC();
 
         if (!_ipc.IsFirstRunner)
@@ -44,7 +48,7 @@ public partial class App
 
         System.Windows.Forms.Application.EnableVisualStyles();
 
-        var store = new Store();
+        var store = new Store(Options.Environment);
         var (loggerFactory, inMemoryLoggerProvider) = SetupLogging(store);
 
         var packageStoreManager = new PackageStoreManager(
@@ -107,7 +111,7 @@ public partial class App
 
         _ipc.Received += (_, _) => _mainWindow.DoShow();
 
-        if (!e.Args.Contains("/silent"))
+        if (!Options.IsSilent)
             _mainWindow.DoShow();
     }
 
@@ -269,9 +273,22 @@ public partial class App
                 FileName = Assembly.GetEntryAssembly()!.Location
             };
             if (RestartMode == RestartMode.SilentRestart)
-                startInfo.Arguments = "/silent";
+                startInfo.Arguments += " --silent";
+            if (Options.Environment != null)
+                startInfo.Arguments += $" --env \"{Options.Environment}\"";
 
             Process.Start(startInfo);
+        }
+    }
+
+    private static IEnumerable<string> FixupArgs(IEnumerable<string> args)
+    {
+        foreach (var arg in args)
+        {
+            if (string.Equals(arg, "/silent", StringComparison.OrdinalIgnoreCase))
+                yield return "--silent";
+            else
+                yield return arg;
         }
     }
 }

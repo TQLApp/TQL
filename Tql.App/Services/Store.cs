@@ -7,18 +7,20 @@ namespace Tql.App.Services;
 
 internal class Store : IStore
 {
+    private readonly string _environmentName;
+
     public string DataFolder { get; }
     public string CacheFolder { get; }
 
-    public Store()
+    public Store(string? environment)
     {
+        _environmentName = "TQL";
+        if (environment != null)
+            _environmentName += $" - {environment}";
+
         DataFolder = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-#if DEBUG
-            "TQL - Debug"
-#else
-            "TQL"
-#endif
+            _environmentName
         );
 
         Directory.CreateDirectory(DataFolder);
@@ -30,13 +32,7 @@ internal class Store : IStore
 
     public RegistryKey CreateBaseKey()
     {
-        return Registry.CurrentUser.CreateSubKey("Software\\" +
-#if DEBUG
-                "TQL - Debug"
-#else
-                "TQL"
-#endif
-        )!;
+        return Registry.CurrentUser.CreateSubKey($"Software\\{_environmentName}")!;
     }
 
     public RegistryKey OpenKey(Guid pluginId)

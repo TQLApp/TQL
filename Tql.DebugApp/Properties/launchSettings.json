@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "TQL Debug": {
+      "commandName": "Project",
+      "commandLineArgs": "--env Debug"
+    }
+  }
+}

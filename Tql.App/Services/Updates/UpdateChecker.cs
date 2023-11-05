@@ -117,7 +117,7 @@ internal class UpdateChecker : IDisposable
         {
             _logger.LogInformation("One or more plugins were updated; restarting");
 
-            if (Environment.GetCommandLineArgs().Contains("/silent"))
+            if (App.Options.IsSilent)
                 App.RestartMode = RestartMode.SilentRestart;
             else
                 App.RestartMode = RestartMode.Restart;
