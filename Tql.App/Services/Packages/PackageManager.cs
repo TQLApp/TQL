@@ -130,7 +130,7 @@ internal class PackageManager
         using var client = GetClient();
 
         var packages = await client.GetPackageMetadata(packageId, false, false, cancellationToken);
-        if (packages == null)
+        if (packages.Length == 0)
             throw new InvalidOperationException($"Cannot find package '{packageId}'");
 
         var latestVersion = packages.OrderByDescending(p => p.Identity.Version).First();
