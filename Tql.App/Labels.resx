@@ -633,4 +633,10 @@
   <data name="NotifyMenu_SettingsLabel" xml:space="preserve">
     <value>S&amp;ettings</value>
   </data>
+  <data name="NotifyIconManager_ApplicationIsStarting" xml:space="preserve">
+    <value>Starting...</value>
+  </data>
+  <data name="NotifyIconManager_ApplicationIsUpdating" xml:space="preserve">
+    <value>Updating...</value>
+  </data>
 </root>

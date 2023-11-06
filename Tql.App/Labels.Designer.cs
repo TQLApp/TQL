@@ -1132,6 +1132,24 @@ namespace Tql.App {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Starting....
+        /// </summary>
+        public static string NotifyIconManager_ApplicationIsStarting {
+            get {
+                return ResourceManager.GetString("NotifyIconManager_ApplicationIsStarting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Updating....
+        /// </summary>
+        public static string NotifyIconManager_ApplicationIsUpdating {
+            get {
+                return ResourceManager.GetString("NotifyIconManager_ApplicationIsUpdating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to E&amp;xit.
         /// </summary>
         public static string NotifyMenu_ExitLabel {

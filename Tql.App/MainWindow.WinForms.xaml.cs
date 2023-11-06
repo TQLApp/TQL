@@ -1,26 +1,16 @@
-﻿using System.Windows.Forms;
-using Tql.App.Services;
+﻿using Tql.App.Services;
 using Tql.App.Support;
-using Application = System.Windows.Application;
-using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
+using ContextMenu = System.Windows.Forms.ContextMenu;
 
 namespace Tql.App;
 
 internal partial class MainWindow
 {
-    private readonly NotifyIcon _notifyIcon;
-
-    private NotifyIcon SetupNotifyIcon()
+    private ContextMenu SetupNotifyIconContextMenu()
     {
-        var notifyIcon = new NotifyIcon();
+        var contextMenu = new ContextMenu();
 
-        notifyIcon.Icon = LoadIcon();
-        notifyIcon.Text = Labels.ApplicationTitle;
-        notifyIcon.Visible = true;
-
-        notifyIcon.ContextMenu = new System.Windows.Forms.ContextMenu();
-
-        var hotKeyMenuItem = notifyIcon.ContextMenu.MenuItems.Add(
+        var hotKeyMenuItem = contextMenu.MenuItems.Add(
             GetHotKeyMenuItemLabel(),
             (_, _) => DoShow()
         );
@@ -30,40 +20,20 @@ internal partial class MainWindow
             (_, _) => hotKeyMenuItem.Text = GetHotKeyMenuItemLabel()
         );
 
-        notifyIcon.ContextMenu.MenuItems.Add("-");
+        contextMenu.MenuItems.Add("-");
 #if DEBUG
-        notifyIcon.ContextMenu.MenuItems.Add(
+        contextMenu.MenuItems.Add(
             Labels.NotifyMenu_InvalidateAllCachesLabel,
             (_, _) => InvalidateAllCaches()
         );
 #endif
-        notifyIcon.ContextMenu.MenuItems.Add(
-            Labels.NotifyMenu_SettingsLabel,
-            (_, _) => OpenSettings()
-        );
-        notifyIcon.ContextMenu.MenuItems.Add("-");
-        notifyIcon.ContextMenu.MenuItems.Add(Labels.NotifyMenu_HelpLabel, (_, _) => OpenHelp());
-        notifyIcon.ContextMenu.MenuItems.Add("-");
-        notifyIcon.ContextMenu.MenuItems.Add(Labels.NotifyMenu_ExitLabel, (_, _) => Close());
+        contextMenu.MenuItems.Add(Labels.NotifyMenu_SettingsLabel, (_, _) => OpenSettings());
+        contextMenu.MenuItems.Add("-");
+        contextMenu.MenuItems.Add(Labels.NotifyMenu_HelpLabel, (_, _) => OpenHelp());
+        contextMenu.MenuItems.Add("-");
+        contextMenu.MenuItems.Add(Labels.NotifyMenu_ExitLabel, (_, _) => Close());
 
-        notifyIcon.Click += (_, e) =>
-        {
-            if (e is MouseEventArgs { Button: MouseButtons.Left })
-                DoShow();
-        };
-
-        return notifyIcon;
-
-        System.Drawing.Icon LoadIcon()
-        {
-            using var stream = Application
-                .GetResourceStream(
-                    new Uri("pack://application:,,,/Tql.App;component/mainicon.ico")
-                )!
-                .Stream;
-
-            return new System.Drawing.Icon(stream);
-        }
+        return contextMenu;
     }
 
     private string GetHotKeyMenuItemLabel()

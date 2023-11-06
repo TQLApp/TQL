@@ -15,7 +15,6 @@
     ShowInTaskbar="False"
     Foreground="White"
     Background="Transparent"
-    Closed="Window_Closed"
     PreviewKeyDown="Window_PreviewKeyDown"
     Deactivated="Window_Deactivated"
     SourceInitialized="Window_SourceInitialized"

@@ -8,6 +8,7 @@ using Tql.Abstractions;
 using Tql.App.Services.Packages;
 using Tql.Utilities;
 using Path = System.IO.Path;
+using Tql.App.Support;
 
 namespace Tql.App.Services.Updates;
 
@@ -19,25 +20,35 @@ internal class UpdateChecker : IDisposable
     private readonly ILogger<UpdateChecker> _logger;
     private readonly HttpClient _httpClient;
     private readonly PackageManager _packageManager;
+    private readonly NotifyIconManager _notifyIconManager;
     private readonly Timer _timer;
 
     public UpdateChecker(
         IUI ui,
         ILogger<UpdateChecker> logger,
         HttpClient httpClient,
-        PackageManager packageManager
+        PackageManager packageManager,
+        NotifyIconManager notifyIconManager
     )
     {
         _ui = ui;
         _logger = logger;
         _httpClient = httpClient;
         _packageManager = packageManager;
+        _notifyIconManager = notifyIconManager;
         _timer = new Timer(TimerCallback, null, UpdateCheckInterval, UpdateCheckInterval);
     }
 
     public bool TryStartUpdate()
     {
-        return TaskUtils.RunSynchronously(TryStartUpdateAsync);
+        _notifyIconManager.State = NotifyIconState.Updating;
+
+        var result = TaskUtils.RunSynchronously(TryStartUpdateAsync);
+
+        if (!result)
+            _notifyIconManager.State = NotifyIconState.Running;
+
+        return result;
     }
 
     private async Task<bool> TryStartUpdateAsync()

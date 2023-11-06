@@ -48,6 +48,8 @@ public partial class App
 
         System.Windows.Forms.Application.EnableVisualStyles();
 
+        var notifyIconManager = new NotifyIconManager();
+
         var store = new Store(Options.Environment);
         var (loggerFactory, inMemoryLoggerProvider) = SetupLogging(store);
 
@@ -68,6 +70,7 @@ public partial class App
 
         builder.Services.AddSingleton(loggerFactory);
         builder.Services.AddSingleton(inMemoryLoggerProvider);
+        builder.Services.AddSingleton(notifyIconManager);
 
         ConfigureServices(builder.Services, store, packageStoreManager, plugins);
 

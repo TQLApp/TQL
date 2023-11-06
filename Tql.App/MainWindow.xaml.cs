@@ -34,6 +34,7 @@ internal partial class MainWindow
     private readonly CacheManagerManager _cacheManagerManager;
     private readonly TelemetryService _telemetryService;
     private readonly QuickStartManager _quickStart;
+    private readonly NotifyIconManager _notifyIconManager;
     private SearchManager? _searchManager;
     private readonly UI _ui;
     private double _listBoxRowHeight = double.NaN;
@@ -52,7 +53,8 @@ internal partial class MainWindow
         IUI ui,
         TelemetryService telemetryService,
         HotKeyService hotKeyService,
-        QuickStartManager quickStart
+        QuickStartManager quickStart,
+        NotifyIconManager notifyIconManager
     )
     {
         _settings = settings;
@@ -62,6 +64,7 @@ internal partial class MainWindow
         _cacheManagerManager = cacheManagerManager;
         _telemetryService = telemetryService;
         _quickStart = quickStart;
+        _notifyIconManager = notifyIconManager;
         _ui = (UI)ui;
 
         cacheManagerManager.LoadingChanged += CacheManagerManager_LoadingChanged;
@@ -107,7 +110,8 @@ internal partial class MainWindow
         if (!double.IsNaN(_listBoxRowHeight))
             RecalculateListBoxHeight();
 
-        _notifyIcon = SetupNotifyIcon();
+        _notifyIconManager.ContextMenu = SetupNotifyIconContextMenu();
+        _notifyIconManager.Clicked += (_, _) => DoShow();
 
         ResetFontSize();
 
@@ -220,11 +224,6 @@ internal partial class MainWindow
             if (IsVisible)
                 _searchManager?.DoSearch();
         }
-    }
-
-    private void Window_Closed(object sender, EventArgs e)
-    {
-        _notifyIcon.Dispose();
     }
 
     private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
