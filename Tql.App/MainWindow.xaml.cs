@@ -54,7 +54,6 @@ internal partial class MainWindow
         HotKeyService hotKeyService,
         QuickStartManager quickStart
     )
-        : base(settings)
     {
         _settings = settings;
         _serviceProvider = serviceProvider;
@@ -70,7 +69,12 @@ internal partial class MainWindow
 
         InitializeComponent();
 
-        Background = WpfUtils.CreateAcrylicBrush(this);
+        Tint = ParseMainWindowTint();
+
+        settings.AttachPropertyChanged(
+            nameof(settings.MainWindowTint),
+            (_, _) => Tint = ParseMainWindowTint()
+        );
 
         ApplyTextOuterGlow();
 
@@ -116,6 +120,13 @@ internal partial class MainWindow
         hotKeyService.Pressed += (_, _) => DoShow();
 
         RenderHotKey();
+    }
+
+    private Color ParseMainWindowTint()
+    {
+        var mainWindowTint = _settings.MainWindowTint;
+
+        return SettingsUtils.ParseMainWindowTint(mainWindowTint);
     }
 
     private void ApplyTextOuterGlow()

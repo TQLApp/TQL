@@ -68,13 +68,13 @@ internal partial class GeneralConfigurationControl : IConfigurationPage
         _mainFontSize.Text = settings.MainFontSize?.ToString();
         ConfigureResetButton(_resetMainFontSize, () => _mainFontSize.Text = null);
 
-        _mainWindowTint.SelectedColor = BlurWindow.ParseMainWindowTint(
+        _mainWindowTint.SelectedColor = SettingsUtils.ParseMainWindowTint(
             settings.MainWindowTint ?? Settings.DefaultMainWindowTint
         );
         ConfigureResetButton(
             _resetMainWindowTint,
             () =>
-                _mainWindowTint.SelectedColor = BlurWindow.ParseMainWindowTint(
+                _mainWindowTint.SelectedColor = SettingsUtils.ParseMainWindowTint(
                     Settings.DefaultMainWindowTint
                 )
         );

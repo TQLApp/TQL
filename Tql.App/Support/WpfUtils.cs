@@ -44,7 +44,7 @@ internal static class WpfUtils
             TileMode = TileMode.Tile,
             ViewportUnits = BrushMappingMode.Absolute,
             Viewport = new Rect(0, 0, 128, 128),
-            Opacity = 0.03
+            Opacity = 0.05
         };
     }
 }

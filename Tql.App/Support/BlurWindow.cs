@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-using System.Runtime.InteropServices;
-using System.Text.RegularExpressions;
+﻿using System.Runtime.InteropServices;
 using System.Windows.Interop;
 using Tql.App.Interop;
 using Tql.App.Services;
@@ -10,33 +8,31 @@ namespace Tql.App.Support;
 
 internal class BlurWindow : BaseWindow
 {
-    private readonly Settings _settings;
-    private Color _tint;
+    public static readonly DependencyProperty TintProperty = DependencyProperty.Register(
+        nameof(Tint),
+        typeof(Color),
+        typeof(BlurWindow),
+        new PropertyMetadata(Colors.Transparent, (d, _) => ((BlurWindow)d).UpdateMainWindowTint())
+    );
 
-    public BlurWindow(Settings settings)
+    public Color Tint
     {
-        _settings = settings;
-        Background = Brushes.Transparent;
+        get => (Color)GetValue(TintProperty);
+        set => SetValue(TintProperty, value);
+    }
+
+    public BlurWindow()
+    {
         WindowStyle = WindowStyle.None;
         ResizeMode = ResizeMode.NoResize;
 
-        Loaded += BlurWindow_Loaded;
-
-        _tint = ParseMainWindowTint();
-
-        settings.AttachPropertyChanged(
-            nameof(settings.MainWindowTint),
-            (_, _) =>
-            {
-                _tint = ParseMainWindowTint();
-
-                UpdateMainWindowTint();
-            }
-        );
+        SourceInitialized += BlurWindow_SourceInitialized;
     }
 
-    private void BlurWindow_Loaded(object sender, RoutedEventArgs e)
+    private void BlurWindow_SourceInitialized(object sender, EventArgs e)
     {
+        Background = WpfUtils.CreateAcrylicBrush(this);
+
         UpdateMainWindowTint();
 
         var interop = new WindowInteropHelper(this);
@@ -66,43 +62,15 @@ internal class BlurWindow : BaseWindow
     private void UpdateMainWindowTint()
     {
         var interop = new WindowInteropHelper(this);
+        if (interop.Handle == IntPtr.Zero)
+            return;
+
         var mainWindowSrc = HwndSource.FromHwnd(interop.Handle);
+        if (mainWindowSrc == null)
+            return;
 
         // This color is used to blend with the background.
-        mainWindowSrc!.CompositionTarget!.BackgroundColor = _tint;
-    }
-
-    private Color ParseMainWindowTint()
-    {
-        var mainWindowTint = _settings.MainWindowTint;
-
-        return ParseMainWindowTint(mainWindowTint);
-    }
-
-    public static Color ParseMainWindowTint(string? value)
-    {
-        var re = new Regex("^#([a-z0-9]{8})$", RegexOptions.IgnoreCase);
-
-        string tint;
-        if (value != null && re.IsMatch(value))
-            tint = value;
-        else
-            tint = Settings.DefaultMainWindowTint;
-
-        var match = re.Match(tint);
-
-        if (!match.Success)
-            throw new InvalidOperationException("Default tint is invalid");
-
-        return Color.FromArgb(Parse(0), Parse(2), Parse(4), Parse(6));
-
-        byte Parse(int offset) =>
-            (byte)
-                int.Parse(
-                    match.Groups[1].Value.Substring(offset, 2),
-                    NumberStyles.HexNumber,
-                    CultureInfo.InvariantCulture
-                );
+        mainWindowSrc.CompositionTarget!.BackgroundColor = Tint;
     }
 
     public static string PrintMainWindowTint(Color value)
