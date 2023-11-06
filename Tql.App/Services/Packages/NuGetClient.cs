@@ -4,6 +4,7 @@ using NuGet.Frameworks;
 using NuGet.PackageManagement;
 using NuGet.Packaging;
 using NuGet.Packaging.Core;
+using NuGet.Packaging.Signing;
 using NuGet.ProjectManagement;
 using NuGet.Protocol;
 using NuGet.Protocol.Core.Types;
@@ -25,11 +26,15 @@ internal class NuGetClient : IDisposable
     private readonly List<Lazy<INuGetResourceProvider>> _providers =
         new(Repository.Provider.GetCoreV3());
 
-    public SourceCacheContext SourceCacheContext { get; } = new();
+    private readonly SourceCacheContext _sourceCacheContext = new();
+    private readonly ISettings _settings = NullSettings.Instance;
+    private readonly string _directDownloadPath;
 
     public NuGetClient(NuGetClientConfiguration configuration, ILogger logger)
     {
         _logger = logger;
+
+        _sourceCacheContext.NoCache = true;
 
         foreach (var source in configuration.Sources)
         {
@@ -43,23 +48,29 @@ internal class NuGetClient : IDisposable
             _remoteSourceRepositories.Add(sourceRepository);
         }
 
-        var packageSourceProvider = new PackageSourceProvider(NullSettings.Instance);
+        var packageSourceProvider = new PackageSourceProvider(_settings);
         var sourceRepositoryProvider = new SourceRepositoryProvider(
             packageSourceProvider,
             _providers
         );
 
-        var packageCachePath = Path.GetFullPath(configuration.PackageCachePath);
+        var packagesFolderPath = Path.GetFullPath(
+            Path.Combine(configuration.PackageCachePath, "Packages")
+        );
+        Directory.CreateDirectory(packagesFolderPath);
 
-        Directory.CreateDirectory(packageCachePath);
+        _directDownloadPath = Path.GetFullPath(
+            Path.Combine(configuration.PackageCachePath, "Download")
+        );
+        Directory.CreateDirectory(_directDownloadPath);
 
         _packageManager = new NuGetPackageManager(
             sourceRepositoryProvider,
-            NullSettings.Instance,
-            packageCachePath
+            _settings,
+            packagesFolderPath
         )
         {
-            PackagesFolderNuGetProject = new FolderNuGetProject(packageCachePath),
+            PackagesFolderNuGetProject = new FolderNuGetProject(packagesFolderPath),
         };
     }
 
@@ -151,7 +162,7 @@ internal class NuGetClient : IDisposable
                 packageId,
                 includePrerelease,
                 includeUnlisted,
-                SourceCacheContext,
+                _sourceCacheContext,
                 _logger,
                 cancellationToken
             );
@@ -258,11 +269,23 @@ internal class NuGetClient : IDisposable
             )
         ).ToList();
 
+        var logger = new LoggerAdapter(projectContext);
+
+        var downloadContext = new PackageDownloadContext(
+            _sourceCacheContext,
+            _directDownloadPath,
+            true
+        )
+        {
+            ParentId = projectContext.OperationId,
+            ClientPolicyContext = ClientPolicyContext.GetClientPolicy(_settings, logger)
+        };
+
         await _packageManager.ExecuteNuGetProjectActionsAsync(
             _packageManager.PackagesFolderNuGetProject,
             installActions,
             projectContext,
-            SourceCacheContext,
+            downloadContext,
             cancellationToken
         );
 
@@ -271,6 +294,6 @@ internal class NuGetClient : IDisposable
 
     public void Dispose()
     {
-        SourceCacheContext.Dispose();
+        _sourceCacheContext.Dispose();
     }
 }
