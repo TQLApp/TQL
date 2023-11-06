@@ -43,8 +43,8 @@ internal static class WpfUtils
             ImageSource = bitmap,
             TileMode = TileMode.Tile,
             ViewportUnits = BrushMappingMode.Absolute,
-            Viewport = new Rect(0, 0, 128, 128),
-            Opacity = 0.05
+            Viewport = new Rect(0, 0, NoiseTextureSize, NoiseTextureSize),
+            Opacity = 0.02
         };
     }
 }
