@@ -40,6 +40,21 @@ internal static class NativeMethods
     [DllImport("kernel32")]
     public static extern bool DeactivateActCtx(int dwFlags, IntPtr lpCookie);
 
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern IntPtr FindWindow(string? lpClassName, string? lpWindowName);
+
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern IntPtr FindWindowEx(
+        IntPtr parentHandle,
+        IntPtr childAfter,
+        string? className,
+        string? windowTitle
+    );
+
+    [DllImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
+
     public delegate int TaskDialogCallback(
         [In] IntPtr hwnd,
         [In] uint msg,
@@ -48,9 +63,24 @@ internal static class NativeMethods
         [In] IntPtr refData
     );
 
+    [DllImport("user32.dll")]
+    public static extern IntPtr MonitorFromWindow(IntPtr hwnd, uint dwFlags);
+
+    [DllImport("Shcore.dll")]
+    public static extern IntPtr GetDpiForMonitor(
+        [In] IntPtr hmonitor,
+        [In] int dpiType,
+        [Out] out uint dpiX,
+        [Out] out uint dpiY
+    );
+
     public const int ACTCTX_FLAG_ASSEMBLY_DIRECTORY_VALID = 0x004;
 
     public const int WM_USER = 0x0400;
+
+    public const int MDT_EFFECTIVE_DPI = 0;
+
+    public const uint MONITOR_DEFAULTTOPRIMARY = 1;
 
     /// <summary>
     /// TASKDIALOG_FLAGS taken from CommCtrl.h.
@@ -436,5 +466,14 @@ internal static class NativeMethods
         public string lpAssemblyDirectory;
         public string lpResourceName;
         public string lpApplicationName;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct RECT
+    {
+        public int Left;
+        public int Top;
+        public int Right;
+        public int Bottom;
     }
 }

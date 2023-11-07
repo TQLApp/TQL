@@ -2,6 +2,7 @@
 using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using Tql.Interop;
 using Application = System.Windows.Application;
 using ContextMenu = System.Windows.Forms.ContextMenu;
 using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
@@ -71,23 +72,22 @@ internal class NotifyIconManager : IDisposable
 
     private List<Icon> CreateUpdateIcons(Icon icon)
     {
+        var taskbarScreenDpi = Win32Utils.GetTaskbarScreenDpi();
+
+        var iconSize = taskbarScreenDpi.DpiX > 96 ? 32 : 16;
+
         var icons = new List<Icon>();
 
-        //using var arrow16 = LoadBitmap("Arrow 16.png");
-        using var arrow32 = LoadBitmap("Arrow 32.png");
+        using var arrow = LoadBitmap($"Arrow {iconSize}.png");
 
-        //using var icon16 = GetIconBitmap(icon, 16);
-        using var icon32 = GetIconBitmap(icon, 32);
+        using var iconBitmap = GetIconBitmap(icon, iconSize);
 
         for (var i = 0; i < 4; i++)
         {
-            //using var rotated16 = RotateBitmap(arrow16, i);
-            using var rotated32 = RotateBitmap(arrow32, i);
+            using var rotated = RotateBitmap(arrow, i);
+            using var overlayed = OverlayBitmap(iconBitmap, rotated);
 
-            //using var overlayed16 = OverlayBitmap(icon16, rotated16);
-            using var overlayed32 = OverlayBitmap(icon32, rotated32);
-
-            icons.Add(Icon.FromHandle(overlayed32.GetHicon()));
+            icons.Add(Icon.FromHandle(overlayed.GetHicon()));
         }
 
         return icons;
