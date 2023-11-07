@@ -71,13 +71,7 @@
                     BorderThickness="1"
                     MaxWidth="300"
                     BorderBrush="#80ffffff"
-                    Background="#40ffffff">
-                    <StackPanel
-                        x:Name="_stackContainer"
-                        Orientation="Horizontal"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Right" />
-                </Border>
+                    Background="#40ffffff"/>
 
                 <TextBox
                     x:Name="_search"

@@ -384,33 +384,19 @@ internal partial class MainWindow
         {
             _stack.Visibility = Visibility.Visible;
 
-            _stackContainer.Children.Clear();
-
-            foreach (var match in _searchManager.Stack)
-            {
-                if (_stackContainer.Children.Count > 0)
-                {
-                    _stackContainer.Children.Add(
-                        new TextBlock(new Run(" » ")) { FontSize = _search.FontSize }
-                    );
-                }
-
-                _stackContainer.Children.Add(
-                    SearchResultUtils.RenderMatch(
-                        match,
-                        null,
-                        false,
-                        _search.FontSize,
-                        maxWidth: _stack.MaxWidth
-                            - (
-                                _stack.Padding.Left
-                                + _stack.Padding.Right
-                                + _stack.BorderThickness.Left
-                                + _stack.BorderThickness.Right
-                            )
+            _stack.Child = SearchResultUtils.RenderMatch(
+                _searchManager.Stack.Last(),
+                null,
+                false,
+                _search.FontSize,
+                maxWidth: _stack.MaxWidth
+                    - (
+                        _stack.Padding.Left
+                        + _stack.Padding.Right
+                        + _stack.BorderThickness.Left
+                        + _stack.BorderThickness.Right
                     )
-                );
-            }
+            );
 
             searchHint = (_searchManager.Stack.Last() as IHasSearchHint)?.SearchHint;
         }
