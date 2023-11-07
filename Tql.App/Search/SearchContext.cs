@@ -91,8 +91,11 @@ internal class SearchContext : ISearchContext, IDisposable
 
         var results = new List<SearchResult>();
 
+        var options = new ParallelOptions { CancellationToken = CancellationToken };
+
         Parallel.ForEach(
             matches,
+            options,
             match =>
             {
                 var searchResult = GetSearchResult(match);
@@ -107,7 +110,9 @@ internal class SearchContext : ISearchContext, IDisposable
             }
         );
 
-        results.Sort(SearchResultComparer.Instance);
+        CancellationToken.ThrowIfCancellationRequested();
+
+        results.Sort(new SearchResultComparer(CancellationToken));
 
         if (maxResults.HasValue)
             return results.Take(maxResults.Value).Select(p => p.Match);
@@ -224,10 +229,17 @@ internal class SearchContext : ISearchContext, IDisposable
 
     private class SearchResultComparer : IComparer<SearchResult>
     {
-        public static readonly SearchResultComparer Instance = new();
+        private readonly CancellationToken _cancellationToken;
+
+        public SearchResultComparer(CancellationToken cancellationToken)
+        {
+            _cancellationToken = cancellationToken;
+        }
 
         public int Compare(SearchResult a, SearchResult b)
         {
+            _cancellationToken.ThrowIfCancellationRequested();
+
             int result = a.Penalty!.Value.CompareTo(b.Penalty!.Value);
             if (result != 0)
                 return result;

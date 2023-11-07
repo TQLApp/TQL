@@ -266,6 +266,8 @@ internal partial class MainWindow
 
         RepositionScreen();
 
+        _dancingDots.Visibility = Visibility.Collapsed;
+
         _search.Text = "";
 
         _pendingEnter = false;
