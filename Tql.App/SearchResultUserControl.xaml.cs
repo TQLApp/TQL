@@ -72,31 +72,6 @@ internal partial class SearchResultUserControl
 
         _iconsPanel.Children.Clear();
 
-        if (IsListBoxItemSelectedOrMouseOver)
-        {
-            if (searchResult.Match is IRunnableMatch)
-            {
-                AddIcon(
-                    Images.Run,
-                    Labels.SearchResultControl_MatchCanBeLaunched,
-                    Labels.SearchResultControl_MatchCanBeLaunchedHelpText
-                );
-            }
-            if (searchResult.Match is ICopyableMatch)
-            {
-                AddIcon(Images.Copy, content: Labels.SearchResultControl_CopyMatchLinkHelpText)
-                    .AttachOnClickHandler(OnCopyClicked);
-            }
-            if (searchResult.Match is ISearchableMatch)
-            {
-                AddIcon(
-                    Images.Category,
-                    Labels.SearchResultControl_MatchContainsSubItems,
-                    Labels.SearchResultControl_MatchContainsSubItemsHelpText
-                );
-            }
-        }
-
         if (
             searchResult.Match is ISerializableMatch
             && (searchResult.IsPinned || IsListBoxItemMouseOver)
@@ -136,6 +111,31 @@ internal partial class SearchResultUserControl
                 pinOff.Visibility = Visibility.Collapsed;
 
                 pin.AttachOnClickHandler(OnPinClicked);
+            }
+        }
+
+        if (IsListBoxItemSelectedOrMouseOver)
+        {
+            if (searchResult.Match is IRunnableMatch)
+            {
+                AddIcon(
+                    Images.Run,
+                    Labels.SearchResultControl_MatchCanBeLaunched,
+                    Labels.SearchResultControl_MatchCanBeLaunchedHelpText
+                );
+            }
+            if (searchResult.Match is ICopyableMatch)
+            {
+                AddIcon(Images.Copy, content: Labels.SearchResultControl_CopyMatchLinkHelpText)
+                    .AttachOnClickHandler(OnCopyClicked);
+            }
+            if (searchResult.Match is ISearchableMatch)
+            {
+                AddIcon(
+                    Images.Category,
+                    Labels.SearchResultControl_MatchContainsSubItems,
+                    Labels.SearchResultControl_MatchContainsSubItemsHelpText
+                );
             }
         }
 
