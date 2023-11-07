@@ -171,6 +171,12 @@
   <data name="DashboardsType_Label" xml:space="preserve">
     <value>JIRA Dashboard</value>
   </data>
+  <data name="FilterMatch_SearchHint" xml:space="preserve">
+    <value>Find issues</value>
+  </data>
+  <data name="FiltersType_Label" xml:space="preserve">
+    <value>JIRA Filter</value>
+  </data>
   <data name="IssuesType_Label" xml:space="preserve">
     <value>JIRA Issue</value>
   </data>

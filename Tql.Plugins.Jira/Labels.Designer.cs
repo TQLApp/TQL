@@ -223,6 +223,24 @@ namespace Tql.Plugins.Jira {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Find issues.
+        /// </summary>
+        public static string FilterMatch_SearchHint {
+            get {
+                return ResourceManager.GetString("FilterMatch_SearchHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to JIRA Filter.
+        /// </summary>
+        public static string FiltersType_Label {
+            get {
+                return ResourceManager.GetString("FiltersType_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to JIRA Issue.
         /// </summary>
         public static string IssuesType_Label {

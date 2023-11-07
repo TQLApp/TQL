@@ -83,7 +83,7 @@ internal class JiraClient
         return await ExecuteJsonRequest<ImmutableArray<JiraProjectDto>>(request, cancellationToken);
     }
 
-    public Task<ImmutableArray<JiraBoardV3Dto>> GetBoardsV3(
+    public Task<ImmutableArray<JiraBoardV3Dto>> GetAgileBoards(
         int? maxResults = null,
         CancellationToken cancellationToken = default
     ) =>
@@ -93,7 +93,7 @@ internal class JiraClient
             cancellationToken
         );
 
-    public async Task<JiraBoardConfigurationV3Dto> GetBoardsConfigurationV3(
+    public async Task<JiraBoardConfigurationV3Dto> GetAgileBoardsConfiguration(
         int boardId,
         CancellationToken cancellationToken = default
     )
@@ -250,6 +250,28 @@ internal class JiraClient
 
         return await ExecuteJsonRequest<JiraXBoardConfigDto>(request, cancellationToken);
     }
+
+    public async Task<ImmutableArray<JiraFilterDto>> GetFavoriteFilters(
+        CancellationToken cancellationToken = default
+    )
+    {
+        using var request = new HttpRequestMessage(
+            HttpMethod.Get,
+            $"{_baseUrl}/rest/api/2/filter/favourite"
+        );
+
+        return await ExecuteJsonRequest<ImmutableArray<JiraFilterDto>>(request, cancellationToken);
+    }
+
+    public Task<ImmutableArray<JiraFilterDto>> GetFiltersV3(
+        int? maxResults = null,
+        CancellationToken cancellationToken = default
+    ) =>
+        GetPagedV3<JiraFilterDto>(
+            $"{_baseUrl}/rest/api/3/filter/search?expand=jql,viewUrl",
+            maxResults,
+            cancellationToken
+        );
 
     private async Task<T> ExecuteJsonRequest<T>(
         HttpRequestMessage request,
@@ -416,3 +438,10 @@ internal record JiraBoardConfigurationV3Dto(
 );
 
 internal record JiraBoardConfigurationFilterV3Dto([property: JsonPropertyName("id")] string Id);
+
+internal record JiraFilterDto(
+    [property: JsonPropertyName("id")] string Id,
+    [property: JsonPropertyName("name")] string Name,
+    [property: JsonPropertyName("jql")] string Jql,
+    [property: JsonPropertyName("viewUrl")] string ViewUrl
+);

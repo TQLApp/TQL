@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using Microsoft.Extensions.Logging;
+using System.Globalization;
 using Tql.Abstractions;
 using Tql.Plugins.Jira.Services;
 
@@ -8,15 +9,21 @@ internal class JiraCacheManager : ICacheManager<JiraData>
 {
     private readonly ConfigurationManager _configurationManager;
     private readonly JiraApi _api;
+    private readonly ILogger<JiraCacheManager> _logger;
 
-    public int Version => 5;
+    public int Version => 6;
 
     public event EventHandler<CacheExpiredEventArgs>? CacheExpired;
 
-    public JiraCacheManager(ConfigurationManager configurationManager, JiraApi api)
+    public JiraCacheManager(
+        ConfigurationManager configurationManager,
+        JiraApi api,
+        ILogger<JiraCacheManager> logger
+    )
     {
         _configurationManager = configurationManager;
         _api = api;
+        _logger = logger;
 
         configurationManager.Changed += (_, _) => OnCacheExpired(new CacheExpiredEventArgs(true));
     }
@@ -72,13 +79,13 @@ internal class JiraCacheManager : ICacheManager<JiraData>
 
         var boards = ImmutableArray.CreateBuilder<JiraBoard>();
 
-        foreach (var board in await client.GetBoardsV3())
+        foreach (var board in await client.GetAgileBoards())
         {
             var location = board.Location;
             if (location == null)
                 continue;
 
-            var boardConfig = await client.GetBoardsConfigurationV3(board.Id);
+            var boardConfig = await client.GetAgileBoardsConfiguration(board.Id);
             var xBoardConfig = await client.GetXBoardConfig(board.Id);
 
             boards.Add(
@@ -100,11 +107,31 @@ internal class JiraCacheManager : ICacheManager<JiraData>
             );
         }
 
+        ImmutableArray<JiraFilterDto> apiFilters;
+
+        // Fall back to the server APIs if we can't get all filters through the
+        // cloud APIs.
+        try
+        {
+            apiFilters = await client.GetFiltersV3();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Could not get all filters");
+
+            apiFilters = await client.GetFavoriteFilters();
+        }
+
+        var filters = apiFilters
+            .Select(p => new JiraFilter(p.Id, p.Name, p.Jql, p.ViewUrl))
+            .ToImmutableArray();
+
         return new JiraConnection(
             connection.Url,
             dashboards,
             projects.ToImmutable(),
-            boards.ToImmutable()
+            boards.ToImmutable(),
+            filters
         );
     }
 

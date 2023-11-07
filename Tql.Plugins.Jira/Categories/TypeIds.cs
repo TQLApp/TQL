@@ -25,4 +25,7 @@ internal static class TypeIds
 
     public static readonly MatchTypeId Projects = CreateId("2370f0ee-20d6-4d0c-8da0-2430449d395b");
     public static readonly MatchTypeId Project = CreateId("c8aa3d77-62fb-4dc8-bde6-d4ac58a2ad6b");
+
+    public static readonly MatchTypeId Filters = CreateId("14751ca6-9a29-4159-b139-851e41a28425");
+    public static readonly MatchTypeId Filter = CreateId("a1dfcdd7-64fd-4988-9fc5-fbcdb46eb16a");
 }

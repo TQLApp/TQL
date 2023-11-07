@@ -24,4 +24,8 @@ internal static class Images
         typeof(Images),
         "Resources.Projects.svg"
     );
+    public static readonly ImageSource Filters = ImageFactory.FromEmbeddedResource(
+        typeof(Images),
+        "Resources.Filters.svg"
+    );
 }

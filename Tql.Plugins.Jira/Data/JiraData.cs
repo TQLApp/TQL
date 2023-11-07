@@ -9,7 +9,8 @@ internal record JiraConnection(
     string Url,
     ImmutableArray<JiraDashboard> Dashboards,
     ImmutableArray<JiraProject> Projects,
-    ImmutableArray<JiraBoard> Boards
+    ImmutableArray<JiraBoard> Boards,
+    ImmutableArray<JiraFilter> Filters
 );
 
 internal record JiraDashboard(string Id, string Name, string View);
@@ -48,3 +49,5 @@ internal record JiraBoard(
 );
 
 internal record JiraQuickFilter(int Id, string Name, string Query);
+
+internal record JiraFilter(string Id, string Name, string Jql, string ViewUrl);
