@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using System.Windows.Threading;
 using Tql.Abstractions;
 using Tql.App.Support;
 using Tql.Utilities;
@@ -11,6 +12,9 @@ internal partial class ProgressWindow
     private readonly Action _action;
     private readonly IUI _ui;
     private bool _complete;
+    private readonly DispatcherTimer _timer;
+    private readonly StringBuilder _sb = new();
+    private readonly object _syncRoot = new();
 
     public static void Show(IServiceProvider serviceProvider, UIElement owner, Func<Task> action)
     {
@@ -33,19 +37,37 @@ internal partial class ProgressWindow
         _action = action;
         _ui = ui;
 
+        _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(0.1) };
+        _timer.Tick += _timer_Tick;
+        _timer.Start();
+
         InitializeComponent();
+    }
+
+    private void _timer_Tick(object sender, EventArgs e)
+    {
+        string log;
+
+        lock (_syncRoot)
+        {
+            if (_sb.Length == 0)
+                return;
+            log = _sb.ToString();
+            _sb.Clear();
+        }
+
+        _log.AppendText(log);
+        _log.ScrollToEnd();
     }
 
     private void LoggerProvider_Logged(object sender, InMemoryLogMessageEventArgs e)
     {
-        Dispatcher.BeginInvoke(() =>
+        lock (_syncRoot)
         {
-            _log.AppendText(
+            _sb.AppendLine(
                 $"[{e.Message.LogLevel}] {e.Message.CategoryName} - {e.Message.Message}"
-                    + Environment.NewLine
             );
-            _log.ScrollToEnd();
-        });
+        }
     }
 
     private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -73,6 +95,7 @@ internal partial class ProgressWindow
         {
             Dispatcher.BeginInvoke(() =>
             {
+                _timer.Stop();
                 _complete = true;
                 Close();
             });

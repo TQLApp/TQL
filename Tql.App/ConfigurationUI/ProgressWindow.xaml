@@ -11,8 +11,9 @@
     ResizeMode="CanResize"
     mc:Ignorable="d"
     Title="{x:Static app:Labels.ProgressWindow_Title}"
-    Width="500"
-    Height="300"
+    Width="700"
+    Height="400"
+    Icon="pack://application:,,,/Tql.App;component/mainicon.ico"
     Loaded="Window_Loaded"
     Unloaded="Window_Unloaded"
     Closing="Window_Closing">
