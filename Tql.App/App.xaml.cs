@@ -38,7 +38,7 @@ public partial class App
     {
         Parser.Default.ParseArguments<Options>(FixupArgs(e.Args)).WithParsed(p => Options = p);
 
-        _ipc = new WindowMessageIPC();
+        _ipc = new WindowMessageIPC(Options.Environment);
 
         if (!_ipc.IsFirstRunner)
         {
