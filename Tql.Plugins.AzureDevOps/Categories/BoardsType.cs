@@ -11,13 +11,22 @@ internal class BoardsType : IMatchType
 {
     private readonly ICache<AzureData> _cache;
     private readonly ConfigurationManager _configurationManager;
+    private readonly AzureDevOpsApi _api;
+    private readonly AzureWorkItemIconManager _iconManager;
 
     public Guid Id => TypeIds.Boards.Id;
 
-    public BoardsType(ICache<AzureData> cache, ConfigurationManager configurationManager)
+    public BoardsType(
+        ICache<AzureData> cache,
+        ConfigurationManager configurationManager,
+        AzureDevOpsApi api,
+        AzureWorkItemIconManager iconManager
+    )
     {
         _cache = cache;
         _configurationManager = configurationManager;
+        _api = api;
+        _iconManager = iconManager;
     }
 
     public IMatch? Deserialize(string json)
@@ -31,7 +40,9 @@ internal class BoardsType : IMatchType
         return new BoardsMatch(
             MatchUtils.GetMatchLabel(Labels.BoardsType_Label, configuration, dto.Url),
             dto.Url,
-            _cache
+            _cache,
+            _api,
+            _iconManager
         );
     }
 }

@@ -132,11 +132,17 @@
   <data name="BacklogMatch_Label" xml:space="preserve">
     <value>{0} Backlog</value>
   </data>
+  <data name="BacklogMatch_SearchHint" xml:space="preserve">
+    <value>Find work items</value>
+  </data>
   <data name="BacklogsType_Label" xml:space="preserve">
     <value>Azure Backlog</value>
   </data>
   <data name="BoardMatch_Label" xml:space="preserve">
     <value>{0} Board</value>
+  </data>
+  <data name="BoardMatch_SearchHint" xml:space="preserve">
+    <value>Find work items</value>
   </data>
   <data name="BoardsType_Label" xml:space="preserve">
     <value>Azure Board</value>

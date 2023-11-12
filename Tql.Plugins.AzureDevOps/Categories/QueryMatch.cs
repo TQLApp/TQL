@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
-using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 using Tql.Abstractions;
 using Tql.Plugins.AzureDevOps.Services;
 using Tql.Utilities;
@@ -71,33 +70,7 @@ internal class QueryMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, 
         // Limit to that.
         var result = await client.QueryByIdAsync(_dto.Id, top: 200);
 
-        var ids = result.WorkItems.Select(p => p.Id).ToList();
-
-        if (ids.Count == 0)
-            return ImmutableArray<IMatch>.Empty;
-
-        var workItems = await client.GetWorkItemsAsync(
-            ids,
-            new[] { "System.Title", "System.WorkItemType", "System.TeamProject" },
-            result.AsOf,
-            errorPolicy: WorkItemErrorPolicy.Omit
-        );
-
-        return workItems
-            .Select(
-                p =>
-                    new WorkItemMatch(
-                        new WorkItemMatchDto(
-                            _dto.Url,
-                            (string)p.Fields["System.TeamProject"],
-                            p.Id!.Value,
-                            (string)p.Fields["System.WorkItemType"],
-                            (string)p.Fields["System.Title"]
-                        ),
-                        _iconManager
-                    )
-            )
-            .ToImmutableArray<IMatch>();
+        return await QueryUtils.GetWorkItemsByIds(client, _dto.Url, result, _iconManager);
     }
 }
 

@@ -106,6 +106,15 @@ namespace Tql.Plugins.AzureDevOps {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Find work items.
+        /// </summary>
+        public static string BacklogMatch_SearchHint {
+            get {
+                return ResourceManager.GetString("BacklogMatch_SearchHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Azure Backlog.
         /// </summary>
         public static string BacklogsType_Label {
@@ -120,6 +129,15 @@ namespace Tql.Plugins.AzureDevOps {
         public static string BoardMatch_Label {
             get {
                 return ResourceManager.GetString("BoardMatch_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find work items.
+        /// </summary>
+        public static string BoardMatch_SearchHint {
+            get {
+                return ResourceManager.GetString("BoardMatch_SearchHint", resourceCulture);
             }
         }
         

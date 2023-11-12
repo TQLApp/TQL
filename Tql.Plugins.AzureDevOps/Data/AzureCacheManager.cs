@@ -20,7 +20,7 @@ internal class AzureCacheManager : ICacheManager<AzureData>
     private readonly AzureDevOpsApi _api;
     private readonly HttpClient _httpClient;
 
-    public int Version => 1;
+    public int Version => 2;
 
     public event EventHandler<CacheExpiredEventArgs>? CacheExpired;
 
@@ -69,7 +69,7 @@ internal class AzureCacheManager : ICacheManager<AzureData>
             var dashboards = ImmutableArray<AzureDashboard>.Empty;
             var backlogs = ImmutableArray<AzureBacklog>.Empty;
             var boards = ImmutableArray<AzureBoard>.Empty;
-            var teams = ImmutableArray<AzureTeam>.Empty;
+            var teams = ImmutableArray.CreateBuilder<AzureTeam>();
             var repositories = ImmutableArray<AzureRepository>.Empty;
             var buildDefinitions = ImmutableArray<AzureBuildDefinition>.Empty;
 
@@ -120,15 +120,30 @@ internal class AzureCacheManager : ICacheManager<AzureData>
                         }
                     )
                     where backlog != null
-                    select new AzureBacklog(backlog.Name)
+                    select new AzureBacklog(
+                        backlog.Name,
+                        backlog.WorkItemTypes.Select(p => p.Name).ToImmutableArray()
+                    )
                 ).ToImmutableArray();
 
                 var teamClient = await _api.GetClient<TeamHttpClient>(connection.Url);
 
-                teams = (
-                    from team in await teamClient.GetTeamsAsync(project.Id.ToString())
-                    select new AzureTeam(team.Id, team.Name)
-                ).ToImmutableArray();
+                foreach (var team in await teamClient.GetTeamsAsync(project.Id.ToString()))
+                {
+                    var teamFieldValues = await workClient.GetTeamFieldValuesAsync(
+                        new TeamContext(project.Id, team.Id)
+                    );
+
+                    teams.Add(
+                        new AzureTeam(
+                            team.Id,
+                            team.Name,
+                            teamFieldValues.Values
+                                .Select(p => new AzureTeamAreaPath(p.Value, p.IncludeChildren))
+                                .ToImmutableArray()
+                        )
+                    );
+                }
             }
 
             if (features[project.Id].Contains(AzureFeature.Pipelines))
@@ -164,7 +179,7 @@ internal class AzureCacheManager : ICacheManager<AzureData>
                     dashboards,
                     backlogs,
                     boards,
-                    teams,
+                    teams.ToImmutable(),
                     repositories,
                     buildDefinitions
                 )

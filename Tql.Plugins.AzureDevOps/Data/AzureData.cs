@@ -36,11 +36,13 @@ internal record AzureWorkItemIcon(byte[] Data, string MediaType);
 
 internal record AzureDashboard(Guid Id, string Name);
 
-internal record AzureBacklog(string Name);
+internal record AzureBacklog(string Name, ImmutableArray<string> WorkItemTypes);
 
 internal record AzureBoard(Guid Id, string Name);
 
-internal record AzureTeam(Guid Id, string Name);
+internal record AzureTeam(Guid Id, string Name, ImmutableArray<AzureTeamAreaPath> AreaPaths);
+
+internal record AzureTeamAreaPath(string Name, bool IncludeChildren);
 
 internal record AzureRepository(Guid Id, string Name);
 

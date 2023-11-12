@@ -1,12 +1,22 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Tql.Abstractions;
+using Tql.Plugins.AzureDevOps.Data;
+using Tql.Plugins.AzureDevOps.Services;
 using Tql.Utilities;
 
 namespace Tql.Plugins.AzureDevOps.Categories;
 
-internal class BacklogMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
+internal class BacklogMatch
+    : IRunnableMatch,
+        ISerializableMatch,
+        ICopyableMatch,
+        ISearchableMatch,
+        IHasSearchHint
 {
     private readonly BacklogMatchDto _dto;
+    private readonly ICache<AzureData> _cache;
+    private readonly AzureDevOpsApi _api;
+    private readonly AzureWorkItemIconManager _iconManager;
 
     public string Text =>
         MatchText.Path(
@@ -17,10 +27,19 @@ internal class BacklogMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
 
     public ImageSource Icon => Images.Boards;
     public MatchTypeId TypeId => TypeIds.Backlog;
+    public string SearchHint => Labels.BacklogMatch_SearchHint;
 
-    public BacklogMatch(BacklogMatchDto dto)
+    public BacklogMatch(
+        BacklogMatchDto dto,
+        ICache<AzureData> cache,
+        AzureDevOpsApi api,
+        AzureWorkItemIconManager iconManager
+    )
     {
         _dto = dto;
+        _cache = cache;
+        _api = api;
+        _iconManager = iconManager;
     }
 
     public Task Run(IServiceProvider serviceProvider, Window owner)
@@ -40,6 +59,25 @@ internal class BacklogMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
         serviceProvider.GetRequiredService<IClipboard>().CopyUri(Text, _dto.GetUrl());
 
         return Task.CompletedTask;
+    }
+
+    public async Task<IEnumerable<IMatch>> Search(
+        ISearchContext context,
+        string text,
+        CancellationToken cancellationToken
+    )
+    {
+        return await QueryUtils.SearchInBacklog(
+            _dto.Url,
+            _dto.ProjectName,
+            _dto.TeamName,
+            _dto.BacklogName,
+            text,
+            _api,
+            await _cache.Get(),
+            _iconManager,
+            cancellationToken
+        );
     }
 }
 
