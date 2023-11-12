@@ -148,8 +148,10 @@ public partial class App
                 Path.Combine(logDirectory, "Log.log"),
                 options =>
                 {
+#if !DEBUG
                     options.FileSizeLimitBytes = 1 * 1024 * 1024;
                     options.MaxRollingFiles = 5;
+#endif
                     options.Append = true;
                 }
             );
