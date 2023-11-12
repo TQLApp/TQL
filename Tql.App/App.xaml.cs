@@ -275,7 +275,8 @@ public partial class App
         {
             var startInfo = new ProcessStartInfo
             {
-                FileName = Assembly.GetEntryAssembly()!.Location
+                FileName = Assembly.GetEntryAssembly()!.Location,
+                UseShellExecute = false
             };
             if (RestartMode == RestartMode.SilentRestart)
                 startInfo.Arguments += " --silent";
