@@ -306,6 +306,23 @@ internal partial class MainWindow
         _search.Focus();
     }
 
+    private void Window_Loaded(object sender, RoutedEventArgs e)
+    {
+        //
+        // HACK: Sometimes when the app starts up the first time, the content
+        // of the window isn't rendered. Resizing the window fixes this. This
+        // bug can be forced by replacing the content of this method with
+        // setting the Height to 0.
+        //
+        // This suggestion came from ChatGPT and consistently fixes the issue.
+        // This does show a slight delay in the content being rendered, on first
+        // show only. There is no impact on subsequent show calls.
+        //
+
+        Opacity = 0;
+        Dispatcher.BeginInvoke(() => Opacity = 1, DispatcherPriority.Render);
+    }
+
     private void ReloadNotifications()
     {
         _notificationBars.ItemsSource = _ui.UINotifications;
