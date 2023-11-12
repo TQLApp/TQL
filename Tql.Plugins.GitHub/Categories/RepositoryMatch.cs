@@ -54,16 +54,23 @@ internal class RepositoryMatch
         CancellationToken cancellationToken
     )
     {
-        if (text.IsWhiteSpace())
-            return Array.Empty<IMatch>();
-
         await context.DebounceDelay(cancellationToken);
 
         var client = await _api.GetClient(_dto.ConnectionId);
 
-        var response = await client.Search.SearchIssues(
-            new SearchIssuesRequest(text) { Repos = { _dto.Name } }
-        );
+        var request = text.IsWhiteSpace()
+            ? new SearchIssuesRequest()
+            : new SearchIssuesRequest(text);
+
+        request.Repos.Add(_dto.Name);
+
+        if (text.IsWhiteSpace())
+        {
+            request.SortField = IssueSearchSort.Created;
+            request.Order = SortDirection.Descending;
+        }
+
+        var response = await client.Search.SearchIssues(request);
 
         cancellationToken.ThrowIfCancellationRequested();
 

@@ -40,19 +40,27 @@ internal abstract class IssuesMatchBase : ISearchableMatch, ISerializableMatch
         CancellationToken cancellationToken
     )
     {
-        if (text.IsWhiteSpace())
+        if (_dto.Scope == RootItemScope.Global && text.IsWhiteSpace())
             return Array.Empty<IMatch>();
 
         await context.DebounceDelay(cancellationToken);
 
         var client = await _api.GetClient(_dto.Id);
 
-        var response = await client.Search.SearchIssues(
-            new SearchIssuesRequest(await GitHubUtils.GetSearchPrefix(_dto, _cache) + text)
-            {
-                Type = _type
-            }
-        );
+        var request = new SearchIssuesRequest(
+            await GitHubUtils.GetSearchPrefix(_dto, _cache) + text
+        )
+        {
+            Type = _type
+        };
+
+        if (text.IsWhiteSpace())
+        {
+            request.SortField = IssueSearchSort.Created;
+            request.Order = SortDirection.Descending;
+        }
+
+        var response = await client.Search.SearchIssues(request);
 
         cancellationToken.ThrowIfCancellationRequested();
 

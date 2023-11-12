@@ -32,16 +32,24 @@ internal class RepositoriesMatch : ISearchableMatch, ISerializableMatch
         CancellationToken cancellationToken
     )
     {
-        if (text.IsWhiteSpace())
+        if (_dto.Scope == RootItemScope.Global && text.IsWhiteSpace())
             return Array.Empty<IMatch>();
 
         await context.DebounceDelay(cancellationToken);
 
         var client = await _api.GetClient(_dto.Id);
 
-        var response = await client.Search.SearchRepo(
-            new SearchRepositoriesRequest(await GitHubUtils.GetSearchPrefix(_dto, _cache) + text)
+        var request = new SearchRepositoriesRequest(
+            await GitHubUtils.GetSearchPrefix(_dto, _cache) + text
         );
+
+        if (text.IsWhiteSpace())
+        {
+            request.SortField = RepoSearchSort.Updated;
+            request.Order = SortDirection.Descending;
+        }
+
+        var response = await client.Search.SearchRepo(request);
 
         cancellationToken.ThrowIfCancellationRequested();
 
