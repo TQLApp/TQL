@@ -43,10 +43,17 @@ internal class UpdateChecker : IDisposable
     {
         _notifyIconManager.State = NotifyIconState.Updating;
 
-        var result = TaskUtils.RunSynchronously(TryStartUpdateAsync);
+        var result = false;
 
-        if (!result)
-            _notifyIconManager.State = NotifyIconState.Running;
+        try
+        {
+            result = TaskUtils.RunSynchronously(TryStartUpdateAsync);
+        }
+        finally
+        {
+            if (!result)
+                _notifyIconManager.State = NotifyIconState.Running;
+        }
 
         return result;
     }
