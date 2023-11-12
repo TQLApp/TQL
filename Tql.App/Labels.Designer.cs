@@ -259,6 +259,33 @@ namespace Tql.App {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Appearance.
+        /// </summary>
+        public static string GeneralConfiguration_Appearance {
+            get {
+                return ResourceManager.GetString("GeneralConfiguration_Appearance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure?.
+        /// </summary>
+        public static string GeneralConfiguration_AreYouSure {
+            get {
+                return ResourceManager.GetString("GeneralConfiguration_AreYouSure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to restart the quick start tutorial?.
+        /// </summary>
+        public static string GeneralConfiguration_AreYouSureRestartTutorial {
+            get {
+                return ResourceManager.GetString("GeneralConfiguration_AreYouSureRestartTutorial", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Determines how often the cache is updated. Some plugins will cache data for performance. This setting will set the number of minutes after which the cache will be updated..
         /// </summary>
         public static string GeneralConfiguration_CacheUpdateIntervalHelpText {
@@ -282,15 +309,6 @@ namespace Tql.App {
         public static string GeneralConfiguration_CacheUpdateIntervalMinutesLabel {
             get {
                 return ResourceManager.GetString("GeneralConfiguration_CacheUpdateIntervalMinutesLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Connections.
-        /// </summary>
-        public static string GeneralConfiguration_Connections {
-            get {
-                return ResourceManager.GetString("GeneralConfiguration_Connections", resourceCulture);
             }
         }
         
@@ -426,6 +444,24 @@ namespace Tql.App {
         public static string GeneralConfiguration_RestartRequiredHelpText {
             get {
                 return ResourceManager.GetString("GeneralConfiguration_RestartRequiredHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restart Tutorial.
+        /// </summary>
+        public static string GeneralConfiguration_RestartTutorial {
+            get {
+                return ResourceManager.GetString("GeneralConfiguration_RestartTutorial", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restart the quick start tutorial..
+        /// </summary>
+        public static string GeneralConfiguration_RestartTutorialHelpText {
+            get {
+                return ResourceManager.GetString("GeneralConfiguration_RestartTutorialHelpText", resourceCulture);
             }
         }
         
@@ -1033,6 +1069,15 @@ namespace Tql.App {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Configuration.
+        /// </summary>
+        public static string MainWindow_Configuration {
+            get {
+                return ResourceManager.GetString("MainWindow_Configuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Help &amp; documentation.
         /// </summary>
         public static string MainWindow_HelpAndDocumentation {
@@ -1042,7 +1087,7 @@ namespace Tql.App {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to matches.
+        ///   Looks up a localized string similar to result.
         /// </summary>
         public static string MainWindow_LaunchRunnablePostfix {
             get {
@@ -1051,7 +1096,7 @@ namespace Tql.App {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Launch.
+        ///   Looks up a localized string similar to Activate.
         /// </summary>
         public static string MainWindow_LaunchRunnablePrefix {
             get {
@@ -1087,7 +1132,7 @@ namespace Tql.App {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to matches.
+        ///   Looks up a localized string similar to category.
         /// </summary>
         public static string MainWindow_OpenCategoryPostfix {
             get {
@@ -1123,15 +1168,6 @@ namespace Tql.App {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Settings.
-        /// </summary>
-        public static string MainWindow_Settings {
-            get {
-                return ResourceManager.GetString("MainWindow_Settings", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Starting....
         /// </summary>
         public static string NotifyIconManager_ApplicationIsStarting {
@@ -1146,6 +1182,15 @@ namespace Tql.App {
         public static string NotifyIconManager_ApplicationIsUpdating {
             get {
                 return ResourceManager.GetString("NotifyIconManager_ApplicationIsUpdating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &amp;Configuration.
+        /// </summary>
+        public static string NotifyMenu_ConfigurationLabel {
+            get {
+                return ResourceManager.GetString("NotifyMenu_ConfigurationLabel", resourceCulture);
             }
         }
         
@@ -1182,15 +1227,6 @@ namespace Tql.App {
         public static string NotifyMenu_SearchLabel {
             get {
                 return ResourceManager.GetString("NotifyMenu_SearchLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to S&amp;ettings.
-        /// </summary>
-        public static string NotifyMenu_SettingsLabel {
-            get {
-                return ResourceManager.GetString("NotifyMenu_SettingsLabel", resourceCulture);
             }
         }
         

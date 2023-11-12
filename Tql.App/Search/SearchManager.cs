@@ -23,7 +23,7 @@ internal class SearchManager : IDisposable
     private volatile History? _history;
     private readonly SynchronizationContext _synchronizationContext =
         SynchronizationContext.Current;
-    private string _search = string.Empty;
+
     private int _suspendSearch;
     private readonly Dictionary<string, object> _contextContext = new();
     private int _isSearchingCount;
@@ -33,6 +33,7 @@ internal class SearchManager : IDisposable
     public ImmutableArray<ISearchableMatch> Stack { get; private set; } =
         ImmutableArray<ISearchableMatch>.Empty;
 
+    public string Search { get; private set; } = string.Empty;
     public SearchContext? Context { get; private set; }
     public bool IsSearching => _isSearchingCount > 0;
 
@@ -175,9 +176,9 @@ internal class SearchManager : IDisposable
         OnSearchResultsChanged();
     }
 
-    public void SearchChanged(string search)
+    public void SetSearch(string search)
     {
-        _search = search;
+        Search = search;
 
         DoSearch();
     }
@@ -192,7 +193,7 @@ internal class SearchManager : IDisposable
         if (_suspendSearch > 0)
             return;
 
-        _logger.LogInformation("Performing search for '{Search}'", _search);
+        _logger.LogInformation("Performing search for '{Search}'", Search);
 
         using var telemetry = _telemetryService.CreateRequest("Search");
 
@@ -206,7 +207,7 @@ internal class SearchManager : IDisposable
 
             category?.InitializeTelemetry(telemetry);
 
-            context = new SearchContext(_serviceProvider, _search, _history, _contextContext);
+            context = new SearchContext(_serviceProvider, Search, _history, _contextContext);
 
             Context = context;
 
@@ -351,7 +352,7 @@ internal class SearchManager : IDisposable
         // We let the current match handle filtering. This allows certain
         // matches to fully delegate search to an external service.
 
-        var task = Stack.Last().Search(context, _search, context.CancellationToken);
+        var task = Stack.Last().Search(context, Search, context.CancellationToken);
         var completedInline = task.IsCompleted;
 
         try

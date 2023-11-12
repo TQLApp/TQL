@@ -1,14 +1,19 @@
-﻿using Tql.App.Services;
+﻿using System.Text.Json.Serialization;
+using Tql.App.Services;
 
 namespace Tql.App.QuickStart;
 
 internal record QuickStartDto(
-    bool IsDismissed = false,
-    bool WelcomeShown = false,
-    QuickStartTool? SelectedTool = null
+    QuickStartStep Step,
+    QuickStartTool? SelectedTool,
+    ImmutableArray<QuickStartTool> CompletedTools
 )
 {
-    public static readonly QuickStartDto Empty = new();
+    private static readonly JsonSerializerOptions JsonSerializerOptions =
+        new() { Converters = { new JsonStringEnumConverter() } };
+
+    public static readonly QuickStartDto Empty =
+        new(QuickStartStep.Welcome, null, ImmutableArray<QuickStartTool>.Empty);
 
     public static QuickStartDto FromSettings(Settings settings)
     {
@@ -16,16 +21,28 @@ internal record QuickStartDto(
         if (quickStart == null)
             return Empty;
 
-        return JsonSerializer.Deserialize<QuickStartDto>(quickStart)!;
+        return JsonSerializer.Deserialize<QuickStartDto>(quickStart, JsonSerializerOptions)!;
     }
 
-    public string ToJson() => JsonSerializer.Serialize(this);
+    public string ToJson() => JsonSerializer.Serialize(this, JsonSerializerOptions);
 }
 
 internal enum QuickStartTool
 {
     JIRA,
     AzureDevOps,
-    GitHub,
-    Outlook
+    GitHub
+}
+
+internal enum QuickStartStep
+{
+    Welcome,
+    SelectTool,
+    InstallPlugin,
+    ConfigurePlugin,
+    ListAllCategories,
+    SearchInsideCategory,
+    ActivateFavorite,
+    Completed,
+    Dismissed
 }

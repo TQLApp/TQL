@@ -1,4 +1,5 @@
 ﻿using System.Windows.Forms;
+using Tql.App.Support;
 
 namespace Tql.App.Services;
 
@@ -19,6 +20,24 @@ internal record HotKey(bool Win, bool Control, bool Alt, bool Shift, Keys Key)
             return FromJson(hotKeyJson);
 
         return Default;
+    }
+
+    public string ToLabel()
+    {
+        var sb = StringBuilderCache.Acquire();
+
+        if (Win)
+            sb.Append(Labels.HotKeyWindows).Append('+');
+        if (Control)
+            sb.Append(Labels.HotKeyControl).Append('+');
+        if (Alt)
+            sb.Append(Labels.HotKeyAlt).Append('+');
+        if (Shift)
+            sb.Append(Labels.HotKeyShift).Append('+');
+
+        sb.Append(AvailableKeys.Single(p => p.Key == Key).Label);
+
+        return StringBuilderCache.GetStringAndRelease(sb);
     }
 
     public static readonly ImmutableArray<(Keys Key, string Label)> AvailableKeys =

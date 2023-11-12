@@ -14,6 +14,16 @@
         "resolved": "2.1.15",
         "contentHash": "1aWSAosZymEM+mRwfrXteRIN74/JTUjqj9B/KqEbanH6vfUKy9D9cemRN0q1ZOEfSB7d1PpFTpVOCbf2Uv70Og=="
       },
+      "Emoji.Wpf": {
+        "type": "Direct",
+        "requested": "[0.3.4, )",
+        "resolved": "0.3.4",
+        "contentHash": "3ouEfw6Mo5Czk0TJd4BWrElB21jK9lKWqB1ZZF1DEBDRLNmOvJJbT51/ELLMIyqyn4p/mh10XC9Kmqmb1IbmnQ==",
+        "dependencies": {
+          "JeremyAnsel.HLSL.Targets": "1.0.13",
+          "Stfu": "0.1.1"
+        }
+      },
       "Extended.Wpf.Toolkit": {
         "type": "Direct",
         "requested": "[4.5.1, )",
@@ -117,6 +127,17 @@
         "dependencies": {
           "Stub.System.Data.SQLite.Core.NetFramework": "[1.0.118]"
         }
+      },
+      "YamlDotNet": {
+        "type": "Direct",
+        "requested": "[13.7.1, )",
+        "resolved": "13.7.1",
+        "contentHash": "X4m1PnFcJwvAj1sCDMntg/eZcX96CJLrWMiYnq41KqhFVZPuw63ZTSxIGqgdCwHWHvCAyTxheELC/VDf1HsU2A=="
+      },
+      "JeremyAnsel.HLSL.Targets": {
+        "type": "Transitive",
+        "resolved": "1.0.13",
+        "contentHash": "uLfE1STTM/o8G2eWEtQWMHm91nO47BIEsjXhO3c6hvsjx+bInTA7LnqI9iAWUWr58Sug+NSoNNZT83i2mWMl7g=="
       },
       "JetBrains.Annotations": {
         "type": "Transitive",
@@ -490,6 +511,14 @@
         "type": "Transitive",
         "resolved": "1.8.2",
         "contentHash": "dIj4fG2oF4vcSEDqepy2IuJkUay8muYF2zqtB2l5FCahwklVHrCEDxReFi6ak3ioFDRRmNJhQz7wpAboU/pG6Q=="
+      },
+      "Stfu": {
+        "type": "Transitive",
+        "resolved": "0.1.1",
+        "contentHash": "wUd0joqQoZ1B/wULKx1gGTY9zxiDbsW3Y6W0G0guCTL/jRMdDBPr9FMHfkoOKB0JIYGlup3NqXrsqs8fPrCdrw==",
+        "dependencies": {
+          "System.ValueTuple": "4.5.0"
+        }
       },
       "Stub.System.Data.SQLite.Core.NetFramework": {
         "type": "Transitive",

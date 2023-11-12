@@ -262,4 +262,16 @@ internal partial class GeneralConfigurationControl : IConfigurationPage
             _settings.HotKey = hotKey == HotKey.Default ? null : hotKey.ToJson();
         }
     }
+
+    private void _restartTutorial_Click(object sender, RoutedEventArgs e)
+    {
+        var result = _ui.ShowConfirmation(
+            this,
+            Labels.GeneralConfiguration_AreYouSure,
+            Labels.GeneralConfiguration_AreYouSureRestartTutorial
+        );
+
+        if (result == DialogResult.Yes)
+            _settings.QuickStart = null;
+    }
 }

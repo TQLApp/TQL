@@ -1,4 +1,6 @@
-﻿namespace Tql.App.Support;
+﻿using System.Windows.Controls.Primitives;
+
+namespace Tql.App.Support;
 
 internal static class DependencyObjectExtensions
 {
@@ -74,5 +76,25 @@ internal static class DependencyObjectExtensions
         }
 
         return foundChild;
+    }
+
+    public static T? FindSelectedItemVisualChild<T>(this Selector self, string name)
+    {
+        var selectedItem = self.SelectedItem;
+        if (selectedItem == null)
+            return default;
+
+        var selectedItemObject = self.ItemContainerGenerator.ContainerFromItem(selectedItem);
+        if (selectedItemObject == null)
+            return default;
+
+        var contentPresenter = FindVisualChild<ContentPresenter>(selectedItemObject);
+        if (contentPresenter == null)
+            return default;
+
+        if (contentPresenter.ContentTemplate.FindName(name, contentPresenter) is T result)
+            return result;
+
+        return default;
     }
 }

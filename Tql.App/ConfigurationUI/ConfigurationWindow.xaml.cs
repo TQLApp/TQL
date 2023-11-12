@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using Microsoft.Extensions.DependencyInjection;
 using Tql.Abstractions;
+using Tql.App.QuickStart;
 using Tql.App.Services;
 
 namespace Tql.App.ConfigurationUI;
@@ -8,21 +9,24 @@ namespace Tql.App.ConfigurationUI;
 internal partial class ConfigurationWindow
 {
     private readonly IServiceProvider _serviceProvider;
-    private readonly IConfigurationManager _configurationManager;
     private readonly IPluginManager _pluginManager;
+    private readonly QuickStartScript _quickStartScript;
     private Context? _currentContext;
 
     public Guid? StartupPage { get; set; }
+    public IConfigurationPage? SelectedPage => _currentContext?.Page;
+
+    public event EventHandler? SelectedPageChanged;
 
     public ConfigurationWindow(
         IServiceProvider serviceProvider,
-        IConfigurationManager configurationManager,
-        IPluginManager pluginManager
+        IPluginManager pluginManager,
+        QuickStartScript quickStartScript
     )
     {
         _serviceProvider = serviceProvider;
-        _configurationManager = configurationManager;
         _pluginManager = pluginManager;
+        _quickStartScript = quickStartScript;
 
         InitializeComponent();
     }
@@ -52,6 +56,8 @@ internal partial class ConfigurationWindow
 
             ((TreeViewItem)rootNode.Items[0]).IsSelected = true;
         }
+
+        _quickStartScript.HandleConfigurationWindow(this);
     }
 
     private TreeViewItem AddCategory(string title, IEnumerable<IConfigurationPage> pages)
@@ -129,6 +135,9 @@ internal partial class ConfigurationWindow
         }
 
         _currentContext = context;
+
+        if (_currentContext != null)
+            OnSelectedPageChanged();
     }
 
     private async void _acceptButton_Click(object sender, RoutedEventArgs e)
@@ -182,6 +191,9 @@ internal partial class ConfigurationWindow
                 context.RaiseClosed();
         }
     }
+
+    protected virtual void OnSelectedPageChanged() =>
+        SelectedPageChanged?.Invoke(this, EventArgs.Empty);
 
     private class Context : IConfigurationPageContext
     {

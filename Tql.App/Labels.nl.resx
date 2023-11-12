@@ -217,10 +217,6 @@
     <value>minuten</value>
     <comment>Original: minutes</comment>
   </data>
-  <data name="GeneralConfiguration_Connections" xml:space="preserve">
-    <value>Verbindingen</value>
-    <comment>Original: Connections</comment>
-  </data>
   <data name="GeneralConfiguration_HistoryInRootResultsHelpText" xml:space="preserve">
     <value>Bepaalt hoeveel dagen aan historie wordt gebruikt.</value>
     <comment>Original: Determines the number of days of history that's used.</comment>

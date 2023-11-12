@@ -1,37 +1,21 @@
-﻿using System.Diagnostics;
-using System.Text.RegularExpressions;
-
-namespace Tql.App.QuickStart;
+﻿namespace Tql.App.QuickStart;
 
 internal class QuickStartPopupBuilder
 {
-    private string? _title;
-    private readonly ImmutableArray<string>.Builder _lines = ImmutableArray.CreateBuilder<string>();
+    private readonly IPlaybook _playbook;
+    private readonly string _id;
+    private readonly object[] _args;
+
     private readonly ImmutableArray<QuickStartPopupButton>.Builder _choiceButtons =
         ImmutableArray.CreateBuilder<QuickStartPopupButton>();
     private readonly ImmutableArray<QuickStartPopupButton>.Builder _buttons =
         ImmutableArray.CreateBuilder<QuickStartPopupButton>();
 
-    public QuickStartPopupBuilder WithTitle(string title)
+    public QuickStartPopupBuilder(IPlaybook playbook, string id, object[] args)
     {
-        _title = title;
-        return this;
-    }
-
-    public QuickStartPopupBuilder WithText(string text)
-    {
-        foreach (var line in Regex.Split(text.TrimEnd(), @"(?:\r?\n){2}"))
-        {
-            WithLine(Regex.Replace(line, @"\r?\n", " "));
-        }
-
-        return this;
-    }
-
-    public QuickStartPopupBuilder WithLine(string line)
-    {
-        _lines.Add(line);
-        return this;
+        _playbook = playbook;
+        _id = id;
+        _args = args;
     }
 
     public QuickStartPopupBuilder WithChoiceButton(string label, Action action)
@@ -48,12 +32,10 @@ internal class QuickStartPopupBuilder
 
     public QuickStartPopup Build()
     {
-        if (_title == null)
-            throw new InvalidOperationException("Title is required");
-
         return new QuickStartPopup(
-            _title,
-            _lines.ToImmutable(),
+            _playbook,
+            _id,
+            _args,
             _choiceButtons.ToImmutable(),
             _buttons.ToImmutable()
         );

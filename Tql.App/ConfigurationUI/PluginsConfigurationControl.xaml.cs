@@ -1,6 +1,7 @@
 ﻿using Tql.Abstractions;
 using Tql.App.Services;
 using Tql.App.Services.Packages;
+using Tql.App.Support;
 
 namespace Tql.App.ConfigurationUI;
 
@@ -13,6 +14,16 @@ internal partial class PluginsConfigurationControl : IConfigurationPage
     public Guid PageId => Guid.Parse("96260cfa-5814-4ed4-ac69-fcc63e4f4571");
     public string Title => Labels.PluginsConfiguration_Plugins;
     public ConfigurationPageMode PageMode => ConfigurationPageMode.AutoSize;
+    public Package? SelectedPackage => (Package?)_browser.SelectedItem;
+    public Button RestartButton => _restart;
+    public Button? InstallButton => _browser.FindSelectedItemVisualChild<Button>("_install");
+    public Button? RemoveButton => _browser.FindSelectedItemVisualChild<Button>("_remove");
+
+    public event EventHandler? SelectedPackageChanged;
+    public event EventHandler? InstallationStarted;
+    public event EventHandler? InstallationCompleted;
+    public event EventHandler? RemovalStarted;
+    public event EventHandler? RemovalCompleted;
 
     public PluginsConfigurationControl(
         PackageManager packageManager,
@@ -81,6 +92,8 @@ internal partial class PluginsConfigurationControl : IConfigurationPage
 
     private async void _install_Click(object sender, RoutedEventArgs e)
     {
+        OnInstallationStarted();
+
         var package = (Package)((FrameworkElement)sender).DataContext;
 
         ProgressWindow.Show(
@@ -91,16 +104,22 @@ internal partial class PluginsConfigurationControl : IConfigurationPage
 
         ShowRestartButton();
 
+        OnInstallationCompleted();
+
         await ReloadPackages();
     }
 
     private async void _remove_Click(object sender, RoutedEventArgs e)
     {
+        OnRemovalStarted();
+
         var package = (Package)((FrameworkElement)sender).DataContext;
 
         _packageManager.RemovePackage(package.Identity.Id);
 
         ShowRestartButton();
+
+        OnRemovalCompleted();
 
         await ReloadPackages();
     }
@@ -115,6 +134,24 @@ internal partial class PluginsConfigurationControl : IConfigurationPage
     {
         ((UI)_ui).Shutdown(RestartMode.Restart);
     }
+
+    private void _browser_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        OnSelectedPackageChanged();
+    }
+
+    protected virtual void OnSelectedPackageChanged() =>
+        SelectedPackageChanged?.Invoke(this, EventArgs.Empty);
+
+    protected virtual void OnInstallationStarted() =>
+        InstallationStarted?.Invoke(this, EventArgs.Empty);
+
+    protected virtual void OnInstallationCompleted() =>
+        InstallationCompleted?.Invoke(this, EventArgs.Empty);
+
+    protected virtual void OnRemovalStarted() => RemovalStarted?.Invoke(this, EventArgs.Empty);
+
+    protected virtual void OnRemovalCompleted() => RemovalCompleted?.Invoke(this, EventArgs.Empty);
 
     private enum Tab
     {

@@ -34,6 +34,13 @@ public partial class App
     public static bool IsDebugMode { get; set; }
     internal static Options Options { get; private set; } = new();
 
+    // It's a puzzler why this property is not public but internal.
+    public static bool IsShuttingDown =>
+        (bool)
+            typeof(Application)
+                .GetProperty(nameof(IsShuttingDown), BindingFlags.NonPublic | BindingFlags.Static)!
+                .GetValue(null);
+
     private void Application_Startup(object sender, StartupEventArgs e)
     {
         Parser.Default.ParseArguments<Options>(FixupArgs(e.Args)).WithParsed(p => Options = p);
@@ -254,6 +261,7 @@ public partial class App
         builder.AddSingleton<PackageManager>();
         builder.AddSingleton(packageStoreManager);
         builder.AddSingleton<QuickStartManager>();
+        builder.AddSingleton<QuickStartScript>();
 
         builder.Add(ServiceDescriptor.Singleton(typeof(ICache<>), typeof(Cache<>)));
 

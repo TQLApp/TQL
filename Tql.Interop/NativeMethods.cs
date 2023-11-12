@@ -40,6 +40,18 @@ internal static class NativeMethods
     [DllImport("kernel32")]
     public static extern bool DeactivateActCtx(int dwFlags, IntPtr lpCookie);
 
+    [DllImport("user32.dll")]
+    public static extern bool GetClientRect(IntPtr hWnd, out RECT lpRect);
+
+    [DllImport("user32.dll")]
+    public static extern bool AdjustWindowRect(ref RECT lpRect, uint dwStyle, bool bMenu);
+
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern uint GetWindowLong(IntPtr hWnd, int nIndex);
+
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
+
     [DllImport("user32.dll", SetLastError = true)]
     public static extern IntPtr FindWindow(string? lpClassName, string? lpWindowName);
 
@@ -50,10 +62,6 @@ internal static class NativeMethods
         string? className,
         string? windowTitle
     );
-
-    [DllImport("user32.dll")]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    public static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
 
     public delegate int TaskDialogCallback(
         [In] IntPtr hwnd,
@@ -74,13 +82,21 @@ internal static class NativeMethods
         [Out] out uint dpiY
     );
 
+    [DllImport("user32.dll")]
+    public static extern int SetWindowLong(IntPtr hwnd, int index, uint newStyle);
+
     public const int ACTCTX_FLAG_ASSEMBLY_DIRECTORY_VALID = 0x004;
 
     public const int WM_USER = 0x0400;
 
+    public const int GWL_STYLE = -16;
+    public const int GWL_EXSTYLE = -20;
+
     public const int MDT_EFFECTIVE_DPI = 0;
 
     public const uint MONITOR_DEFAULTTOPRIMARY = 1;
+
+    public const uint WS_EX_TOOLWINDOW = 0x00000080;
 
     /// <summary>
     /// TASKDIALOG_FLAGS taken from CommCtrl.h.

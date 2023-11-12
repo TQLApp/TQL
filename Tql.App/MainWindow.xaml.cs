@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Windows.Threading;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Tql.Abstractions;
 using Tql.App.QuickStart;
@@ -33,9 +34,9 @@ internal partial class MainWindow
     private readonly IDb _db;
     private readonly CacheManagerManager _cacheManagerManager;
     private readonly TelemetryService _telemetryService;
-    private readonly QuickStartManager _quickStart;
+    private readonly QuickStartScript _quickStartScript;
+    private readonly QuickStartManager _quickStartManager;
     private readonly NotifyIconManager _notifyIconManager;
-    private SearchManager? _searchManager;
     private readonly UI _ui;
     private double _listBoxRowHeight = double.NaN;
     private bool _pendingEnter;
@@ -43,6 +44,17 @@ internal partial class MainWindow
     private IPageViewTelemetry? _pageView;
 
     private SearchResult? SelectedSearchResult => (SearchResult?)_results.SelectedItem;
+
+    public SearchManager? SearchManager { get; private set; }
+    public Image ConfigurationImage => _configurationImage;
+
+    public event EventHandler<MatchEventArgs>? MatchActivated;
+    public event EventHandler<MatchEventArgs>? MatchPushed;
+    public event EventHandler<MatchEventArgs>? MatchPopped;
+    public event EventHandler<MatchEventArgs>? MatchCopied;
+    public event EventHandler<MatchEventArgs>? MatchHistoryRemoved;
+    public event EventHandler<MatchEventArgs>? MatchPinned;
+    public event EventHandler<MatchEventArgs>? MatchUnpinned;
 
     public MainWindow(
         Settings settings,
@@ -53,7 +65,8 @@ internal partial class MainWindow
         IUI ui,
         TelemetryService telemetryService,
         HotKeyService hotKeyService,
-        QuickStartManager quickStart,
+        QuickStartScript quickStartScript,
+        QuickStartManager quickStartManager,
         NotifyIconManager notifyIconManager
     )
     {
@@ -63,7 +76,8 @@ internal partial class MainWindow
         _db = db;
         _cacheManagerManager = cacheManagerManager;
         _telemetryService = telemetryService;
-        _quickStart = quickStart;
+        _quickStartScript = quickStartScript;
+        _quickStartManager = quickStartManager;
         _notifyIconManager = notifyIconManager;
         _ui = (UI)ui;
 
@@ -98,9 +112,9 @@ internal partial class MainWindow
         _helpImage.AttachOnClickHandler(OpenHelp);
         _helpImage.SetPopoverToolTip(Labels.MainWindow_HelpAndDocumentation);
 
-        _settingsImage.Source = Images.Settings;
-        _settingsImage.AttachOnClickHandler(() => OpenSettings());
-        _settingsImage.SetPopoverToolTip(Labels.MainWindow_Settings);
+        _configurationImage.Source = Images.Settings;
+        _configurationImage.AttachOnClickHandler(() => OpenConfiguration());
+        _configurationImage.SetPopoverToolTip(Labels.MainWindow_Configuration);
 
         _spinner.SetPopoverToolTip(
             Labels.MainWindow_CacheIsBeingUpdated,
@@ -119,7 +133,7 @@ internal partial class MainWindow
         settings.AttachPropertyChanged(nameof(settings.HotKey), (_, _) => RenderHotKey());
 
         _ui.UINotificationsChanged += (_, _) => ReloadNotifications();
-        _ui.ConfigurationUIRequested += (_, e) => OpenSettings(e.Id);
+        _ui.ConfigurationUIRequested += (_, e) => OpenConfiguration(e.Id);
 
         hotKeyService.Pressed += (_, _) => DoShow();
 
@@ -177,7 +191,7 @@ internal partial class MainWindow
         _results.FontSize = WpfUtils.PointsToPixels(fontSize);
     }
 
-    private void OpenSettings(Guid? id = null)
+    private void OpenConfiguration(Guid? id = null)
     {
         if (!IsVisible)
             DoShow();
@@ -187,8 +201,11 @@ internal partial class MainWindow
         window.StartupPage = id;
         window.ShowDialog();
 
+        if (!App.IsShuttingDown)
+            _quickStartScript.HandleMainWindow(this);
+
         // The settings may have impacted the current search results.
-        _searchManager?.DoSearch();
+        SearchManager?.DoSearch();
     }
 
     private void OpenFeedback()
@@ -222,7 +239,7 @@ internal partial class MainWindow
         void Invoke()
         {
             if (IsVisible)
-                _searchManager?.DoSearch();
+                SearchManager?.DoSearch();
         }
     }
 
@@ -239,13 +256,7 @@ internal partial class MainWindow
 
     private void Window_Deactivated(object sender, EventArgs e)
     {
-        // Detect whether a child dialog is being displayed.
-        var haveChildWindow = Application.Current.Windows
-            .OfType<Window>()
-            .Any(p => p.Owner == this);
-
-        if (!haveChildWindow && !_ui.IsShowingTaskDialog)
-            DoHide();
+        DoHide();
     }
 
     public void DoShow() => DoShow(false);
@@ -254,7 +265,7 @@ internal partial class MainWindow
     {
         if (IsVisible && !force)
         {
-            _searchManager?.DoSearch();
+            SearchManager?.DoSearch();
 
             Activate();
 
@@ -278,10 +289,10 @@ internal partial class MainWindow
 
         DisposeSearchManager();
 
-        _searchManager = _serviceProvider.GetRequiredService<SearchManager>();
-        _searchManager.SearchResultsChanged += _searchManager_SearchResultsChanged;
-        _searchManager.StackChanged += _searchManager_StackChanged;
-        _searchManager.IsSearchingChanged += _searchManager_IsSearchingChanged;
+        SearchManager = _serviceProvider.GetRequiredService<SearchManager>();
+        SearchManager.SearchResultsChanged += _searchManager_SearchResultsChanged;
+        SearchManager.StackChanged += _searchManager_StackChanged;
+        SearchManager.IsSearchingChanged += _searchManager_IsSearchingChanged;
 
         RenderStack();
 
@@ -301,7 +312,10 @@ internal partial class MainWindow
 
         Activate();
 
-        HandleQuickStart();
+        Dispatcher.BeginInvoke(
+            () => _quickStartScript.HandleMainWindow(this),
+            DispatcherPriority.Loaded
+        );
 
         _search.Focus();
     }
@@ -337,7 +351,7 @@ internal partial class MainWindow
 
     private void _searchManager_IsSearchingChanged(object sender, EventArgs e)
     {
-        var isSearching = _searchManager?.IsSearching ?? false;
+        var isSearching = SearchManager?.IsSearching ?? false;
 
         _dancingDots.Visibility = isSearching ? Visibility.Visible : Visibility.Collapsed;
 
@@ -347,7 +361,7 @@ internal partial class MainWindow
 
     private void _searchManager_SearchResultsChanged(object sender, EventArgs e)
     {
-        if (_searchManager == null || _searchManager.Results.Length == 0)
+        if (SearchManager == null || SearchManager.Results.Length == 0)
         {
             _results.ItemsSource = null;
             SetResultsVisibility(Visibility.Collapsed);
@@ -356,7 +370,7 @@ internal partial class MainWindow
 
         SetResultsVisibility(Visibility.Visible);
 
-        _results.ItemsSource = _searchManager.Results;
+        _results.ItemsSource = SearchManager.Results;
 
         if (_results.Items.Count > 0)
         {
@@ -388,12 +402,12 @@ internal partial class MainWindow
 
     private void RenderStack()
     {
-        if (_searchManager == null)
+        if (SearchManager == null)
             return;
 
         var searchHint = default(string);
 
-        if (_searchManager.Stack.Length == 0)
+        if (SearchManager.Stack.Length == 0)
         {
             _stack.Visibility = Visibility.Collapsed;
         }
@@ -402,7 +416,7 @@ internal partial class MainWindow
             _stack.Visibility = Visibility.Visible;
 
             _stack.Child = SearchResultUtils.RenderMatch(
-                _searchManager.Stack.Last(),
+                SearchManager.Stack.Last(),
                 null,
                 false,
                 _search.FontSize,
@@ -415,7 +429,7 @@ internal partial class MainWindow
                     )
             );
 
-            searchHint = (_searchManager.Stack.Last() as IHasSearchHint)?.SearchHint;
+            searchHint = (SearchManager.Stack.Last() as IHasSearchHint)?.SearchHint;
         }
 
         // The HintedTextBox style expects the hint in the Tag.
@@ -424,6 +438,32 @@ internal partial class MainWindow
 
     private void DoHide()
     {
+        // Detect whether a child dialog is being displayed.
+
+        var haveChildWindow = false;
+        var haveQuickStartChildWindow = false;
+
+        foreach (
+            var window in Application.Current.Windows.OfType<Window>().Where(p => p.Owner == this)
+        )
+        {
+            if (window is QuickStartWindow)
+                haveQuickStartChildWindow = true;
+            else
+                haveChildWindow = true;
+        }
+
+#if DEBUG
+        if (haveQuickStartChildWindow)
+            haveChildWindow = true;
+#endif
+
+        if (haveChildWindow || _ui.IsShowingTaskDialog)
+            return;
+
+        if (haveQuickStartChildWindow)
+            _quickStartManager.Close();
+
         _ui.SetMainWindow(null);
 
         Visibility = Visibility.Hidden;
@@ -436,20 +476,20 @@ internal partial class MainWindow
 
     private void DisposeSearchManager()
     {
-        if (_searchManager != null)
+        if (SearchManager != null)
         {
-            _searchManager.SearchResultsChanged -= _searchManager_SearchResultsChanged;
-            _searchManager.StackChanged -= _searchManager_StackChanged;
-            _searchManager.IsSearchingChanged -= _searchManager_IsSearchingChanged;
-            _searchManager.Dispose();
-            _searchManager = null;
+            SearchManager.SearchResultsChanged -= _searchManager_SearchResultsChanged;
+            SearchManager.StackChanged -= _searchManager_StackChanged;
+            SearchManager.IsSearchingChanged -= _searchManager_IsSearchingChanged;
+            SearchManager.Dispose();
+            SearchManager = null;
         }
     }
 
     private void _search_TextChanged(object sender, TextChangedEventArgs e)
     {
         _pendingEnter = false;
-        _searchManager?.SearchChanged(_search.Text);
+        SearchManager?.SetSearch(_search.Text);
 
         UpdateClearVisibility();
     }
@@ -457,7 +497,7 @@ internal partial class MainWindow
     private void UpdateClearVisibility()
     {
         _clearImage.Visibility =
-            _search.Text.IsEmpty() && _searchManager?.Stack.Length == 0
+            _search.Text.IsEmpty() && SearchManager?.Stack.Length == 0
                 ? Visibility.Collapsed
                 : Visibility.Visible;
     }
@@ -489,7 +529,7 @@ internal partial class MainWindow
             case Key.Enter:
                 if (
                     searchResult == null
-                    && _searchManager
+                    && SearchManager
                         is { IsSearching: true, Context.IsPreliminaryResultsSuppressed: true }
                 )
                     _pendingEnter = true;
@@ -513,7 +553,7 @@ internal partial class MainWindow
             case Key.Escape:
                 if (_search.Text.Length > 0)
                     _search.Text = null;
-                else if (_searchManager?.Stack.Length > 0)
+                else if (SearchManager?.Stack.Length > 0)
                     PopItem();
                 else if (inSearch)
                     DoHide();
@@ -523,7 +563,7 @@ internal partial class MainWindow
                 break;
 
             case Key.Back:
-                if (_search.Text.Length == 0 && _searchManager?.Stack.Length > 0)
+                if (_search.Text.Length == 0 && SearchManager?.Stack.Length > 0)
                 {
                     PopItem();
                     if (!inSearch)
@@ -610,6 +650,8 @@ internal partial class MainWindow
 
         MarkAsAccessed(searchResult);
 
+        OnMatchActivated(new MatchEventArgs(match));
+
         try
         {
             await match.Run(_serviceProvider, this);
@@ -628,13 +670,15 @@ internal partial class MainWindow
     {
         MarkAsAccessed(searchResult);
 
-        _searchManager?.SuspendSearch();
+        OnMatchPushed(new MatchEventArgs(searchResult.Match));
+
+        SearchManager?.SuspendSearch();
 
         _search.Text = string.Empty;
 
-        _searchManager?.Push(match);
+        SearchManager?.Push(match);
 
-        _searchManager?.ResumeSearch();
+        SearchManager?.ResumeSearch();
     }
 
     private async void CopyItem(ICopyableMatch match, SearchResult searchResult)
@@ -643,6 +687,8 @@ internal partial class MainWindow
         {
             match.InitializeTelemetry(telemetry);
         }
+
+        OnMatchCopied(new MatchEventArgs(match));
 
         MarkAsAccessed(searchResult);
 
@@ -664,7 +710,7 @@ internal partial class MainWindow
         if (searchResult.Match is not ISerializableMatch match)
             return null;
 
-        var parent = _searchManager?.Stack.LastOrDefault();
+        var parent = SearchManager?.Stack.LastOrDefault();
         var parentTypeId = parent?.TypeId.Id;
         var parentJson = (parent as ISerializableMatch)?.Serialize();
         var json = match.Serialize();
@@ -706,13 +752,16 @@ internal partial class MainWindow
 
     private void PopItem()
     {
-        _searchManager?.SuspendSearch();
+        if (SearchManager?.Stack.Length > 0)
+            OnMatchPopped(new MatchEventArgs(SearchManager.Stack.Last()));
+
+        SearchManager?.SuspendSearch();
 
         _search.Text = string.Empty;
 
-        _searchManager?.Pop();
+        SearchManager?.Pop();
 
-        _searchManager?.ResumeSearch();
+        SearchManager?.ResumeSearch();
     }
 
     private void SearchResultUserControl_RemoveHistoryClicked(object sender, EventArgs e)
@@ -725,6 +774,8 @@ internal partial class MainWindow
         {
             searchResult.Match.InitializeTelemetry(telemetry);
         }
+
+        OnMatchHistoryRemoved(new MatchEventArgs(searchResult.Match));
 
         using (var access = _db.Access())
         {
@@ -798,6 +849,11 @@ internal partial class MainWindow
             searchResult.Match.InitializeTelemetry(telemetry);
         }
 
+        if (pinned)
+            OnMatchPinned(new MatchEventArgs(searchResult.Match));
+        else
+            OnMatchUnpinned(new MatchEventArgs(searchResult.Match));
+
         using (var access = _db.Access())
         {
             access.SetHistoryPinned(historyId.Value, pinned);
@@ -808,7 +864,7 @@ internal partial class MainWindow
 
     private void ReloadResults()
     {
-        _searchManager?.ReloadHistory();
+        SearchManager?.ReloadHistory();
 
         _search.Focus();
     }
@@ -831,15 +887,18 @@ internal partial class MainWindow
         e.Notification.Dismiss?.Invoke();
     }
 
-    private void Window_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
-    {
-        // This is here for debugging only. There's a strange scenario where
-        // the main window pops up looking wrong. Likely it's uninitialized.
+    protected virtual void OnMatchActivated(MatchEventArgs e) => MatchActivated?.Invoke(this, e);
 
-        if ((bool)e.NewValue && _searchManager == null)
-        {
-            _logger.LogError("Main window got visible unexpectedly");
-            _logger.LogError(Environment.StackTrace);
-        }
-    }
+    protected virtual void OnMatchPushed(MatchEventArgs e) => MatchPushed?.Invoke(this, e);
+
+    protected virtual void OnMatchPopped(MatchEventArgs e) => MatchPopped?.Invoke(this, e);
+
+    protected virtual void OnMatchCopied(MatchEventArgs e) => MatchCopied?.Invoke(this, e);
+
+    protected virtual void OnMatchHistoryRemoved(MatchEventArgs e) =>
+        MatchHistoryRemoved?.Invoke(this, e);
+
+    protected virtual void OnMatchPinned(MatchEventArgs e) => MatchPinned?.Invoke(this, e);
+
+    protected virtual void OnMatchUnpinned(MatchEventArgs e) => MatchUnpinned?.Invoke(this, e);
 }

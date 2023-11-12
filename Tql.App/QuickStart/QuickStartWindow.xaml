@@ -17,26 +17,49 @@
     mc:Ignorable="d"
     d:DataContext="{d:DesignInstance local:QuickStartPopup}"
     d:DesignWidth="450"
-    d:DesignHeight="300">
+    d:DesignHeight="300"
+    SourceInitialized="BaseWindow_SourceInitialized">
+    <Window.Style>
+        <Style TargetType="local:QuickStartWindow">
+            <Setter
+                Property="Text"
+                Value="{Binding Text}" />
+        </Style>
+    </Window.Style>
     <Window.Resources>
         <SolidColorBrush
-            x:Key="TitleBackground"
+            x:Key="Background"
             Color="#579dff" />
         <SolidColorBrush
-            x:Key="TitleForeground"
-            Color="#1952a2" />
+            x:Key="Foreground"
+            Color="#144fa2" />
+        <SolidColorBrush
+            x:Key="ButtonForeground"
+            Color="#84b7ff" />
         <SolidColorBrush
             x:Key="ButtonBackground"
-            Color="#1952a2" />
+            Color="#144fa2" />
         <SolidColorBrush
             x:Key="ButtonBackgroundMouseOver"
             Color="#14407f" />
         <SolidColorBrush
             x:Key="ButtonBackgroundPressed"
             Color="#103568" />
-        <SolidColorBrush
-            x:Key="ButtonForeground"
-            Color="#579dff" />
+        <Style TargetType="TextBlock">
+            <Setter
+                Property="Foreground"
+                Value="{DynamicResource Foreground}" />
+        </Style>
+        <Style TargetType="Run">
+            <Setter
+                Property="Foreground"
+                Value="{DynamicResource Foreground}" />
+        </Style>
+        <Style TargetType="Hyperlink">
+            <Setter
+                Property="Foreground"
+                Value="{DynamicResource Foreground}" />
+        </Style>
         <Style
             TargetType="Button"
             BasedOn="{StaticResource {x:Type Button}}">
@@ -50,7 +73,8 @@
                             x:Name="border"
                             Background="{DynamicResource ButtonBackground}"
                             SnapsToDevicePixels="True"
-                            Padding="4,1">
+                            CornerRadius="4"
+                            Padding="5,1">
                             <ContentPresenter
                                 x:Name="contentPresenter"
                                 Focusable="False"
@@ -98,85 +122,121 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style
+            x:Key="ButtonBorder"
+            TargetType="Border">
+            <Setter
+                Property="BorderBrush"
+                Value="#50ffffff" />
+            <Setter
+                Property="BorderThickness"
+                Value="1" />
+            <Setter
+                Property="CornerRadius"
+                Value="3" />
+            <Setter
+                Property="Background"
+                Value="#20ffffff" />
+            <Setter
+                Property="Padding"
+                Value="4,0" />
+        </Style>
     </Window.Resources>
 
-    <Border
-        SnapsToDevicePixels="True"
-        Background="{DynamicResource TitleBackground}"
-        CornerRadius="11"
-        Padding="15">
-        <StackPanel
-            Orientation="Vertical"
-            Margin="0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Width="450">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                
-            <TextBlock
-                Text="{Binding Title}"
-                FontWeight="Bold"
-                FontSize="13pt"
-                TextWrapping="Wrap"
-                Foreground="{DynamicResource TitleForeground}"
-                Margin="5" />
-                <Image x:Name="_dismiss" Grid.Column="1"
-                       Height="11"
-                       Width="11"
-                       Margin="3,3,6,3"
-                       />
-            </Grid>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Image
+            x:Name="_arrow"
+            Height="8"
+            VerticalAlignment="Center"
+            SnapsToDevicePixels="True">
+            <Image.Source>
+                <DrawingImage>
+                    <DrawingImage.Drawing>
+                        <DrawingGroup>
+                            <DrawingGroup.Children>
+                                <GeometryDrawing
+                                    Geometry="M 1,0 L 2,1 L 0,1 Z"
+                                    Brush="{DynamicResource Background}" />
+                            </DrawingGroup.Children>
+                        </DrawingGroup>
+                    </DrawingImage.Drawing>
+                </DrawingImage>
+            </Image.Source>
+        </Image>
 
-            <ItemsControl
-                x:Name="_lines"
-                ItemsSource="{Binding Lines}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock
-                            Text="{Binding}"
-                            TextWrapping="Wrap"
-                            Foreground="{DynamicResource TitleForeground}"
-                            Margin="5" />
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+        <Border
+            SnapsToDevicePixels="True"
+            Background="{DynamicResource Background}"
+            CornerRadius="11"
+            Padding="15,10"
+            Grid.Row="1">
+            <StackPanel
+                x:Name="_content"
+                Orientation="Vertical"
+                Margin="0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Width="450">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
 
-            <ItemsControl
-                x:Name="_choiceButtons"
-                ItemsSource="{Binding ChoiceButtons}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Button
-                            Content="{Binding Label}"
-                            Margin="5"
-                            HorizontalAlignment="Left"
-                            Click="ChoiceButton_Click" />
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+                    <TextBlock
+                        Text="{Binding Title}"
+                        FontWeight="Bold"
+                        FontSize="13pt"
+                        TextWrapping="Wrap"
+                        Margin="5" />
+                    <Image
+                        x:Name="_dismiss"
+                        Grid.Column="1"
+                        Height="11"
+                        Width="11"
+                        Margin="3,10,6,3"
+                        VerticalAlignment="Top" />
+                </Grid>
 
-            <ItemsControl
-                x:Name="_buttons"
-                ItemsSource="{Binding Buttons}"
-                HorizontalAlignment="Right">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal" />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Button
-                            Content="{Binding Label}"
-                            Margin="5"
-                            Click="Button_Click" />
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </StackPanel>
-    </Border>
+                <ItemsControl x:Name="_lines" />
+
+                <ItemsControl
+                    x:Name="_choiceButtons"
+                    ItemsSource="{Binding ChoiceButtons}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button
+                                Content="{Binding Label}"
+                                Margin="5"
+                                HorizontalAlignment="Left"
+                                Click="ChoiceButton_Click" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <ItemsControl
+                    x:Name="_buttons"
+                    ItemsSource="{Binding Buttons}"
+                    HorizontalAlignment="Right">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button
+                                Content="{Binding Label}"
+                                Margin="5"
+                                Click="Button_Click" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </Border>
+    </Grid>
 </utilities:BaseWindow>

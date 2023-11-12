@@ -19,11 +19,20 @@
 
   <ItemGroup>
 		<Reference Include="PresentationFramework.Aero2" />
+		<Reference Include="System.Web" />
 	</ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Services\Database\Migrations\*.sql" />
     <None Remove="Services\Database\Migrations\*.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="QuickStart\Playbook*.md" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="QuickStart\Playbook*.md" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,6 +42,7 @@
 	<ItemGroup>
 		<PackageReference Include="CommandLineParser" Version="2.9.1" />
 		<PackageReference Include="Dapper" Version="2.1.15" />
+		<PackageReference Include="Emoji.Wpf" Version="0.3.4" />
 		<PackageReference Include="Extended.Wpf.Toolkit" Version="4.5.1" />
 		<PackageReference Include="Markdig" Version="0.33.0" />
 		<PackageReference Include="Microsoft.ApplicationInsights" Version="2.21.0" />
@@ -41,6 +51,7 @@
 		<PackageReference Include="NReco.Logging.File" Version="1.1.7" />
 		<PackageReference Include="NuGet.PackageManagement" Version="6.7.0" />
 		<PackageReference Include="System.Data.SQLite.Core" Version="1.0.118" />
+		<PackageReference Include="YamlDotNet" Version="13.7.1" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -59,9 +70,6 @@
 		  <SubType>Code</SubType>
 		</Compile>
 		<Compile Update="MainWindow.WinForms.xaml.cs">
-			<DependentUpon>MainWindow.xaml</DependentUpon>
-		</Compile>
-		<Compile Update="MainWindow.QuickStart.xaml.cs">
 			<DependentUpon>MainWindow.xaml</DependentUpon>
 		</Compile>
 		<Compile Update="Labels.Designer.cs">

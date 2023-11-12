@@ -27,7 +27,10 @@ internal partial class MainWindow
             (_, _) => InvalidateAllCaches()
         );
 #endif
-        contextMenu.MenuItems.Add(Labels.NotifyMenu_SettingsLabel, (_, _) => OpenSettings());
+        contextMenu.MenuItems.Add(
+            Labels.NotifyMenu_ConfigurationLabel,
+            (_, _) => OpenConfiguration()
+        );
         contextMenu.MenuItems.Add("-");
         contextMenu.MenuItems.Add(Labels.NotifyMenu_HelpLabel, (_, _) => OpenHelp());
         contextMenu.MenuItems.Add("-");
@@ -40,20 +43,7 @@ internal partial class MainWindow
     {
         var hotKey = HotKey.FromSettings(_settings);
 
-        var sb = StringBuilderCache.Acquire();
-
-        if (hotKey.Win)
-            sb.Append(Labels.HotKeyWindows).Append('+');
-        if (hotKey.Control)
-            sb.Append(Labels.HotKeyControl).Append('+');
-        if (hotKey.Alt)
-            sb.Append(Labels.HotKeyAlt).Append('+');
-        if (hotKey.Shift)
-            sb.Append(Labels.HotKeyShift).Append('+');
-
-        sb.Append(HotKey.AvailableKeys.Single(p => p.Key == hotKey.Key).Label);
-
-        return $"{Labels.NotifyMenu_SearchLabel}\t{StringBuilderCache.GetStringAndRelease(sb)}";
+        return $"{Labels.NotifyMenu_SearchLabel}\t{hotKey.ToLabel()}";
     }
 
     private void InvalidateAllCaches()
@@ -75,6 +65,9 @@ internal partial class MainWindow
 
         Left =
             (screen.WorkingArea.Left / scaleX) + ((screen.WorkingArea.Width / scaleX) - Width) / 2;
-        Top = (screen.WorkingArea.Top / scaleY) + ((screen.WorkingArea.Height / scaleY) - 30) / 2;
+        // The window is roughly 100 units in height. Most of the time though, it'll have
+        // content. Position it slightly above center so that the quick start window
+        // has enough space to point at the configuration icon.
+        Top = (screen.WorkingArea.Top / scaleY) + ((screen.WorkingArea.Height / scaleY) - 140) / 2;
     }
 }

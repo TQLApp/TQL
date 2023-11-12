@@ -193,9 +193,6 @@
   <data name="GeneralConfiguration_CacheUpdateIntervalMinutesLabel" xml:space="preserve">
     <value>minutes</value>
   </data>
-  <data name="GeneralConfiguration_Connections" xml:space="preserve">
-    <value>Connections</value>
-  </data>
   <data name="GeneralConfiguration_HistoryInRootResultsHelpText" xml:space="preserve">
     <value>Determines the number of days of history that's used.</value>
   </data>
@@ -474,13 +471,13 @@
     <value>The following resource requires your credentials:</value>
   </data>
   <data name="MainWindow_LaunchRunnablePostfix" xml:space="preserve">
-    <value>matches</value>
+    <value>result</value>
   </data>
   <data name="MainWindow_LaunchRunnablePrefix" xml:space="preserve">
-    <value>Launch</value>
+    <value>Activate</value>
   </data>
   <data name="MainWindow_OpenCategoryPostfix" xml:space="preserve">
-    <value>matches</value>
+    <value>category</value>
   </data>
   <data name="MainWindow_OpenCategoryPrefix" xml:space="preserve">
     <value>Open</value>
@@ -600,8 +597,8 @@
   <data name="MainWindow_LinkCopied" xml:space="preserve">
     <value>Link copied</value>
   </data>
-  <data name="MainWindow_Settings" xml:space="preserve">
-    <value>Settings</value>
+  <data name="MainWindow_Configuration" xml:space="preserve">
+    <value>Configuration</value>
   </data>
   <data name="GeneralConfiguration_LanguageDutch" xml:space="preserve">
     <value>Dutch</value>
@@ -630,13 +627,28 @@
   <data name="NotifyMenu_SearchLabel" xml:space="preserve">
     <value>&amp;Search</value>
   </data>
-  <data name="NotifyMenu_SettingsLabel" xml:space="preserve">
-    <value>S&amp;ettings</value>
+  <data name="NotifyMenu_ConfigurationLabel" xml:space="preserve">
+    <value>&amp;Configuration</value>
   </data>
   <data name="NotifyIconManager_ApplicationIsStarting" xml:space="preserve">
     <value>Starting...</value>
   </data>
   <data name="NotifyIconManager_ApplicationIsUpdating" xml:space="preserve">
     <value>Updating...</value>
+  </data>
+  <data name="GeneralConfiguration_Appearance" xml:space="preserve">
+    <value>Appearance</value>
+  </data>
+  <data name="GeneralConfiguration_AreYouSure" xml:space="preserve">
+    <value>Are you sure?</value>
+  </data>
+  <data name="GeneralConfiguration_AreYouSureRestartTutorial" xml:space="preserve">
+    <value>Are you sure you want to restart the quick start tutorial?</value>
+  </data>
+  <data name="GeneralConfiguration_RestartTutorial" xml:space="preserve">
+    <value>Restart Tutorial</value>
+  </data>
+  <data name="GeneralConfiguration_RestartTutorialHelpText" xml:space="preserve">
+    <value>Restart the quick start tutorial.</value>
   </data>
 </root>

@@ -18,7 +18,7 @@
     PreviewKeyDown="Window_PreviewKeyDown"
     Deactivated="Window_Deactivated"
     SourceInitialized="Window_SourceInitialized"
-    IsVisibleChanged="Window_IsVisibleChanged">
+    Loaded="Window_Loaded">
     <Window.Resources>
         <Style TargetType="TextBlock">
             <Setter
@@ -71,7 +71,7 @@
                     BorderThickness="1"
                     MaxWidth="300"
                     BorderBrush="#80ffffff"
-                    Background="#40ffffff"/>
+                    Background="#40ffffff" />
 
                 <TextBox
                     x:Name="_search"
@@ -347,7 +347,7 @@
                             Width="16"
                             Margin="12,0,0,0" />
                         <Image
-                            x:Name="_settingsImage"
+                            x:Name="_configurationImage"
                             Height="16"
                             Width="16"
                             Margin="12,0,0,0" />

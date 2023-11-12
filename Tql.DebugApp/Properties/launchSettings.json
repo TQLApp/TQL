@@ -3,6 +3,10 @@
     "TQL Debug": {
       "commandName": "Project",
       "commandLineArgs": "--env Debug"
+    },
+    "TQL Quick Start": {
+      "commandName": "Project",
+      "commandLineArgs": "--env QuickStart"
     }
   }
 }

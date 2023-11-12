@@ -49,8 +49,8 @@
                     VerticalAlignment="Center"
                     Margin="3"
                     Visibility="Hidden"
-                    Grid.Column="2"
                     TextWrapping="Wrap"
+                    Grid.Column="2"
                     Text="{x:Static app:Labels.PluginsConfiguration_RestartHelpText}" />
                 <Button
                     x:Name="_restart"
@@ -65,7 +65,8 @@
                 x:Name="_browser"
                 Margin="3"
                 Grid.Row="1"
-                ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                SelectionChanged="_browser_SelectionChanged">
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
                         <Setter
@@ -132,11 +133,13 @@
                                 Visibility="{Binding IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}, Converter={StaticResource B2VHConverter}}"
                                 Grid.Column="2">
                                 <Button
+                                    x:Name="_install"
                                     Content="{x:Static app:Labels.PluginsConfiguration_InstallLabel}"
                                     Margin="3"
                                     Visibility="{Binding IsInstalled, Converter={StaticResource IB2VConverter}}"
                                     Click="_install_Click" />
                                 <Button
+                                    x:Name="_remove"
                                     Content="{x:Static app:Labels.PluginsConfiguration_RemoveLabel}"
                                     Margin="3"
                                     Visibility="{Binding IsInstalled, Converter={StaticResource B2VConverter}}"
