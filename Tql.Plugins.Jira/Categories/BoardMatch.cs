@@ -7,7 +7,12 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.Jira.Categories;
 
-internal class BoardMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, ISearchableMatch
+internal class BoardMatch
+    : IRunnableMatch,
+        ISerializableMatch,
+        ICopyableMatch,
+        ISearchableMatch,
+        IHasSearchHint
 {
     private readonly BoardMatchDto _dto;
     private readonly IconCacheManager _iconCacheManager;
@@ -17,6 +22,7 @@ internal class BoardMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, 
     public string Text => MatchText.Path(_dto.Name, MatchUtils.GetBoardLabel(_dto));
     public ImageSource Icon { get; }
     public MatchTypeId TypeId => TypeIds.Board;
+    public string SearchHint => Labels.BoardMatch_SearchHint;
 
     public BoardMatch(
         BoardMatchDto dto,

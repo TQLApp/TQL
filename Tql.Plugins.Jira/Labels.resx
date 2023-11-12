@@ -120,6 +120,9 @@
   <data name="BoardMatch_AllIssues" xml:space="preserve">
     <value>All Issues</value>
   </data>
+  <data name="BoardMatch_SearchHint" xml:space="preserve">
+    <value>Find quick filters</value>
+  </data>
   <data name="BoardQuickFilterMatch_SearchHint" xml:space="preserve">
     <value>Find issues</value>
   </data>

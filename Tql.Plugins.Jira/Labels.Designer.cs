@@ -70,6 +70,15 @@ namespace Tql.Plugins.Jira {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Find quick filters.
+        /// </summary>
+        public static string BoardMatch_SearchHint {
+            get {
+                return ResourceManager.GetString("BoardMatch_SearchHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Find issues.
         /// </summary>
         public static string BoardQuickFilterMatch_SearchHint {
