@@ -169,7 +169,7 @@ internal partial class ConfigurationControl : IConfigurationPage
     private void _passwordDocumentation_Click(object sender, RoutedEventArgs e)
     {
         _ui.OpenUrl(
-            "https://confluence.atlassian.com/enterprise/using-personal-access-tokens-1026032365.html#UsingPersonalAccessTokens-CreatingPATsintheapplication"
+            "https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/"
         );
     }
 }
