@@ -1,7 +1,14 @@
-﻿namespace Tql.App.Support;
+﻿using System.Collections.Concurrent;
+
+namespace Tql.App.Support;
 
 internal static class WpfUtils
 {
+    private static readonly ConcurrentDictionary<
+        (double DpiScaleX, double DpiScaleY),
+        Brush
+    > BrushCache = new();
+
     private const int NoiseTextureSize = 256;
 
     public static double PointsToPixels(int points)
@@ -9,17 +16,19 @@ internal static class WpfUtils
         return (points / 72.0) * 96.0;
     }
 
-    public static Brush CreateAcrylicBrush(Window window)
+    public static Brush GetAcrylicBrush(Window window)
+    {
+        var dpiScale = VisualTreeHelper.GetDpi(window);
+
+        return BrushCache.GetOrAdd((dpiScale.DpiScaleX, dpiScale.DpiScaleY), CreateAcrylicBrush);
+    }
+
+    private static Brush CreateAcrylicBrush((double DpiScaleX, double DpiScaleY) dpiScale)
     {
         // See https://learn.microsoft.com/en-us/windows/apps/design/style/acrylic for info.
 
-        var dpiScale = VisualTreeHelper.GetDpi(window);
-
-        var dpiX = dpiScale.PixelsPerInchX;
-        var dpiY = dpiScale.PixelsPerInchY;
-
-        var width = (int)(NoiseTextureSize * dpiX / 96);
-        var height = (int)(NoiseTextureSize * dpiY / 96);
+        var width = (int)(NoiseTextureSize * dpiScale.DpiScaleX);
+        var height = (int)(NoiseTextureSize * dpiScale.DpiScaleY);
 
         var pixels = new byte[width * height];
 
@@ -28,8 +37,8 @@ internal static class WpfUtils
         var bitmap = BitmapSource.Create(
             width,
             height,
-            dpiX,
-            dpiY,
+            dpiScale.DpiScaleX * 96,
+            dpiScale.DpiScaleY * 96,
             PixelFormats.Gray8,
             null,
             pixels,
@@ -38,7 +47,7 @@ internal static class WpfUtils
 
         bitmap.Freeze();
 
-        return new ImageBrush
+        var brush = new ImageBrush
         {
             ImageSource = bitmap,
             TileMode = TileMode.Tile,
@@ -46,5 +55,9 @@ internal static class WpfUtils
             Viewport = new Rect(0, 0, NoiseTextureSize, NoiseTextureSize),
             Opacity = 0.02
         };
+
+        brush.Freeze();
+
+        return brush;
     }
 }

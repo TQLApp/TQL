@@ -1,7 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 using System.Windows.Interop;
 using Tql.App.Interop;
-using Tql.App.Services;
 using Tql.Utilities;
 
 namespace Tql.App.Support;
@@ -15,6 +14,8 @@ internal class BlurWindow : BaseWindow
         new PropertyMetadata(Colors.Transparent, (d, _) => ((BlurWindow)d).UpdateMainWindowTint())
     );
 
+    private (double DpiScaleX, double DpiScaleY)? _acrylicDpi;
+
     public Color Tint
     {
         get => (Color)GetValue(TintProperty);
@@ -27,11 +28,12 @@ internal class BlurWindow : BaseWindow
         ResizeMode = ResizeMode.NoResize;
 
         SourceInitialized += BlurWindow_SourceInitialized;
+        IsVisibleChanged += BlurWindow_IsVisibleChanged;
     }
 
     private void BlurWindow_SourceInitialized(object sender, EventArgs e)
     {
-        Background = WpfUtils.CreateAcrylicBrush(this);
+        EnsureAcrylicBrush();
 
         UpdateMainWindowTint();
 
@@ -57,6 +59,23 @@ internal class BlurWindow : BaseWindow
         //// Set Drop shadow of a border-less Form
         //if (WindowStyle == WindowStyle.None)
         //    Dwm.WindowBorderlessDropShadow(interop.Handle, 2);
+    }
+
+    private void BlurWindow_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+    {
+        if ((bool)e.NewValue)
+            EnsureAcrylicBrush();
+    }
+
+    private void EnsureAcrylicBrush()
+    {
+        var dpiScale = VisualTreeHelper.GetDpi(this);
+        var acrylicDpi = (dpiScale.DpiScaleX, dpiScale.DpiScaleY);
+
+        if (_acrylicDpi != acrylicDpi)
+            Background = WpfUtils.GetAcrylicBrush(this);
+
+        _acrylicDpi = acrylicDpi;
     }
 
     private void UpdateMainWindowTint()
