@@ -3,6 +3,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using SharpVectors.Converters;
 using SharpVectors.Renderers.Wpf;
+using Brush = System.Windows.Media.Brush;
 
 namespace Tql.Utilities;
 
@@ -24,6 +25,11 @@ public static class ImageFactory
 
     public static DrawingImage CreateSvgImage(Stream stream)
     {
+        return CreateSvgImage(stream, null, null);
+    }
+
+    public static DrawingImage CreateSvgImage(Stream stream, Brush? fill, Brush? stroke)
+    {
         var settings = new WpfDrawingSettings
         {
             IncludeRuntime = true,
@@ -33,10 +39,13 @@ public static class ImageFactory
 
         using var reader = new FileSvgReader(settings);
 
-        var drawGroup = reader.Read(stream);
-        if (drawGroup != null)
+        var drawingGroup = reader.Read(stream);
+        if (drawingGroup != null)
         {
-            var drawing = new DrawingImage(drawGroup);
+            if (fill != null || stroke != null)
+                OverrideBrushes(drawingGroup, fill, stroke);
+
+            var drawing = new DrawingImage(drawingGroup);
 
             drawing.Freeze();
 
@@ -44,6 +53,26 @@ public static class ImageFactory
         }
 
         throw new InvalidOperationException("Could not convert SVG image");
+    }
+
+    private static void OverrideBrushes(DrawingGroup group, Brush? fill, Brush? stroke)
+    {
+        foreach (var child in group.Children)
+        {
+            switch (child)
+            {
+                case DrawingGroup drawingGroup:
+                    OverrideBrushes(drawingGroup, fill, stroke);
+                    break;
+
+                case GeometryDrawing geometryDrawing:
+                    if (fill != null && geometryDrawing.Brush != null)
+                        geometryDrawing.Brush = fill;
+                    if (stroke != null && geometryDrawing.Pen != null)
+                        geometryDrawing.Pen.Brush = stroke;
+                    break;
+            }
+        }
     }
 
     public static ImageSource FromEmbeddedResource(Type relativeTo, string name)
