@@ -46,7 +46,8 @@ internal static class Images
     public static readonly DrawingImage Settings = GetImage("Settings.svg");
     public static readonly DrawingImage CommentNote = GetImage("Comment Note.svg");
     public static readonly DrawingImage Astronaut = GetImage("Astronaut.svg");
-    public static readonly DrawingImage Undo = GetImage("Undo.svg");
+    public static readonly DrawingImage UndoDark = GetImage("Undo.svg", Color.FromRgb(240, 240, 240));
+    public static readonly DrawingImage UndoLight = GetImage("Undo.svg", Color.FromRgb(15, 15, 15));
     public static readonly DrawingImage Pin = GetImage("Pin.svg");
     public static readonly DrawingImage PinOff = GetImage("Pin Off.svg");
     public static readonly DrawingImage NuGet = GetImage("NuGet.svg");

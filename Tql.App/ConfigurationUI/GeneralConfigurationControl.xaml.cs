@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using Tql.Abstractions;
 using Tql.App.Services;
 using Tql.App.Support;
+using Tql.App.Themes;
 using Tql.Utilities;
 
 namespace Tql.App.ConfigurationUI;
@@ -31,6 +32,7 @@ internal partial class GeneralConfigurationControl : IConfigurationPage
     private readonly bool? _loadedEnableMetricsTelemetry;
     private readonly bool? _loadedEnableExceptionTelemetry;
     private bool _requireRestart;
+    private readonly DrawingImage _undoImage;
 
     public Guid PageId => Guid.Parse("df92b623-a629-465a-bddf-8f36ef6d4fdd");
     public string Title => Labels.GeneralConfiguration_General;
@@ -41,6 +43,7 @@ internal partial class GeneralConfigurationControl : IConfigurationPage
         _settings = settings;
         _ui = ui;
         _hotKeyService = hotKeyService;
+        _undoImage = ThemeManager.CurrentTheme == Theme.Light ? Images.UndoLight : Images.UndoDark;
 
         InitializeComponent();
 
@@ -141,7 +144,7 @@ internal partial class GeneralConfigurationControl : IConfigurationPage
     {
         image.Height = 12;
         image.Width = 12;
-        image.Source = Images.Undo;
+        image.Source = _undoImage;
 
         image.AttachOnClickHandler(action);
     }

@@ -5,10 +5,14 @@ namespace Tql.App.Support;
 
 internal static class ThemeManager
 {
+    public static Theme CurrentTheme { get; private set; } = GetSystemTheme();
+
     public static void SetTheme(Theme theme)
     {
         if (theme == Theme.System)
             theme = GetSystemTheme();
+
+        CurrentTheme = theme;
 
         ThemesController.SetTheme(theme == Theme.Light ? ThemeType.LightTheme : ThemeType.SoftDark);
     }
