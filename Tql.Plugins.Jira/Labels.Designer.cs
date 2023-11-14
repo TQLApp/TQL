@@ -88,6 +88,15 @@ namespace Tql.Plugins.Jira {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Find boards.
+        /// </summary>
+        public static string BoardsMatch_SearchHint {
+            get {
+                return ResourceManager.GetString("BoardsMatch_SearchHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to JIRA Board.
         /// </summary>
         public static string BoardsType_Label {
@@ -223,6 +232,15 @@ namespace Tql.Plugins.Jira {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Find dashboards.
+        /// </summary>
+        public static string DashboardsMatch_SearchHint {
+            get {
+                return ResourceManager.GetString("DashboardsMatch_SearchHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to JIRA Dashboard.
         /// </summary>
         public static string DashboardsType_Label {
@@ -241,11 +259,29 @@ namespace Tql.Plugins.Jira {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Find filters.
+        /// </summary>
+        public static string FiltersMatch_SearchHint {
+            get {
+                return ResourceManager.GetString("FiltersMatch_SearchHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to JIRA Filter.
         /// </summary>
         public static string FiltersType_Label {
             get {
                 return ResourceManager.GetString("FiltersType_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find issues.
+        /// </summary>
+        public static string IssuesMatch_SearchHint {
+            get {
+                return ResourceManager.GetString("IssuesMatch_SearchHint", resourceCulture);
             }
         }
         
@@ -349,6 +385,15 @@ namespace Tql.Plugins.Jira {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Find item to create.
+        /// </summary>
+        public static string NewsMatch_SearchHint {
+            get {
+                return ResourceManager.GetString("NewsMatch_SearchHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to JIRA New.
         /// </summary>
         public static string NewsType_Label {
@@ -372,6 +417,15 @@ namespace Tql.Plugins.Jira {
         public static string ProjectMatch_SearchHint {
             get {
                 return ResourceManager.GetString("ProjectMatch_SearchHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find projects.
+        /// </summary>
+        public static string ProjectsMatch_SearchHint {
+            get {
+                return ResourceManager.GetString("ProjectsMatch_SearchHint", resourceCulture);
             }
         }
         

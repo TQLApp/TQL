@@ -20,6 +20,7 @@ internal class SearchesMatch : ISearchableMatch, ISerializableMatch
 
     public ImageSource Icon => Images.Confluence;
     public MatchTypeId TypeId => TypeIds.Searches;
+    public string SearchHint => Labels.SearchesMatch_SearchHint;
 
     public SearchesMatch(
         RootItemDto dto,

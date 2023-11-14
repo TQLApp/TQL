@@ -106,6 +106,15 @@ namespace Tql.Plugins.MicrosoftTeams {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Find people.
+        /// </summary>
+        public static string PeopleMatchBase_SearchHint {
+            get {
+                return ResourceManager.GetString("PeopleMatchBase_SearchHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Teams Call.
         /// </summary>
         public static string TeamsCallsType_Label {

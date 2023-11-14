@@ -15,6 +15,7 @@ internal class EmailsMatch : ISearchableMatch, ISerializableMatch
     public string Text => Labels.EmailsMatch_Label;
     public ImageSource Icon => Images.Outlook;
     public MatchTypeId TypeId => TypeIds.Emails;
+    public string SearchHint => Labels.EmailsMatch_SearchHint;
 
     public EmailsMatch(
         OutlookPeopleDirectory outlookPeopleDirectory,

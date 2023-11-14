@@ -16,6 +16,7 @@ internal abstract class PeopleMatchBase<T> : ISearchableMatch, ISerializableMatc
     public abstract string Text { get; }
     public abstract ImageSource Icon { get; }
     public abstract MatchTypeId TypeId { get; }
+    public string SearchHint => Labels.PeopleMatchBase_SearchHint;
 
     protected PeopleMatchBase(
         RootItemDto dto,

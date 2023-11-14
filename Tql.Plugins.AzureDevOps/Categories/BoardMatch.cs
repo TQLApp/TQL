@@ -6,12 +6,7 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.AzureDevOps.Categories;
 
-internal class BoardMatch
-    : IRunnableMatch,
-        ISerializableMatch,
-        ICopyableMatch,
-        ISearchableMatch,
-        IHasSearchHint
+internal class BoardMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, ISearchableMatch
 {
     private readonly BoardMatchDto _dto;
     private readonly ICache<AzureData> _cache;

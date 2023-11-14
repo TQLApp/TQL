@@ -21,6 +21,7 @@ internal class BacklogsMatch : CachedMatch<AzureData>, ISerializableMatch
 
     public override ImageSource Icon => Images.Boards;
     public override MatchTypeId TypeId => TypeIds.Backlogs;
+    public override string SearchHint => Labels.BacklogsMatch_SearchHint;
 
     public BacklogsMatch(
         RootItemDto dto,

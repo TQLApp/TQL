@@ -11,8 +11,7 @@ internal class RepositoryMatch
     : IRunnableMatch,
         ISerializableMatch,
         ICopyableMatch,
-        ISearchableMatch,
-        IHasSearchHint
+        ISearchableMatch
 {
     private readonly RepositoryMatchDto _dto;
     private readonly GitHubApi _api;

@@ -7,12 +7,7 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.Jira.Categories;
 
-internal class BoardMatch
-    : IRunnableMatch,
-        ISerializableMatch,
-        ICopyableMatch,
-        ISearchableMatch,
-        IHasSearchHint
+internal class BoardMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, ISearchableMatch
 {
     private readonly BoardMatchDto _dto;
     private readonly ICache<JiraData> _cache;

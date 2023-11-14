@@ -12,8 +12,7 @@ internal class RepositoryMatch
     : IRunnableMatch,
         ISearchableMatch,
         ISerializableMatch,
-        ICopyableMatch,
-        IHasSearchHint
+        ICopyableMatch
 {
     private const int MaxResults = 100;
 

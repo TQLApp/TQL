@@ -6,12 +6,7 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.AzureDevOps.Categories;
 
-internal class BacklogMatch
-    : IRunnableMatch,
-        ISerializableMatch,
-        ICopyableMatch,
-        ISearchableMatch,
-        IHasSearchHint
+internal class BacklogMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, ISearchableMatch
 {
     private readonly BacklogMatchDto _dto;
     private readonly ICache<AzureData> _cache;

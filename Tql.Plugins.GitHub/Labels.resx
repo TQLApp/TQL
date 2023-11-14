@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="BoardsMatch_SearchHint" xml:space="preserve">
+    <value>Find boards</value>
+  </data>
   <data name="Button_Add" xml:space="preserve">
     <value>Add</value>
   </data>
@@ -138,6 +141,9 @@
   <data name="ConfigurationControl_NameLabel" xml:space="preserve">
     <value>Name:</value>
   </data>
+  <data name="DashboardsMatch_SearchHint" xml:space="preserve">
+    <value>Find dashboards</value>
+  </data>
   <data name="DeviceCodeWindow_AuthenticationWithGitHub" xml:space="preserve">
     <value>Authenticate with GitHub</value>
   </data>
@@ -149,6 +155,12 @@
   </data>
   <data name="DeviceCodeWindow_Title" xml:space="preserve">
     <value>GitHub Authentication</value>
+  </data>
+  <data name="FiltersMatch_SearchHint" xml:space="preserve">
+    <value>Find filters</value>
+  </data>
+  <data name="GistsMatch_SearchHint" xml:space="preserve">
+    <value>Find gists</value>
   </data>
   <data name="GistsType_Label" xml:space="preserve">
     <value>GitHub Gist</value>
@@ -165,6 +177,9 @@
   <data name="GitHubPlugin_Title" xml:space="preserve">
     <value>GitHub</value>
   </data>
+  <data name="IssuesMatch_SearchHint" xml:space="preserve">
+    <value>Find issues</value>
+  </data>
   <data name="IssuesTypeBase_IssueLabel" xml:space="preserve">
     <value>GitHub Issue</value>
   </data>
@@ -177,6 +192,15 @@
   <data name="IssuesTypeBase_PullRequestLabel" xml:space="preserve">
     <value>GitHub Pull Request</value>
   </data>
+  <data name="NewsMatch_SearchHint" xml:space="preserve">
+    <value>Find item to create</value>
+  </data>
+  <data name="PullRequestsMatch_SearchHint" xml:space="preserve">
+    <value>Find pull requests</value>
+  </data>
+  <data name="RepositoriesMatch_SearchHint" xml:space="preserve">
+    <value>Find repositories</value>
+  </data>
   <data name="RepositoriesType_Label" xml:space="preserve">
     <value>GitHub Repository</value>
   </data>
@@ -188,6 +212,9 @@
   </data>
   <data name="UserMatch_SearchHint" xml:space="preserve">
     <value>Find repositories</value>
+  </data>
+  <data name="UsersMatch_SearchHint" xml:space="preserve">
+    <value>Find users</value>
   </data>
   <data name="UsersType_Label" xml:space="preserve">
     <value>GitHub User</value>

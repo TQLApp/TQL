@@ -42,6 +42,7 @@ internal class PortalsMatch : ISearchableMatch, ISerializableMatch
 
     public ImageSource Icon => Images.Azure;
     public MatchTypeId TypeId => TypeIds.Portals;
+    public string SearchHint => Labels.PortalsMatch_SearchHint;
 
     public PortalsMatch(
         RootItemDto dto,

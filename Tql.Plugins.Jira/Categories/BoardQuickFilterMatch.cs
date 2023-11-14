@@ -9,7 +9,6 @@ namespace Tql.Plugins.Jira.Categories;
 
 internal class BoardQuickFilterMatch
     : ISearchableMatch,
-        IHasSearchHint,
         IRunnableMatch,
         ICopyableMatch,
         ISerializableMatch

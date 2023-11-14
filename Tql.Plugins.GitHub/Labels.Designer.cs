@@ -61,6 +61,15 @@ namespace Tql.Plugins.GitHub {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Find boards.
+        /// </summary>
+        public static string BoardsMatch_SearchHint {
+            get {
+                return ResourceManager.GetString("BoardsMatch_SearchHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add.
         /// </summary>
         public static string Button_Add {
@@ -124,6 +133,15 @@ namespace Tql.Plugins.GitHub {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Find dashboards.
+        /// </summary>
+        public static string DashboardsMatch_SearchHint {
+            get {
+                return ResourceManager.GetString("DashboardsMatch_SearchHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Authenticate with GitHub.
         /// </summary>
         public static string DeviceCodeWindow_AuthenticationWithGitHub {
@@ -156,6 +174,24 @@ namespace Tql.Plugins.GitHub {
         public static string DeviceCodeWindow_Title {
             get {
                 return ResourceManager.GetString("DeviceCodeWindow_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find filters.
+        /// </summary>
+        public static string FiltersMatch_SearchHint {
+            get {
+                return ResourceManager.GetString("FiltersMatch_SearchHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find gists.
+        /// </summary>
+        public static string GistsMatch_SearchHint {
+            get {
+                return ResourceManager.GetString("GistsMatch_SearchHint", resourceCulture);
             }
         }
         
@@ -205,6 +241,15 @@ namespace Tql.Plugins.GitHub {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Find issues.
+        /// </summary>
+        public static string IssuesMatch_SearchHint {
+            get {
+                return ResourceManager.GetString("IssuesMatch_SearchHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to GitHub Issue.
         /// </summary>
         public static string IssuesTypeBase_IssueLabel {
@@ -241,6 +286,33 @@ namespace Tql.Plugins.GitHub {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Find item to create.
+        /// </summary>
+        public static string NewsMatch_SearchHint {
+            get {
+                return ResourceManager.GetString("NewsMatch_SearchHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find pull requests.
+        /// </summary>
+        public static string PullRequestsMatch_SearchHint {
+            get {
+                return ResourceManager.GetString("PullRequestsMatch_SearchHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find repositories.
+        /// </summary>
+        public static string RepositoriesMatch_SearchHint {
+            get {
+                return ResourceManager.GetString("RepositoriesMatch_SearchHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to GitHub Repository.
         /// </summary>
         public static string RepositoriesType_Label {
@@ -273,6 +345,15 @@ namespace Tql.Plugins.GitHub {
         public static string UserMatch_SearchHint {
             get {
                 return ResourceManager.GetString("UserMatch_SearchHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find users.
+        /// </summary>
+        public static string UsersMatch_SearchHint {
+            get {
+                return ResourceManager.GetString("UsersMatch_SearchHint", resourceCulture);
             }
         }
         

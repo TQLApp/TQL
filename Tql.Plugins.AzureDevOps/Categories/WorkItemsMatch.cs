@@ -24,6 +24,7 @@ internal class WorkItemsMatch : ISearchableMatch, ISerializableMatch
 
     public ImageSource Icon => Images.Boards;
     public MatchTypeId TypeId => TypeIds.WorkItems;
+    public string SearchHint => Labels.WorkItemsMatch_SearchHint;
 
     public WorkItemsMatch(
         RootItemDto dto,

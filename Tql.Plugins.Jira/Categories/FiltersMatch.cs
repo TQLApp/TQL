@@ -21,6 +21,7 @@ internal class FiltersMatch : CachedMatch<JiraData>, ISerializableMatch
 
     public override ImageSource Icon => Images.Filters;
     public override MatchTypeId TypeId => TypeIds.Filters;
+    public override string SearchHint => Labels.FiltersMatch_SearchHint;
 
     public FiltersMatch(
         RootItemDto dto,

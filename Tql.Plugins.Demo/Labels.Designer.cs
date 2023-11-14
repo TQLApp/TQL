@@ -70,6 +70,15 @@ namespace Tql.Plugins.Demo {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Find demo data.
+        /// </summary>
+        public static string DemoesMatch_SearchHint {
+            get {
+                return ResourceManager.GetString("DemoesMatch_SearchHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to TQL Website.
         /// </summary>
         public static string DemoMatch_Label {

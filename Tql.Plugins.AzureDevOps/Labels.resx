@@ -135,6 +135,9 @@
   <data name="BacklogMatch_SearchHint" xml:space="preserve">
     <value>Find work items</value>
   </data>
+  <data name="BacklogsMatch_SearchHint" xml:space="preserve">
+    <value>Find backlogs</value>
+  </data>
   <data name="BacklogsType_Label" xml:space="preserve">
     <value>Azure Backlog</value>
   </data>
@@ -143,6 +146,9 @@
   </data>
   <data name="BoardMatch_SearchHint" xml:space="preserve">
     <value>Find work items</value>
+  </data>
+  <data name="BoardsMatch_SearchHint" xml:space="preserve">
+    <value>Find boards</value>
   </data>
   <data name="BoardsType_Label" xml:space="preserve">
     <value>Azure Board</value>
@@ -177,6 +183,9 @@
   <data name="DashboardMatch_Label" xml:space="preserve">
     <value>{0} Dashboard</value>
   </data>
+  <data name="DashboardsMatch_SearchHint" xml:space="preserve">
+    <value>Find dashboards</value>
+  </data>
   <data name="DashboardsType_Label" xml:space="preserve">
     <value>Azure Dashboard</value>
   </data>
@@ -186,20 +195,38 @@
   <data name="NewMatch_NewQuery" xml:space="preserve">
     <value>New Query</value>
   </data>
+  <data name="NewsMatch_SearchHint" xml:space="preserve">
+    <value>Find item to create</value>
+  </data>
   <data name="NewsType_Label" xml:space="preserve">
     <value>Azure New</value>
+  </data>
+  <data name="PipelinesMatch_SearchHint" xml:space="preserve">
+    <value>Find pipelines</value>
   </data>
   <data name="PipelinesType_Label" xml:space="preserve">
     <value>Azure Pipeline</value>
   </data>
+  <data name="QueriesMatch_SearchHint" xml:space="preserve">
+    <value>Find queries</value>
+  </data>
   <data name="QueriesType_Label" xml:space="preserve">
     <value>Azure Query</value>
+  </data>
+  <data name="QueryMatch_SearchHint" xml:space="preserve">
+    <value>Find work items</value>
+  </data>
+  <data name="RepositoriesMatch_SearchHint" xml:space="preserve">
+    <value>Find repositories</value>
   </data>
   <data name="RepositoriesType_Label" xml:space="preserve">
     <value>Azure Repository</value>
   </data>
   <data name="RepositoryMatch_FindFiles" xml:space="preserve">
     <value>Find files</value>
+  </data>
+  <data name="WorkItemsMatch_SearchHint" xml:space="preserve">
+    <value>Find work items</value>
   </data>
   <data name="WorkItemsType_Label" xml:space="preserve">
     <value>Azure Work Item</value>

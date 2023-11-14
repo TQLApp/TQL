@@ -11,6 +11,7 @@ internal class DemoesMatch : ISearchableMatch, ISerializableMatch
     public string Text => Labels.DemoesMatch_Label;
     public ImageSource Icon => Images.SpaceShuttle;
     public MatchTypeId TypeId => TypeIds.Demoes;
+    public string SearchHint => Labels.DemoesMatch_SearchHint;
 
     public DemoesMatch(DemoesMatchDto dto, IMatchFactory<DemoMatch, DemoMatchDto> factory)
     {

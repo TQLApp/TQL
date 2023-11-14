@@ -23,6 +23,7 @@ internal class BoardsMatch : CachedMatch<JiraData>, ISerializableMatch
 
     public override ImageSource Icon => Images.Boards;
     public override MatchTypeId TypeId => TypeIds.Boards;
+    public override string SearchHint => Labels.BoardsMatch_SearchHint;
 
     public BoardsMatch(
         RootItemDto dto,

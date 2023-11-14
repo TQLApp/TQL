@@ -21,6 +21,7 @@ internal class SpacesMatch : CachedMatch<ConfluenceData>, ISerializableMatch
 
     public override ImageSource Icon => Images.Confluence;
     public override MatchTypeId TypeId => TypeIds.Spaces;
+    public override string SearchHint => Labels.SpacesMatch_SearchHint;
 
     public SpacesMatch(
         RootItemDto dto,

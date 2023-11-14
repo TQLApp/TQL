@@ -26,6 +26,7 @@ internal class IssuesMatch : ISearchableMatch, ISerializableMatch
 
     public ImageSource Icon => Images.Issues;
     public MatchTypeId TypeId => TypeIds.Issues;
+    public string SearchHint => Labels.IssuesMatch_SearchHint;
 
     public IssuesMatch(
         RootItemDto dto,

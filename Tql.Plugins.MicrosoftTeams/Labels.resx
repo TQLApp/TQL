@@ -133,6 +133,9 @@
   <data name="MicrosoftTeamsPlugin_Label" xml:space="preserve">
     <value>Microsoft Teams</value>
   </data>
+  <data name="PeopleMatchBase_SearchHint" xml:space="preserve">
+    <value>Find people</value>
+  </data>
   <data name="TeamsCallsType_Label" xml:space="preserve">
     <value>Teams Call</value>
   </data>

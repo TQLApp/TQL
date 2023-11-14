@@ -115,6 +115,15 @@ namespace Tql.Plugins.AzureDevOps {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Find backlogs.
+        /// </summary>
+        public static string BacklogsMatch_SearchHint {
+            get {
+                return ResourceManager.GetString("BacklogsMatch_SearchHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Azure Backlog.
         /// </summary>
         public static string BacklogsType_Label {
@@ -138,6 +147,15 @@ namespace Tql.Plugins.AzureDevOps {
         public static string BoardMatch_SearchHint {
             get {
                 return ResourceManager.GetString("BoardMatch_SearchHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find boards.
+        /// </summary>
+        public static string BoardsMatch_SearchHint {
+            get {
+                return ResourceManager.GetString("BoardsMatch_SearchHint", resourceCulture);
             }
         }
         
@@ -241,6 +259,15 @@ namespace Tql.Plugins.AzureDevOps {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Find dashboards.
+        /// </summary>
+        public static string DashboardsMatch_SearchHint {
+            get {
+                return ResourceManager.GetString("DashboardsMatch_SearchHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Azure Dashboard.
         /// </summary>
         public static string DashboardsType_Label {
@@ -268,11 +295,29 @@ namespace Tql.Plugins.AzureDevOps {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Find item to create.
+        /// </summary>
+        public static string NewsMatch_SearchHint {
+            get {
+                return ResourceManager.GetString("NewsMatch_SearchHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Azure New.
         /// </summary>
         public static string NewsType_Label {
             get {
                 return ResourceManager.GetString("NewsType_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find pipelines.
+        /// </summary>
+        public static string PipelinesMatch_SearchHint {
+            get {
+                return ResourceManager.GetString("PipelinesMatch_SearchHint", resourceCulture);
             }
         }
         
@@ -286,11 +331,38 @@ namespace Tql.Plugins.AzureDevOps {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Find queries.
+        /// </summary>
+        public static string QueriesMatch_SearchHint {
+            get {
+                return ResourceManager.GetString("QueriesMatch_SearchHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Azure Query.
         /// </summary>
         public static string QueriesType_Label {
             get {
                 return ResourceManager.GetString("QueriesType_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find work items.
+        /// </summary>
+        public static string QueryMatch_SearchHint {
+            get {
+                return ResourceManager.GetString("QueryMatch_SearchHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find repositories.
+        /// </summary>
+        public static string RepositoriesMatch_SearchHint {
+            get {
+                return ResourceManager.GetString("RepositoriesMatch_SearchHint", resourceCulture);
             }
         }
         
@@ -309,6 +381,15 @@ namespace Tql.Plugins.AzureDevOps {
         public static string RepositoryMatch_FindFiles {
             get {
                 return ResourceManager.GetString("RepositoryMatch_FindFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find work items.
+        /// </summary>
+        public static string WorkItemsMatch_SearchHint {
+            get {
+                return ResourceManager.GetString("WorkItemsMatch_SearchHint", resourceCulture);
             }
         }
         

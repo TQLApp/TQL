@@ -120,6 +120,9 @@
   <data name="DemoesMatch_Label" xml:space="preserve">
     <value>Demo Plugin</value>
   </data>
+  <data name="DemoesMatch_SearchHint" xml:space="preserve">
+    <value>Find demo data</value>
+  </data>
   <data name="DemoMatch_Label" xml:space="preserve">
     <value>TQL Website</value>
   </data>

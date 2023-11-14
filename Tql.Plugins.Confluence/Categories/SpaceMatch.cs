@@ -5,12 +5,7 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.Confluence.Categories;
 
-internal class SpaceMatch
-    : IRunnableMatch,
-        ISerializableMatch,
-        ICopyableMatch,
-        ISearchableMatch,
-        IHasSearchHint
+internal class SpaceMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, ISearchableMatch
 {
     private readonly SpaceMatchDto _dto;
     private readonly ConfigurationManager _configurationManager;

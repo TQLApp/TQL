@@ -31,6 +31,7 @@ internal abstract class IssuesMatchBase<T> : ISearchableMatch, ISerializableMatc
 
     public ImageSource Icon => Images.Issue;
     public abstract MatchTypeId TypeId { get; }
+    public abstract string SearchHint { get; }
 
     protected IssuesMatchBase(
         RootItemDto dto,

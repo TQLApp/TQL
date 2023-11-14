@@ -70,6 +70,15 @@ namespace Tql.Plugins.Outlook {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Find people.
+        /// </summary>
+        public static string EmailsMatch_SearchHint {
+            get {
+                return ResourceManager.GetString("EmailsMatch_SearchHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Outlook isn&apos;t running.
         /// </summary>
         public static string OutlookClient_OutlookIsNotRunning {

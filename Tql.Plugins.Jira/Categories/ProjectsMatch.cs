@@ -21,6 +21,7 @@ internal class ProjectsMatch : CachedMatch<JiraData>, ISerializableMatch
 
     public override ImageSource Icon => Images.Projects;
     public override MatchTypeId TypeId => TypeIds.Projects;
+    public override string SearchHint => Labels.ProjectsMatch_SearchHint;
 
     public ProjectsMatch(
         RootItemDto dto,

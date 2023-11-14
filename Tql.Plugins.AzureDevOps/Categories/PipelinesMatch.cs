@@ -21,6 +21,7 @@ internal class PipelinesMatch : CachedMatch<AzureData>, ISerializableMatch
 
     public override ImageSource Icon => Images.Pipelines;
     public override MatchTypeId TypeId => TypeIds.Pipelines;
+    public override string SearchHint => Labels.PipelinesMatch_SearchHint;
 
     public PipelinesMatch(
         RootItemDto dto,

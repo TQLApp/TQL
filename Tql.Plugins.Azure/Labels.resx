@@ -156,6 +156,9 @@
   <data name="ConfigurationControl_TenantIDLabel" xml:space="preserve">
     <value>Tenant ID:</value>
   </data>
+  <data name="PortalsMatch_SearchHint" xml:space="preserve">
+    <value>Find Azure resources</value>
+  </data>
   <data name="PortalsType_Label" xml:space="preserve">
     <value>Azure Portal</value>
   </data>

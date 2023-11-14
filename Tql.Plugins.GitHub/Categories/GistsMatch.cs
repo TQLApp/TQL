@@ -30,6 +30,7 @@ internal class GistsMatch : ISearchableMatch, ISerializableMatch
 
     public ImageSource Icon => Images.Gist;
     public MatchTypeId TypeId => TypeIds.Gists;
+    public string SearchHint => Labels.GistsMatch_SearchHint;
 
     public GistsMatch(
         RootItemDto dto,

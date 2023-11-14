@@ -24,6 +24,7 @@ internal class QueriesMatch : ISearchableMatch, ISerializableMatch
 
     public ImageSource Icon => Images.Boards;
     public MatchTypeId TypeId => TypeIds.Queries;
+    public string SearchHint => Labels.QueriesMatch_SearchHint;
 
     public QueriesMatch(
         RootItemDto dto,

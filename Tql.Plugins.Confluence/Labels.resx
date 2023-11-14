@@ -171,6 +171,9 @@
   <data name="ConfluencePlugin_Label" xml:space="preserve">
     <value>Confluence</value>
   </data>
+  <data name="SearchesMatch_SearchHint" xml:space="preserve">
+    <value>Search Confluence</value>
+  </data>
   <data name="SearchesType_Label" xml:space="preserve">
     <value>Confluence Search</value>
   </data>
@@ -179,6 +182,9 @@
   </data>
   <data name="SpaceMatch_SearchHint" xml:space="preserve">
     <value>Find content</value>
+  </data>
+  <data name="SpacesMatch_SearchHint" xml:space="preserve">
+    <value>Find spaces</value>
   </data>
   <data name="SpacesType_Label" xml:space="preserve">
     <value>Confluence Space</value>

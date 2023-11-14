@@ -21,6 +21,7 @@ internal class DashboardsMatch : CachedMatch<JiraData>, ISerializableMatch
 
     public override ImageSource Icon => Images.Dashboards;
     public override MatchTypeId TypeId => TypeIds.Dashboards;
+    public override string SearchHint => Labels.DashboardsMatch_SearchHint;
 
     public DashboardsMatch(
         RootItemDto dto,

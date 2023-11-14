@@ -25,6 +25,7 @@ internal class RepositoriesMatch : ISearchableMatch, ISerializableMatch
 
     public ImageSource Icon => Images.Repository;
     public MatchTypeId TypeId => TypeIds.Repositories;
+    public string SearchHint => Labels.RepositoriesMatch_SearchHint;
 
     public RepositoriesMatch(
         RootItemDto dto,

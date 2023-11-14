@@ -429,7 +429,7 @@ internal partial class MainWindow
                     )
             );
 
-            searchHint = (SearchManager.Stack.Last() as IHasSearchHint)?.SearchHint;
+            searchHint = SearchManager.Stack.Last().SearchHint;
         }
 
         // The HintedTextBox style expects the hint in the Tag.

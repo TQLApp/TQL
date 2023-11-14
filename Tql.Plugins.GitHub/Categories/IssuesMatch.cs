@@ -8,6 +8,7 @@ namespace Tql.Plugins.GitHub.Categories;
 internal class IssuesMatch : IssuesMatchBase<IssueMatch>
 {
     public override MatchTypeId TypeId => TypeIds.Issues;
+    public override string SearchHint => Labels.IssuesMatch_SearchHint;
 
     public IssuesMatch(
         RootItemDto dto,

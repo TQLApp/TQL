@@ -11,6 +11,7 @@ public abstract class CachedMatch<T> : ISearchableMatch
     public abstract string Text { get; }
     public abstract ImageSource Icon { get; }
     public abstract MatchTypeId TypeId { get; }
+    public abstract string SearchHint { get; }
 
     protected CachedMatch(ICache<T> cache)
     {

@@ -21,6 +21,7 @@ internal class NewsMatch : CachedMatch<AzureData>, ISerializableMatch
 
     public override ImageSource Icon => Images.Boards;
     public override MatchTypeId TypeId => TypeIds.News;
+    public override string SearchHint => Labels.NewsMatch_SearchHint;
 
     public NewsMatch(
         RootItemDto dto,

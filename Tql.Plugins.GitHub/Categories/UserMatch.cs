@@ -6,12 +6,7 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.GitHub.Categories;
 
-internal class UserMatch
-    : IRunnableMatch,
-        ISerializableMatch,
-        ICopyableMatch,
-        ISearchableMatch,
-        IHasSearchHint
+internal class UserMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, ISearchableMatch
 {
     private readonly UserMatchDto _dto;
     private readonly GitHubApi _api;

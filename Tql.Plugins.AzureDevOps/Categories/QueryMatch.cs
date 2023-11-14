@@ -16,6 +16,7 @@ internal class QueryMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, 
 
     public ImageSource Icon => Images.Boards;
     public MatchTypeId TypeId => TypeIds.Query;
+    public string SearchHint => Labels.QueryMatch_SearchHint;
 
     public QueryMatch(
         QueryMatchDto dto,

@@ -223,6 +223,15 @@ namespace Tql.Plugins.Confluence {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Search Confluence.
+        /// </summary>
+        public static string SearchesMatch_SearchHint {
+            get {
+                return ResourceManager.GetString("SearchesMatch_SearchHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confluence Search.
         /// </summary>
         public static string SearchesType_Label {
@@ -246,6 +255,15 @@ namespace Tql.Plugins.Confluence {
         public static string SpaceMatch_SearchHint {
             get {
                 return ResourceManager.GetString("SpaceMatch_SearchHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find spaces.
+        /// </summary>
+        public static string SpacesMatch_SearchHint {
+            get {
+                return ResourceManager.GetString("SpacesMatch_SearchHint", resourceCulture);
             }
         }
         

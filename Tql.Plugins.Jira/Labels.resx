@@ -126,6 +126,9 @@
   <data name="BoardQuickFilterMatch_SearchHint" xml:space="preserve">
     <value>Find issues</value>
   </data>
+  <data name="BoardsMatch_SearchHint" xml:space="preserve">
+    <value>Find boards</value>
+  </data>
   <data name="BoardsType_Label" xml:space="preserve">
     <value>JIRA Board</value>
   </data>
@@ -171,14 +174,23 @@
   <data name="DashboardMatch_Label" xml:space="preserve">
     <value>{0} Dashboard</value>
   </data>
+  <data name="DashboardsMatch_SearchHint" xml:space="preserve">
+    <value>Find dashboards</value>
+  </data>
   <data name="DashboardsType_Label" xml:space="preserve">
     <value>JIRA Dashboard</value>
   </data>
   <data name="FilterMatch_SearchHint" xml:space="preserve">
     <value>Find issues</value>
   </data>
+  <data name="FiltersMatch_SearchHint" xml:space="preserve">
+    <value>Find filters</value>
+  </data>
   <data name="FiltersType_Label" xml:space="preserve">
     <value>JIRA Filter</value>
+  </data>
+  <data name="IssuesMatch_SearchHint" xml:space="preserve">
+    <value>Find issues</value>
   </data>
   <data name="IssuesType_Label" xml:space="preserve">
     <value>JIRA Issue</value>
@@ -213,6 +225,9 @@
   <data name="NewsMatch_Query" xml:space="preserve">
     <value>Query</value>
   </data>
+  <data name="NewsMatch_SearchHint" xml:space="preserve">
+    <value>Find item to create</value>
+  </data>
   <data name="NewsType_Label" xml:space="preserve">
     <value>JIRA New</value>
   </data>
@@ -221,6 +236,9 @@
   </data>
   <data name="ProjectMatch_SearchHint" xml:space="preserve">
     <value>Find issues</value>
+  </data>
+  <data name="ProjectsMatch_SearchHint" xml:space="preserve">
+    <value>Find projects</value>
   </data>
   <data name="ProjectsType_Label" xml:space="preserve">
     <value>JIRA Project</value>

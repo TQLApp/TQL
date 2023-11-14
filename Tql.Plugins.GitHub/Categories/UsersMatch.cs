@@ -18,6 +18,7 @@ internal class UsersMatch : ISearchableMatch, ISerializableMatch
 
     public ImageSource Icon => Images.User;
     public MatchTypeId TypeId => TypeIds.Users;
+    public string SearchHint => Labels.UsersMatch_SearchHint;
 
     public UsersMatch(
         RootItemDto dto,

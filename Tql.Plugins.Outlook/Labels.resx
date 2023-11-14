@@ -120,6 +120,9 @@
   <data name="EmailsMatch_Label" xml:space="preserve">
     <value>Email</value>
   </data>
+  <data name="EmailsMatch_SearchHint" xml:space="preserve">
+    <value>Find people</value>
+  </data>
   <data name="OutlookClient_OutlookIsNotRunning" xml:space="preserve">
     <value>Outlook isn't running</value>
   </data>

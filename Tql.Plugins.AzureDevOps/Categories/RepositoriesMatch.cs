@@ -21,6 +21,7 @@ internal class RepositoriesMatch : CachedMatch<AzureData>, ISerializableMatch
 
     public override ImageSource Icon => Images.Repositories;
     public override MatchTypeId TypeId => TypeIds.Repositories;
+    public override string SearchHint => Labels.RepositoriesMatch_SearchHint;
 
     public RepositoriesMatch(
         RootItemDto dto,
