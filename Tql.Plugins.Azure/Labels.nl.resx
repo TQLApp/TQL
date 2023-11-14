@@ -169,7 +169,7 @@
     <value>Tenant-id:</value>
     <comment>Original: Tenant ID:</comment>
   </data>
-  <data name="PortalsType_Label" xml:space="preserve">
+  <data name="PortalsMatch_Label" xml:space="preserve">
     <value>Azure Portal</value>
     <comment>Original: Azure Portal</comment>
   </data>

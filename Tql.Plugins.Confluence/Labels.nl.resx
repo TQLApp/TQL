@@ -189,7 +189,7 @@
     <value>Confluence</value>
     <comment>Original: Confluence</comment>
   </data>
-  <data name="SearchesType_Label" xml:space="preserve">
+  <data name="SearchesMatch_Label" xml:space="preserve">
     <value>Confluence Zoeken</value>
     <comment>Original: Confluence Search</comment>
   </data>
@@ -201,7 +201,7 @@
     <value>Zoek naar inhoud</value>
     <comment>Original: Find content</comment>
   </data>
-  <data name="SpacesType_Label" xml:space="preserve">
+  <data name="SpacesMatch_Label" xml:space="preserve">
     <value>Confluence Space</value>
     <comment>Original: Confluence Space</comment>
   </data>

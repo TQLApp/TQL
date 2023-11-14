@@ -14,7 +14,7 @@ internal class PipelinesMatch : CachedMatch<AzureData>, ISerializableMatch
 
     public override string Text =>
         MatchUtils.GetMatchLabel(
-            Labels.PipelinesType_Label,
+            Labels.PipelinesMatch_Label,
             _configurationManager.Configuration,
             _dto.Url
         );

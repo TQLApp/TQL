@@ -161,11 +161,11 @@
     <value>GitHub Authenticatie</value>
     <comment>Original: GitHub Authentication</comment>
   </data>
-  <data name="GistsType_Label" xml:space="preserve">
+  <data name="GistsMatch_Label" xml:space="preserve">
     <value>GitHub Gist</value>
     <comment>Original: GitHub Gist</comment>
   </data>
-  <data name="GistsType_MyLabel" xml:space="preserve">
+  <data name="GistsMatch_MyLabel" xml:space="preserve">
     <value>Mijn GitHub Gist</value>
     <comment>Original: My GitHub Gist</comment>
   </data>
@@ -181,27 +181,27 @@
     <value>GitHub</value>
     <comment>Original: GitHub</comment>
   </data>
-  <data name="IssuesTypeBase_IssueLabel" xml:space="preserve">
+  <data name="IssuesMatchBase_IssueLabel" xml:space="preserve">
     <value>GitHub Issue</value>
     <comment>Original: GitHub Issue</comment>
   </data>
-  <data name="IssuesTypeBase_MyIssueLabel" xml:space="preserve">
+  <data name="IssuesMatchBase_MyIssueLabel" xml:space="preserve">
     <value>Mijn GitHub Issue</value>
     <comment>Original: My GitHub Issue</comment>
   </data>
-  <data name="IssuesTypeBase_MyPullRequestLabel" xml:space="preserve">
+  <data name="IssuesMatchBase_MyPullRequestLabel" xml:space="preserve">
     <value>Mijn GitHub Pull Request</value>
     <comment>Original: My GitHub Pull Request</comment>
   </data>
-  <data name="IssuesTypeBase_PullRequestLabel" xml:space="preserve">
+  <data name="IssuesMatchBase_PullRequestLabel" xml:space="preserve">
     <value>GitHub Pull Request</value>
     <comment>Original: GitHub Pull Request</comment>
   </data>
-  <data name="RepositoriesType_Label" xml:space="preserve">
+  <data name="RepositoriesMatch_Label" xml:space="preserve">
     <value>GitHub Repository</value>
     <comment>Original: GitHub Repository</comment>
   </data>
-  <data name="RepositoriesType_MyLabel" xml:space="preserve">
+  <data name="RepositoriesMatch_MyLabel" xml:space="preserve">
     <value>Mijn GitHub Repository</value>
     <comment>Original: My GitHub Repository</comment>
   </data>
@@ -213,7 +213,7 @@
     <value>Zoek repositories</value>
     <comment>Original: Find repositories</comment>
   </data>
-  <data name="UsersType_Label" xml:space="preserve">
+  <data name="UsersMatch_Label" xml:space="preserve">
     <value>GitHub Gebruiker</value>
     <comment>Original: GitHub User</comment>
   </data>

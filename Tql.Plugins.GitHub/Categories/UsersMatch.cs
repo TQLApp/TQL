@@ -14,7 +14,11 @@ internal class UsersMatch : ISearchableMatch, ISerializableMatch
     private readonly IMatchFactory<UserMatch, UserMatchDto> _factory;
 
     public string Text =>
-        MatchUtils.GetMatchLabel(Labels.UsersType_Label, _configurationManager.Configuration, _dto);
+        MatchUtils.GetMatchLabel(
+            Labels.UsersMatch_Label,
+            _configurationManager.Configuration,
+            _dto
+        );
 
     public ImageSource Icon => Images.User;
     public MatchTypeId TypeId => TypeIds.Users;

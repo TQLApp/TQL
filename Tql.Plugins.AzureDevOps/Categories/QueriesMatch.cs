@@ -17,7 +17,7 @@ internal class QueriesMatch : ISearchableMatch, ISerializableMatch
 
     public string Text =>
         MatchUtils.GetMatchLabel(
-            Labels.QueriesType_Label,
+            Labels.QueriesMatch_Label,
             _configurationManager.Configuration,
             _dto.Url
         );

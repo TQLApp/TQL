@@ -14,7 +14,7 @@ internal class SpacesMatch : CachedMatch<ConfluenceData>, ISerializableMatch
 
     public override string Text =>
         MatchUtils.GetMatchLabel(
-            Labels.SpacesType_Label,
+            Labels.SpacesMatch_Label,
             _configurationManager.Configuration,
             _dto.Url
         );

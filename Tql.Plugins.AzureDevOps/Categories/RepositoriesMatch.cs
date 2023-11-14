@@ -14,7 +14,7 @@ internal class RepositoriesMatch : CachedMatch<AzureData>, ISerializableMatch
 
     public override string Text =>
         MatchUtils.GetMatchLabel(
-            Labels.RepositoriesType_Label,
+            Labels.RepositoriesMatch_Label,
             _configurationManager.Configuration,
             _dto.Url
         );

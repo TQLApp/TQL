@@ -159,7 +159,7 @@
   <data name="PortalsMatch_SearchHint" xml:space="preserve">
     <value>Find Azure resources</value>
   </data>
-  <data name="PortalsType_Label" xml:space="preserve">
+  <data name="PortalsMatch_Label" xml:space="preserve">
     <value>Azure Portal</value>
   </data>
 </root>

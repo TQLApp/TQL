@@ -14,7 +14,7 @@ internal class BacklogsMatch : CachedMatch<AzureData>, ISerializableMatch
 
     public override string Text =>
         MatchUtils.GetMatchLabel(
-            Labels.BacklogsType_Label,
+            Labels.BacklogsMatch_Label,
             _configurationManager.Configuration,
             _dto.Url
         );

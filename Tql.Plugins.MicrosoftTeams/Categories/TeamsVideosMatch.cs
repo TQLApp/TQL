@@ -12,7 +12,7 @@ internal class TeamsVideosMatch : PeopleMatchBase<TeamsVideoMatch>
 
     public override string Text =>
         MatchUtils.GetMatchLabel(
-            Labels.TeamsVideosType_Label,
+            Labels.TeamsVideosMatch_Label,
             _configurationManager,
             _peopleDirectoryManager,
             _dto.Id

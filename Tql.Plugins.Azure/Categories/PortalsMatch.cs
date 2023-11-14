@@ -35,7 +35,7 @@ internal class PortalsMatch : ISearchableMatch, ISerializableMatch
 
     public string Text =>
         MatchUtils.GetMatchLabel(
-            Labels.PortalsType_Label,
+            Labels.PortalsMatch_Label,
             _configurationManager.Configuration,
             _dto.Id
         );

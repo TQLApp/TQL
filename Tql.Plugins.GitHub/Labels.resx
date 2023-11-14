@@ -162,10 +162,10 @@
   <data name="GistsMatch_SearchHint" xml:space="preserve">
     <value>Find gists</value>
   </data>
-  <data name="GistsType_Label" xml:space="preserve">
+  <data name="GistsMatch_Label" xml:space="preserve">
     <value>GitHub Gist</value>
   </data>
-  <data name="GistsType_MyLabel" xml:space="preserve">
+  <data name="GistsMatch_MyLabel" xml:space="preserve">
     <value>My GitHub Gist</value>
   </data>
   <data name="GitHubApi_ResourceName" xml:space="preserve">
@@ -180,16 +180,16 @@
   <data name="IssuesMatch_SearchHint" xml:space="preserve">
     <value>Find issues</value>
   </data>
-  <data name="IssuesTypeBase_IssueLabel" xml:space="preserve">
+  <data name="IssuesMatchBase_IssueLabel" xml:space="preserve">
     <value>GitHub Issue</value>
   </data>
-  <data name="IssuesTypeBase_MyIssueLabel" xml:space="preserve">
+  <data name="IssuesMatchBase_MyIssueLabel" xml:space="preserve">
     <value>My GitHub Issue</value>
   </data>
-  <data name="IssuesTypeBase_MyPullRequestLabel" xml:space="preserve">
+  <data name="IssuesMatchBase_MyPullRequestLabel" xml:space="preserve">
     <value>My GitHub Pull Request</value>
   </data>
-  <data name="IssuesTypeBase_PullRequestLabel" xml:space="preserve">
+  <data name="IssuesMatchBase_PullRequestLabel" xml:space="preserve">
     <value>GitHub Pull Request</value>
   </data>
   <data name="NewsMatch_SearchHint" xml:space="preserve">
@@ -201,10 +201,10 @@
   <data name="RepositoriesMatch_SearchHint" xml:space="preserve">
     <value>Find repositories</value>
   </data>
-  <data name="RepositoriesType_Label" xml:space="preserve">
+  <data name="RepositoriesMatch_Label" xml:space="preserve">
     <value>GitHub Repository</value>
   </data>
-  <data name="RepositoriesType_MyLabel" xml:space="preserve">
+  <data name="RepositoriesMatch_MyLabel" xml:space="preserve">
     <value>My GitHub Repository</value>
   </data>
   <data name="RepositoryMatch_SearchHint" xml:space="preserve">
@@ -216,7 +216,7 @@
   <data name="UsersMatch_SearchHint" xml:space="preserve">
     <value>Find users</value>
   </data>
-  <data name="UsersType_Label" xml:space="preserve">
+  <data name="UsersMatch_Label" xml:space="preserve">
     <value>GitHub User</value>
   </data>
 </root>

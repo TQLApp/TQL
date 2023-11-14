@@ -19,7 +19,7 @@ internal class IssuesMatch : ISearchableMatch, ISerializableMatch
 
     public string Text =>
         MatchUtils.GetMatchLabel(
-            Labels.IssuesType_Label,
+            Labels.IssuesMatch_Label,
             _configurationManager.Configuration,
             _dto.Url
         );

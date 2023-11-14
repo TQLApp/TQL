@@ -20,11 +20,11 @@ internal abstract class IssuesMatchBase<T> : ISearchableMatch, ISerializableMatc
     public string Text =>
         MatchUtils.GetMatchLabel(
             _type == IssueTypeQualifier.Issue
-                ? Labels.IssuesTypeBase_IssueLabel
-                : Labels.IssuesTypeBase_PullRequestLabel,
+                ? Labels.IssuesMatchBase_IssueLabel
+                : Labels.IssuesMatchBase_PullRequestLabel,
             _type == IssueTypeQualifier.Issue
-                ? Labels.IssuesTypeBase_MyIssueLabel
-                : Labels.IssuesTypeBase_MyPullRequestLabel,
+                ? Labels.IssuesMatchBase_MyIssueLabel
+                : Labels.IssuesMatchBase_MyPullRequestLabel,
             _configurationManager.Configuration,
             _dto
         );

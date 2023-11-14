@@ -117,27 +117,27 @@ namespace Tql.Plugins.MicrosoftTeams {
         /// <summary>
         ///   Looks up a localized string similar to Teams Call.
         /// </summary>
-        public static string TeamsCallsType_Label {
+        public static string TeamsCallsMatch_Label {
             get {
-                return ResourceManager.GetString("TeamsCallsType_Label", resourceCulture);
+                return ResourceManager.GetString("TeamsCallsMatch_Label", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Teams Chat.
         /// </summary>
-        public static string TeamsChatsType_Label {
+        public static string TeamsChatsMatch_Label {
             get {
-                return ResourceManager.GetString("TeamsChatsType_Label", resourceCulture);
+                return ResourceManager.GetString("TeamsChatsMatch_Label", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Teams Video Call.
         /// </summary>
-        public static string TeamsVideosType_Label {
+        public static string TeamsVideosMatch_Label {
             get {
-                return ResourceManager.GetString("TeamsVideosType_Label", resourceCulture);
+                return ResourceManager.GetString("TeamsVideosMatch_Label", resourceCulture);
             }
         }
     }

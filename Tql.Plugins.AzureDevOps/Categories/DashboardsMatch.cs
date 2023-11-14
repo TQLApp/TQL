@@ -14,7 +14,7 @@ internal class DashboardsMatch : CachedMatch<AzureData>, ISerializableMatch
 
     public override string Text =>
         MatchUtils.GetMatchLabel(
-            Labels.DashboardsType_Label,
+            Labels.DashboardsMatch_Label,
             _configurationManager.Configuration,
             _dto.Url
         );

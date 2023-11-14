@@ -136,13 +136,13 @@
   <data name="PeopleMatchBase_SearchHint" xml:space="preserve">
     <value>Find people</value>
   </data>
-  <data name="TeamsCallsType_Label" xml:space="preserve">
+  <data name="TeamsCallsMatch_Label" xml:space="preserve">
     <value>Teams Call</value>
   </data>
-  <data name="TeamsChatsType_Label" xml:space="preserve">
+  <data name="TeamsChatsMatch_Label" xml:space="preserve">
     <value>Teams Chat</value>
   </data>
-  <data name="TeamsVideosType_Label" xml:space="preserve">
+  <data name="TeamsVideosMatch_Label" xml:space="preserve">
     <value>Teams Video Call</value>
   </data>
 </root>

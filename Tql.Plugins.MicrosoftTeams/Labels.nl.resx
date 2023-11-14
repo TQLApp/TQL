@@ -137,15 +137,15 @@
     <value>Microsoft Teams</value>
     <comment>Original: Microsoft Teams</comment>
   </data>
-  <data name="TeamsCallsType_Label" xml:space="preserve">
+  <data name="TeamsCallsMatch_Label" xml:space="preserve">
     <value>Teams Oproep</value>
     <comment>Original: Teams Call</comment>
   </data>
-  <data name="TeamsChatsType_Label" xml:space="preserve">
+  <data name="TeamsChatsMatch_Label" xml:space="preserve">
     <value>Teams Chat</value>
     <comment>Original: Teams Chat</comment>
   </data>
-  <data name="TeamsVideosType_Label" xml:space="preserve">
+  <data name="TeamsVideosMatch_Label" xml:space="preserve">
     <value>Teams Videogesprek</value>
     <comment>Original: Teams Video Call</comment>
   </data>

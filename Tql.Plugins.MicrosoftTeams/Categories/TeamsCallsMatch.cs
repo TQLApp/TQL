@@ -12,7 +12,7 @@ internal class TeamsCallsMatch : PeopleMatchBase<TeamsCallMatch>
 
     public override string Text =>
         MatchUtils.GetMatchLabel(
-            Labels.TeamsCallsType_Label,
+            Labels.TeamsCallsMatch_Label,
             _configurationManager,
             _peopleDirectoryManager,
             _dto.Id

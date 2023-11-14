@@ -14,7 +14,7 @@ internal class NewsMatch : CachedMatch<AzureData>, ISerializableMatch
 
     public override string Text =>
         MatchUtils.GetMatchLabel(
-            Labels.NewsType_Label,
+            Labels.NewsMatch_Label,
             _configurationManager.Configuration,
             _dto.Url
         );

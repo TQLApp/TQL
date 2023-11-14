@@ -178,20 +178,20 @@ namespace Tql.Plugins.Azure {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Azure Portal.
+        /// </summary>
+        public static string PortalsMatch_Label {
+            get {
+                return ResourceManager.GetString("PortalsMatch_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Find Azure resources.
         /// </summary>
         public static string PortalsMatch_SearchHint {
             get {
                 return ResourceManager.GetString("PortalsMatch_SearchHint", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Azure Portal.
-        /// </summary>
-        public static string PortalsType_Label {
-            get {
-                return ResourceManager.GetString("PortalsType_Label", resourceCulture);
             }
         }
     }

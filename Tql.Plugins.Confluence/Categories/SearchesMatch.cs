@@ -13,7 +13,7 @@ internal class SearchesMatch : ISearchableMatch, ISerializableMatch
 
     public string Text =>
         MatchUtils.GetMatchLabel(
-            Labels.SearchesType_Label,
+            Labels.SearchesMatch_Label,
             _configurationManager.Configuration,
             _dto.Url
         );

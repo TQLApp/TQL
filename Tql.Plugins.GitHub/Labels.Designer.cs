@@ -187,29 +187,29 @@ namespace Tql.Plugins.GitHub {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Find gists.
-        /// </summary>
-        public static string GistsMatch_SearchHint {
-            get {
-                return ResourceManager.GetString("GistsMatch_SearchHint", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to GitHub Gist.
         /// </summary>
-        public static string GistsType_Label {
+        public static string GistsMatch_Label {
             get {
-                return ResourceManager.GetString("GistsType_Label", resourceCulture);
+                return ResourceManager.GetString("GistsMatch_Label", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to My GitHub Gist.
         /// </summary>
-        public static string GistsType_MyLabel {
+        public static string GistsMatch_MyLabel {
             get {
-                return ResourceManager.GetString("GistsType_MyLabel", resourceCulture);
+                return ResourceManager.GetString("GistsMatch_MyLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find gists.
+        /// </summary>
+        public static string GistsMatch_SearchHint {
+            get {
+                return ResourceManager.GetString("GistsMatch_SearchHint", resourceCulture);
             }
         }
         
@@ -252,36 +252,36 @@ namespace Tql.Plugins.GitHub {
         /// <summary>
         ///   Looks up a localized string similar to GitHub Issue.
         /// </summary>
-        public static string IssuesTypeBase_IssueLabel {
+        public static string IssuesMatchBase_IssueLabel {
             get {
-                return ResourceManager.GetString("IssuesTypeBase_IssueLabel", resourceCulture);
+                return ResourceManager.GetString("IssuesMatchBase_IssueLabel", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to My GitHub Issue.
         /// </summary>
-        public static string IssuesTypeBase_MyIssueLabel {
+        public static string IssuesMatchBase_MyIssueLabel {
             get {
-                return ResourceManager.GetString("IssuesTypeBase_MyIssueLabel", resourceCulture);
+                return ResourceManager.GetString("IssuesMatchBase_MyIssueLabel", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to My GitHub Pull Request.
         /// </summary>
-        public static string IssuesTypeBase_MyPullRequestLabel {
+        public static string IssuesMatchBase_MyPullRequestLabel {
             get {
-                return ResourceManager.GetString("IssuesTypeBase_MyPullRequestLabel", resourceCulture);
+                return ResourceManager.GetString("IssuesMatchBase_MyPullRequestLabel", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to GitHub Pull Request.
         /// </summary>
-        public static string IssuesTypeBase_PullRequestLabel {
+        public static string IssuesMatchBase_PullRequestLabel {
             get {
-                return ResourceManager.GetString("IssuesTypeBase_PullRequestLabel", resourceCulture);
+                return ResourceManager.GetString("IssuesMatchBase_PullRequestLabel", resourceCulture);
             }
         }
         
@@ -304,29 +304,29 @@ namespace Tql.Plugins.GitHub {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Find repositories.
-        /// </summary>
-        public static string RepositoriesMatch_SearchHint {
-            get {
-                return ResourceManager.GetString("RepositoriesMatch_SearchHint", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to GitHub Repository.
         /// </summary>
-        public static string RepositoriesType_Label {
+        public static string RepositoriesMatch_Label {
             get {
-                return ResourceManager.GetString("RepositoriesType_Label", resourceCulture);
+                return ResourceManager.GetString("RepositoriesMatch_Label", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to My GitHub Repository.
         /// </summary>
-        public static string RepositoriesType_MyLabel {
+        public static string RepositoriesMatch_MyLabel {
             get {
-                return ResourceManager.GetString("RepositoriesType_MyLabel", resourceCulture);
+                return ResourceManager.GetString("RepositoriesMatch_MyLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find repositories.
+        /// </summary>
+        public static string RepositoriesMatch_SearchHint {
+            get {
+                return ResourceManager.GetString("RepositoriesMatch_SearchHint", resourceCulture);
             }
         }
         
@@ -349,20 +349,20 @@ namespace Tql.Plugins.GitHub {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to GitHub User.
+        /// </summary>
+        public static string UsersMatch_Label {
+            get {
+                return ResourceManager.GetString("UsersMatch_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Find users.
         /// </summary>
         public static string UsersMatch_SearchHint {
             get {
                 return ResourceManager.GetString("UsersMatch_SearchHint", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to GitHub User.
-        /// </summary>
-        public static string UsersType_Label {
-            get {
-                return ResourceManager.GetString("UsersType_Label", resourceCulture);
             }
         }
     }

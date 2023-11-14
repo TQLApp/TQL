@@ -14,7 +14,7 @@ internal class BoardsMatch : CachedMatch<AzureData>, ISerializableMatch
 
     public override string Text =>
         MatchUtils.GetMatchLabel(
-            Labels.BoardsType_Label,
+            Labels.BoardsMatch_Label,
             _configurationManager.Configuration,
             _dto.Url
         );

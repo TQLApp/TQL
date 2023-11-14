@@ -22,8 +22,8 @@ internal class GistsMatch : ISearchableMatch, ISerializableMatch
 
     public string Text =>
         MatchUtils.GetMatchLabel(
-            Labels.GistsType_Label,
-            Labels.GistsType_MyLabel,
+            Labels.GistsMatch_Label,
+            Labels.GistsMatch_MyLabel,
             _configurationManager.Configuration,
             _dto
         );

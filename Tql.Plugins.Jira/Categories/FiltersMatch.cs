@@ -14,7 +14,7 @@ internal class FiltersMatch : CachedMatch<JiraData>, ISerializableMatch
 
     public override string Text =>
         MatchUtils.GetMatchLabel(
-            Labels.FiltersType_Label,
+            Labels.FiltersMatch_Label,
             _configurationManager.Configuration,
             _dto.Url
         );

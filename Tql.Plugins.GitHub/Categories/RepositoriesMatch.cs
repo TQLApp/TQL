@@ -17,8 +17,8 @@ internal class RepositoriesMatch : ISearchableMatch, ISerializableMatch
 
     public string Text =>
         MatchUtils.GetMatchLabel(
-            Labels.RepositoriesType_Label,
-            Labels.RepositoriesType_MyLabel,
+            Labels.RepositoriesMatch_Label,
+            Labels.RepositoriesMatch_MyLabel,
             _configurationManager.Configuration,
             _dto
         );

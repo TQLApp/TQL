@@ -174,7 +174,7 @@
   <data name="SearchesMatch_SearchHint" xml:space="preserve">
     <value>Search Confluence</value>
   </data>
-  <data name="SearchesType_Label" xml:space="preserve">
+  <data name="SearchesMatch_Label" xml:space="preserve">
     <value>Confluence Search</value>
   </data>
   <data name="SpaceMatch_Label" xml:space="preserve">
@@ -186,7 +186,7 @@
   <data name="SpacesMatch_SearchHint" xml:space="preserve">
     <value>Find spaces</value>
   </data>
-  <data name="SpacesType_Label" xml:space="preserve">
+  <data name="SpacesMatch_Label" xml:space="preserve">
     <value>Confluence Space</value>
   </data>
 </root>

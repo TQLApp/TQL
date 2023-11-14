@@ -17,7 +17,7 @@ internal class WorkItemsMatch : ISearchableMatch, ISerializableMatch
 
     public string Text =>
         MatchUtils.GetMatchLabel(
-            Labels.WorkItemsType_Label,
+            Labels.WorkItemsMatch_Label,
             _configurationManager.Configuration,
             _dto.Url
         );

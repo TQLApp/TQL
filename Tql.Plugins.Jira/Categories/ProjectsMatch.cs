@@ -14,7 +14,7 @@ internal class ProjectsMatch : CachedMatch<JiraData>, ISerializableMatch
 
     public override string Text =>
         MatchUtils.GetMatchLabel(
-            Labels.ProjectsType_Label,
+            Labels.ProjectsMatch_Label,
             _configurationManager.Configuration,
             _dto.Url
         );
