@@ -4,23 +4,22 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.AzureDevOps.Categories;
 
-internal class RepositoryFilePathType : IMatchType
+internal class RepositoryFilePathType
+    : MatchType<RepositoryFilePathMatch, RepositoryFilePathMatchDto>
 {
     private readonly ConfigurationManager _configurationManager;
 
-    public Guid Id => TypeIds.RepositoryFilePath.Id;
+    public override Guid Id => TypeIds.RepositoryFilePath.Id;
 
-    public RepositoryFilePathType(ConfigurationManager configurationManager)
+    public RepositoryFilePathType(
+        IMatchFactory<RepositoryFilePathMatch, RepositoryFilePathMatchDto> factory,
+        ConfigurationManager configurationManager
+    )
+        : base(factory)
     {
         _configurationManager = configurationManager;
     }
 
-    public IMatch? Deserialize(string json)
-    {
-        var dto = JsonSerializer.Deserialize<RepositoryFilePathMatchDto>(json)!;
-        if (!_configurationManager.Configuration.HasConnection(dto.Repository.Url))
-            return null;
-
-        return new RepositoryFilePathMatch(dto);
-    }
+    protected override bool IsValid(RepositoryFilePathMatchDto dto) =>
+        _configurationManager.Configuration.HasConnection(dto.Repository.Url);
 }

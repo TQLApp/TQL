@@ -15,9 +15,9 @@ internal class BoardQuickFilterMatch
         ISerializableMatch
 {
     private readonly BoardQuickFilterMatchDto _dto;
-    private readonly IconCacheManager _iconCacheManager;
     private readonly ICache<JiraData> _cache;
     private readonly ConfigurationManager _configurationManager;
+    private readonly IMatchFactory<IssueMatch, IssueMatchDto> _factory;
 
     public string Text =>
         MatchText.Path(_dto.Board.Name, MatchUtils.GetBoardLabel(_dto.Board), _dto.Name);
@@ -29,13 +29,14 @@ internal class BoardQuickFilterMatch
         BoardQuickFilterMatchDto dto,
         IconCacheManager iconCacheManager,
         ICache<JiraData> cache,
-        ConfigurationManager configurationManager
+        ConfigurationManager configurationManager,
+        IMatchFactory<IssueMatch, IssueMatchDto> factory
     )
     {
         _dto = dto;
-        _iconCacheManager = iconCacheManager;
         _cache = cache;
         _configurationManager = configurationManager;
+        _factory = factory;
 
         Icon =
             iconCacheManager.GetIcon(new IconKey(dto.Board.Url, dto.Board.AvatarUrl))
@@ -95,7 +96,7 @@ internal class BoardQuickFilterMatch
 
         var issues = await client.SearchIssues(query, 100, cancellationToken);
 
-        return IssueUtils.CreateMatches(_dto.Board.Url, issues, _iconCacheManager);
+        return IssueUtils.CreateMatches(_dto.Board.Url, issues, _factory);
     }
 }
 

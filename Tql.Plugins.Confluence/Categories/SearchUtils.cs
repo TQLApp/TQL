@@ -7,12 +7,13 @@ internal static class SearchUtils
 {
     public static IEnumerable<IMatch> CreateMatches(
         string url,
-        IEnumerable<ConfluenceSiteSearchDto> searchResults
+        IEnumerable<ConfluenceSiteSearchDto> searchResults,
+        IMatchFactory<SearchMatch, SearchMatchDto> factory
     )
     {
         return searchResults.Select(
             p =>
-                new SearchMatch(
+                factory.Create(
                     new SearchMatchDto(
                         url,
                         p.ResultGlobalContainer?.Title,

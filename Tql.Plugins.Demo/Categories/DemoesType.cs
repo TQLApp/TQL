@@ -5,12 +5,10 @@ using Tql.Utilities;
 namespace Tql.Plugins.Demo.Categories;
 
 [RootMatchType]
-internal class DemoesType : IMatchType
+internal class DemoesType : MatchType<DemoesMatch, DemoesMatchDto>
 {
-    public Guid Id => TypeIds.Demoes.Id;
+    public override Guid Id => TypeIds.Demoes.Id;
 
-    public IMatch Deserialize(string json)
-    {
-        return new DemoesMatch();
-    }
+    public DemoesType(IMatchFactory<DemoesMatch, DemoesMatchDto> factory)
+        : base(factory) { }
 }

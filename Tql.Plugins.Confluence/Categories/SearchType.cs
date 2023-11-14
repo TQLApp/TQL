@@ -4,23 +4,21 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.Confluence.Categories;
 
-internal class SearchType : IMatchType
+internal class SearchType : MatchType<SearchMatch, SearchMatchDto>
 {
     private readonly ConfigurationManager _configurationManager;
 
-    public Guid Id => TypeIds.Search.Id;
+    public override Guid Id => TypeIds.Search.Id;
 
-    public SearchType(ConfigurationManager configurationManager)
+    public SearchType(
+        IMatchFactory<SearchMatch, SearchMatchDto> factory,
+        ConfigurationManager configurationManager
+    )
+        : base(factory)
     {
         _configurationManager = configurationManager;
     }
 
-    public IMatch? Deserialize(string json)
-    {
-        var dto = JsonSerializer.Deserialize<SearchMatchDto>(json)!;
-        if (!_configurationManager.Configuration.HasConnection(dto.Url))
-            return null;
-
-        return new SearchMatch(dto);
-    }
+    protected override bool IsValid(SearchMatchDto dto) =>
+        _configurationManager.Configuration.HasConnection(dto.Url);
 }

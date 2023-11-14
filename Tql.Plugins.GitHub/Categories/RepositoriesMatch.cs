@@ -12,18 +12,33 @@ internal class RepositoriesMatch : ISearchableMatch, ISerializableMatch
     private readonly RootItemDto _dto;
     private readonly GitHubApi _api;
     private readonly ICache<GitHubData> _cache;
+    private readonly ConfigurationManager _configurationManager;
+    private readonly IMatchFactory<RepositoryMatch, RepositoryMatchDto> _factory;
 
-    public string Text { get; }
+    public string Text =>
+        MatchUtils.GetMatchLabel(
+            Labels.RepositoriesType_Label,
+            Labels.RepositoriesType_MyLabel,
+            _configurationManager.Configuration,
+            _dto
+        );
+
     public ImageSource Icon => Images.Repository;
     public MatchTypeId TypeId => TypeIds.Repositories;
 
-    public RepositoriesMatch(string text, RootItemDto dto, GitHubApi api, ICache<GitHubData> cache)
+    public RepositoriesMatch(
+        RootItemDto dto,
+        GitHubApi api,
+        ICache<GitHubData> cache,
+        ConfigurationManager configurationManager,
+        IMatchFactory<RepositoryMatch, RepositoryMatchDto> factory
+    )
     {
         _dto = dto;
         _api = api;
         _cache = cache;
-
-        Text = text;
+        _configurationManager = configurationManager;
+        _factory = factory;
     }
 
     public async Task<IEnumerable<IMatch>> Search(
@@ -54,7 +69,7 @@ internal class RepositoriesMatch : ISearchableMatch, ISerializableMatch
         cancellationToken.ThrowIfCancellationRequested();
 
         return response.Items.Select(
-            p => new RepositoryMatch(new RepositoryMatchDto(_dto.Id, p.FullName, p.HtmlUrl), _api)
+            p => _factory.Create(new RepositoryMatchDto(_dto.Id, p.FullName, p.HtmlUrl))
         );
     }
 

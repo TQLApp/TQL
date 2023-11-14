@@ -1,48 +1,50 @@
 ﻿using Tql.Abstractions;
 using Tql.Plugins.Jira.Data;
 using Tql.Plugins.Jira.Services;
+using Tql.Plugins.Jira.Support;
 using Tql.Utilities;
 
 namespace Tql.Plugins.Jira.Categories;
 
 internal class FiltersMatch : CachedMatch<JiraData>, ISerializableMatch
 {
-    private readonly string _url;
-    private readonly IconCacheManager _iconCacheManager;
+    private readonly RootItemDto _dto;
     private readonly ConfigurationManager _configurationManager;
+    private readonly IMatchFactory<FilterMatch, FilterMatchDto> _factory;
 
-    public override string Text { get; }
+    public override string Text =>
+        MatchUtils.GetMatchLabel(
+            Labels.FiltersType_Label,
+            _configurationManager.Configuration,
+            _dto.Url
+        );
+
     public override ImageSource Icon => Images.Filters;
     public override MatchTypeId TypeId => TypeIds.Filters;
 
     public FiltersMatch(
-        string text,
-        string url,
+        RootItemDto dto,
         ICache<JiraData> cache,
-        IconCacheManager iconCacheManager,
-        ConfigurationManager configurationManager
+        ConfigurationManager configurationManager,
+        IMatchFactory<FilterMatch, FilterMatchDto> factory
     )
         : base(cache)
     {
-        _url = url;
-        _iconCacheManager = iconCacheManager;
+        _dto = dto;
         _configurationManager = configurationManager;
-
-        Text = text;
+        _factory = factory;
     }
 
     protected override IEnumerable<IMatch> Create(JiraData data)
     {
-        return from filter in data.GetConnection(_url).Filters
-            select new FilterMatch(
-                new FilterMatchDto(_url, filter.Name, filter.ViewUrl, filter.Jql),
-                _iconCacheManager,
-                _configurationManager
+        return from filter in data.GetConnection(_dto.Url).Filters
+            select _factory.Create(
+                new FilterMatchDto(_dto.Url, filter.Name, filter.ViewUrl, filter.Jql)
             );
     }
 
     public string Serialize()
     {
-        return JsonSerializer.Serialize(new RootItemDto(_url));
+        return JsonSerializer.Serialize(_dto);
     }
 }

@@ -4,25 +4,21 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.Jira.Categories;
 
-internal class IssueType : IMatchType
+internal class IssueType : MatchType<IssueMatch, IssueMatchDto>
 {
-    private readonly IconCacheManager _iconCacheManager;
     private readonly ConfigurationManager _configurationManager;
 
-    public Guid Id => TypeIds.Issue.Id;
+    public override Guid Id => TypeIds.Issue.Id;
 
-    public IssueType(IconCacheManager iconCacheManager, ConfigurationManager configurationManager)
+    public IssueType(
+        IMatchFactory<IssueMatch, IssueMatchDto> factory,
+        ConfigurationManager configurationManager
+    )
+        : base(factory)
     {
-        _iconCacheManager = iconCacheManager;
         _configurationManager = configurationManager;
     }
 
-    public IMatch? Deserialize(string json)
-    {
-        var dto = JsonSerializer.Deserialize<IssueMatchDto>(json)!;
-        if (!_configurationManager.Configuration.HasConnection(dto.Url))
-            return null;
-
-        return new IssueMatch(dto, _iconCacheManager);
-    }
+    protected override bool IsValid(IssueMatchDto dto) =>
+        _configurationManager.Configuration.HasConnection(dto.Url);
 }

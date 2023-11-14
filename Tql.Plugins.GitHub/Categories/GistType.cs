@@ -4,23 +4,21 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.GitHub.Categories;
 
-internal class GistType : IMatchType
+internal class GistType : MatchType<GistMatch, GistMatchDto>
 {
     private readonly ConfigurationManager _configurationManager;
 
-    public Guid Id => TypeIds.Gist.Id;
+    public override Guid Id => TypeIds.Gist.Id;
 
-    public GistType(ConfigurationManager configurationManager)
+    public GistType(
+        IMatchFactory<GistMatch, GistMatchDto> factory,
+        ConfigurationManager configurationManager
+    )
+        : base(factory)
     {
         _configurationManager = configurationManager;
     }
 
-    public IMatch? Deserialize(string json)
-    {
-        var dto = JsonSerializer.Deserialize<GistMatchDto>(json)!;
-        if (!_configurationManager.Configuration.HasConnection(dto.ConnectionId))
-            return null;
-
-        return new GistMatch(dto);
-    }
+    protected override bool IsValid(GistMatchDto dto) =>
+        _configurationManager.Configuration.HasConnection(dto.ConnectionId);
 }

@@ -2,44 +2,46 @@
 using Tql.Abstractions;
 using Tql.Plugins.Jira.Data;
 using Tql.Plugins.Jira.Services;
+using Tql.Plugins.Jira.Support;
 using Tql.Utilities;
 
 namespace Tql.Plugins.Jira.Categories;
 
 internal class BoardsMatch : CachedMatch<JiraData>, ISerializableMatch
 {
-    private readonly string _url;
-    private readonly ICache<JiraData> _cache;
-    private readonly IconCacheManager _iconCacheManager;
-    private readonly ConfigurationManager _configurationManager;
+    private readonly RootItemDto _dto;
     private readonly ILogger<BoardsMatch> _logger;
+    private readonly ConfigurationManager _configurationManager;
+    private readonly IMatchFactory<BoardMatch, BoardMatchDto> _factory;
 
-    public override string Text { get; }
+    public override string Text =>
+        MatchUtils.GetMatchLabel(
+            Labels.BoardsType_Label,
+            _configurationManager.Configuration,
+            _dto.Url
+        );
+
     public override ImageSource Icon => Images.Boards;
     public override MatchTypeId TypeId => TypeIds.Boards;
 
     public BoardsMatch(
-        string text,
-        string url,
+        RootItemDto dto,
         ICache<JiraData> cache,
-        IconCacheManager iconCacheManager,
+        ILogger<BoardsMatch> logger,
         ConfigurationManager configurationManager,
-        ILogger<BoardsMatch> logger
+        IMatchFactory<BoardMatch, BoardMatchDto> factory
     )
         : base(cache)
     {
-        _url = url;
-        _cache = cache;
-        _iconCacheManager = iconCacheManager;
-        _configurationManager = configurationManager;
+        _dto = dto;
         _logger = logger;
-
-        Text = text;
+        _configurationManager = configurationManager;
+        _factory = factory;
     }
 
     protected override IEnumerable<IMatch> Create(JiraData data)
     {
-        var connection = data.GetConnection(_url);
+        var connection = data.GetConnection(_dto.Url);
 
         var boards = connection.Boards;
 
@@ -74,9 +76,9 @@ internal class BoardsMatch : CachedMatch<JiraData>, ISerializableMatch
                     projectType = BoardProjectType.TeamManaged;
                 }
 
-                yield return new BoardMatch(
+                yield return _factory.Create(
                     new BoardMatchDto(
-                        _url,
+                        _dto.Url,
                         board.Id,
                         board.Name,
                         board.ProjectKey,
@@ -84,10 +86,7 @@ internal class BoardsMatch : CachedMatch<JiraData>, ISerializableMatch
                         projectType,
                         board.AvatarUrl,
                         matchType
-                    ),
-                    _iconCacheManager,
-                    _cache,
-                    _configurationManager
+                    )
                 );
             }
         }
@@ -95,6 +94,6 @@ internal class BoardsMatch : CachedMatch<JiraData>, ISerializableMatch
 
     public string Serialize()
     {
-        return JsonSerializer.Serialize(new RootItemDto(_url));
+        return JsonSerializer.Serialize(_dto);
     }
 }

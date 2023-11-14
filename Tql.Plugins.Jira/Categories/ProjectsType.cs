@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using Tql.Abstractions;
-using Tql.Plugins.Jira.Data;
+﻿using Tql.Abstractions;
 using Tql.Plugins.Jira.Services;
 using Tql.Plugins.Jira.Support;
 using Tql.Utilities;
@@ -8,44 +6,21 @@ using Tql.Utilities;
 namespace Tql.Plugins.Jira.Categories;
 
 [RootMatchType]
-internal class ProjectsType : IMatchType
+internal class ProjectsType : MatchType<ProjectsMatch, RootItemDto>
 {
-    private readonly ICache<JiraData> _cache;
     private readonly ConfigurationManager _configurationManager;
-    private readonly IconCacheManager _iconCacheManager;
-    private readonly ILogger<ProjectsMatch> _matchLogger;
 
-    public Guid Id => TypeIds.Projects.Id;
+    public override Guid Id => TypeIds.Projects.Id;
 
     public ProjectsType(
-        ICache<JiraData> cache,
-        ConfigurationManager configurationManager,
-        IconCacheManager iconCacheManager,
-        JiraApi api,
-        ILogger<ProjectsMatch> matchLogger
+        IMatchFactory<ProjectsMatch, RootItemDto> factory,
+        ConfigurationManager configurationManager
     )
+        : base(factory)
     {
-        _cache = cache;
         _configurationManager = configurationManager;
-        _iconCacheManager = iconCacheManager;
-        _matchLogger = matchLogger;
     }
 
-    public IMatch? Deserialize(string json)
-    {
-        var dto = JsonSerializer.Deserialize<RootItemDto>(json)!;
-        var configuration = _configurationManager.Configuration;
-
-        if (!configuration.HasConnection(dto.Url))
-            return null;
-
-        return new ProjectsMatch(
-            MatchUtils.GetMatchLabel(Labels.ProjectsType_Label, configuration, dto.Url),
-            dto.Url,
-            _cache,
-            _iconCacheManager,
-            _configurationManager,
-            _matchLogger
-        );
-    }
+    protected override bool IsValid(RootItemDto dto) =>
+        _configurationManager.Configuration.HasConnection(dto.Url);
 }

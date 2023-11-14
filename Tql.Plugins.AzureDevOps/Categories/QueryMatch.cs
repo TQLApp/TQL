@@ -10,18 +10,22 @@ internal class QueryMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, 
 {
     private readonly QueryMatchDto _dto;
     private readonly AzureDevOpsApi _api;
-    private readonly AzureWorkItemIconManager _iconManager;
+    private readonly IMatchFactory<WorkItemMatch, WorkItemMatchDto> _factory;
 
     public string Text => MatchText.Path(_dto.ProjectName, _dto.Path.Trim('\\').Replace('\\', '/'));
 
     public ImageSource Icon => Images.Boards;
     public MatchTypeId TypeId => TypeIds.Query;
 
-    public QueryMatch(QueryMatchDto dto, AzureDevOpsApi api, AzureWorkItemIconManager iconManager)
+    public QueryMatch(
+        QueryMatchDto dto,
+        AzureDevOpsApi api,
+        IMatchFactory<WorkItemMatch, WorkItemMatchDto> factory
+    )
     {
         _dto = dto;
         _api = api;
-        _iconManager = iconManager;
+        _factory = factory;
     }
 
     public Task Run(IServiceProvider serviceProvider, Window owner)
@@ -70,7 +74,7 @@ internal class QueryMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, 
         // Limit to that.
         var result = await client.QueryByIdAsync(_dto.Id, top: 200);
 
-        return await QueryUtils.GetWorkItemsByIds(client, _dto.Url, result, _iconManager);
+        return await QueryUtils.GetWorkItemsByIds(client, _dto.Url, result, _factory);
     }
 }
 

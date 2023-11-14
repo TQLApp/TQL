@@ -4,23 +4,21 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.MicrosoftTeams.Categories;
 
-internal class TeamsVideoType : IMatchType
+internal class TeamsVideoType : MatchType<TeamsVideoMatch, PersonDto>
 {
     private readonly ConfigurationManager _configurationManager;
 
-    public Guid Id => TypeIds.TeamsVideo.Id;
+    public override Guid Id => TypeIds.TeamsVideo.Id;
 
-    public TeamsVideoType(ConfigurationManager configurationManager)
+    public TeamsVideoType(
+        IMatchFactory<TeamsVideoMatch, PersonDto> factory,
+        ConfigurationManager configurationManager
+    )
+        : base(factory)
     {
         _configurationManager = configurationManager;
     }
 
-    public IMatch? Deserialize(string json)
-    {
-        var dto = JsonSerializer.Deserialize<PersonDto>(json)!;
-        if (!_configurationManager.HasDirectory(dto.DirectoryId))
-            return null;
-
-        return new TeamsVideoMatch(dto);
-    }
+    protected override bool IsValid(PersonDto dto) =>
+        _configurationManager.HasDirectory(dto.DirectoryId);
 }

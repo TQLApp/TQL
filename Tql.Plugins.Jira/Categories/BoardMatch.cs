@@ -15,9 +15,8 @@ internal class BoardMatch
         IHasSearchHint
 {
     private readonly BoardMatchDto _dto;
-    private readonly IconCacheManager _iconCacheManager;
     private readonly ICache<JiraData> _cache;
-    private readonly ConfigurationManager _configurationManager;
+    private readonly IMatchFactory<BoardQuickFilterMatch, BoardQuickFilterMatchDto> _factory;
 
     public string Text => MatchText.Path(_dto.Name, MatchUtils.GetBoardLabel(_dto));
     public ImageSource Icon { get; }
@@ -28,13 +27,12 @@ internal class BoardMatch
         BoardMatchDto dto,
         IconCacheManager iconCacheManager,
         ICache<JiraData> cache,
-        ConfigurationManager configurationManager
+        IMatchFactory<BoardQuickFilterMatch, BoardQuickFilterMatchDto> factory
     )
     {
         _dto = dto;
-        _iconCacheManager = iconCacheManager;
         _cache = cache;
-        _configurationManager = configurationManager;
+        _factory = factory;
         Icon = iconCacheManager.GetIcon(new IconKey(dto.Url, dto.AvatarUrl)) ?? Images.Boards;
     }
 
@@ -72,23 +70,12 @@ internal class BoardMatch
 
         var matches = new List<BoardQuickFilterMatch>
         {
-            new(
-                new BoardQuickFilterMatchDto(_dto, null, Labels.BoardMatch_AllIssues),
-                _iconCacheManager,
-                _cache,
-                _configurationManager
-            )
+            _factory.Create(new BoardQuickFilterMatchDto(_dto, null, Labels.BoardMatch_AllIssues))
         };
 
         matches.AddRange(
             board.QuickFilters.Select(
-                p =>
-                    new BoardQuickFilterMatch(
-                        new BoardQuickFilterMatchDto(_dto, p.Id, p.Name),
-                        _iconCacheManager,
-                        _cache,
-                        _configurationManager
-                    )
+                p => _factory.Create(new BoardQuickFilterMatchDto(_dto, p.Id, p.Name))
             )
         );
 

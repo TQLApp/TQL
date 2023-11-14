@@ -264,6 +264,7 @@ public partial class App
         builder.AddSingleton<QuickStartScript>();
 
         builder.Add(ServiceDescriptor.Singleton(typeof(ICache<>), typeof(Cache<>)));
+        builder.Add(ServiceDescriptor.Singleton(typeof(IMatchFactory<,>), typeof(MatchFactory<,>)));
 
         builder.AddTransient<MainWindow>();
         builder.AddTransient<ConfigurationWindow>();

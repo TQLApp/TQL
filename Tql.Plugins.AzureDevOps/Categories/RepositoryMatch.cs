@@ -18,15 +18,20 @@ internal class RepositoryMatch
     private const int MaxResults = 100;
 
     private readonly RepositoryMatchDto _dto;
+    private readonly IMatchFactory<RepositoryFilePathMatch, RepositoryFilePathMatchDto> _factory;
 
     public string Text => MatchText.Path(_dto.ProjectName, _dto.RepositoryName);
     public ImageSource Icon => Images.Repositories;
     public MatchTypeId TypeId => TypeIds.Repository;
     public string SearchHint => Labels.RepositoryMatch_FindFiles;
 
-    public RepositoryMatch(RepositoryMatchDto dto)
+    public RepositoryMatch(
+        RepositoryMatchDto dto,
+        IMatchFactory<RepositoryFilePathMatch, RepositoryFilePathMatchDto> factory
+    )
     {
         _dto = dto;
+        _factory = factory;
     }
 
     public async Task<IEnumerable<IMatch>> Search(
@@ -43,9 +48,7 @@ internal class RepositoryMatch
         var filePaths = await cache;
 
         return await context.FilterAsync(
-            filePaths.Select(
-                p => new RepositoryFilePathMatch(new RepositoryFilePathMatchDto(_dto, p))
-            ),
+            filePaths.Select(p => _factory.Create(new RepositoryFilePathMatchDto(_dto, p))),
             MaxResults
         );
     }

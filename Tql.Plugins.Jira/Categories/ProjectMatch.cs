@@ -13,8 +13,8 @@ internal class ProjectMatch
         IHasSearchHint
 {
     private readonly ProjectMatchDto _dto;
-    private readonly IconCacheManager _iconCacheManager;
     private readonly ConfigurationManager _configurationManager;
+    private readonly IMatchFactory<IssueMatch, IssueMatchDto> _factory;
 
     public string Text => string.Format(Labels.ProjectMatch_Label, _dto.Name);
     public ImageSource Icon { get; }
@@ -24,12 +24,13 @@ internal class ProjectMatch
     public ProjectMatch(
         ProjectMatchDto dto,
         IconCacheManager iconCacheManager,
-        ConfigurationManager configurationManager
+        ConfigurationManager configurationManager,
+        IMatchFactory<IssueMatch, IssueMatchDto> factory
     )
     {
         _dto = dto;
-        _iconCacheManager = iconCacheManager;
         _configurationManager = configurationManager;
+        _factory = factory;
 
         Icon = iconCacheManager.GetIcon(new IconKey(dto.Url, dto.AvatarUrl)) ?? Images.Projects;
     }
@@ -72,7 +73,7 @@ internal class ProjectMatch
             cancellationToken
         );
 
-        return IssueUtils.CreateMatches(_dto.Url, issues, _iconCacheManager);
+        return IssueUtils.CreateMatches(_dto.Url, issues, _factory);
     }
 }
 

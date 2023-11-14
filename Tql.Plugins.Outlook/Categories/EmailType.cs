@@ -3,12 +3,10 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.Outlook.Categories;
 
-internal class EmailType : IMatchType
+internal class EmailType : MatchType<EmailMatch, PersonDto>
 {
-    public Guid Id => TypeIds.Email.Id;
+    public override Guid Id => TypeIds.Email.Id;
 
-    public IMatch Deserialize(string json)
-    {
-        return new EmailMatch(JsonSerializer.Deserialize<PersonDto>(json)!);
-    }
+    public EmailType(IMatchFactory<EmailMatch, PersonDto> factory)
+        : base(factory) { }
 }

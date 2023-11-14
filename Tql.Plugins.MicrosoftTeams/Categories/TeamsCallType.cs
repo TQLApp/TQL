@@ -4,23 +4,21 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.MicrosoftTeams.Categories;
 
-internal class TeamsCallType : IMatchType
+internal class TeamsCallType : MatchType<TeamsCallMatch, PersonDto>
 {
     private readonly ConfigurationManager _configurationManager;
 
-    public Guid Id => TypeIds.TeamsCall.Id;
+    public override Guid Id => TypeIds.TeamsCall.Id;
 
-    public TeamsCallType(ConfigurationManager configurationManager)
+    public TeamsCallType(
+        IMatchFactory<TeamsCallMatch, PersonDto> factory,
+        ConfigurationManager configurationManager
+    )
+        : base(factory)
     {
         _configurationManager = configurationManager;
     }
 
-    public IMatch? Deserialize(string json)
-    {
-        var dto = JsonSerializer.Deserialize<PersonDto>(json)!;
-        if (!_configurationManager.HasDirectory(dto.DirectoryId))
-            return null;
-
-        return new TeamsCallMatch(dto);
-    }
+    protected override bool IsValid(PersonDto dto) =>
+        _configurationManager.HasDirectory(dto.DirectoryId);
 }

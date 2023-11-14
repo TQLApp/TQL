@@ -1,5 +1,4 @@
 ﻿using Tql.Abstractions;
-using Tql.Plugins.Jira.Data;
 using Tql.Plugins.Jira.Services;
 using Tql.Plugins.Jira.Support;
 using Tql.Utilities;
@@ -7,38 +6,21 @@ using Tql.Utilities;
 namespace Tql.Plugins.Jira.Categories;
 
 [RootMatchType]
-internal class NewsType : IMatchType
+internal class NewsType : MatchType<NewsMatch, RootItemDto>
 {
-    private readonly ICache<JiraData> _cache;
     private readonly ConfigurationManager _configurationManager;
-    private readonly IconCacheManager _iconCacheManager;
 
-    public Guid Id => TypeIds.News.Id;
+    public override Guid Id => TypeIds.News.Id;
 
     public NewsType(
-        ICache<JiraData> cache,
-        ConfigurationManager configurationManager,
-        IconCacheManager iconCacheManager
+        IMatchFactory<NewsMatch, RootItemDto> factory,
+        ConfigurationManager configurationManager
     )
+        : base(factory)
     {
-        _cache = cache;
         _configurationManager = configurationManager;
-        _iconCacheManager = iconCacheManager;
     }
 
-    public IMatch? Deserialize(string json)
-    {
-        var dto = JsonSerializer.Deserialize<RootItemDto>(json)!;
-        var configuration = _configurationManager.Configuration;
-
-        if (!configuration.HasConnection(dto.Url))
-            return null;
-
-        return new NewsMatch(
-            MatchUtils.GetMatchLabel(Labels.NewsType_Label, configuration, dto.Url),
-            dto.Url,
-            _cache,
-            _iconCacheManager
-        );
-    }
+    protected override bool IsValid(RootItemDto dto) =>
+        _configurationManager.Configuration.HasConnection(dto.Url);
 }

@@ -1,21 +1,36 @@
 using Tql.Abstractions;
+using Tql.Plugins.MicrosoftTeams.Services;
+using Tql.Plugins.MicrosoftTeams.Support;
 
 namespace Tql.Plugins.MicrosoftTeams.Categories;
 
-internal class TeamsVideosMatch : PersonMatchBase
+internal class TeamsVideosMatch : PeopleMatchBase<TeamsVideoMatch>
 {
-    public override string Text { get; }
+    private readonly RootItemDto _dto;
+    private readonly IPeopleDirectoryManager _peopleDirectoryManager;
+    private readonly ConfigurationManager _configurationManager;
+
+    public override string Text =>
+        MatchUtils.GetMatchLabel(
+            Labels.TeamsVideosType_Label,
+            _configurationManager,
+            _peopleDirectoryManager,
+            _dto.Id
+        );
+
     public override ImageSource Icon => Images.Teams;
     public override MatchTypeId TypeId => TypeIds.TeamsVideos;
 
-    public TeamsVideosMatch(string text, IPeopleDirectory peopleDirectory)
-        : base(peopleDirectory)
+    public TeamsVideosMatch(
+        RootItemDto dto,
+        IPeopleDirectoryManager peopleDirectoryManager,
+        ConfigurationManager configurationManager,
+        IMatchFactory<TeamsVideoMatch, PersonDto> factory
+    )
+        : base(dto, peopleDirectoryManager, configurationManager, factory)
     {
-        Text = text;
-    }
-
-    protected override IMatch CreateMatch(PersonDto dto)
-    {
-        return new TeamsVideoMatch(dto);
+        _dto = dto;
+        _peopleDirectoryManager = peopleDirectoryManager;
+        _configurationManager = configurationManager;
     }
 }

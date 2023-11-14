@@ -1,27 +1,17 @@
-﻿using Octokit;
-using Tql.Abstractions;
-using Tql.Plugins.GitHub.Data;
+﻿using Tql.Abstractions;
 using Tql.Plugins.GitHub.Services;
 using Tql.Plugins.GitHub.Support;
 
 namespace Tql.Plugins.GitHub.Categories;
 
 [RootMatchType(SupportsUserScope = true)]
-internal class IssuesType : IssuesTypeBase
+internal class IssuesType : IssuesTypeBase<IssuesMatch, IssueMatch>
 {
     public override Guid Id => TypeIds.Issues.Id;
 
     public IssuesType(
-        ConfigurationManager configurationManager,
-        GitHubApi api,
-        ICache<GitHubData> cache
+        IMatchFactory<IssuesMatch, RootItemDto> factory,
+        ConfigurationManager configurationManager
     )
-        : base(configurationManager, api, cache, IssueTypeQualifier.Issue) { }
-
-    protected override IssuesMatchBase CreateMatch(
-        string text,
-        RootItemDto dto,
-        GitHubApi api,
-        ICache<GitHubData> cache
-    ) => new IssuesMatch(text, dto, api, cache);
+        : base(factory, configurationManager) { }
 }

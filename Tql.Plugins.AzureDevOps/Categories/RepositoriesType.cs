@@ -1,5 +1,4 @@
 ﻿using Tql.Abstractions;
-using Tql.Plugins.AzureDevOps.Data;
 using Tql.Plugins.AzureDevOps.Services;
 using Tql.Plugins.AzureDevOps.Support;
 using Tql.Utilities;
@@ -7,31 +6,21 @@ using Tql.Utilities;
 namespace Tql.Plugins.AzureDevOps.Categories;
 
 [RootMatchType]
-internal class RepositoriesType : IMatchType
+internal class RepositoriesType : MatchType<RepositoriesMatch, RootItemDto>
 {
-    private readonly ICache<AzureData> _cache;
     private readonly ConfigurationManager _configurationManager;
 
-    public Guid Id => TypeIds.Repositories.Id;
+    public override Guid Id => TypeIds.Repositories.Id;
 
-    public RepositoriesType(ICache<AzureData> cache, ConfigurationManager configurationManager)
+    public RepositoriesType(
+        IMatchFactory<RepositoriesMatch, RootItemDto> factory,
+        ConfigurationManager configurationManager
+    )
+        : base(factory)
     {
-        _cache = cache;
         _configurationManager = configurationManager;
     }
 
-    public IMatch? Deserialize(string json)
-    {
-        var dto = JsonSerializer.Deserialize<RootItemDto>(json)!;
-        var configuration = _configurationManager.Configuration;
-
-        if (!configuration.HasConnection(dto.Url))
-            return null;
-
-        return new RepositoriesMatch(
-            MatchUtils.GetMatchLabel(Labels.RepositoriesType_Label, configuration, dto.Url),
-            dto.Url,
-            _cache
-        );
-    }
+    protected override bool IsValid(RootItemDto dto) =>
+        _configurationManager.Configuration.HasConnection(dto.Url);
 }

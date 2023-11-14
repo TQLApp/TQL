@@ -2,37 +2,40 @@
 using Microsoft.VisualStudio.Services.Search.WebApi;
 using Microsoft.VisualStudio.Services.Search.WebApi.Contracts.WorkItem;
 using Tql.Abstractions;
-using Tql.Plugins.AzureDevOps.Data;
 using Tql.Plugins.AzureDevOps.Services;
+using Tql.Plugins.AzureDevOps.Support;
 using Tql.Utilities;
 
 namespace Tql.Plugins.AzureDevOps.Categories;
 
 internal class WorkItemsMatch : ISearchableMatch, ISerializableMatch
 {
-    private readonly string _url;
-    private readonly ICache<AzureData> _cache;
+    private readonly RootItemDto _dto;
+    private readonly ConfigurationManager _configurationManager;
     private readonly AzureDevOpsApi _api;
-    private readonly AzureWorkItemIconManager _iconManager;
+    private readonly IMatchFactory<WorkItemMatch, WorkItemMatchDto> _factory;
 
-    public string Text { get; }
+    public string Text =>
+        MatchUtils.GetMatchLabel(
+            Labels.WorkItemsType_Label,
+            _configurationManager.Configuration,
+            _dto.Url
+        );
+
     public ImageSource Icon => Images.Boards;
     public MatchTypeId TypeId => TypeIds.WorkItems;
 
     public WorkItemsMatch(
-        string text,
-        string url,
-        ICache<AzureData> cache,
+        RootItemDto dto,
+        ConfigurationManager configurationManager,
         AzureDevOpsApi api,
-        AzureWorkItemIconManager iconManager
+        IMatchFactory<WorkItemMatch, WorkItemMatchDto> factory
     )
     {
-        _url = url;
-        _cache = cache;
+        _dto = dto;
+        _configurationManager = configurationManager;
         _api = api;
-        _iconManager = iconManager;
-
-        Text = text;
+        _factory = factory;
     }
 
     public async Task<IEnumerable<IMatch>> Search(
@@ -52,7 +55,7 @@ internal class WorkItemsMatch : ISearchableMatch, ISerializableMatch
 
         if (isId)
         {
-            var client = await _api.GetClient<WorkItemTrackingHttpClient>(_url);
+            var client = await _api.GetClient<WorkItemTrackingHttpClient>(_dto.Url);
 
             var workItem = await client.GetWorkItemAsync(
                 workItemId,
@@ -64,15 +67,14 @@ internal class WorkItemsMatch : ISearchableMatch, ISerializableMatch
 
             return new IMatch[]
             {
-                new WorkItemMatch(
+                _factory.Create(
                     new WorkItemMatchDto(
-                        _url,
+                        _dto.Url,
                         (string)workItem.Fields["System.TeamProject"],
                         workItem.Id!.Value,
                         (string)workItem.Fields["System.WorkItemType"],
                         (string)workItem.Fields["System.Title"]
-                    ),
-                    _iconManager
+                    )
                 )
             };
         }
@@ -83,7 +85,7 @@ internal class WorkItemsMatch : ISearchableMatch, ISerializableMatch
         if (search.Length < 3)
             return Array.Empty<IMatch>();
 
-        var searchClient = await _api.GetClient<SearchHttpClient>(_url);
+        var searchClient = await _api.GetClient<SearchHttpClient>(_dto.Url);
 
         var results = await searchClient.FetchWorkItemSearchResultsAsync(
             new WorkItemSearchRequest { SearchText = search, Top = 25 },
@@ -92,21 +94,20 @@ internal class WorkItemsMatch : ISearchableMatch, ISerializableMatch
 
         return results.Results.Select(
             p =>
-                new WorkItemMatch(
+                _factory.Create(
                     new WorkItemMatchDto(
-                        _url,
+                        _dto.Url,
                         p.Project.Name,
                         int.Parse(p.Fields["system.id"]),
                         p.Fields["system.workitemtype"],
                         p.Fields["system.title"]
-                    ),
-                    _iconManager
+                    )
                 )
         );
     }
 
     public string Serialize()
     {
-        return JsonSerializer.Serialize(new RootItemDto(_url));
+        return JsonSerializer.Serialize(_dto);
     }
 }

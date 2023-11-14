@@ -4,25 +4,21 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.Jira.Categories;
 
-internal class FilterType : IMatchType
+internal class FilterType : MatchType<FilterMatch, FilterMatchDto>
 {
     private readonly ConfigurationManager _configurationManager;
-    private readonly IconCacheManager _iconCacheManager;
 
-    public Guid Id => TypeIds.Filter.Id;
+    public override Guid Id => TypeIds.Filter.Id;
 
-    public FilterType(ConfigurationManager configurationManager, IconCacheManager iconCacheManager)
+    public FilterType(
+        IMatchFactory<FilterMatch, FilterMatchDto> factory,
+        ConfigurationManager configurationManager
+    )
+        : base(factory)
     {
         _configurationManager = configurationManager;
-        _iconCacheManager = iconCacheManager;
     }
 
-    public IMatch? Deserialize(string json)
-    {
-        var dto = JsonSerializer.Deserialize<FilterMatchDto>(json)!;
-        if (!_configurationManager.Configuration.HasConnection(dto.Url))
-            return null;
-
-        return new FilterMatch(dto, _iconCacheManager, _configurationManager);
-    }
+    protected override bool IsValid(FilterMatchDto dto) =>
+        _configurationManager.Configuration.HasConnection(dto.Url);
 }

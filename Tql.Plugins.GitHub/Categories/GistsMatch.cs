@@ -17,25 +17,35 @@ internal class GistsMatch : ISearchableMatch, ISerializableMatch
     private readonly GitHubApi _api;
     private readonly ICache<GitHubData> _cache;
     private readonly HttpClient _httpClient;
+    private readonly ConfigurationManager _configurationManager;
+    private readonly IMatchFactory<GistMatch, GistMatchDto> _factory;
 
-    public string Text { get; }
+    public string Text =>
+        MatchUtils.GetMatchLabel(
+            Labels.GistsType_Label,
+            Labels.GistsType_MyLabel,
+            _configurationManager.Configuration,
+            _dto
+        );
+
     public ImageSource Icon => Images.Gist;
     public MatchTypeId TypeId => TypeIds.Gists;
 
     public GistsMatch(
-        string text,
         RootItemDto dto,
         GitHubApi api,
         ICache<GitHubData> cache,
-        HttpClient httpClient
+        HttpClient httpClient,
+        ConfigurationManager configurationManager,
+        IMatchFactory<GistMatch, GistMatchDto> factory
     )
     {
         _dto = dto;
         _api = api;
         _cache = cache;
         _httpClient = httpClient;
-
-        Text = text;
+        _configurationManager = configurationManager;
+        _factory = factory;
     }
 
     public async Task<IEnumerable<IMatch>> Search(
@@ -90,7 +100,7 @@ internal class GistsMatch : ISearchableMatch, ISerializableMatch
             var name = Regex.Replace(containerElement.InnerText, @"\s+", "");
 
             matches.Add(
-                new GistMatch(
+                _factory.Create(
                     new GistMatchDto(
                         _dto.Id,
                         name,

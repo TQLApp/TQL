@@ -17,7 +17,7 @@ internal static class QueryUtils
         string text,
         AzureDevOpsApi api,
         AzureData cache,
-        AzureWorkItemIconManager iconManager,
+        IMatchFactory<WorkItemMatch, WorkItemMatchDto> factory,
         CancellationToken cancellationToken
     )
     {
@@ -78,14 +78,14 @@ internal static class QueryUtils
             cancellationToken: cancellationToken
         );
 
-        return await GetWorkItemsByIds(client, connectionUrl, result, iconManager);
+        return await GetWorkItemsByIds(client, connectionUrl, result, factory);
     }
 
     public static async Task<ImmutableArray<IMatch>> GetWorkItemsByIds(
         WorkItemTrackingHttpClient client,
         string connectionUrl,
         WorkItemQueryResult result,
-        AzureWorkItemIconManager iconManager
+        IMatchFactory<WorkItemMatch, WorkItemMatchDto> factory
     )
     {
         var ids = result.WorkItems.Select(p => p.Id).ToList();
@@ -103,15 +103,14 @@ internal static class QueryUtils
         return workItems
             .Select(
                 p =>
-                    new WorkItemMatch(
+                    factory.Create(
                         new WorkItemMatchDto(
                             connectionUrl,
                             (string)p.Fields["System.TeamProject"],
                             p.Id!.Value,
                             (string)p.Fields["System.WorkItemType"],
                             (string)p.Fields["System.Title"]
-                        ),
-                        iconManager
+                        )
                     )
             )
             .ToImmutableArray<IMatch>();

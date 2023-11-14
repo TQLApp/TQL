@@ -1,21 +1,36 @@
 using Tql.Abstractions;
+using Tql.Plugins.MicrosoftTeams.Services;
+using Tql.Plugins.MicrosoftTeams.Support;
 
 namespace Tql.Plugins.MicrosoftTeams.Categories;
 
-internal class TeamsChatsMatch : PersonMatchBase
+internal class TeamsChatsMatch : PeopleMatchBase<TeamsChatMatch>
 {
-    public override string Text { get; }
+    private readonly RootItemDto _dto;
+    private readonly IPeopleDirectoryManager _peopleDirectoryManager;
+    private readonly ConfigurationManager _configurationManager;
+
+    public override string Text =>
+        MatchUtils.GetMatchLabel(
+            Labels.TeamsChatsType_Label,
+            _configurationManager,
+            _peopleDirectoryManager,
+            _dto.Id
+        );
+
     public override ImageSource Icon => Images.Teams;
     public override MatchTypeId TypeId => TypeIds.TeamsChats;
 
-    public TeamsChatsMatch(string text, IPeopleDirectory peopleDirectory)
-        : base(peopleDirectory)
+    public TeamsChatsMatch(
+        RootItemDto dto,
+        IPeopleDirectoryManager peopleDirectoryManager,
+        ConfigurationManager configurationManager,
+        IMatchFactory<TeamsChatMatch, PersonDto> factory
+    )
+        : base(dto, peopleDirectoryManager, configurationManager, factory)
     {
-        Text = text;
-    }
-
-    protected override IMatch CreateMatch(PersonDto dto)
-    {
-        return new TeamsChatMatch(dto);
+        _dto = dto;
+        _peopleDirectoryManager = peopleDirectoryManager;
+        _configurationManager = configurationManager;
     }
 }

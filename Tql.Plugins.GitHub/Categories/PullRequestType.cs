@@ -4,23 +4,21 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.GitHub.Categories;
 
-internal class PullRequestType : IMatchType
+internal class PullRequestType : MatchType<IssueMatch, IssueMatchDto>
 {
     private readonly ConfigurationManager _configurationManager;
 
-    public Guid Id => TypeIds.PullRequest.Id;
+    public override Guid Id => TypeIds.PullRequest.Id;
 
-    public PullRequestType(ConfigurationManager configurationManager)
+    public PullRequestType(
+        IMatchFactory<IssueMatch, IssueMatchDto> factory,
+        ConfigurationManager configurationManager
+    )
+        : base(factory)
     {
         _configurationManager = configurationManager;
     }
 
-    public IMatch? Deserialize(string json)
-    {
-        var dto = JsonSerializer.Deserialize<IssueMatchDto>(json)!;
-        if (!_configurationManager.Configuration.HasConnection(dto.ConnectionId))
-            return null;
-
-        return new IssueMatch(dto);
-    }
+    protected override bool IsValid(IssueMatchDto dto) =>
+        _configurationManager.Configuration.HasConnection(dto.ConnectionId);
 }

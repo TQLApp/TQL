@@ -1,53 +1,52 @@
 ﻿using Tql.Abstractions;
 using Tql.Plugins.AzureDevOps.Data;
 using Tql.Plugins.AzureDevOps.Services;
+using Tql.Plugins.AzureDevOps.Support;
 using Tql.Utilities;
 
 namespace Tql.Plugins.AzureDevOps.Categories;
 
 internal class BoardsMatch : CachedMatch<AzureData>, ISerializableMatch
 {
-    private readonly string _url;
-    private readonly ICache<AzureData> _cache;
-    private readonly AzureDevOpsApi _api;
-    private readonly AzureWorkItemIconManager _iconManager;
+    private readonly RootItemDto _dto;
+    private readonly ConfigurationManager _configurationManager;
+    private readonly IMatchFactory<BoardMatch, BoardMatchDto> _factory;
 
-    public override string Text { get; }
+    public override string Text =>
+        MatchUtils.GetMatchLabel(
+            Labels.BoardsType_Label,
+            _configurationManager.Configuration,
+            _dto.Url
+        );
+
     public override ImageSource Icon => Images.Boards;
     public override MatchTypeId TypeId => TypeIds.Boards;
 
     public BoardsMatch(
-        string text,
-        string url,
+        RootItemDto dto,
         ICache<AzureData> cache,
-        AzureDevOpsApi api,
-        AzureWorkItemIconManager iconManager
+        ConfigurationManager configurationManager,
+        IMatchFactory<BoardMatch, BoardMatchDto> factory
     )
         : base(cache)
     {
-        _url = url;
-        _cache = cache;
-        _api = api;
-        _iconManager = iconManager;
-
-        Text = text;
+        _dto = dto;
+        _configurationManager = configurationManager;
+        _factory = factory;
     }
 
     protected override IEnumerable<IMatch> Create(AzureData data)
     {
-        return from project in data.GetConnection(_url).Projects
+        return from project in data.GetConnection(_dto.Url).Projects
             from team in project.Teams
             from board in project.Boards
-            select new BoardMatch(
-                new BoardMatchDto(_url, project.Name, team.Name, board.Name),
-                _cache,
-                _api,
-                _iconManager
+            select _factory.Create(
+                new BoardMatchDto(_dto.Url, project.Name, team.Name, board.Name)
             );
     }
 
     public string Serialize()
     {
-        return JsonSerializer.Serialize(new RootItemDto(_url));
+        return JsonSerializer.Serialize(_dto);
     }
 }

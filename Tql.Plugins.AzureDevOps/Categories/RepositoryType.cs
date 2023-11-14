@@ -4,23 +4,21 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.AzureDevOps.Categories;
 
-internal class RepositoryType : IMatchType
+internal class RepositoryType : MatchType<RepositoryMatch, RepositoryMatchDto>
 {
     private readonly ConfigurationManager _configurationManager;
 
-    public Guid Id => TypeIds.Repository.Id;
+    public override Guid Id => TypeIds.Repository.Id;
 
-    public RepositoryType(ConfigurationManager configurationManager)
+    public RepositoryType(
+        IMatchFactory<RepositoryMatch, RepositoryMatchDto> factory,
+        ConfigurationManager configurationManager
+    )
+        : base(factory)
     {
         _configurationManager = configurationManager;
     }
 
-    public IMatch? Deserialize(string json)
-    {
-        var dto = JsonSerializer.Deserialize<RepositoryMatchDto>(json)!;
-        if (!_configurationManager.Configuration.HasConnection(dto.Url))
-            return null;
-
-        return new RepositoryMatch(dto);
-    }
+    protected override bool IsValid(RepositoryMatchDto dto) =>
+        _configurationManager.Configuration.HasConnection(dto.Url);
 }

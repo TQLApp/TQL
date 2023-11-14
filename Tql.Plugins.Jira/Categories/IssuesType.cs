@@ -6,32 +6,21 @@ using Tql.Utilities;
 namespace Tql.Plugins.Jira.Categories;
 
 [RootMatchType]
-internal class IssuesType : IMatchType
+internal class IssuesType : MatchType<IssuesMatch, RootItemDto>
 {
     private readonly ConfigurationManager _configurationManager;
-    private readonly IconCacheManager _iconCacheManager;
 
-    public Guid Id => TypeIds.Issues.Id;
+    public override Guid Id => TypeIds.Issues.Id;
 
-    public IssuesType(ConfigurationManager configurationManager, IconCacheManager iconCacheManager)
+    public IssuesType(
+        IMatchFactory<IssuesMatch, RootItemDto> factory,
+        ConfigurationManager configurationManager
+    )
+        : base(factory)
     {
         _configurationManager = configurationManager;
-        _iconCacheManager = iconCacheManager;
     }
 
-    public IMatch? Deserialize(string json)
-    {
-        var dto = JsonSerializer.Deserialize<RootItemDto>(json)!;
-        var configuration = _configurationManager.Configuration;
-
-        if (!configuration.HasConnection(dto.Url))
-            return null;
-
-        return new IssuesMatch(
-            MatchUtils.GetMatchLabel(Labels.IssuesType_Label, configuration, dto.Url),
-            dto.Url,
-            _configurationManager,
-            _iconCacheManager
-        );
-    }
+    protected override bool IsValid(RootItemDto dto) =>
+        _configurationManager.Configuration.HasConnection(dto.Url);
 }

@@ -1,6 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using Tql.Abstractions;
 using Tql.Plugins.Jira.Services;
+using Tql.Plugins.Jira.Support;
 using Tql.Utilities;
 
 namespace Tql.Plugins.Jira.Categories;
@@ -12,26 +13,29 @@ internal class IssuesMatch : ISearchableMatch, ISerializableMatch
     private static readonly Regex KeyRe =
         new(@"^[A-Z][A-Z]+-\d+$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-    private readonly string _url;
+    private readonly RootItemDto _dto;
     private readonly ConfigurationManager _configurationManager;
-    private readonly IconCacheManager _iconCacheManager;
+    private readonly IMatchFactory<IssueMatch, IssueMatchDto> _factory;
 
-    public string Text { get; }
+    public string Text =>
+        MatchUtils.GetMatchLabel(
+            Labels.IssuesType_Label,
+            _configurationManager.Configuration,
+            _dto.Url
+        );
+
     public ImageSource Icon => Images.Issues;
     public MatchTypeId TypeId => TypeIds.Issues;
 
     public IssuesMatch(
-        string text,
-        string url,
+        RootItemDto dto,
         ConfigurationManager configurationManager,
-        IconCacheManager iconCacheManager
+        IMatchFactory<IssueMatch, IssueMatchDto> factory
     )
     {
-        _url = url;
+        _dto = dto;
         _configurationManager = configurationManager;
-        _iconCacheManager = iconCacheManager;
-
-        Text = text;
+        _factory = factory;
     }
 
     public async Task<IEnumerable<IMatch>> Search(
@@ -49,7 +53,7 @@ internal class IssuesMatch : ISearchableMatch, ISerializableMatch
 
         await context.DebounceDelay(cancellationToken);
 
-        var client = _configurationManager.GetClient(_url);
+        var client = _configurationManager.GetClient(_dto.Url);
 
         if (maybeKey)
         {
@@ -57,7 +61,7 @@ internal class IssuesMatch : ISearchableMatch, ISerializableMatch
             {
                 var issue = await client.GetIssue(text.ToUpper(), cancellationToken);
 
-                return IssueUtils.CreateMatches(_url, new[] { issue }, _iconCacheManager);
+                return IssueUtils.CreateMatches(_dto.Url, new[] { issue }, _factory);
             }
             catch
             {
@@ -71,11 +75,11 @@ internal class IssuesMatch : ISearchableMatch, ISerializableMatch
             cancellationToken
         );
 
-        return IssueUtils.CreateMatches(_url, issues, _iconCacheManager);
+        return IssueUtils.CreateMatches(_dto.Url, issues, _factory);
     }
 
     public string Serialize()
     {
-        return JsonSerializer.Serialize(new RootItemDto(_url));
+        return JsonSerializer.Serialize(_dto);
     }
 }

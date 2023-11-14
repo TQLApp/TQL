@@ -13,8 +13,8 @@ internal class FilterMatch
         IHasSearchHint
 {
     private readonly FilterMatchDto _dto;
-    private readonly IconCacheManager _iconCacheManager;
     private readonly ConfigurationManager _configurationManager;
+    private readonly IMatchFactory<IssueMatch, IssueMatchDto> _factory;
 
     public string Text => _dto.Name;
     public ImageSource Icon => Images.Filters;
@@ -23,13 +23,13 @@ internal class FilterMatch
 
     public FilterMatch(
         FilterMatchDto dto,
-        IconCacheManager iconCacheManager,
-        ConfigurationManager configurationManager
+        ConfigurationManager configurationManager,
+        IMatchFactory<IssueMatch, IssueMatchDto> factory
     )
     {
         _dto = dto;
-        _iconCacheManager = iconCacheManager;
         _configurationManager = configurationManager;
+        _factory = factory;
     }
 
     public Task Run(IServiceProvider serviceProvider, Window owner)
@@ -66,7 +66,7 @@ internal class FilterMatch
 
         var issues = await client.SearchIssues(_dto.Jql, 100, cancellationToken);
 
-        return IssueUtils.CreateMatches(_dto.Url, issues, _iconCacheManager);
+        return IssueUtils.CreateMatches(_dto.Url, issues, _factory);
     }
 }
 

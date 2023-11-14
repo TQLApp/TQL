@@ -4,25 +4,21 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.GitHub.Categories;
 
-internal class RepositoryType : IMatchType
+internal class RepositoryType : MatchType<RepositoryMatch, RepositoryMatchDto>
 {
-    private readonly GitHubApi _api;
     private readonly ConfigurationManager _configurationManager;
 
-    public Guid Id => TypeIds.Repository.Id;
+    public override Guid Id => TypeIds.Repository.Id;
 
-    public RepositoryType(GitHubApi api, ConfigurationManager configurationManager)
+    public RepositoryType(
+        IMatchFactory<RepositoryMatch, RepositoryMatchDto> factory,
+        ConfigurationManager configurationManager
+    )
+        : base(factory)
     {
-        _api = api;
         _configurationManager = configurationManager;
     }
 
-    public IMatch? Deserialize(string json)
-    {
-        var dto = JsonSerializer.Deserialize<RepositoryMatchDto>(json)!;
-        if (!_configurationManager.Configuration.HasConnection(dto.ConnectionId))
-            return null;
-
-        return new RepositoryMatch(dto, _api);
-    }
+    protected override bool IsValid(RepositoryMatchDto dto) =>
+        _configurationManager.Configuration.HasConnection(dto.ConnectionId);
 }

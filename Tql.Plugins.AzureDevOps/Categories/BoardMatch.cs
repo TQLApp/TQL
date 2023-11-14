@@ -16,7 +16,7 @@ internal class BoardMatch
     private readonly BoardMatchDto _dto;
     private readonly ICache<AzureData> _cache;
     private readonly AzureDevOpsApi _api;
-    private readonly AzureWorkItemIconManager _iconManager;
+    private readonly IMatchFactory<WorkItemMatch, WorkItemMatchDto> _factory;
 
     public string Text =>
         MatchText.Path(
@@ -33,13 +33,13 @@ internal class BoardMatch
         BoardMatchDto dto,
         ICache<AzureData> cache,
         AzureDevOpsApi api,
-        AzureWorkItemIconManager iconManager
+        IMatchFactory<WorkItemMatch, WorkItemMatchDto> factory
     )
     {
         _dto = dto;
         _cache = cache;
         _api = api;
-        _iconManager = iconManager;
+        _factory = factory;
     }
 
     public Task Run(IServiceProvider serviceProvider, Window owner)
@@ -75,7 +75,7 @@ internal class BoardMatch
             text,
             _api,
             await _cache.Get(),
-            _iconManager,
+            _factory,
             cancellationToken
         );
     }

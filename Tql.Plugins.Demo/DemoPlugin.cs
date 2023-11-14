@@ -13,7 +13,7 @@ public class DemoPlugin : ITqlPlugin
 
     private readonly MatchTypeManagerBuilder _matchTypeManagerBuilder;
     private MatchTypeManager? _matchTypeManager;
-    private IServiceProvider? _serviceProvider;
+    private IMatchFactory<DemoesMatch, DemoesMatchDto>? _factory;
 
     Guid ITqlPlugin.Id => Id;
     public string Title => Labels.DemoPlugin_Label;
@@ -30,18 +30,17 @@ public class DemoPlugin : ITqlPlugin
 
     public void Initialize(IServiceProvider serviceProvider)
     {
-        _serviceProvider = serviceProvider;
-
         serviceProvider
             .GetRequiredService<IPeopleDirectoryManager>()
             .Add(new DemoPeopleDirectory());
 
         _matchTypeManager = _matchTypeManagerBuilder.Build(serviceProvider);
+        _factory = serviceProvider.GetRequiredService<IMatchFactory<DemoesMatch, DemoesMatchDto>>();
     }
 
     public IEnumerable<IMatch> GetMatches()
     {
-        yield return new DemoesMatch();
+        yield return _factory!.Create(new DemoesMatchDto());
     }
 
     public IMatch? DeserializeMatch(Guid typeId, string json)

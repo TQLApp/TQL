@@ -7,31 +7,46 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.GitHub.Categories;
 
-internal abstract class IssuesMatchBase : ISearchableMatch, ISerializableMatch
+internal abstract class IssuesMatchBase<T> : ISearchableMatch, ISerializableMatch
+    where T : IssueMatchBase
 {
     private readonly RootItemDto _dto;
     private readonly GitHubApi _api;
     private readonly IssueTypeQualifier _type;
+    private readonly ConfigurationManager _configurationManager;
+    private readonly IMatchFactory<T, IssueMatchDto> _factory;
     private readonly ICache<GitHubData> _cache;
 
-    public string Text { get; }
+    public string Text =>
+        MatchUtils.GetMatchLabel(
+            _type == IssueTypeQualifier.Issue
+                ? Labels.IssuesTypeBase_IssueLabel
+                : Labels.IssuesTypeBase_PullRequestLabel,
+            _type == IssueTypeQualifier.Issue
+                ? Labels.IssuesTypeBase_MyIssueLabel
+                : Labels.IssuesTypeBase_MyPullRequestLabel,
+            _configurationManager.Configuration,
+            _dto
+        );
+
     public ImageSource Icon => Images.Issue;
     public abstract MatchTypeId TypeId { get; }
 
     protected IssuesMatchBase(
-        string text,
         RootItemDto dto,
         GitHubApi api,
         ICache<GitHubData> cache,
-        IssueTypeQualifier type
+        IssueTypeQualifier type,
+        ConfigurationManager configurationManager,
+        IMatchFactory<T, IssueMatchDto> factory
     )
     {
         _dto = dto;
         _api = api;
         _type = type;
+        _configurationManager = configurationManager;
+        _factory = factory;
         _cache = cache;
-
-        Text = text;
     }
 
     public async Task<IEnumerable<IMatch>> Search(
@@ -66,7 +81,7 @@ internal abstract class IssuesMatchBase : ISearchableMatch, ISerializableMatch
 
         return response.Items.Select(
             p =>
-                CreateIssue(
+                _factory.Create(
                     new IssueMatchDto(
                         _dto.Id,
                         GitHubUtils.GetRepositoryName(p.HtmlUrl),
@@ -83,6 +98,4 @@ internal abstract class IssuesMatchBase : ISearchableMatch, ISerializableMatch
     {
         return JsonSerializer.Serialize(_dto);
     }
-
-    protected abstract IssueMatchBase CreateIssue(IssueMatchDto dto);
 }

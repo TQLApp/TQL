@@ -1,21 +1,35 @@
 ﻿using Tql.Abstractions;
+using Tql.Plugins.MicrosoftTeams.Services;
+using Tql.Plugins.MicrosoftTeams.Support;
 using Tql.Utilities;
 
 namespace Tql.Plugins.MicrosoftTeams.Categories;
 
-internal abstract class PersonMatchBase : ISearchableMatch, ISerializableMatch
+internal abstract class PeopleMatchBase<T> : ISearchableMatch, ISerializableMatch
+    where T : IMatch
 {
     private const int MaxResults = 100;
 
     private readonly IPeopleDirectory _peopleDirectory;
+    private readonly IMatchFactory<T, PersonDto> _factory;
 
     public abstract string Text { get; }
     public abstract ImageSource Icon { get; }
     public abstract MatchTypeId TypeId { get; }
 
-    protected PersonMatchBase(IPeopleDirectory peopleDirectory)
+    protected PeopleMatchBase(
+        RootItemDto dto,
+        IPeopleDirectoryManager peopleDirectoryManager,
+        ConfigurationManager configurationManager,
+        IMatchFactory<T, PersonDto> factory
+    )
     {
-        _peopleDirectory = peopleDirectory;
+        _peopleDirectory = MatchUtils.GetDirectory(
+            configurationManager,
+            peopleDirectoryManager,
+            dto.Id
+        )!;
+        _factory = factory;
     }
 
     public async Task<IEnumerable<IMatch>> Search(
@@ -37,14 +51,17 @@ internal abstract class PersonMatchBase : ISearchableMatch, ISerializableMatch
 
         var allPeople = await _peopleDirectory.Find("", cancellationToken);
         if (allPeople.Length > 0)
-            return await context.FilterAsync(GetDtos(allPeople).Select(CreateMatch), MaxResults);
+            return await context.FilterAsync(
+                GetDtos(allPeople).Select(p => (IMatch)_factory.Create(p)),
+                MaxResults
+            );
 
         var people = await _peopleDirectory.Find(text, cancellationToken);
 
         return GetDtos(people)
             .OrderBy(p => p.DisplayName, StringComparer.CurrentCultureIgnoreCase)
             .Take(MaxResults)
-            .Select(CreateMatch);
+            .Select(p => (IMatch)_factory.Create(p));
     }
 
     private IEnumerable<PersonDto> GetDtos(ImmutableArray<IPerson> people)
@@ -64,8 +81,6 @@ internal abstract class PersonMatchBase : ISearchableMatch, ISerializableMatch
             return new PersonDto(_peopleDirectory.Id, displayName, p.EmailAddress);
         });
     }
-
-    protected abstract IMatch CreateMatch(PersonDto dto);
 
     public string Serialize()
     {

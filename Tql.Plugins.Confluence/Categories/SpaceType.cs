@@ -4,25 +4,21 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.Confluence.Categories;
 
-internal class SpaceType : IMatchType
+internal class SpaceType : MatchType<SpaceMatch, SpaceMatchDto>
 {
-    private readonly IconCacheManager _iconCacheManager;
     private readonly ConfigurationManager _configurationManager;
 
-    public Guid Id => TypeIds.Space.Id;
+    public override Guid Id => TypeIds.Space.Id;
 
-    public SpaceType(IconCacheManager iconCacheManager, ConfigurationManager configurationManager)
+    public SpaceType(
+        IMatchFactory<SpaceMatch, SpaceMatchDto> factory,
+        ConfigurationManager configurationManager
+    )
+        : base(factory)
     {
-        _iconCacheManager = iconCacheManager;
         _configurationManager = configurationManager;
     }
 
-    public IMatch? Deserialize(string json)
-    {
-        var dto = JsonSerializer.Deserialize<SpaceMatchDto>(json)!;
-        if (!_configurationManager.Configuration.HasConnection(dto.Url))
-            return null;
-
-        return new SpaceMatch(dto, _iconCacheManager, _configurationManager);
-    }
+    protected override bool IsValid(SpaceMatchDto dto) =>
+        _configurationManager.Configuration.HasConnection(dto.Url);
 }

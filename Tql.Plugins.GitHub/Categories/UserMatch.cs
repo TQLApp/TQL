@@ -15,16 +15,22 @@ internal class UserMatch
 {
     private readonly UserMatchDto _dto;
     private readonly GitHubApi _api;
+    private readonly IMatchFactory<RepositoryMatch, RepositoryMatchDto> _factory;
 
     public string Text => _dto.Login;
     public ImageSource Icon => Images.User;
     public MatchTypeId TypeId => TypeIds.User;
     public string SearchHint => Labels.UserMatch_SearchHint;
 
-    public UserMatch(UserMatchDto dto, GitHubApi api)
+    public UserMatch(
+        UserMatchDto dto,
+        GitHubApi api,
+        IMatchFactory<RepositoryMatch, RepositoryMatchDto> factory
+    )
     {
         _dto = dto;
         _api = api;
+        _factory = factory;
     }
 
     public Task Run(IServiceProvider serviceProvider, Window owner)
@@ -66,11 +72,7 @@ internal class UserMatch
         cancellationToken.ThrowIfCancellationRequested();
 
         return response.Items.Select(
-            p =>
-                new RepositoryMatch(
-                    new RepositoryMatchDto(_dto.ConnectionId, p.FullName, p.HtmlUrl),
-                    _api
-                )
+            p => _factory.Create(new RepositoryMatchDto(_dto.ConnectionId, p.FullName, p.HtmlUrl))
         );
     }
 }

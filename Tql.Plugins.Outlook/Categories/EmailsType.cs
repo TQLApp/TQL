@@ -1,24 +1,14 @@
 ﻿using Tql.Abstractions;
-using Tql.Plugins.Outlook.Services;
 using Tql.Plugins.Outlook.Support;
 using Tql.Utilities;
 
 namespace Tql.Plugins.Outlook.Categories;
 
 [RootMatchType]
-internal class EmailsType : IMatchType
+internal class EmailsType : MatchType<EmailsMatch, RootItemDto>
 {
-    private readonly OutlookPeopleDirectory _outlookPeopleDirectory;
+    public override Guid Id => TypeIds.Emails.Id;
 
-    public Guid Id => TypeIds.Emails.Id;
-
-    public EmailsType(OutlookPeopleDirectory outlookPeopleDirectory)
-    {
-        _outlookPeopleDirectory = outlookPeopleDirectory;
-    }
-
-    public IMatch? Deserialize(string json)
-    {
-        return new EmailsMatch(_outlookPeopleDirectory);
-    }
+    public EmailsType(IMatchFactory<EmailsMatch, RootItemDto> factory)
+        : base(factory) { }
 }

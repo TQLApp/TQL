@@ -16,6 +16,7 @@ internal class RepositoryMatch
 {
     private readonly RepositoryMatchDto _dto;
     private readonly GitHubApi _api;
+    private readonly IMatchFactory<IssueMatch, IssueMatchDto> _factory;
 
     public string Text => _dto.Name;
     public ImageSource Icon => Images.Repository;
@@ -23,10 +24,15 @@ internal class RepositoryMatch
 
     public string SearchHint => Labels.RepositoryMatch_SearchHint;
 
-    public RepositoryMatch(RepositoryMatchDto dto, GitHubApi api)
+    public RepositoryMatch(
+        RepositoryMatchDto dto,
+        GitHubApi api,
+        IMatchFactory<IssueMatch, IssueMatchDto> factory
+    )
     {
         _dto = dto;
         _api = api;
+        _factory = factory;
     }
 
     public Task Run(IServiceProvider serviceProvider, Window owner)
@@ -76,7 +82,7 @@ internal class RepositoryMatch
 
         return response.Items.Select(
             p =>
-                new IssueMatch(
+                _factory.Create(
                     new IssueMatchDto(
                         _dto.ConnectionId,
                         GitHubUtils.GetRepositoryName(p.HtmlUrl),

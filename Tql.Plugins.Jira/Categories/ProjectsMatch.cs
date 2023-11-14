@@ -1,54 +1,52 @@
-﻿using Microsoft.Extensions.Logging;
-using Tql.Abstractions;
+﻿using Tql.Abstractions;
 using Tql.Plugins.Jira.Data;
 using Tql.Plugins.Jira.Services;
+using Tql.Plugins.Jira.Support;
 using Tql.Utilities;
 
 namespace Tql.Plugins.Jira.Categories;
 
 internal class ProjectsMatch : CachedMatch<JiraData>, ISerializableMatch
 {
-    private readonly string _url;
-    private readonly IconCacheManager _iconCacheManager;
+    private readonly RootItemDto _dto;
     private readonly ConfigurationManager _configurationManager;
-    private readonly ILogger<ProjectsMatch> _logger;
+    private readonly IMatchFactory<ProjectMatch, ProjectMatchDto> _factory;
 
-    public override string Text { get; }
+    public override string Text =>
+        MatchUtils.GetMatchLabel(
+            Labels.ProjectsType_Label,
+            _configurationManager.Configuration,
+            _dto.Url
+        );
+
     public override ImageSource Icon => Images.Projects;
     public override MatchTypeId TypeId => TypeIds.Projects;
 
     public ProjectsMatch(
-        string text,
-        string url,
+        RootItemDto dto,
         ICache<JiraData> cache,
-        IconCacheManager iconCacheManager,
         ConfigurationManager configurationManager,
-        ILogger<ProjectsMatch> logger
+        IMatchFactory<ProjectMatch, ProjectMatchDto> factory
     )
         : base(cache)
     {
-        _url = url;
-        _iconCacheManager = iconCacheManager;
+        _dto = dto;
         _configurationManager = configurationManager;
-        _logger = logger;
-
-        Text = text;
+        _factory = factory;
     }
 
     protected override IEnumerable<IMatch> Create(JiraData data)
     {
-        var projects = data.GetConnection(_url).Projects;
+        var projects = data.GetConnection(_dto.Url).Projects;
 
         return from project in projects
-            select new ProjectMatch(
-                new ProjectMatchDto(_url, project.Key, project.Name, project.AvatarUrl),
-                _iconCacheManager,
-                _configurationManager
+            select _factory.Create(
+                new ProjectMatchDto(_dto.Url, project.Key, project.Name, project.AvatarUrl)
             );
     }
 
     public string Serialize()
     {
-        return JsonSerializer.Serialize(new RootItemDto(_url));
+        return JsonSerializer.Serialize(_dto);
     }
 }

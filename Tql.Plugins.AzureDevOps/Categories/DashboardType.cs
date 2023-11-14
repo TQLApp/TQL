@@ -4,23 +4,21 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.AzureDevOps.Categories;
 
-internal class DashboardType : IMatchType
+internal class DashboardType : MatchType<DashboardMatch, DashboardMatchDto>
 {
     private readonly ConfigurationManager _configurationManager;
 
-    public Guid Id => TypeIds.Dashboard.Id;
+    public override Guid Id => TypeIds.Dashboard.Id;
 
-    public DashboardType(ConfigurationManager configurationManager)
+    public DashboardType(
+        IMatchFactory<DashboardMatch, DashboardMatchDto> factory,
+        ConfigurationManager configurationManager
+    )
+        : base(factory)
     {
         _configurationManager = configurationManager;
     }
 
-    public IMatch? Deserialize(string json)
-    {
-        var dto = JsonSerializer.Deserialize<DashboardMatchDto>(json)!;
-        if (!_configurationManager.Configuration.HasConnection(dto.Url))
-            return null;
-
-        return new DashboardMatch(dto);
-    }
+    protected override bool IsValid(DashboardMatchDto dto) =>
+        _configurationManager.Configuration.HasConnection(dto.Url);
 }

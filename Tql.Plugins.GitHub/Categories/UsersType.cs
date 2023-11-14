@@ -6,31 +6,21 @@ using Tql.Utilities;
 namespace Tql.Plugins.GitHub.Categories;
 
 [RootMatchType]
-internal class UsersType : IMatchType
+internal class UsersType : MatchType<UsersMatch, RootItemDto>
 {
     private readonly ConfigurationManager _configurationManager;
-    private readonly GitHubApi _api;
 
-    public Guid Id => TypeIds.Users.Id;
+    public override Guid Id => TypeIds.Users.Id;
 
-    public UsersType(ConfigurationManager configurationManager, GitHubApi api)
+    public UsersType(
+        IMatchFactory<UsersMatch, RootItemDto> factory,
+        ConfigurationManager configurationManager
+    )
+        : base(factory)
     {
         _configurationManager = configurationManager;
-        _api = api;
     }
 
-    public IMatch? Deserialize(string json)
-    {
-        var dto = JsonSerializer.Deserialize<RootItemDto>(json)!;
-        var configuration = _configurationManager.Configuration;
-
-        if (!configuration.HasConnection(dto.Id))
-            return null;
-
-        return new UsersMatch(
-            MatchUtils.GetMatchLabel(Labels.UsersType_Label, configuration, dto),
-            dto,
-            _api
-        );
-    }
+    protected override bool IsValid(RootItemDto dto) =>
+        _configurationManager.Configuration.HasConnection(dto.Id);
 }

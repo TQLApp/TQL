@@ -4,23 +4,21 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.MicrosoftTeams.Categories;
 
-internal class TeamsChatType : IMatchType
+internal class TeamsChatType : MatchType<TeamsChatMatch, PersonDto>
 {
     private readonly ConfigurationManager _configurationManager;
 
-    public Guid Id => TypeIds.TeamsChat.Id;
+    public override Guid Id => TypeIds.TeamsChat.Id;
 
-    public TeamsChatType(ConfigurationManager configurationManager)
+    public TeamsChatType(
+        IMatchFactory<TeamsChatMatch, PersonDto> factory,
+        ConfigurationManager configurationManager
+    )
+        : base(factory)
     {
         _configurationManager = configurationManager;
     }
 
-    public IMatch? Deserialize(string json)
-    {
-        var dto = JsonSerializer.Deserialize<PersonDto>(json)!;
-        if (!_configurationManager.HasDirectory(dto.DirectoryId))
-            return null;
-
-        return new TeamsChatMatch(dto);
-    }
+    protected override bool IsValid(PersonDto dto) =>
+        _configurationManager.HasDirectory(dto.DirectoryId);
 }

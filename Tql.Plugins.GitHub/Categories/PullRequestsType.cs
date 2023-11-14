@@ -1,27 +1,17 @@
-﻿using Octokit;
-using Tql.Abstractions;
-using Tql.Plugins.GitHub.Data;
+﻿using Tql.Abstractions;
 using Tql.Plugins.GitHub.Services;
 using Tql.Plugins.GitHub.Support;
 
 namespace Tql.Plugins.GitHub.Categories;
 
 [RootMatchType(SupportsUserScope = true)]
-internal class PullRequestsType : IssuesTypeBase
+internal class PullRequestsType : IssuesTypeBase<PullRequestsMatch, PullRequestMatch>
 {
     public override Guid Id => TypeIds.PullRequests.Id;
 
     public PullRequestsType(
-        ConfigurationManager configurationManager,
-        GitHubApi api,
-        ICache<GitHubData> cache
+        IMatchFactory<PullRequestsMatch, RootItemDto> factory,
+        ConfigurationManager configurationManager
     )
-        : base(configurationManager, api, cache, IssueTypeQualifier.PullRequest) { }
-
-    protected override IssuesMatchBase CreateMatch(
-        string text,
-        RootItemDto dto,
-        GitHubApi api,
-        ICache<GitHubData> cache
-    ) => new PullRequestsMatch(text, dto, api, cache);
+        : base(factory, configurationManager) { }
 }

@@ -6,29 +6,21 @@ using Tql.Utilities;
 namespace Tql.Plugins.Confluence.Categories;
 
 [RootMatchType]
-internal class SearchesType : IMatchType
+internal class SearchesType : MatchType<SearchesMatch, RootItemDto>
 {
     private readonly ConfigurationManager _configurationManager;
 
-    public Guid Id => TypeIds.Searches.Id;
+    public override Guid Id => TypeIds.Searches.Id;
 
-    public SearchesType(ConfigurationManager configurationManager)
+    public SearchesType(
+        IMatchFactory<SearchesMatch, RootItemDto> factory,
+        ConfigurationManager configurationManager
+    )
+        : base(factory)
     {
         _configurationManager = configurationManager;
     }
 
-    public IMatch? Deserialize(string json)
-    {
-        var dto = JsonSerializer.Deserialize<RootItemDto>(json)!;
-        var configuration = _configurationManager.Configuration;
-
-        if (!configuration.HasConnection(dto.Url))
-            return null;
-
-        return new SearchesMatch(
-            MatchUtils.GetMatchLabel(Labels.SearchesType_Label, configuration, dto.Url),
-            dto.Url,
-            _configurationManager
-        );
-    }
+    protected override bool IsValid(RootItemDto dto) =>
+        _configurationManager.Configuration.HasConnection(dto.Url);
 }

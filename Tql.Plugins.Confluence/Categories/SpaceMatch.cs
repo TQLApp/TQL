@@ -14,6 +14,7 @@ internal class SpaceMatch
 {
     private readonly SpaceMatchDto _dto;
     private readonly ConfigurationManager _configurationManager;
+    private readonly IMatchFactory<SearchMatch, SearchMatchDto> _factory;
 
     public string Text => string.Format(Labels.SpaceMatch_Label, _dto.Name);
     public ImageSource Icon { get; }
@@ -23,11 +24,13 @@ internal class SpaceMatch
     public SpaceMatch(
         SpaceMatchDto dto,
         IconCacheManager iconCacheManager,
-        ConfigurationManager configurationManager
+        ConfigurationManager configurationManager,
+        IMatchFactory<SearchMatch, SearchMatchDto> factory
     )
     {
         _dto = dto;
         _configurationManager = configurationManager;
+        _factory = factory;
 
         Icon = iconCacheManager.GetIcon(new IconKey(dto.Url, dto.Icon)) ?? Images.Confluence;
     }
@@ -69,7 +72,8 @@ internal class SpaceMatch
 
         return SearchUtils.CreateMatches(
             _dto.Url,
-            await client.SiteSearch(cql, 25, cancellationToken)
+            await client.SiteSearch(cql, 25, cancellationToken),
+            _factory
         );
     }
 }

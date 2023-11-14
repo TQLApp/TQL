@@ -3,7 +3,6 @@ using System.Windows.Forms;
 using Tql.Abstractions;
 using Tql.App.Services;
 using Tql.App.Support;
-using Tql.App.Themes;
 using Tql.Utilities;
 
 namespace Tql.App.ConfigurationUI;

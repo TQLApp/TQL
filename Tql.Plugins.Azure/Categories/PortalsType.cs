@@ -6,31 +6,21 @@ using Tql.Utilities;
 namespace Tql.Plugins.Azure.Categories;
 
 [RootMatchType]
-internal class PortalsType : IMatchType
+internal class PortalsType : MatchType<PortalsMatch, RootItemDto>
 {
     private readonly ConfigurationManager _configurationManager;
-    private readonly AzureApi _api;
 
-    public Guid Id => TypeIds.Portals.Id;
+    public override Guid Id => TypeIds.Portals.Id;
 
-    public PortalsType(ConfigurationManager configurationManager, AzureApi api)
+    public PortalsType(
+        IMatchFactory<PortalsMatch, RootItemDto> factory,
+        ConfigurationManager configurationManager
+    )
+        : base(factory)
     {
         _configurationManager = configurationManager;
-        _api = api;
     }
 
-    public IMatch? Deserialize(string json)
-    {
-        var dto = JsonSerializer.Deserialize<RootItemDto>(json)!;
-        var configuration = _configurationManager.Configuration;
-
-        if (!configuration.HasConnection(dto.Id))
-            return null;
-
-        return new PortalsMatch(
-            MatchUtils.GetMatchLabel(Labels.PortalsType_Label, configuration, dto.Id),
-            dto.Id,
-            _api
-        );
-    }
+    protected override bool IsValid(RootItemDto dto) =>
+        _configurationManager.Configuration.HasConnection(dto.Id);
 }

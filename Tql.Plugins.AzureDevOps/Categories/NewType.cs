@@ -4,25 +4,21 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.AzureDevOps.Categories;
 
-internal class NewType : IMatchType
+internal class NewType : MatchType<NewMatch, NewMatchDto>
 {
-    private readonly AzureWorkItemIconManager _iconManager;
     private readonly ConfigurationManager _configurationManager;
 
-    public Guid Id => TypeIds.New.Id;
+    public override Guid Id => TypeIds.New.Id;
 
-    public NewType(AzureWorkItemIconManager iconManager, ConfigurationManager configurationManager)
+    public NewType(
+        IMatchFactory<NewMatch, NewMatchDto> factory,
+        ConfigurationManager configurationManager
+    )
+        : base(factory)
     {
-        _iconManager = iconManager;
         _configurationManager = configurationManager;
     }
 
-    public IMatch? Deserialize(string json)
-    {
-        var dto = JsonSerializer.Deserialize<NewMatchDto>(json)!;
-        if (!_configurationManager.Configuration.HasConnection(dto.Url))
-            return null;
-
-        return new NewMatch(dto, _iconManager);
-    }
+    protected override bool IsValid(NewMatchDto dto) =>
+        _configurationManager.Configuration.HasConnection(dto.Url);
 }

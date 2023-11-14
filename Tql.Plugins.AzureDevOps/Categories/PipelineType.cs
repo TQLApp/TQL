@@ -4,23 +4,21 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.AzureDevOps.Categories;
 
-internal class PipelineType : IMatchType
+internal class PipelineType : MatchType<PipelineMatch, PipelineMatchDto>
 {
     private readonly ConfigurationManager _configurationManager;
 
-    public Guid Id => TypeIds.Pipeline.Id;
+    public override Guid Id => TypeIds.Pipeline.Id;
 
-    public PipelineType(ConfigurationManager configurationManager)
+    public PipelineType(
+        IMatchFactory<PipelineMatch, PipelineMatchDto> factory,
+        ConfigurationManager configurationManager
+    )
+        : base(factory)
     {
         _configurationManager = configurationManager;
     }
 
-    public IMatch? Deserialize(string json)
-    {
-        var dto = JsonSerializer.Deserialize<PipelineMatchDto>(json)!;
-        if (!_configurationManager.Configuration.HasConnection(dto.Url))
-            return null;
-
-        return new PipelineMatch(dto);
-    }
+    protected override bool IsValid(PipelineMatchDto dto) =>
+        _configurationManager.Configuration.HasConnection(dto.Url);
 }

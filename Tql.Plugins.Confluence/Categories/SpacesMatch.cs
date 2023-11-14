@@ -1,52 +1,54 @@
 ﻿using Tql.Abstractions;
 using Tql.Plugins.Confluence.Data;
 using Tql.Plugins.Confluence.Services;
+using Tql.Plugins.Confluence.Support;
 using Tql.Utilities;
 
 namespace Tql.Plugins.Confluence.Categories;
 
 internal class SpacesMatch : CachedMatch<ConfluenceData>, ISerializableMatch
 {
-    private readonly string _url;
-    private readonly IconCacheManager _iconCacheManager;
+    private readonly RootItemDto _dto;
     private readonly ConfigurationManager _configurationManager;
+    private readonly IMatchFactory<SpaceMatch, SpaceMatchDto> _factory;
 
-    public override string Text { get; }
+    public override string Text =>
+        MatchUtils.GetMatchLabel(
+            Labels.SpacesType_Label,
+            _configurationManager.Configuration,
+            _dto.Url
+        );
+
     public override ImageSource Icon => Images.Confluence;
     public override MatchTypeId TypeId => TypeIds.Spaces;
 
     public SpacesMatch(
-        string text,
-        string url,
+        RootItemDto dto,
         ICache<ConfluenceData> cache,
-        IconCacheManager iconCacheManager,
-        ConfigurationManager configurationManager
+        ConfigurationManager configurationManager,
+        IMatchFactory<SpaceMatch, SpaceMatchDto> factory
     )
         : base(cache)
     {
-        _url = url;
-        _iconCacheManager = iconCacheManager;
+        _dto = dto;
         _configurationManager = configurationManager;
-
-        Text = text;
+        _factory = factory;
     }
 
     protected override IEnumerable<IMatch> Create(ConfluenceData data)
     {
         // Download the project avatars in the background.
 
-        var spaces = data.GetConnection(_url).Spaces;
+        var spaces = data.GetConnection(_dto.Url).Spaces;
 
         return from space in spaces
-            select new SpaceMatch(
-                new SpaceMatchDto(_url, space.Key, space.Name, space.Url, space.Icon),
-                _iconCacheManager,
-                _configurationManager
+            select _factory.Create(
+                new SpaceMatchDto(_dto.Url, space.Key, space.Name, space.Url, space.Icon)
             );
     }
 
     public string Serialize()
     {
-        return JsonSerializer.Serialize(new RootItemDto(_url));
+        return JsonSerializer.Serialize(_dto);
     }
 }

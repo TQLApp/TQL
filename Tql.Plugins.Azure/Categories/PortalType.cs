@@ -4,23 +4,21 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.Azure.Categories;
 
-internal class PortalType : IMatchType
+internal class PortalType : MatchType<PortalMatch, PortalMatchDto>
 {
     private readonly ConfigurationManager _configurationManager;
 
-    public Guid Id => TypeIds.Portal.Id;
+    public override Guid Id => TypeIds.Portal.Id;
 
-    public PortalType(ConfigurationManager configurationManager)
+    public PortalType(
+        IMatchFactory<PortalMatch, PortalMatchDto> factory,
+        ConfigurationManager configurationManager
+    )
+        : base(factory)
     {
         _configurationManager = configurationManager;
     }
 
-    public IMatch? Deserialize(string json)
-    {
-        var dto = JsonSerializer.Deserialize<PortalMatchDto>(json)!;
-        if (!_configurationManager.Configuration.HasConnection(dto.ConnectionId))
-            return null;
-
-        return new PortalMatch(dto);
-    }
+    protected override bool IsValid(PortalMatchDto dto) =>
+        _configurationManager.Configuration.HasConnection(dto.ConnectionId);
 }
