@@ -83,14 +83,6 @@ internal class NuGetClientFixture
             )
         );
 
-#if false
-        // Clear the HTTP cache.
-
-        var httpCacheDirectory = NuGetEnvironment.GetFolderPath(NuGetFolderPath.HttpCacheDirectory);
-
-        Directory.Delete(httpCacheDirectory, true);
-#endif
-
         return new NuGetClient(configuration, new NuGetLogger());
     }
 }

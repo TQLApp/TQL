@@ -8,32 +8,11 @@ internal record PackageManagerConfiguration(ImmutableArray<PackageManagerSource>
 
     private static PackageManagerConfiguration CreateDefault()
     {
-        var sources = ImmutableArray.CreateBuilder<PackageManagerSource>();
-
-        sources.Add(new PackageManagerSource("https://api.nuget.org/v3/index.json", null, null));
-
-        var betaArtifactFeedUserName = Environment.GetEnvironmentVariable(
-            "AzureDevOpsArtifactsUserName"
+        return new PackageManagerConfiguration(
+            ImmutableArray.Create(
+                new PackageManagerSource("https://api.nuget.org/v3/index.json", null, null)
+            )
         );
-        var betaArtifactFeedPatToken = Environment.GetEnvironmentVariable(
-            "AzureDevOpsArtifactsPatToken"
-        );
-
-        if (
-            !string.IsNullOrEmpty(betaArtifactFeedUserName)
-            && !string.IsNullOrEmpty(betaArtifactFeedPatToken)
-        )
-        {
-            sources.Add(
-                new PackageManagerSource(
-                    "https://pvginkel.pkgs.visualstudio.com/Launcher/_packaging/TQLPlugins/nuget/v3/index.json",
-                    betaArtifactFeedUserName,
-                    Encryption.Protect(betaArtifactFeedPatToken)
-                )
-            );
-        }
-
-        return new PackageManagerConfiguration(sources.ToImmutable());
     }
 
     public static PackageManagerConfiguration FromJson(string? json)

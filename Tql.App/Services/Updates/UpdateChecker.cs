@@ -154,14 +154,6 @@ internal class UpdateChecker : IDisposable
         request.Headers.UserAgent.Add(
             new ProductInfoHeaderValue("TQL", GetAppVersion().ToString())
         );
-
-#if DEBUG
-        // TODO: Remove in the final version. This is only for testing
-        // while the repo is private.
-        var patToken = Environment.GetEnvironmentVariable("GITHUB_PAT");
-        if (patToken?.IsEmpty() == false)
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", patToken);
-#endif
     }
 
     private async Task<string> Download(ReleaseAssetDto asset)
