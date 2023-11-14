@@ -122,7 +122,7 @@ Function Build-Solution([string]$Solution, [string]$Target = $Null, [string]$Con
         # XML documentation. Warning CS0436 is because we need to override a framework
         # class.
         
-        $Arguments = "/nr:false /m /verbosity:quiet /nologo `"/t:$Target`" /p:$Properties `"$Solution`""
+        $Arguments = "/nr:false /m /verbosity:minimal /nologo `"/t:$Target`" /p:$Properties `"$Solution`""
         
         $Process = Start-Process -NoNewWindow -Wait -FilePath $Global:MSBuild -ArgumentList $Arguments -PassThru
         
@@ -162,6 +162,7 @@ $Global:MSBuild = Get-MSBuild
 
 Prepare-Directory -Path $Global:Distrib
 
+Build-Solution -Solution ($Global:Root + "\Tql.sln") -Target Restore
 Build-Solution -Solution ($Global:Root + "\Tql.sln")
 
 Copy-Output -From "Tql.App" -Target $Global:Distrib
