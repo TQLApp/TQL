@@ -146,7 +146,7 @@ Function Copy-Output([string]$From, [string]$Target)
 {
     Write-Host "Copying $From"
 
-    Copy-Item ($Global:Root + "\" + $From + "\bin\Release\net48") -Destination $Target -Recurse
+    Copy-Item ($Global:Root + "\" + $From + "\bin\Release\net48\*") -Destination $Target -Recurse
 
     Console-Update-Status "[OK]" -ForegroundColor Green
 }
@@ -165,4 +165,4 @@ Prepare-Directory -Path $Global:Distrib
 Build-Solution -Solution ($Global:Root + "\Tql.sln") -Target Restore
 Build-Solution -Solution ($Global:Root + "\Tql.sln")
 
-Copy-Output -From "Tql.App" -Target $Global:Distrib
+Copy-Output -From "Tql.DebugApp" -Target $Global:Distrib
