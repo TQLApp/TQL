@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System.Windows.Threading;
 using Tql.Abstractions;
+using Tql.App.Services;
 using Tql.App.Support;
 using Tql.Utilities;
 
@@ -24,11 +25,19 @@ internal partial class ProgressWindow
     public static void Show(IServiceProvider serviceProvider, UIElement owner, Action action)
     {
         var loggerProvider = serviceProvider.GetRequiredService<InMemoryLoggerProvider>();
-        var ui = serviceProvider.GetRequiredService<IUI>();
+        var ui = (UI)serviceProvider.GetRequiredService<IUI>();
 
         var window = new ProgressWindow(loggerProvider, action, ui) { Owner = GetWindow(owner) };
 
-        window.ShowDialog();
+        ui.EnterModalDialog();
+        try
+        {
+            window.ShowDialog();
+        }
+        finally
+        {
+            ui.ExitModalDialog();
+        }
     }
 
     private ProgressWindow(InMemoryLoggerProvider loggerProvider, Action action, IUI ui)

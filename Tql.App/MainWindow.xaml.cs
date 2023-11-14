@@ -199,7 +199,16 @@ internal partial class MainWindow
         var window = _serviceProvider.GetRequiredService<ConfigurationUI.ConfigurationWindow>();
         window.Owner = this;
         window.StartupPage = id;
-        window.ShowDialog();
+
+        _ui.EnterModalDialog();
+        try
+        {
+            window.ShowDialog();
+        }
+        finally
+        {
+            _ui.ExitModalDialog();
+        }
 
         if (!App.IsShuttingDown)
             _quickStartScript.HandleMainWindow(this);
@@ -212,7 +221,16 @@ internal partial class MainWindow
     {
         var window = _serviceProvider.GetRequiredService<FeedbackWindow>();
         window.Owner = this;
-        window.ShowDialog();
+
+        _ui.EnterModalDialog();
+        try
+        {
+            window.ShowDialog();
+        }
+        finally
+        {
+            _ui.ExitModalDialog();
+        }
     }
 
     private void OpenHelp()
@@ -438,6 +456,9 @@ internal partial class MainWindow
 
     private void DoHide()
     {
+        if (_ui.IsModalDialogShowing)
+            return;
+
         // Detect whether a child dialog is being displayed.
 
         var haveChildWindow = false;
@@ -458,7 +479,7 @@ internal partial class MainWindow
             haveChildWindow = true;
 #endif
 
-        if (haveChildWindow || _ui.IsShowingTaskDialog)
+        if (haveChildWindow || _ui.IsModalDialogShowing)
             return;
 
         if (haveQuickStartChildWindow)

@@ -12,6 +12,7 @@ public class BaseWindow : Window
         TextOptions.SetTextFormattingMode(this, TextFormattingMode.Display);
         UseLayoutRounding = true;
         SnapsToDevicePixels = true;
+        ShowInTaskbar = false;
         RenderOptions.SetClearTypeHint(this, ClearTypeHint.Enabled);
         Style = (Style)FindResource("CustomWindowStyle");
     }

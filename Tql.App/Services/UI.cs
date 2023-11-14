@@ -14,10 +14,10 @@ internal class UI : IUI
     private SynchronizationContext? _synchronizationContext;
     private volatile List<UINotification> _notifications = new();
     private readonly object _syncRoot = new();
-    private int _taskDialogShown;
+    private int _modalDialogShowing;
 
     public MainWindow? MainWindow { get; private set; }
-    public bool IsShowingTaskDialog => _taskDialogShown > 0;
+    public bool IsModalDialogShowing => _modalDialogShowing > 0;
 
     // This uses the safe publication pattern.
     // ReSharper disable once InconsistentlySynchronizedField
@@ -50,7 +50,15 @@ internal class UI : IUI
                     Owner = MainWindow
                 };
 
-                window.ShowDialog();
+                EnterModalDialog();
+                try
+                {
+                    window.ShowDialog();
+                }
+                finally
+                {
+                    ExitModalDialog();
+                }
 
                 if (window.Exception != null)
                     tcs.SetException(window.Exception);
@@ -100,7 +108,7 @@ internal class UI : IUI
         DialogIcon icon = DialogIcon.Warning
     )
     {
-        _taskDialogShown++;
+        EnterModalDialog();
 
         try
         {
@@ -114,7 +122,7 @@ internal class UI : IUI
         }
         finally
         {
-            _taskDialogShown--;
+            ExitModalDialog();
         }
     }
 
@@ -126,7 +134,7 @@ internal class UI : IUI
         DialogCommonButtons buttons = DialogCommonButtons.OK
     )
     {
-        _taskDialogShown++;
+        EnterModalDialog();
 
         try
         {
@@ -140,7 +148,7 @@ internal class UI : IUI
         }
         finally
         {
-            _taskDialogShown--;
+            ExitModalDialog();
         }
     }
 
@@ -177,6 +185,20 @@ internal class UI : IUI
     public void OpenConfiguration(Guid id)
     {
         OnConfigurationUIRequested(new ConfigurationUIEventArgs(id));
+    }
+
+    public void EnterModalDialog()
+    {
+        if (_modalDialogShowing == 0 && MainWindow != null)
+            MainWindow.ShowInTaskbar = true;
+        _modalDialogShowing++;
+    }
+
+    public void ExitModalDialog()
+    {
+        _modalDialogShowing--;
+        if (_modalDialogShowing == 0 && MainWindow != null)
+            MainWindow.ShowInTaskbar = false;
     }
 
     protected virtual void OnUINotificationsChanged() =>

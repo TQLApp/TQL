@@ -10,7 +10,7 @@ namespace Tql.App.QuickStart;
 internal class QuickStartManager
 {
     private readonly Settings _settings;
-    private readonly IUI _ui;
+    private readonly UI _ui;
     private QuickStartDto _state;
     private QuickStartWindow? _window;
 
@@ -30,7 +30,7 @@ internal class QuickStartManager
     public QuickStartManager(Settings settings, IUI ui)
     {
         _settings = settings;
-        _ui = ui;
+        _ui = (UI)ui;
         _state = QuickStartDto.FromSettings(settings);
 
         settings.AttachPropertyChanged(
@@ -103,9 +103,21 @@ internal class QuickStartManager
         };
 
         if (mode.HasFlag(QuickStartPopupMode.Modal))
-            _window.ShowDialog();
+        {
+            _ui.EnterModalDialog();
+            try
+            {
+                _window.ShowDialog();
+            }
+            finally
+            {
+                _ui.ExitModalDialog();
+            }
+        }
         else
+        {
             _window.Show();
+        }
 
         return new WindowCloser(_window);
     }
