@@ -114,6 +114,12 @@ internal class Settings : INotifyPropertyChanged
         set => SetString(nameof(EncryptionKey), value);
     }
 
+    public bool? InstallPrerelease
+    {
+        get => GetBoolean(nameof(InstallPrerelease));
+        set => SetBoolean(nameof(InstallPrerelease), value);
+    }
+
     public event PropertyChangedEventHandler? PropertyChanged;
 
     public Settings(IStore store)

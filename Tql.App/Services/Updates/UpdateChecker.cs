@@ -21,6 +21,7 @@ internal class UpdateChecker : IDisposable
     private readonly HttpClient _httpClient;
     private readonly PackageManager _packageManager;
     private readonly NotifyIconManager _notifyIconManager;
+    private readonly Settings _settings;
     private readonly Timer _timer;
 
     public UpdateChecker(
@@ -28,7 +29,8 @@ internal class UpdateChecker : IDisposable
         ILogger<UpdateChecker> logger,
         HttpClient httpClient,
         PackageManager packageManager,
-        NotifyIconManager notifyIconManager
+        NotifyIconManager notifyIconManager,
+        Settings settings
     )
     {
         _ui = ui;
@@ -36,6 +38,7 @@ internal class UpdateChecker : IDisposable
         _httpClient = httpClient;
         _packageManager = packageManager;
         _notifyIconManager = notifyIconManager;
+        _settings = settings;
         _timer = new Timer(TimerCallback, null, UpdateCheckInterval, UpdateCheckInterval);
     }
 
@@ -65,28 +68,12 @@ internal class UpdateChecker : IDisposable
 
     private async Task<bool> TryStartApplicationUpdate()
     {
-        var request = new HttpRequestMessage(
-            HttpMethod.Get,
-            "https://api.github.com/repos/pvginkel/TQL/releases/latest"
-        );
+        var installPrerelease = _settings.InstallPrerelease.GetValueOrDefault();
 
-        InitializeRequest(request);
-
-        using var response = await _httpClient.SendAsync(request);
-
-        if (response.StatusCode == HttpStatusCode.NotFound)
-        {
-            _logger.LogInformation(
-                "Request for latest release returned not found; build is likely going"
-            );
+        var release = installPrerelease ? await GetLatestPrerelease() : await GetLatestRelease();
+        if (release == null)
             return false;
-        }
 
-        response.EnsureSuccessStatusCode();
-
-        var json = await response.Content.ReadAsStringAsync();
-
-        var release = JsonSerializer.Deserialize<ReleaseDto>(json)!;
         if (
             !release.TagName.StartsWith("v")
             || !Version.TryParse(release.TagName.Substring(1), out var releaseVersion)
@@ -125,6 +112,74 @@ internal class UpdateChecker : IDisposable
         Install(target);
 
         return true;
+    }
+
+    private async Task<ReleaseDto?> GetLatestRelease()
+    {
+        var request = new HttpRequestMessage(
+            HttpMethod.Get,
+            "https://api.github.com/repos/pvginkel/TQL/releases/latest"
+        );
+
+        InitializeRequest(request);
+
+        using var response = await _httpClient.SendAsync(request);
+
+        if (response.StatusCode == HttpStatusCode.NotFound)
+        {
+            _logger.LogInformation(
+                "Request for latest release returned not found; build is likely going"
+            );
+            return null;
+        }
+
+        response.EnsureSuccessStatusCode();
+
+        var json = await response.Content.ReadAsStringAsync();
+
+        return JsonSerializer.Deserialize<ReleaseDto>(json)!;
+    }
+
+    private async Task<ReleaseDto?> GetLatestPrerelease()
+    {
+        var releases = new List<ReleaseDto>();
+        const int pageSize = 100;
+
+        for (var page = 1; ; page++)
+        {
+            var request = new HttpRequestMessage(
+                HttpMethod.Get,
+                $"https://api.github.com/repos/pvginkel/TQL/releases?per_page={pageSize}&page={page}"
+            );
+
+            InitializeRequest(request);
+
+            using var response = await _httpClient.SendAsync(request);
+
+            if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                _logger.LogInformation(
+                    "Request for latest release returned not found; build is likely going"
+                );
+                return null;
+            }
+
+            response.EnsureSuccessStatusCode();
+
+            var json = await response.Content.ReadAsStringAsync();
+
+            var pageReleases = JsonSerializer.Deserialize<List<ReleaseDto>>(json)!;
+
+            releases.AddRange(pageReleases);
+
+            if (pageReleases.Count < pageSize)
+                break;
+        }
+
+        return releases
+            .Where(p => p.Prerelease)
+            .OrderByDescending(p => p.CreatedAt)
+            .FirstOrDefault();
     }
 
     private async Task<bool> TryStartPluginUpdate()
