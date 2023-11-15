@@ -8,6 +8,7 @@ using System.IO;
 using Tql.Abstractions;
 using Tql.App.Services.Telemetry;
 using NuGet.Packaging.Core;
+using NuGet.Versioning;
 
 namespace Tql.App.Services.Packages;
 
@@ -188,7 +189,7 @@ internal class PackageManager
         var assemblyName = typeof(ITqlPlugin).Assembly.GetName();
         var packageIdentity = new PackageIdentity(
             assemblyName.Name,
-            new NuGet.Versioning.NuGetVersion(assemblyName.Version)
+            new NuGetVersion(assemblyName.Version)
         );
 
         var installedPackages = await client.InstallPackage(

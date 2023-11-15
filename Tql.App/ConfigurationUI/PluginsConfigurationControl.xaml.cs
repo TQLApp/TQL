@@ -77,7 +77,9 @@ internal partial class PluginsConfigurationControl : IConfigurationPage
 
         try
         {
-            var packages = (await _packageManager.GetAvailablePackages()).ToList();
+            var packages = (await _packageManager.GetAvailablePackages())
+                .OrderBy(p => p.Identity.Id, StringComparer.OrdinalIgnoreCase)
+                .ToList();
 
             if (_installedTab.IsChecked.GetValueOrDefault())
                 packages = packages.Where(p => p.IsInstalled).ToList();

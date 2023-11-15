@@ -57,6 +57,7 @@
                     Margin="3"
                     Content="{x:Static app:Labels.PluginsConfiguration_RestartLabel}"
                     Visibility="Hidden"
+                    VerticalAlignment="Center"
                     Grid.Column="3"
                     Click="_restart_Click" />
             </Grid>
