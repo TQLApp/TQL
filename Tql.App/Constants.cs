@@ -22,8 +22,9 @@ internal static class Constants
     public const string ApplicationInsightsConnectionString =
         "InstrumentationKey=b24fa90c-fa1d-4b19-836b-66202920fa50;IngestionEndpoint=https://westeurope-5.in.applicationinsights.azure.com/;LiveEndpoint=https://westeurope.livediagnostics.monitor.azure.com/";
 
-    public const string PackageSource =
-        "https://pvginkel.pkgs.visualstudio.com/Launcher/_packaging/TQLPlugins/nuget/v3/index.json";
+    public static readonly ImmutableArray<string> PackageSources = ImmutableArray.Create(
+        "https://api.nuget.org/v3/index.json"
+    );
 
     public static readonly Guid PackageManagerConfigurationId = Guid.Parse(
         "8dd1ea3b-d412-43c3-b5a4-a36bb7d52189"

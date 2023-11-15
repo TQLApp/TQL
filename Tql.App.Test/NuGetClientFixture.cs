@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using NuGet.Configuration;
 using NuGet.Packaging.Core;
 using NuGet.Versioning;
 using Tql.App.Services.Packages;
@@ -68,19 +67,7 @@ internal class NuGetClientFixture
 
         var configuration = new NuGetClientConfiguration(
             packageCachePath,
-            ImmutableArray.Create(
-                new NuGetClientSource(
-                    "https://pvginkel.pkgs.visualstudio.com/Launcher/_packaging/TQLPlugins/nuget/v3/index.json",
-                    new PackageSourceCredential(
-                        Constants.PackageSource,
-                        Environment.GetEnvironmentVariable("AzureDevOpsArtifactsUserName"),
-                        Environment.GetEnvironmentVariable("AzureDevOpsArtifactsPatToken"),
-                        true,
-                        null
-                    )
-                ),
-                new NuGetClientSource("https://api.nuget.org/v3/index.json", null)
-            )
+            Constants.PackageSources.Select(p => new NuGetClientSource(p, null)).ToImmutableArray()
         );
 
         return new NuGetClient(configuration, new NuGetLogger());

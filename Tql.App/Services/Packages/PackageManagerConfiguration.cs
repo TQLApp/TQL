@@ -7,9 +7,9 @@ internal record PackageManagerConfiguration(ImmutableArray<PackageManagerSource>
     private static PackageManagerConfiguration CreateDefault()
     {
         return new PackageManagerConfiguration(
-            ImmutableArray.Create(
-                new PackageManagerSource("https://api.nuget.org/v3/index.json", null, null)
-            )
+            Constants.PackageSources
+                .Select(p => new PackageManagerSource(p, null, null))
+                .ToImmutableArray()
         );
     }
 
