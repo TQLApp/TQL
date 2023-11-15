@@ -60,7 +60,7 @@ jobs:
           body: ${{ steps.tag-data.outputs.git-tag-annotation }}
 
       - name: Publish NuGet packages to TQLApp
-        run: dotnet nuget push "**/*.nupkg"  --source github --skip-duplicate
+        run: dotnet nuget push "**/*.nupkg"  --source github
 
       - name: Publish NuGet packages to NuGet.org
-        run: dotnet nuget push "**/*.nupkg" --api-key "${{ secrets.nuget_api_key }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+        run: dotnet nuget push "**/*.nupkg" --api-key "${{ secrets.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json
