@@ -186,15 +186,14 @@ internal class PackageManager
 
         Directory.CreateDirectory(targetPath);
 
-        var assemblyName = typeof(ITqlPlugin).Assembly.GetName();
-        var packageIdentity = new PackageIdentity(
-            assemblyName.Name,
-            new NuGetVersion(assemblyName.Version)
+        var abstractionsPackageIdentity = new PackageIdentity(
+            "TQLApp.Abstractions",
+            new NuGetVersion(typeof(ITqlPlugin).Assembly.GetName().Version)
         );
 
         var installedPackages = await client.InstallPackage(
             latestVersion.Identity,
-            requiredDependency: packageIdentity,
+            requiredDependency: abstractionsPackageIdentity,
             cancellationToken: cancellationToken
         );
 
@@ -210,6 +209,8 @@ internal class PackageManager
                 CopyDirectory(Path.GetDirectoryName(fileName)!, targetPath);
             }
         }
+
+        _storeManager.WritePackageManifest(targetPath);
 
         _storeManager.SetPackageVersion(
             latestVersion.Identity.Id,

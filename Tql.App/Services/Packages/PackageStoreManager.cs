@@ -9,7 +9,8 @@ namespace Tql.App.Services.Packages;
 
 internal class PackageStoreManager
 {
-    private static readonly string[] AssemblyExtensions = { ".dll", ".exe" };
+    private const string ManifestFileName = "tqlpackage.manifest.json";
+    private const int ManifestVersion = 1;
 
     private readonly Store _store;
     private readonly ILogger<PackageStoreManager> _logger;
@@ -38,21 +39,16 @@ internal class PackageStoreManager
         {
             var assemblyKey = AssemblyKey.FromName(new AssemblyName(args.Name));
 
-            var loadedAssembly = AppDomain.CurrentDomain
-                .GetAssemblies()
-                .Select(p => (AssemblyName: p.GetName(), Assembly: p))
-                .Where(p => AssemblyKey.FromName(p.AssemblyName).Equals(assemblyKey))
-                .OrderByDescending(p => p.AssemblyName.Version)
-                .FirstOrDefault();
+            var loadedAssembly = PackageStoreUtils.GetLoadedAssembly(assemblyKey);
 
-            if (loadedAssembly.Assembly != null)
+            if (loadedAssembly != null)
             {
                 _logger.LogDebug(
                     "Using already loaded assembly '{AssemblyName}'",
-                    loadedAssembly.AssemblyName
+                    loadedAssembly.GetName()
                 );
 
-                return loadedAssembly.Assembly;
+                return loadedAssembly;
             }
 
             if (_packageAssemblies.TryGetValue(assemblyKey, out var fileName))
@@ -116,13 +112,16 @@ internal class PackageStoreManager
     {
         _logger.LogInformation("Discovering plugins");
 
-        var assemblyExtensions = new HashSet<string>(
-            AssemblyExtensions,
-            StringComparer.OrdinalIgnoreCase
-        );
+        var packages = FindPackageAssemblies();
 
-        var pluginAssemblyFileNames = new List<string>();
-        var packageAssemblies = new List<(AssemblyName AssemblyName, string FileName)>();
+        InitializePackageAssemblies(packages);
+
+        return CreatePluginInstances(packages);
+    }
+
+    private List<Package> FindPackageAssemblies()
+    {
+        var packages = new List<Package>();
 
         foreach (var packageRef in GetInstalledPackages())
         {
@@ -132,21 +131,16 @@ internal class PackageStoreManager
             {
                 _logger.LogInformation("Loading assemblies of package '{Package}'", packageRef);
 
-                foreach (
-                    var fileName in Directory.GetFiles(
-                        packageFolder,
-                        "*",
-                        SearchOption.AllDirectories
-                    )
-                )
+                var packageAssemblies = new List<PackageAssembly>();
+
+                foreach (var fileName in PackageStoreUtils.GetAssemblyFileNames(packageFolder))
                 {
-                    if (assemblyExtensions.Contains(Path.GetExtension(fileName)))
                     {
                         try
                         {
                             var assemblyName = AssemblyName.GetAssemblyName(fileName);
 
-                            packageAssemblies.Add((assemblyName, fileName));
+                            packageAssemblies.Add(new PackageAssembly(assemblyName, fileName));
                         }
                         catch (Exception ex)
                         {
@@ -159,7 +153,7 @@ internal class PackageStoreManager
                     }
                 }
 
-                pluginAssemblyFileNames.Add(Path.Combine(packageFolder, packageRef.Id + ".dll"));
+                packages.Add(new Package(packageFolder, packageAssemblies));
             }
             catch (Exception ex)
             {
@@ -171,16 +165,22 @@ internal class PackageStoreManager
             }
         }
 
+        return packages;
+    }
+
+    private void InitializePackageAssemblies(List<Package> packages)
+    {
         lock (_syncRoot)
         {
             foreach (
-                var entry in packageAssemblies
-                    .GroupBy(p => new AssemblyKey(p.AssemblyName.Name, p.AssemblyName.CultureName))
+                var entry in packages
+                    .SelectMany(p => p.Assemblies)
+                    .GroupBy(p => new AssemblyKey(p.Name.Name, p.Name.CultureName))
                     .Select(
                         p =>
                             (
                                 AssemblyKey: p.Key,
-                                FileName: p.OrderByDescending(p1 => p1.AssemblyName.Version)
+                                FileName: p.OrderByDescending(p1 => p1.Name.Version)
                                     .Select(p1 => p1.FileName)
                                     .First()
                             )
@@ -190,38 +190,38 @@ internal class PackageStoreManager
                 _packageAssemblies.Add(entry.AssemblyKey, entry.FileName);
             }
         }
+    }
 
+    private ImmutableArray<ITqlPlugin> CreatePluginInstances(List<Package> packages)
+    {
         var plugins = ImmutableArray.CreateBuilder<ITqlPlugin>();
 
-        foreach (var fileName in pluginAssemblyFileNames)
+        foreach (var packageFolder in packages.Select(p => p.Path))
         {
-            _logger.LogInformation("Loading plugins from '{FileName}'", fileName);
+            _logger.LogInformation("Loading plugins from '{PackageFolder}'", packageFolder);
 
             try
             {
-                var assembly = Assembly.LoadFile(fileName);
+                var manifestJson = File.ReadAllText(Path.Combine(packageFolder, ManifestFileName));
+                var manifest = JsonSerializer.Deserialize<PackageManifest>(manifestJson)!;
 
-                foreach (var type in assembly.ExportedTypes)
+                foreach (var assemblyEntries in manifest.Entries.GroupBy(p => p.FileName))
                 {
-                    var attribute = type.GetCustomAttribute<TqlPluginAttribute>();
-                    if (attribute == null)
-                        continue;
+                    var assembly = Assembly.LoadFile(
+                        Path.Combine(packageFolder, assemblyEntries.Key)
+                    );
 
-                    if (!typeof(ITqlPlugin).IsAssignableFrom(type))
+                    foreach (var entry in assemblyEntries)
                     {
-                        throw new InvalidOperationException(
-                            $"'{type}' does not implement '{nameof(ITqlPlugin)}'"
-                        );
+                        var type = assembly.GetType(entry.TypeName);
+
+                        plugins.Add((ITqlPlugin)Activator.CreateInstance(type)!);
                     }
-
-                    _logger.LogInformation("Discovered plugin type '{Type}'", type);
-
-                    plugins.Add((ITqlPlugin)Activator.CreateInstance(type)!);
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to load plugin from '{Package}'", fileName);
+                _logger.LogError(ex, "Failed to load plugin from '{Package}'", packageFolder);
             }
         }
 
@@ -248,6 +248,28 @@ internal class PackageStoreManager
 
         return key.GetValue(packageId) as string;
     }
+
+    public void WritePackageManifest(string targetPath)
+    {
+        _logger.LogInformation("Writing package manifest");
+
+        var entries = PackageEntryResolver.Resolve(targetPath, _logger);
+
+        if (entries.Count == 0)
+            throw new InvalidOperationException("Could not discover assembly entry points");
+
+        var manifest = new PackageManifest(ManifestVersion, entries.ToImmutableArray());
+
+        var json = JsonSerializer.Serialize(manifest);
+
+        File.WriteAllText(Path.Combine(targetPath, ManifestFileName), json);
+    }
+
+    private record Package(string Path, List<PackageAssembly> Assemblies);
+
+    private record PackageAssembly(AssemblyName Name, string FileName);
+
+    private record PackageManifest(int Version, ImmutableArray<PackageEntry> Entries);
 }
 
 internal record struct AssemblyKey(string Name, string CultureName)
