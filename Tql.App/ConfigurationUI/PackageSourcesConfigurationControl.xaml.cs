@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using Microsoft.Extensions.Logging;
+using System.Windows.Forms;
 using Tql.Abstractions;
 using Tql.App.Services;
 using Tql.App.Services.Packages;
@@ -10,6 +11,8 @@ internal partial class PackageSourcesConfigurationControl : IConfigurationPage
 {
     private readonly IConfigurationManager _configurationManager;
     private readonly IUI _ui;
+    private readonly IEncryption _encryption;
+    private readonly ILogger<PackageSourcesConfigurationControl> _logger;
     private bool _dirty;
 
     private new PackageManagerConfigurationDto DataContext =>
@@ -19,10 +22,17 @@ internal partial class PackageSourcesConfigurationControl : IConfigurationPage
     public string Title => Labels.PackageSourcesConfiguration_PackageSources;
     public ConfigurationPageMode PageMode => ConfigurationPageMode.AutoSize;
 
-    public PackageSourcesConfigurationControl(IConfigurationManager configurationManager, IUI ui)
+    public PackageSourcesConfigurationControl(
+        IConfigurationManager configurationManager,
+        IUI ui,
+        IEncryption encryption,
+        ILogger<PackageSourcesConfigurationControl> logger
+    )
     {
         _configurationManager = configurationManager;
         _ui = ui;
+        _encryption = encryption;
+        _logger = logger;
 
         InitializeComponent();
 
@@ -49,7 +59,7 @@ internal partial class PackageSourcesConfigurationControl : IConfigurationPage
         {
             Url = _url.Text,
             UserName = _userName.Text,
-            Password = _password.Password
+            ProtectedPassword = _encryption.EncryptString(_password.Password)
         };
     }
 
@@ -129,7 +139,16 @@ internal partial class PackageSourcesConfigurationControl : IConfigurationPage
         {
             _url.Text = connectionDto.Url;
             _userName.Text = connectionDto.UserName;
-            _password.Password = connectionDto.Password;
+
+            try
+            {
+                _password.Password = _encryption.DecryptString(connectionDto.ProtectedPassword);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Failed to decrypt password");
+                _password.Password = null;
+            }
         }
 
         UpdateEnabled();

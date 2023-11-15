@@ -20,13 +20,15 @@ internal class PackageManager
     private readonly PackageStoreManager _storeManager;
     private readonly IConfigurationManager _configurationManager;
     private readonly TelemetryService _telemetryService;
+    private readonly IEncryption _encryption;
 
     public PackageManager(
         HttpClient httpClient,
         ILogger<PackageManager> logger,
         PackageStoreManager storeManager,
         IConfigurationManager configurationManager,
-        TelemetryService telemetryService
+        TelemetryService telemetryService,
+        IEncryption encryption
     )
     {
         _httpClient = httpClient;
@@ -34,6 +36,7 @@ internal class PackageManager
         _storeManager = storeManager;
         _configurationManager = configurationManager;
         _telemetryService = telemetryService;
+        _encryption = encryption;
     }
 
     private NuGetClient GetClient()
@@ -52,7 +55,7 @@ internal class PackageManager
                 credentials = new PackageSourceCredential(
                     source.Url,
                     source.UserName,
-                    Encryption.Unprotect(source.ProtectedPassword),
+                    _encryption.DecryptString(source.ProtectedPassword),
                     true,
                     null
                 );

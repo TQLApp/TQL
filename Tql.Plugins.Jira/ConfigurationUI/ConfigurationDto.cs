@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using Tql.Plugins.Jira.Support;
-using Tql.Utilities;
 
 namespace Tql.Plugins.Jira.ConfigurationUI;
 
@@ -46,13 +45,7 @@ internal class ConnectionDto
     public string? Name { get; set; }
     public string? Url { get; set; }
     public string? UserName { get; set; }
-    public byte[]? ProtectedPassword { get; set; }
-
-    public string? Password
-    {
-        get => Encryption.Unprotect(ProtectedPassword);
-        set => ProtectedPassword = Encryption.Protect(value);
-    }
+    public string? ProtectedPassword { get; set; }
 
     public ConnectionDto(Guid id)
     {

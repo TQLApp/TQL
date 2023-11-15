@@ -1,4 +1,5 @@
-﻿using Tql.Abstractions;
+﻿using Microsoft.Extensions.Logging;
+using Tql.Abstractions;
 using Tql.App.Services;
 using Tql.Plugins.Confluence.Services;
 using Tql.Utilities;
@@ -11,6 +12,8 @@ internal partial class ConfigurationControl : IConfigurationPage
     private readonly IConfigurationManager _configurationManager;
     private readonly IUI _ui;
     private readonly ConfluenceApi _api;
+    private readonly IEncryption _encryption;
+    private readonly ILogger<ConfigurationControl> _logger;
     private Guid? _id;
     private bool _dirty;
 
@@ -23,12 +26,16 @@ internal partial class ConfigurationControl : IConfigurationPage
     public ConfigurationControl(
         IConfigurationManager configurationManager,
         IUI ui,
-        ConfluenceApi api
+        ConfluenceApi api,
+        IEncryption encryption,
+        ILogger<ConfigurationControl> logger
     )
     {
         _configurationManager = configurationManager;
         _ui = ui;
         _api = api;
+        _encryption = encryption;
+        _logger = logger;
 
         InitializeComponent();
 
@@ -60,7 +67,7 @@ internal partial class ConfigurationControl : IConfigurationPage
             Name = _name.Text,
             Url = url,
             UserName = _userName.Text,
-            Password = _password.Password
+            ProtectedPassword = _encryption.EncryptString(_password.Password)
         };
     }
 
@@ -159,7 +166,16 @@ internal partial class ConfigurationControl : IConfigurationPage
             _name.Text = connectionDto.Name;
             _url.Text = connectionDto.Url;
             _userName.Text = connectionDto.UserName;
-            _password.Password = connectionDto.Password;
+
+            try
+            {
+                _password.Password = _encryption.DecryptString(connectionDto.ProtectedPassword);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Failed to decrypt password");
+                _password.Password = null;
+            }
             _id = connectionDto.Id;
         }
 

@@ -4,35 +4,6 @@ namespace Tql.Utilities;
 
 public static class Encryption
 {
-    public static string? Unprotect(byte[]? value)
-    {
-        if (value == null)
-            return null;
-
-        try
-        {
-            return Encoding.UTF8.GetString(
-                ProtectedData.Unprotect(value, null, DataProtectionScope.CurrentUser)
-            );
-        }
-        catch
-        {
-            return null;
-        }
-    }
-
-    public static byte[]? Protect(string? value)
-    {
-        if (string.IsNullOrEmpty(value))
-            return null;
-
-        return ProtectedData.Protect(
-            Encoding.UTF8.GetBytes(value),
-            null,
-            DataProtectionScope.CurrentUser
-        );
-    }
-
     public static string Sha1Hash(string input)
     {
         using var sha1 = SHA1.Create();

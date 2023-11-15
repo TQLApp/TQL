@@ -23,6 +23,7 @@ internal class GitHubApi
     private readonly ConfigurationManager _configurationManager;
     private readonly IStore _store;
     private readonly HttpClient _httpClient;
+    private readonly IEncryption _encryption;
     private readonly AsyncLock _lock = new();
     private readonly Dictionary<Guid, GitHubClient> _clients = new();
 
@@ -31,7 +32,8 @@ internal class GitHubApi
         IUI ui,
         ConfigurationManager configurationManager,
         IStore store,
-        HttpClient httpClient
+        HttpClient httpClient,
+        IEncryption encryption
     )
     {
         _logger = logger;
@@ -39,6 +41,7 @@ internal class GitHubApi
         _configurationManager = configurationManager;
         _store = store;
         _httpClient = httpClient;
+        _encryption = encryption;
     }
 
     public async Task<GitHubClient> GetClient(Guid id)
@@ -151,9 +154,7 @@ internal class GitHubApi
 
             if (subKey?.GetValue(id.ToString()) is string protectedCredentials)
             {
-                var credentials = Encryption.Unprotect(
-                    Convert.FromBase64String(protectedCredentials)
-                );
+                var credentials = _encryption.DecryptString(protectedCredentials);
                 if (credentials == null)
                     return null;
 
@@ -172,7 +173,7 @@ internal class GitHubApi
     {
         var json = JsonSerializer.Serialize(credentialsDto);
 
-        var protectedCredentials = Convert.ToBase64String(Encryption.Protect(json)!);
+        var protectedCredentials = _encryption.EncryptString(json)!;
 
         using var key = _store.OpenKey(GitHubPlugin.Id);
         using var subKey = key.CreateSubKey("Credentials")!;

@@ -108,6 +108,12 @@ internal class Settings : INotifyPropertyChanged
         set => SetString(nameof(QuickStart), value);
     }
 
+    public string? EncryptionKey
+    {
+        get => GetString(nameof(EncryptionKey));
+        set => SetString(nameof(EncryptionKey), value);
+    }
+
     public event PropertyChangedEventHandler? PropertyChanged;
 
     public Settings(IStore store)

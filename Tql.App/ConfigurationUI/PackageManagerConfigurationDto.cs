@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using Tql.App.Services.Packages;
 using Tql.App.Support;
-using Tql.Utilities;
 
 namespace Tql.App.ConfigurationUI;
 
@@ -44,13 +43,7 @@ internal class PackageManagerSourceDto
 {
     public string? Url { get; set; }
     public string? UserName { get; set; }
-    public byte[]? ProtectedPassword { get; set; }
-
-    public string? Password
-    {
-        get => Encryption.Unprotect(ProtectedPassword);
-        set => ProtectedPassword = Encryption.Protect(value);
-    }
+    public string? ProtectedPassword { get; set; }
 
     public bool GetIsValid()
     {

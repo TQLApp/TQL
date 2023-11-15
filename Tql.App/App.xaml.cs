@@ -266,6 +266,7 @@ public partial class App
         builder.AddSingleton(packageStoreManager);
         builder.AddSingleton<QuickStartManager>();
         builder.AddSingleton<QuickStartScript>();
+        builder.AddSingleton<IEncryption, Encryption>();
 
         builder.Add(ServiceDescriptor.Singleton(typeof(ICache<>), typeof(Cache<>)));
         builder.Add(ServiceDescriptor.Singleton(typeof(IMatchFactory<,>), typeof(MatchFactory<,>)));

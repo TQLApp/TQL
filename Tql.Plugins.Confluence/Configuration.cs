@@ -22,5 +22,5 @@ internal record Connection(
     string Name,
     string Url,
     string? UserName,
-    byte[] ProtectedPassword
+    string ProtectedPassword
 );

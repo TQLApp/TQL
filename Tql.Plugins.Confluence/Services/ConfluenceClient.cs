@@ -14,7 +14,12 @@ internal class ConfluenceClient
     private readonly AuthenticationHeaderValue _authentication;
     private readonly string _baseUrl;
 
-    public ConfluenceClient(HttpClient httpClient, Connection connection, IUI ui)
+    public ConfluenceClient(
+        HttpClient httpClient,
+        Connection connection,
+        IUI ui,
+        IEncryption encryption
+    )
     {
         _httpClient = httpClient;
         _connection = connection;
@@ -22,7 +27,7 @@ internal class ConfluenceClient
 
         _baseUrl = connection.Url.TrimEnd('/');
 
-        var password = Encryption.Unprotect(connection.ProtectedPassword);
+        var password = encryption.DecryptString(connection.ProtectedPassword);
 
         if (string.IsNullOrEmpty(connection.UserName))
         {

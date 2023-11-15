@@ -2,7 +2,6 @@
 using System.Net.Http.Headers;
 using System.Text.Json.Serialization;
 using Tql.Abstractions;
-using Tql.Utilities;
 
 namespace Tql.Plugins.Jira.Services;
 
@@ -14,7 +13,7 @@ internal class JiraClient
     private readonly AuthenticationHeaderValue _authentication;
     private readonly string _baseUrl;
 
-    public JiraClient(HttpClient httpClient, Connection connection, IUI ui)
+    public JiraClient(HttpClient httpClient, Connection connection, IUI ui, IEncryption encryption)
     {
         _httpClient = httpClient;
         _connection = connection;
@@ -22,7 +21,7 @@ internal class JiraClient
 
         _baseUrl = connection.Url.TrimEnd('/');
 
-        var password = Encryption.Unprotect(connection.ProtectedPassword);
+        var password = encryption.DecryptString(connection.ProtectedPassword);
 
         if (string.IsNullOrEmpty(connection.UserName))
         {
