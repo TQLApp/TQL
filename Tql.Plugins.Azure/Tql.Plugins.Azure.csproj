@@ -12,7 +12,7 @@
 		<PackageId>TQLApp.Plugins.Azure</PackageId>
 	</PropertyGroup>
 
-	<Import Project="..\TqlPackage.targets" />
+	<Import Project="..\TqlPluginPackage.targets" />
 
 	<ItemGroup>
 		<EmbeddedResource Include="Resources\**\*" />
