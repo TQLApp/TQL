@@ -18,7 +18,7 @@ internal class DemoMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
 
     public Task Run(IServiceProvider serviceProvider, Window owner)
     {
-        serviceProvider.GetRequiredService<IUI>().OpenUrl("https://github.com/pvginkel/TQL");
+        serviceProvider.GetRequiredService<IUI>().OpenUrl("https://github.com/TQLApp/TQL");
 
         return Task.CompletedTask;
     }
@@ -32,7 +32,7 @@ internal class DemoMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
     {
         serviceProvider
             .GetRequiredService<IClipboard>()
-            .CopyUri(Text, "https://github.com/pvginkel/TQL");
+            .CopyUri(Text, "https://github.com/TQLApp/TQL");
 
         return Task.CompletedTask;
     }

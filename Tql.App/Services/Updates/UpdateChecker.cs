@@ -118,7 +118,7 @@ internal class UpdateChecker : IDisposable
     {
         var request = new HttpRequestMessage(
             HttpMethod.Get,
-            "https://api.github.com/repos/pvginkel/TQL/releases/latest"
+            "https://api.github.com/repos/TQLApp/TQL/releases/latest"
         );
 
         InitializeRequest(request);
@@ -149,7 +149,7 @@ internal class UpdateChecker : IDisposable
         {
             var request = new HttpRequestMessage(
                 HttpMethod.Get,
-                $"https://api.github.com/repos/pvginkel/TQL/releases?per_page={pageSize}&page={page}"
+                $"https://api.github.com/repos/TQLApp/TQL/releases?per_page={pageSize}&page={page}"
             );
 
             InitializeRequest(request);

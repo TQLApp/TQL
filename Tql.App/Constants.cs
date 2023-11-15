@@ -7,12 +7,12 @@ internal static class Constants
 {
     public const int MaxPenalty = 5;
     public const int MaxDistance = 3;
-    public const string HelpUrl = "https://github.com/pvginkel/TQL/wiki";
+    public const string HelpUrl = "https://github.com/TQLApp/TQL/wiki";
 
     public const string BugReportUrl =
-        "https://github.com/pvginkel/TQL/issues/new?assignees=&labels=&projects=&template=bug_report.md&title=";
+        "https://github.com/TQLApp/TQL/issues/new?assignees=&labels=&projects=&template=bug_report.md&title=";
     public const string FeatureRequestUrl =
-        "https://github.com/pvginkel/TQL/issues/new?assignees=&labels=&projects=&template=feature_request.md&title=";
+        "https://github.com/TQLApp/TQL/issues/new?assignees=&labels=&projects=&template=feature_request.md&title=";
 
     [UsedImplicitly]
     public const string ApplicationInsightsDevelopmentConnectionString =
