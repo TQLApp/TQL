@@ -1330,6 +1330,15 @@ namespace Tql.App {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Plugin installation failed.
+        /// </summary>
+        public static string PluginsConfiguration_PluginInstallationFailed {
+            get {
+                return ResourceManager.GetString("PluginsConfiguration_PluginInstallationFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Plugins.
         /// </summary>
         public static string PluginsConfiguration_Plugins {

@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using System.Runtime.ExceptionServices;
+using System.Runtime.InteropServices;
 using System.Windows.Threading;
 using Tql.Abstractions;
 using Tql.App.Services;
@@ -11,11 +13,11 @@ internal partial class ProgressWindow
 {
     private readonly InMemoryLoggerProvider _loggerProvider;
     private readonly Action _action;
-    private readonly IUI _ui;
     private bool _complete;
     private readonly DispatcherTimer _timer;
     private readonly StringBuilder _sb = new();
     private readonly object _syncRoot = new();
+    private ExceptionDispatchInfo? _exception;
 
     public static void Show(IServiceProvider serviceProvider, UIElement owner, Func<Task> action)
     {
@@ -27,7 +29,7 @@ internal partial class ProgressWindow
         var loggerProvider = serviceProvider.GetRequiredService<InMemoryLoggerProvider>();
         var ui = (UI)serviceProvider.GetRequiredService<IUI>();
 
-        var window = new ProgressWindow(loggerProvider, action, ui) { Owner = GetWindow(owner) };
+        var window = new ProgressWindow(loggerProvider, action) { Owner = GetWindow(owner) };
 
         ui.EnterModalDialog();
         try
@@ -38,13 +40,14 @@ internal partial class ProgressWindow
         {
             ui.ExitModalDialog();
         }
+
+        window._exception?.Throw();
     }
 
-    private ProgressWindow(InMemoryLoggerProvider loggerProvider, Action action, IUI ui)
+    private ProgressWindow(InMemoryLoggerProvider loggerProvider, Action action)
     {
         _loggerProvider = loggerProvider;
         _action = action;
-        _ui = ui;
 
         _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(0.1) };
         _timer.Tick += _timer_Tick;
@@ -96,9 +99,7 @@ internal partial class ProgressWindow
         }
         catch (Exception ex)
         {
-            Dispatcher.BeginInvoke(
-                () => _ui.ShowError(this, Labels.Alert_AnUnexpectedErrorOccurred, ex)
-            );
+            _exception = ExceptionDispatchInfo.Capture(ex);
         }
         finally
         {

@@ -7,6 +7,7 @@ using Path = System.IO.Path;
 using System.IO;
 using Tql.Abstractions;
 using Tql.App.Services.Telemetry;
+using NuGet.Packaging.Core;
 
 namespace Tql.App.Services.Packages;
 
@@ -184,8 +185,15 @@ internal class PackageManager
 
         Directory.CreateDirectory(targetPath);
 
+        var assemblyName = typeof(ITqlPlugin).Assembly.GetName();
+        var packageIdentity = new PackageIdentity(
+            assemblyName.Name,
+            new NuGet.Versioning.NuGetVersion(assemblyName.Version)
+        );
+
         var installedPackages = await client.InstallPackage(
             latestVersion.Identity,
+            requiredDependency: packageIdentity,
             cancellationToken: cancellationToken
         );
 

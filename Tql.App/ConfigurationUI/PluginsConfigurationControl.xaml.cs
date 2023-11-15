@@ -96,11 +96,19 @@ internal partial class PluginsConfigurationControl : IConfigurationPage
 
         var package = (Package)((FrameworkElement)sender).DataContext;
 
-        ProgressWindow.Show(
-            _serviceProvider,
-            this,
-            () => _packageManager.InstallPackage(package.Identity.Id)
-        );
+        try
+        {
+            ProgressWindow.Show(
+                _serviceProvider,
+                this,
+                () => _packageManager.InstallPackage(package.Identity.Id)
+            );
+        }
+        catch (Exception ex)
+        {
+            _ui.ShowError(this, Labels.PluginsConfiguration_PluginInstallationFailed, ex);
+            return;
+        }
 
         ShowRestartButton();
 

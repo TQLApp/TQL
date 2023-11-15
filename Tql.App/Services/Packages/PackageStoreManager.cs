@@ -55,11 +55,6 @@ internal class PackageStoreManager
                 return loadedAssembly.Assembly;
             }
 
-            if (
-                args.Name
-                == "Tql.Plugins.GitHub.resources, Version=0.5.1.0, Culture=nl, PublicKeyToken=null"
-            ) { }
-
             if (_packageAssemblies.TryGetValue(assemblyKey, out var fileName))
             {
                 _logger.LogDebug("Resolved assembly to '{FileName}'", fileName);

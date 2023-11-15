@@ -651,4 +651,7 @@
   <data name="GeneralConfiguration_RestartTutorialHelpText" xml:space="preserve">
     <value>Restart the quick start tutorial.</value>
   </data>
+  <data name="PluginsConfiguration_PluginInstallationFailed" xml:space="preserve">
+    <value>Plugin installation failed</value>
+  </data>
 </root>

@@ -246,6 +246,7 @@ internal class NuGetClient : IDisposable
         bool allowUnlisted = false,
         VersionConstraints versionConstraints =
             VersionConstraints.ExactMajor | VersionConstraints.ExactMinor,
+        PackageIdentity? requiredDependency = null,
         CancellationToken cancellationToken = default
     )
     {
@@ -268,6 +269,35 @@ internal class NuGetClient : IDisposable
                 cancellationToken
             )
         ).ToList();
+
+        if (requiredDependency != null)
+        {
+            var dependencyVersion = installActions
+                .Select(p => p.PackageIdentity)
+                .Where(
+                    p =>
+                        string.Equals(
+                            p.Id,
+                            requiredDependency.Id,
+                            StringComparison.OrdinalIgnoreCase
+                        )
+                )
+                .OrderByDescending(p => p.Version.Version)
+                .FirstOrDefault();
+
+            if (dependencyVersion == null)
+            {
+                throw new NuGetClientException(
+                    $"NuGet package '{identity.Id}' does not list '{requiredDependency.Id}' as a dependency"
+                );
+            }
+            if (dependencyVersion.Version.Version.CompareTo(requiredDependency.Version.Version) > 0)
+            {
+                throw new NuGetClientException(
+                    $"NuGet package '{identity.Id}' requires version '{dependencyVersion.Version.Version}' of '{requiredDependency.Id}' which is higher then the supported version '{requiredDependency.Version.Version}'"
+                );
+            }
+        }
 
         var logger = new LoggerAdapter(projectContext);
 
