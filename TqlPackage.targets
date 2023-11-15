@@ -1,11 +1,16 @@
 <Project>
 
-  <PropertyGroup>
-    <Version>0.0</Version>
-    <Authors>Pieter van Ginkel</Authors>
-    <Copyright>Copyright © 2023 Pieter van Ginkel</Copyright>
-    <PackageTags>tql-plugin</PackageTags>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-  </PropertyGroup>
-  
+	<PropertyGroup>
+		<Version>0.0</Version>
+		<Authors>Pieter van Ginkel</Authors>
+		<Copyright>Copyright © 2023 Pieter van Ginkel</Copyright>
+		<PackageTags>tql-plugin</PackageTags>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="..\LICENSE" Pack="true" PackagePath=""/>
+	</ItemGroup>
+
 </Project>
