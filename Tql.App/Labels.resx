@@ -480,7 +480,7 @@
     <value>category</value>
   </data>
   <data name="MainWindow_OpenCategoryPrefix" xml:space="preserve">
-    <value>Open</value>
+    <value>Enter</value>
   </data>
   <data name="MainWindow_OpenTQL" xml:space="preserve">
     <value>Open TQL</value>
@@ -544,19 +544,19 @@
     <value>Search failed with the following error message:</value>
   </data>
   <data name="SearchResultControl_CopyMatchLinkHelpText" xml:space="preserve">
-    <value>Copy a link to the match to the clipboard.</value>
+    <value>Copy a link to the search results to the clipboard.</value>
   </data>
   <data name="SearchResultControl_MatchCanBeLaunched" xml:space="preserve">
-    <value>Match can be launched</value>
+    <value>Search result can be launched</value>
   </data>
   <data name="SearchResultControl_MatchCanBeLaunchedHelpText" xml:space="preserve">
-    <value>This match is for something you can launch. Click on it, or press Enter to launch the match.</value>
+    <value>This search result is for something you can launch. Click on it, or press Enter to launch the search result.</value>
   </data>
   <data name="SearchResultControl_MatchContainsSubItems" xml:space="preserve">
-    <value>Match contains sub items</value>
+    <value>Search result is a category</value>
   </data>
   <data name="SearchResultControl_MatchContainsSubItemsHelpText" xml:space="preserve">
-    <value>This match is a category and can it self be searched. Press Tab to enter the category to search in it.</value>
+    <value>This search result is a category and can it self be searched. Press Tab to enter the category to search in it.</value>
   </data>
   <data name="SearchResultControl_PinSearchResult" xml:space="preserve">
     <value>Pin search result</value>
@@ -565,7 +565,7 @@
     <value>Pin the search result to have them sorted to the top of the list.</value>
   </data>
   <data name="SearchResultControl_RemoveMatchFromHistoryHelpText" xml:space="preserve">
-    <value>Remove match from the history</value>
+    <value>Remove search result from the history</value>
   </data>
   <data name="SearchResultControl_UnpinSearchResultHelpText" xml:space="preserve">
     <value>Unpin search result</value>

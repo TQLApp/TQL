@@ -1141,7 +1141,7 @@ namespace Tql.App {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Open.
+        ///   Looks up a localized string similar to Enter.
         /// </summary>
         public static string MainWindow_OpenCategoryPrefix {
             get {
@@ -1393,7 +1393,7 @@ namespace Tql.App {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Copy a link to the match to the clipboard..
+        ///   Looks up a localized string similar to Copy a link to the search results to the clipboard..
         /// </summary>
         public static string SearchResultControl_CopyMatchLinkHelpText {
             get {
@@ -1402,7 +1402,7 @@ namespace Tql.App {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Match can be launched.
+        ///   Looks up a localized string similar to Search result can be launched.
         /// </summary>
         public static string SearchResultControl_MatchCanBeLaunched {
             get {
@@ -1411,7 +1411,7 @@ namespace Tql.App {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This match is for something you can launch. Click on it, or press Enter to launch the match..
+        ///   Looks up a localized string similar to This search result is for something you can launch. Click on it, or press Enter to launch the search result..
         /// </summary>
         public static string SearchResultControl_MatchCanBeLaunchedHelpText {
             get {
@@ -1420,7 +1420,7 @@ namespace Tql.App {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Match contains sub items.
+        ///   Looks up a localized string similar to Search result is a category.
         /// </summary>
         public static string SearchResultControl_MatchContainsSubItems {
             get {
@@ -1429,7 +1429,7 @@ namespace Tql.App {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This match is a category and can it self be searched. Press Tab to enter the category to search in it..
+        ///   Looks up a localized string similar to This search result is a category and can it self be searched. Press Tab to enter the category to search in it..
         /// </summary>
         public static string SearchResultControl_MatchContainsSubItemsHelpText {
             get {
@@ -1456,7 +1456,7 @@ namespace Tql.App {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Remove match from the history.
+        ///   Looks up a localized string similar to Remove search result from the history.
         /// </summary>
         public static string SearchResultControl_RemoveMatchFromHistoryHelpText {
             get {
