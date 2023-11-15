@@ -51,4 +51,5 @@ jobs:
         with:
           files: Build/Distrib/Tql*.msi
           generate_release_notes: true
+          prerelease: true
           body: ${{ steps.tag-data.outputs.git-tag-annotation }}
