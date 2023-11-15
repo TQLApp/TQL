@@ -7,18 +7,19 @@
 		<LangVersion>latest</LangVersion>
 		<UseWPF>true</UseWPF>
 		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
-    <Product>TQL Azure Plugin</Product>
-    <Description>Techie's Quick Launcher plugin for Azure.</Description>
-  </PropertyGroup>
+		<Product>TQL Azure Plugin</Product>
+		<Description>Techie's Quick Launcher plugin for Azure.</Description>
+		<PackageId>TQLApp.Plugins.Azure</PackageId>
+	</PropertyGroup>
 
-  <Import Project="..\TqlPackage.targets" />
+	<Import Project="..\TqlPackage.targets" />
 
 	<ItemGroup>
 		<EmbeddedResource Include="Resources\**\*" />
-    <None Remove="Resources\**\*" />
-  </ItemGroup>
+		<None Remove="Resources\**\*" />
+	</ItemGroup>
 
-  <ItemGroup>
+	<ItemGroup>
 		<None Remove="Categories\ResourceGroupQuery.txt" />
 		<None Remove="Categories\ResourceQuery.txt" />
 		<None Remove="Categories\Resources.json.gz" />
@@ -44,17 +45,17 @@
 			<SubType>Code</SubType>
 		</Compile>
 		<Compile Update="Labels.Designer.cs">
-		  <DesignTime>True</DesignTime>
-		  <AutoGen>True</AutoGen>
-		  <DependentUpon>Labels.resx</DependentUpon>
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Labels.resx</DependentUpon>
 		</Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <EmbeddedResource Update="Labels.resx">
-	    <Generator>PublicResXFileCodeGenerator</Generator>
-	    <LastGenOutput>Labels.Designer.cs</LastGenOutput>
-	  </EmbeddedResource>
+		<EmbeddedResource Update="Labels.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>Labels.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
 	</ItemGroup>
 
 </Project>

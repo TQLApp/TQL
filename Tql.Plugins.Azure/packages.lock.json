@@ -275,7 +275,7 @@
         "resolved": "4.5.0",
         "contentHash": "okurQJO6NRE/apDIP23ajJ0hpiNmJ+f0BwOlB/cSqTLQlw5upkf+5+96+iG2Jw40G1fCVCyPz/FhIABUjMR+RQ=="
       },
-      "tql.abstractions": {
+      "TQLApp.Abstractions": {
         "type": "Project",
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection.Abstractions": "[7.0.0, )",
@@ -283,14 +283,14 @@
           "System.Collections.Immutable": "[7.0.0, )"
         }
       },
-      "tql.utilities": {
+      "TQLApp.Utilities": {
         "type": "Project",
         "dependencies": {
           "JetBrains.Annotations": "[2023.2.0, )",
           "SharpVectors.Wpf": "[1.8.2, )",
           "System.Net.Http": "[4.3.4, )",
           "System.Text.Json": "[7.0.3, )",
-          "Tql.Abstractions": "[0.2.0, )"
+          "TQLApp.Abstractions": "[0.0.0, )"
         }
       }
     }

@@ -8,25 +8,26 @@
 		<UseWPF>true</UseWPF>
 		<UseWindowsForms>true</UseWindowsForms>
 		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
-    <Product>TQL Plugin Utilities</Product>
-    <Description>Utilities to simplify plugin development for Techie's Quick Launcher.</Description>
-  </PropertyGroup>
+		<Product>TQL Plugin Utilities</Product>
+		<Description>Utilities to simplify plugin development for Techie's Quick Launcher.</Description>
+		<PackageId>TQLApp.Utilities</PackageId>
+	</PropertyGroup>
 
-  <Import Project="..\TqlPackage.targets" />
+	<Import Project="..\TqlPackage.targets" />
 
-  <ItemGroup>
+	<ItemGroup>
 		<PackageReference Include="JetBrains.Annotations" Version="2023.2.0" />
 		<PackageReference Include="SharpVectors.Wpf" Version="1.8.2" />
 		<PackageReference Include="System.Net.Http" Version="4.3.4" />
 		<PackageReference Include="System.Text.Json" Version="7.0.3" />
-  </ItemGroup>
+	</ItemGroup>
 
-  <ItemGroup>
+	<ItemGroup>
 		<ProjectReference Include="..\Tql.Abstractions\Tql.Abstractions.csproj" />
 	</ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="System.Security" />
-  </ItemGroup>
+	<ItemGroup>
+		<Reference Include="System.Security" />
+	</ItemGroup>
 
 </Project>

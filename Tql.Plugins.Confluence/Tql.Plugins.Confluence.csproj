@@ -1,46 +1,47 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net48</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <LangVersion>latest</LangVersion>
-    <UseWPF>true</UseWPF>
-    <UseWindowsForms>true</UseWindowsForms>
-    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
-    <Product>TQL Confluence Plugin</Product>
-    <Description>Techie's Quick Launcher plugin for Confluence by Atlassian.</Description>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net48</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<LangVersion>latest</LangVersion>
+		<UseWPF>true</UseWPF>
+		<UseWindowsForms>true</UseWindowsForms>
+		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+		<Product>TQL Confluence Plugin</Product>
+		<Description>Techie's Quick Launcher plugin for Confluence by Atlassian.</Description>
+		<PackageId>TQLApp.Plugins.Confluence</PackageId>
+	</PropertyGroup>
 
-  <Import Project="..\TqlPackage.targets" />
+	<Import Project="..\TqlPackage.targets" />
 
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\**\*" />
-    <None Remove="Resources\**\*" />
-  </ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Include="Resources\**\*" />
+		<None Remove="Resources\**\*" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Tql.Utilities\Tql.Utilities.csproj" />
-  </ItemGroup>
-
-
-  <ItemGroup>
-    <Compile Update="ConfigurationUI\ConfigurationControl.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Labels.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Labels.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Tql.Utilities\Tql.Utilities.csproj" />
+	</ItemGroup>
 
 
-  <ItemGroup>
-    <EmbeddedResource Update="Labels.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Labels.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Update="ConfigurationUI\ConfigurationControl.xaml.cs">
+			<SubType>Code</SubType>
+		</Compile>
+		<Compile Update="Labels.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Labels.resx</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+
+	<ItemGroup>
+		<EmbeddedResource Update="Labels.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>Labels.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
 
 </Project>

@@ -8,11 +8,12 @@
 		<UseWPF>true</UseWPF>
 		<UseWindowsForms>true</UseWindowsForms>
 		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
-    <Product>TQL GitHib Plugin</Product>
-    <Description>Techie's Quick Launcher plugin for GitHub.</Description>
-  </PropertyGroup>
+		<Product>TQL GitHib Plugin</Product>
+		<Description>Techie's Quick Launcher plugin for GitHub.</Description>
+		<PackageId>TQLApp.Plugins.GitHub</PackageId>
+	</PropertyGroup>
 
-  <Import Project="..\TqlPackage.targets" />
+	<Import Project="..\TqlPackage.targets" />
 
 	<ItemGroup>
 		<EmbeddedResource Include="Resources\**\*" />
@@ -33,17 +34,17 @@
 			<SubType>Code</SubType>
 		</Compile>
 		<Compile Update="Labels.Designer.cs">
-		  <DesignTime>True</DesignTime>
-		  <AutoGen>True</AutoGen>
-		  <DependentUpon>Labels.resx</DependentUpon>
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Labels.resx</DependentUpon>
 		</Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <EmbeddedResource Update="Labels.resx">
-	    <Generator>PublicResXFileCodeGenerator</Generator>
-	    <LastGenOutput>Labels.Designer.cs</LastGenOutput>
-	  </EmbeddedResource>
+		<EmbeddedResource Update="Labels.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>Labels.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
 	</ItemGroup>
 
 </Project>
