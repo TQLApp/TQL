@@ -104,6 +104,10 @@ public partial class App
             if (TryStartUpdate(logger))
                 return;
         }
+        else
+        {
+            notifyIconManager.State = NotifyIconState.Running;
+        }
 
         logger.LogInformation("Initializing plugins");
 
