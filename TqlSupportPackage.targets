@@ -1,0 +1,9 @@
+<Project>
+
+	<PropertyGroup>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+	</PropertyGroup>
+
+	<Import Project="TqlPackage.targets" />
+
+</Project>

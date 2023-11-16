@@ -13,7 +13,7 @@
 		<PackageId>TQLApp.Abstractions</PackageId>
 	</PropertyGroup>
 
-	<Import Project="..\TqlPackage.targets" />
+	<Import Project="..\TqlSupportPackage.targets" />
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />

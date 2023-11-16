@@ -13,7 +13,7 @@
 		<PackageId>TQLApp.Utilities</PackageId>
 	</PropertyGroup>
 
-	<Import Project="..\TqlPackage.targets" />
+	<Import Project="..\TqlSupportPackage.targets" />
 
 	<ItemGroup>
 		<PackageReference Include="JetBrains.Annotations" Version="2023.2.0" />

@@ -4,7 +4,6 @@
 		<Version>0.0</Version>
 		<Authors>Pieter van Ginkel</Authors>
 		<Copyright>Copyright © 2023 Pieter van Ginkel</Copyright>
-		<PackageTags>tql-plugin</PackageTags>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 	</PropertyGroup>
