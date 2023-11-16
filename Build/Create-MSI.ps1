@@ -82,7 +82,7 @@ Function Create-MSI
 
     Run-WiX-Command `
         -File "heat.exe" `
-        -ArgumentList "dir . -nologo -v -dr MyBinFolder -srd -cg MyAppComponents -gg -sfrag -scom -sreg -out ..\AppFiles.wxs" `
+        -ArgumentList "dir . -nologo -v -dr INSTALLFOLDER -srd -cg MyAppComponents -gg -sfrag -scom -sreg -out ..\AppFiles.wxs" `
         -WorkingDirectory "$Global:Distrib\SourceDir"
 
     Get-Content "$Global:Distrib\AppFiles.wxs"

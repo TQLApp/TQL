@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using System.Globalization;
-using System.IO;
 using System.Net.Http;
 using System.Reflection;
 using System.Windows.Markup;
@@ -142,9 +141,6 @@ public partial class App
 
     private (ILoggerFactory, InMemoryLoggerProvider) SetupLogging(Store store)
     {
-        var logDirectory = Path.Combine(store.DataFolder, "Log");
-        Directory.CreateDirectory(logDirectory);
-
         var inMemoryLoggerProvider = new InMemoryLoggerProvider();
 
         var loggerFactory = LoggerFactory.Create(builder =>
@@ -156,7 +152,7 @@ public partial class App
             }
 
             builder.AddFile(
-                Path.Combine(logDirectory, "Log.log"),
+                Path.Combine(store.LogFolder, "Log.log"),
                 options =>
                 {
 #if !DEBUG

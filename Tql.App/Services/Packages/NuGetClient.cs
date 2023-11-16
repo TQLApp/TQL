@@ -272,7 +272,7 @@ internal class NuGetClient : IDisposable
 
         if (requiredDependency != null)
         {
-            var dependencyVersion = installActions
+            var resolvedDependency = installActions
                 .Select(p => p.PackageIdentity)
                 .Where(
                     p =>
@@ -285,16 +285,25 @@ internal class NuGetClient : IDisposable
                 .OrderByDescending(p => p.Version.Version)
                 .FirstOrDefault();
 
-            if (dependencyVersion == null)
+            if (resolvedDependency == null)
             {
                 throw new NuGetClientException(
                     $"NuGet package '{identity.Id}' does not list '{requiredDependency.Id}' as a dependency"
                 );
             }
-            if (dependencyVersion.Version.Version.CompareTo(requiredDependency.Version.Version) > 0)
+
+            var requiredVersion = requiredDependency.Version.Version;
+            var resolvedVersion = resolvedDependency.Version.Version;
+
+            // Local builds have 0.0 as the version. Skip the version check in this case.
+            if (
+                !requiredVersion.Equals(new Version(0, 0, 0, 0))
+                && resolvedVersion.CompareTo(requiredVersion) > 0
+            )
             {
                 throw new NuGetClientException(
-                    $"NuGet package '{identity.Id}' requires version '{dependencyVersion.Version.Version}' of '{requiredDependency.Id}' which is higher then the supported version '{requiredDependency.Version.Version}'"
+                    $"NuGet package '{identity.Id}' requires version '{resolvedVersion}' of "
+                        + $"'{requiredDependency.Id}' which is higher then the supported version '{requiredVersion}'"
                 );
             }
         }

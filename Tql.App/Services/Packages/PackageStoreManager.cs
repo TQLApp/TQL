@@ -24,9 +24,7 @@ internal class PackageStoreManager
         _store = store;
         _logger = logger;
 
-        PackagesFolder = Path.Combine(store.DataFolder, "Packages");
-
-        Directory.CreateDirectory(PackagesFolder);
+        PackagesFolder = _store.PackagesFolder;
 
         AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
     }

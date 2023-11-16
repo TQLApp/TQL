@@ -43,9 +43,9 @@
     -->
 
     <Directory Id="TARGETDIR" Name="SourceDir">
-      <Directory Id="AppDataFolder">
-        <Directory Id="INSTALLFOLDER" Name="TQL">
-          <Directory Id="MyBinFolder" Name="Bin" />
+      <Directory Id="LocalAppDataFolder">
+        <Directory Id="ProgramsFolder" Name="Programs">
+          <Directory Id="INSTALLFOLDER" Name="TQL" />
         </Directory>
       </Directory>
       <Directory Id="ProgramMenuFolder">
@@ -64,7 +64,7 @@
           Id="StartMenuShortcut"
           Name="$(var.ProductName)"
           Description="$(var.ProductDescription)"
-          Target="[MyBinFolder]Tql.App.exe"
+          Target="[INSTALLFOLDER]Tql.App.exe"
           WorkingDirectory="INSTALLFOLDER"
         />
         <Shortcut
@@ -99,7 +99,7 @@
           Id="StartupShortcut"
           Name="$(var.ProductName)"
           Description="$(var.ProductDescription)"
-          Target="[MyBinFolder]Tql.App.exe"
+          Target="[INSTALLFOLDER]Tql.App.exe"
           WorkingDirectory="INSTALLFOLDER"
           Arguments="--silent"
         />
@@ -199,7 +199,7 @@
       Impersonate="yes"
       Return="asyncNoWait"
       Directory="INSTALLFOLDER"
-      ExeCommand="[MyBinFolder]Tql.App.exe"
+      ExeCommand="[INSTALLFOLDER]Tql.App.exe"
     />
 
     <InstallExecuteSequence>

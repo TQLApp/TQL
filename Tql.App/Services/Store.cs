@@ -9,8 +9,10 @@ internal class Store : IStore
 {
     private readonly string _environmentName;
 
+    public string PackagesFolder { get; }
     public string DataFolder { get; }
     public string CacheFolder { get; }
+    public string LogFolder { get; }
 
     public Store(string? environment)
     {
@@ -18,16 +20,17 @@ internal class Store : IStore
         if (environment != null)
             _environmentName += $" - {environment}";
 
-        DataFolder = Path.Combine(
+        DataFolder = EnsureFolder(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
             _environmentName
         );
-
-        Directory.CreateDirectory(DataFolder);
-
-        CacheFolder = Path.Combine(DataFolder, "Cache");
-
-        Directory.CreateDirectory(CacheFolder);
+        var localFolder = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            _environmentName
+        );
+        CacheFolder = EnsureFolder(localFolder, "Cache");
+        LogFolder = EnsureFolder(localFolder, "Log");
+        PackagesFolder = EnsureFolder(localFolder, "Packages");
     }
 
     public RegistryKey CreateBaseKey()
@@ -42,21 +45,17 @@ internal class Store : IStore
         return key.CreateSubKey($"Plugins\\{pluginId}")!;
     }
 
-    public string GetDataFolder(Guid pluginId)
+    public string GetDataFolder(Guid pluginId) =>
+        EnsureFolder(DataFolder, "Plugins", pluginId.ToString());
+
+    public string GetCacheFolder(Guid pluginId) =>
+        EnsureFolder(CacheFolder, "Plugins", pluginId.ToString());
+
+    private string EnsureFolder(params string[] paths)
     {
-        var path = Path.Combine(DataFolder, "Plugins", pluginId.ToString());
+        var folder = Path.Combine(paths);
 
-        Directory.CreateDirectory(path);
-
-        return path;
-    }
-
-    public string GetCacheFolder(Guid pluginId)
-    {
-        var path = Path.Combine(CacheFolder, "Plugins", pluginId.ToString());
-
-        Directory.CreateDirectory(path);
-
-        return path;
+        Directory.CreateDirectory(folder);
+        return folder;
     }
 }
