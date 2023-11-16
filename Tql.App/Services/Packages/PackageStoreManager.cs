@@ -270,7 +270,7 @@ internal class PackageStoreManager
     private record PackageManifest(int Version, ImmutableArray<PackageEntry> Entries);
 }
 
-internal record struct AssemblyKey(string Name, string CultureName)
+internal record struct AssemblyKey(string Name, string? CultureName)
 {
     public static AssemblyKey FromName(AssemblyName name) => new(name.Name, name.CultureName);
 
@@ -285,7 +285,11 @@ internal record struct AssemblyKey(string Name, string CultureName)
         unchecked
         {
             return (StringComparer.OrdinalIgnoreCase.GetHashCode(Name) * 397)
-                ^ StringComparer.OrdinalIgnoreCase.GetHashCode(CultureName);
+                ^ (
+                    CultureName != null
+                        ? StringComparer.OrdinalIgnoreCase.GetHashCode(CultureName)
+                        : 0
+                );
         }
     }
 }

@@ -3,7 +3,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
                     xmlns:ap="clr-namespace:Tql.App.Themes.Attached"
-                    xmlns:support="clr-namespace:Tql.App.Support">
+                    xmlns:support="clr-namespace:Tql.App.Support"
+                    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit">
     <Style x:Key="FocusVisual">
         <Setter Property="Control.Template">
             <Setter.Value>
@@ -109,7 +110,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-
+    
     <Style TargetType="{x:Type ToggleButton}">
         <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
         <Setter Property="Background" Value="{DynamicResource Button.Static.Background}"/>
@@ -4651,6 +4652,15 @@
         <Setter Property="TextOptions.TextRenderingMode" Value="ClearType"/>
         <Setter Property="TextOptions.TextHintingMode" Value="Fixed" />
         <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
+    </Style>
+
+    <Style TargetType="{x:Type xctk:ColorPicker}">
+        <Setter Property="DropDownBackground" Value="{DynamicResource ComboBox.Static.Background}"/>
+        <Setter Property="DropDownBorderBrush" Value="{DynamicResource ComboBox.Static.Border}"/>
+        <Setter Property="HeaderBackground" Value="{DynamicResource TabItem.Selected.Background}"/>
+        <Setter Property="HeaderForeground" Value="{DynamicResource ABrush.Foreground.Static}"/>
+        <Setter Property="TabBackground" Value="{DynamicResource TabItem.Selected.Background}"/>
+        <Setter Property="TabForeground" Value="{DynamicResource ABrush.Foreground.Static}"/>
     </Style>
 </ResourceDictionary>
     
