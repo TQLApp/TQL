@@ -8,7 +8,7 @@ namespace Tql.App.Services;
 internal class Settings : INotifyPropertyChanged
 {
     public const int DefaultHistoryInRootResults = 90;
-    public const int DefaultCacheUpdateInterval = 30;
+    public const int DefaultCacheUpdateInterval = 60;
     public const int DefaultMainFontSize = 15;
     public const string DefaultMainWindowTint = "#40000000";
 
