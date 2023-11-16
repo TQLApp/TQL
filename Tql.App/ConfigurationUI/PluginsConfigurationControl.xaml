@@ -119,13 +119,11 @@
                                 </TextBlock>
 
                                 <TextBlock Margin="3">
-                                    <Run
-                                        Text="{Binding Identity.Version, Mode=OneWay}" />
-                                    ,
-                                    <Run
-                                        Text="{Binding DownloadCount, Mode=OneWay}" />
-                                    <Run
-                                        Text="{x:Static app:Labels.PluginsConfiguration_PluginDownloads}" />
+                                    <!-- prettier-ignore-start -->
+                                    <Run Text="{Binding Identity.Version, Mode=OneWay}" />,
+                                    <Run Text="{Binding DownloadCount, Mode=OneWay}" />
+                                    <Run Text="{x:Static app:Labels.PluginsConfiguration_PluginDownloads}" />
+                                    <!-- prettier-ignore-end -->
                                 </TextBlock>
                             </StackPanel>
 
