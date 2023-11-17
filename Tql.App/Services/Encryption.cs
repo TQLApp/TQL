@@ -6,6 +6,12 @@ namespace Tql.App.Services;
 
 internal class Encryption : IEncryption, IDisposable
 {
+    // This header identifies the encryption algorithm in use.
+    // This is added for forward compatibility to ensure we can
+    // decrypt data if we encrypted using an algorithm other than
+    // the current one.
+    private const string Header = "aes1:";
+
     private readonly Aes _aes;
 
     public Encryption(Settings settings)
@@ -55,7 +61,7 @@ internal class Encryption : IEncryption, IDisposable
             source.Write(data, offset, length);
         }
 
-        return Convert.ToBase64String(target.ToArray());
+        return Header + Convert.ToBase64String(target.ToArray());
     }
 
     public string? EncryptString(string? data)
@@ -68,7 +74,10 @@ internal class Encryption : IEncryption, IDisposable
 
     public byte[] Decrypt(string encrypted)
     {
-        var bytes = Convert.FromBase64String(encrypted);
+        if (!encrypted.StartsWith(Header))
+            throw new ArgumentException("Invalid data", nameof(encrypted));
+
+        var bytes = Convert.FromBase64String(encrypted.Substring(Header.Length));
 
         using var decryptor = _aes.CreateDecryptor();
 
