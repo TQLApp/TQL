@@ -1,4 +1,4 @@
-﻿namespace Tql.App.Services;
+﻿namespace Tql.Abstractions;
 
 public enum RestartMode
 {

@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using Tql.App.Services;
 
 namespace Tql.Abstractions;
 
@@ -35,4 +34,6 @@ public interface IUI
     void RemoveNotificationBar(string key);
 
     void OpenConfiguration(Guid id);
+
+    void Shutdown(RestartMode mode);
 }

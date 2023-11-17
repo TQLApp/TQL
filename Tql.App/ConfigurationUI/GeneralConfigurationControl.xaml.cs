@@ -134,7 +134,7 @@ internal partial class GeneralConfigurationControl : IConfigurationPage
                     DialogIcon.Information
                 );
 
-                ((UI)_ui).Shutdown(RestartMode.Restart);
+                _ui.Shutdown(RestartMode.Restart);
             }
         };
     }

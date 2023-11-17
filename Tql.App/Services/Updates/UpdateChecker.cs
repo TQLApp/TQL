@@ -263,7 +263,7 @@ internal class UpdateChecker : IDisposable
             {
                 _logger.LogInformation("Updating is running; shutting down");
 
-                ((UI)_ui).Shutdown(RestartMode.SilentRestart);
+                _ui.Shutdown(RestartMode.SilentRestart);
             }
         }
         catch (Exception ex)

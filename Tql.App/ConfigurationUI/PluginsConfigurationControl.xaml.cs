@@ -142,7 +142,7 @@ internal partial class PluginsConfigurationControl : IConfigurationPage
 
     private void _restart_Click(object sender, RoutedEventArgs e)
     {
-        ((UI)_ui).Shutdown(RestartMode.Restart);
+        _ui.Shutdown(RestartMode.Restart);
     }
 
     private void _browser_SelectionChanged(object sender, SelectionChangedEventArgs e)
