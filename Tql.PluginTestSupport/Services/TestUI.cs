@@ -79,7 +79,12 @@ public class TestUI : IUI
         DialogIcon icon = DialogIcon.Warning
     )
     {
-        throw new NotImplementedException();
+        throw new NotSupportedException();
+    }
+
+    public void Shutdown(RestartMode mode)
+    {
+        throw new NotSupportedException();
     }
 
     private record Win32Window(IntPtr Handle) : IWin32Window;
