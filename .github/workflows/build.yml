@@ -8,6 +8,8 @@ on:
 permissions:
   contents: write
   packages: write
+  pages: write
+  id-token: write
 
 jobs:
   build:
@@ -17,7 +19,7 @@ jobs:
     steps:
       - name: Authenticate GitHub package source
         run: dotnet nuget add source --username USERNAME --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/TQLApp/index.json"
-      
+
       - uses: actions/checkout@v4
 
       - name: Fetch tags
@@ -64,3 +66,19 @@ jobs:
 
       - name: Publish NuGet packages to NuGet.org
         run: dotnet nuget push "**/*.nupkg" --api-key "${{ secrets.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+
+      - run: dotnet tool update -g docfx
+
+      - run: docfx Documentation/docfx.json
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: "Documentation/_site"
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
