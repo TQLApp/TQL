@@ -61,11 +61,11 @@ jobs:
           prerelease: true
           body: ${{ steps.tag-data.outputs.git-tag-annotation }}
 
-      - name: Publish NuGet packages to TQLApp
-        run: dotnet nuget push "**/*.nupkg"  --source github --skip-duplicate
-
       - name: Publish NuGet packages to NuGet.org
         run: dotnet nuget push "**/*.nupkg" --api-key "${{ secrets.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+
+      - name: Publish symbol NuGet packages to NuGet.org
+        run: dotnet nuget push "**/*.snupkg" --api-key "${{ secrets.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
 
       - run: dotnet tool update -g docfx
 
