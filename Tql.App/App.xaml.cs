@@ -72,18 +72,17 @@ public partial class App
         else
             plugins = packageStoreManager.GetPlugins();
 
+        var pluginManager = new PluginManager(plugins);
+
         var builder = Host.CreateApplicationBuilder(e.Args);
 
         builder.Services.AddSingleton(loggerFactory);
         builder.Services.AddSingleton(inMemoryLoggerProvider);
         builder.Services.AddSingleton(notifyIconManager);
 
-        ConfigureServices(builder.Services, store, packageStoreManager, plugins);
+        ConfigureServices(builder.Services, store, packageStoreManager, pluginManager);
 
-        foreach (var plugin in plugins)
-        {
-            plugin.ConfigureServices(builder.Services);
-        }
+        pluginManager.ConfigureServices(builder.Services);
 
         _host = builder.Build();
 
@@ -113,8 +112,6 @@ public partial class App
         ((UI)_host.Services.GetRequiredService<IUI>()).SetSynchronizationContext(
             SynchronizationContext.Current
         );
-
-        var pluginManager = (PluginManager)_host.Services.GetRequiredService<IPluginManager>();
 
         pluginManager.Initialize(_host.Services);
 
@@ -242,7 +239,7 @@ public partial class App
         IServiceCollection builder,
         Store store,
         PackageStoreManager packageStoreManager,
-        ImmutableArray<ITqlPlugin> plugins
+        PluginManager pluginManager
     )
     {
         builder.AddSingleton<IStore>(store);
@@ -257,7 +254,7 @@ public partial class App
         builder.AddSingleton<TelemetryService>();
         builder.AddSingleton<IPeopleDirectoryManager, PeopleDirectoryManager>();
         builder.AddSingleton<HotKeyService>();
-        builder.AddSingleton<IPluginManager>(new PluginManager(plugins));
+        builder.AddSingleton<IPluginManager>(pluginManager);
         builder.AddSingleton<PackageManager>();
         builder.AddSingleton(packageStoreManager);
         builder.AddSingleton<QuickStartManager>();

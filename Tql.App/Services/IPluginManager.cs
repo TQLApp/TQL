@@ -4,5 +4,6 @@ namespace Tql.App.Services;
 
 internal interface IPluginManager
 {
-    ImmutableArray<ITqlPlugin> Plugins { get; }
+    ImmutableArray<IAvailablePlugin> AvailablePlugins { get; }
+    IEnumerable<ITqlPlugin> Plugins { get; }
 }

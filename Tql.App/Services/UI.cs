@@ -152,7 +152,12 @@ internal class UI : IUI
         }
     }
 
-    public void ShowNotificationBar(string key, string message, Action? activate, Action? dismiss)
+    public void ShowNotificationBar(
+        string key,
+        string message,
+        Action? activate = null,
+        Action? dismiss = null
+    )
     {
         lock (_syncRoot)
         {

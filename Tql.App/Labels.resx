@@ -654,4 +654,12 @@
   <data name="PluginsConfiguration_PluginInstallationFailed" xml:space="preserve">
     <value>Plugin installation failed</value>
   </data>
+  <data name="PluginManager_PluginFailedToLoad" xml:space="preserve">
+    <value>Plugin '{0}' failed to load</value>
+  </data>
+  <data name="PluginManager_PluginFailedToLoadSubtitle" xml:space="preserve">
+    <value>The following error occurred while loading the '{0}' plugin: {1}.
+
+Do you want to restart TQL to see if this resolves the issue?</value>
+  </data>
 </root>

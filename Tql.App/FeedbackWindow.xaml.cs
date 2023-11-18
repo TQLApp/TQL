@@ -29,11 +29,11 @@ internal partial class FeedbackWindow
         sb.AppendLine("Installed plugins:");
         sb.AppendLine();
 
-        foreach (var plugin in pluginManager.Plugins)
+        foreach (var plugin in pluginManager.AvailablePlugins)
         {
-            var assemblyName = plugin.GetType().Assembly.GetName();
+            var assemblyName = plugin.Plugin.GetType().Assembly.GetName();
 
-            sb.AppendLine($"- {assemblyName.Name} ({assemblyName.Version}): {plugin.Id}");
+            sb.AppendLine($"- {assemblyName.Name} ({assemblyName.Version}): {plugin.Plugin.Id}");
         }
 
         _systemInformation.Text = sb.ToString().TrimEnd();
