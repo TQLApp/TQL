@@ -1,19 +1,24 @@
 ﻿using System.Windows.Interop;
 using Tql.Abstractions;
 using Tql.App.Support;
-using Tql.Interop;
+using Tql.Utilities;
 
 namespace Tql.App.Services;
 
 internal partial class InteractiveAuthenticationWindow
 {
     private readonly IInteractiveAuthentication _interactiveAuthentication;
+    private readonly IUI _ui;
 
     public Exception? Exception { get; private set; }
 
-    public InteractiveAuthenticationWindow(IInteractiveAuthentication interactiveAuthentication)
+    public InteractiveAuthenticationWindow(
+        IInteractiveAuthentication interactiveAuthentication,
+        IUI ui
+    )
     {
         _interactiveAuthentication = interactiveAuthentication;
+        _ui = ui;
 
         InitializeComponent();
 
@@ -35,11 +40,11 @@ internal partial class InteractiveAuthenticationWindow
             }
             catch (Exception ex)
             {
-                var result = TaskDialogEx.Error(
+                var result = _ui.ShowError(
                     this,
                     Labels.InteractiveAuthenticationWindow_FailedToAuthenticate,
                     ex,
-                    buttons: TaskDialogCommonButtons.Retry | TaskDialogCommonButtons.Cancel
+                    buttons: DialogCommonButtons.Retry | DialogCommonButtons.Cancel
                 );
 
                 if (result != System.Windows.Forms.DialogResult.Retry)

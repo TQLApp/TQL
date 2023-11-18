@@ -45,7 +45,7 @@ internal class UI : IUI
         _synchronizationContext!.Post(
             _ =>
             {
-                var window = new InteractiveAuthenticationWindow(interactiveAuthentication)
+                var window = new InteractiveAuthenticationWindow(interactiveAuthentication, this)
                 {
                     Owner = MainWindow
                 };
@@ -101,7 +101,7 @@ internal class UI : IUI
     }
 
     public DialogResult ShowConfirmation(
-        UIElement owner,
+        IWin32Window owner,
         string title,
         string? subtitle = null,
         DialogCommonButtons buttons = DialogCommonButtons.Yes | DialogCommonButtons.No,
@@ -127,7 +127,7 @@ internal class UI : IUI
     }
 
     public DialogResult ShowError(
-        UIElement owner,
+        IWin32Window owner,
         string title,
         Exception exception,
         DialogIcon icon = DialogIcon.Error,

@@ -1,7 +1,7 @@
 ﻿using System.Windows.Forms;
-using System.Windows.Interop;
 using Tql.Interop;
 using Clipboard = System.Windows.Forms.Clipboard;
+using IWin32Window = System.Windows.Forms.IWin32Window;
 
 namespace Tql.App.Support;
 
@@ -21,7 +21,7 @@ public static class TaskDialogEx
     }
 
     public static DialogResult Confirm(
-        UIElement owner,
+        IWin32Window owner,
         string title,
         string? subtitle = null,
         TaskDialogCommonButtons buttons = TaskDialogCommonButtons.Yes | TaskDialogCommonButtons.No,
@@ -33,11 +33,11 @@ public static class TaskDialogEx
         taskDialog.AllowDialogCancellation = (buttons & TaskDialogCommonButtons.Cancel) != 0;
         taskDialog.CommonButtons = buttons;
 
-        return (DialogResult)taskDialog.Show(GetOwner(owner));
+        return (DialogResult)taskDialog.Show(owner);
     }
 
     public static DialogResult Error(
-        UIElement owner,
+        IWin32Window owner,
         string title,
         Exception exception,
         TaskDialogIcon icon = TaskDialogIcon.Error,
@@ -57,7 +57,7 @@ public static class TaskDialogEx
 
         taskDialog.Buttons = new[] { new TaskDialogButton(101, Labels.Alert_CopyToClipboard) };
 
-        var result = taskDialog.Show(GetOwner(owner));
+        var result = taskDialog.Show(owner);
 
         if (result == 101)
         {
@@ -66,10 +66,5 @@ public static class TaskDialogEx
         }
 
         return (DialogResult)result;
-    }
-
-    private static IntPtr GetOwner(UIElement owner)
-    {
-        return new WindowInteropHelper(Window.GetWindow(owner)!).Handle;
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.Windows;
-using Tql.App.Services;
+﻿using Tql.App.Services;
 
 namespace Tql.Abstractions;
 
@@ -10,7 +9,7 @@ public interface IUI
     void OpenUrl(string url);
 
     DialogResult ShowConfirmation(
-        UIElement owner,
+        IWin32Window owner,
         string title,
         string? subtitle = null,
         DialogCommonButtons buttons = DialogCommonButtons.Yes | DialogCommonButtons.No,
@@ -18,7 +17,7 @@ public interface IUI
     );
 
     DialogResult ShowError(
-        UIElement owner,
+        IWin32Window owner,
         string title,
         Exception exception,
         DialogIcon icon = DialogIcon.Error,

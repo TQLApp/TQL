@@ -1,5 +1,4 @@
-﻿using System.Windows;
-using Tql.Abstractions;
+﻿using Tql.Abstractions;
 using Tql.App.Services;
 
 namespace Tql.PluginTestSupport.Services;
@@ -60,7 +59,7 @@ public class TestUI : IUI
     }
 
     public DialogResult ShowError(
-        UIElement owner,
+        IWin32Window owner,
         string title,
         Exception exception,
         DialogIcon icon = DialogIcon.Error,
@@ -71,7 +70,7 @@ public class TestUI : IUI
     }
 
     public DialogResult ShowConfirmation(
-        UIElement owner,
+        IWin32Window owner,
         string title,
         string? subtitle = null,
         DialogCommonButtons buttons =
