@@ -33,11 +33,14 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1
 
-      - uses: actions/cache@v3
-        id: cache
-        with:
-          path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-v2-${{ hashFiles('**/packages.lock.json') }}
+      # Caches are scoped to branches and tags, so doesn't work for us since
+      # we're building off of tags.
+      #
+      # - uses: actions/cache@v3
+      #   id: cache
+      #   with:
+      #     path: ~/.nuget/packages
+      #     key: ${{ runner.os }}-nuget-v2-${{ hashFiles('**/packages.lock.json') }}
 
       - name: Restore Solution
         run: msbuild -nodeReuse:false -maxCpuCount -target:Restore -property:Platform="Any CPU" -property:Configuration="Release" -property:Version="${{ steps.get-build-version.outputs.build-version }}" Tql.sln
