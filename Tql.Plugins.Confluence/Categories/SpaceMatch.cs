@@ -30,7 +30,7 @@ internal class SpaceMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, 
         Icon = iconCacheManager.GetIcon(new IconKey(dto.Url, dto.Icon)) ?? Images.Confluence;
     }
 
-    public Task Run(IServiceProvider serviceProvider, Window owner)
+    public Task Run(IServiceProvider serviceProvider, IWin32Window owner)
     {
         serviceProvider.GetRequiredService<IUI>().OpenUrl(_dto.GetUrl());
 

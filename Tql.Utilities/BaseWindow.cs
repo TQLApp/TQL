@@ -5,8 +5,18 @@ using Color = System.Windows.Media.Color;
 
 namespace Tql.Utilities;
 
+/// <summary>
+/// Base class for WPF windows.
+/// </summary>
+/// <remarks>
+/// Use this class as the base class for any WPF windows you create to
+/// integrate with the TQL theme and styling.
+/// </remarks>
 public class BaseWindow : Window
 {
+    /// <summary>
+    /// Initializes a new <see cref="BaseWindow"/>.
+    /// </summary>
     public BaseWindow()
     {
         TextOptions.SetTextFormattingMode(this, TextFormattingMode.Display);
@@ -17,6 +27,7 @@ public class BaseWindow : Window
         Style = (Style)FindResource("CustomWindowStyle");
     }
 
+    /// <inheritdoc/>
     protected override void OnSourceInitialized(EventArgs e)
     {
         base.OnSourceInitialized(e);

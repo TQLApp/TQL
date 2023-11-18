@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Windows.Forms;
+using Microsoft.Extensions.DependencyInjection;
 using Tql.Abstractions;
 using Tql.Plugins.AzureDevOps.Services;
 using Tql.Utilities;
@@ -22,7 +23,7 @@ internal class WorkItemMatch : IRunnableMatch, ISerializableMatch, ICopyableMatc
             iconManager.GetWorkItemIconImage(dto.Url, dto.ProjectName, dto.Type) ?? Images.Boards;
     }
 
-    public Task Run(IServiceProvider serviceProvider, Window owner)
+    public Task Run(IServiceProvider serviceProvider, IWin32Window owner)
     {
         serviceProvider.GetRequiredService<IUI>().OpenUrl(_dto.GetUrl());
 

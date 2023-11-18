@@ -22,7 +22,7 @@ internal class TestCache<T> : ICache<T>
         if (!LoadFromDisk())
             Create();
 
-        _cacheManager.CacheExpired += (_, _) => Create();
+        _cacheManager.CacheInvalidationRequired += (_, _) => Create();
     }
 
     private string GetCacheFileName()

@@ -15,14 +15,14 @@ public class OutlookPlugin : ITqlPlugin
     public static readonly Guid Id = Guid.Parse("90410ab2-0836-49e8-9af3-3df479d43e75");
 
     private readonly MatchTypeManagerBuilder _matchTypeManagerBuilder;
-    private MatchTypeManager? _matchTypeManager;
+    private IMatchTypeManager? _matchTypeManager;
 
     Guid ITqlPlugin.Id => Id;
     public string Title => Labels.OutlookPlugin_Label;
 
     public OutlookPlugin()
     {
-        _matchTypeManagerBuilder = new MatchTypeManagerBuilder(GetType().Assembly);
+        _matchTypeManagerBuilder = MatchTypeManagerBuilder.ForAssembly(GetType().Assembly);
     }
 
     public void ConfigureServices(IServiceCollection services)
@@ -49,9 +49,9 @@ public class OutlookPlugin : ITqlPlugin
             select matchType.Deserialize(JsonSerializer.Serialize(new RootItemDto()));
     }
 
-    public IMatch? DeserializeMatch(Guid typeId, string json)
+    public IMatch? DeserializeMatch(Guid typeId, string value)
     {
-        return _matchTypeManager?.Deserialize(typeId, json);
+        return _matchTypeManager?.Deserialize(typeId, value);
     }
 
     public IEnumerable<IConfigurationPage> GetConfigurationPages() =>

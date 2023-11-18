@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Tql.Abstractions;
 using Tql.Plugins.Jira.Services;
-using Tql.Utilities;
 
 namespace Tql.Plugins.Jira.Categories;
 
@@ -27,7 +26,7 @@ internal class FilterMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch,
         _factory = factory;
     }
 
-    public Task Run(IServiceProvider serviceProvider, Window owner)
+    public Task Run(IServiceProvider serviceProvider, IWin32Window owner)
     {
         serviceProvider.GetRequiredService<IUI>().OpenUrl(_dto.ViewUrl);
 
@@ -52,9 +51,6 @@ internal class FilterMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch,
         CancellationToken cancellationToken
     )
     {
-        if (text.IsWhiteSpace())
-            return Array.Empty<IMatch>();
-
         await context.DebounceDelay(cancellationToken);
 
         var client = _configurationManager.GetClient(_dto.Url);

@@ -34,7 +34,7 @@ internal class RepositoryMatch
         _factory = factory;
     }
 
-    public Task Run(IServiceProvider serviceProvider, Window owner)
+    public Task Run(IServiceProvider serviceProvider, IWin32Window owner)
     {
         serviceProvider.GetRequiredService<IUI>().OpenUrl(_dto.Url);
 

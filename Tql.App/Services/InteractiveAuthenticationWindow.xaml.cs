@@ -40,7 +40,7 @@ internal partial class InteractiveAuthenticationWindow
             }
             catch (Exception ex)
             {
-                var result = _ui.ShowError(
+                var result = _ui.ShowException(
                     this,
                     Labels.InteractiveAuthenticationWindow_FailedToAuthenticate,
                     ex,

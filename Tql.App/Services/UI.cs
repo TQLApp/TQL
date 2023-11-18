@@ -100,7 +100,7 @@ internal class UI : IUI
         );
     }
 
-    public DialogResult ShowConfirmation(
+    public DialogResult ShowTaskDialog(
         IWin32Window owner,
         string title,
         string? subtitle = null,
@@ -126,12 +126,12 @@ internal class UI : IUI
         }
     }
 
-    public DialogResult ShowError(
+    public DialogResult ShowException(
         IWin32Window owner,
         string title,
         Exception exception,
-        DialogIcon icon = DialogIcon.Error,
-        DialogCommonButtons buttons = DialogCommonButtons.OK
+        DialogCommonButtons buttons = DialogCommonButtons.OK,
+        DialogIcon icon = DialogIcon.Error
     )
     {
         EnterModalDialog();

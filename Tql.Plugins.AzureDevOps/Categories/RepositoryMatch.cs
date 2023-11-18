@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Nodes;
+using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
 using Tql.Abstractions;
@@ -44,15 +45,10 @@ internal class RepositoryMatch
         if (!cache.IsCompleted)
             await context.DebounceDelay(cancellationToken);
 
-        var filePaths = await cache;
-
-        return await context.FilterAsync(
-            filePaths.Select(p => _factory.Create(new RepositoryFilePathMatchDto(_dto, p))),
-            MaxResults
-        );
+        return await context.Filter(await cache, MaxResults);
     }
 
-    private async Task<ImmutableArray<string>> GetRepositoryFilePaths(
+    private async Task<ImmutableArray<IMatch>> GetRepositoryFilePaths(
         IServiceProvider serviceProvider
     )
     {
@@ -70,11 +66,13 @@ internal class RepositoryMatch
 
         return node!.AsObject()["paths"]!
             .AsArray()
-            .Select(p => p!.GetValue<string>())
-            .ToImmutableArray();
+            .Select(
+                p => _factory.Create(new RepositoryFilePathMatchDto(_dto, p!.GetValue<string>()))
+            )
+            .ToImmutableArray<IMatch>();
     }
 
-    public Task Run(IServiceProvider serviceProvider, Window owner)
+    public Task Run(IServiceProvider serviceProvider, IWin32Window owner)
     {
         serviceProvider.GetRequiredService<IUI>().OpenUrl(_dto.GetUrl());
 

@@ -1,8 +1,8 @@
 ﻿# Azure Resources Converter
 
-This tool converts resources from Azure Portal into a format the app understands.
-Note that this makes use of internals of the Azure Portal, so will very likely
-change in the future.
+This tool converts resources from Azure Portal into a format the app
+understands. Note that this makes use of internals of the Azure Portal, so will
+very likely change in the future.
 
 ## Instructions
 

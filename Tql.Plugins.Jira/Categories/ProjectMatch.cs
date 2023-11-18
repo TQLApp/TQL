@@ -30,7 +30,7 @@ internal class ProjectMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
         Icon = iconCacheManager.GetIcon(new IconKey(dto.Url, dto.AvatarUrl)) ?? Images.Projects;
     }
 
-    public Task Run(IServiceProvider serviceProvider, Window owner)
+    public Task Run(IServiceProvider serviceProvider, IWin32Window owner)
     {
         serviceProvider.GetRequiredService<IUI>().OpenUrl(_dto.GetUrl());
 

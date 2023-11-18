@@ -25,7 +25,7 @@ internal class DemoesMatch : ISearchableMatch, ISerializableMatch
         CancellationToken cancellationToken
     )
     {
-        return context.FilterAsync(new[] { _factory.Create(new DemoMatchDto()) });
+        return context.Filter(new[] { _factory.Create(new DemoMatchDto()) });
     }
 
     public string Serialize()

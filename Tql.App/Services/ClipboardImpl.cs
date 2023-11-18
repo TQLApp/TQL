@@ -40,11 +40,11 @@ internal class ClipboardImpl : IClipboard
         ClipboardHelper.CopyToClipboard(html, plainText);
     }
 
-    public string EscapeMarkdown(string markdown)
+    public string EscapeMarkdown(string value)
     {
         var sb = StringBuilderCache.Acquire();
 
-        foreach (var c in markdown)
+        foreach (var c in value)
         {
             if (EscapeChars.IndexOf(c) != -1)
                 sb.Append('\\');

@@ -10,14 +10,15 @@ internal class ConfluenceCacheManager : ICacheManager<ConfluenceData>
 
     public int Version => 1;
 
-    public event EventHandler<CacheExpiredEventArgs>? CacheExpired;
+    public event EventHandler<CacheInvalidationRequiredEventArgs>? CacheInvalidationRequired;
 
     public ConfluenceCacheManager(ConfigurationManager configurationManager, ConfluenceApi api)
     {
         _configurationManager = configurationManager;
         _api = api;
 
-        configurationManager.Changed += (_, _) => OnCacheExpired(new CacheExpiredEventArgs(true));
+        configurationManager.Changed += (_, _) =>
+            OnCacheInvalidationRequired(new CacheInvalidationRequiredEventArgs(true));
     }
 
     public async Task<ConfluenceData> Create()
@@ -44,5 +45,6 @@ internal class ConfluenceCacheManager : ICacheManager<ConfluenceData>
         return new ConfluenceConnection(connection.Url, spaces);
     }
 
-    protected virtual void OnCacheExpired(CacheExpiredEventArgs e) => CacheExpired?.Invoke(this, e);
+    protected virtual void OnCacheInvalidationRequired(CacheInvalidationRequiredEventArgs e) =>
+        CacheInvalidationRequired?.Invoke(this, e);
 }

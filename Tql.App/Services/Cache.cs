@@ -62,7 +62,7 @@ internal class Cache<T> : ICache<T>
         if (!IsAvailable)
             Create(true);
 
-        _cacheManager.CacheExpired += (_, e) =>
+        _cacheManager.CacheInvalidationRequired += (_, e) =>
         {
             if (e.Force)
             {

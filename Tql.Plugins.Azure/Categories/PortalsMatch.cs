@@ -82,7 +82,7 @@ internal class PortalsMatch : ISearchableMatch, ISerializableMatch
 
         await Task.WhenAll(tasks);
 
-        return await context.FilterAsync(tasks.SelectMany(p => p.Result));
+        return await context.Filter(tasks.SelectMany(p => p.Result));
     }
 
     private async Task<List<IMatch>> RunQuery(

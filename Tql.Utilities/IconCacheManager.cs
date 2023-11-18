@@ -6,6 +6,18 @@ using Tql.Abstractions;
 
 namespace Tql.Utilities;
 
+/// <summary>
+/// Provides cache management for icons.
+/// </summary>
+/// <remarks>
+/// This class provides a base implementation for implementing an icon cache.
+/// The intended use of this class is to inherit from it, and use a DTO
+/// type as the generic parameter. You can then implement the <see cref="LoadIcon(T)"/>
+/// method to load an icon from a the server on demand. This class takes
+/// care of caching the icons on disk and returning them as <see cref="ImageSource"/>
+/// objects.
+/// </remarks>
+/// <typeparam name="T">Key type for icons.</typeparam>
 public abstract class IconCacheManager<T>
     where T : notnull
 {
@@ -19,8 +31,17 @@ public abstract class IconCacheManager<T>
     private readonly AsyncBackgroundProcessor _processor;
     private readonly string _cachePath;
 
+    /// <summary>
+    /// Occurs when an icon completes loading.
+    /// </summary>
     public event EventHandler? IconLoaded;
 
+    /// <summary>
+    /// Initializes a new <see cref="IconCacheManager{T}"/>.
+    /// </summary>
+    /// <param name="store">Store service.</param>
+    /// <param name="logger">Logger.</param>
+    /// <param name="configuration">Configuration.</param>
     protected IconCacheManager(
         IStore store,
         ILogger logger,
@@ -36,6 +57,25 @@ public abstract class IconCacheManager<T>
         _processor = new AsyncBackgroundProcessor(logger);
     }
 
+    /// <summary>
+    /// Get an icon by the specified key.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This method is synchronous. If the icon is present in the memory cache,
+    /// or on disk, it's returned immediately. Otherwise an asynchronous background
+    /// task is started to load the icon from the server.
+    /// </para>
+    ///
+    /// <para>
+    /// The intended use of this method is to call it in <see cref="IMatch"/>
+    /// constructors and, if the image isn't available, fall back to a default
+    /// icon. Then, next time the user finds the same match, the icon will be
+    /// present in cache.
+    /// </para>
+    /// </remarks>
+    /// <param name="key">Key to get the icon by.</param>
+    /// <returns>Image source for the icon.</returns>
     public ImageSource? GetIcon(T key)
     {
         _logger.LogDebug("Requested icon '{Url}'", key);
@@ -61,7 +101,7 @@ public abstract class IconCacheManager<T>
                 _cache[key] = cache;
             }
 
-            return cache?.ImageSource;
+            return cache.ImageSource;
         }
     }
 
@@ -142,8 +182,16 @@ public abstract class IconCacheManager<T>
         return Path.Combine(_cachePath, Encryption.Sha1Hash(key.ToString()));
     }
 
+    /// <summary>
+    /// Loads the icon from the server.
+    /// </summary>
+    /// <param name="key">Key of the icon to load.</param>
+    /// <returns>Loaded icon.</returns>
     protected abstract Task<IconData> LoadIcon(T key);
 
+    /// <summary>
+    /// Raises the <see cref="IconLoaded"/> event.
+    /// </summary>
     protected virtual void OnIconLoaded() => IconLoaded?.Invoke(this, EventArgs.Empty);
 
     private class Cache
@@ -158,6 +206,21 @@ public abstract class IconCacheManager<T>
     }
 }
 
+/// <summary>
+/// Configuration for the <see cref="IconCacheManager{T}"/> class.
+/// </summary>
+/// <param name="PluginId">ID of the plugin.</param>
+/// <param name="Expiration">Expiration interval for icons.</param>
 public record IconCacheManagerConfiguration(Guid PluginId, TimeSpan Expiration);
 
+/// <summary>
+/// Data of an icon.
+/// </summary>
+/// <remarks>
+/// If the media type is <c>image/svg+xml</c>, the data will be
+/// interpreted as an SVG icon. Otherwise the data is assumed to be an
+/// image.
+/// </remarks>
+/// <param name="MediaType">Media type of the data.</param>
+/// <param name="Data">Data of the icon.</param>
 public record IconData(string MediaType, byte[] Data);

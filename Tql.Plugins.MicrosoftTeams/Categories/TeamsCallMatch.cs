@@ -16,7 +16,7 @@ internal class TeamsCallMatch : IRunnableMatch, ISerializableMatch, ICopyableMat
         _dto = dto;
     }
 
-    public Task Run(IServiceProvider serviceProvider, Window owner)
+    public Task Run(IServiceProvider serviceProvider, IWin32Window owner)
     {
         serviceProvider.GetRequiredService<IUI>().OpenUrl(GetUrl());
 

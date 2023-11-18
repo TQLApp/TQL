@@ -211,7 +211,8 @@ internal class SearchManager : IDisposable
 
             Context = context;
 
-            var results = Stack.Length == 0 ? GetRootSearchResults() : await GetSubSearchResults();
+            var results =
+                Stack.Length == 0 ? await GetRootSearchResults() : await GetSubSearchResults();
 
             // If the current _context changed (i.e. isn't our version anymore),
             // a new async task was started while we were working. Don't process
@@ -255,7 +256,7 @@ internal class SearchManager : IDisposable
                     ErrorBannerId.ToString(),
                     $"{Labels.SearchManager_SearchFailedWithErrorMessage} {ex.Message}",
                     () =>
-                        _ui.ShowError(
+                        _ui.ShowException(
                             ((UI)_ui).MainWindow!,
                             Labels.SearchManager_SearchFailedWithError,
                             ex
@@ -265,7 +266,7 @@ internal class SearchManager : IDisposable
         }
     }
 
-    private ImmutableArray<SearchResult>? GetRootSearchResults()
+    private async Task<ImmutableArray<SearchResult>?> GetRootSearchResults()
     {
         var context = Context;
         if (context == null)
@@ -276,10 +277,7 @@ internal class SearchManager : IDisposable
 
         if (context.Search.Length == 0)
         {
-            if (context.History == null)
-                return null;
-
-            return context.History.Items
+            return context.History?.Items
                 .Select(p => context.GetSearchResult(p.Match))
                 .Take(100)
                 .ToImmutableArray();
@@ -287,11 +285,14 @@ internal class SearchManager : IDisposable
 
         // Get the root items from all plugins.
 
-        var rootItems = context
-            .Filter(_pluginManager.Plugins.SelectMany(p => p.GetMatches()))
-            .Select(context.GetSearchResult)
-            .Where(p => !p.IsFuzzyMatch)
-            .ToList();
+        var rootItems = (
+            from match in await context.Filter(
+                _pluginManager.Plugins.SelectMany(p => p.GetMatches())
+            )
+            let searchResult = context.GetSearchResult(match)
+            where !searchResult.IsFuzzyMatch
+            select searchResult
+        ).ToList();
 
         Debug.Assert(
             rootItems.All(p => p.Match is ISerializableMatch),
@@ -313,10 +314,10 @@ internal class SearchManager : IDisposable
         {
             // Filter the history and get the associated states.
 
-            var history = context
-                .Filter(context.History.Items.Select(p => p.Match))
-                .Select(context.GetSearchResult)
-                .ToList();
+            var history = (
+                from match in await context.Filter(context.History.Items.Select(p => p.Match))
+                select context.GetSearchResult(match)
+            ).ToList();
 
             // Group fuzzy and non fuzzy matches, and pinned and not pinned.
 
@@ -434,7 +435,7 @@ internal class SearchManager : IDisposable
             .Select(p => p.Match);
 
         if (!context.Search.IsEmpty())
-            items = context.Filter(items, null, internalCall: true);
+            items = context.FilterInternal(items, null);
 
         return items.Select(context.GetSearchResult).ToImmutableArray();
     }

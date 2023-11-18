@@ -126,7 +126,7 @@ internal partial class GeneralConfigurationControl : IConfigurationPage
         {
             if (_requireRestart)
             {
-                _ui.ShowConfirmation(
+                _ui.ShowTaskDialog(
                     this,
                     Labels.GeneralConfiguration_RestartRequired,
                     Labels.GeneralConfiguration_RestartRequiredHelpText,
@@ -188,7 +188,7 @@ internal partial class GeneralConfigurationControl : IConfigurationPage
         }
         catch
         {
-            _ui.ShowConfirmation(
+            _ui.ShowTaskDialog(
                 this,
                 Labels.GeneralConfiguration_UnableToSetHotKey,
                 Labels.GeneralConfiguration_UnableToSetHotKeyHelpText,

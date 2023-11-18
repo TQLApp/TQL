@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
 using Tql.Abstractions;
-using Tql.App.Services;
 using Tql.Plugins.Jira.Services;
 using Tql.Utilities;
 using Button = System.Windows.Controls.Button;
@@ -102,7 +101,7 @@ internal partial class ConfigurationControl : IConfigurationPage
             }
             catch (Exception ex)
             {
-                _ui.ShowError(this, $"Failed to connect to {connection.Name}", ex);
+                _ui.ShowException(this, $"Failed to connect to {connection.Name}", ex);
                 return SaveStatus.Failure;
             }
         }

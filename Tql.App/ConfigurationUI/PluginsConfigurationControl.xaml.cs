@@ -108,7 +108,7 @@ internal partial class PluginsConfigurationControl : IConfigurationPage
         }
         catch (Exception ex)
         {
-            _ui.ShowError(this, Labels.PluginsConfiguration_PluginInstallationFailed, ex);
+            _ui.ShowException(this, Labels.PluginsConfiguration_PluginInstallationFailed, ex);
             return;
         }
 

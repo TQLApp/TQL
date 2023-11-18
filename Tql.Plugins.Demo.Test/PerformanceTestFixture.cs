@@ -32,9 +32,9 @@ internal class PerformanceTestFixture : BaseFixture
     [TestCase("rayseanic")]
     [TestCase("rayseanich")]
     [TestCase("rayseanicho")]
-    public void PerformanceTest(string search)
+    public async Task PerformanceTest(string search)
     {
-        _ = CreateSearchContext(search).Filter(_people).Count();
+        _ = (await CreateSearchContext(search).Filter(_people)).Count();
     }
 
     private class PersonMatch : IMatch

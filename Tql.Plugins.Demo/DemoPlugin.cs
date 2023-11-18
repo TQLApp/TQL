@@ -12,7 +12,7 @@ public class DemoPlugin : ITqlPlugin
     public static readonly Guid Id = Guid.Parse("7a44cf85-6b57-4ce1-b057-bdbb9aea50fe");
 
     private readonly MatchTypeManagerBuilder _matchTypeManagerBuilder;
-    private MatchTypeManager? _matchTypeManager;
+    private IMatchTypeManager? _matchTypeManager;
     private IMatchFactory<DemoesMatch, DemoesMatchDto>? _factory;
 
     Guid ITqlPlugin.Id => Id;
@@ -20,7 +20,7 @@ public class DemoPlugin : ITqlPlugin
 
     public DemoPlugin()
     {
-        _matchTypeManagerBuilder = new MatchTypeManagerBuilder(GetType().Assembly);
+        _matchTypeManagerBuilder = MatchTypeManagerBuilder.ForAssembly(GetType().Assembly);
     }
 
     public void ConfigureServices(IServiceCollection services)
@@ -43,9 +43,9 @@ public class DemoPlugin : ITqlPlugin
         yield return _factory!.Create(new DemoesMatchDto());
     }
 
-    public IMatch? DeserializeMatch(Guid typeId, string json)
+    public IMatch? DeserializeMatch(Guid typeId, string value)
     {
-        return _matchTypeManager?.Deserialize(typeId, json);
+        return _matchTypeManager?.Deserialize(typeId, value);
     }
 
     public IEnumerable<IConfigurationPage> GetConfigurationPages() =>

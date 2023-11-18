@@ -13,7 +13,7 @@ internal class JiraCacheManager : ICacheManager<JiraData>
 
     public int Version => 6;
 
-    public event EventHandler<CacheExpiredEventArgs>? CacheExpired;
+    public event EventHandler<CacheInvalidationRequiredEventArgs>? CacheInvalidationRequired;
 
     public JiraCacheManager(
         ConfigurationManager configurationManager,
@@ -25,7 +25,8 @@ internal class JiraCacheManager : ICacheManager<JiraData>
         _api = api;
         _logger = logger;
 
-        configurationManager.Changed += (_, _) => OnCacheExpired(new CacheExpiredEventArgs(true));
+        configurationManager.Changed += (_, _) =>
+            OnCacheInvalidationRequired(new CacheInvalidationRequiredEventArgs(true));
     }
 
     public async Task<JiraData> Create()
@@ -147,5 +148,6 @@ internal class JiraCacheManager : ICacheManager<JiraData>
             int.Parse(key.Substring(0, key.IndexOf('x')), CultureInfo.InvariantCulture);
     }
 
-    protected virtual void OnCacheExpired(CacheExpiredEventArgs e) => CacheExpired?.Invoke(this, e);
+    protected virtual void OnCacheInvalidationRequired(CacheInvalidationRequiredEventArgs e) =>
+        CacheInvalidationRequired?.Invoke(this, e);
 }

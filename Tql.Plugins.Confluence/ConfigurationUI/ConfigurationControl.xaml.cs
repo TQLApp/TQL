@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
 using Tql.Abstractions;
-using Tql.App.Services;
 using Tql.Plugins.Confluence.Services;
 using Tql.Utilities;
 using Button = System.Windows.Controls.Button;
@@ -102,7 +101,7 @@ internal partial class ConfigurationControl : IConfigurationPage
             }
             catch (Exception ex)
             {
-                _ui.ShowError(
+                _ui.ShowException(
                     this,
                     string.Format(Labels.Alert_FailedToConnect, connection.Name),
                     ex

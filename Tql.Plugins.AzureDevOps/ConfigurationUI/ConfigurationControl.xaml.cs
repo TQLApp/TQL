@@ -41,8 +41,6 @@ internal partial class ConfigurationControl : IConfigurationPage
     {
         _configurationManager.UpdateConfiguration(DataContext.ToConfiguration());
 
-        _cache.Invalidate();
-
         return Task.FromResult(SaveStatus.Success);
     }
 

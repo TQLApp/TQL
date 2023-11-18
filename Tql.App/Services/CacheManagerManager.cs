@@ -15,7 +15,7 @@ internal class CacheManagerManager
 
     public void Register<T>(ICache<T> cache)
     {
-        _invalidateActions[typeof(T)] = cache.Invalidate;
+        _invalidateActions[typeof(T)] = ((Cache<T>)cache).Invalidate;
     }
 
     public void InvalidateAllCaches()

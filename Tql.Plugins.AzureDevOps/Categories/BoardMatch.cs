@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Windows.Forms;
+using Microsoft.Extensions.DependencyInjection;
 using Tql.Abstractions;
 using Tql.Plugins.AzureDevOps.Data;
 using Tql.Plugins.AzureDevOps.Services;
@@ -37,7 +38,7 @@ internal class BoardMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, 
         _factory = factory;
     }
 
-    public Task Run(IServiceProvider serviceProvider, Window owner)
+    public Task Run(IServiceProvider serviceProvider, IWin32Window owner)
     {
         serviceProvider.GetRequiredService<IUI>().OpenUrl(_dto.GetUrl());
 

@@ -19,7 +19,7 @@ public class JiraPlugin : ITqlPlugin
     );
 
     private readonly MatchTypeManagerBuilder _matchTypeManagerBuilder;
-    private MatchTypeManager? _matchTypeManager;
+    private IMatchTypeManager? _matchTypeManager;
     private IServiceProvider? _serviceProvider;
 
     Guid ITqlPlugin.Id => Id;
@@ -27,7 +27,7 @@ public class JiraPlugin : ITqlPlugin
 
     public JiraPlugin()
     {
-        _matchTypeManagerBuilder = new MatchTypeManagerBuilder(GetType().Assembly);
+        _matchTypeManagerBuilder = MatchTypeManagerBuilder.ForAssembly(GetType().Assembly);
     }
 
     public void ConfigureServices(IServiceCollection services)
@@ -60,9 +60,9 @@ public class JiraPlugin : ITqlPlugin
             select matchType.Deserialize(json);
     }
 
-    public IMatch? DeserializeMatch(Guid typeId, string json)
+    public IMatch? DeserializeMatch(Guid typeId, string value)
     {
-        return _matchTypeManager?.Deserialize(typeId, json);
+        return _matchTypeManager?.Deserialize(typeId, value);
     }
 
     public IEnumerable<IConfigurationPage> GetConfigurationPages()

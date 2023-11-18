@@ -57,10 +57,7 @@ internal class SearchContext : ISearchContext, IDisposable
     public Task DebounceDelay(CancellationToken cancellationToken) =>
         Task.Delay(TimeSpan.FromMilliseconds(200), cancellationToken);
 
-    public Task<IEnumerable<IMatch>> FilterAsync(
-        IEnumerable<IMatch> matches,
-        int? maxResults = null
-    )
+    public Task<IEnumerable<IMatch>> Filter(IEnumerable<IMatch> matches, int? maxResults = null)
     {
         // Create a copy of the list so we don't enumerate it on the background thread.
         var matchList = matches.ToList();
@@ -68,17 +65,8 @@ internal class SearchContext : ISearchContext, IDisposable
         return Task.Run(() => DoFilter(matchList, maxResults, false), CancellationToken);
     }
 
-    public IEnumerable<IMatch> Filter(IEnumerable<IMatch> matches, int? maxResults = null) =>
-        Filter(matches, maxResults, false);
-
-    public IEnumerable<IMatch> Filter(
-        IEnumerable<IMatch> matches,
-        int? maxResults,
-        bool internalCall
-    )
-    {
-        return DoFilter(matches, maxResults, internalCall);
-    }
+    public IEnumerable<IMatch> FilterInternal(IEnumerable<IMatch> matches, int? maxResults) =>
+        DoFilter(matches, maxResults, true);
 
     private IEnumerable<IMatch> DoFilter(
         IEnumerable<IMatch> matches,

@@ -19,7 +19,7 @@ internal class IssueMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
             iconCacheManager.GetIcon(new IconKey(dto.Url, dto.IssueTypeIconUrl)) ?? Images.Issues;
     }
 
-    public Task Run(IServiceProvider serviceProvider, Window owner)
+    public Task Run(IServiceProvider serviceProvider, IWin32Window owner)
     {
         serviceProvider.GetRequiredService<IUI>().OpenUrl(_dto.GetUrl());
 

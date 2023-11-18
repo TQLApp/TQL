@@ -1,4 +1,5 @@
-﻿using System.Windows.Threading;
+﻿using System.Windows.Interop;
+using System.Windows.Threading;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Tql.Abstractions;
@@ -675,7 +676,9 @@ internal partial class MainWindow
 
         try
         {
-            await match.Run(_serviceProvider, this);
+            var handle = new WindowInteropHelper(this).Handle;
+
+            await match.Run(_serviceProvider, new Win32Window(handle));
 
             telemetry.IsSuccess = true;
         }

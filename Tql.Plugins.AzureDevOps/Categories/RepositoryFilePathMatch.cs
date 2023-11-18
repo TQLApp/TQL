@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Windows.Forms;
+using Microsoft.Extensions.DependencyInjection;
 using Tql.Abstractions;
 using Tql.Utilities;
 
@@ -19,7 +20,7 @@ internal class RepositoryFilePathMatch : IRunnableMatch, ISerializableMatch, ICo
         _dto = dto;
     }
 
-    public Task Run(IServiceProvider serviceProvider, Window owner)
+    public Task Run(IServiceProvider serviceProvider, IWin32Window owner)
     {
         serviceProvider.GetRequiredService<IUI>().OpenUrl(_dto.GetUrl());
 

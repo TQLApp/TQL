@@ -31,7 +31,7 @@ internal class BoardMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, 
         Icon = iconCacheManager.GetIcon(new IconKey(dto.Url, dto.AvatarUrl)) ?? Images.Boards;
     }
 
-    public Task Run(IServiceProvider serviceProvider, Window owner)
+    public Task Run(IServiceProvider serviceProvider, IWin32Window owner)
     {
         serviceProvider.GetRequiredService<IUI>().OpenUrl(MatchUtils.GetBoardUrl(_dto));
 
@@ -74,7 +74,7 @@ internal class BoardMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, 
             )
         );
 
-        return await context.FilterAsync(matches);
+        return await context.Filter(matches);
     }
 }
 

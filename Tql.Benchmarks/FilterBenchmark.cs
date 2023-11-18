@@ -48,7 +48,7 @@ public class FilterBenchmark
     {
         var context = new SearchContext(null!, Search, null, null!);
 
-        return context.Filter(_people, 100).Count();
+        return context.Filter(_people, 100).Result.Count();
     }
 
     [DebuggerDisplay("Text = {Text}")]

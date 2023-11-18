@@ -4,8 +4,54 @@ using Tql.Abstractions;
 
 namespace Tql.Utilities;
 
+/// <summary>
+/// Utility methods for working with <see cref="ISearchContext"/>'s.
+/// </summary>
 public static class SearchContextExtensions
 {
+    /// <summary>
+    /// Gets cached data.
+    /// </summary>
+    /// <remarks>
+    /// This method is used to manage short lived caches. These caches
+    /// are stored in the <see cref="ISearchContext.Context"/> map
+    /// and only persist as long as the user has the search window open.
+    ///
+    /// This method combines building the cache and retrieving the cache
+    /// in one. The first time this method is called, the action is
+    /// used to create a task instance, which is stored in the context
+    /// map. On subsequent calls, this same task is returned to the caller.
+    ///
+    /// The intended use of this method is as follows:
+    ///
+    /// <code><![CDATA[
+    /// public async Task<IEnumerable<IMatch>> Search(ISearchContext context, string text, CancellationToken cancellationToken)
+    /// {
+    ///     // The LoadData method in this examples loads the data from the server.
+    ///     // The cache key is a combination of the name of the current class
+    ///     // and a string serialized version of the DTO object. This example
+    ///     // assumes that the DTO object is a "record".
+    ///     //
+    ///     // Note that the cancellation token is NOT passed to the LoadData method.
+    ///     // If it were, and the first search were cancelled (because the user
+    ///     // typed more characters), it would also cancel seeding of the cache.
+    ///     var cache = context.GetDataCached($"{GetType().FullName}:{_dto}", LoadData);
+    ///
+    ///     // It's only necessary to introduce a debounce delay if the cache
+    ///     // hasn't completed loading yet.
+    ///     if (!cache.IsCompleted)
+    ///         await context.DebounceDelay(cancellationToken);
+    ///
+    ///     // Return a filtered version of the cached matches.
+    ///     return await context.Filter(await cache);
+    /// }
+    /// ]]></code>
+    /// </remarks>
+    /// <typeparam name="T">Type of the cached data.</typeparam>
+    /// <param name="self">Search context to cache data in.</param>
+    /// <param name="cacheKey">Cache key. This needs to be globally unique.</param>
+    /// <param name="action">Reference to the method that loads the cache.</param>
+    /// <returns>Cached data.</returns>
     public static Task<T> GetDataCached<T>(
         this ISearchContext self,
         string cacheKey,

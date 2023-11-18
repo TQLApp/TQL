@@ -27,7 +27,7 @@ internal class NewMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
         Icon = icon ?? Images.Issues;
     }
 
-    public async Task Run(IServiceProvider serviceProvider, Window owner)
+    public async Task Run(IServiceProvider serviceProvider, IWin32Window owner)
     {
         serviceProvider.GetRequiredService<IUI>().OpenUrl(await GetUrl());
     }

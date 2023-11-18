@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Windows.Forms;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
 using Tql.Abstractions;
 using Tql.Plugins.AzureDevOps.Services;
@@ -29,7 +30,7 @@ internal class QueryMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, 
         _factory = factory;
     }
 
-    public Task Run(IServiceProvider serviceProvider, Window owner)
+    public Task Run(IServiceProvider serviceProvider, IWin32Window owner)
     {
         serviceProvider.GetRequiredService<IUI>().OpenUrl(_dto.GetUrl());
 
@@ -59,12 +60,7 @@ internal class QueryMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, 
         if (!cache.IsCompleted)
             await context.DebounceDelay(cancellationToken);
 
-        var matches = await cache;
-
-        if (!text.IsWhiteSpace())
-            return await context.FilterAsync(matches);
-
-        return matches;
+        return await context.Filter(await cache);
     }
 
     private async Task<ImmutableArray<IMatch>> ExecuteQuery(IServiceProvider serviceProvider)

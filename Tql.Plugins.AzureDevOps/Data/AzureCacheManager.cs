@@ -22,7 +22,7 @@ internal class AzureCacheManager : ICacheManager<AzureData>
 
     public int Version => 2;
 
-    public event EventHandler<CacheExpiredEventArgs>? CacheExpired;
+    public event EventHandler<CacheInvalidationRequiredEventArgs>? CacheInvalidationRequired;
 
     public AzureCacheManager(
         AzureDevOpsApi api,
@@ -34,7 +34,8 @@ internal class AzureCacheManager : ICacheManager<AzureData>
         _httpClient = httpClient;
         _configurationManager = configurationManager;
 
-        configurationManager.Changed += (_, _) => OnCacheExpired(new CacheExpiredEventArgs(true));
+        configurationManager.Changed += (_, _) =>
+            OnCacheInvalidationRequired(new CacheInvalidationRequiredEventArgs(true));
     }
 
     public async Task<AzureData> Create()
@@ -260,5 +261,6 @@ internal class AzureCacheManager : ICacheManager<AzureData>
         return result;
     }
 
-    protected virtual void OnCacheExpired(CacheExpiredEventArgs e) => CacheExpired?.Invoke(this, e);
+    protected virtual void OnCacheInvalidationRequired(CacheInvalidationRequiredEventArgs e) =>
+        CacheInvalidationRequired?.Invoke(this, e);
 }

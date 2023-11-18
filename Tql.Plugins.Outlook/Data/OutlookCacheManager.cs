@@ -9,7 +9,7 @@ internal class OutlookCacheManager : ICacheManager<OutlookData>
     private readonly ILogger<OutlookClient> _clientLogger;
     public int Version => 1;
 
-    public event EventHandler<CacheExpiredEventArgs>? CacheExpired;
+    public event EventHandler<CacheInvalidationRequiredEventArgs>? CacheInvalidationRequired;
 
     public OutlookCacheManager(ILogger<OutlookClient> clientLogger)
     {
@@ -31,5 +31,6 @@ internal class OutlookCacheManager : ICacheManager<OutlookData>
         return Task.FromResult(new OutlookData(unique));
     }
 
-    protected virtual void OnCacheExpired(CacheExpiredEventArgs e) => CacheExpired?.Invoke(this, e);
+    protected virtual void OnCacheInvalidationRequired(CacheInvalidationRequiredEventArgs e) =>
+        CacheInvalidationRequired?.Invoke(this, e);
 }

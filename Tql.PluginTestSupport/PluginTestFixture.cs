@@ -95,7 +95,7 @@ public abstract class PluginTestFixture
         {
             // Get the root items from all plugins.
 
-            var filtered = await context.FilterAsync(_plugins.SelectMany(p => p.GetMatches()));
+            var filtered = await context.Filter(_plugins.SelectMany(p => p.GetMatches()));
 
             items = filtered.Select(context.GetSearchResult).Where(p => !p.IsFuzzyMatch).ToList();
         }

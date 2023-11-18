@@ -10,14 +10,15 @@ internal class GitHubCacheManager : ICacheManager<GitHubData>
 
     public int Version => 1;
 
-    public event EventHandler<CacheExpiredEventArgs>? CacheExpired;
+    public event EventHandler<CacheInvalidationRequiredEventArgs>? CacheInvalidationRequired;
 
     public GitHubCacheManager(GitHubApi api, ConfigurationManager configurationManager)
     {
         _configurationManager = configurationManager;
         _api = api;
 
-        configurationManager.Changed += (_, _) => OnCacheExpired(new CacheExpiredEventArgs(true));
+        configurationManager.Changed += (_, _) =>
+            OnCacheInvalidationRequired(new CacheInvalidationRequiredEventArgs(true));
     }
 
     public async Task<GitHubData> Create()
@@ -43,5 +44,6 @@ internal class GitHubCacheManager : ICacheManager<GitHubData>
         return new GitHubData(connections.ToImmutableArray());
     }
 
-    protected virtual void OnCacheExpired(CacheExpiredEventArgs e) => CacheExpired?.Invoke(this, e);
+    protected virtual void OnCacheInvalidationRequired(CacheInvalidationRequiredEventArgs e) =>
+        CacheInvalidationRequired?.Invoke(this, e);
 }
