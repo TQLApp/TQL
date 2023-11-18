@@ -1,6 +1,7 @@
 ﻿using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System.Resources;
+using System.Text.RegularExpressions;
 
 namespace Tql.Localization;
 
@@ -192,7 +193,13 @@ internal class Importer : Tool
             }
 
             newResourceStrings.Add(
-                (i, new ResourceKey(values[0]!, values[1]!), values[2]!, values[3], values[4])
+                (
+                    i,
+                    new ResourceKey(values[0]!, values[1]!),
+                    ReplaceNewlines(values[2])!,
+                    ReplaceNewlines(values[3]),
+                    values[4]
+                )
             );
         }
 
@@ -236,5 +243,13 @@ internal class Importer : Tool
         }
 
         return values;
+    }
+
+    private string? ReplaceNewlines(string? value)
+    {
+        if (string.IsNullOrEmpty(value))
+            return value;
+
+        return Regex.Replace(value, "\r?\n", "\r\n");
     }
 }

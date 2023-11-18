@@ -121,6 +121,10 @@
     <value>Demo Plug-in</value>
     <comment>Original: Demo Plugin</comment>
   </data>
+  <data name="DemoesMatch_SearchHint" xml:space="preserve">
+    <value>Vind demo data</value>
+    <comment>Original: Find demo data</comment>
+  </data>
   <data name="DemoMatch_Label" xml:space="preserve">
     <value>TQL Website</value>
     <comment>Original: TQL Website</comment>

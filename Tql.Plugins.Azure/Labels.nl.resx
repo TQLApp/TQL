@@ -169,6 +169,10 @@
     <value>Tenant-id:</value>
     <comment>Original: Tenant ID:</comment>
   </data>
+  <data name="PortalsMatch_SearchHint" xml:space="preserve">
+    <value>Vind Azure resources</value>
+    <comment>Original: Find Azure resources</comment>
+  </data>
   <data name="PortalsMatch_Label" xml:space="preserve">
     <value>Azure Portal</value>
     <comment>Original: Azure Portal</comment>

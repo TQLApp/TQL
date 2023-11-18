@@ -61,15 +61,6 @@ namespace Tql.Plugins.GitHub {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Find boards.
-        /// </summary>
-        public static string BoardsMatch_SearchHint {
-            get {
-                return ResourceManager.GetString("BoardsMatch_SearchHint", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Add.
         /// </summary>
         public static string Button_Add {
@@ -133,15 +124,6 @@ namespace Tql.Plugins.GitHub {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Find dashboards.
-        /// </summary>
-        public static string DashboardsMatch_SearchHint {
-            get {
-                return ResourceManager.GetString("DashboardsMatch_SearchHint", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Authenticate with GitHub.
         /// </summary>
         public static string DeviceCodeWindow_AuthenticationWithGitHub {
@@ -174,15 +156,6 @@ namespace Tql.Plugins.GitHub {
         public static string DeviceCodeWindow_Title {
             get {
                 return ResourceManager.GetString("DeviceCodeWindow_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Find filters.
-        /// </summary>
-        public static string FiltersMatch_SearchHint {
-            get {
-                return ResourceManager.GetString("FiltersMatch_SearchHint", resourceCulture);
             }
         }
         

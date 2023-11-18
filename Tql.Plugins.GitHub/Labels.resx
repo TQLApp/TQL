@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BoardsMatch_SearchHint" xml:space="preserve">
-    <value>Find boards</value>
-  </data>
   <data name="Button_Add" xml:space="preserve">
     <value>Add</value>
   </data>
@@ -141,9 +138,6 @@
   <data name="ConfigurationControl_NameLabel" xml:space="preserve">
     <value>Name:</value>
   </data>
-  <data name="DashboardsMatch_SearchHint" xml:space="preserve">
-    <value>Find dashboards</value>
-  </data>
   <data name="DeviceCodeWindow_AuthenticationWithGitHub" xml:space="preserve">
     <value>Authenticate with GitHub</value>
   </data>
@@ -155,9 +149,6 @@
   </data>
   <data name="DeviceCodeWindow_Title" xml:space="preserve">
     <value>GitHub Authentication</value>
-  </data>
-  <data name="FiltersMatch_SearchHint" xml:space="preserve">
-    <value>Find filters</value>
   </data>
   <data name="GistsMatch_SearchHint" xml:space="preserve">
     <value>Find gists</value>

@@ -137,6 +137,14 @@
     <value>{0} Backlog</value>
     <comment>Original: {0} Backlog</comment>
   </data>
+  <data name="BacklogMatch_SearchHint" xml:space="preserve">
+    <value>Vind work items</value>
+    <comment>Original: Find work items</comment>
+  </data>
+  <data name="BacklogsMatch_SearchHint" xml:space="preserve">
+    <value>Vind backlogs</value>
+    <comment>Original: Find backlogs</comment>
+  </data>
   <data name="BacklogsMatch_Label" xml:space="preserve">
     <value>Azure Backlog</value>
     <comment>Original: Azure Backlog</comment>
@@ -144,6 +152,14 @@
   <data name="BoardMatch_Label" xml:space="preserve">
     <value>{0} Board</value>
     <comment>Original: {0} Board</comment>
+  </data>
+  <data name="BoardMatch_SearchHint" xml:space="preserve">
+    <value>Vind work items</value>
+    <comment>Original: Find work items</comment>
+  </data>
+  <data name="BoardsMatch_SearchHint" xml:space="preserve">
+    <value>Vind boards</value>
+    <comment>Original: Find boards</comment>
   </data>
   <data name="BoardsMatch_Label" xml:space="preserve">
     <value>Azure Board</value>
@@ -189,6 +205,10 @@
     <value>{0} Dashboard</value>
     <comment>Original: {0} Dashboard</comment>
   </data>
+  <data name="DashboardsMatch_SearchHint" xml:space="preserve">
+    <value>Vind dashboards</value>
+    <comment>Original: Find dashboards</comment>
+  </data>
   <data name="DashboardsMatch_Label" xml:space="preserve">
     <value>Azure Dashboard</value>
     <comment>Original: Azure Dashboard</comment>
@@ -201,17 +221,37 @@
     <value>Nieuwe Query</value>
     <comment>Original: New Query</comment>
   </data>
+  <data name="NewsMatch_SearchHint" xml:space="preserve">
+    <value>Vind item om aan te maken</value>
+    <comment>Original: Find item to create</comment>
+  </data>
   <data name="NewsMatch_Label" xml:space="preserve">
     <value>Azure Nieuw</value>
     <comment>Original: Azure New</comment>
+  </data>
+  <data name="PipelinesMatch_SearchHint" xml:space="preserve">
+    <value>Vind pipelines</value>
+    <comment>Original: Find pipelines</comment>
   </data>
   <data name="PipelinesMatch_Label" xml:space="preserve">
     <value>Azure Pipeline</value>
     <comment>Original: Azure Pipeline</comment>
   </data>
+  <data name="QueriesMatch_SearchHint" xml:space="preserve">
+    <value>Vind queries</value>
+    <comment>Original: Find queries</comment>
+  </data>
   <data name="QueriesMatch_Label" xml:space="preserve">
     <value>Azure Query</value>
     <comment>Original: Azure Query</comment>
+  </data>
+  <data name="QueryMatch_SearchHint" xml:space="preserve">
+    <value>Vind work items</value>
+    <comment>Original: Find work items</comment>
+  </data>
+  <data name="RepositoriesMatch_SearchHint" xml:space="preserve">
+    <value>Vind repositories</value>
+    <comment>Original: Find repositories</comment>
   </data>
   <data name="RepositoriesMatch_Label" xml:space="preserve">
     <value>Azure Repository</value>
@@ -220,6 +260,10 @@
   <data name="RepositoryMatch_FindFiles" xml:space="preserve">
     <value>Zoek bestanden</value>
     <comment>Original: Find files</comment>
+  </data>
+  <data name="WorkItemsMatch_SearchHint" xml:space="preserve">
+    <value>Vind work items</value>
+    <comment>Original: Find work items</comment>
   </data>
   <data name="WorkItemsMatch_Label" xml:space="preserve">
     <value>Azure Work Item</value>

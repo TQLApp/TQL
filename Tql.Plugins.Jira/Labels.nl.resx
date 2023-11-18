@@ -121,9 +121,17 @@
     <value>Alle Issues</value>
     <comment>Original: All Issues</comment>
   </data>
+  <data name="BoardMatch_SearchHint" xml:space="preserve">
+    <value>Vind snelle filters</value>
+    <comment>Original: Find quick filters</comment>
+  </data>
   <data name="BoardQuickFilterMatch_SearchHint" xml:space="preserve">
     <value>Zoek issues</value>
     <comment>Original: Find issues</comment>
+  </data>
+  <data name="BoardsMatch_SearchHint" xml:space="preserve">
+    <value>Vind borden</value>
+    <comment>Original: Find boards</comment>
   </data>
   <data name="BoardsMatch_Label" xml:space="preserve">
     <value>JIRA Board</value>
@@ -185,9 +193,29 @@
     <value>{0} Dashboard</value>
     <comment>Original: {0} Dashboard</comment>
   </data>
+  <data name="DashboardsMatch_SearchHint" xml:space="preserve">
+    <value>Vind dashboarden</value>
+    <comment>Original: Find dashboards</comment>
+  </data>
   <data name="DashboardsMatch_Label" xml:space="preserve">
     <value>JIRA Dashboard</value>
     <comment>Original: JIRA Dashboard</comment>
+  </data>
+  <data name="FilterMatch_SearchHint" xml:space="preserve">
+    <value>Vind issues</value>
+    <comment>Original: Find issues</comment>
+  </data>
+  <data name="FiltersMatch_SearchHint" xml:space="preserve">
+    <value>Vind filters</value>
+    <comment>Original: Find filters</comment>
+  </data>
+  <data name="FiltersMatch_Label" xml:space="preserve">
+    <value>JIRA Filter</value>
+    <comment>Original: JIRA Filter</comment>
+  </data>
+  <data name="IssuesMatch_SearchHint" xml:space="preserve">
+    <value>Vind issues</value>
+    <comment>Original: Find issues</comment>
   </data>
   <data name="IssuesMatch_Label" xml:space="preserve">
     <value>JIRA Issue</value>
@@ -233,6 +261,10 @@
     <value>Query</value>
     <comment>Original: Query</comment>
   </data>
+  <data name="NewsMatch_SearchHint" xml:space="preserve">
+    <value>Vind item om aan te maken</value>
+    <comment>Original: Find item to create</comment>
+  </data>
   <data name="NewsMatch_Label" xml:space="preserve">
     <value>JIRA Nieuw</value>
     <comment>Original: JIRA New</comment>
@@ -244,6 +276,10 @@
   <data name="ProjectMatch_SearchHint" xml:space="preserve">
     <value>Zoek issues</value>
     <comment>Original: Find issues</comment>
+  </data>
+  <data name="ProjectsMatch_SearchHint" xml:space="preserve">
+    <value>Vind projecten</value>
+    <comment>Original: Find projects</comment>
   </data>
   <data name="ProjectsMatch_Label" xml:space="preserve">
     <value>JIRA Project</value>

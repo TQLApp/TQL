@@ -137,6 +137,10 @@
     <value>Microsoft Teams</value>
     <comment>Original: Microsoft Teams</comment>
   </data>
+  <data name="PeopleMatchBase_SearchHint" xml:space="preserve">
+    <value>Vind personen</value>
+    <comment>Original: Find people</comment>
+  </data>
   <data name="TeamsCallsMatch_Label" xml:space="preserve">
     <value>Teams Oproep</value>
     <comment>Original: Teams Call</comment>

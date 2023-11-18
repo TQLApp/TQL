@@ -161,6 +161,10 @@
     <value>GitHub Authenticatie</value>
     <comment>Original: GitHub Authentication</comment>
   </data>
+  <data name="GistsMatch_SearchHint" xml:space="preserve">
+    <value>Vind gists</value>
+    <comment>Original: Find gists</comment>
+  </data>
   <data name="GistsMatch_Label" xml:space="preserve">
     <value>GitHub Gist</value>
     <comment>Original: GitHub Gist</comment>
@@ -181,6 +185,10 @@
     <value>GitHub</value>
     <comment>Original: GitHub</comment>
   </data>
+  <data name="IssuesMatch_SearchHint" xml:space="preserve">
+    <value>Vind issues</value>
+    <comment>Original: Find issues</comment>
+  </data>
   <data name="IssuesMatchBase_IssueLabel" xml:space="preserve">
     <value>GitHub Issue</value>
     <comment>Original: GitHub Issue</comment>
@@ -197,6 +205,18 @@
     <value>GitHub Pull Request</value>
     <comment>Original: GitHub Pull Request</comment>
   </data>
+  <data name="NewsMatch_SearchHint" xml:space="preserve">
+    <value>Vind item om aan te maken</value>
+    <comment>Original: Find item to create</comment>
+  </data>
+  <data name="PullRequestsMatch_SearchHint" xml:space="preserve">
+    <value>Vind pull requests</value>
+    <comment>Original: Find pull requests</comment>
+  </data>
+  <data name="RepositoriesMatch_SearchHint" xml:space="preserve">
+    <value>Vind repositories</value>
+    <comment>Original: Find repositories</comment>
+  </data>
   <data name="RepositoriesMatch_Label" xml:space="preserve">
     <value>GitHub Repository</value>
     <comment>Original: GitHub Repository</comment>
@@ -212,6 +232,10 @@
   <data name="UserMatch_SearchHint" xml:space="preserve">
     <value>Zoek repositories</value>
     <comment>Original: Find repositories</comment>
+  </data>
+  <data name="UsersMatch_SearchHint" xml:space="preserve">
+    <value>Vind gebruikers</value>
+    <comment>Original: Find users</comment>
   </data>
   <data name="UsersMatch_Label" xml:space="preserve">
     <value>GitHub Gebruiker</value>

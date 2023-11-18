@@ -121,6 +121,10 @@
     <value>E-mail</value>
     <comment>Original: Email</comment>
   </data>
+  <data name="EmailsMatch_SearchHint" xml:space="preserve">
+    <value>Vind personen</value>
+    <comment>Original: Find people</comment>
+  </data>
   <data name="OutlookClient_OutlookIsNotRunning" xml:space="preserve">
     <value>Outlook is niet opgestart</value>
     <comment>Original: Outlook isn't running</comment>

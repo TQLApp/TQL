@@ -189,6 +189,10 @@
     <value>Confluence</value>
     <comment>Original: Confluence</comment>
   </data>
+  <data name="SearchesMatch_SearchHint" xml:space="preserve">
+    <value>Zoek in Confluence</value>
+    <comment>Original: Search Confluence</comment>
+  </data>
   <data name="SearchesMatch_Label" xml:space="preserve">
     <value>Confluence Zoeken</value>
     <comment>Original: Confluence Search</comment>
@@ -200,6 +204,10 @@
   <data name="SpaceMatch_SearchHint" xml:space="preserve">
     <value>Zoek naar inhoud</value>
     <comment>Original: Find content</comment>
+  </data>
+  <data name="SpacesMatch_SearchHint" xml:space="preserve">
+    <value>Vind spaces</value>
+    <comment>Original: Find spaces</comment>
   </data>
   <data name="SpacesMatch_Label" xml:space="preserve">
     <value>Confluence Space</value>

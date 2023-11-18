@@ -518,20 +518,20 @@
     <comment>Original: The following resource requires your credentials:</comment>
   </data>
   <data name="MainWindow_LaunchRunnablePostfix" xml:space="preserve">
-    <value>resultaten</value>
-    <comment>Original: matches</comment>
+    <value>resultaat</value>
+    <comment>Original: result</comment>
   </data>
   <data name="MainWindow_LaunchRunnablePrefix" xml:space="preserve">
-    <value>Start</value>
-    <comment>Original: Launch</comment>
+    <value>Activeer</value>
+    <comment>Original: Activate</comment>
   </data>
   <data name="MainWindow_OpenCategoryPostfix" xml:space="preserve">
-    <value>resultaten</value>
-    <comment>Original: matches</comment>
+    <value>categorie</value>
+    <comment>Original: category</comment>
   </data>
   <data name="MainWindow_OpenCategoryPrefix" xml:space="preserve">
     <value>Open</value>
-    <comment>Original: Open</comment>
+    <comment>Original: Enter</comment>
   </data>
   <data name="MainWindow_OpenTQL" xml:space="preserve">
     <value>Open TQL</value>
@@ -614,24 +614,24 @@
     <comment>Original: Search failed with the following error message:</comment>
   </data>
   <data name="SearchResultControl_CopyMatchLinkHelpText" xml:space="preserve">
-    <value>Kopieer een link naar dit resultaat naar het klembord.</value>
-    <comment>Original: Copy a link to the match to the clipboard.</comment>
+    <value>Kopieer een link voor dit zoekresultaat naar het klembord.</value>
+    <comment>Original: Copy a link to the search results to the clipboard.</comment>
   </data>
   <data name="SearchResultControl_MatchCanBeLaunched" xml:space="preserve">
-    <value>Resultaat kan uitgevoerd worden</value>
-    <comment>Original: Match can be launched</comment>
+    <value>Zoekresultaat kan uitgevoerd worden.</value>
+    <comment>Original: Search result can be launched</comment>
   </data>
   <data name="SearchResultControl_MatchCanBeLaunchedHelpText" xml:space="preserve">
-    <value>Dit resultaat kun je uitvoeren door erop te klikken of op Enter te drukken.</value>
-    <comment>Original: This match is for something you can launch. Click on it, or press Enter to launch the match.</comment>
+    <value>Dit zoekresultaat is iets wat je kunt uitvoeren. Klik erop, of druk op Enter, om het zoekresultaat te starten.</value>
+    <comment>Original: This search result is for something you can launch. Click on it, or press Enter to launch the search result.</comment>
   </data>
   <data name="SearchResultControl_MatchContainsSubItems" xml:space="preserve">
-    <value>Resultaat heeft onderliggende resultaten</value>
-    <comment>Original: Match contains sub items</comment>
+    <value>Zoekresultaat is een categorie</value>
+    <comment>Original: Search result is a category</comment>
   </data>
   <data name="SearchResultControl_MatchContainsSubItemsHelpText" xml:space="preserve">
-    <value>Dit resultaat is een categorie waar in tezocht kan worden. Druk op Tab om de categorie te openen zodat je er in kunt zoeken.</value>
-    <comment>Original: This match is a category and can it self be searched. Press Tab to enter the category to search in it.</comment>
+    <value>Dit zoekresultaat is een categorie waar je in kunt zoeken. Druk op Tab om de categorie te openen.</value>
+    <comment>Original: This search result is a category and can it self be searched. Press Tab to enter the category to search in it.</comment>
   </data>
   <data name="SearchResultControl_PinSearchResult" xml:space="preserve">
     <value>Resultaat vastzetten</value>
@@ -642,8 +642,8 @@
     <comment>Original: Pin the search result to have them sorted to the top of the list.</comment>
   </data>
   <data name="SearchResultControl_RemoveMatchFromHistoryHelpText" xml:space="preserve">
-    <value>Verwijder dit resultaat uit de historie</value>
-    <comment>Original: Remove match from the history</comment>
+    <value>Verwijder zoek resultaat uit de historie</value>
+    <comment>Original: Remove search result from the history</comment>
   </data>
   <data name="SearchResultControl_UnpinSearchResultHelpText" xml:space="preserve">
     <value>Resultaat losmaken</value>
@@ -685,9 +685,9 @@
     <value>Link is gekopieërd</value>
     <comment>Original: Link copied</comment>
   </data>
-  <data name="MainWindow_Settings" xml:space="preserve">
-    <value>Instellingen</value>
-    <comment>Original: Settings</comment>
+  <data name="MainWindow_Configuration" xml:space="preserve">
+    <value>Configuratie</value>
+    <comment>Original: Configuration</comment>
   </data>
   <data name="GeneralConfiguration_LanguageDutch" xml:space="preserve">
     <value>Nederlands</value>
@@ -708,5 +708,69 @@
   <data name="GeneralConfiguration_LanguageSystem" xml:space="preserve">
     <value>Systeem</value>
     <comment>Original: System</comment>
+  </data>
+  <data name="NotifyMenu_ExitLabel" xml:space="preserve">
+    <value>A&amp;fsluiten</value>
+    <comment>Original: E&amp;xit</comment>
+  </data>
+  <data name="NotifyMenu_HelpLabel" xml:space="preserve">
+    <value>&amp;Help</value>
+    <comment>Original: &amp;Help</comment>
+  </data>
+  <data name="NotifyMenu_InvalidateAllCachesLabel" xml:space="preserve">
+    <value>Alle Caches Ongeldig Maken</value>
+    <comment>Original: Invalidate All Caches</comment>
+  </data>
+  <data name="NotifyMenu_SearchLabel" xml:space="preserve">
+    <value>&amp;Zoeken</value>
+    <comment>Original: &amp;Search</comment>
+  </data>
+  <data name="NotifyMenu_ConfigurationLabel" xml:space="preserve">
+    <value>&amp;Configuratie</value>
+    <comment>Original: &amp;Configuration</comment>
+  </data>
+  <data name="NotifyIconManager_ApplicationIsStarting" xml:space="preserve">
+    <value>Opstarten…</value>
+    <comment>Original: Starting...</comment>
+  </data>
+  <data name="NotifyIconManager_ApplicationIsUpdating" xml:space="preserve">
+    <value>Updaten…</value>
+    <comment>Original: Updating...</comment>
+  </data>
+  <data name="GeneralConfiguration_Appearance" xml:space="preserve">
+    <value>Weergave</value>
+    <comment>Original: Appearance</comment>
+  </data>
+  <data name="GeneralConfiguration_AreYouSure" xml:space="preserve">
+    <value>Weet je het weker?</value>
+    <comment>Original: Are you sure?</comment>
+  </data>
+  <data name="GeneralConfiguration_AreYouSureRestartTutorial" xml:space="preserve">
+    <value>Weet je het zeker dat je de snelstartgids wilt herstarten?</value>
+    <comment>Original: Are you sure you want to restart the quick start tutorial?</comment>
+  </data>
+  <data name="GeneralConfiguration_RestartTutorial" xml:space="preserve">
+    <value>Herstart Snelstartgids</value>
+    <comment>Original: Restart Tutorial</comment>
+  </data>
+  <data name="GeneralConfiguration_RestartTutorialHelpText" xml:space="preserve">
+    <value>Herstart de snelstartgids.</value>
+    <comment>Original: Restart the quick start tutorial.</comment>
+  </data>
+  <data name="PluginsConfiguration_PluginInstallationFailed" xml:space="preserve">
+    <value>Installatie van de plugin is mislukt</value>
+    <comment>Original: Plugin installation failed</comment>
+  </data>
+  <data name="PluginManager_PluginFailedToLoad" xml:space="preserve">
+    <value>Plugin '{0}' kon niet geladen worden</value>
+    <comment>Original: Plugin '{0}' failed to load</comment>
+  </data>
+  <data name="PluginManager_PluginFailedToLoadSubtitle" xml:space="preserve">
+    <value>De volgende fout heeft plaatsgevonden tijdens het laden van plugin '{0}': {1}.
+
+Wil je TQL herstarten om te kijken of dit het probleem oplost?</value>
+    <comment>Original: The following error occurred while loading the '{0}' plugin: {1}.
+
+Do you want to restart TQL to see if this resolves the issue?</comment>
   </data>
 </root>
