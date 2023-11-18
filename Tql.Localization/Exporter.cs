@@ -23,14 +23,7 @@ internal class Exporter : Tool
         WriteWorkbook(resourceStrings);
     }
 
-    private void WriteWorkbook(
-        List<(
-            ResourceKey Key,
-            string Value,
-            string? LocalizedValue,
-            string? Comment
-        )> resourceStrings
-    )
+    private void WriteWorkbook(List<ResourceString> resourceStrings)
     {
         var workbook = new XSSFWorkbook();
         var sheet = workbook.CreateSheet("TQL Resource Strings");

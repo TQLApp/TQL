@@ -62,15 +62,9 @@ internal abstract class Tool
         }
     }
 
-    protected List<(
-        ResourceKey Key,
-        string Value,
-        string? LocalizedValue,
-        string? Comment
-    )> GetResourceStrings()
+    protected List<ResourceString> GetResourceStrings()
     {
-        var resourceStrings =
-            new List<(ResourceKey Key, string Value, string? LocalizedValue, string? Comment)>();
+        var resourceStrings = new List<ResourceString>();
 
         foreach (var resource in GetAllResources())
         {
@@ -125,7 +119,7 @@ internal abstract class Tool
                 }
 
                 resourceStrings.Add(
-                    (
+                    new ResourceString(
                         new ResourceKey(resource.Project, resourceString.Key),
                         resourceString.Value,
                         localizedResourceString.Value,
@@ -170,3 +164,10 @@ internal record Resource(
 internal record LocalizedResource(string FileName, string Locale);
 
 internal record struct ResourceKey(string Project, string Key);
+
+internal record ResourceString(
+    ResourceKey Key,
+    string Value,
+    string? LocalizedValue,
+    string? Comment
+);

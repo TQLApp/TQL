@@ -31,22 +31,14 @@ internal class Importer : Tool
     }
 
     private void WriteUpdatedResources(
-        List<(
-            int Row,
-            ResourceKey Key,
-            string Value,
-            string? LocalizedValue,
-            string? Comment
-        )> newResourceStrings,
-        List<(
-            ResourceKey Key,
-            string Value,
-            string? LocalizedValue,
-            string? Comment
-        )> resourceStrings
+        List<(int Row, ResourceString String)> newResourceStrings,
+        List<ResourceString> resourceStrings
     )
     {
-        var newResourceStringMap = newResourceStrings.ToDictionary(p => p.Key, p => p);
+        var newResourceStringMap = newResourceStrings.ToDictionary(
+            p => p.String.Key,
+            p => p.String
+        );
 
         foreach (var project in resourceStrings.Select(p => p.Key.Project).Distinct())
         {
@@ -73,12 +65,7 @@ internal class Importer : Tool
 
     private void WriteUpdatedComments(
         Dictionary<ResourceKey, string?> updatedComments,
-        List<(
-            ResourceKey Key,
-            string Value,
-            string? LocalizedValue,
-            string? Comment
-        )> resourceStrings
+        List<ResourceString> resourceStrings
     )
     {
         foreach (var project in updatedComments.Select(p => p.Key.Project).Distinct())
@@ -91,47 +78,39 @@ internal class Importer : Tool
                 if (!updatedComments.TryGetValue(entry.Key, out var comment))
                     comment = entry.Comment;
 
+                var entryValue = entry.Value;
+                // Entry value can be null (even though the type is defined as
+                // not nullable).
+                if (string.IsNullOrEmpty(entryValue))
+                    entryValue = string.Empty;
+
                 writer.AddResource(
-                    new ResXDataNode(entry.Key.Key, entry.Value ?? string.Empty)
-                    {
-                        Comment = comment
-                    }
+                    new ResXDataNode(entry.Key.Key, entryValue) { Comment = comment }
                 );
             }
         }
     }
 
     private Dictionary<ResourceKey, string?> GetUpdatedComments(
-        List<(
-            ResourceKey Key,
-            string Value,
-            string? LocalizedValue,
-            string? Comment
-        )> resourceStrings,
-        List<(
-            int Row,
-            ResourceKey Key,
-            string Value,
-            string? LocalizedValue,
-            string? Comment
-        )> newResourceStrings
+        List<ResourceString> resourceStrings,
+        List<(int Row, ResourceString String)> newResourceStrings
     )
     {
         var updatedComments = new Dictionary<ResourceKey, string?>();
         var resourceStringMap = resourceStrings.ToDictionary(p => p.Key, p => p);
 
-        foreach (var newResourceString in newResourceStrings)
+        foreach (var (row, newResourceString) in newResourceStrings)
         {
             if (!resourceStringMap.TryGetValue(newResourceString.Key, out var resourceString))
             {
-                WriteError(newResourceString.Row, $"Unknown key '{newResourceString.Key.Key}'");
+                WriteError(row, $"Unknown key '{newResourceString.Key.Key}'");
                 continue;
             }
 
             if (newResourceString.Value != resourceString.Value)
             {
                 WriteError(
-                    newResourceString.Row,
+                    row,
                     $"Unlocalized value '{newResourceString.Value}' differs from '{resourceString.Value}'"
                 );
                 continue;
@@ -144,13 +123,7 @@ internal class Importer : Tool
         return updatedComments;
     }
 
-    private List<(
-        int Row,
-        ResourceKey Key,
-        string Value,
-        string? LocalizedValue,
-        string? Comment
-    )> ParseWorkbook()
+    private List<(int Row, ResourceString String)> ParseWorkbook()
     {
         using var stream = File.OpenRead(Options.FileName);
 
@@ -161,14 +134,7 @@ internal class Importer : Tool
         if (!ArrayEquals(headers, Exporter.Headers.ToArray()))
             throw new InvalidOperationException("Unexpected Excel file");
 
-        var newResourceStrings =
-            new List<(
-                int Row,
-                ResourceKey Key,
-                string Value,
-                string? LocalizedValue,
-                string? Comment
-            )>();
+        var newResourceStrings = new List<(int Row, ResourceString String)>();
 
         for (var i = 1; i <= sheet.LastRowNum; i++)
         {
@@ -192,15 +158,14 @@ internal class Importer : Tool
                 continue;
             }
 
-            newResourceStrings.Add(
-                (
-                    i,
-                    new ResourceKey(values[0]!, values[1]!),
-                    ReplaceNewlines(values[2])!,
-                    ReplaceNewlines(values[3]),
-                    values[4]
-                )
+            var resourceString = new ResourceString(
+                new ResourceKey(values[0]!, values[1]!),
+                ReplaceNewlines(values[2])!,
+                ReplaceNewlines(values[3]),
+                values[4]
             );
+
+            newResourceStrings.Add((i, resourceString));
         }
 
         return newResourceStrings;
