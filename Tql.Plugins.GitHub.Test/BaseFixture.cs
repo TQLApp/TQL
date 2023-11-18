@@ -27,7 +27,9 @@ internal class BaseFixture : PluginTestFixture
                 GitHubPlugin.Id,
                 JsonSerializer.Serialize(
                     new Configuration(
-                        ImmutableArray.Create(new Connection(Guid.NewGuid(), "test", patToken))
+                        ImmutableArray.Create(
+                            new Connection(Guid.NewGuid(), "test", patToken, null)
+                        )
                     )
                 )
             );

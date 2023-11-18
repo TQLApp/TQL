@@ -9,10 +9,10 @@ namespace Tql.App.ConfigurationUI;
 
 internal partial class PackageSourcesConfigurationControl : IConfigurationPage
 {
-    private readonly IConfigurationManager _configurationManager;
     private readonly IUI _ui;
     private readonly IEncryption _encryption;
     private readonly ILogger<PackageSourcesConfigurationControl> _logger;
+    private readonly PackageManager _packageManager;
     private bool _dirty;
 
     private new PackageManagerConfigurationDto DataContext =>
@@ -23,24 +23,22 @@ internal partial class PackageSourcesConfigurationControl : IConfigurationPage
     public ConfigurationPageMode PageMode => ConfigurationPageMode.AutoSize;
 
     public PackageSourcesConfigurationControl(
-        IConfigurationManager configurationManager,
         IUI ui,
         IEncryption encryption,
-        ILogger<PackageSourcesConfigurationControl> logger
+        ILogger<PackageSourcesConfigurationControl> logger,
+        PackageManager packageManager
     )
     {
-        _configurationManager = configurationManager;
         _ui = ui;
         _encryption = encryption;
         _logger = logger;
+        _packageManager = packageManager;
 
         InitializeComponent();
 
-        var configuration = PackageManagerConfiguration.FromJson(
-            configurationManager.GetConfiguration(Constants.PackageManagerConfigurationId)
+        base.DataContext = PackageManagerConfigurationDto.FromConfiguration(
+            _packageManager.Configuration
         );
-
-        base.DataContext = PackageManagerConfigurationDto.FromConfiguration(configuration);
 
         UpdateEnabled();
     }
@@ -88,10 +86,7 @@ internal partial class PackageSourcesConfigurationControl : IConfigurationPage
         if (!_dirty)
             return Task.FromResult(SaveStatus.Success);
 
-        _configurationManager.SetConfiguration(
-            Constants.PackageManagerConfigurationId,
-            DataContext.ToConfiguration().ToJson()
-        );
+        _packageManager.UpdateConfiguration(DataContext.ToConfiguration());
 
         return Task.FromResult(SaveStatus.Success);
     }

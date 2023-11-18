@@ -26,22 +26,6 @@ internal class TestStore : IStore
         return Registry.CurrentUser.CreateSubKey("Software\\TQL - Unit Test")!;
     }
 
-    public RegistryKey OpenKey(Guid pluginId)
-    {
-        using var key = CreateBaseKey();
-
-        return key.CreateSubKey($"Plugins\\{pluginId}")!;
-    }
-
-    public string GetDataFolder(Guid pluginId)
-    {
-        var path = Path.Combine(DataFolder, "Plugins", pluginId.ToString());
-
-        Directory.CreateDirectory(path);
-
-        return path;
-    }
-
     public string GetCacheFolder(Guid pluginId)
     {
         var path = Path.Combine(CacheFolder, "Plugins", pluginId.ToString());

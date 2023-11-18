@@ -1,18 +1,19 @@
 ﻿using JetBrains.Annotations;
 using Tql.Abstractions;
+using Tql.Plugins.MicrosoftTeams.Services;
 
 namespace Tql.Plugins.MicrosoftTeams.ConfigurationUI;
 
 internal partial class ConfigurationControl : IConfigurationPage
 {
-    private readonly IConfigurationManager _configurationManager;
+    private readonly ConfigurationManager _configurationManager;
 
     public Guid PageId => MicrosoftTeamsPlugin.ConfigurationPageId;
     public string Title => Labels.ConfigurationControl_General;
     public ConfigurationPageMode PageMode => ConfigurationPageMode.AutoSize;
 
     public ConfigurationControl(
-        IConfigurationManager configurationManager,
+        ConfigurationManager configurationManager,
         IPeopleDirectoryManager peopleDirectoryManager
     )
     {
@@ -20,9 +21,7 @@ internal partial class ConfigurationControl : IConfigurationPage
 
         InitializeComponent();
 
-        var configuration = Configuration.FromJson(
-            configurationManager.GetConfiguration(MicrosoftTeamsPlugin.Id)
-        );
+        var configuration = configurationManager.Configuration;
 
         _allDirectories.IsChecked = configuration.Mode == ConfigurationMode.All;
         _selectedDirectories.IsChecked = configuration.Mode == ConfigurationMode.Selected;
@@ -59,7 +58,7 @@ internal partial class ConfigurationControl : IConfigurationPage
             directoryIds
         );
 
-        _configurationManager.SetConfiguration(MicrosoftTeamsPlugin.Id, configuration.ToJson());
+        _configurationManager.UpdateConfiguration(configuration);
 
         return Task.FromResult(SaveStatus.Success);
     }

@@ -12,7 +12,9 @@ internal class ConfigurationDto
         var result = new ConfigurationDto();
 
         result.Connections.AddRange(
-            configuration.Connections.Select(p => new ConnectionDto(p.Id) { Name = p.Name })
+            configuration.Connections.Select(
+                p => new ConnectionDto(p.Id, p.PatToken, p.ProtectedCredentials) { Name = p.Name }
+            )
         );
 
         return result;
@@ -21,7 +23,9 @@ internal class ConfigurationDto
     public Configuration ToConfiguration()
     {
         return new Configuration(
-            Connections.Select(p => new Connection(p.Id, p.Name!)).ToImmutableArray()
+            Connections
+                .Select(p => new Connection(p.Id, p.Name!, p.PatToken, p.ProtectedCredentials))
+                .ToImmutableArray()
         );
     }
 }
@@ -29,11 +33,15 @@ internal class ConfigurationDto
 internal class ConnectionDto
 {
     public Guid Id { get; }
+    public string? PatToken { get; }
+    public string? ProtectedCredentials { get; }
     public string? Name { get; set; }
 
-    public ConnectionDto(Guid id)
+    public ConnectionDto(Guid id, string? patToken, string? protectedCredentials)
     {
         Id = id;
+        PatToken = patToken;
+        ProtectedCredentials = protectedCredentials;
     }
 
     public bool GetIsValid()

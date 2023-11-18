@@ -1,10 +1,11 @@
 ﻿using Tql.Abstractions;
+using Tql.Plugins.Azure.Services;
 
 namespace Tql.Plugins.Azure.ConfigurationUI;
 
 internal partial class ConfigurationControl : IConfigurationPage
 {
-    private readonly IConfigurationManager _configurationManager;
+    private readonly ConfigurationManager _configurationManager;
     private Guid? _id;
 
     private new ConfigurationDto DataContext => (ConfigurationDto)base.DataContext;
@@ -13,17 +14,13 @@ internal partial class ConfigurationControl : IConfigurationPage
     public string Title => Labels.ConfigurationControl_General;
     public ConfigurationPageMode PageMode => ConfigurationPageMode.AutoSize;
 
-    public ConfigurationControl(IConfigurationManager configurationManager)
+    public ConfigurationControl(ConfigurationManager configurationManager)
     {
         _configurationManager = configurationManager;
 
         InitializeComponent();
 
-        var configuration = Configuration.FromJson(
-            configurationManager.GetConfiguration(AzurePlugin.Id)
-        );
-
-        base.DataContext = ConfigurationDto.FromConfiguration(configuration);
+        base.DataContext = ConfigurationDto.FromConfiguration(configurationManager.Configuration);
 
         UpdateEnabled();
     }
@@ -41,10 +38,7 @@ internal partial class ConfigurationControl : IConfigurationPage
 
     public Task<SaveStatus> Save()
     {
-        _configurationManager.SetConfiguration(
-            AzurePlugin.Id,
-            DataContext.ToConfiguration().ToJson()
-        );
+        _configurationManager.UpdateConfiguration(DataContext.ToConfiguration());
 
         return Task.FromResult(SaveStatus.Success);
     }

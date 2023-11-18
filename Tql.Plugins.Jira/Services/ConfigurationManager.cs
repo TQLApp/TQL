@@ -1,11 +1,14 @@
-﻿using Tql.Abstractions;
+﻿using Microsoft.Extensions.Logging;
+using Tql.Abstractions;
 
 namespace Tql.Plugins.Jira.Services;
 
 internal class ConfigurationManager
 {
+    private readonly IConfigurationManager _configurationManager;
     private readonly IPeopleDirectoryManager _peopleDirectoryManager;
     private readonly JiraApi _api;
+    private readonly ILogger<ConfigurationManager> _logger;
     private volatile Configuration _configuration = Configuration.Empty;
 
     public Configuration Configuration => _configuration;
@@ -15,13 +18,16 @@ internal class ConfigurationManager
     public ConfigurationManager(
         IConfigurationManager configurationManager,
         IPeopleDirectoryManager peopleDirectoryManager,
-        JiraApi api
+        JiraApi api,
+        ILogger<ConfigurationManager> logger
     )
     {
+        _configurationManager = configurationManager;
         _peopleDirectoryManager = peopleDirectoryManager;
         _api = api;
+        _logger = logger;
 
-        configurationManager.ConfigurationChanged += (s, e) =>
+        configurationManager.ConfigurationChanged += (_, e) =>
         {
             if (e.PluginId == JiraPlugin.Id)
             {
@@ -42,7 +48,16 @@ internal class ConfigurationManager
     {
         var configuration = default(Configuration);
         if (json != null)
-            configuration = JsonSerializer.Deserialize<Configuration>(json);
+        {
+            try
+            {
+                configuration = JsonSerializer.Deserialize<Configuration>(json);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical(ex, "Failed to deserialize configuration");
+            }
+        }
 
         _configuration = configuration ?? Configuration.Empty;
 
@@ -60,6 +75,13 @@ internal class ConfigurationManager
         {
             _peopleDirectoryManager.Add(new JiraPeopleDirectory(connection, _api));
         }
+    }
+
+    public void UpdateConfiguration(Configuration configuration)
+    {
+        var json = JsonSerializer.Serialize(configuration);
+
+        _configurationManager.SetConfiguration(JiraPlugin.Id, json);
     }
 
     protected virtual void OnChanged() => Changed?.Invoke(this, EventArgs.Empty);

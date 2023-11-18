@@ -1,10 +1,12 @@
-﻿using Tql.Abstractions;
+﻿using Microsoft.Extensions.Logging;
+using Tql.Abstractions;
+using Tql.Plugins.GitHub.Services;
 
 namespace Tql.Plugins.GitHub.ConfigurationUI;
 
 internal partial class ConfigurationControl : IConfigurationPage
 {
-    private readonly IConfigurationManager _configurationManager;
+    private readonly ConfigurationManager _configurationManager;
     private Guid? _id;
 
     private new ConfigurationDto DataContext => (ConfigurationDto)base.DataContext;
@@ -13,17 +15,16 @@ internal partial class ConfigurationControl : IConfigurationPage
     public string Title => Labels.ConfigurationControl_General;
     public ConfigurationPageMode PageMode => ConfigurationPageMode.AutoSize;
 
-    public ConfigurationControl(IConfigurationManager configurationManager)
+    public ConfigurationControl(
+        ConfigurationManager configurationManager,
+        ILogger<ConfigurationControl> logger
+    )
     {
         _configurationManager = configurationManager;
 
         InitializeComponent();
 
-        var configuration = Configuration.FromJson(
-            configurationManager.GetConfiguration(GitHubPlugin.Id)
-        );
-
-        base.DataContext = ConfigurationDto.FromConfiguration(configuration);
+        base.DataContext = ConfigurationDto.FromConfiguration(configurationManager.Configuration);
 
         UpdateEnabled();
     }
@@ -36,14 +37,12 @@ internal partial class ConfigurationControl : IConfigurationPage
         _update.IsEnabled = CreateConnectionDto().GetIsValid();
     }
 
-    private ConnectionDto CreateConnectionDto() => new(_id ?? Guid.NewGuid()) { Name = _name.Text };
+    private ConnectionDto CreateConnectionDto() =>
+        new(_id ?? Guid.NewGuid(), null, null) { Name = _name.Text };
 
     public Task<SaveStatus> Save()
     {
-        _configurationManager.SetConfiguration(
-            GitHubPlugin.Id,
-            DataContext.ToConfiguration().ToJson()
-        );
+        _configurationManager.UpdateConfiguration(DataContext.ToConfiguration());
 
         return Task.FromResult(SaveStatus.Success);
     }

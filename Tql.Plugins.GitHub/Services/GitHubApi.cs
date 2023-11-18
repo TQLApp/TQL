@@ -149,17 +149,15 @@ internal class GitHubApi
     {
         try
         {
-            using var key = _store.OpenKey(GitHubPlugin.Id);
-            using var subKey = key.OpenSubKey("Credentials");
+            var connection = _configurationManager.Configuration.Connections.Single(
+                p => p.Id == id
+            );
 
-            if (subKey?.GetValue(id.ToString()) is string protectedCredentials)
-            {
-                var credentials = _encryption.DecryptString(protectedCredentials);
-                if (credentials == null)
-                    return null;
+            var credentials = _encryption.DecryptString(connection.ProtectedCredentials);
+            if (credentials == null)
+                return null;
 
-                return JsonSerializer.Deserialize<CredentialsDto>(credentials);
-            }
+            return JsonSerializer.Deserialize<CredentialsDto>(credentials);
         }
         catch (Exception ex)
         {
@@ -175,10 +173,7 @@ internal class GitHubApi
 
         var protectedCredentials = _encryption.EncryptString(json)!;
 
-        using var key = _store.OpenKey(GitHubPlugin.Id);
-        using var subKey = key.CreateSubKey("Credentials")!;
-
-        subKey.SetValue(id.ToString(), protectedCredentials);
+        _configurationManager.UpdateCredentials(id, protectedCredentials);
     }
 
     private class InteractiveAuthentication : IInteractiveAuthentication

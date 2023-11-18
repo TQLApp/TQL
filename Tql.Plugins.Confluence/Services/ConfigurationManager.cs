@@ -1,21 +1,30 @@
-﻿using Tql.Abstractions;
+﻿using Microsoft.Extensions.Logging;
+using Tql.Abstractions;
 
 namespace Tql.Plugins.Confluence.Services;
 
 internal class ConfigurationManager
 {
+    private readonly IConfigurationManager _configurationManager;
     private readonly ConfluenceApi _api;
+    private readonly ILogger<ConfigurationManager> _logger;
     private volatile Configuration _configuration = Configuration.Empty;
 
     public Configuration Configuration => _configuration;
 
     public event EventHandler? Changed;
 
-    public ConfigurationManager(IConfigurationManager configurationManager, ConfluenceApi api)
+    public ConfigurationManager(
+        IConfigurationManager configurationManager,
+        ConfluenceApi api,
+        ILogger<ConfigurationManager> logger
+    )
     {
+        _configurationManager = configurationManager;
         _api = api;
+        _logger = logger;
 
-        configurationManager.ConfigurationChanged += (s, e) =>
+        configurationManager.ConfigurationChanged += (_, e) =>
         {
             if (e.PluginId == ConfluencePlugin.Id)
             {
@@ -36,9 +45,25 @@ internal class ConfigurationManager
     {
         var configuration = default(Configuration);
         if (json != null)
-            configuration = JsonSerializer.Deserialize<Configuration>(json);
+        {
+            try
+            {
+                configuration = JsonSerializer.Deserialize<Configuration>(json);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical(ex, "Failed to deserialize configuration");
+            }
+        }
 
         _configuration = configuration ?? Configuration.Empty;
+    }
+
+    public void UpdateConfiguration(Configuration configuration)
+    {
+        var json = JsonSerializer.Serialize(configuration);
+
+        _configurationManager.SetConfiguration(ConfluencePlugin.Id, json);
     }
 
     protected virtual void OnChanged() => Changed?.Invoke(this, EventArgs.Empty);

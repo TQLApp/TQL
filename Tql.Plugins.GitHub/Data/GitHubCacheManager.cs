@@ -5,35 +5,26 @@ namespace Tql.Plugins.GitHub.Data;
 
 internal class GitHubCacheManager : ICacheManager<GitHubData>
 {
-    private readonly IConfigurationManager _configurationManager;
+    private readonly ConfigurationManager _configurationManager;
     private readonly GitHubApi _api;
 
     public int Version => 1;
 
     public event EventHandler<CacheExpiredEventArgs>? CacheExpired;
 
-    public GitHubCacheManager(
-        IConfigurationManager configurationManager,
-        GitHubApi api,
-        ConfigurationManager configurationManagerImpl
-    )
+    public GitHubCacheManager(GitHubApi api, ConfigurationManager configurationManager)
     {
         _configurationManager = configurationManager;
         _api = api;
 
-        configurationManagerImpl.Changed += (_, _) =>
-            OnCacheExpired(new CacheExpiredEventArgs(true));
+        configurationManager.Changed += (_, _) => OnCacheExpired(new CacheExpiredEventArgs(true));
     }
 
     public async Task<GitHubData> Create()
     {
-        var configuration = Configuration.FromJson(
-            _configurationManager.GetConfiguration(GitHubPlugin.Id)
-        );
-
         var connections = new List<GitHubConnectionData>();
 
-        foreach (var connection in configuration.Connections)
+        foreach (var connection in _configurationManager.Configuration.Connections)
         {
             var client = await _api.GetClient(connection.Id);
 

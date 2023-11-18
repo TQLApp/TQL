@@ -16,38 +16,32 @@ namespace Tql.Plugins.AzureDevOps.Data;
 
 internal class AzureCacheManager : ICacheManager<AzureData>
 {
-    private readonly IConfigurationManager _configurationManager;
     private readonly AzureDevOpsApi _api;
     private readonly HttpClient _httpClient;
+    private readonly ConfigurationManager _configurationManager;
 
     public int Version => 2;
 
     public event EventHandler<CacheExpiredEventArgs>? CacheExpired;
 
     public AzureCacheManager(
-        IConfigurationManager configurationManager,
         AzureDevOpsApi api,
         HttpClient httpClient,
-        ConfigurationManager configurationManagerImpl
+        ConfigurationManager configurationManager
     )
     {
-        _configurationManager = configurationManager;
         _api = api;
         _httpClient = httpClient;
+        _configurationManager = configurationManager;
 
-        configurationManagerImpl.Changed += (_, _) =>
-            OnCacheExpired(new CacheExpiredEventArgs(true));
+        configurationManager.Changed += (_, _) => OnCacheExpired(new CacheExpiredEventArgs(true));
     }
 
     public async Task<AzureData> Create()
     {
-        var configuration = Configuration.FromJson(
-            _configurationManager.GetConfiguration(AzureDevOpsPlugin.Id)
-        );
-
         var connections = new List<AzureConnection>();
 
-        foreach (var connection in configuration.Connections)
+        foreach (var connection in _configurationManager.Configuration.Connections)
         {
             connections.Add(await LoadConnection(connection));
         }

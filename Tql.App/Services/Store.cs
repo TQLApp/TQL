@@ -38,16 +38,6 @@ internal class Store : IStore
         return Registry.CurrentUser.CreateSubKey($"Software\\{_environmentName}")!;
     }
 
-    public RegistryKey OpenKey(Guid pluginId)
-    {
-        using var key = CreateBaseKey();
-
-        return key.CreateSubKey($"Plugins\\{pluginId}")!;
-    }
-
-    public string GetDataFolder(Guid pluginId) =>
-        EnsureFolder(DataFolder, "Plugins", pluginId.ToString());
-
     public string GetCacheFolder(Guid pluginId) =>
         EnsureFolder(CacheFolder, "Plugins", pluginId.ToString());
 

@@ -1,10 +1,13 @@
-﻿using Tql.Abstractions;
+﻿using Microsoft.Extensions.Logging;
+using Tql.Abstractions;
 
 namespace Tql.Plugins.MicrosoftTeams.Services;
 
 internal class ConfigurationManager
 {
+    private readonly IConfigurationManager _configurationManager;
     private readonly IPeopleDirectoryManager _peopleDirectoryManager;
+    private readonly ILogger<ConfigurationManager> _logger;
     private volatile Configuration _configuration = Configuration.Empty;
     private readonly object _syncRoot = new();
     private ImmutableArray<string> _directoryIds = ImmutableArray<string>.Empty;
@@ -24,12 +27,15 @@ internal class ConfigurationManager
 
     public ConfigurationManager(
         IConfigurationManager configurationManager,
-        IPeopleDirectoryManager peopleDirectoryManager
+        IPeopleDirectoryManager peopleDirectoryManager,
+        ILogger<ConfigurationManager> logger
     )
     {
+        _configurationManager = configurationManager;
         _peopleDirectoryManager = peopleDirectoryManager;
+        _logger = logger;
 
-        configurationManager.ConfigurationChanged += (s, e) =>
+        configurationManager.ConfigurationChanged += (_, e) =>
         {
             if (e.PluginId == MicrosoftTeamsPlugin.Id)
                 LoadConnections(e.Configuration);
@@ -50,7 +56,16 @@ internal class ConfigurationManager
     {
         var configuration = default(Configuration);
         if (json != null)
-            configuration = JsonSerializer.Deserialize<Configuration>(json);
+        {
+            try
+            {
+                configuration = JsonSerializer.Deserialize<Configuration>(json);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical(ex, "Failed to deserialize configuration");
+            }
+        }
 
         configuration ??= Configuration.Empty;
 
@@ -69,5 +84,12 @@ internal class ConfigurationManager
                 _directoryIds = configuration.DirectoryIds.ToImmutableArray();
             }
         }
+    }
+
+    public void UpdateConfiguration(Configuration configuration)
+    {
+        var json = JsonSerializer.Serialize(configuration);
+
+        _configurationManager.SetConfiguration(MicrosoftTeamsPlugin.Id, json);
     }
 }

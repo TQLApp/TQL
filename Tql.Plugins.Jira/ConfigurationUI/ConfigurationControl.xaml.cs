@@ -9,7 +9,7 @@ namespace Tql.Plugins.Jira.ConfigurationUI;
 
 internal partial class ConfigurationControl : IConfigurationPage
 {
-    private readonly IConfigurationManager _configurationManager;
+    private readonly ConfigurationManager _configurationManager;
     private readonly IUI _ui;
     private readonly JiraApi _api;
     private readonly IEncryption _encryption;
@@ -24,7 +24,7 @@ internal partial class ConfigurationControl : IConfigurationPage
     public string Title => Labels.ConfigurationControl_General;
 
     public ConfigurationControl(
-        IConfigurationManager configurationManager,
+        ConfigurationManager configurationManager,
         IUI ui,
         JiraApi api,
         IEncryption encryption,
@@ -39,11 +39,7 @@ internal partial class ConfigurationControl : IConfigurationPage
 
         InitializeComponent();
 
-        var configuration = Configuration.FromJson(
-            configurationManager.GetConfiguration(JiraPlugin.Id)
-        );
-
-        base.DataContext = ConfigurationDto.FromConfiguration(configuration);
+        base.DataContext = ConfigurationDto.FromConfiguration(configurationManager.Configuration);
 
         UpdateEnabled();
     }
@@ -111,7 +107,7 @@ internal partial class ConfigurationControl : IConfigurationPage
             }
         }
 
-        _configurationManager.SetConfiguration(JiraPlugin.Id, configuration.ToJson());
+        _configurationManager.UpdateConfiguration(configuration);
 
         return SaveStatus.Success;
     }

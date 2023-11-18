@@ -9,7 +9,7 @@ namespace Tql.Plugins.Confluence.ConfigurationUI;
 
 internal partial class ConfigurationControl : IConfigurationPage
 {
-    private readonly IConfigurationManager _configurationManager;
+    private readonly ConfigurationManager _configurationManager;
     private readonly IUI _ui;
     private readonly ConfluenceApi _api;
     private readonly IEncryption _encryption;
@@ -24,7 +24,7 @@ internal partial class ConfigurationControl : IConfigurationPage
     public ConfigurationPageMode PageMode => ConfigurationPageMode.AutoSize;
 
     public ConfigurationControl(
-        IConfigurationManager configurationManager,
+        ConfigurationManager configurationManager,
         IUI ui,
         ConfluenceApi api,
         IEncryption encryption,
@@ -39,11 +39,7 @@ internal partial class ConfigurationControl : IConfigurationPage
 
         InitializeComponent();
 
-        var configuration = Configuration.FromJson(
-            configurationManager.GetConfiguration(ConfluencePlugin.Id)
-        );
-
-        base.DataContext = ConfigurationDto.FromConfiguration(configuration);
+        base.DataContext = ConfigurationDto.FromConfiguration(configurationManager.Configuration);
 
         UpdateEnabled();
     }
@@ -115,7 +111,7 @@ internal partial class ConfigurationControl : IConfigurationPage
             }
         }
 
-        _configurationManager.SetConfiguration(ConfluencePlugin.Id, configuration.ToJson());
+        _configurationManager.UpdateConfiguration(configuration);
 
         return SaveStatus.Success;
     }

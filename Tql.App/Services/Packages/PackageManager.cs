@@ -23,6 +23,10 @@ internal class PackageManager
     private readonly IConfigurationManager _configurationManager;
     private readonly TelemetryService _telemetryService;
     private readonly IEncryption _encryption;
+    private volatile PackageManagerConfiguration _configuration =
+        PackageManagerConfiguration.Default;
+
+    public PackageManagerConfiguration Configuration => _configuration;
 
     public PackageManager(
         HttpClient httpClient,
@@ -39,17 +43,49 @@ internal class PackageManager
         _configurationManager = configurationManager;
         _telemetryService = telemetryService;
         _encryption = encryption;
+
+        configurationManager.ConfigurationChanged += (_, e) =>
+        {
+            if (e.PluginId == Constants.PackageManagerConfigurationId)
+                LoadConfiguration(e.Configuration);
+        };
+
+        LoadConfiguration(
+            configurationManager.GetConfiguration(Constants.PackageManagerConfigurationId)
+        );
+    }
+
+    private void LoadConfiguration(string? json)
+    {
+        var configuration = default(PackageManagerConfiguration);
+
+        if (json != null)
+        {
+            try
+            {
+                configuration = JsonSerializer.Deserialize<PackageManagerConfiguration>(json);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical(ex, "Failed to deserialize configuration");
+            }
+        }
+
+        _configuration = configuration ?? PackageManagerConfiguration.Default;
+    }
+
+    public void UpdateConfiguration(PackageManagerConfiguration configuration)
+    {
+        var json = JsonSerializer.Serialize(configuration);
+
+        _configurationManager.SetConfiguration(Constants.PackageManagerConfigurationId, json);
     }
 
     private NuGetClient GetClient()
     {
-        var configuration = PackageManagerConfiguration.FromJson(
-            _configurationManager.GetConfiguration(Constants.PackageManagerConfigurationId)
-        );
-
         var sources = ImmutableArray.CreateBuilder<NuGetClientSource>();
 
-        foreach (var source in configuration.Sources)
+        foreach (var source in _configuration.Sources)
         {
             var credentials = default(PackageSourceCredential);
             if (source.UserName != null)

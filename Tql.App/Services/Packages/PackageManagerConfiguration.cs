@@ -12,19 +12,6 @@ internal record PackageManagerConfiguration(ImmutableArray<PackageManagerSource>
                 .ToImmutableArray()
         );
     }
-
-    public static PackageManagerConfiguration FromJson(string? json)
-    {
-        if (json == null)
-            return Default;
-
-        return JsonSerializer.Deserialize<PackageManagerConfiguration>(json)!;
-    }
-
-    public string ToJson()
-    {
-        return JsonSerializer.Serialize(this);
-    }
 }
 
 internal record PackageManagerSource(string Url, string? UserName, string? ProtectedPassword);

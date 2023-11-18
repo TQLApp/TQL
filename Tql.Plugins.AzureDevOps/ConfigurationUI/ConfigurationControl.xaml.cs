@@ -1,11 +1,12 @@
 ﻿using Tql.Abstractions;
 using Tql.Plugins.AzureDevOps.Data;
+using Tql.Plugins.AzureDevOps.Services;
 
 namespace Tql.Plugins.AzureDevOps.ConfigurationUI;
 
 internal partial class ConfigurationControl : IConfigurationPage
 {
-    private readonly IConfigurationManager _configurationManager;
+    private readonly ConfigurationManager _configurationManager;
     private readonly ICache<AzureData> _cache;
 
     private new ConfigurationDto DataContext => (ConfigurationDto)base.DataContext;
@@ -14,18 +15,14 @@ internal partial class ConfigurationControl : IConfigurationPage
     public string Title => Labels.ConfigurationControl_General;
     public ConfigurationPageMode PageMode => ConfigurationPageMode.AutoSize;
 
-    public ConfigurationControl(IConfigurationManager configurationManager, ICache<AzureData> cache)
+    public ConfigurationControl(ConfigurationManager configurationManager, ICache<AzureData> cache)
     {
         _configurationManager = configurationManager;
         _cache = cache;
 
         InitializeComponent();
 
-        var configuration = Configuration.FromJson(
-            configurationManager.GetConfiguration(AzureDevOpsPlugin.Id)
-        );
-
-        base.DataContext = ConfigurationDto.FromConfiguration(configuration);
+        base.DataContext = ConfigurationDto.FromConfiguration(configurationManager.Configuration);
 
         UpdateEnabled();
     }
@@ -42,10 +39,7 @@ internal partial class ConfigurationControl : IConfigurationPage
 
     public Task<SaveStatus> Save()
     {
-        _configurationManager.SetConfiguration(
-            AzureDevOpsPlugin.Id,
-            DataContext.ToConfiguration().ToJson()
-        );
+        _configurationManager.UpdateConfiguration(DataContext.ToConfiguration());
 
         _cache.Invalidate();
 
