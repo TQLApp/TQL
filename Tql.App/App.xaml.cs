@@ -67,7 +67,9 @@ public partial class App
         packageStoreManager.PerformCleanup();
 
         ImmutableArray<ITqlPlugin> plugins;
-        if (DebugAssemblies.HasValue)
+        if (Options.Sideload != null)
+            plugins = packageStoreManager.GetSideloadedPlugins(Options.Sideload).ToImmutableArray();
+        else if (DebugAssemblies.HasValue)
             plugins = GetDebugPlugins().ToImmutableArray();
         else
             plugins = packageStoreManager.GetPlugins();

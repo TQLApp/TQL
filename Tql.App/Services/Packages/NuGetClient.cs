@@ -95,7 +95,7 @@ internal class NuGetClient : IDisposable
             );
             if (searchResource != null)
             {
-                var searchFilter = new SearchFilter(true)
+                var searchFilter = new SearchFilter(includePrerelease)
                 {
                     OrderBy = SearchOrderBy.Id,
                     IncludeDelisted = includeDelisted

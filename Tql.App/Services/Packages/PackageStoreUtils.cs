@@ -1,5 +1,7 @@
-﻿using System.IO;
+﻿using Microsoft.Extensions.Logging;
+using System.IO;
 using System.Reflection;
+using Tql.Abstractions;
 using Path = System.IO.Path;
 
 namespace Tql.App.Services.Packages;
@@ -30,5 +32,31 @@ internal static class PackageStoreUtils
             .FirstOrDefault();
 
         return loadedAssembly.Assembly;
+    }
+
+    public static IEnumerable<Type> GetPackageTypes(Assembly assembly) =>
+        GetPackageTypes(assembly, typeof(ITqlPlugin), typeof(TqlPluginAttribute));
+
+    public static IEnumerable<Type> GetPackageTypes(
+        Assembly assembly,
+        Type tqlPluginType,
+        Type tqlPluginAttributeType
+    )
+    {
+        foreach (var type in assembly.GetExportedTypes())
+        {
+            var attribute = type.GetCustomAttribute(tqlPluginAttributeType);
+            if (attribute == null)
+                continue;
+
+            if (!tqlPluginType.IsAssignableFrom(type))
+            {
+                throw new InvalidOperationException(
+                    $"'{type}' does not implement '{nameof(ITqlPlugin)}'"
+                );
+            }
+
+            yield return type;
+        }
     }
 }

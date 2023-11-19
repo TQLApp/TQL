@@ -263,6 +263,34 @@ internal class PackageStoreManager
         File.WriteAllText(Path.Combine(targetPath, ManifestFileName), json);
     }
 
+    public IEnumerable<ITqlPlugin> GetSideloadedPlugins(string path)
+    {
+        var assemblyNames = new List<AssemblyName>();
+
+        lock (_syncRoot)
+        {
+            foreach (var fileName in PackageStoreUtils.GetAssemblyFileNames(Path.GetFullPath(path)))
+            {
+                var assemblyName = AssemblyName.GetAssemblyName(fileName);
+                assemblyNames.Add(assemblyName);
+
+                var key = AssemblyKey.FromName(assemblyName);
+
+                _packageAssemblies.Add(key, fileName);
+            }
+        }
+
+        foreach (var assemblyName in assemblyNames)
+        {
+            var assembly = Assembly.Load(assemblyName);
+
+            foreach (var type in PackageStoreUtils.GetPackageTypes(assembly))
+            {
+                yield return (ITqlPlugin)Activator.CreateInstance(type);
+            }
+        }
+    }
+
     private record Package(string Path, List<PackageAssembly> Assemblies);
 
     private record PackageAssembly(AssemblyName Name, string FileName);

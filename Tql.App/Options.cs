@@ -9,4 +9,7 @@ internal class Options
 
     [Option("env")]
     public string? Environment { get; set; }
+
+    [Option("sideload")]
+    public string? Sideload { get; set; }
 }

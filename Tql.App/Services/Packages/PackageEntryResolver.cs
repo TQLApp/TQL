@@ -119,19 +119,14 @@ internal class PackageEntryResolver
 
                 try
                 {
-                    foreach (var type in assembly.Assembly.GetExportedTypes())
+                    foreach (
+                        var type in PackageStoreUtils.GetPackageTypes(
+                            assembly.Assembly,
+                            tqlPluginType,
+                            tqlPluginAttributeType
+                        )
+                    )
                     {
-                        var attribute = type.GetCustomAttribute(tqlPluginAttributeType);
-                        if (attribute == null)
-                            continue;
-
-                        if (!tqlPluginType.IsAssignableFrom(type))
-                        {
-                            throw new InvalidOperationException(
-                                $"'{type}' does not implement '{nameof(ITqlPlugin)}'"
-                            );
-                        }
-
                         logger.Log(LogLevel.Information, "Discovered {TypeName}", type.FullName);
 
                         entries.Add((assembly.FileName, type.FullName!));
