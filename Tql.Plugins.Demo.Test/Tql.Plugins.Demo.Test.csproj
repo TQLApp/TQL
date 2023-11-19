@@ -9,6 +9,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="AsyncEnumerator" Version="4.0.2" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<ProjectReference Include="..\Tql.Plugins.Demo\Tql.Plugins.Demo.csproj" />
 		<ProjectReference Include="..\Tql.PluginTestSupport\Tql.PluginTestSupport.csproj" />
 	</ItemGroup>

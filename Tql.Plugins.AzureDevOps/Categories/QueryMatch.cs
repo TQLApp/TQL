@@ -60,7 +60,7 @@ internal class QueryMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, 
         if (!cache.IsCompleted)
             await context.DebounceDelay(cancellationToken);
 
-        return await context.Filter(await cache);
+        return context.Filter(await cache);
     }
 
     private async Task<ImmutableArray<IMatch>> ExecuteQuery(IServiceProvider serviceProvider)

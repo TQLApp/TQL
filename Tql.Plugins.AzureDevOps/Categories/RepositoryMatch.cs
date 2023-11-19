@@ -45,7 +45,7 @@ internal class RepositoryMatch
         if (!cache.IsCompleted)
             await context.DebounceDelay(cancellationToken);
 
-        return await context.Filter(await cache, MaxResults);
+        return context.Filter(await cache).Take(MaxResults);
     }
 
     private async Task<ImmutableArray<IMatch>> GetRepositoryFilePaths(

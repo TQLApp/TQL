@@ -74,7 +74,7 @@ internal class BoardMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, 
             )
         );
 
-        return await context.Filter(matches);
+        return context.Filter(matches);
     }
 }
 

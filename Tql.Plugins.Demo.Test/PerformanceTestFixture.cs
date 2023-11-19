@@ -1,4 +1,5 @@
 ﻿using System.Windows.Media;
+using Dasync.Collections;
 using Tql.Abstractions;
 using Tql.Plugins.Demo.Services;
 
@@ -34,7 +35,9 @@ internal class PerformanceTestFixture : BaseFixture
     [TestCase("rayseanicho")]
     public async Task PerformanceTest(string search)
     {
-        _ = (await CreateSearchContext(search).Filter(_people)).Count();
+        var matches = await CreateSearchContext(search).Filter(_people).ToListAsync();
+
+        _ = matches.Count();
     }
 
     private class PersonMatch : IMatch

@@ -2,6 +2,16 @@
   "version": 1,
   "dependencies": {
     ".NETFramework,Version=v4.8": {
+      "AsyncEnumerator": {
+        "type": "Direct",
+        "requested": "[4.0.2, )",
+        "resolved": "4.0.2",
+        "contentHash": "mjBg9pGuQVbCeC/3t75B74mRjIIqOg6o212CJ7g37wRrPIJTGzuFKo9/TsVuJl2by2I1ESJLyFnNFHHEMRUysA==",
+        "dependencies": {
+          "Microsoft.Bcl.AsyncInterfaces": "1.0.0",
+          "System.Threading.Tasks.Extensions": "4.5.2"
+        }
+      },
       "CommandLineParser": {
         "type": "Direct",
         "requested": "[2.9.1, )",

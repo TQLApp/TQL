@@ -5,7 +5,7 @@ using Tql.App.Support;
 
 namespace Tql.App.Search;
 
-internal class SearchContext : ISearchContext, IDisposable
+internal partial class SearchContext : ISearchContext, IDisposable
 {
     private readonly ConcurrentDictionary<IMatch, SearchResult> _results =
         new(ReferenceEqualityComparer<IMatch>.Instance);
@@ -57,16 +57,11 @@ internal class SearchContext : ISearchContext, IDisposable
     public Task DebounceDelay(CancellationToken cancellationToken) =>
         Task.Delay(TimeSpan.FromMilliseconds(200), cancellationToken);
 
-    public Task<IEnumerable<IMatch>> Filter(IEnumerable<IMatch> matches, int? maxResults = null)
-    {
-        // Create a copy of the list so we don't enumerate it on the background thread.
-        var matchList = matches.ToList();
+    public IFilteredAsyncEnumerable Filter(IEnumerable<IMatch> matches) =>
+        new FilteredMatches(this, matches.ToImmutableArray());
 
-        return Task.Run(() => DoFilter(matchList, maxResults, false), CancellationToken);
-    }
-
-    public IEnumerable<IMatch> FilterInternal(IEnumerable<IMatch> matches, int? maxResults) =>
-        DoFilter(matches, maxResults, true);
+    public IFilteredAsyncEnumerable FilterInternal(IEnumerable<IMatch> matches) =>
+        new FilteredMatches(this, matches.ToImmutableArray(), internalCall: true);
 
     private IEnumerable<IMatch> DoFilter(
         IEnumerable<IMatch> matches,

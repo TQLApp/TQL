@@ -58,6 +58,6 @@ public abstract class CachedMatch<T> : ISearchableMatch
         if (_matches == null)
             _matches = Create(await _cache.Get()).ToImmutableArray();
 
-        return await context.Filter(_matches);
+        return context.Filter(_matches);
     }
 }

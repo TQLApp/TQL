@@ -44,7 +44,7 @@ internal class EmailsMatch : ISearchableMatch, ISerializableMatch
             "The Outlook people directory should return all results on an empty search string"
         );
 
-        return await context.Filter(GetDtos(people).Select(_factory.Create), MaxResults);
+        return context.Filter(GetDtos(people).Select(_factory.Create)).Take(MaxResults);
     }
 
     private IEnumerable<PersonDto> GetDtos(ImmutableArray<IPerson> people)

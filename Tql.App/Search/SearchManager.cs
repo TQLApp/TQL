@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Dasync.Collections;
 using Microsoft.Extensions.Logging;
 using Tql.Abstractions;
 using Tql.App.Services;
@@ -286,9 +287,9 @@ internal class SearchManager : IDisposable
         // Get the root items from all plugins.
 
         var rootItems = (
-            from match in await context.Filter(
-                _pluginManager.Plugins.SelectMany(p => p.GetMatches())
-            )
+            from match in await context
+                .Filter(_pluginManager.Plugins.SelectMany(p => p.GetMatches()))
+                .ToListAsync()
             let searchResult = context.GetSearchResult(match)
             where !searchResult.IsFuzzyMatch
             select searchResult
@@ -315,7 +316,9 @@ internal class SearchManager : IDisposable
             // Filter the history and get the associated states.
 
             var history = (
-                from match in await context.Filter(context.History.Items.Select(p => p.Match))
+                from match in await context
+                    .Filter(context.History.Items.Select(p => p.Match))
+                    .ToListAsync()
                 select context.GetSearchResult(match)
             ).ToList();
 
@@ -364,15 +367,20 @@ internal class SearchManager : IDisposable
                 OnIsSearchingChanged();
 
                 if (!context.IsPreliminaryResultsSuppressed)
-                    ShowPreliminaryResults();
+                    await ShowPreliminaryResults();
             }
 
-            var result = (await task).Select(context.GetSearchResult).ToList();
+            var enumerable = await task;
+            if (enumerable is IAsyncEnumerable<IMatch> asyncEnumerable)
+                enumerable = await asyncEnumerable.ToListAsync();
+
+            var result = enumerable.Select(context.GetSearchResult).ToList();
 
             if (result.Count == 0)
             {
                 if (context.Search.IsEmpty())
-                    return GetPreliminaryResults();
+                    return await GetPreliminaryResults();
+
                 return ImmutableArray<SearchResult>.Empty;
             }
 
@@ -404,9 +412,9 @@ internal class SearchManager : IDisposable
         }
     }
 
-    private void ShowPreliminaryResults()
+    private async Task ShowPreliminaryResults()
     {
-        var results = GetPreliminaryResults();
+        var results = await GetPreliminaryResults();
         if (results != null)
         {
             Results = results.Value;
@@ -415,7 +423,7 @@ internal class SearchManager : IDisposable
         }
     }
 
-    private ImmutableArray<SearchResult>? GetPreliminaryResults()
+    private async Task<ImmutableArray<SearchResult>?> GetPreliminaryResults()
     {
         var context = Context;
         if (context == null || _history == null)
@@ -435,7 +443,7 @@ internal class SearchManager : IDisposable
             .Select(p => p.Match);
 
         if (!context.Search.IsEmpty())
-            items = context.FilterInternal(items, null);
+            items = await context.FilterInternal(items).ToListAsync();
 
         return items.Select(context.GetSearchResult).ToImmutableArray();
     }

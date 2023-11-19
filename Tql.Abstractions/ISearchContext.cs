@@ -105,26 +105,10 @@ public interface ISearchContext
     /// also where fuzzy matching and the ordering algorithms are
     /// implemented.
     /// </para>
-    ///
-    /// <para>
-    /// The <paramref name="maxResults"/> parameter is used to limit
-    /// the number of items returned. This method is highly optimized
-    /// and can handle up to 50k items as input. The <paramref name="maxResults"/>
-    /// parameter is used to limit the number of search results
-    /// returned after applying the filters. The reason for having
-    /// this parameter instead of depending on a separate
-    /// <see cref="Enumerable.Take{TSource}(IEnumerable{TSource}, int)"/>
-    /// call is that this opens up the possibility of implementing
-    /// advanced sorting algorithms that are optimized for returning
-    /// a limited number of results. This is not currently implemented
-    /// but may be in the future if the current performance isn't
-    /// sufficient.
-    /// </para>
     /// </remarks>
     /// <param name="matches">Search results to filter and sort.</param>
-    /// <param name="maxResults">Maximum number of search results to return.</param>
     /// <returns>Filtered and sorted search results.</returns>
-    Task<IEnumerable<IMatch>> Filter(IEnumerable<IMatch> matches, int? maxResults = null);
+    IFilteredAsyncEnumerable Filter(IEnumerable<IMatch> matches);
 
     /// <summary>
     /// Suppresses preliminary results.

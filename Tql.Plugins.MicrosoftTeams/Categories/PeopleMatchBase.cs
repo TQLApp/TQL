@@ -52,10 +52,11 @@ internal abstract class PeopleMatchBase<T> : ISearchableMatch, ISerializableMatc
 
         var allPeople = await _peopleDirectory.Find("", cancellationToken);
         if (allPeople.Length > 0)
-            return await context.Filter(
-                GetDtos(allPeople).Select(p => (IMatch)_factory.Create(p)),
-                MaxResults
-            );
+        {
+            return context
+                .Filter(GetDtos(allPeople).Select(p => (IMatch)_factory.Create(p)))
+                .Take(MaxResults);
+        }
 
         var people = await _peopleDirectory.Find(text, cancellationToken);
 

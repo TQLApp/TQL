@@ -1,9 +1,11 @@
 ﻿using System.Net.Http;
 using System.Reflection;
+using Dasync.Collections;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Tql.Abstractions;
 using Tql.App.Search;
+using Tql.App.Services;
 using Tql.PluginTestSupport.Services;
 
 namespace Tql.PluginTestSupport;
@@ -18,7 +20,15 @@ public abstract class PluginTestFixture
             // all details except for the assembly name. I couldn't
             // get binding redirects to work. This is a work around.
 
-            var assemblyName = e.Name.Split(',').First().Trim();
+            var pos = e.Name.IndexOf(',');
+            if (pos == -1)
+                return null;
+
+            var assemblyName = e.Name.Substring(0, pos).Trim();
+
+            // Don't attempt to resolve resource assemblies.
+            if (assemblyName.EndsWith(".resources", StringComparison.OrdinalIgnoreCase))
+                return null;
 
             return Assembly.Load(assemblyName);
         };
@@ -69,6 +79,7 @@ public abstract class PluginTestFixture
         builder.AddSingleton<HttpClient>();
         builder.AddSingleton<IPeopleDirectoryManager, TestPeopleDirectoryManager>();
 
+        builder.Add(ServiceDescriptor.Singleton(typeof(IMatchFactory<,>), typeof(MatchFactory<,>)));
         builder.Add(ServiceDescriptor.Singleton(typeof(ICache<>), typeof(TestCache<>)));
     }
 
@@ -95,7 +106,9 @@ public abstract class PluginTestFixture
         {
             // Get the root items from all plugins.
 
-            var filtered = await context.Filter(_plugins.SelectMany(p => p.GetMatches()));
+            var filtered = await context
+                .Filter(_plugins.SelectMany(p => p.GetMatches()))
+                .ToListAsync();
 
             items = filtered.Select(context.GetSearchResult).Where(p => !p.IsFuzzyMatch).ToList();
         }
@@ -130,6 +143,9 @@ public abstract class PluginTestFixture
             using (var context = (SearchContext)CreateSearchContext(lastSearch, contextMap))
             {
                 var matches = await searchable!.Search(context, lastSearch, default);
+
+                if (matches is IAsyncEnumerable<IMatch> asyncEnumerable)
+                    matches = await asyncEnumerable.ToListAsync();
 
                 items = matches.Select(context.GetSearchResult).ToList();
             }

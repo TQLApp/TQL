@@ -1,4 +1,5 @@
-﻿using NuGet.Common;
+﻿using Dasync.Collections;
+using NuGet.Common;
 using NuGet.Configuration;
 using NuGet.Frameworks;
 using NuGet.PackageManagement;
@@ -126,7 +127,12 @@ internal class NuGetClient : IDisposable
                     cancellationToken
                 );
 
-                packages.AddRange(await searchResults.ToListAsync());
+                var enumerator = searchResults.GetEnumeratorAsync();
+
+                while (await enumerator.MoveNextAsync())
+                {
+                    packages.Add(enumerator.Current);
+                }
             }
         }
 

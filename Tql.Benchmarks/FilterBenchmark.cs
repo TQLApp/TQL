@@ -1,6 +1,7 @@
 ﻿using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Jobs;
 using Bogus;
+using Dasync.Collections;
 using System.Diagnostics;
 using Tql.Abstractions;
 using Tql.App.Search;
@@ -48,7 +49,7 @@ public class FilterBenchmark
     {
         var context = new SearchContext(null!, Search, null, null!);
 
-        return context.Filter(_people, 100).Result.Count();
+        return context.Filter(_people).Take(100).ToListAsync().Result.Count();
     }
 
     [DebuggerDisplay("Text = {Text}")]
