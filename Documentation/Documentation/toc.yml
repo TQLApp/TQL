@@ -10,3 +10,19 @@
 - name: Plugin development
 - name: Getting started
   href: Getting-started.md
+- name: Setting up a plugin project
+  href: Setting-up-a-plugin-project.md
+- name: Creating the plugin class
+  href: Creating-the-plugin-class.md
+- name: Creating the category match
+  href: Creating-the-category-match.md
+- name: Adding an icon
+  href: Adding-an-icon.md
+- name: Adding a type ID
+  href: Adding-a-type-ID.md
+- name: Create a runnable match
+  href: Create-a-runnable-match.md
+- name: Implementing search
+  href: Implementing-search.md
+- name: Activating matches
+  href: Activating-matches.md

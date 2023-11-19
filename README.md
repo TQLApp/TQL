@@ -31,7 +31,7 @@ towards the first release.
 When you install the app, the quick start tutorial will guide you through the
 setup of TQL. Just follow the steps to start using Techie's Quick Launcher.
 
-![](Documentation/Images/Quick%20Start%20Screenshot.png)
+![](Documentation/Images/Quick-Start-screenshot.png)
 
 There's more in depth documentation available at
 [the wiki](https://github.com/TQLApp/TQL/wiki).
