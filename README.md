@@ -40,13 +40,13 @@ There's more in depth documentation available at
 
 There are two ways in which you can contribute. If you have an idea for a plugin
 for TQL, you can write your own. Have a look at the
-[Creating a plugin](https://github.com/TQLApp/TQL/wiki/Creating-a-plugin) wiki
-page for information on how to do this. You don't have to create a PR for this!
-You can publish your own plugin from your own repository and have it work with
-TQL.
+[Creating a plugin](https://tqlapp.github.io/TQL/Documentation/Getting-started.html)
+documentation on the developers website on how to do this. You don't have to
+create a PR for this! You can publish your own plugin from your own repository
+and have it work with TQL.
 
 If you want to contribute to TQL directly, we welcome PRs. See the
-[Development environment](https://github.com/TQLApp/TQL/wiki/Development-environment)
+[Development environment](https://tqlapp.github.io/TQL/Documentation/Development-environment.html)
 wiki page for information on how to setup a local development environment for
 TQL.
 
@@ -57,9 +57,9 @@ for this and mention that you'd like to contribute it yourself. We'll use the
 comments on the issue to discuss whether the feature is a good fit for the tool.
 
 We also welcome localization of TQL. See the
-[Localizing TQL](https://github.com/TQLApp/TQL/wiki/Localizing-TQL) wiki page
-for instructions on how to do this. I maintain English and Dutch myself, and I
-welcome contributions for any other language.
+[Localizing TQL](https://tqlapp.github.io/TQL/Documentation/Localizing-TQL.html)
+wiki page for instructions on how to do this. I maintain English and Dutch
+myself, and I welcome contributions for any other language.
 
 ## License
 
