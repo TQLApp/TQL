@@ -1,0 +1,66 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  release:
+    name: Release
+    runs-on: windows-2022
+
+    steps:
+      - name: Authenticate GitHub package source
+        run: dotnet nuget add source --username USERNAME --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/TQLApp/index.json"
+
+      - uses: actions/checkout@v4
+
+      - name: Fetch tags
+        run: git fetch --tags --force
+
+      - name: Get Build Version
+        id: get-build-version
+        shell: pwsh
+        run: ./Build/GetBuildVersion.ps1 -tag ${{ github.ref }}
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1
+
+      - uses: actions/cache@v3
+        id: cache
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-v2-${{ hashFiles('**/packages.lock.json') }}
+
+      - name: Restore Solution
+        run: msbuild -nodeReuse:false -maxCpuCount -target:Restore -property:Configuration="Release" -property:Version="${{ steps.get-build-version.outputs.build-version }}" Tql.sln
+
+      - name: Build Solution
+        run: msbuild -nodeReuse:false -maxCpuCount -target:Build -property:Configuration="Release" -property:Version="${{ steps.get-build-version.outputs.build-version }}" Tql.sln
+
+      - name: Create MSI
+        shell: pwsh
+        run: ./Build/Create-MSI.ps1
+
+      - name: Get Tag Annotation
+        uses: ericcornelissen/git-tag-annotation-action@v2
+        id: tag-data
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: Build/Distrib/Tql*.msi
+          generate_release_notes: true
+          prerelease: true
+          body: ${{ steps.tag-data.outputs.git-tag-annotation }}
+
+      - name: Publish NuGet packages to NuGet.org
+        run: dotnet nuget push "**/*.nupkg" --api-key "${{ secrets.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+
+      - name: Publish symbol NuGet packages to NuGet.org
+        run: dotnet nuget push "**/*.snupkg" --api-key "${{ secrets.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate

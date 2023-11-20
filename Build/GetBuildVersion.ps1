@@ -21,19 +21,58 @@ Function Get-Script-Directory
     }
 }
 
+Function Get-Version-From-Tag([string]$Tag)
+{
+  if ($tag -match "tags/v(.*)")
+  {
+    return $Matches[1]
+  }
+  if ($tag -match "^v(.*)")
+  {
+    return $Matches[1]
+  }
+
+  return $Null
+}
+
 ################################################################################
 # ENTRY POINT
 ################################################################################
 
 $Global:Root = (Get-Item (Get-Script-Directory)).Parent.FullName
 
-if (-not ($tag -match "tags/v(.*)"))
+if ($tag -eq $null)
 {
-  Write-Host "Invalid tag ref"
-  exit 1
+  $Tags = git for-each-ref --sort=-creatordate --format '%(refname:short)' refs/tags
+
+  $Version = $null
+
+  foreach ($Match in $Tags | Select-String "\S+" -AllMatches)
+  {
+    $Version = Get-Version-From-Tag $Match
+    if ($Version -ne $null)
+    {
+      break
+    }
+  }
+
+  if ($Version -eq $null)
+  {
+    Write-Host "Could not find tag"
+    exit 2
+  }
+}
+else
+{
+  $Version = Get-Version-From-Tag $tag
+
+  if ($Version -eq $null)
+  {
+    Write-Host "Invalid tag ref"
+    exit 1
+  }
 }
 
-$Version = $Matches[1]
 $VersionId = [guid]::NewGuid()
 
 $Content = @"

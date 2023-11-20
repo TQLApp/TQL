@@ -2,12 +2,11 @@ name: Create Setup
 
 on:
   push:
-    tags:
-      - "v*"
+    branches:
+      - main
 
 permissions:
   contents: write
-  packages: write
   pages: write
   id-token: write
 
@@ -20,64 +19,38 @@ jobs:
       - name: Authenticate GitHub package source
         run: dotnet nuget add source --username USERNAME --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/TQLApp/index.json"
 
-      - uses: actions/checkout@v4
-
-      - name: Fetch tags
-        run: git fetch --tags --force
-
-      - name: Get Build Version
+      - name: Get Last Build Version
         id: get-build-version
         shell: pwsh
-        run: ./Build/GetBuildVersion.ps1 -tag ${{ github.ref }}
+        run: ./Build/GetBuildVersion.ps1
+
+      - uses: actions/checkout@v4
 
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1
 
-      # Caches are scoped to branches and tags, so doesn't work for us since
-      # we're building off of tags.
-      #
-      # - uses: actions/cache@v3
-      #   id: cache
-      #   with:
-      #     path: ~/.nuget/packages
-      #     key: ${{ runner.os }}-nuget-v2-${{ hashFiles('**/packages.lock.json') }}
+      - uses: actions/cache@v3
+        id: cache
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-v2-${{ hashFiles('**/packages.lock.json') }}
 
       - name: Restore Solution
-        run: msbuild -nodeReuse:false -maxCpuCount -target:Restore -property:Platform="Any CPU" -property:Configuration="Release" -property:Version="${{ steps.get-build-version.outputs.build-version }}" Tql.sln
+        run: msbuild -nodeReuse:false -maxCpuCount -target:Restore -property:Configuration="Release" -property:Version="${{ steps.get-build-version.outputs.build-version }}" Tql.sln
 
       - name: Build Solution
-        run: msbuild -nodeReuse:false -maxCpuCount -target:Build -property:Platform="Any CPU" -property:Configuration="Release" -property:Version="${{ steps.get-build-version.outputs.build-version }}" Tql.sln
+        run: msbuild -nodeReuse:false -maxCpuCount -target:Build -property:Configuration="Release" -property:Version="${{ steps.get-build-version.outputs.build-version }}" Tql.sln
 
-      - name: Create MSI
-        shell: pwsh
-        run: ./Build/Create-MSI.ps1
+      - name: Install DocFX
+        run: dotnet tool update -g docfx
 
-      - name: Get Tag Annotation
-        uses: ericcornelissen/git-tag-annotation-action@v2
-        id: tag-data
-
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: Build/Distrib/Tql*.msi
-          generate_release_notes: true
-          prerelease: true
-          body: ${{ steps.tag-data.outputs.git-tag-annotation }}
-
-      - name: Publish NuGet packages to NuGet.org
-        run: dotnet nuget push "**/*.nupkg" --api-key "${{ secrets.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
-
-      - name: Publish symbol NuGet packages to NuGet.org
-        run: dotnet nuget push "**/*.snupkg" --api-key "${{ secrets.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
-
-      - run: dotnet tool update -g docfx
-
-      - run: docfx Documentation/docfx.json
+      - name: Run DocFX
+        run: docfx Documentation/docfx.json
 
       - name: Setup Pages
         uses: actions/configure-pages@v3
 
-      - name: Upload artifact
+      - name: Upload DocFX Pages Artifact
         uses: actions/upload-pages-artifact@v2
         with:
           path: "Documentation/_site"
