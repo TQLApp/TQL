@@ -29,7 +29,7 @@ Tql.App in two ways:
 
 TQL has support for environments:
 
-![](../Images/Environments-screenshot.png)
+![=2x](../Images/Environments-screenshot.png)
 
 Three environments have been added to the launch settings. Normally you use the
 debug environment to not interfere with your main installation of TQL. There's a

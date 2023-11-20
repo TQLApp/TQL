@@ -28,11 +28,11 @@ link to the clipboard, using the `Text` of the match as a label.
 If you now run the project again, the copy item should appear next to any
 package match:
 
-![](../Images/Copy-on-package-match.png)
+![=2x](../Images/Copy-on-package-match.png)
 
 If you click this and e.g. paste this into Word, you'll get the following:
 
-![](../Images/Pasted-link.png)
+![=2x](../Images/Pasted-link.png)
 
 The `IClipboard` service also has a `CopyMarkdown` method that allows you to do
 more advanced formatting.

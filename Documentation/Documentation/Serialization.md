@@ -133,20 +133,20 @@ public IMatch? DeserializeMatch(Guid typeId, string value)
 If we now run the project again, first thing you'll notice is that the pin icon
 appears if you hover over the NuGet packages match:
 
-![](../Images/Pin-on-packages-match.png)
+![=2x](../Images/Pin-on-packages-match.png)
 
 If you open the category, and re-open the search window, the NuGet packages
 match will have been added to the history:
 
-![](../Images/Packages-match-in-history.png)
+![=2x](../Images/Packages-match-in-history.png)
 
 And, same for the package matches of course:
 
-![](../Images/Pin-on-package-match.png)
+![=2x](../Images/Pin-on-package-match.png)
 
 And after we activate it:
 
-![](../Images/Package-match-in-history.png)
+![=2x](../Images/Package-match-in-history.png)
 
 Next we'll look at the last interface you should consider implementing on every
 match. This will allow users to copy links to your matches.

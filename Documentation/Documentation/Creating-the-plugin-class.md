@@ -12,7 +12,7 @@ package instead:
 - Right click on the project file and click **Manage NuGet Packages...**.
 - Search for "tqlapp.utilities" and click **Install**:
 
-  ![](../Images/Install-utilities-NuGet-package.png)
+  ![=2x](../Images/Install-utilities-NuGet-package.png)
 
 Next, replace the automatically generated **Class1.cs** file with a new file
 called **Plugin.cs** and paste in the following content:
@@ -70,13 +70,13 @@ profile to use this version of TQL:
 
 - Open the **Debug | TqlNuGetPlugin Debug Properties** menu item:
 
-  ![](../Images/Edit-debug-properties.png)
+  ![=2x](../Images/Edit-debug-properties.png)
 
 - Remove the automatically generated launch profile and replace it with a new
   one of type **Executable**.
 - Configure the launch profile as follows:
 
-  ![](../Images/Create-launch-profile.png)
+  ![=2x](../Images/Create-launch-profile.png)
 
   - Set the path to the executable to this:
     "%LOCALAPPDATA%\\Programs\\TQL\\Tql.App.exe". This configures the launch

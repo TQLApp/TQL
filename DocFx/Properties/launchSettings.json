@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "DocFX": {
+      "commandName": "Executable",
+      "executablePath": "docfx",
+      "commandLineArgs": "docfx.json --serve",
+      "workingDirectory": "$(SolutionDir)..\\Documentation"
+    }
+  }
+}

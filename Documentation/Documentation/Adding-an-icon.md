@@ -16,11 +16,11 @@ Complete the following steps to add the NuGet logo to your project:
 
 - Right click on the logo in the solution explorer and click **Properties**:
 
-  ![](../Images/Change-icon-properties.png)
+  ![=2x](../Images/Change-icon-properties.png)
 
 - Changed the **Build Action** to **Embedded Resource**:
 
-  ![](../Images/Change-to-embedded-resource.png)
+  ![=2x](../Images/Change-to-embedded-resource.png)
 
 This adds the icon to our class library. Next we'll create a class to load these
 resources. To do this, create a new class called **Images** and paste in the
@@ -53,6 +53,6 @@ public ImageSource Icon => Images.NuGetLogo;
 If you now start the app again and type in a single space again, the logo should
 appear:
 
-![](../Images/Packages-category-with-icon.png)
+![=2x](../Images/Packages-category-with-icon.png)
 
 Next will add the type ID.

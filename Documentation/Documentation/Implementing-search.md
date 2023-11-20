@@ -132,7 +132,7 @@ There are a few important things to note here:
 
 If you now run the project, you should be able to search for NuGet packages:
 
-![](../Images/Search-results.png)
+![=2x](../Images/Search-results.png)
 
 Next we'll update the `PackageMatch` class to allow the user to open the package
 page.

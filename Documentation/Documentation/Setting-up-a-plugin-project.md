@@ -11,39 +11,39 @@ Complete the following steps:
 
 - Open Visual Studio:
 
-  ![](../Images/Open-Visual-Studio.png)
+  ![=2x](../Images/Open-Visual-Studio.png)
 
 - Click **Create a new project**, search for "class library" and pick the C#
   version of the **Class Library** template:
 
-  ![](../Images/Search-for-class-library.png)
+  ![=2x](../Images/Search-for-class-library.png)
 
 - Give your plugin a name, e.g. "TqlNuGetPlugin":
 
-  ![](../Images/Configure-your-new-project.png)
+  ![=2x](../Images/Configure-your-new-project.png)
 
 - In **Framework**, pick the latest framework. TQL plugins must be .NET
   Framework 4.8. We'll change to that in a bit:
 
-  ![](../Images/Set-the-target-framework.png)
+  ![=2x](../Images/Set-the-target-framework.png)
 
 Visual Studio now opens the newly created project. I have the CSharpier plugin
 installed. If you haven't, install that now. You should get a prompt from
 CSharpier to install CSharpier locally. Click the **Install CSharpier Locally**
 button to install CSharpier:
 
-![](../Images/Install-CSharpier.png)
+![=2x](../Images/Install-CSharpier.png)
 
 Then, configure CSharpier to run on save:
 
 - Open the **Tools | Options** menu.
 - Search for "csharpier" and open the **General** menu option:
 
-  ![](../Images/Search-for-CSharpier-configuration-dialog.png)
+  ![=2x](../Images/Search-for-CSharpier-configuration-dialog.png)
 
 - Change **CSharpier - Solution | Reformat with CSharper on Save** to **True**:
 
-  ![](../Images/Configure-CSharpier.png)
+  ![=2x](../Images/Configure-CSharpier.png)
 
 This would also be a good time to add your project to source control. You can do
 this from Visual Studio directly, or use your favorite tool for this.

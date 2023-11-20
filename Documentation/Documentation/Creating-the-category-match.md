@@ -44,7 +44,7 @@ public IEnumerable<IMatch> GetMatches()
 If you now start the app again and type a single space into the search box, your
 match will show:
 
-![](../Images/Packages-category-without-icon.png)
+![=2x](../Images/Packages-category-without-icon.png)
 
 That's great progress already!
 
