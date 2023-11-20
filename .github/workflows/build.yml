@@ -1,4 +1,4 @@
-name: Create Setup
+name: Update GitHub Pages
 
 on:
   push:
@@ -19,12 +19,12 @@ jobs:
       - name: Authenticate GitHub package source
         run: dotnet nuget add source --username USERNAME --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/TQLApp/index.json"
 
+      - uses: actions/checkout@v4
+
       - name: Get Last Build Version
         id: get-build-version
         shell: pwsh
         run: ./Build/GetBuildVersion.ps1
-
-      - uses: actions/checkout@v4
 
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1
