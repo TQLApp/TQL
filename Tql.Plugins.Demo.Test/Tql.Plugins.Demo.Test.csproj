@@ -1,12 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<TargetFramework>net48</TargetFramework>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
-		<LangVersion>latest</LangVersion>
-		<UseWPF>true</UseWPF>
-	</PropertyGroup>
+	<Import Project="..\Tql.targets" />
 
 	<ItemGroup>
 	  <PackageReference Include="AsyncEnumerator" Version="4.0.2" />

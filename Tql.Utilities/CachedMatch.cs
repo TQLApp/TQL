@@ -1,5 +1,4 @@
-﻿using System.Windows.Media;
-using Tql.Abstractions;
+﻿using Tql.Abstractions;
 
 namespace Tql.Utilities;
 

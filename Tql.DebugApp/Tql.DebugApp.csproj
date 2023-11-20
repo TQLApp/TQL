@@ -2,13 +2,11 @@
 
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
-		<TargetFramework>net48</TargetFramework>
-		<Nullable>enable</Nullable>
-		<LangVersion>latest</LangVersion>
-		<UseWPF>true</UseWPF>
 		<ApplicationManifest>app.manifest</ApplicationManifest>
 		<ApplicationIcon>mainicon.ico</ApplicationIcon>
 	</PropertyGroup>
+
+	<Import Project="..\Tql.targets" />
 
 	<ItemGroup>
 		<None Remove="app.manifest" />

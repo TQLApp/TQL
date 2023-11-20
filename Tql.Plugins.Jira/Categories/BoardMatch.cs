@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Windows.Forms;
+using Microsoft.Extensions.DependencyInjection;
 using Tql.Abstractions;
 using Tql.Plugins.Jira.Data;
 using Tql.Plugins.Jira.Services;

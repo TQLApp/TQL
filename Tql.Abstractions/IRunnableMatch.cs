@@ -1,4 +1,6 @@
-﻿namespace Tql.Abstractions;
+﻿using System.Windows.Forms;
+
+namespace Tql.Abstractions;
 
 /// <summary>
 /// Represents a runnable match.

@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using System.IO;
+﻿using System.IO;
 using System.Reflection;
 using Tql.Abstractions;
 using Path = System.IO.Path;

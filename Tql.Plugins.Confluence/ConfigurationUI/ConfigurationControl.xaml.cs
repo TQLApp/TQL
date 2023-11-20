@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System.Windows.Forms;
+using Microsoft.Extensions.Logging;
 using Tql.Abstractions;
 using Tql.Plugins.Confluence.Services;
 using Tql.Utilities;

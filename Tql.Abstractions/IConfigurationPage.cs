@@ -1,6 +1,4 @@
-﻿using System.Windows.Controls;
-
-namespace Tql.Abstractions;
+﻿namespace Tql.Abstractions;
 
 /// <summary>
 /// Represents a configuration page.

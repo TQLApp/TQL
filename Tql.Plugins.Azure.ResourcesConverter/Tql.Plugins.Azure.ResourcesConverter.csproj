@@ -2,11 +2,9 @@
 
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
-		<TargetFramework>net48</TargetFramework>
-		<ImplicitUsings>disable</ImplicitUsings>
-		<Nullable>enable</Nullable>
-		<LangVersion>latest</LangVersion>
 	</PropertyGroup>
+
+	<Import Project="..\Tql.targets" />
 
 	<ItemGroup>
 		<PackageReference Include="AsyncEnumerator" Version="4.0.2" />

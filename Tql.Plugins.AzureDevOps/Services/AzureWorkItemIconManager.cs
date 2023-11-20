@@ -1,5 +1,4 @@
-﻿using System.IO;
-using Tql.Abstractions;
+﻿using Tql.Abstractions;
 using Tql.Plugins.AzureDevOps.Data;
 using Tql.Utilities;
 

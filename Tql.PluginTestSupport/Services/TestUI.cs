@@ -1,4 +1,5 @@
-﻿using Tql.Abstractions;
+﻿using System.Windows.Forms;
+using Tql.Abstractions;
 
 namespace Tql.PluginTestSupport.Services;
 

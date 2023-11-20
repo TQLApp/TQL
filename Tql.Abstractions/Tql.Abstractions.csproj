@@ -1,13 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net48</TargetFramework>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
-		<LangVersion>latest</LangVersion>
-		<UseWPF>true</UseWPF>
-		<UseWindowsForms>true</UseWindowsForms>
-		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
 		<Product>TQL Plugin Abstractions</Product>
 		<Description>Abstractions for building plugins for Techie's Quick Launcher.</Description>
 		<PackageId>TQLApp.Abstractions</PackageId>

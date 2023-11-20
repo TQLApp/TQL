@@ -1,13 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net48</TargetFramework>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
-		<LangVersion>latest</LangVersion>
-		<UseWPF>true</UseWPF>
-		<UseWindowsForms>true</UseWindowsForms>
-		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
 		<Product>TQL JIRA Plugin</Product>
 		<Description>Techie's Quick Launcher plugin for JIRA by Atlassian.</Description>
 		<PackageId>TQLApp.Plugins.Jira</PackageId>

@@ -1,12 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net48</TargetFramework>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
-		<LangVersion>latest</LangVersion>
-		<UseWPF>true</UseWPF>
-		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
 		<NoWarn>NU5104</NoWarn>
 		<Product>TQL Azure DevOps Plugin</Product>
 		<Description>Techie's Quick Launcher plugin for Azure DevOps.</Description>

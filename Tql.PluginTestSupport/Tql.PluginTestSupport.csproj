@@ -1,20 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net48</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <LangVersion>latest</LangVersion>
-    <UseWPF>true</UseWPF>
-    <UseWindowsForms>true</UseWindowsForms>
-  </PropertyGroup>
+	<Import Project="..\Tql.targets" />
 
-  <ItemGroup>
-    <PackageReference Include="NUnit" Version="3.14.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="NUnit" Version="3.14.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Tql.App\Tql.App.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Tql.App\Tql.App.csproj" />
+	</ItemGroup>
 
 </Project>

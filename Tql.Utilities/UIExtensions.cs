@@ -1,4 +1,5 @@
-﻿using System.Windows.Interop;
+﻿using System.Windows.Forms;
+using System.Windows.Interop;
 using Tql.Abstractions;
 using IWin32Window = System.Windows.Forms.IWin32Window;
 

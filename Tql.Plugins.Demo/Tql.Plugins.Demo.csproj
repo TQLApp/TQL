@@ -1,13 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net48</TargetFramework>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
-		<LangVersion>latest</LangVersion>
-		<UseWPF>true</UseWPF>
-		<UseWindowsForms>true</UseWindowsForms>
-		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
 		<Product>TQL Demo Plugin</Product>
 		<Description>Demo plugin for Techie's Quick Launcher.</Description>
 		<PackageId>TQLApp.Plugins.Demo</PackageId>

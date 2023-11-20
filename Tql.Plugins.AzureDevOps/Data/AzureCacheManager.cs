@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Net.Http;
+﻿using System.Net.Http;
 using Microsoft.TeamFoundation.Build.WebApi;
 using Microsoft.TeamFoundation.Core.WebApi;
 using Microsoft.TeamFoundation.Core.WebApi.Types;

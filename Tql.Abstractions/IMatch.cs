@@ -1,6 +1,4 @@
-﻿using System.Windows.Media;
-
-namespace Tql.Abstractions;
+﻿namespace Tql.Abstractions;
 
 /// <summary>
 /// Represents a search result.

@@ -1,5 +1,4 @@
-﻿using System.Windows.Media;
-using Dasync.Collections;
+﻿using Dasync.Collections;
 using Tql.Abstractions;
 using Tql.Plugins.Demo.Services;
 

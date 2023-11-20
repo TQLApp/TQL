@@ -1,15 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net48</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
+	<Import Project="..\Tql.targets" />
 
-  <ItemGroup>
-    <ProjectReference Include="..\Tql.Plugins.GitHub\Tql.Plugins.GitHub.csproj" />
-    <ProjectReference Include="..\Tql.PluginTestSupport\Tql.PluginTestSupport.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Tql.Plugins.GitHub\Tql.Plugins.GitHub.csproj" />
+		<ProjectReference Include="..\Tql.PluginTestSupport\Tql.PluginTestSupport.csproj" />
+	</ItemGroup>
 
 </Project>

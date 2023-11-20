@@ -1,21 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net48</TargetFramework>
-    <Nullable>enable</Nullable>
-    <UseWPF>true</UseWPF>
-    <UseWindowsForms>true</UseWindowsForms>
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="BenchmarkDotNet" Version="0.13.10" />
-    <PackageReference Include="Bogus" Version="34.0.2" />
-  </ItemGroup>
+	<Import Project="..\Tql.targets" />
 
-  <ItemGroup>
-    <ProjectReference Include="..\Tql.App\Tql.App.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="BenchmarkDotNet" Version="0.13.10" />
+		<PackageReference Include="Bogus" Version="34.0.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Tql.App\Tql.App.csproj" />
+	</ItemGroup>
 
 </Project>

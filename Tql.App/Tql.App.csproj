@@ -2,15 +2,12 @@
 
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
-		<TargetFramework>net48</TargetFramework>
-		<Nullable>enable</Nullable>
-		<UseWPF>true</UseWPF>
-		<UseWindowsForms>true</UseWindowsForms>
-		<LangVersion>latest</LangVersion>
 		<ApplicationIcon>mainicon.ico</ApplicationIcon>
 		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
 		<ApplicationManifest>app.manifest</ApplicationManifest>
 	</PropertyGroup>
+
+	<Import Project="..\Tql.targets" />
 
 	<ItemGroup>
 		<Resource Include="Resources\**\*" />

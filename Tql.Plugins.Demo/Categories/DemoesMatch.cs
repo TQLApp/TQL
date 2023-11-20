@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-using Tql.Abstractions;
+﻿using Tql.Abstractions;
 
 namespace Tql.Plugins.Demo.Categories;
 

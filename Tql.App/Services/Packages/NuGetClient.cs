@@ -1,5 +1,4 @@
-﻿using Dasync.Collections;
-using NuGet.Common;
+﻿using NuGet.Common;
 using NuGet.Configuration;
 using NuGet.Frameworks;
 using NuGet.PackageManagement;
@@ -12,7 +11,6 @@ using NuGet.Protocol.Core.Types;
 using NuGet.Resolver;
 using System.IO;
 using System.Text.RegularExpressions;
-using Tql.App.Support;
 using Path = System.IO.Path;
 
 namespace Tql.App.Services.Packages;
