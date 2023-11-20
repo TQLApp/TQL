@@ -1,8 +1,10 @@
 # Creating the category match
 
-TQL distinguishes roughly two types of matches: categories and runnable matches. Categories are what you search, and runnable matches is what the search returns.
+TQL distinguishes roughly two types of matches: categories and runnable matches.
+Categories are what you search, and runnable matches is what the search returns.
 
-We start with the category. Add a new class called **PackagesMatch** and paste in the following contents:
+We start with the category. Add a new class called **PackagesMatch** and paste
+in the following contents:
 
 ```cs
 using System.Windows.Media;
@@ -28,7 +30,9 @@ internal class PackagesMatch : ISearchableMatch
 }
 ```
 
-This is a base implementation for a searchable match. To let TQL know of the match, we need to return an instance of it form the `GetMatches()` method in the plugin. Update that method the following:
+This is a base implementation for a searchable match. To let TQL know of the
+match, we need to return an instance of it form the `GetMatches()` method in the
+plugin. Update that method the following:
 
 ```cs
 public IEnumerable<IMatch> GetMatches()
@@ -37,7 +41,8 @@ public IEnumerable<IMatch> GetMatches()
 }
 ```
 
-If you now start the app again and type a single space into the search box, your match will show:
+If you now start the app again and type a single space into the search box, your
+match will show:
 
 ![](../Images/Packages-category-without-icon.png)
 

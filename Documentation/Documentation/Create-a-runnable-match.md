@@ -1,8 +1,11 @@
 # Create a runnable match
 
-We now have everything we need to start implementing our search functionality, but we can't yet return anything. So, before we implement search, we'll add everything we need to be able to return search some search results.
+We now have everything we need to start implementing our search functionality,
+but we can't yet return anything. So, before we implement search, we'll add
+everything we need to be able to return search some search results.
 
-Start by adding a new class called **PackageMatch** and paste in the following code:
+Start by adding a new class called **PackageMatch** and paste in the following
+code:
 
 ```cs
 using System.Windows.Media;
@@ -32,7 +35,10 @@ internal class PackageMatch : IRunnableMatch
 internal record PackageDto(string PackageId);
 ```
 
-It's best practice to define DTO objects for all matches. DTO object should be immutable, so the C# `record` type is a good fit. Because our project is a .NET Framework project, we need to add a missing attribute to our class project. Add a new file called **CompilerServices** and paste in the following content:
+It's best practice to define DTO objects for all matches. DTO object should be
+immutable, so the C# `record` type is a good fit. Because our project is a .NET
+Framework project, we need to add a missing attribute to our class project. Add
+a new file called **CompilerServices** and paste in the following content:
 
 ```cs
 namespace System.Runtime.CompilerServices
@@ -43,7 +49,8 @@ namespace System.Runtime.CompilerServices
 
 This allows us to use `record` types.
 
-We also have to add a new type ID to the `TypeIds` class. Add the following code in it:
+We also have to add a new type ID to the `TypeIds` class. Add the following code
+in it:
 
 ```cs
 public static readonly MatchTypeId Package = new MatchTypeId(
