@@ -26,7 +26,8 @@ internal class OutlookPeopleDirectory : IPeopleDirectory
         if (search.IsWhiteSpace())
             return cache.People.CastArray<IPerson>();
 
-        return cache.People
+        return cache
+            .People
             .Where(p => p.DisplayName.Contains(search, StringComparison.CurrentCultureIgnoreCase))
             .ToImmutableArray<IPerson>();
     }

@@ -39,10 +39,9 @@ internal partial class ConfigurationWindow
         );
 
         foreach (
-            var plugin in _pluginManager.Plugins.OrderBy(
-                p => p.Title,
-                StringComparer.CurrentCultureIgnoreCase
-            )
+            var plugin in _pluginManager
+                .Plugins
+                .OrderBy(p => p.Title, StringComparer.CurrentCultureIgnoreCase)
         )
         {
             var pages = plugin.GetConfigurationPages().ToList();

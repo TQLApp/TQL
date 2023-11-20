@@ -1,12 +1,12 @@
-﻿using Markdig;
+﻿using System.Diagnostics;
+using System.Web;
+using Markdig;
 using Markdig.Extensions.Emoji;
 using Markdig.Helpers;
 using Markdig.Parsers;
 using Markdig.Renderers;
 using Markdig.Syntax;
 using Markdig.Syntax.Inlines;
-using System.Diagnostics;
-using System.Web;
 using Tql.Abstractions;
 using Tql.App.Support;
 using Inline = Markdig.Syntax.Inlines.Inline;
@@ -174,19 +174,21 @@ internal class QuickStartMarkdownRenderer
 
             var image = Images.GetImage(url, color);
 
-            renderer.CurrentInlines!.Add(
-                new InlineUIContainer
-                {
-                    BaselineAlignment = BaselineAlignment.Center,
-                    Child = new Image
+            renderer
+                .CurrentInlines!
+                .Add(
+                    new InlineUIContainer
                     {
-                        Source = image,
-                        Height = 15,
-                        Width = 15,
-                        VerticalAlignment = VerticalAlignment.Center
+                        BaselineAlignment = BaselineAlignment.Center,
+                        Child = new Image
+                        {
+                            Source = image,
+                            Height = 15,
+                            Width = 15,
+                            VerticalAlignment = VerticalAlignment.Center
+                        }
                     }
-                }
-            );
+                );
         }
 
         private static void WriteLink(TextBlockRenderer renderer, LinkInline obj)
@@ -223,18 +225,20 @@ internal class QuickStartMarkdownRenderer
 
                 foreach (var item in obj.Content.ToString().Split('+'))
                 {
-                    renderer.CurrentInlines!.Add(
-                        new InlineUIContainer
-                        {
-                            BaselineAlignment = BaselineAlignment.Center,
-                            Child = new Border
+                    renderer
+                        .CurrentInlines!
+                        .Add(
+                            new InlineUIContainer
                             {
-                                Style = (Style)renderer.Owner.FindResource("ButtonBorder"),
-                                Child = new TextBlock(new Run(item)),
-                                VerticalAlignment = VerticalAlignment.Center
+                                BaselineAlignment = BaselineAlignment.Center,
+                                Child = new Border
+                                {
+                                    Style = (Style)renderer.Owner.FindResource("ButtonBorder"),
+                                    Child = new TextBlock(new Run(item)),
+                                    VerticalAlignment = VerticalAlignment.Center
+                                }
                             }
-                        }
-                    );
+                        );
                 }
             }
             else if (obj is EmojiInline)
@@ -242,14 +246,16 @@ internal class QuickStartMarkdownRenderer
                 if (!owner)
                     throw new InvalidOperationException("Cannot add emojis into other inlines");
 
-                renderer.CurrentInlines!.Add(
-                    new Emoji.Wpf.EmojiInline
-                    {
-                        Text = obj.Content.ToString(),
-                        FontSize = WpfUtils.PointsToPixels(13),
-                        Foreground = Brushes.Black
-                    }
-                );
+                renderer
+                    .CurrentInlines!
+                    .Add(
+                        new Emoji.Wpf.EmojiInline
+                        {
+                            Text = obj.Content.ToString(),
+                            FontSize = WpfUtils.PointsToPixels(13),
+                            Foreground = Brushes.Black
+                        }
+                    );
             }
             else
             {

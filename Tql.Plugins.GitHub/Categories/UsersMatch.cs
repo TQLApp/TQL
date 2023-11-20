@@ -54,9 +54,9 @@ internal class UsersMatch : ISearchableMatch, ISerializableMatch
 
         cancellationToken.ThrowIfCancellationRequested();
 
-        return response.Items.Select(
-            p => _factory.Create(new UserMatchDto(_dto.Id, p.Login, p.HtmlUrl))
-        );
+        return response
+            .Items
+            .Select(p => _factory.Create(new UserMatchDto(_dto.Id, p.Login, p.HtmlUrl)));
     }
 
     public string Serialize()

@@ -1,13 +1,13 @@
 ﻿using System.Diagnostics;
-using Microsoft.Extensions.Logging;
 using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using Microsoft.Extensions.Logging;
 using Tql.Abstractions;
 using Tql.App.Services.Packages;
-using Path = System.IO.Path;
 using Tql.App.Support;
+using Path = System.IO.Path;
 
 namespace Tql.App.Services.Updates;
 
@@ -90,7 +90,8 @@ internal class UpdateChecker : IDisposable
         if (appVersion.CompareTo(releaseVersion) >= 0)
             return false;
 
-        var assets = release.Assets
+        var assets = release
+            .Assets
             .Where(p => p.Name.EndsWith(".msi", StringComparison.OrdinalIgnoreCase))
             .ToList();
 
@@ -205,9 +206,10 @@ internal class UpdateChecker : IDisposable
 
     private void InitializeRequest(HttpRequestMessage request)
     {
-        request.Headers.UserAgent.Add(
-            new ProductInfoHeaderValue("TQL", GetAppVersion().ToString())
-        );
+        request
+            .Headers
+            .UserAgent
+            .Add(new ProductInfoHeaderValue("TQL", GetAppVersion().ToString()));
     }
 
     private async Task<string> Download(ReleaseAssetDto asset)

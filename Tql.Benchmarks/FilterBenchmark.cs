@@ -1,8 +1,8 @@
-﻿using BenchmarkDotNet.Attributes;
+﻿using System.Diagnostics;
+using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Jobs;
 using Bogus;
 using Dasync.Collections;
-using System.Diagnostics;
 using Tql.Abstractions;
 using Tql.App.Search;
 

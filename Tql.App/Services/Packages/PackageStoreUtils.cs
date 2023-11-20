@@ -23,7 +23,8 @@ internal static class PackageStoreUtils
 
     public static Assembly? GetLoadedAssembly(AssemblyKey assemblyKey)
     {
-        var loadedAssembly = AppDomain.CurrentDomain
+        var loadedAssembly = AppDomain
+            .CurrentDomain
             .GetAssemblies()
             .Select(p => (AssemblyName: p.GetName(), Assembly: p))
             .Where(p => AssemblyKey.FromName(p.AssemblyName).Equals(assemblyKey))

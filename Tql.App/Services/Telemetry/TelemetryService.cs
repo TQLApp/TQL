@@ -1,10 +1,10 @@
-﻿using Microsoft.ApplicationInsights;
-using Microsoft.ApplicationInsights.Extensibility;
-using System.Diagnostics;
-using Microsoft.ApplicationInsights.DataContracts;
-using Tql.App.Support;
+﻿using System.Diagnostics;
 using JetBrains.Annotations;
+using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.DataContracts;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
+using Tql.App.Support;
 
 namespace Tql.App.Services.Telemetry;
 

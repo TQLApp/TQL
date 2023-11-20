@@ -80,19 +80,21 @@ internal abstract class IssuesMatchBase<T> : ISearchableMatch, ISerializableMatc
 
         cancellationToken.ThrowIfCancellationRequested();
 
-        return response.Items.Select(
-            p =>
-                _factory.Create(
-                    new IssueMatchDto(
-                        _dto.Id,
-                        GitHubUtils.GetRepositoryName(p.HtmlUrl),
-                        p.Number,
-                        p.Title,
-                        p.HtmlUrl,
-                        p.State.Value
+        return response
+            .Items
+            .Select(
+                p =>
+                    _factory.Create(
+                        new IssueMatchDto(
+                            _dto.Id,
+                            GitHubUtils.GetRepositoryName(p.HtmlUrl),
+                            p.Number,
+                            p.Title,
+                            p.HtmlUrl,
+                            p.State.Value
+                        )
                     )
-                )
-        );
+            );
     }
 
     public string Serialize()

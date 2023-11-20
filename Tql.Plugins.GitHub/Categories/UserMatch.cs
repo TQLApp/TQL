@@ -61,15 +61,20 @@ internal class UserMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, I
 
         var client = await _api.GetClient(_dto.ConnectionId);
 
-        var response = await client.Search.SearchRepo(
-            new SearchRepositoriesRequest(text) { User = _dto.Login }
-        );
+        var response = await client
+            .Search
+            .SearchRepo(new SearchRepositoriesRequest(text) { User = _dto.Login });
 
         cancellationToken.ThrowIfCancellationRequested();
 
-        return response.Items.Select(
-            p => _factory.Create(new RepositoryMatchDto(_dto.ConnectionId, p.FullName, p.HtmlUrl))
-        );
+        return response
+            .Items
+            .Select(
+                p =>
+                    _factory.Create(
+                        new RepositoryMatchDto(_dto.ConnectionId, p.FullName, p.HtmlUrl)
+                    )
+            );
     }
 }
 

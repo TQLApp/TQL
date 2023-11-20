@@ -63,7 +63,9 @@ internal class ConfigurationManager
     private void UpdatePeopleDirectoryManager()
     {
         foreach (
-            var directory in _peopleDirectoryManager.Directories.OfType<AzureDevOpsPeopleDirectory>()
+            var directory in _peopleDirectoryManager
+                .Directories
+                .OfType<AzureDevOpsPeopleDirectory>()
         )
         {
             _peopleDirectoryManager.Remove(directory);

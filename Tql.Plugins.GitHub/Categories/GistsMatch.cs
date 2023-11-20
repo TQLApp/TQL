@@ -1,7 +1,7 @@
-﻿using HtmlAgilityPack;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.RegularExpressions;
+using HtmlAgilityPack;
 using Tql.Abstractions;
 using Tql.Plugins.GitHub.Data;
 using Tql.Plugins.GitHub.Services;
@@ -70,9 +70,12 @@ internal class GistsMatch : ISearchableMatch, ISerializableMatch
         var client = await _api.GetClient(_dto.Id);
         var connection = (Octokit.Connection)client.Connection;
 
-        request.Headers.UserAgent.Add(
-            new ProductInfoHeaderValue("TQL", GetType().Assembly.GetName().Version.ToString())
-        );
+        request
+            .Headers
+            .UserAgent
+            .Add(
+                new ProductInfoHeaderValue("TQL", GetType().Assembly.GetName().Version.ToString())
+            );
         request.Headers.Authorization = new AuthenticationHeaderValue(
             "Bearer",
             connection.Credentials.Password

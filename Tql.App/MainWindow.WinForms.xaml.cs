@@ -10,10 +10,9 @@ internal partial class MainWindow
     {
         var contextMenu = new ContextMenu();
 
-        var hotKeyMenuItem = contextMenu.MenuItems.Add(
-            GetHotKeyMenuItemLabel(),
-            (_, _) => DoShow()
-        );
+        var hotKeyMenuItem = contextMenu
+            .MenuItems
+            .Add(GetHotKeyMenuItemLabel(), (_, _) => DoShow());
 
         _settings.AttachPropertyChanged(
             nameof(_settings.HotKey),
@@ -22,15 +21,13 @@ internal partial class MainWindow
 
         contextMenu.MenuItems.Add("-");
 #if DEBUG
-        contextMenu.MenuItems.Add(
-            Labels.NotifyMenu_InvalidateAllCachesLabel,
-            (_, _) => InvalidateAllCaches()
-        );
+        contextMenu
+            .MenuItems
+            .Add(Labels.NotifyMenu_InvalidateAllCachesLabel, (_, _) => InvalidateAllCaches());
 #endif
-        contextMenu.MenuItems.Add(
-            Labels.NotifyMenu_ConfigurationLabel,
-            (_, _) => OpenConfiguration()
-        );
+        contextMenu
+            .MenuItems
+            .Add(Labels.NotifyMenu_ConfigurationLabel, (_, _) => OpenConfiguration());
         contextMenu.MenuItems.Add("-");
         contextMenu.MenuItems.Add(Labels.NotifyMenu_HelpLabel, (_, _) => OpenHelp());
         contextMenu.MenuItems.Add("-");

@@ -1,7 +1,7 @@
-﻿using NPOI.SS.UserModel;
-using NPOI.XSSF.UserModel;
-using System.Resources;
+﻿using System.Resources;
 using System.Text.RegularExpressions;
+using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
 
 namespace Tql.Localization;
 

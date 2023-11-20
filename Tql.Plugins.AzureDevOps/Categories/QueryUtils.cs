@@ -1,8 +1,8 @@
-﻿using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
-using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
+﻿using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
+using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 using Tql.Abstractions;
-using Tql.Plugins.AzureDevOps.Services;
 using Tql.Plugins.AzureDevOps.Data;
+using Tql.Plugins.AzureDevOps.Services;
 using Tql.Utilities;
 
 namespace Tql.Plugins.AzureDevOps.Categories;

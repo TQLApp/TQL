@@ -11,9 +11,11 @@ internal class Playbook : IPlaybook
 
         while (!Equals(culture, CultureInfo.InvariantCulture))
         {
-            using var stream = typeof(Playbook).Assembly.GetManifestResourceStream(
-                $"{typeof(Playbook).Namespace}.Playbook.{culture.TwoLetterISOLanguageName}.md"
-            );
+            using var stream = typeof(Playbook)
+                .Assembly
+                .GetManifestResourceStream(
+                    $"{typeof(Playbook).Namespace}.Playbook.{culture.TwoLetterISOLanguageName}.md"
+                );
 
             if (stream != null)
                 playbook.AddMissingEntries(PlaybookParser.Parse(stream));
@@ -21,9 +23,9 @@ internal class Playbook : IPlaybook
             culture = culture.Parent;
         }
 
-        using var fallbackStream = typeof(Playbook).Assembly.GetManifestResourceStream(
-            $"{typeof(Playbook).Namespace}.Playbook.md"
-        );
+        using var fallbackStream = typeof(Playbook)
+            .Assembly
+            .GetManifestResourceStream($"{typeof(Playbook).Namespace}.Playbook.md");
 
         playbook.AddMissingEntries(PlaybookParser.Parse(fallbackStream!));
 

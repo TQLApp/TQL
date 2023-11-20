@@ -1,5 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
-using System.Globalization;
+﻿using System.Globalization;
+using Microsoft.Extensions.Logging;
 using Tql.Abstractions;
 using Tql.Plugins.Jira.Services;
 
@@ -57,7 +57,9 @@ internal class JiraCacheManager : ICacheManager<JiraData>
             var issueTypes = ImmutableArray<JiraIssueType>.Empty;
             if (project.IssueTypes != null)
             {
-                issueTypes = project.IssueTypes.Value
+                issueTypes = project
+                    .IssueTypes
+                    .Value
                     .Select(
                         p => new JiraIssueType(p.Id, p.Description, p.IconUrl, p.Name, p.SubTask)
                     )
@@ -101,7 +103,9 @@ internal class JiraCacheManager : ICacheManager<JiraData>
                     boardConfig.Filter.Id,
                     xBoardConfig.CurrentViewConfig.IsIssueListBacklog,
                     xBoardConfig.CurrentViewConfig.SprintSupportEnabled,
-                    xBoardConfig.CurrentViewConfig.QuickFilters
+                    xBoardConfig
+                        .CurrentViewConfig
+                        .QuickFilters
                         .Select(p => new JiraQuickFilter(p.Id, p.Name, p.Query))
                         .ToImmutableArray()
                 )
@@ -138,7 +142,8 @@ internal class JiraCacheManager : ICacheManager<JiraData>
 
     private string SelectAvatarUrl(JiraProjectDto project)
     {
-        return project.AvatarUrls
+        return project
+            .AvatarUrls
             .Select(p => (Size: GetSize(p.Key), Url: p.Value))
             .OrderByDescending(p => p.Size)
             .First()

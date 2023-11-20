@@ -19,9 +19,9 @@ internal static class ThemeManager
 
     public static Theme GetSystemTheme()
     {
-        using var key = Registry.CurrentUser.OpenSubKey(
-            @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize"
-        );
+        using var key = Registry
+            .CurrentUser
+            .OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize");
 
         var isLight = (key?.GetValue("AppsUseLightTheme") as int?) != 0;
 

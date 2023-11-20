@@ -7,7 +7,8 @@ internal record PackageManagerConfiguration(ImmutableArray<PackageManagerSource>
     private static PackageManagerConfiguration CreateDefault()
     {
         return new PackageManagerConfiguration(
-            Constants.PackageSources
+            Constants
+                .PackageSources
                 .Select(p => new PackageManagerSource(p, null, null))
                 .ToImmutableArray()
         );

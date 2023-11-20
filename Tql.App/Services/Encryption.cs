@@ -100,9 +100,9 @@ internal class Encryption : IEncryption, IDisposable
 
     private string Unprotect(byte[] value)
     {
-        return Encoding.UTF8.GetString(
-            ProtectedData.Unprotect(value, null, DataProtectionScope.CurrentUser)
-        );
+        return Encoding
+            .UTF8
+            .GetString(ProtectedData.Unprotect(value, null, DataProtectionScope.CurrentUser));
     }
 
     private byte[] Protect(string value)

@@ -59,7 +59,8 @@ internal static class DependencyObjectExtensions
             {
                 // If the child's name is set for search
                 if (
-                    child is FrameworkElement frameworkElement && frameworkElement.Name == childName
+                    child is FrameworkElement frameworkElement
+                    && frameworkElement.Name == childName
                 )
                 {
                     // if the child's name is of the request name

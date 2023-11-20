@@ -86,7 +86,8 @@ internal partial class Db : IDb, IDisposable
         var resourceNamePrefix = $"{GetType().Namespace}.Migrations.";
 
         foreach (
-            var resourceName in GetType().Assembly
+            var resourceName in GetType()
+                .Assembly
                 .GetManifestResourceNames()
                 .Where(
                     p =>

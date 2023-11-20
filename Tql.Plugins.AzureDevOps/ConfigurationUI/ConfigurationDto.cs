@@ -11,9 +11,13 @@ internal class ConfigurationDto
     {
         var result = new ConfigurationDto();
 
-        result.Connections.AddRange(
-            configuration.Connections.Select(p => new ConnectionDto { Name = p.Name, Url = p.Url })
-        );
+        result
+            .Connections
+            .AddRange(
+                configuration
+                    .Connections
+                    .Select(p => new ConnectionDto { Name = p.Name, Url = p.Url })
+            );
 
         return result;
     }

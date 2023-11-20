@@ -44,10 +44,12 @@ internal class AzureDevOpsApi
                     // Clear any cached credentials.
 
                     using (
-                        var key = Registry.CurrentUser.OpenSubKey(
-                            @"Software\Microsoft\VSCommon\14.0\ClientServices\TokenStorage\Tql",
-                            true
-                        )
+                        var key = Registry
+                            .CurrentUser
+                            .OpenSubKey(
+                                @"Software\Microsoft\VSCommon\14.0\ClientServices\TokenStorage\Tql",
+                                true
+                            )
                     )
                     {
                         key?.DeleteSubKeyTree(collectionUri, false);
@@ -123,9 +125,11 @@ internal class AzureDevOpsApi
 
     private static bool CredentialsExist(string collectionUri)
     {
-        using var key = Registry.CurrentUser.OpenSubKey(
-            $@"Software\Microsoft\VSCommon\14.0\ClientServices\TokenStorage\Tql\{collectionUri}"
-        );
+        using var key = Registry
+            .CurrentUser
+            .OpenSubKey(
+                $@"Software\Microsoft\VSCommon\14.0\ClientServices\TokenStorage\Tql\{collectionUri}"
+            );
 
         return key != null;
     }

@@ -93,18 +93,20 @@ internal class WorkItemsMatch : ISearchableMatch, ISerializableMatch
             cancellationToken: cancellationToken
         );
 
-        return results.Results.Select(
-            p =>
-                _factory.Create(
-                    new WorkItemMatchDto(
-                        _dto.Url,
-                        p.Project.Name,
-                        int.Parse(p.Fields["system.id"]),
-                        p.Fields["system.workitemtype"],
-                        p.Fields["system.title"]
+        return results
+            .Results
+            .Select(
+                p =>
+                    _factory.Create(
+                        new WorkItemMatchDto(
+                            _dto.Url,
+                            p.Project.Name,
+                            int.Parse(p.Fields["system.id"]),
+                            p.Fields["system.workitemtype"],
+                            p.Fields["system.title"]
+                        )
                     )
-                )
-        );
+            );
     }
 
     public string Serialize()

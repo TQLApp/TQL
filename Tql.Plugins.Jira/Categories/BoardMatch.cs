@@ -70,9 +70,9 @@ internal class BoardMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, 
         };
 
         matches.AddRange(
-            board.QuickFilters.Select(
-                p => _factory.Create(new BoardQuickFilterMatchDto(_dto, p.Id, p.Name))
-            )
+            board
+                .QuickFilters
+                .Select(p => _factory.Create(new BoardQuickFilterMatchDto(_dto, p.Id, p.Name)))
         );
 
         return context.Filter(matches);

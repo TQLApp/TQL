@@ -68,12 +68,14 @@ internal class QueriesMatch : ISearchableMatch, ISerializableMatch
                 );
 
                 result.AddRange(
-                    queries.Value.Select(
-                        p =>
-                            _factory.Create(
-                                new QueryMatchDto(_dto.Url, project.Name, p.Id, p.Path, p.Name)
-                            )
-                    )
+                    queries
+                        .Value
+                        .Select(
+                            p =>
+                                _factory.Create(
+                                    new QueryMatchDto(_dto.Url, project.Name, p.Id, p.Path, p.Name)
+                                )
+                        )
                 );
             }
         }

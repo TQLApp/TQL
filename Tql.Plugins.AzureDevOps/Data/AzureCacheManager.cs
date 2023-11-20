@@ -106,13 +106,15 @@ internal class AzureCacheManager : ICacheManager<AzureData>
                 );
 
                 backlogs = (
-                    from backlog in backlogConfigurations.PortfolioBacklogs.Concat(
-                        new[]
-                        {
-                            backlogConfigurations.RequirementBacklog,
-                            backlogConfigurations.TaskBacklog
-                        }
-                    )
+                    from backlog in backlogConfigurations
+                        .PortfolioBacklogs
+                        .Concat(
+                            new[]
+                            {
+                                backlogConfigurations.RequirementBacklog,
+                                backlogConfigurations.TaskBacklog
+                            }
+                        )
                     where backlog != null
                     select new AzureBacklog(
                         backlog.Name,
@@ -132,7 +134,8 @@ internal class AzureCacheManager : ICacheManager<AzureData>
                         new AzureTeam(
                             team.Id,
                             team.Name,
-                            teamFieldValues.Values
+                            teamFieldValues
+                                .Values
                                 .Select(p => new AzureTeamAreaPath(p.Value, p.IncludeChildren))
                                 .ToImmutableArray()
                         )

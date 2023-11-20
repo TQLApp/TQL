@@ -75,7 +75,8 @@ internal class ConfigurationManager
         {
             if (configuration.Mode == ConfigurationMode.All)
             {
-                _directoryIds = _peopleDirectoryManager.Directories
+                _directoryIds = _peopleDirectoryManager
+                    .Directories
                     .Select(p => p.Id)
                     .ToImmutableArray();
             }

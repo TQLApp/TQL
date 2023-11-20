@@ -69,9 +69,11 @@ internal abstract class Tool
         foreach (var resource in GetAllResources())
         {
             var baseResourceStrings = ReadResourceFile(resource.FileName).ToList();
-            var localizedResource = resource.Resources.SingleOrDefault(
-                p => string.Equals(p.Locale, Options.Locale, StringComparison.OrdinalIgnoreCase)
-            );
+            var localizedResource = resource
+                .Resources
+                .SingleOrDefault(
+                    p => string.Equals(p.Locale, Options.Locale, StringComparison.OrdinalIgnoreCase)
+                );
             var localizedResourceStrings = ReadResourceFile(localizedResource?.FileName)
                 .ToDictionary(p => p.Key, p => p);
 
@@ -91,27 +93,33 @@ internal abstract class Tool
                     var localizedComment = localizedResourceString.Comment;
                     if (string.IsNullOrEmpty(localizedComment))
                     {
-                        Console.Error.WriteLine(
-                            $"Warning: comment of localized resource '{resourceString.Key}' is empty"
-                        );
+                        Console
+                            .Error
+                            .WriteLine(
+                                $"Warning: comment of localized resource '{resourceString.Key}' is empty"
+                            );
                     }
                     else
                     {
                         const string prefix = "Original: ";
                         if (!localizedComment.StartsWith(prefix))
                         {
-                            Console.Error.WriteLine(
-                                $"Warning: comment of localized resource '{resourceString.Key}' should start with '{prefix}'"
-                            );
+                            Console
+                                .Error
+                                .WriteLine(
+                                    $"Warning: comment of localized resource '{resourceString.Key}' should start with '{prefix}'"
+                                );
                         }
                         else
                         {
                             var originalValue = localizedComment.Substring(prefix.Length);
                             if (originalValue != resourceString.Value)
                             {
-                                Console.Error.WriteLine(
-                                    $"Warning: ignoring localized value of resource '{resourceString.Key}' because it's a translation off of a different source string"
-                                );
+                                Console
+                                    .Error
+                                    .WriteLine(
+                                        $"Warning: ignoring localized value of resource '{resourceString.Key}' because it's a translation off of a different source string"
+                                    );
                                 localizedResourceString = default;
                             }
                         }

@@ -1,5 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
-using System.Reflection;
+﻿using System.Reflection;
+using Microsoft.Extensions.Logging;
 using Tql.Abstractions;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 using Path = System.IO.Path;

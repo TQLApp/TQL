@@ -63,11 +63,9 @@ internal partial class SearchContext
             {
                 return await Task.Run(
                     () =>
-                        _owner._owner.DoFilter(
-                            _owner._matches,
-                            _owner._maxResults,
-                            _owner._internalCall
-                        ),
+                        _owner
+                            ._owner
+                            .DoFilter(_owner._matches, _owner._maxResults, _owner._internalCall),
                     _cancellationToken
                 );
             }

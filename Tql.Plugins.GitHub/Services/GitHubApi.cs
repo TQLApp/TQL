@@ -50,9 +50,10 @@ internal class GitHubApi
         {
             if (!_clients.TryGetValue(id, out var client))
             {
-                var connection = _configurationManager.Configuration.Connections.Single(
-                    p => p.Id == id
-                );
+                var connection = _configurationManager
+                    .Configuration
+                    .Connections
+                    .Single(p => p.Id == id);
 
                 try
                 {
@@ -149,9 +150,10 @@ internal class GitHubApi
     {
         try
         {
-            var connection = _configurationManager.Configuration.Connections.Single(
-                p => p.Id == id
-            );
+            var connection = _configurationManager
+                .Configuration
+                .Connections
+                .Single(p => p.Id == id);
 
             var credentials = _encryption.DecryptString(connection.ProtectedCredentials);
             if (credentials == null)

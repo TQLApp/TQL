@@ -1,4 +1,6 @@
-﻿using NuGet.Common;
+﻿using System.IO;
+using System.Text.RegularExpressions;
+using NuGet.Common;
 using NuGet.Configuration;
 using NuGet.Frameworks;
 using NuGet.PackageManagement;
@@ -9,8 +11,6 @@ using NuGet.ProjectManagement;
 using NuGet.Protocol;
 using NuGet.Protocol.Core.Types;
 using NuGet.Resolver;
-using System.IO;
-using System.Text.RegularExpressions;
 using Path = System.IO.Path;
 
 namespace Tql.App.Services.Packages;
@@ -199,10 +199,9 @@ internal class NuGetClient : IDisposable
             .GetReferenceItems()
             .Where(
                 p =>
-                    DefaultCompatibilityProvider.Instance.IsCompatible(
-                        targetFramework,
-                        p.TargetFramework
-                    )
+                    DefaultCompatibilityProvider
+                        .Instance
+                        .IsCompatible(targetFramework, p.TargetFramework)
             )
             .ToList();
 
@@ -238,7 +237,8 @@ internal class NuGetClient : IDisposable
         if (matchedReferenceItem == null)
             throw new InvalidOperationException("Cannot determine the correct framework version");
 
-        return matchedReferenceItem.Items
+        return matchedReferenceItem
+            .Items
             .Select(p => Path.Combine(directoryName, p.Replace('/', Path.DirectorySeparatorChar)))
             .ToImmutableArray();
     }

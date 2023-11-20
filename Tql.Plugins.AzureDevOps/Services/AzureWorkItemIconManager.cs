@@ -41,10 +41,12 @@ internal class AzureWorkItemIconManager
 
             var workItemIcon = task.Result
                 .GetConnection(collectionUrl)
-                .Projects.SingleOrDefault(
+                .Projects
+                .SingleOrDefault(
                     p => string.Equals(p.Name, project, StringComparison.OrdinalIgnoreCase)
                 )
-                ?.WorkItemTypes.SingleOrDefault(
+                ?.WorkItemTypes
+                .SingleOrDefault(
                     p => string.Equals(p.Name, workItemType, StringComparison.OrdinalIgnoreCase)
                 )
                 ?.Icon;

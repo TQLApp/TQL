@@ -69,9 +69,9 @@ internal class RepositoriesMatch : ISearchableMatch, ISerializableMatch
 
         cancellationToken.ThrowIfCancellationRequested();
 
-        return response.Items.Select(
-            p => _factory.Create(new RepositoryMatchDto(_dto.Id, p.FullName, p.HtmlUrl))
-        );
+        return response
+            .Items
+            .Select(p => _factory.Create(new RepositoryMatchDto(_dto.Id, p.FullName, p.HtmlUrl)));
     }
 
     public string Serialize()
