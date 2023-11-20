@@ -24,14 +24,28 @@ public static class ImageFactory
     /// <returns>Loaded bitmap image.</returns>
     public static BitmapImage CreateBitmapImage(Stream stream)
     {
+        var memoryStream = default(MemoryStream);
+
+        // BitmapImage requires that the stream can be seekable in order
+        // to be able to freeze the bitmap.
+
+        if (!stream.CanSeek)
+        {
+            memoryStream = new MemoryStream();
+            stream.CopyTo(memoryStream);
+            memoryStream.Position = 0;
+        }
+
         var bitmapImage = new BitmapImage();
 
         bitmapImage.BeginInit();
         bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-        bitmapImage.StreamSource = stream;
+        bitmapImage.StreamSource = memoryStream ?? stream;
         bitmapImage.EndInit();
 
         bitmapImage.Freeze();
+
+        memoryStream?.Dispose();
 
         return bitmapImage;
     }
