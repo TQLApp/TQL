@@ -10,7 +10,7 @@ internal partial class QuickStartScript
     private static readonly PluginValues JiraPluginValues =
         new(
             "JIRA",
-            "Tql.Plugins.Jira",
+            "TQLApp.Plugins.Jira",
             Guid.Parse("18760188-f7b1-448d-94ba-646b85b55d98"),
             Guid.Parse("97f80138-0b44-4ffc-b5c2-2a40f1070e17"),
             Guid.Parse("b984b4ae-0a4d-4b77-bc95-db675a6c96e9"),
@@ -20,7 +20,7 @@ internal partial class QuickStartScript
     private static readonly PluginValues AzureDevOpsPluginValues =
         new(
             "Azure DevOps",
-            "Tql.Plugins.AzureDevOps",
+            "TQLApp.Plugins.AzureDevOps",
             Guid.Parse("36828080-c1f0-4759-8dff-2b764a44b62e"),
             Guid.Parse("12e42adb-7f02-40fe-b8ba-2938b49b3d81"),
             Guid.Parse("8d85fc68-ac7c-4d25-a837-7ab475b073f6"),
@@ -30,7 +30,7 @@ internal partial class QuickStartScript
     private static readonly PluginValues GitHubPluginValues =
         new(
             "GitHub",
-            "Tql.Plugins.GitHub",
+            "TQLApp.Plugins.GitHub",
             Guid.Parse("028ffb5f-5d9f-4ee1-91fd-47f192d16e20"),
             Guid.Parse("35954273-99ae-473c-9386-2dc220a12c45"),
             Guid.Parse("d4d42f26-f777-46c5-895b-b18287fd6fb9"),
