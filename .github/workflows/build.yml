@@ -39,10 +39,10 @@ jobs:
           key: ${{ runner.os }}-nuget-v2-${{ hashFiles('**/packages.lock.json') }}
 
       - name: Restore Solution
-        run: msbuild -nodeReuse:false -maxCpuCount -target:Restore -property:Configuration="Release" -property:Version="${{ steps.get-build-version.outputs.build-version }}" Tql.sln
+        run: msbuild -nodeReuse:false -maxCpuCount -target:Restore -property:Configuration="Release" -property:Version="${{ steps.get-build-version.outputs.build-version }}" -warnaserror Tql.sln
 
       - name: Build Solution
-        run: msbuild -nodeReuse:false -maxCpuCount -target:Build -property:Configuration="Release" -property:Version="${{ steps.get-build-version.outputs.build-version }}" Tql.sln
+        run: msbuild -nodeReuse:false -maxCpuCount -target:Build -property:Configuration="Release" -property:Version="${{ steps.get-build-version.outputs.build-version }}" -warnaserror Tql.sln
 
       - name: Install DocFX
         run: dotnet tool update -g docfx
