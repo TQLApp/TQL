@@ -1,6 +1,6 @@
 ﻿using NuGet.Configuration;
 
-namespace Tql.App.Services.Packages;
+namespace Tql.App.Services.Packages.NuGet;
 
 public record NuGetClientConfiguration(
     string PackageCachePath,

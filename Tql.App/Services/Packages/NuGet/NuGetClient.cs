@@ -13,7 +13,7 @@ using NuGet.Protocol.Core.Types;
 using NuGet.Resolver;
 using Path = System.IO.Path;
 
-namespace Tql.App.Services.Packages;
+namespace Tql.App.Services.Packages.NuGet;
 
 // Heavily based on https://gist.github.com/cpyfferoen/74092a74b165e85aed5ca1d51973b9d2.
 

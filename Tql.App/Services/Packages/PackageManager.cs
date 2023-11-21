@@ -6,6 +6,8 @@ using NuGet.Packaging.Core;
 using NuGet.Protocol.Core.Types;
 using NuGet.Versioning;
 using Tql.Abstractions;
+using Tql.App.Services.Packages.NuGet;
+using Tql.App.Services.Packages.PackageStore;
 using Tql.App.Services.Telemetry;
 using Tql.Utilities;
 using Path = System.IO.Path;
@@ -246,7 +248,7 @@ internal class PackageManager
             }
         }
 
-        _storeManager.WritePackageManifest(targetPath);
+        PackagesPluginLoader.WritePackageManifest(targetPath, _logger);
 
         _storeManager.SetPackageVersion(
             latestVersion.Identity.Id,

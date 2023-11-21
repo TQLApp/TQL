@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using NuGet.Packaging.Core;
 using NuGet.Versioning;
-using Tql.App.Services.Packages;
+using Tql.App.Services.Packages.NuGet;
 
 namespace Tql.App.Test;
 

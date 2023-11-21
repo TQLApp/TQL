@@ -14,6 +14,7 @@ using Tql.App.Search;
 using Tql.App.Services;
 using Tql.App.Services.Database;
 using Tql.App.Services.Packages;
+using Tql.App.Services.Packages.PackageStore;
 using Tql.App.Services.Telemetry;
 using Tql.App.Services.Updates;
 using Tql.App.Support;
@@ -66,15 +67,21 @@ public partial class App
 
         packageStoreManager.PerformCleanup();
 
-        ImmutableArray<ITqlPlugin> plugins;
+        IPluginLoader loader;
         if (Options.Sideload != null)
-            plugins = packageStoreManager.GetSideloadedPlugins(Options.Sideload).ToImmutableArray();
+            loader = new SideloadedPluginLoader(
+                Options.Sideload,
+                loggerFactory.CreateLogger<SideloadedPluginLoader>()
+            );
         else if (DebugAssemblies.HasValue)
-            plugins = GetDebugPlugins().ToImmutableArray();
+            loader = new InstancePluginLoader(GetDebugPlugins().ToImmutableArray());
         else
-            plugins = packageStoreManager.GetPlugins();
+            loader = new PackagesPluginLoader(
+                packageStoreManager,
+                loggerFactory.CreateLogger<PackagesPluginLoader>()
+            );
 
-        var pluginManager = new PluginManager(plugins);
+        var pluginManager = new PluginManager(loader);
 
         var builder = Host.CreateApplicationBuilder(e.Args);
 
