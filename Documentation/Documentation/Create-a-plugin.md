@@ -75,8 +75,7 @@ package instead:
 TQL plugins must implement the `ITqlPlugin` interface and must specify the
 `TqlPluginAttribute` attribute for TQL to pick them up.
 
-> [!IMPORTANT]
-> This code snippet contains a GUID. More code snippets in this
+> [!IMPORTANT] This code snippet contains a GUID. More code snippets in this
 > guide will have one. You need to replace these with a newly generated one when
 > using these code snippets. The
 > [Insert Guid](https://marketplace.visualstudio.com/items?itemName=MadsKristensen.insertguid)
@@ -150,8 +149,9 @@ profile to use this version of TQL:
 
    4. Start your project.
 
-TQL now starts with a clean environment with your plugin installed. If you want to verify that your plugin is picked up, you
-can set a break point in the `ConfigureServices` method.
+TQL now starts with a clean environment with your plugin installed. If you want
+to verify that your plugin is picked up, you can set a break point in the
+`ConfigureServices` method.
 
 ## Create a category match
 
@@ -186,8 +186,8 @@ the search returns. We start with adding a category match.
    ```
 
 2. This is a base implementation for a searchable match. To let TQL know of the
-   match, we need to return an instance of it form the `GetMatches()` method in the
-   plugin. Update that method the following:
+   match, we need to return an instance of it form the `GetMatches()` method in
+   the plugin. Update that method the following:
 
    ```cs
    public IEnumerable<IMatch> GetMatches()
@@ -208,11 +208,11 @@ Every match has an icon associated with it. The simplest way to add them is to
 add icons as an embedded resource to your plugin and load them in a static
 class.
 
-> [!TIP]
-> TQL supports both bitmap images (like PNGs and JPEGs), and SVG images. If you
-> can find an SVG image, that's the preferred image type to use.
+> [!TIP] TQL supports both bitmap images (like PNGs and JPEGs), and SVG images.
+> If you can find an SVG image, that's the preferred image type to use.
 
-1. Download the logo from here: https://github.com/NuGet/Media/blob/main/Images/MainLogo/Vector/nuget.svg.
+1. Download the logo from here:
+   https://github.com/NuGet/Media/blob/main/Images/MainLogo/Vector/nuget.svg.
 
 2. Copy the logo into your project.
 
@@ -245,18 +245,19 @@ Next we'll create a class to load these resources.
    }
    ```
 
-   > [!NOTE]
-   > This uses a method from the utilities NuGet package to load the embedded
-   > resource and turn it into an `ImageSource`.
+   > [!NOTE] This uses a method from the utilities NuGet package to load the
+   > embedded resource and turn it into an `ImageSource`.
 
-6. Update the `Icon` property on our match implementation to use this. Change this property to the following:
+6. Update the `Icon` property on our match implementation to use this. Change
+   this property to the following:
 
    ```cs
    public ImageSource Icon => Images.NuGetLogo;
    ```
 
 7. Start your project.
-8. Type a single space into the search box. This will show your match again, now with an icon
+8. Type a single space into the search box. This will show your match again, now
+   with an icon
 
    ![=2x](../Images/Packages-category-with-icon.png)
 
@@ -265,8 +266,7 @@ Next we'll create a class to load these resources.
 Every match class in TQL is identified by a type ID. These are used e.g. as
 stable names in the user's history.
 
-> [!TIP]
-> It's best practice to put type IDs in a separate class.
+> [!TIP] It's best practice to put type IDs in a separate class.
 
 1. Create a new class called **TypeIds** and paste in the following code:
 
@@ -286,7 +286,8 @@ stable names in the user's history.
 
    Type IDs are a combination of the ID of the match and the ID of the plugin.
 
-2. Update the `TypeId` property of the match implementation to use the new class:
+2. Update the `TypeId` property of the match implementation to use the new
+   class:
 
    ```cs
    public MatchTypeId TypeId => TypeIds.Packages;
@@ -295,10 +296,14 @@ stable names in the user's history.
 ## Create a runnable match
 
 We now have everything we need to start implementing our search functionality,
-but we can't yet return anything. We need to implement a runnable match for this.
+but we can't yet return anything. We need to implement a runnable match for
+this.
 
-> [!IMPORTANT]
-> It's best practice to define DTO objects for all matches. DTO object should be immutable, so the C# `record` type is a good fit. If you need to store collections, you should do this using classes from the [System.Collections.Immutable](https://www.nuget.org/packages/System.Collections.Immutable/) NuGet package.
+> [!IMPORTANT] It's best practice to define DTO objects for all matches. DTO
+> object should be immutable, so the C# `record` type is a good fit. If you need
+> to store collections, you should do this using classes from the
+> [System.Collections.Immutable](https://www.nuget.org/packages/System.Collections.Immutable/)
+> NuGet package.
 
 1. Add a new class called **PackageMatch** and paste in the following code:
 
@@ -330,7 +335,9 @@ but we can't yet return anything. We need to implement a runnable match for this
    internal record PackageDto(string PackageId);
    ```
 
-2. Because our project is a .NET Framework project, we need to add a missing attribute to our class project for us to be able to use `record` types. Add a new file called **CompilerServices** and paste in the following content:
+2. Because our project is a .NET Framework project, we need to add a missing
+   attribute to our class project for us to be able to use `record` types. Add a
+   new file called **CompilerServices** and paste in the following content:
 
    ```cs
    namespace System.Runtime.CompilerServices
@@ -352,10 +359,16 @@ but we can't yet return anything. We need to implement a runnable match for this
 
 We'll implement search using the NuGet client NuGet packages.
 
-> [!IMPORTANT]
-> TQL uses Microsoft Depedency Injection. The `ConfigureServices` method in your plugin class allows you to setup the DI container, and the `Initialize` method gives you access to the built service container. If your plugin uses services, it's best practice to integrate with the DI container TQL manages itself.
+> [!IMPORTANT] TQL uses Microsoft Depedency Injection. The `ConfigureServices`
+> method in your plugin class allows you to setup the DI container, and the
+> `Initialize` method gives you access to the built service container. If your
+> plugin uses services, it's best practice to integrate with the DI container
+> TQL manages itself.
 
-1. Add the [NuGet.PackageManagement](https://www.nuget.org/packages/NuGet.PackageManagement) NuGet package to your class library. Next, we'll create our own client class to abstract over the NuGet package.
+1. Add the
+   [NuGet.PackageManagement](https://www.nuget.org/packages/NuGet.PackageManagement)
+   NuGet package to your class library. Next, we'll create our own client class
+   to abstract over the NuGet package.
 
 2. Add a new class called **NuGetClient** and paste in the following code:
 
@@ -414,7 +427,8 @@ We'll implement search using the NuGet client NuGet packages.
 
    This adds both the `NuGetClient` class and the `PackagesMatch` class.
 
-4. Add the following constructor to the `PackagesMatch` class to have an instance of the `NuGetClient` injected into it:
+4. Add the following constructor to the `PackagesMatch` class to have an
+   instance of the `NuGetClient` injected into it:
 
    ```cs
    private readonly NuGetClient _client;
@@ -425,7 +439,9 @@ We'll implement search using the NuGet client NuGet packages.
    }
    ```
 
-5. This does require us to make a few more updates to the `Plugin` class to instantiate the `PackagesMatch` class using the DI container. Update the `Initialize` and `GetMatches` methods to the following:
+5. This does require us to make a few more updates to the `Plugin` class to
+   instantiate the `PackagesMatch` class using the DI container. Update the
+   `Initialize` and `GetMatches` methods to the following:
 
    ```cs
    private IServiceProvider? _serviceProvider;
@@ -441,7 +457,8 @@ We'll implement search using the NuGet client NuGet packages.
    }
    ```
 
-6. We can now use this to implement search in the same class. Update the `Search` method to the following:
+6. We can now use this to implement search in the same class. Update the
+   `Search` method to the following:
 
    ```cs
    public async Task<IEnumerable<IMatch>> Search(
@@ -465,8 +482,8 @@ We'll implement search using the NuGet client NuGet packages.
    - We start by checking whether the user has actually typed in a search query.
      Some categories will return a default set of results if the search query is
      empty, but we don't. We just return an empty list instead.
-   - When we find that the user actually wants to search for something, we use the
-     `DebounceDelay` method to implement debounce.
+   - When we find that the user actually wants to search for something, we use
+     the `DebounceDelay` method to implement debounce.
    - Last we perform the search and turn the search results into a list of
      `PackageMatch` instances.
 
@@ -479,15 +496,27 @@ We'll implement search using the NuGet client NuGet packages.
 When the user activates a match, the `Run` method on the runnable match class is
 called. We'll implement this now.
 
-> [!TIP]
-> In this example we're just going to open a URL. You can however show UI to the user instead. If you do, use the `owner` parameter passed into the `Run` method to correctly parent your window to the TQL search window. See [`WindowInteropHelper.Owner`](https://learn.microsoft.com/en-us/dotnet/api/system.windows.interop.windowinterophelper.owner?view=netframework-4.8) for information on how to do this with using WPF.
+> [!TIP] In this example we're just going to open a URL. You can however show UI
+> to the user instead. If you do, use the `owner` parameter passed into the
+> `Run` method to correctly parent your window to the TQL search window. See
+> [`WindowInteropHelper.Owner`](https://learn.microsoft.com/en-us/dotnet/api/system.windows.interop.windowinterophelper.owner?view=netframework-4.8)
+> for information on how to do this with using WPF.
 
-> [!IMPORTANT]
-> The `Run` method has a `serviceProvider` parameter. This is a reference to the service container. In the example below, we're using this container to resolve the `IUI` service. You could also inject this service into the constructor. The reason we're going through the service provider instead is that this limits memory usage of the TQL app.
+> [!IMPORTANT] The `Run` method has a `serviceProvider` parameter. This is a
+> reference to the service container. In the example below, we're using this
+> container to resolve the `IUI` service. You could also inject this service
+> into the constructor. The reason we're going through the service provider
+> instead is that this limits memory usage of the TQL app.
 >
-> The `IUI` service is only needed in the `Run` method. There will be far more matches instantiated than that will be run. To not have to track references to rarely used services in every match, TQL provides you with the service container on a few methods like this.
+> The `IUI` service is only needed in the `Run` method. There will be far more
+> matches instantiated than that will be run. To not have to track references to
+> rarely used services in every match, TQL provides you with the service
+> container on a few methods like this.
 >
-> This isn't as much of an issue for the `PackagesMatch` class. Because that's a category, very few instances will be instantiated for it. This is why we do pass in the `NuGetClient` service into the constructor of the `PackagesMatch` class.
+> This isn't as much of an issue for the `PackagesMatch` class. Because that's a
+> category, very few instances will be instantiated for it. This is why we do
+> pass in the `NuGetClient` service into the constructor of the `PackagesMatch`
+> class.
 
 1. Update the `Run` method on the `PackageMatch` class to the following:
 
@@ -529,13 +558,14 @@ deserialization to our plugin.
    internal record PackagesDto();
    ```
 
-   > [!NOTE]
-   > Normally the DTO object should be passed into the constructor. We've done this
-   > for the `PackageMatch` class already. This however isn't required, and the above
-   > will work fine. However, if you'd later want to add support for e.g. multiple
-   > NuGet feeds, you would refactor this to have the DTO object passed in.
+   > [!NOTE] Normally the DTO object should be passed into the constructor.
+   > We've done this for the `PackageMatch` class already. This however isn't
+   > required, and the above will work fine. However, if you'd later want to add
+   > support for e.g. multiple NuGet feeds, you would refactor this to have the
+   > DTO object passed in.
 
-4. Add the `ISerializableMatch` interface to the `PackageMatch` class also and add the following method:
+4. Add the `ISerializableMatch` interface to the `PackageMatch` class also and
+   add the following method:
 
    ```cs
    public string Serialize()
@@ -584,8 +614,10 @@ NuGet package has some infrastructure to simplify this. We'll use that instead.
    }
    ```
 
-> [!TIP]
-> The `MatchType` class handles deserialization for you. These implementations are quite straight forward. The `MatchType` class also has a virtual `IsValid` method. If you can validate DTO objects, e.g. against user configuration or cached data, you should override this method to do so.
+> [!TIP] The `MatchType` class handles deserialization for you. These
+> implementations are quite straight forward. The `MatchType` class also has a
+> virtual `IsValid` method. If you can validate DTO objects, e.g. against user
+> configuration or cached data, you should override this method to do so.
 
 To use these classes, we need to add a `IMatchTypeManager` to the `Plugin`
 class.
@@ -598,7 +630,8 @@ class.
    private IMatchTypeManager? _matchTypeManager;
    ```
 
-   This adds a builder for the current assembly, and an field to store the built manager in.
+   This adds a builder for the current assembly, and an field to store the built
+   manager in.
 
 8. Update the `ConfigureServices` method to the following:
 
@@ -636,7 +669,8 @@ class.
 
 11. Start your project.
 
-You'll notice is that the pin icon appears if you hover over the NuGet packages match:
+You'll notice is that the pin icon appears if you hover over the NuGet packages
+match:
 
 ![=2x](../Images/Pin-on-packages-match.png)
 
@@ -660,12 +694,17 @@ implement this interface, a copy icon will be added next to your match. If the
 user clicks it, TQL calls into the `Copy` method on the interface to allow you
 to copy something to the clipboard.
 
-> [!TIP]
-> The example here implements the standard pattern for copyable matches. The URL is the same as the one in the `Run` method.
+> [!TIP] The example here implements the standard pattern for copyable matches.
+> The URL is the same as the one in the `Run` method.
 >
-> The `IClipboard` service has helper methods for working with the clipboard. The `CopyUri` method copies a nicely formatted link to the clipboard, using the `Text` of the match as a label. There's also a `CopyMarkdown` method that allows you to format the labels of copied links, similar to what Azure DevOps does.
+> The `IClipboard` service has helper methods for working with the clipboard.
+> The `CopyUri` method copies a nicely formatted link to the clipboard, using
+> the `Text` of the match as a label. There's also a `CopyMarkdown` method that
+> allows you to format the labels of copied links, similar to what Azure DevOps
+> does.
 
-1. Add the `ICopyableMatch` interface to the `PackageMatch` class and add the following code:
+1. Add the `ICopyableMatch` interface to the `PackageMatch` class and add the
+   following code:
 
    ```cs
    public Task Copy(IServiceProvider serviceProvider)
