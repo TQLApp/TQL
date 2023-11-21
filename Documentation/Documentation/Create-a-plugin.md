@@ -1,6 +1,9 @@
 # Create a plugin
 
-This guide shows how to create a plugin for Techie's Quick Launcher. TQL plugins are C# class libraries. You need Visual Studio to build one. Have a look at the [Development environment](Development-environment.md) page for how to setup your computer.
+This guide shows how to create a plugin for Techie's Quick Launcher. TQL plugins
+are C# class libraries. You need Visual Studio to build one. Have a look at the
+[Development environment](Development-environment.md) page for how to setup your
+computer.
 
 ## Create a new project
 
@@ -9,7 +12,7 @@ This guide shows how to create a plugin for Techie's Quick Launcher. TQL plugins
    ![=2x](../Images/Open-Visual-Studio.png)
 
 2. Click **Create a new project**, search for "class library" and pick the C#
-  version of the **Class Library** template:
+   version of the **Class Library** template:
 
    ![=2x](../Images/Search-for-class-library.png)
 
@@ -18,11 +21,13 @@ This guide shows how to create a plugin for Techie's Quick Launcher. TQL plugins
    ![=2x](../Images/Configure-your-new-project.png)
 
 4. In **Framework**, pick the latest framework. TQL plugins must be .NET
-  Framework 4.8. We'll change to that in a bit:
+   Framework 4.8. We'll change to that in a bit:
 
    ![=2x](../Images/Set-the-target-framework.png)
 
-   Visual Studio now opens the newly created project. We still need to make a few changes to the project file to make sure the plugin is going to work properly with TQL.
+   Visual Studio now opens the newly created project. We still need to make a
+   few changes to the project file to make sure the plugin is going to work
+   properly with TQL.
 
 5. Right click on the project and click **Edit Project File**.
 
@@ -70,41 +75,43 @@ package instead:
 TQL plugins must implement the `ITqlPlugin` interface and must specify the
 `TqlPluginAttribute` attribute for TQL to pick them up.
 
-> [!IMPORTANT]
-> This code snippet contains a GUID. More code snippets in this guide will have one.
-> You need to replace these with a newly generated one when using these code snippets. The
-> [Insert Guid](https://marketplace.visualstudio.com/items?itemName=MadsKristensen.insertguid) Visual Studio extension is a useful extension to do this from inside the IDE.
+> [!IMPORTANT] This code snippet contains a GUID. More code snippets in this
+> guide will have one. You need to replace these with a newly generated one when
+> using these code snippets. The
+> [Insert Guid](https://marketplace.visualstudio.com/items?itemName=MadsKristensen.insertguid)
+> Visual Studio extension is a useful extension to do this from inside the IDE.
 
-1. Replace the automatically generated **Class1.cs** file with a new file called **Plugin.cs** and paste in the following content:
+1. Replace the automatically generated **Class1.cs** file with a new file called
+   **Plugin.cs** and paste in the following content:
 
    ```cs
    using Microsoft.Extensions.DependencyInjection;
    using Tql.Abstractions;
-   
+
    namespace TqlNuGetPlugin;
-   
+
    [TqlPlugin]
    public class Plugin : ITqlPlugin
    {
        public static readonly Guid PluginId = Guid.Parse("74bc3db4-c951-442b-921c-887921772d64");
-   
+
        public Guid Id => PluginId;
        public string Title => "NuGet";
-   
+
        public void ConfigureServices(IServiceCollection services) { }
-   
+
        public void Initialize(IServiceProvider serviceProvider) { }
-   
+
        public IMatch? DeserializeMatch(Guid typeId, string value)
        {
            return null;
        }
-   
+
        public IEnumerable<IMatch> GetMatches()
        {
            yield break;
        }
-   
+
        public IEnumerable<IConfigurationPage> GetConfigurationPages()
        {
            yield break;
@@ -123,45 +130,49 @@ profile to use this version of TQL:
    ![=2x](../Images/Edit-debug-properties.png)
 
 2. Remove the automatically generated launch profile and replace it with a new
-  one of type **Executable**.
+   one of type **Executable**.
 
 3. Configure the launch profile as follows:
 
    ![=2x](../Images/Create-launch-profile.png)
 
    1. Set the path to the executable to this:
-    "%LOCALAPPDATA%\\Programs\\TQL\\Tql.App.exe". This configures the launch
-    profile to use the locally installed TQL version.
+      "%LOCALAPPDATA%\\Programs\\TQL\\Tql.App.exe". This configures the launch
+      profile to use the locally installed TQL version.
 
    2. Set the command line arguments to this: "--env NuGetPlugin --sideload .".
-    This creates an isolated environment for your plugin and side loads it from
-    the current working directory. This will be the build folder of your class
-    library.
+      This creates an isolated environment for your plugin and side loads it
+      from the current working directory. This will be the build folder of your
+      class library.
 
    3. Rename the launch profile to e.g. **Run**.
 
-   4. If you now start the new launch profile, TQL should start with a clean configuration. If you want to verify that your plugin is picked up, you can set a break point in the `ConfigureServices` method.
+   4. Start your project.
+
+TQL now starts with a clean environment with your plugin installed. If you want to verify that your plugin is picked up, you
+can set a break point in the `ConfigureServices` method.
 
 ## Creating the category match
 
-TQL distinguishes roughly two types of matches: categories (or searchable) and runnable matches.
-Categories are what you search, and runnable matches is what the search returns. We start with adding a category match.
+TQL distinguishes roughly two types of matches: categories (or searchable) and
+runnable matches. Categories are what you search, and runnable matches is what
+the search returns. We start with adding a category match.
 
 1. Add a new class called **PackagesMatch** and paste in the following contents:
 
    ```cs
    using System.Windows.Media;
    using Tql.Abstractions;
-   
+
    namespace TqlNuGetPlugin;
-   
+
    internal class PackagesMatch : ISearchableMatch
    {
        public string Text => "NuGet Packages";
        public ImageSource Icon { get; }
        public MatchTypeId TypeId { get; }
        public string SearchHint => "Find NuGet packages";
-   
+
        public Task<IEnumerable<IMatch>> Search(
            ISearchContext context,
            string text,
@@ -173,10 +184,10 @@ Categories are what you search, and runnable matches is what the search returns.
    }
    ```
 
-This is a base implementation for a searchable match. To let TQL know of the
-match, we need to return an instance of it form the `GetMatches()` method in the
-plugin. Update that method the following:
-
+2. This is a base implementation for a searchable match. To let TQL know of the
+   match, we need to return an instance of it form the `GetMatches()` method in the
+   plugin. Update that method the following:
+   
    ```cs
    public IEnumerable<IMatch> GetMatches()
    {
@@ -184,11 +195,8 @@ plugin. Update that method the following:
    }
    ```
 
-If you now start the app again and type a single space into the search box, your
-match will show:
+3. Start your project.
 
-![=2x](../Images/Packages-category-without-icon.png)
+4. Type a single space into the search box. This will show your match:
 
-That's great progress already!
-
-Next we'll add some supporting code to improve on this simple implementation.
+ ![=2x](../Images/Packages-category-without-icon.png)
