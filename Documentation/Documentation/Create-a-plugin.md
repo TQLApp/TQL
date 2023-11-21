@@ -473,3 +473,215 @@ We'll implement search using the NuGet client NuGet packages.
 7. Start your project. You should be able to search for NuGet packages:
 
    ![=2x](../Images/Search-results.png)
+
+## Activating matches
+
+When the user activates a match, the `Run` method on the runnable match class is
+called. We'll implement this now.
+
+> [!TIP]
+> In this example we're just going to open a URL. You can however show UI to the user instead. If you do, use the `owner` parameter passed into the `Run` method to correctly parent your window to the TQL search window. See [`WindowInteropHelper.Owner`](https://learn.microsoft.com/en-us/dotnet/api/system.windows.interop.windowinterophelper.owner?view=netframework-4.8) for information on how to do this with using WPF.
+
+> [!IMPORTANT]
+> The `Run` method has a `serviceProvider` parameter. This is a reference to the service container. In the example below, we're using this container to resolve the `IUI` service. You could also inject this service into the constructor. The reason we're going through the service provider instead is that this limits memory usage of the TQL app.
+> 
+> The `IUI` service is only needed in the `Run` method. There will be far more matches instantiated than that will be run. To not have to track references to rarely used services in every match, TQL provides you with the service container on a few methods like this.
+> 
+> This isn't as much of an issue for the `PackagesMatch` class. Because that's a category, very few instances will be instantiated for it. This is why we do pass in the `NuGetClient` service into the constructor of the `PackagesMatch` class.
+
+1. Update the `Run` method on the `PackageMatch` class to the following:
+   
+   ```cs
+   public Task Run(IServiceProvider serviceProvider, IWin32Window owner)
+   {
+       var url = $"https://www.nuget.org/packages/{Uri.EscapeUriString(_dto.PackageId)}";
+   
+       serviceProvider.GetRequiredService<IUI>().OpenUrl(url);
+   
+       return Task.CompletedTask;
+   }
+   ```
+
+2. Start your project. You'll be able to activate the match and the NuGet page
+should open for you.
+
+## Serialization
+
+We haven't implemented serialization yet. When a user opens a category or
+activates a match, it's automatically added to the history. Matches need to be
+serializable thought for this to work. In this step we'll add serialization and
+deserialization to our plugin.
+
+1. Add the `ISerializableMatch` interface to the `PackagesMatch` class.
+
+2. Add the following method to the `PackagesMatch` class:
+   
+   ```cs
+   public string Serialize()
+   {
+       return JsonSerializer.Serialize(new PackagesDto());
+   }
+   ```
+
+3. Add the new DTO object to the bottom of the file:
+   
+   ```cs
+   internal record PackagesDto();
+   ```
+   
+   > [!NOTE]
+   > Normally the DTO object should be passed into the constructor. We've done this
+   > for the `PackageMatch` class already. This however isn't required, and the above
+   > will work fine. However, if you'd later want to add support for e.g. multiple
+   > NuGet feeds, you would refactor this to have the DTO object passed in.
+
+4. Add the `ISerializableMatch` interface to the `PackageMatch` class also and add the following method:
+   
+   ```cs
+   public string Serialize()
+   {
+       return JsonSerializer.Serialize(_dto);
+   }
+   ```
+
+This takes care of serialization. To allow TQL to deserialize matches, we need
+to implement the `Deserialize` method on the `Plugin` class. This is possible.
+We could use the GUIDs in the `TypeIds` class to detect which match and DTO
+class we need to use and implement the logic that way. However, the utilities
+NuGet package has some infrastructure to simplify this. We'll use that instead.
+
+5. Create a new class called **PackagesType** and paste in the following code:
+   
+   ```cs
+   using Tql.Abstractions;
+   using Tql.Utilities;
+   
+   namespace TqlNuGetPlugin;
+   
+   internal class PackagesType : MatchType<PackagesMatch, PackagesDto>
+   {
+       public override Guid Id => TypeIds.Packages.Id;
+   
+       public PackagesType(IMatchFactory<PackagesMatch, PackagesDto> factory)
+           : base(factory) { }
+   }
+   ```
+
+6. Add a class called **PackageType** and paste in the following code:
+   
+   ```cs
+   using Tql.Abstractions;
+   using Tql.Utilities;
+   
+   namespace TqlNuGetPlugin;
+   
+   internal class PackageType : MatchType<PackageMatch, PackageDto>
+   {
+       public override Guid Id => TypeIds.Package.Id;
+   
+       public PackageType(IMatchFactory<PackageMatch, PackageDto> factory)
+           : base(factory) { }
+   }
+   ```
+
+> [!TIP]
+> The `MatchType` class handles deserialization for you. These implementations are quite straight forward. The `MatchType` class also has a virtual `IsValid` method. If you can validate DTO objects, e.g. against user configuration or cached data, you should override this method to do so.
+
+To use these classes, we need to add a `IMatchTypeManager` to the `Plugin`
+class.
+
+7. Add the following fields to the `Plugin` class:
+   
+   ```cs
+   private readonly MatchTypeManagerBuilder _matchTypeManagerBuilder =
+       MatchTypeManagerBuilder.ForAssembly(typeof(Plugin).Assembly);
+   private IMatchTypeManager? _matchTypeManager;
+   ```
+
+   This adds a builder for the current assembly, and an field to store the built manager in.
+
+8. Update the `ConfigureServices` method to the following:
+   
+   ```cs
+   public void ConfigureServices(IServiceCollection services)
+   {
+       services.AddSingleton<NuGetClient>();
+       services.AddTransient<PackagesMatch>();
+   
+       _matchTypeManagerBuilder.ConfigureServices(services);
+   }
+   ```
+
+   This allows the builder to add our match type classes to the DI container.
+
+9. Update the `Initialize` method to build the manager:
+   
+   ```cs
+   public void Initialize(IServiceProvider serviceProvider)
+   {
+       _serviceProvider = serviceProvider;
+   
+       _matchTypeManager = _matchTypeManagerBuilder.Build(serviceProvider);
+   }
+   ```
+
+10. Update the `Deserialize` method to the following:
+    
+    ```cs
+    public IMatch? DeserializeMatch(Guid typeId, string value)
+    {
+        return _matchTypeManager!.Deserialize(typeId, value);
+    }
+    ```
+
+11. Start your project.
+
+You'll notice is that the pin icon appears if you hover over the NuGet packages match:
+
+![=2x](../Images/Pin-on-packages-match.png)
+
+If you open the category, and re-open the search window, the NuGet packages
+match will have been added to the history:
+
+![=2x](../Images/Packages-match-in-history.png)
+
+And, same for the package matches of course:
+
+![=2x](../Images/Pin-on-package-match.png)
+
+And after we activate it:
+
+![=2x](../Images/Package-match-in-history.png)
+
+## Copying matches
+
+The `ICoppyableMatch` interface gives TQL a way to copy matches. If you
+implement this interface, a copy icon will be added next to your match. If the
+user clicks it, TQL calls into the `Copy` method on the interface to allow you
+to copy something to the clipboard.
+
+> [!TIP]
+> The example here implements the standard pattern for copyable matches. The URL is the same as the one in the `Run` method.
+> 
+> The `IClipboard` service has helper methods for working with the clipboard. The `CopyUri` method copies a nicely formatted link to the clipboard, using the `Text` of the match as a label. There's also a `CopyMarkdown` method that allows you to format the labels of copied links, similar to what Azure DevOps does.
+
+1. Add the `ICopyableMatch` interface to the `PackageMatch` class and add the following code:
+   
+   ```cs
+   public Task Copy(IServiceProvider serviceProvider)
+   {
+       var url = $"https://www.nuget.org/packages/{Uri.EscapeUriString(_dto.PackageId)}";
+   
+       serviceProvider.GetRequiredService<IClipboard>().CopyUri(Text, url);
+   
+       return Task.CompletedTask;
+   }
+   ```
+
+2. Start your project. The copy item should appear next to any package match:
+
+   ![=2x](../Images/Copy-on-package-match.png)
+
+   If you click this and e.g. paste this into Word, you'll get the following:
+
+   ![=2x](../Images/Pasted-link.png)
