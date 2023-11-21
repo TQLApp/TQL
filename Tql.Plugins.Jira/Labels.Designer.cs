@@ -205,6 +205,15 @@ namespace Tql.Plugins.Jira {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This URL is the URL to your JIRA environment. It should be similar to https://yourcompany.atlassian.net..
+        /// </summary>
+        public static string ConfigurationControl_URLHelpText {
+            get {
+                return ResourceManager.GetString("ConfigurationControl_URLHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to URL:.
         /// </summary>
         public static string ConfigurationControl_URLLabel {

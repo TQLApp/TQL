@@ -62,6 +62,7 @@
                     <RowDefinition />
                     <RowDefinition />
                     <RowDefinition />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -85,6 +86,12 @@
                     Grid.Column="1"
                     Margin="3"
                     TextChanged="_url_TextChanged" />
+                <TextBlock
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Margin="3"
+                    TextWrapping="Wrap"
+                    Text="{x:Static app:Labels.ConfigurationControl_URLHelpText}" />
 
                 <StackPanel
                     Grid.Column="2"

@@ -231,4 +231,7 @@
   <data name="WorkItemsMatch_Label" xml:space="preserve">
     <value>Azure Work Item</value>
   </data>
+  <data name="ConfigurationControl_URLHelpText" xml:space="preserve">
+    <value>This URL is the URL to your Azure DevOps environment. It should be either https://yourcompany.visualstudio.com or https://dev.azure.com/yourcompany.</value>
+  </data>
 </root>

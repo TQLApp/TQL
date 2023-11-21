@@ -189,4 +189,7 @@
   <data name="SpacesMatch_Label" xml:space="preserve">
     <value>Confluence Space</value>
   </data>
+  <data name="ConfigurationControl_URLHelpText" xml:space="preserve">
+    <value>This URL is the URL to your Confluence environment. It should be similar to https://yourcompany.atlassian.net.</value>
+  </data>
 </root>
