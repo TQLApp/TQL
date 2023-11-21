@@ -13,23 +13,18 @@ internal partial class SearchContext
         bool internalCall = false
     ) : IFilteredAsyncEnumerable
     {
-        private readonly SearchContext _owner = owner;
-        private readonly ImmutableArray<IMatch> _matches = matches;
-        private readonly int? _maxResults = maxResults;
-        private readonly bool _internalCall = internalCall;
-
         public IFilteredAsyncEnumerable Take(int count)
         {
             return new FilteredMatches(
-                _owner,
-                _matches,
-                _maxResults.HasValue ? Math.Min(count, _maxResults.Value) : count,
-                _internalCall
+                owner,
+                matches,
+                maxResults.HasValue ? Math.Min(count, maxResults.Value) : count,
+                internalCall
             );
         }
 
         public IAsyncEnumerator<IMatch> GetAsyncEnumerator(CancellationToken cancellationToken) =>
-            new Enumerator(this, cancellationToken);
+            new Enumerator(owner, matches, maxResults, internalCall, cancellationToken);
 
         public IEnumerator<IMatch> GetEnumerator()
         {
@@ -40,16 +35,18 @@ internal partial class SearchContext
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        private class Enumerator(FilteredMatches owner, CancellationToken cancellationToken)
-            : AsyncEnumerator<IMatch>
+        private class Enumerator(
+            SearchContext owner,
+            ImmutableArray<IMatch> matches,
+            int? maxResults,
+            bool internalCall,
+            CancellationToken cancellationToken
+        ) : AsyncEnumerator<IMatch>
         {
             protected override async Task<IEnumerable<IMatch>> GetValues()
             {
                 return await Task.Run(
-                    () =>
-                        owner
-                            ._owner
-                            .DoFilter(owner._matches, owner._maxResults, owner._internalCall),
+                    () => owner.DoFilter(matches, maxResults, internalCall),
                     cancellationToken
                 );
             }

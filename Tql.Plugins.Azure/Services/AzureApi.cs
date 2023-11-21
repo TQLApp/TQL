@@ -2,15 +2,13 @@
 using Azure.Core;
 using Azure.Identity;
 using Azure.ResourceManager;
-using Microsoft.Extensions.Logging;
 using Tql.Abstractions;
 using Tql.Utilities;
 
 namespace Tql.Plugins.Azure.Services;
 
-internal class AzureApi(ILogger<AzureApi> logger, IUI ui, ConfigurationManager configurationManager)
+internal class AzureApi(IUI ui, ConfigurationManager configurationManager)
 {
-    private readonly ILogger<AzureApi> _logger = logger;
     private readonly AsyncLock _lock = new();
     private readonly Dictionary<Guid, ArmClient> _clients = new();
 

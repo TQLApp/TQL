@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Tql.Abstractions;
 using Tql.Utilities;
+using Path = System.IO.Path;
 
 namespace Tql.Plugins.AzureDevOps.Categories;
 
@@ -13,7 +14,7 @@ internal class PipelineMatch(PipelineMatchDto dto)
     public string Text =>
         MatchText.Path(
             dto.ProjectName,
-            System.IO.Path.Combine(dto.Path.Trim('\\'), dto.Name).Replace('\\', '/')
+            Path.Combine(dto.Path.Trim('\\'), dto.Name).Replace('\\', '/')
         );
 
     public ImageSource Icon => Images.Pipelines;
