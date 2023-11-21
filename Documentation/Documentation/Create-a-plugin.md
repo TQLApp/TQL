@@ -152,7 +152,7 @@ profile to use this version of TQL:
 TQL now starts with a clean environment with your plugin installed. If you want to verify that your plugin is picked up, you
 can set a break point in the `ConfigureServices` method.
 
-## Creating the category match
+## Create a category match
 
 TQL distinguishes roughly two types of matches: categories (or searchable) and
 runnable matches. Categories are what you search, and runnable matches is what
@@ -200,3 +200,150 @@ the search returns. We start with adding a category match.
 4. Type a single space into the search box. This will show your match:
 
  ![=2x](../Images/Packages-category-without-icon.png)
+
+## Add an icon
+
+Every match has an icon associated with it. The simplest way to add them is to
+add icons as an embedded resource to your plugin and load them in a static
+class.
+
+> [!TIP]
+> TQL supports both bitmap images (like PNGs and JPEGs), and SVG images. If you
+> can find an SVG image, that's the preferred image type to use.
+
+1. Download the logo from here: https://github.com/NuGet/Media/blob/main/Images/MainLogo/Vector/nuget.svg.
+
+2. Copy the logo into your project.
+
+3. Right click on the logo in the solution explorer and click **Properties**:
+
+   ![=2x](../Images/Change-icon-properties.png)
+
+4. Changed the **Build Action** to **Embedded Resource**:
+
+   ![=2x](../Images/Change-to-embedded-resource.png)
+
+   This adds the icon to our class library.
+   
+Next we'll create a class to load these resources.
+
+5. Create a new class called **Images** and paste in the following code:
+   
+   ```cs
+   using System.Windows.Media;
+   using Tql.Utilities;
+   
+   namespace TqlNuGetPlugin;
+   
+   internal static class Images
+   {
+       public static readonly ImageSource NuGetLogo = ImageFactory.FromEmbeddedResource(
+           typeof(Images),
+           "nuget.svg"
+       );
+   }
+   ```
+
+   > [!NOTE]
+   > This uses a method from the utilities NuGet package to load the embedded
+   > resource and turn it into an `ImageSource`.
+   
+6. Update the `Icon` property on our match implementation to use this. Change this property to the following:
+   
+   ```cs
+   public ImageSource Icon => Images.NuGetLogo;
+   ```
+
+7. Start your project.
+   
+8. Type a single space into the search box. This will show your match again, now with an icon 
+
+   ![=2x](../Images/Packages-category-with-icon.png)
+
+## Add a type ID
+
+Every match class in TQL is identified by a type ID. These are used e.g. as
+stable names in the user's history.
+
+> [!TIP]
+> It's best practice to put  type IDs in a separate class.
+
+1. Create a new class called **TypeIds** and paste in the following code:
+   
+   ```cs
+   using Tql.Abstractions;
+   
+   namespace TqlNuGetPlugin;
+   
+   internal static class TypeIds
+   {
+       public static readonly MatchTypeId Packages = new MatchTypeId(
+           Guid.Parse("b1c8f27b-8534-4ee7-bcc6-e45fef01e5bc"),
+           Plugin.PluginId
+       );
+   }
+   ```
+
+   Type IDs are a combination of the ID of the match and the ID of the plugin.
+
+2. Update the `TypeId` property of the match implementation to use the new class:
+   
+   ```cs
+   public MatchTypeId TypeId => TypeIds.Packages;
+   ```
+
+## Create a runnable match
+
+We now have everything we need to start implementing our search functionality,
+but we can't yet return anything. We need to implement a runnable match for this.
+
+> [!IMPORTANT]
+> It's best practice to define DTO objects for all matches. DTO object should be immutable, so the C# `record` type is a good fit. If you need to store collections, you should do this using classes from the [System.Collections.Immutable](https://www.nuget.org/packages/System.Collections.Immutable/) NuGet package.
+
+1. Add a new class called **PackageMatch** and paste in the following code:
+   
+   ```cs
+   using System.Windows.Media;
+   using Tql.Abstractions;
+   
+   namespace TqlNuGetPlugin;
+   
+   internal class PackageMatch : IRunnableMatch
+   {
+       private readonly PackageDto _dto;
+   
+       public string Text => _dto.PackageId;
+       public ImageSource Icon => Images.NuGetLogo;
+       public MatchTypeId TypeId => TypeIds.Package;
+   
+       public PackageMatch(PackageDto dto)
+       {
+           _dto = dto;
+       }
+   
+       public Task Run(IServiceProvider serviceProvider, IWin32Window owner)
+       {
+           throw new NotImplementedException();
+       }
+   }
+   
+   internal record PackageDto(string PackageId);
+   ```
+
+2. Because our project is a .NET Framework project, we need to add a missing attribute to our class project for us to be able to use `record` types. Add a new file called **CompilerServices** and paste in the following content:
+   
+   ```cs
+   namespace System.Runtime.CompilerServices
+   {
+       internal static class IsExternalInit { }
+   }
+   ```
+
+3. Add the following code to the `TypeIds` class:
+   
+   ```cs
+   public static readonly MatchTypeId Package = new MatchTypeId(
+       Guid.Parse("188fcd76-a9b9-485e-a0ae-bd5da448a668"),
+       Plugin.PluginId
+   );
+   ```
