@@ -6,47 +6,35 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.AzureDevOps.Categories;
 
-internal class DashboardsMatch : CachedMatch<AzureData>, ISerializableMatch
+internal class DashboardsMatch(
+    RootItemDto dto,
+    ICache<AzureData> cache,
+    ConfigurationManager configurationManager,
+    IMatchFactory<DashboardMatch, DashboardMatchDto> factory
+) : CachedMatch<AzureData>(cache), ISerializableMatch
 {
-    private readonly RootItemDto _dto;
-    private readonly ConfigurationManager _configurationManager;
-    private readonly IMatchFactory<DashboardMatch, DashboardMatchDto> _factory;
-
     public override string Text =>
         MatchUtils.GetMatchLabel(
             Labels.DashboardsMatch_Label,
-            _configurationManager.Configuration,
-            _dto.Url
+            configurationManager.Configuration,
+            dto.Url
         );
 
     public override ImageSource Icon => Images.Dashboards;
     public override MatchTypeId TypeId => TypeIds.Dashboards;
     public override string SearchHint => Labels.DashboardsMatch_SearchHint;
 
-    public DashboardsMatch(
-        RootItemDto dto,
-        ICache<AzureData> cache,
-        ConfigurationManager configurationManager,
-        IMatchFactory<DashboardMatch, DashboardMatchDto> factory
-    )
-        : base(cache)
-    {
-        _dto = dto;
-        _configurationManager = configurationManager;
-        _factory = factory;
-    }
-
     protected override IEnumerable<IMatch> Create(AzureData data)
     {
-        return from project in data.GetConnection(_dto.Url).Projects
+        return from project in data.GetConnection(dto.Url).Projects
             from dashboard in project.Dashboards
-            select _factory.Create(
-                new DashboardMatchDto(_dto.Url, project.Name, dashboard.Id, dashboard.Name)
+            select factory.Create(
+                new DashboardMatchDto(dto.Url, project.Name, dashboard.Id, dashboard.Name)
             );
     }
 
     public string Serialize()
     {
-        return JsonSerializer.Serialize(_dto);
+        return JsonSerializer.Serialize(dto);
     }
 }

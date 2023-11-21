@@ -5,26 +5,17 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.Outlook.Categories;
 
-internal class EmailsMatch : ISearchableMatch, ISerializableMatch
+internal class EmailsMatch(
+    OutlookPeopleDirectory outlookPeopleDirectory,
+    IMatchFactory<EmailMatch, PersonDto> factory
+) : ISearchableMatch, ISerializableMatch
 {
     private const int MaxResults = 100;
-
-    private readonly OutlookPeopleDirectory _outlookPeopleDirectory;
-    private readonly IMatchFactory<EmailMatch, PersonDto> _factory;
 
     public string Text => Labels.EmailsMatch_Label;
     public ImageSource Icon => Images.Outlook;
     public MatchTypeId TypeId => TypeIds.Emails;
     public string SearchHint => Labels.EmailsMatch_SearchHint;
-
-    public EmailsMatch(
-        OutlookPeopleDirectory outlookPeopleDirectory,
-        IMatchFactory<EmailMatch, PersonDto> factory
-    )
-    {
-        _outlookPeopleDirectory = outlookPeopleDirectory;
-        _factory = factory;
-    }
 
     public async Task<IEnumerable<IMatch>> Search(
         ISearchContext context,
@@ -37,14 +28,14 @@ internal class EmailsMatch : ISearchableMatch, ISerializableMatch
 
         await context.DebounceDelay(cancellationToken);
 
-        var people = await _outlookPeopleDirectory.Find("", cancellationToken);
+        var people = await outlookPeopleDirectory.Find("", cancellationToken);
 
         Debug.Assert(
             people.Length > 0,
             "The Outlook people directory should return all results on an empty search string"
         );
 
-        return context.Filter(GetDtos(people).Select(_factory.Create)).Take(MaxResults);
+        return context.Filter(GetDtos(people).Select(factory.Create)).Take(MaxResults);
     }
 
     private IEnumerable<PersonDto> GetDtos(ImmutableArray<IPerson> people)

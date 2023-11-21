@@ -2,7 +2,7 @@
 
 namespace Tql.App.QuickStart;
 
-internal class Playbook : IPlaybook
+internal class Playbook(Dictionary<string, PlaybookPage> pages) : IPlaybook
 {
     public static Playbook Load()
     {
@@ -32,9 +32,7 @@ internal class Playbook : IPlaybook
         return playbook;
     }
 
-    private readonly Dictionary<string, PlaybookPage> _pages;
-
-    public PlaybookPage this[string id] => _pages[id];
+    public PlaybookPage this[string id] => pages[id];
 
     public event EventHandler? Updated
     {
@@ -42,17 +40,12 @@ internal class Playbook : IPlaybook
         remove { }
     }
 
-    public Playbook(Dictionary<string, PlaybookPage> pages)
+    private void AddMissingEntries(Dictionary<string, PlaybookPage> newPages)
     {
-        _pages = pages;
-    }
-
-    private void AddMissingEntries(Dictionary<string, PlaybookPage> pages)
-    {
-        foreach (var entry in pages)
+        foreach (var entry in newPages)
         {
-            if (!_pages.ContainsKey(entry.Key))
-                _pages[entry.Key] = entry.Value;
+            if (!pages.ContainsKey(entry.Key))
+                pages[entry.Key] = entry.Value;
         }
     }
 }

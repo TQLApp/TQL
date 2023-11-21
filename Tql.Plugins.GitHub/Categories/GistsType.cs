@@ -6,21 +6,13 @@ using Tql.Utilities;
 namespace Tql.Plugins.GitHub.Categories;
 
 [RootMatchType(SupportsUserScope = true)]
-internal class GistsType : MatchType<GistsMatch, RootItemDto>
+internal class GistsType(
+    IMatchFactory<GistsMatch, RootItemDto> factory,
+    ConfigurationManager configurationManager
+) : MatchType<GistsMatch, RootItemDto>(factory)
 {
-    private readonly ConfigurationManager _configurationManager;
-
     public override Guid Id => TypeIds.Gists.Id;
 
-    public GistsType(
-        IMatchFactory<GistsMatch, RootItemDto> factory,
-        ConfigurationManager configurationManager
-    )
-        : base(factory)
-    {
-        _configurationManager = configurationManager;
-    }
-
     protected override bool IsValid(RootItemDto dto) =>
-        _configurationManager.Configuration.HasConnection(dto.Id);
+        configurationManager.Configuration.HasConnection(dto.Id);
 }

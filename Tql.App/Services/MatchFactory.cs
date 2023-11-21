@@ -3,15 +3,11 @@ using Expression = System.Linq.Expressions.Expression;
 
 namespace Tql.App.Services;
 
-internal class MatchFactory<TMatch, TDto> : IMatchFactory<TMatch, TDto>
+internal class MatchFactory<TMatch, TDto>(IServiceProvider serviceProvider)
+    : IMatchFactory<TMatch, TDto>
     where TMatch : IMatch
 {
-    private readonly Func<TDto, TMatch> _factory;
-
-    public MatchFactory(IServiceProvider serviceProvider)
-    {
-        _factory = CreateFactory(serviceProvider);
-    }
+    private readonly Func<TDto, TMatch> _factory = CreateFactory(serviceProvider);
 
     //
     // This method creates a factory for a type where a single argument

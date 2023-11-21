@@ -2,21 +2,14 @@
 
 namespace Tql.Plugins.Demo.Categories;
 
-internal class DemoesMatch : ISearchableMatch, ISerializableMatch
+internal class DemoesMatch(DemoesMatchDto dto, IMatchFactory<DemoMatch, DemoMatchDto> factory)
+    : ISearchableMatch,
+        ISerializableMatch
 {
-    private readonly DemoesMatchDto _dto;
-    private readonly IMatchFactory<DemoMatch, DemoMatchDto> _factory;
-
     public string Text => Labels.DemoesMatch_Label;
     public ImageSource Icon => Images.SpaceShuttle;
     public MatchTypeId TypeId => TypeIds.Demoes;
     public string SearchHint => Labels.DemoesMatch_SearchHint;
-
-    public DemoesMatch(DemoesMatchDto dto, IMatchFactory<DemoMatch, DemoMatchDto> factory)
-    {
-        _dto = dto;
-        _factory = factory;
-    }
 
     public Task<IEnumerable<IMatch>> Search(
         ISearchContext context,
@@ -25,13 +18,13 @@ internal class DemoesMatch : ISearchableMatch, ISerializableMatch
     )
     {
         return Task.FromResult<IEnumerable<IMatch>>(
-            context.Filter(new[] { _factory.Create(new DemoMatchDto()) })
+            context.Filter(new[] { factory.Create(new DemoMatchDto()) })
         );
     }
 
     public string Serialize()
     {
-        return JsonSerializer.Serialize(_dto);
+        return JsonSerializer.Serialize(dto);
     }
 }
 

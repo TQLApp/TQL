@@ -5,10 +5,8 @@ using Tql.Utilities;
 namespace Tql.Plugins.Demo.Categories;
 
 [RootMatchType]
-internal class DemoesType : MatchType<DemoesMatch, DemoesMatchDto>
+internal class DemoesType(IMatchFactory<DemoesMatch, DemoesMatchDto> factory)
+    : MatchType<DemoesMatch, DemoesMatchDto>(factory)
 {
     public override Guid Id => TypeIds.Demoes.Id;
-
-    public DemoesType(IMatchFactory<DemoesMatch, DemoesMatchDto> factory)
-        : base(factory) { }
 }

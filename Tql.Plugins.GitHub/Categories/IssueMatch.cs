@@ -3,12 +3,9 @@ using Tql.Abstractions;
 
 namespace Tql.Plugins.GitHub.Categories;
 
-internal class IssueMatch : IssueMatchBase
+internal class IssueMatch(IssueMatchDto dto) : IssueMatchBase(dto)
 {
     public override ImageSource Icon =>
         Dto.State == ItemState.Open ? Images.OpenIssue : Images.ClosedIssue;
     public override MatchTypeId TypeId => TypeIds.Issue;
-
-    public IssueMatch(IssueMatchDto dto)
-        : base(dto) { }
 }

@@ -12,37 +12,22 @@ using ProductHeaderValue = Octokit.ProductHeaderValue;
 
 namespace Tql.Plugins.GitHub.Services;
 
-internal class GitHubApi
+internal class GitHubApi(
+    ILogger<GitHubApi> logger,
+    IUI ui,
+    ConfigurationManager configurationManager,
+    IStore store,
+    HttpClient httpClient,
+    IEncryption encryption
+)
 {
     private const string ClientId = "b5cf8dfb10c01dcfd22f";
     private const string RedirectUrl = "http://127.0.0.1:23119/complete";
     private const string Scope = "repo,project";
 
-    private readonly ILogger<GitHubApi> _logger;
-    private readonly IUI _ui;
-    private readonly ConfigurationManager _configurationManager;
-    private readonly IStore _store;
-    private readonly HttpClient _httpClient;
-    private readonly IEncryption _encryption;
+    private readonly IStore _store = store;
     private readonly AsyncLock _lock = new();
     private readonly Dictionary<Guid, GitHubClient> _clients = new();
-
-    public GitHubApi(
-        ILogger<GitHubApi> logger,
-        IUI ui,
-        ConfigurationManager configurationManager,
-        IStore store,
-        HttpClient httpClient,
-        IEncryption encryption
-    )
-    {
-        _logger = logger;
-        _ui = ui;
-        _configurationManager = configurationManager;
-        _store = store;
-        _httpClient = httpClient;
-        _encryption = encryption;
-    }
 
     public async Task<GitHubClient> GetClient(Guid id)
     {
@@ -50,7 +35,7 @@ internal class GitHubApi
         {
             if (!_clients.TryGetValue(id, out var client))
             {
-                var connection = _configurationManager
+                var connection = configurationManager
                     .Configuration
                     .Connections
                     .Single(p => p.Id == id);
@@ -61,7 +46,7 @@ internal class GitHubApi
                 }
                 catch
                 {
-                    _ui.ShowNotificationBar(
+                    ui.ShowNotificationBar(
                         $"{GitHubPlugin.Id}/ConnectionFailed/{id}",
                         string.Format(
                             Labels.GitHubApi_UnableToConnect,
@@ -128,12 +113,12 @@ internal class GitHubApi
 
         if (client.Credentials.AuthenticationType != AuthenticationType.Bearer)
         {
-            await _ui.PerformInteractiveAuthentication(
+            await ui.PerformInteractiveAuthentication(
                 new InteractiveAuthentication(
                     string.Format(Labels.GitHubApi_ResourceName, connection.Name),
                     client,
-                    _httpClient,
-                    _ui
+                    httpClient,
+                    ui
                 )
             );
 
@@ -150,12 +135,9 @@ internal class GitHubApi
     {
         try
         {
-            var connection = _configurationManager
-                .Configuration
-                .Connections
-                .Single(p => p.Id == id);
+            var connection = configurationManager.Configuration.Connections.Single(p => p.Id == id);
 
-            var credentials = _encryption.DecryptString(connection.ProtectedCredentials);
+            var credentials = encryption.DecryptString(connection.ProtectedCredentials);
             if (credentials == null)
                 return null;
 
@@ -163,7 +145,7 @@ internal class GitHubApi
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to load credentials for connection {ConnectionId}", id);
+            logger.LogError(ex, "Failed to load credentials for connection {ConnectionId}", id);
         }
 
         return null;
@@ -173,31 +155,19 @@ internal class GitHubApi
     {
         var json = JsonSerializer.Serialize(credentialsDto);
 
-        var protectedCredentials = _encryption.EncryptString(json)!;
+        var protectedCredentials = encryption.EncryptString(json)!;
 
-        _configurationManager.UpdateCredentials(id, protectedCredentials);
+        configurationManager.UpdateCredentials(id, protectedCredentials);
     }
 
-    private class InteractiveAuthentication : IInteractiveAuthentication
+    private class InteractiveAuthentication(
+        string resourceName,
+        GitHubClient client,
+        HttpClient httpClient,
+        IUI ui
+    ) : IInteractiveAuthentication
     {
-        private readonly GitHubClient _client;
-        private readonly HttpClient _httpClient;
-        private readonly IUI _ui;
-
-        public string ResourceName { get; }
-
-        public InteractiveAuthentication(
-            string resourceName,
-            GitHubClient client,
-            HttpClient httpClient,
-            IUI ui
-        )
-        {
-            _client = client;
-            _httpClient = httpClient;
-            _ui = ui;
-            ResourceName = resourceName;
-        }
+        public string ResourceName { get; } = resourceName;
 
         public async Task Authenticate(IWin32Window owner)
         {
@@ -208,7 +178,7 @@ internal class GitHubApi
 
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            using var response = await _httpClient.SendAsync(request);
+            using var response = await httpClient.SendAsync(request);
 
             response.EnsureSuccessStatusCode();
 
@@ -216,7 +186,7 @@ internal class GitHubApi
 
             var dto = JsonSerializer.Deserialize<DeviceCodeLoginDto>(stream)!;
 
-            var window = new DeviceCodeWindow(dto, ClientId, _ui, _httpClient)
+            var window = new DeviceCodeWindow(dto, ClientId, ui, httpClient)
             {
                 Owner = HwndSource.FromHwnd(owner.Handle)?.RootVisual as Window
             };
@@ -228,9 +198,9 @@ internal class GitHubApi
             if (window.AccessToken == null)
                 throw new GitHubAuthenticationException("Unexpected error");
 
-            _client.Credentials = new Credentials(window.AccessToken, AuthenticationType.Bearer);
+            client.Credentials = new Credentials(window.AccessToken, AuthenticationType.Bearer);
 
-            await _client.User.Current();
+            await client.User.Current();
         }
     }
 

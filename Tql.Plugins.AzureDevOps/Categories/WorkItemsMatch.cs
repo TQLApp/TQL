@@ -8,36 +8,23 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.AzureDevOps.Categories;
 
-internal class WorkItemsMatch : ISearchableMatch, ISerializableMatch
+internal class WorkItemsMatch(
+    RootItemDto dto,
+    ConfigurationManager configurationManager,
+    AzureDevOpsApi api,
+    IMatchFactory<WorkItemMatch, WorkItemMatchDto> factory
+) : ISearchableMatch, ISerializableMatch
 {
-    private readonly RootItemDto _dto;
-    private readonly ConfigurationManager _configurationManager;
-    private readonly AzureDevOpsApi _api;
-    private readonly IMatchFactory<WorkItemMatch, WorkItemMatchDto> _factory;
-
     public string Text =>
         MatchUtils.GetMatchLabel(
             Labels.WorkItemsMatch_Label,
-            _configurationManager.Configuration,
-            _dto.Url
+            configurationManager.Configuration,
+            dto.Url
         );
 
     public ImageSource Icon => Images.Boards;
     public MatchTypeId TypeId => TypeIds.WorkItems;
     public string SearchHint => Labels.WorkItemsMatch_SearchHint;
-
-    public WorkItemsMatch(
-        RootItemDto dto,
-        ConfigurationManager configurationManager,
-        AzureDevOpsApi api,
-        IMatchFactory<WorkItemMatch, WorkItemMatchDto> factory
-    )
-    {
-        _dto = dto;
-        _configurationManager = configurationManager;
-        _api = api;
-        _factory = factory;
-    }
 
     public async Task<IEnumerable<IMatch>> Search(
         ISearchContext context,
@@ -56,7 +43,7 @@ internal class WorkItemsMatch : ISearchableMatch, ISerializableMatch
 
         if (isId)
         {
-            var client = await _api.GetClient<WorkItemTrackingHttpClient>(_dto.Url);
+            var client = await api.GetClient<WorkItemTrackingHttpClient>(dto.Url);
 
             var workItem = await client.GetWorkItemAsync(
                 workItemId,
@@ -68,9 +55,9 @@ internal class WorkItemsMatch : ISearchableMatch, ISerializableMatch
 
             return new IMatch[]
             {
-                _factory.Create(
+                factory.Create(
                     new WorkItemMatchDto(
-                        _dto.Url,
+                        dto.Url,
                         (string)workItem.Fields["System.TeamProject"],
                         workItem.Id!.Value,
                         (string)workItem.Fields["System.WorkItemType"],
@@ -86,7 +73,7 @@ internal class WorkItemsMatch : ISearchableMatch, ISerializableMatch
         if (search.Length < 3)
             return Array.Empty<IMatch>();
 
-        var searchClient = await _api.GetClient<SearchHttpClient>(_dto.Url);
+        var searchClient = await api.GetClient<SearchHttpClient>(dto.Url);
 
         var results = await searchClient.FetchWorkItemSearchResultsAsync(
             new WorkItemSearchRequest { SearchText = search, Top = 25 },
@@ -97,9 +84,9 @@ internal class WorkItemsMatch : ISearchableMatch, ISerializableMatch
             .Results
             .Select(
                 p =>
-                    _factory.Create(
+                    factory.Create(
                         new WorkItemMatchDto(
-                            _dto.Url,
+                            dto.Url,
                             p.Project.Name,
                             int.Parse(p.Fields["system.id"]),
                             p.Fields["system.workitemtype"],
@@ -111,6 +98,6 @@ internal class WorkItemsMatch : ISearchableMatch, ISerializableMatch
 
     public string Serialize()
     {
-        return JsonSerializer.Serialize(_dto);
+        return JsonSerializer.Serialize(dto);
     }
 }

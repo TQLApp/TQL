@@ -5,18 +5,10 @@ namespace Tql.App.Services.Database;
 
 internal partial class Db
 {
-    private class DbAccess : IDbAccess
+    private class DbAccess(Db owner) : IDbAccess
     {
-        private readonly Db _owner;
         private bool _disposed;
-        private readonly SQLiteTransaction _transaction;
-
-        public DbAccess(Db owner)
-        {
-            _owner = owner;
-
-            _transaction = owner._connection.BeginTransaction();
-        }
+        private readonly SQLiteTransaction _transaction = owner._connection.BeginTransaction();
 
         public CacheEntity? GetCache(string key)
         {
@@ -65,7 +57,7 @@ internal partial class Db
                 }
             );
 
-            history.Id = _owner._connection.LastInsertRowId;
+            history.Id = owner._connection.LastInsertRowId;
         }
 
         public void MarkHistoryAsAccessed(long id, string? parentJson)
@@ -109,10 +101,10 @@ internal partial class Db
         }
 
         private IEnumerable<T> Query<T>(string sql, object? param = null) =>
-            _owner._connection.Query<T>(sql, param, _transaction);
+            owner._connection.Query<T>(sql, param, _transaction);
 
         private void Execute(string sql, object? param = null) =>
-            _owner._connection.Execute(sql, param, _transaction);
+            owner._connection.Execute(sql, param, _transaction);
 
         public void Dispose()
         {
@@ -121,7 +113,7 @@ internal partial class Db
                 _transaction.Commit();
                 _transaction.Dispose();
 
-                _owner._semaphore.Release();
+                owner._semaphore.Release();
 
                 _disposed = true;
             }

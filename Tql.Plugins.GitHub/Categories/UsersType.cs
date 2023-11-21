@@ -6,21 +6,13 @@ using Tql.Utilities;
 namespace Tql.Plugins.GitHub.Categories;
 
 [RootMatchType]
-internal class UsersType : MatchType<UsersMatch, RootItemDto>
+internal class UsersType(
+    IMatchFactory<UsersMatch, RootItemDto> factory,
+    ConfigurationManager configurationManager
+) : MatchType<UsersMatch, RootItemDto>(factory)
 {
-    private readonly ConfigurationManager _configurationManager;
-
     public override Guid Id => TypeIds.Users.Id;
 
-    public UsersType(
-        IMatchFactory<UsersMatch, RootItemDto> factory,
-        ConfigurationManager configurationManager
-    )
-        : base(factory)
-    {
-        _configurationManager = configurationManager;
-    }
-
     protected override bool IsValid(RootItemDto dto) =>
-        _configurationManager.Configuration.HasConnection(dto.Id);
+        configurationManager.Configuration.HasConnection(dto.Id);
 }

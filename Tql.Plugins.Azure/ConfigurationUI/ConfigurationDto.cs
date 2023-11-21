@@ -30,16 +30,11 @@ internal class ConfigurationDto
     }
 }
 
-internal class ConnectionDto
+internal class ConnectionDto(Guid id)
 {
-    public Guid Id { get; }
+    public Guid Id { get; } = id;
     public string? Name { get; set; }
     public string? TenantId { get; set; }
-
-    public ConnectionDto(Guid id)
-    {
-        Id = id;
-    }
 
     public bool GetIsValid()
     {

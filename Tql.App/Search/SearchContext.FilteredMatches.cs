@@ -6,25 +6,17 @@ namespace Tql.App.Search;
 
 internal partial class SearchContext
 {
-    private class FilteredMatches : IFilteredAsyncEnumerable
+    private class FilteredMatches(
+        SearchContext owner,
+        ImmutableArray<IMatch> matches,
+        int? maxResults = null,
+        bool internalCall = false
+    ) : IFilteredAsyncEnumerable
     {
-        private readonly SearchContext _owner;
-        private readonly ImmutableArray<IMatch> _matches;
-        private readonly int? _maxResults;
-        private readonly bool _internalCall;
-
-        public FilteredMatches(
-            SearchContext owner,
-            ImmutableArray<IMatch> matches,
-            int? maxResults = null,
-            bool internalCall = false
-        )
-        {
-            _owner = owner;
-            _matches = matches;
-            _maxResults = maxResults;
-            _internalCall = internalCall;
-        }
+        private readonly SearchContext _owner = owner;
+        private readonly ImmutableArray<IMatch> _matches = matches;
+        private readonly int? _maxResults = maxResults;
+        private readonly bool _internalCall = internalCall;
 
         public IFilteredAsyncEnumerable Take(int count)
         {
@@ -48,25 +40,17 @@ internal partial class SearchContext
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        private class Enumerator : AsyncEnumerator<IMatch>
+        private class Enumerator(FilteredMatches owner, CancellationToken cancellationToken)
+            : AsyncEnumerator<IMatch>
         {
-            private readonly FilteredMatches _owner;
-            private readonly CancellationToken _cancellationToken;
-
-            public Enumerator(FilteredMatches owner, CancellationToken cancellationToken)
-            {
-                _owner = owner;
-                _cancellationToken = cancellationToken;
-            }
-
             protected override async Task<IEnumerable<IMatch>> GetValues()
             {
                 return await Task.Run(
                     () =>
-                        _owner
+                        owner
                             ._owner
-                            .DoFilter(_owner._matches, _owner._maxResults, _owner._internalCall),
-                    _cancellationToken
+                            .DoFilter(owner._matches, owner._maxResults, owner._internalCall),
+                    cancellationToken
                 );
             }
         }

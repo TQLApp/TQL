@@ -5,39 +5,35 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.AzureDevOps.Categories;
 
-internal class PipelineMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
+internal class PipelineMatch(PipelineMatchDto dto)
+    : IRunnableMatch,
+        ISerializableMatch,
+        ICopyableMatch
 {
-    private readonly PipelineMatchDto _dto;
-
     public string Text =>
         MatchText.Path(
-            _dto.ProjectName,
-            System.IO.Path.Combine(_dto.Path.Trim('\\'), _dto.Name).Replace('\\', '/')
+            dto.ProjectName,
+            System.IO.Path.Combine(dto.Path.Trim('\\'), dto.Name).Replace('\\', '/')
         );
 
     public ImageSource Icon => Images.Pipelines;
     public MatchTypeId TypeId => TypeIds.Pipeline;
 
-    public PipelineMatch(PipelineMatchDto dto)
-    {
-        _dto = dto;
-    }
-
     public Task Run(IServiceProvider serviceProvider, IWin32Window owner)
     {
-        serviceProvider.GetRequiredService<IUI>().OpenUrl(_dto.GetUrl());
+        serviceProvider.GetRequiredService<IUI>().OpenUrl(dto.GetUrl());
 
         return Task.CompletedTask;
     }
 
     public string Serialize()
     {
-        return JsonSerializer.Serialize(_dto);
+        return JsonSerializer.Serialize(dto);
     }
 
     public Task Copy(IServiceProvider serviceProvider)
     {
-        serviceProvider.GetRequiredService<IClipboard>().CopyUri(Text, _dto.GetUrl());
+        serviceProvider.GetRequiredService<IClipboard>().CopyUri(Text, dto.GetUrl());
 
         return Task.CompletedTask;
     }

@@ -4,18 +4,11 @@ using Tql.Abstractions;
 
 namespace Tql.Plugins.MicrosoftTeams.Categories;
 
-internal class TeamsCallMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
+internal class TeamsCallMatch(PersonDto dto) : IRunnableMatch, ISerializableMatch, ICopyableMatch
 {
-    private readonly PersonDto _dto;
-
-    public string Text => _dto.DisplayName;
+    public string Text => dto.DisplayName;
     public ImageSource Icon => Images.Teams;
     public MatchTypeId TypeId => TypeIds.TeamsCall;
-
-    public TeamsCallMatch(PersonDto dto)
-    {
-        _dto = dto;
-    }
 
     public Task Run(IServiceProvider serviceProvider, IWin32Window owner)
     {
@@ -26,12 +19,12 @@ internal class TeamsCallMatch : IRunnableMatch, ISerializableMatch, ICopyableMat
 
     private string GetUrl()
     {
-        return $"msteams:/l/call/0/0?users={Uri.EscapeDataString(_dto.EmailAddress)}";
+        return $"msteams:/l/call/0/0?users={Uri.EscapeDataString(dto.EmailAddress)}";
     }
 
     public string Serialize()
     {
-        return JsonSerializer.Serialize(_dto);
+        return JsonSerializer.Serialize(dto);
     }
 
     public Task Copy(IServiceProvider serviceProvider)

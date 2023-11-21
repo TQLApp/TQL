@@ -7,44 +7,33 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.AzureDevOps.Categories;
 
-internal class QueryMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, ISearchableMatch
+internal class QueryMatch(
+    QueryMatchDto dto,
+    AzureDevOpsApi api,
+    IMatchFactory<WorkItemMatch, WorkItemMatchDto> factory
+) : IRunnableMatch, ISerializableMatch, ICopyableMatch, ISearchableMatch
 {
-    private readonly QueryMatchDto _dto;
-    private readonly AzureDevOpsApi _api;
-    private readonly IMatchFactory<WorkItemMatch, WorkItemMatchDto> _factory;
-
-    public string Text => MatchText.Path(_dto.ProjectName, _dto.Path.Trim('\\').Replace('\\', '/'));
+    public string Text => MatchText.Path(dto.ProjectName, dto.Path.Trim('\\').Replace('\\', '/'));
 
     public ImageSource Icon => Images.Boards;
     public MatchTypeId TypeId => TypeIds.Query;
     public string SearchHint => Labels.QueryMatch_SearchHint;
 
-    public QueryMatch(
-        QueryMatchDto dto,
-        AzureDevOpsApi api,
-        IMatchFactory<WorkItemMatch, WorkItemMatchDto> factory
-    )
-    {
-        _dto = dto;
-        _api = api;
-        _factory = factory;
-    }
-
     public Task Run(IServiceProvider serviceProvider, IWin32Window owner)
     {
-        serviceProvider.GetRequiredService<IUI>().OpenUrl(_dto.GetUrl());
+        serviceProvider.GetRequiredService<IUI>().OpenUrl(dto.GetUrl());
 
         return Task.CompletedTask;
     }
 
     public string Serialize()
     {
-        return JsonSerializer.Serialize(_dto);
+        return JsonSerializer.Serialize(dto);
     }
 
     public Task Copy(IServiceProvider serviceProvider)
     {
-        serviceProvider.GetRequiredService<IClipboard>().CopyUri(Text, _dto.GetUrl());
+        serviceProvider.GetRequiredService<IClipboard>().CopyUri(Text, dto.GetUrl());
 
         return Task.CompletedTask;
     }
@@ -55,7 +44,7 @@ internal class QueryMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, 
         CancellationToken cancellationToken
     )
     {
-        var cache = context.GetDataCached($"{GetType().FullName}:{_dto}", ExecuteQuery);
+        var cache = context.GetDataCached($"{GetType().FullName}:{dto}", ExecuteQuery);
 
         if (!cache.IsCompleted)
             await context.DebounceDelay(cancellationToken);
@@ -65,13 +54,13 @@ internal class QueryMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, 
 
     private async Task<ImmutableArray<IMatch>> ExecuteQuery(IServiceProvider serviceProvider)
     {
-        var client = await _api.GetClient<WorkItemTrackingHttpClient>(_dto.Url);
+        var client = await api.GetClient<WorkItemTrackingHttpClient>(dto.Url);
 
         // GetWorkItemsAsync allows for a maximum of 200 work items.
         // Limit to that.
-        var result = await client.QueryByIdAsync(_dto.Id, top: 200);
+        var result = await client.QueryByIdAsync(dto.Id, top: 200);
 
-        return await QueryUtils.GetWorkItemsByIds(client, _dto.Url, result, _factory);
+        return await QueryUtils.GetWorkItemsByIds(client, dto.Url, result, factory);
     }
 }
 

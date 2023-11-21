@@ -8,20 +8,11 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.Azure.Services;
 
-internal class AzureApi
+internal class AzureApi(ILogger<AzureApi> logger, IUI ui, ConfigurationManager configurationManager)
 {
-    private readonly ILogger<AzureApi> _logger;
-    private readonly IUI _ui;
-    private readonly ConfigurationManager _configurationManager;
+    private readonly ILogger<AzureApi> _logger = logger;
     private readonly AsyncLock _lock = new();
     private readonly Dictionary<Guid, ArmClient> _clients = new();
-
-    public AzureApi(ILogger<AzureApi> logger, IUI ui, ConfigurationManager configurationManager)
-    {
-        _logger = logger;
-        _ui = ui;
-        _configurationManager = configurationManager;
-    }
 
     public async Task<ArmClient> GetClient(Guid id)
     {
@@ -29,7 +20,7 @@ internal class AzureApi
         {
             if (!_clients.TryGetValue(id, out var client))
             {
-                var connection = _configurationManager
+                var connection = configurationManager
                     .Configuration
                     .Connections
                     .Single(p => p.Id == id);
@@ -40,7 +31,7 @@ internal class AzureApi
                 }
                 catch
                 {
-                    _ui.ShowNotificationBar(
+                    ui.ShowNotificationBar(
                         $"{AzurePlugin.Id}/ConnectionFailed/{id}",
                         string.Format(
                             Labels.AzureApi_UnableToConnect,
@@ -92,7 +83,7 @@ internal class AzureApi
                         TenantId = connection.TenantId
                     }
                 ),
-                _ui,
+                ui,
                 string.Format(Labels.AzureApi_ResourceName, connection.Name)
             )
         );
@@ -105,19 +96,8 @@ internal class AzureApi
         return client;
     }
 
-    private class UICredential : TokenCredential
+    private class UICredential(TokenCredential item, IUI ui, string resourceName) : TokenCredential
     {
-        private readonly TokenCredential _item;
-        private readonly IUI _ui;
-        private readonly string _resourceName;
-
-        public UICredential(TokenCredential item, IUI ui, string resourceName)
-        {
-            _item = item;
-            _ui = ui;
-            _resourceName = resourceName;
-        }
-
         public override async ValueTask<AccessToken> GetTokenAsync(
             TokenRequestContext requestContext,
             CancellationToken cancellationToken
@@ -125,11 +105,11 @@ internal class AzureApi
         {
             var accessToken = default(AccessToken);
 
-            await _ui.PerformInteractiveAuthentication(
+            await ui.PerformInteractiveAuthentication(
                 new InteractiveAuthentication(
-                    _resourceName,
+                    resourceName,
                     async () =>
-                        accessToken = await _item.GetTokenAsync(requestContext, cancellationToken)
+                        accessToken = await item.GetTokenAsync(requestContext, cancellationToken)
                 )
             );
 
@@ -145,21 +125,14 @@ internal class AzureApi
         }
     }
 
-    private class InteractiveAuthentication : IInteractiveAuthentication
+    private class InteractiveAuthentication(string resourceName, Func<Task> action)
+        : IInteractiveAuthentication
     {
-        private readonly Func<Task> _action;
-
-        public string ResourceName { get; }
-
-        public InteractiveAuthentication(string resourceName, Func<Task> action)
-        {
-            _action = action;
-            ResourceName = resourceName;
-        }
+        public string ResourceName { get; } = resourceName;
 
         public async Task Authenticate(IWin32Window owner)
         {
-            await _action();
+            await action();
         }
     }
 }

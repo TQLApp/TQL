@@ -160,28 +160,22 @@ internal class TelemetryService : IDisposable
         public static readonly PageViewTelemetrySink Instance = new();
     }
 
-    private class PageViewTelemetryImpl : TelemetryImpl, IPageViewTelemetry
+    private class PageViewTelemetryImpl(TelemetryService owner, string name)
+        : TelemetryImpl,
+            IPageViewTelemetry
     {
-        private readonly TelemetryService _owner;
-        private readonly string _name;
         private readonly Stopwatch _stopwatch = Stopwatch.StartNew();
-
-        public PageViewTelemetryImpl(TelemetryService owner, string name)
-        {
-            _owner = owner;
-            _name = name;
-        }
 
         public override void Dispose()
         {
-            var telemetry = new PageViewTelemetry { Name = _name, Duration = _stopwatch.Elapsed };
+            var telemetry = new PageViewTelemetry { Name = name, Duration = _stopwatch.Elapsed };
 
             foreach (var property in Properties)
             {
                 telemetry.Properties[property.Name] = property.Value;
             }
 
-            _owner._client.TrackPageView(telemetry);
+            owner._client.TrackPageView(telemetry);
         }
     }
 
@@ -202,27 +196,21 @@ internal class TelemetryService : IDisposable
         }
     }
 
-    private class RequestTelemetryImpl : TelemetryImpl, IRequestTelemetry
+    private class RequestTelemetryImpl(TelemetryService owner, string name)
+        : TelemetryImpl,
+            IRequestTelemetry
     {
-        private readonly TelemetryService _owner;
-        private readonly string _name;
         private readonly Stopwatch _stopwatch = Stopwatch.StartNew();
 
         public bool IsSuccess { get; set; }
         public string? RequestCode { get; set; }
-
-        public RequestTelemetryImpl(TelemetryService owner, string name)
-        {
-            _owner = owner;
-            _name = name;
-        }
 
         public override void Dispose()
         {
             var telemetry = new RequestTelemetry
             {
                 Success = IsSuccess,
-                Name = _name,
+                Name = name,
                 ResponseCode = RequestCode,
                 Duration = _stopwatch.Elapsed
             };
@@ -232,7 +220,7 @@ internal class TelemetryService : IDisposable
                 telemetry.Properties[property.Name] = property.Value;
             }
 
-            _owner._client.TrackRequest(telemetry);
+            owner._client.TrackRequest(telemetry);
         }
     }
 
@@ -253,43 +241,29 @@ internal class TelemetryService : IDisposable
         }
     }
 
-    private class DependencyTelemetryImpl : TelemetryImpl, IDependencyTelemetry
+    private class DependencyTelemetryImpl(
+        TelemetryService owner,
+        string name,
+        string? target,
+        string? data,
+        string? type
+    ) : TelemetryImpl, IDependencyTelemetry
     {
-        private readonly TelemetryService _owner;
-        private readonly string _name;
-        private readonly string? _target;
-        private readonly string? _data;
-        private readonly string? _type;
         private readonly Stopwatch _stopwatch = Stopwatch.StartNew();
 
         public bool IsSuccess { get; set; }
         public string? ResultCode { get; set; }
-
-        public DependencyTelemetryImpl(
-            TelemetryService owner,
-            string name,
-            string? target,
-            string? data,
-            string? type
-        )
-        {
-            _owner = owner;
-            _name = name;
-            _target = target;
-            _data = data;
-            _type = type;
-        }
 
         public override void Dispose()
         {
             var telemetry = new DependencyTelemetry
             {
                 Success = IsSuccess,
-                Name = _name,
+                Name = name,
                 ResultCode = ResultCode,
-                Target = _target,
-                Data = _data,
-                Type = _type,
+                Target = target,
+                Data = data,
+                Type = type,
                 Duration = _stopwatch.Elapsed
             };
 
@@ -298,7 +272,7 @@ internal class TelemetryService : IDisposable
                 telemetry.Properties[property.Name] = property.Value;
             }
 
-            _owner._client.TrackDependency(telemetry);
+            owner._client.TrackDependency(telemetry);
         }
     }
 
@@ -307,27 +281,20 @@ internal class TelemetryService : IDisposable
         public static readonly EventTelemetrySink Instance = new();
     }
 
-    private class EventTelemetryImpl : TelemetryImpl, IEventTelemetry
+    private class EventTelemetryImpl(TelemetryService owner, string name)
+        : TelemetryImpl,
+            IEventTelemetry
     {
-        private readonly TelemetryService _owner;
-        private readonly string _name;
-
-        public EventTelemetryImpl(TelemetryService owner, string name)
-        {
-            _owner = owner;
-            _name = name;
-        }
-
         public override void Dispose()
         {
-            var telemetry = new EventTelemetry { Name = _name };
+            var telemetry = new EventTelemetry { Name = name };
 
             foreach (var property in Properties)
             {
                 telemetry.Properties[property.Name] = property.Value;
             }
 
-            _owner._client.TrackEvent(telemetry);
+            owner._client.TrackEvent(telemetry);
         }
     }
 }

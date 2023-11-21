@@ -4,21 +4,13 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.Jira.Categories;
 
-internal class DashboardType : MatchType<DashboardMatch, DashboardMatchDto>
+internal class DashboardType(
+    IMatchFactory<DashboardMatch, DashboardMatchDto> factory,
+    ConfigurationManager configurationManager
+) : MatchType<DashboardMatch, DashboardMatchDto>(factory)
 {
-    private readonly ConfigurationManager _configurationManager;
-
     public override Guid Id => TypeIds.Dashboard.Id;
 
-    public DashboardType(
-        IMatchFactory<DashboardMatch, DashboardMatchDto> factory,
-        ConfigurationManager configurationManager
-    )
-        : base(factory)
-    {
-        _configurationManager = configurationManager;
-    }
-
     protected override bool IsValid(DashboardMatchDto dto) =>
-        _configurationManager.Configuration.HasConnection(dto.Url);
+        configurationManager.Configuration.HasConnection(dto.Url);
 }

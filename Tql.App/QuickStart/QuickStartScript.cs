@@ -2,11 +2,12 @@
 
 namespace Tql.App.QuickStart;
 
-internal partial class QuickStartScript
+internal partial class QuickStartScript(
+    QuickStartManager quickStart,
+    IPluginManager pluginManager,
+    Settings settings
+)
 {
-    private readonly QuickStartManager _quickStart;
-    private readonly IPluginManager _pluginManager;
-    private readonly Settings _settings;
     private readonly IPlaybook _playbook = LoadPlaybook();
 
     private static IPlaybook LoadPlaybook()
@@ -20,26 +21,15 @@ internal partial class QuickStartScript
 
     private QuickStartDto State
     {
-        get => _quickStart.State;
-        set => _quickStart.State = value;
-    }
-
-    public QuickStartScript(
-        QuickStartManager quickStart,
-        IPluginManager pluginManager,
-        Settings settings
-    )
-    {
-        _quickStart = quickStart;
-        _pluginManager = pluginManager;
-        _settings = settings;
+        get => quickStart.State;
+        set => quickStart.State = value;
     }
 
     private bool IsToolInstalled(QuickStartTool tool)
     {
         var plugin = GetPluginValues(tool);
 
-        return _pluginManager.Plugins.Any(p => p.Id == plugin.Id);
+        return pluginManager.Plugins.Any(p => p.Id == plugin.Id);
     }
 
     private PluginValues CurrentPlugin => GetPluginValues(State.SelectedTool);

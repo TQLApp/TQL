@@ -5,10 +5,8 @@ using Tql.Utilities;
 namespace Tql.Plugins.Outlook.Categories;
 
 [RootMatchType]
-internal class EmailsType : MatchType<EmailsMatch, RootItemDto>
+internal class EmailsType(IMatchFactory<EmailsMatch, RootItemDto> factory)
+    : MatchType<EmailsMatch, RootItemDto>(factory)
 {
     public override Guid Id => TypeIds.Emails.Id;
-
-    public EmailsType(IMatchFactory<EmailsMatch, RootItemDto> factory)
-        : base(factory) { }
 }

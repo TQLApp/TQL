@@ -1,11 +1,6 @@
 ﻿namespace Tql.App.QuickStart;
 
-internal class QuickStartPopupButtonEventArgs : EventArgs
+internal class QuickStartPopupButtonEventArgs(QuickStartPopupButton button) : EventArgs
 {
-    public QuickStartPopupButton Button { get; }
-
-    public QuickStartPopupButtonEventArgs(QuickStartPopupButton button)
-    {
-        Button = button;
-    }
+    public QuickStartPopupButton Button { get; } = button;
 }

@@ -5,13 +5,10 @@ using Tql.Plugins.MicrosoftTeams.Support;
 namespace Tql.Plugins.MicrosoftTeams.Categories;
 
 [RootMatchType]
-internal class TeamsChatsType : PeopleTypeBase<TeamsChatsMatch, TeamsChatMatch>
+internal class TeamsChatsType(
+    ConfigurationManager configurationManager,
+    IMatchFactory<TeamsChatsMatch, RootItemDto> factory
+) : PeopleTypeBase<TeamsChatsMatch, TeamsChatMatch>(configurationManager, factory)
 {
     public override Guid Id => TypeIds.TeamsChats.Id;
-
-    public TeamsChatsType(
-        ConfigurationManager configurationManager,
-        IMatchFactory<TeamsChatsMatch, RootItemDto> factory
-    )
-        : base(configurationManager, factory) { }
 }

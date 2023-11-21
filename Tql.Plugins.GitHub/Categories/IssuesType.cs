@@ -5,13 +5,10 @@ using Tql.Plugins.GitHub.Support;
 namespace Tql.Plugins.GitHub.Categories;
 
 [RootMatchType(SupportsUserScope = true)]
-internal class IssuesType : IssuesTypeBase<IssuesMatch, IssueMatch>
+internal class IssuesType(
+    IMatchFactory<IssuesMatch, RootItemDto> factory,
+    ConfigurationManager configurationManager
+) : IssuesTypeBase<IssuesMatch, IssueMatch>(factory, configurationManager)
 {
     public override Guid Id => TypeIds.Issues.Id;
-
-    public IssuesType(
-        IMatchFactory<IssuesMatch, RootItemDto> factory,
-        ConfigurationManager configurationManager
-    )
-        : base(factory, configurationManager) { }
 }

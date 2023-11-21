@@ -194,11 +194,11 @@ internal partial class ConfigurationWindow
     protected virtual void OnSelectedPageChanged() =>
         SelectedPageChanged?.Invoke(this, EventArgs.Empty);
 
-    private class Context : IConfigurationPageContext
+    private class Context(IConfigurationPage page) : IConfigurationPageContext
     {
         private bool _isVisible;
 
-        public IConfigurationPage Page { get; }
+        public IConfigurationPage Page { get; } = page;
 
         public bool IsVisible
         {
@@ -215,11 +215,6 @@ internal partial class ConfigurationWindow
 
         public event EventHandler? IsVisibleChanged;
         public event EventHandler? Closed;
-
-        public Context(IConfigurationPage page)
-        {
-            Page = page;
-        }
 
         public void RaiseClosed() => OnClosed();
 

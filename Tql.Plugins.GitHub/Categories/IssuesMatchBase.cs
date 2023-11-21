@@ -7,48 +7,31 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.GitHub.Categories;
 
-internal abstract class IssuesMatchBase<T> : ISearchableMatch, ISerializableMatch
+internal abstract class IssuesMatchBase<T>(
+    RootItemDto dto,
+    GitHubApi api,
+    ICache<GitHubData> cache,
+    IssueTypeQualifier type,
+    ConfigurationManager configurationManager,
+    IMatchFactory<T, IssueMatchDto> factory
+) : ISearchableMatch, ISerializableMatch
     where T : IssueMatchBase
 {
-    private readonly RootItemDto _dto;
-    private readonly GitHubApi _api;
-    private readonly IssueTypeQualifier _type;
-    private readonly ConfigurationManager _configurationManager;
-    private readonly IMatchFactory<T, IssueMatchDto> _factory;
-    private readonly ICache<GitHubData> _cache;
-
     public string Text =>
         MatchUtils.GetMatchLabel(
-            _type == IssueTypeQualifier.Issue
+            type == IssueTypeQualifier.Issue
                 ? Labels.IssuesMatchBase_IssueLabel
                 : Labels.IssuesMatchBase_PullRequestLabel,
-            _type == IssueTypeQualifier.Issue
+            type == IssueTypeQualifier.Issue
                 ? Labels.IssuesMatchBase_MyIssueLabel
                 : Labels.IssuesMatchBase_MyPullRequestLabel,
-            _configurationManager.Configuration,
-            _dto
+            configurationManager.Configuration,
+            dto
         );
 
     public ImageSource Icon => Images.Issue;
     public abstract MatchTypeId TypeId { get; }
     public abstract string SearchHint { get; }
-
-    protected IssuesMatchBase(
-        RootItemDto dto,
-        GitHubApi api,
-        ICache<GitHubData> cache,
-        IssueTypeQualifier type,
-        ConfigurationManager configurationManager,
-        IMatchFactory<T, IssueMatchDto> factory
-    )
-    {
-        _dto = dto;
-        _api = api;
-        _type = type;
-        _configurationManager = configurationManager;
-        _factory = factory;
-        _cache = cache;
-    }
 
     public async Task<IEnumerable<IMatch>> Search(
         ISearchContext context,
@@ -56,18 +39,16 @@ internal abstract class IssuesMatchBase<T> : ISearchableMatch, ISerializableMatc
         CancellationToken cancellationToken
     )
     {
-        if (_dto.Scope == RootItemScope.Global && text.IsWhiteSpace())
+        if (dto.Scope == RootItemScope.Global && text.IsWhiteSpace())
             return Array.Empty<IMatch>();
 
         await context.DebounceDelay(cancellationToken);
 
-        var client = await _api.GetClient(_dto.Id);
+        var client = await api.GetClient(dto.Id);
 
-        var request = new SearchIssuesRequest(
-            await GitHubUtils.GetSearchPrefix(_dto, _cache) + text
-        )
+        var request = new SearchIssuesRequest(await GitHubUtils.GetSearchPrefix(dto, cache) + text)
         {
-            Type = _type
+            Type = type
         };
 
         if (text.IsWhiteSpace())
@@ -84,9 +65,9 @@ internal abstract class IssuesMatchBase<T> : ISearchableMatch, ISerializableMatc
             .Items
             .Select(
                 p =>
-                    _factory.Create(
+                    factory.Create(
                         new IssueMatchDto(
-                            _dto.Id,
+                            dto.Id,
                             GitHubUtils.GetRepositoryName(p.HtmlUrl),
                             p.Number,
                             p.Title,
@@ -99,6 +80,6 @@ internal abstract class IssuesMatchBase<T> : ISearchableMatch, ISerializableMatc
 
     public string Serialize()
     {
-        return JsonSerializer.Serialize(_dto);
+        return JsonSerializer.Serialize(dto);
     }
 }

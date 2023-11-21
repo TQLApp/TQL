@@ -4,21 +4,13 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.AzureDevOps.Categories;
 
-internal class WorkItemType : MatchType<WorkItemMatch, WorkItemMatchDto>
+internal class WorkItemType(
+    IMatchFactory<WorkItemMatch, WorkItemMatchDto> factory,
+    ConfigurationManager configurationManager
+) : MatchType<WorkItemMatch, WorkItemMatchDto>(factory)
 {
-    private readonly ConfigurationManager _configurationManager;
-
     public override Guid Id => TypeIds.WorkItem.Id;
 
-    public WorkItemType(
-        IMatchFactory<WorkItemMatch, WorkItemMatchDto> factory,
-        ConfigurationManager configurationManager
-    )
-        : base(factory)
-    {
-        _configurationManager = configurationManager;
-    }
-
     protected override bool IsValid(WorkItemMatchDto dto) =>
-        _configurationManager.Configuration.HasConnection(dto.Url);
+        configurationManager.Configuration.HasConnection(dto.Url);
 }

@@ -7,43 +7,32 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.GitHub.Categories;
 
-internal class UserMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, ISearchableMatch
+internal class UserMatch(
+    UserMatchDto dto,
+    GitHubApi api,
+    IMatchFactory<RepositoryMatch, RepositoryMatchDto> factory
+) : IRunnableMatch, ISerializableMatch, ICopyableMatch, ISearchableMatch
 {
-    private readonly UserMatchDto _dto;
-    private readonly GitHubApi _api;
-    private readonly IMatchFactory<RepositoryMatch, RepositoryMatchDto> _factory;
-
-    public string Text => _dto.Login;
+    public string Text => dto.Login;
     public ImageSource Icon => Images.User;
     public MatchTypeId TypeId => TypeIds.User;
     public string SearchHint => Labels.UserMatch_SearchHint;
 
-    public UserMatch(
-        UserMatchDto dto,
-        GitHubApi api,
-        IMatchFactory<RepositoryMatch, RepositoryMatchDto> factory
-    )
-    {
-        _dto = dto;
-        _api = api;
-        _factory = factory;
-    }
-
     public Task Run(IServiceProvider serviceProvider, IWin32Window owner)
     {
-        serviceProvider.GetRequiredService<IUI>().OpenUrl(_dto.Url);
+        serviceProvider.GetRequiredService<IUI>().OpenUrl(dto.Url);
 
         return Task.CompletedTask;
     }
 
     public string Serialize()
     {
-        return JsonSerializer.Serialize(_dto);
+        return JsonSerializer.Serialize(dto);
     }
 
     public Task Copy(IServiceProvider serviceProvider)
     {
-        serviceProvider.GetRequiredService<IClipboard>().CopyUri(Text, _dto.Url);
+        serviceProvider.GetRequiredService<IClipboard>().CopyUri(Text, dto.Url);
 
         return Task.CompletedTask;
     }
@@ -59,21 +48,18 @@ internal class UserMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, I
 
         await context.DebounceDelay(cancellationToken);
 
-        var client = await _api.GetClient(_dto.ConnectionId);
+        var client = await api.GetClient(dto.ConnectionId);
 
         var response = await client
             .Search
-            .SearchRepo(new SearchRepositoriesRequest(text) { User = _dto.Login });
+            .SearchRepo(new SearchRepositoriesRequest(text) { User = dto.Login });
 
         cancellationToken.ThrowIfCancellationRequested();
 
         return response
             .Items
             .Select(
-                p =>
-                    _factory.Create(
-                        new RepositoryMatchDto(_dto.ConnectionId, p.FullName, p.HtmlUrl)
-                    )
+                p => factory.Create(new RepositoryMatchDto(dto.ConnectionId, p.FullName, p.HtmlUrl))
             );
     }
 }

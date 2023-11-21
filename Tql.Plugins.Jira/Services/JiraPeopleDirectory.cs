@@ -3,21 +3,11 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.Jira.Services;
 
-internal class JiraPeopleDirectory : IPeopleDirectory
+internal class JiraPeopleDirectory(Connection connection, JiraApi api) : IPeopleDirectory
 {
-    private readonly Connection _connection;
-    private readonly JiraApi _api;
-    public string Id { get; }
-    public string Name { get; }
-
-    public JiraPeopleDirectory(Connection connection, JiraApi api)
-    {
-        _connection = connection;
-        _api = api;
-
-        Id = Encryption.Sha1Hash($"{JiraPlugin.Id}/{connection.Id}");
-        Name = string.Format(Labels.JiraPeopleDirectory_Title, connection.Name);
-    }
+    public string Id { get; } = Encryption.Sha1Hash($"{JiraPlugin.Id}/{connection.Id}");
+    public string Name { get; } =
+        string.Format(Labels.JiraPeopleDirectory_Title, (object)connection.Name);
 
     public async Task<ImmutableArray<IPerson>> Find(
         string search,
@@ -27,7 +17,7 @@ internal class JiraPeopleDirectory : IPeopleDirectory
         if (search.IsWhiteSpace())
             return ImmutableArray<IPerson>.Empty;
 
-        var client = _api.GetClient(_connection);
+        var client = api.GetClient(connection);
 
         try
         {

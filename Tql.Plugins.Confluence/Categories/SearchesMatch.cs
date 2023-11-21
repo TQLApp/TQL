@@ -5,33 +5,22 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.Confluence.Categories;
 
-internal class SearchesMatch : ISearchableMatch, ISerializableMatch
+internal class SearchesMatch(
+    RootItemDto dto,
+    ConfigurationManager configurationManager,
+    IMatchFactory<SearchMatch, SearchMatchDto> factory
+) : ISearchableMatch, ISerializableMatch
 {
-    private readonly RootItemDto _dto;
-    private readonly ConfigurationManager _configurationManager;
-    private readonly IMatchFactory<SearchMatch, SearchMatchDto> _factory;
-
     public string Text =>
         MatchUtils.GetMatchLabel(
             Labels.SearchesMatch_Label,
-            _configurationManager.Configuration,
-            _dto.Url
+            configurationManager.Configuration,
+            dto.Url
         );
 
     public ImageSource Icon => Images.Confluence;
     public MatchTypeId TypeId => TypeIds.Searches;
     public string SearchHint => Labels.SearchesMatch_SearchHint;
-
-    public SearchesMatch(
-        RootItemDto dto,
-        ConfigurationManager configurationManager,
-        IMatchFactory<SearchMatch, SearchMatchDto> factory
-    )
-    {
-        _dto = dto;
-        _configurationManager = configurationManager;
-        _factory = factory;
-    }
 
     public async Task<IEnumerable<IMatch>> Search(
         ISearchContext context,
@@ -44,20 +33,20 @@ internal class SearchesMatch : ISearchableMatch, ISerializableMatch
 
         await context.DebounceDelay(cancellationToken);
 
-        var client = _configurationManager.GetClient(_dto.Url);
+        var client = configurationManager.GetClient(dto.Url);
 
         string cql =
             $"siteSearch ~ \"{text.Replace("\"", "\\\"")}\" AND type in (\"space\",\"user\",\"attachment\",\"page\",\"blogpost\")";
 
         return SearchUtils.CreateMatches(
-            _dto.Url,
+            dto.Url,
             await client.SiteSearch(cql, 25, cancellationToken),
-            _factory
+            factory
         );
     }
 
     public string Serialize()
     {
-        return JsonSerializer.Serialize(_dto);
+        return JsonSerializer.Serialize(dto);
     }
 }

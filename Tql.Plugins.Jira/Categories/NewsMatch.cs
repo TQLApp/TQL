@@ -6,43 +6,31 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.Jira.Categories;
 
-internal class NewsMatch : CachedMatch<JiraData>, ISerializableMatch
+internal class NewsMatch(
+    RootItemDto dto,
+    ICache<JiraData> cache,
+    ConfigurationManager configurationManager,
+    IMatchFactory<NewMatch, NewMatchDto> factory
+) : CachedMatch<JiraData>(cache), ISerializableMatch
 {
-    private readonly RootItemDto _dto;
-    private readonly ConfigurationManager _configurationManager;
-    private readonly IMatchFactory<NewMatch, NewMatchDto> _factory;
-
     public override string Text =>
         MatchUtils.GetMatchLabel(
             Labels.NewsMatch_Label,
-            _configurationManager.Configuration,
-            _dto.Url
+            configurationManager.Configuration,
+            dto.Url
         );
 
     public override ImageSource Icon => Images.Issues;
     public override MatchTypeId TypeId => TypeIds.News;
     public override string SearchHint => Labels.NewsMatch_SearchHint;
 
-    public NewsMatch(
-        RootItemDto dto,
-        ICache<JiraData> cache,
-        ConfigurationManager configurationManager,
-        IMatchFactory<NewMatch, NewMatchDto> factory
-    )
-        : base(cache)
-    {
-        _dto = dto;
-        _configurationManager = configurationManager;
-        _factory = factory;
-    }
-
     protected override IEnumerable<IMatch> Create(JiraData data)
     {
-        foreach (var project in data.GetConnection(_dto.Url).Projects)
+        foreach (var project in data.GetConnection(dto.Url).Projects)
         {
-            yield return _factory.Create(
+            yield return factory.Create(
                 new NewMatchDto(
-                    _dto.Url,
+                    dto.Url,
                     project.Name,
                     project.Id,
                     NewMatchType.Query,
@@ -54,9 +42,9 @@ internal class NewsMatch : CachedMatch<JiraData>, ISerializableMatch
 
             foreach (var issueType in project.IssueTypes)
             {
-                yield return _factory.Create(
+                yield return factory.Create(
                     new NewMatchDto(
-                        _dto.Url,
+                        dto.Url,
                         project.Name,
                         project.Id,
                         NewMatchType.Issue,
@@ -71,6 +59,6 @@ internal class NewsMatch : CachedMatch<JiraData>, ISerializableMatch
 
     public string Serialize()
     {
-        return JsonSerializer.Serialize(_dto);
+        return JsonSerializer.Serialize(dto);
     }
 }

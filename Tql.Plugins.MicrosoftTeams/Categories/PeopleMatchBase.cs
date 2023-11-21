@@ -5,33 +5,26 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.MicrosoftTeams.Categories;
 
-internal abstract class PeopleMatchBase<T> : ISearchableMatch, ISerializableMatch
+internal abstract class PeopleMatchBase<T>(
+    RootItemDto dto,
+    IPeopleDirectoryManager peopleDirectoryManager,
+    ConfigurationManager configurationManager,
+    IMatchFactory<T, PersonDto> factory
+) : ISearchableMatch, ISerializableMatch
     where T : IMatch
 {
     private const int MaxResults = 100;
 
-    private readonly IPeopleDirectory _peopleDirectory;
-    private readonly IMatchFactory<T, PersonDto> _factory;
+    private readonly IPeopleDirectory _peopleDirectory = MatchUtils.GetDirectory(
+        configurationManager,
+        peopleDirectoryManager,
+        dto.Id
+    )!;
 
     public abstract string Text { get; }
     public abstract ImageSource Icon { get; }
     public abstract MatchTypeId TypeId { get; }
     public string SearchHint => Labels.PeopleMatchBase_SearchHint;
-
-    protected PeopleMatchBase(
-        RootItemDto dto,
-        IPeopleDirectoryManager peopleDirectoryManager,
-        ConfigurationManager configurationManager,
-        IMatchFactory<T, PersonDto> factory
-    )
-    {
-        _peopleDirectory = MatchUtils.GetDirectory(
-            configurationManager,
-            peopleDirectoryManager,
-            dto.Id
-        )!;
-        _factory = factory;
-    }
 
     public async Task<IEnumerable<IMatch>> Search(
         ISearchContext context,
@@ -54,7 +47,7 @@ internal abstract class PeopleMatchBase<T> : ISearchableMatch, ISerializableMatc
         if (allPeople.Length > 0)
         {
             return context
-                .Filter(GetDtos(allPeople).Select(p => (IMatch)_factory.Create(p)))
+                .Filter(GetDtos(allPeople).Select(p => (IMatch)factory.Create(p)))
                 .Take(MaxResults);
         }
 
@@ -63,7 +56,7 @@ internal abstract class PeopleMatchBase<T> : ISearchableMatch, ISerializableMatc
         return GetDtos(people)
             .OrderBy(p => p.DisplayName, StringComparer.CurrentCultureIgnoreCase)
             .Take(MaxResults)
-            .Select(p => (IMatch)_factory.Create(p));
+            .Select(p => (IMatch)factory.Create(p));
     }
 
     private IEnumerable<PersonDto> GetDtos(ImmutableArray<IPerson> people)

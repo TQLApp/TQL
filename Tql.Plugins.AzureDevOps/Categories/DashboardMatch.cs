@@ -5,39 +5,35 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.AzureDevOps.Categories;
 
-internal class DashboardMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
+internal class DashboardMatch(DashboardMatchDto dto)
+    : IRunnableMatch,
+        ISerializableMatch,
+        ICopyableMatch
 {
-    private readonly DashboardMatchDto _dto;
-
     public string Text =>
         MatchText.Path(
-            _dto.ProjectName,
-            string.Format(Labels.DashboardMatch_Label, _dto.DashboardName)
+            dto.ProjectName,
+            string.Format(Labels.DashboardMatch_Label, dto.DashboardName)
         );
 
     public ImageSource Icon => Images.Dashboards;
     public MatchTypeId TypeId => TypeIds.Dashboard;
 
-    public DashboardMatch(DashboardMatchDto dto)
-    {
-        _dto = dto;
-    }
-
     public Task Run(IServiceProvider serviceProvider, IWin32Window owner)
     {
-        serviceProvider.GetRequiredService<IUI>().OpenUrl(_dto.GetUrl());
+        serviceProvider.GetRequiredService<IUI>().OpenUrl(dto.GetUrl());
 
         return Task.CompletedTask;
     }
 
     public string Serialize()
     {
-        return JsonSerializer.Serialize(_dto);
+        return JsonSerializer.Serialize(dto);
     }
 
     public Task Copy(IServiceProvider serviceProvider)
     {
-        serviceProvider.GetRequiredService<IClipboard>().CopyUri(Text, _dto.GetUrl());
+        serviceProvider.GetRequiredService<IClipboard>().CopyUri(Text, dto.GetUrl());
 
         return Task.CompletedTask;
     }

@@ -5,36 +5,31 @@ using Tql.Plugins.Jira.Services;
 
 namespace Tql.Plugins.Jira.Categories;
 
-internal class IssueMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
+internal class IssueMatch(IssueMatchDto dto, IconCacheManager iconCacheManager)
+    : IRunnableMatch,
+        ISerializableMatch,
+        ICopyableMatch
 {
-    private readonly IssueMatchDto _dto;
-
-    public string Text => $"{_dto.Key} {_dto.Summary}";
-    public ImageSource Icon { get; }
+    public string Text => $"{dto.Key} {dto.Summary}";
+    public ImageSource Icon { get; } =
+        iconCacheManager.GetIcon(new IconKey(dto.Url, dto.IssueTypeIconUrl)) ?? Images.Issues;
     public MatchTypeId TypeId => TypeIds.Issue;
-
-    public IssueMatch(IssueMatchDto dto, IconCacheManager iconCacheManager)
-    {
-        _dto = dto;
-        Icon =
-            iconCacheManager.GetIcon(new IconKey(dto.Url, dto.IssueTypeIconUrl)) ?? Images.Issues;
-    }
 
     public Task Run(IServiceProvider serviceProvider, IWin32Window owner)
     {
-        serviceProvider.GetRequiredService<IUI>().OpenUrl(_dto.GetUrl());
+        serviceProvider.GetRequiredService<IUI>().OpenUrl(dto.GetUrl());
 
         return Task.CompletedTask;
     }
 
     public string Serialize()
     {
-        return JsonSerializer.Serialize(_dto);
+        return JsonSerializer.Serialize(dto);
     }
 
     public Task Copy(IServiceProvider serviceProvider)
     {
-        serviceProvider.GetRequiredService<IClipboard>().CopyUri(Text, _dto.GetUrl());
+        serviceProvider.GetRequiredService<IClipboard>().CopyUri(Text, dto.GetUrl());
 
         return Task.CompletedTask;
     }

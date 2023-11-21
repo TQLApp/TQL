@@ -4,20 +4,12 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.MicrosoftTeams.Categories;
 
-internal abstract class PeopleTypeBase<TCategory, TMatch> : MatchType<TCategory, RootItemDto>
+internal abstract class PeopleTypeBase<TCategory, TMatch>(
+    ConfigurationManager configurationManager,
+    IMatchFactory<TCategory, RootItemDto> factory
+) : MatchType<TCategory, RootItemDto>(factory)
     where TCategory : PeopleMatchBase<TMatch>
     where TMatch : IMatch
 {
-    private readonly ConfigurationManager _configurationManager;
-
-    protected PeopleTypeBase(
-        ConfigurationManager configurationManager,
-        IMatchFactory<TCategory, RootItemDto> factory
-    )
-        : base(factory)
-    {
-        _configurationManager = configurationManager;
-    }
-
-    protected override bool IsValid(RootItemDto dto) => _configurationManager.HasDirectory(dto.Id);
+    protected override bool IsValid(RootItemDto dto) => configurationManager.HasDirectory(dto.Id);
 }

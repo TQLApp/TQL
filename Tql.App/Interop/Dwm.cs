@@ -15,20 +15,12 @@ public class Dwm
 {
     public const int WM_DWMCOMPOSITIONCHANGED = 0x031E;
 
-    public struct MARGINS
+    public struct MARGINS(int LeftWidth, int RightWidth, int TopHeight, int BottomHeight)
     {
-        public int leftWidth;
-        public int rightWidth;
-        public int topHeight;
-        public int bottomHeight;
-
-        public MARGINS(int LeftWidth, int RightWidth, int TopHeight, int BottomHeight)
-        {
-            leftWidth = LeftWidth;
-            rightWidth = RightWidth;
-            topHeight = TopHeight;
-            bottomHeight = BottomHeight;
-        }
+        public int leftWidth = LeftWidth;
+        public int rightWidth = RightWidth;
+        public int topHeight = TopHeight;
+        public int bottomHeight = BottomHeight;
 
         public void NoMargins()
         {
@@ -150,42 +142,26 @@ public class Dwm
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public struct AccentPolicy
+    public struct AccentPolicy(
+        DWMACCENTSTATE accentState,
+        DWMACCENTFLAGS accentFlags,
+        int gradientColor,
+        int animationId
+    )
     {
-        public DWMACCENTSTATE AccentState;
-        public DWMACCENTFLAGS AccentFlags;
-        public int GradientColor;
-        public int AnimationId;
-
-        public AccentPolicy(
-            DWMACCENTSTATE accentState,
-            DWMACCENTFLAGS accentFlags,
-            int gradientColor,
-            int animationId
-        )
-        {
-            AccentState = accentState;
-            AccentFlags = accentFlags;
-            GradientColor = gradientColor;
-            AnimationId = animationId;
-        }
+        public DWMACCENTSTATE AccentState = accentState;
+        public DWMACCENTFLAGS AccentFlags = accentFlags;
+        public int GradientColor = gradientColor;
+        public int AnimationId = animationId;
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public struct DWM_BLURBEHIND
+    public struct DWM_BLURBEHIND(bool enabled)
     {
-        public DWM_BB dwFlags;
-        public int fEnable;
-        public IntPtr hRgnBlur;
-        public int fTransitionOnMaximized;
-
-        public DWM_BLURBEHIND(bool enabled)
-        {
-            dwFlags = DWM_BB.Enable;
-            fEnable = (enabled) ? 1 : 0;
-            hRgnBlur = IntPtr.Zero;
-            fTransitionOnMaximized = 0;
-        }
+        public DWM_BB dwFlags = DWM_BB.Enable;
+        public int fEnable = (enabled) ? 1 : 0;
+        public IntPtr hRgnBlur = IntPtr.Zero;
+        public int fTransitionOnMaximized = 0;
 
         public Region Region => Region.FromHrgn(hRgnBlur);
 
@@ -207,18 +183,11 @@ public class Dwm
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public struct WinCompositionAttrData
+    public struct WinCompositionAttrData(DWMWINDOWATTRIBUTE attribute, IntPtr data, int sizeOfData)
     {
-        public DWMWINDOWATTRIBUTE Attribute;
-        public IntPtr Data; //Will point to an AccentPolicy struct, where Attribute will be DWMWINDOWATTRIBUTE.AccentPolicy
-        public int SizeOfData;
-
-        public WinCompositionAttrData(DWMWINDOWATTRIBUTE attribute, IntPtr data, int sizeOfData)
-        {
-            Attribute = attribute;
-            Data = data;
-            SizeOfData = sizeOfData;
-        }
+        public DWMWINDOWATTRIBUTE Attribute = attribute;
+        public IntPtr Data = data; //Will point to an AccentPolicy struct, where Attribute will be DWMWINDOWATTRIBUTE.AccentPolicy
+        public int SizeOfData = sizeOfData;
     }
 
     [StructLayout(LayoutKind.Sequential)]

@@ -6,53 +6,36 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.AzureDevOps.Categories;
 
-internal class NewsMatch : CachedMatch<AzureData>, ISerializableMatch
+internal class NewsMatch(
+    RootItemDto dto,
+    ICache<AzureData> cache,
+    ConfigurationManager configurationManager,
+    IMatchFactory<NewMatch, NewMatchDto> factory
+) : CachedMatch<AzureData>(cache), ISerializableMatch
 {
-    private readonly RootItemDto _dto;
-    private readonly ConfigurationManager _configurationManager;
-    private readonly IMatchFactory<NewMatch, NewMatchDto> _factory;
-
     public override string Text =>
         MatchUtils.GetMatchLabel(
             Labels.NewsMatch_Label,
-            _configurationManager.Configuration,
-            _dto.Url
+            configurationManager.Configuration,
+            dto.Url
         );
 
     public override ImageSource Icon => Images.Boards;
     public override MatchTypeId TypeId => TypeIds.News;
     public override string SearchHint => Labels.NewsMatch_SearchHint;
 
-    public NewsMatch(
-        RootItemDto dto,
-        ICache<AzureData> cache,
-        ConfigurationManager configurationManager,
-        IMatchFactory<NewMatch, NewMatchDto> factory
-    )
-        : base(cache)
-    {
-        _dto = dto;
-        _configurationManager = configurationManager;
-        _factory = factory;
-    }
-
     protected override IEnumerable<IMatch> Create(AzureData data)
     {
-        foreach (var project in data.GetConnection(_dto.Url).Projects)
+        foreach (var project in data.GetConnection(dto.Url).Projects)
         {
-            yield return _factory.Create(
-                new NewMatchDto(_dto.Url, project.Name, NewMatchType.Query, null)
+            yield return factory.Create(
+                new NewMatchDto(dto.Url, project.Name, NewMatchType.Query, null)
             );
 
             foreach (var workItemType in project.WorkItemTypes)
             {
-                yield return _factory.Create(
-                    new NewMatchDto(
-                        _dto.Url,
-                        project.Name,
-                        NewMatchType.WorkItem,
-                        workItemType.Name
-                    )
+                yield return factory.Create(
+                    new NewMatchDto(dto.Url, project.Name, NewMatchType.WorkItem, workItemType.Name)
                 );
             }
         }
@@ -60,6 +43,6 @@ internal class NewsMatch : CachedMatch<AzureData>, ISerializableMatch
 
     public string Serialize()
     {
-        return JsonSerializer.Serialize(_dto);
+        return JsonSerializer.Serialize(dto);
     }
 }

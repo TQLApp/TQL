@@ -3,10 +3,8 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.Outlook.Categories;
 
-internal class EmailType : MatchType<EmailMatch, PersonDto>
+internal class EmailType(IMatchFactory<EmailMatch, PersonDto> factory)
+    : MatchType<EmailMatch, PersonDto>(factory)
 {
     public override Guid Id => TypeIds.Email.Id;
-
-    public EmailType(IMatchFactory<EmailMatch, PersonDto> factory)
-        : base(factory) { }
 }

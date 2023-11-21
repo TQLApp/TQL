@@ -8,7 +8,12 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.Azure.Categories;
 
-internal class PortalsMatch : ISearchableMatch, ISerializableMatch
+internal class PortalsMatch(
+    RootItemDto dto,
+    ConfigurationManager configurationManager,
+    AzureApi api,
+    IMatchFactory<PortalMatch, PortalMatchDto> factory
+) : ISearchableMatch, ISerializableMatch
 {
     private const int SearchResultCount = 30;
 
@@ -28,34 +33,16 @@ internal class PortalsMatch : ISearchableMatch, ISerializableMatch
         return reader.ReadToEnd();
     }
 
-    private readonly AzureApi _api;
-    private readonly IMatchFactory<PortalMatch, PortalMatchDto> _factory;
-    private readonly RootItemDto _dto;
-    private readonly ConfigurationManager _configurationManager;
-
     public string Text =>
         MatchUtils.GetMatchLabel(
             Labels.PortalsMatch_Label,
-            _configurationManager.Configuration,
-            _dto.Id
+            configurationManager.Configuration,
+            dto.Id
         );
 
     public ImageSource Icon => Images.Azure;
     public MatchTypeId TypeId => TypeIds.Portals;
     public string SearchHint => Labels.PortalsMatch_SearchHint;
-
-    public PortalsMatch(
-        RootItemDto dto,
-        ConfigurationManager configurationManager,
-        AzureApi api,
-        IMatchFactory<PortalMatch, PortalMatchDto> factory
-    )
-    {
-        _dto = dto;
-        _configurationManager = configurationManager;
-        _api = api;
-        _factory = factory;
-    }
 
     public async Task<IEnumerable<IMatch>> Search(
         ISearchContext context,
@@ -71,7 +58,7 @@ internal class PortalsMatch : ISearchableMatch, ISerializableMatch
         // We run two queries. One for the main resources and one for the
         // resource groups.
 
-        var client = await _api.GetClient(_dto.Id);
+        var client = await api.GetClient(dto.Id);
 
         // All tenants seem to return the same results.
         var tenant = client.GetTenants().First();
@@ -113,9 +100,9 @@ internal class PortalsMatch : ISearchableMatch, ISerializableMatch
         return resources
             .Select(
                 p =>
-                    _factory.Create(
+                    factory.Create(
                         new PortalMatchDto(
-                            _dto.Id,
+                            dto.Id,
                             tenant.Data.DefaultDomain,
                             p.Id,
                             p.Name,
@@ -132,7 +119,7 @@ internal class PortalsMatch : ISearchableMatch, ISerializableMatch
 
     public string Serialize()
     {
-        return JsonSerializer.Serialize(_dto);
+        return JsonSerializer.Serialize(dto);
     }
 
     private record ResourceDto(

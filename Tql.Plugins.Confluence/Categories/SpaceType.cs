@@ -4,21 +4,13 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.Confluence.Categories;
 
-internal class SpaceType : MatchType<SpaceMatch, SpaceMatchDto>
+internal class SpaceType(
+    IMatchFactory<SpaceMatch, SpaceMatchDto> factory,
+    ConfigurationManager configurationManager
+) : MatchType<SpaceMatch, SpaceMatchDto>(factory)
 {
-    private readonly ConfigurationManager _configurationManager;
-
     public override Guid Id => TypeIds.Space.Id;
 
-    public SpaceType(
-        IMatchFactory<SpaceMatch, SpaceMatchDto> factory,
-        ConfigurationManager configurationManager
-    )
-        : base(factory)
-    {
-        _configurationManager = configurationManager;
-    }
-
     protected override bool IsValid(SpaceMatchDto dto) =>
-        _configurationManager.Configuration.HasConnection(dto.Url);
+        configurationManager.Configuration.HasConnection(dto.Url);
 }
