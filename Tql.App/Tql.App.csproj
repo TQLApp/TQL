@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+	<Import Project="..\Tql.targets" />
+
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
 		<ApplicationIcon>mainicon.ico</ApplicationIcon>
 		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
 		<ApplicationManifest>app.manifest</ApplicationManifest>
 	</PropertyGroup>
-
-	<Import Project="..\Tql.targets" />
 
 	<ItemGroup>
 		<Resource Include="Resources\**\*" />

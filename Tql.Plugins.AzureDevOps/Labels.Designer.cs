@@ -205,6 +205,15 @@ namespace Tql.Plugins.AzureDevOps {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Documentation.
+        /// </summary>
+        public static string ConfigurationControl_Documentation {
+            get {
+                return ResourceManager.GetString("ConfigurationControl_Documentation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to General.
         /// </summary>
         public static string ConfigurationControl_General {

@@ -210,4 +210,7 @@
   <data name="UsersMatch_Label" xml:space="preserve">
     <value>GitHub User</value>
   </data>
+  <data name="ConfigurationControl_Documentation" xml:space="preserve">
+    <value>Documentation</value>
+  </data>
 </root>

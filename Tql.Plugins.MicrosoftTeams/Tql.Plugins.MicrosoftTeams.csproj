@@ -1,12 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+	<Import Project="..\TqlPluginPackage.targets" />
+
 	<PropertyGroup>
 		<Product>TQL Microsoft Teams Plugin</Product>
 		<Description>Techie's Quick Launcher plugin for Microsoft Teams. To use this plugin, you need to have at least one plugin installed that exposes a people directory, e.g. the, Outlook, JIRA or Azure DevOps plugins.</Description>
 		<PackageId>TQLApp.Plugins.MicrosoftTeams</PackageId>
+		<PackageProjectUrl>https://github.com/TQLApp/TQL/wiki/Microsoft-Teams-plugin</PackageProjectUrl>
 	</PropertyGroup>
-
-	<Import Project="..\TqlPluginPackage.targets" />
 
 	<ItemGroup>
 		<EmbeddedResource Include="Resources\**\*" />

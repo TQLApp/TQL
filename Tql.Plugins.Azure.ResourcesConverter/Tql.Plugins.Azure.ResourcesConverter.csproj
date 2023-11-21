@@ -1,10 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+	<Import Project="..\Tql.targets" />
+
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
 	</PropertyGroup>
-
-	<Import Project="..\Tql.targets" />
 
 	<ItemGroup>
 		<PackageReference Include="AsyncEnumerator" Version="4.0.2" />

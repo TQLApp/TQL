@@ -1,5 +1,7 @@
 <Project>
 
+	<Import Project="Tql.targets" />
+
 	<PropertyGroup>
 		<Version>0.0</Version>
 		<Authors>Pieter van Ginkel</Authors>
@@ -14,8 +16,6 @@
 		<IncludeSymbols>True</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 	</PropertyGroup>
-
-	<Import Project="Tql.targets" />
 
 	<ItemGroup>
 		<None Include="..\LICENSE" Pack="true" PackagePath=""/>

@@ -1,12 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+
+	<Import Project="..\TqlPluginPackage.targets" />
+
 	<PropertyGroup>
 		<Product>TQL JIRA Plugin</Product>
 		<Description>Techie's Quick Launcher plugin for JIRA by Atlassian.</Description>
 		<PackageId>TQLApp.Plugins.Jira</PackageId>
+		<PackageProjectUrl>https://github.com/TQLApp/TQL/wiki/JIRA-plugin</PackageProjectUrl>
 	</PropertyGroup>
-
-	<Import Project="..\TqlPluginPackage.targets" />
 
 	<ItemGroup>
 		<EmbeddedResource Include="Resources\**\*" />

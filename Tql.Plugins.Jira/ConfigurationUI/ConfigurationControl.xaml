@@ -24,6 +24,16 @@
             <StackPanel
                 Orientation="Horizontal"
                 HorizontalAlignment="Right">
+                <TextBlock
+                    Margin="9,3"
+                    VerticalAlignment="Center">
+                    <Hyperlink
+                        x:Name="_documentation"
+                        Click="_documentation_Click">
+                        <Run
+                            Text="{x:Static app:Labels.ConfigurationControl_Documentation}" />
+                    </Hyperlink>
+                </TextBlock>
                 <Button
                     x:Name="_add"
                     Content="{x:Static app:Labels.Button_Add}"
@@ -68,8 +78,7 @@
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
@@ -78,7 +87,6 @@
                 <TextBox
                     x:Name="_name"
                     Grid.Column="1"
-                    Grid.ColumnSpan="2"
                     Margin="3"
                     TextChanged="_name_TextChanged" />
 
@@ -89,13 +97,11 @@
                     x:Name="_url"
                     Grid.Row="1"
                     Grid.Column="1"
-                    Grid.ColumnSpan="2"
                     Margin="3"
                     TextChanged="_url_TextChanged" />
                 <TextBlock
                     Grid.Row="2"
                     Grid.Column="1"
-                    Grid.ColumnSpan="2"
                     Margin="3"
                     TextWrapping="Wrap"
                     Text="{x:Static app:Labels.ConfigurationControl_URLHelpText}" />
@@ -109,17 +115,6 @@
                     Grid.Column="1"
                     Margin="3"
                     TextChanged="_userName_TextChanged" />
-                <TextBlock
-                    Grid.Row="3"
-                    Grid.Column="2"
-                    Margin="3">
-                    <Hyperlink
-                        x:Name="_passwordDocumentation"
-                        Click="_passwordDocumentation_Click">
-                        <Run
-                            Text="{x:Static app:Labels.ConfigurationControl_Documentation}" />
-                    </Hyperlink>
-                </TextBlock>
 
                 <Label
                     Content="{x:Static app:Labels.ConfigurationControl_PasswordLabel}"
@@ -135,12 +130,11 @@
                     Margin="4"
                     Grid.Row="5"
                     Grid.Column="1"
-                    Grid.ColumnSpan="2"
                     TextWrapping="Wrap"
                     Text="{x:Static app:Labels.ConfigurationControl_BasicCredentialsDocumentation}" />
 
                 <StackPanel
-                    Grid.Column="3"
+                    Grid.Column="2"
                     Orientation="Vertical"
                     Grid.RowSpan="999">
                     <Button

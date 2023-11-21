@@ -190,6 +190,6 @@
     <value>Confluence Space</value>
   </data>
   <data name="ConfigurationControl_URLHelpText" xml:space="preserve">
-    <value>This URL is the URL to your Confluence environment. It should be similar to https://yourcompany.atlassian.net.</value>
+    <value>This URL is the URL to your Confluence environment. It should be similar to https://yourcompany.atlassian.net/wiki.</value>
   </data>
 </root>

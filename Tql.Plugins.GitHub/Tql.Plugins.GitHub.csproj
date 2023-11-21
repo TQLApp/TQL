@@ -1,12 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+	<Import Project="..\TqlPluginPackage.targets" />
+
 	<PropertyGroup>
 		<Product>TQL GitHib Plugin</Product>
 		<Description>Techie's Quick Launcher plugin for GitHub.</Description>
 		<PackageId>TQLApp.Plugins.GitHub</PackageId>
+		<PackageProjectUrl>https://github.com/TQLApp/TQL/wiki/GitHub-plugin</PackageProjectUrl>
 	</PropertyGroup>
-
-	<Import Project="..\TqlPluginPackage.targets" />
 
 	<ItemGroup>
 		<EmbeddedResource Include="Resources\**\*" />

@@ -6,6 +6,7 @@ namespace Tql.Plugins.Azure.ConfigurationUI;
 internal partial class ConfigurationControl : IConfigurationPage
 {
     private readonly ConfigurationManager _configurationManager;
+    private readonly IUI _ui;
     private Guid? _id;
 
     private new ConfigurationDto DataContext => (ConfigurationDto)base.DataContext;
@@ -14,9 +15,10 @@ internal partial class ConfigurationControl : IConfigurationPage
     public string Title => Labels.ConfigurationControl_General;
     public ConfigurationPageMode PageMode => ConfigurationPageMode.AutoSize;
 
-    public ConfigurationControl(ConfigurationManager configurationManager)
+    public ConfigurationControl(ConfigurationManager configurationManager, IUI ui)
     {
         _configurationManager = configurationManager;
+        _ui = ui;
 
         InitializeComponent();
 
@@ -91,4 +93,9 @@ internal partial class ConfigurationControl : IConfigurationPage
     private void _name_TextChanged(object sender, TextChangedEventArgs e) => UpdateEnabled();
 
     private void _tenantId_TextChanged(object sender, TextChangedEventArgs e) => UpdateEnabled();
+
+    private void _documentation_Click(object sender, RoutedEventArgs e)
+    {
+        _ui.OpenUrl("https://github.com/TQLApp/TQL/wiki/Azure-plugin");
+    }
 }

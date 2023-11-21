@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+	<Import Project="..\TqlSupportPackage.targets" />
+
 	<PropertyGroup>
 		<Product>TQL Plugin Utilities</Product>
 		<Description>Utilities to simplify plugin development for Techie's Quick Launcher.</Description>
 		<PackageId>TQLApp.Utilities</PackageId>
 	</PropertyGroup>
-
-	<Import Project="..\TqlSupportPackage.targets" />
 
 	<ItemGroup>
 		<PackageReference Include="JetBrains.Annotations" Version="2023.3.0" />

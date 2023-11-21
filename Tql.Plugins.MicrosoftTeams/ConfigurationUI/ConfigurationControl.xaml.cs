@@ -7,6 +7,7 @@ namespace Tql.Plugins.MicrosoftTeams.ConfigurationUI;
 internal partial class ConfigurationControl : IConfigurationPage
 {
     private readonly ConfigurationManager _configurationManager;
+    private readonly IUI _ui;
 
     public Guid PageId => MicrosoftTeamsPlugin.ConfigurationPageId;
     public string Title => Labels.ConfigurationControl_General;
@@ -14,10 +15,12 @@ internal partial class ConfigurationControl : IConfigurationPage
 
     public ConfigurationControl(
         ConfigurationManager configurationManager,
-        IPeopleDirectoryManager peopleDirectoryManager
+        IPeopleDirectoryManager peopleDirectoryManager,
+        IUI ui
     )
     {
         _configurationManager = configurationManager;
+        _ui = ui;
 
         InitializeComponent();
 
@@ -69,6 +72,11 @@ internal partial class ConfigurationControl : IConfigurationPage
 
     private void _selectedDirectories_Unchecked(object sender, RoutedEventArgs e) =>
         UpdateEnabled();
+
+    private void _documentation_Click(object sender, RoutedEventArgs e)
+    {
+        _ui.OpenUrl("https://github.com/TQLApp/TQL/wiki/Microsoft-Teams-plugin");
+    }
 
     private record DirectoryItem(IPeopleDirectory Directory)
     {

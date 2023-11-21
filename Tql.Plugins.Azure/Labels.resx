@@ -162,4 +162,7 @@
   <data name="PortalsMatch_Label" xml:space="preserve">
     <value>Azure Portal</value>
   </data>
+  <data name="ConfigurationControl_Documentation" xml:space="preserve">
+    <value>Documentation</value>
+  </data>
 </root>
