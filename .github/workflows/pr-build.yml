@@ -1,0 +1,49 @@
+name: Update GitHub Pages
+
+on: pull_request
+
+jobs:
+  pr-build:
+    name: PR build
+    runs-on: windows-2022
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1
+
+      - name: Validate prettier
+        run: prettier.bat
+
+      - name: Check for changes by prettier
+        shell: pwsh
+        run: ./Build/Uncommitted-changes.ps1 -tool runprettier.bat
+
+      - name: Install CSharpier
+        run: dotnet tool restore
+
+      - name: Run CSharpier
+        run: dotnet csharpier .
+
+      - name: Check for changes by CSharpier
+        shell: pwsh
+        run: ./Build/Uncommitted-changes.ps1 -tool "dotnet csharpier ."
+
+      - uses: actions/cache@v3
+        id: cache
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-v2-${{ hashFiles('**/packages.lock.json') }}
+
+      - name: Restore Solution
+        run: msbuild -nodeReuse:false -maxCpuCount -target:Restore -property:Configuration="Release" -property:Version="${{ steps.get-build-version.outputs.build-version }}" Tql.sln
+
+      - name: Build Solution
+        run: msbuild -nodeReuse:false -maxCpuCount -target:Build -property:Configuration="Release" -property:Version="${{ steps.get-build-version.outputs.build-version }}" Tql.sln
+
+      - name: Install DocFX
+        run: dotnet tool update -g docfx
+
+      - name: Run DocFX
+        run: docfx Documentation/docfx.json
