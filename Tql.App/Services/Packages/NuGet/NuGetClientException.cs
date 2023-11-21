@@ -1,4 +1,4 @@
-﻿namespace Tql.App.Services.Packages;
+﻿namespace Tql.App.Services.Packages.NuGet;
 
 internal class NuGetClientException : Exception
 {

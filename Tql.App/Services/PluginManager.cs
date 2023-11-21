@@ -1,20 +1,30 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Tql.Abstractions;
+using Tql.App.Services.Packages.PackageStore;
 using Tql.Utilities;
 
 namespace Tql.App.Services;
 
-internal class PluginManager : IPluginManager
+internal class PluginManager : IPluginManager, IDisposable
 {
+    private readonly IPluginLoader _loader;
     private readonly ImmutableArray<AvailablePlugin> _availablePlugins;
 
     public ImmutableArray<IAvailablePlugin> AvailablePlugins { get; }
     public IEnumerable<ITqlPlugin> Plugins =>
         AvailablePlugins.Where(p => p.LoadException == null).Select(p => p.Plugin);
 
-    public PluginManager(IEnumerable<ITqlPlugin> plugins)
+    public PluginManager(IPluginLoader loader)
     {
-        _availablePlugins = plugins.Select(p => new AvailablePlugin(p)).ToImmutableArray();
+        // We need to keep a reference to the loader because it's also responsible
+        // for resolving assemblies.
+        _loader = loader;
+
+        _availablePlugins = loader
+            .GetPlugins()
+            .Select(p => new AvailablePlugin(p))
+            .ToImmutableArray();
+
         AvailablePlugins = _availablePlugins.CastArray<IAvailablePlugin>();
     }
 
@@ -73,6 +83,11 @@ internal class PluginManager : IPluginManager
                     ui.Shutdown(RestartMode.Restart);
             }
         }
+    }
+
+    public void Dispose()
+    {
+        _loader.Dispose();
     }
 
     private record AvailablePlugin(ITqlPlugin Plugin) : IAvailablePlugin

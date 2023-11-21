@@ -4,8 +4,9 @@ using NuGet.Configuration;
 using NuGet.Packaging;
 using NuGet.Packaging.Signing;
 using NuGet.ProjectManagement;
+using ExecutionContext = NuGet.ProjectManagement.ExecutionContext;
 
-namespace Tql.App.Services.Packages;
+namespace Tql.App.Services.Packages.NuGet;
 
 internal class BlankProjectContext : INuGetProjectContext
 {
@@ -13,7 +14,7 @@ internal class BlankProjectContext : INuGetProjectContext
 
     public PackageExtractionContext PackageExtractionContext { get; set; }
     public ISourceControlManagerProvider? SourceControlManagerProvider => null;
-    public NuGet.ProjectManagement.ExecutionContext? ExecutionContext => null;
+    public ExecutionContext? ExecutionContext => null;
     public XDocument? OriginalPackagesConfig { get; set; }
     public NuGetActionType ActionType { get; set; }
     public Guid OperationId { get; set; }

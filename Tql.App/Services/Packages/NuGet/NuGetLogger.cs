@@ -4,7 +4,7 @@ using ILogger = Microsoft.Extensions.Logging.ILogger;
 using LogLevel = NuGet.Common.LogLevel;
 using MicrosoftLogLevel = Microsoft.Extensions.Logging.LogLevel;
 
-namespace Tql.App.Services.Packages;
+namespace Tql.App.Services.Packages.NuGet;
 
 internal class NuGetLogger(ILogger logger) : LoggerBase
 {

@@ -14,6 +14,7 @@ using Tql.App.Search;
 using Tql.App.Services;
 using Tql.App.Services.Database;
 using Tql.App.Services.Packages;
+using Tql.App.Services.Packages.PackageStore;
 using Tql.App.Services.Telemetry;
 using Tql.App.Services.Updates;
 using Tql.App.Support;
@@ -66,15 +67,9 @@ public partial class App
 
         packageStoreManager.PerformCleanup();
 
-        ImmutableArray<ITqlPlugin> plugins;
-        if (Options.Sideload != null)
-            plugins = packageStoreManager.GetSideloadedPlugins(Options.Sideload).ToImmutableArray();
-        else if (DebugAssemblies.HasValue)
-            plugins = GetDebugPlugins().ToImmutableArray();
-        else
-            plugins = packageStoreManager.GetPlugins();
+        var loader = CreatePluginLoader(packageStoreManager, loggerFactory);
 
-        var pluginManager = new PluginManager(plugins);
+        var pluginManager = new PluginManager(loader);
 
         var builder = Host.CreateApplicationBuilder(e.Args);
 
@@ -125,6 +120,28 @@ public partial class App
 
         if (!Options.IsSilent)
             _mainWindow.DoShow();
+    }
+
+    private static IPluginLoader CreatePluginLoader(
+        PackageStoreManager packageStoreManager,
+        ILoggerFactory loggerFactory
+    )
+    {
+        if (Options.Sideload != null)
+        {
+            return new SideloadedPluginLoader(
+                Options.Sideload,
+                loggerFactory.CreateLogger<SideloadedPluginLoader>()
+            );
+        }
+
+        if (DebugAssemblies.HasValue)
+            return new AssemblyPluginLoader(DebugAssemblies.Value);
+
+        return new PackagesPluginLoader(
+            packageStoreManager,
+            loggerFactory.CreateLogger<PackagesPluginLoader>()
+        );
     }
 
     private void SetCulture(CultureInfo culture)
@@ -215,26 +232,6 @@ public partial class App
         }
 
         return false;
-    }
-
-    private IEnumerable<ITqlPlugin> GetDebugPlugins()
-    {
-        foreach (var assembly in DebugAssemblies!.Value)
-        {
-            foreach (var type in assembly.ExportedTypes)
-            {
-                var attribute = type.GetCustomAttribute<TqlPluginAttribute>();
-                if (attribute == null)
-                    continue;
-
-                if (!typeof(ITqlPlugin).IsAssignableFrom(type))
-                    throw new InvalidOperationException(
-                        $"'{type}' does not implement '{nameof(ITqlPlugin)}'"
-                    );
-
-                yield return (ITqlPlugin)Activator.CreateInstance(type)!;
-            }
-        }
     }
 
     private static void ConfigureServices(

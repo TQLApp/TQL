@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using Tql.Abstractions;
+﻿using Tql.Abstractions;
 using Tql.Plugins.GitHub.Services;
 
 namespace Tql.Plugins.GitHub.ConfigurationUI;
