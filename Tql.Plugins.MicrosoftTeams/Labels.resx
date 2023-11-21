@@ -121,6 +121,9 @@
     <value>Directories</value>
     <comment>These are people directories, e.g. your Outlook contacts, users in JIRA and Azure DevOps, etc.</comment>
   </data>
+  <data name="ConfigurationControl_Documentation" xml:space="preserve">
+    <value>Documentation</value>
+  </data>
   <data name="ConfigurationControl_EnableAllDirectoriesLabel" xml:space="preserve">
     <value>Enable all directories</value>
   </data>

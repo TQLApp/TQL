@@ -181,10 +181,8 @@ internal partial class ConfigurationControl : IConfigurationPage
 
     private void _password_PasswordChanged(object sender, RoutedEventArgs e) => UpdateEnabled();
 
-    private void _passwordDocumentation_Click(object sender, RoutedEventArgs e)
+    private void _documentation_Click(object sender, RoutedEventArgs e)
     {
-        _ui.OpenUrl(
-            "https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/"
-        );
+        _ui.OpenUrl("https://github.com/TQLApp/TQL/wiki/JIRA-plugin");
     }
 }

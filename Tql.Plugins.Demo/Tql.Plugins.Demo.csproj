@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+	<Import Project="..\TqlPluginPackage.targets" />
+
 	<PropertyGroup>
 		<Product>TQL Demo Plugin</Product>
 		<Description>Demo plugin for Techie's Quick Launcher.</Description>
 		<PackageId>TQLApp.Plugins.Demo</PackageId>
 	</PropertyGroup>
-
-	<Import Project="..\TqlPluginPackage.targets" />
 
 	<ItemGroup>
 		<EmbeddedResource Include="Resources\**\*" />

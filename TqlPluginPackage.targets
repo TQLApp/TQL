@@ -1,9 +1,9 @@
 <Project>
 
+	<Import Project="TqlPackage.targets" />
+
 	<PropertyGroup>
 		<PackageTags>tql-plugin</PackageTags>
 	</PropertyGroup>
-
-	<Import Project="TqlPackage.targets" />
 
 </Project>

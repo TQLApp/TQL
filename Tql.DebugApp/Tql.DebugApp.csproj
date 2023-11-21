@@ -1,12 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+	<Import Project="..\Tql.targets" />
+
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
 		<ApplicationManifest>app.manifest</ApplicationManifest>
 		<ApplicationIcon>mainicon.ico</ApplicationIcon>
 	</PropertyGroup>
-
-	<Import Project="..\Tql.targets" />
 
 	<ItemGroup>
 		<None Remove="app.manifest" />

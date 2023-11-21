@@ -24,6 +24,16 @@
             <StackPanel
                 Orientation="Horizontal"
                 HorizontalAlignment="Right">
+                <TextBlock
+                    Margin="9,3"
+                    VerticalAlignment="Center">
+                    <Hyperlink
+                        x:Name="_documentation"
+                        Click="_documentation_Click">
+                        <Run
+                            Text="{x:Static app:Labels.ConfigurationControl_Documentation}" />
+                    </Hyperlink>
+                </TextBlock>
                 <Button
                     x:Name="_add"
                     Content="{x:Static app:Labels.Button_Add}"

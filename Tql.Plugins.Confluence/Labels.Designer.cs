@@ -169,7 +169,7 @@ namespace Tql.Plugins.Confluence {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This URL is the URL to your Confluence environment. It should be similar to https://yourcompany.atlassian.net..
+        ///   Looks up a localized string similar to This URL is the URL to your Confluence environment. It should be similar to https://yourcompany.atlassian.net/wiki..
         /// </summary>
         public static string ConfigurationControl_URLHelpText {
             get {

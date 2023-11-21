@@ -70,6 +70,15 @@ namespace Tql.Plugins.MicrosoftTeams {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Documentation.
+        /// </summary>
+        public static string ConfigurationControl_Documentation {
+            get {
+                return ResourceManager.GetString("ConfigurationControl_Documentation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enable all directories.
         /// </summary>
         public static string ConfigurationControl_EnableAllDirectoriesLabel {

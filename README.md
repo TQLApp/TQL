@@ -26,9 +26,17 @@ towards the first release.
 - Advanced search capabilities. You'll forget how to use the web apps once you
   get used to TQL 😀.
 
+## Installation
+
+You need to download and install the setup to run Techie's Quick Launcher. Go to
+the [latest release](https://github.com/TQLApp/TQL/releases/latest) page and
+under **Assets**, download the **MSI** file. Have a look at the
+[Getting started](https://github.com/TQLApp/TQL/wiki/Getting-started) page to
+see how you can get yourself up and running.
+
 ## Getting started
 
-When you install the app, the quick start tutorial will guide you through the
+When you first run the app, the quick start tutorial will guide you through the
 setup of TQL. Just follow the steps to start using Techie's Quick Launcher.
 
 ![](Documentation/Images/Quick-Start-screenshot.png)

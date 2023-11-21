@@ -8,6 +8,7 @@ internal partial class ConfigurationControl : IConfigurationPage
 {
     private readonly ConfigurationManager _configurationManager;
     private readonly ICache<AzureData> _cache;
+    private readonly IUI _ui;
 
     private new ConfigurationDto DataContext => (ConfigurationDto)base.DataContext;
 
@@ -15,10 +16,15 @@ internal partial class ConfigurationControl : IConfigurationPage
     public string Title => Labels.ConfigurationControl_General;
     public ConfigurationPageMode PageMode => ConfigurationPageMode.AutoSize;
 
-    public ConfigurationControl(ConfigurationManager configurationManager, ICache<AzureData> cache)
+    public ConfigurationControl(
+        ConfigurationManager configurationManager,
+        ICache<AzureData> cache,
+        IUI ui
+    )
     {
         _configurationManager = configurationManager;
         _cache = cache;
+        _ui = ui;
 
         InitializeComponent();
 
@@ -88,4 +94,9 @@ internal partial class ConfigurationControl : IConfigurationPage
     private void _name_TextChanged(object sender, TextChangedEventArgs e) => UpdateEnabled();
 
     private void _url_TextChanged(object sender, TextChangedEventArgs e) => UpdateEnabled();
+
+    private void _documentation_Click(object sender, RoutedEventArgs e)
+    {
+        _ui.OpenUrl("https://github.com/TQLApp/TQL/wiki/Azure-DevOps-plugin");
+    }
 }

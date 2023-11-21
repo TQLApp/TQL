@@ -50,6 +50,17 @@
                     </Style>
                 </ListBox.Resources>
             </ListBox>
+
+            <TextBlock
+                Margin="3"
+                VerticalAlignment="Center">
+                <Hyperlink
+                    x:Name="_documentation"
+                    Click="_documentation_Click">
+                    <Run
+                        Text="{x:Static app:Labels.ConfigurationControl_Documentation}" />
+                </Hyperlink>
+            </TextBlock>
         </StackPanel>
     </GroupBox>
 </UserControl>
