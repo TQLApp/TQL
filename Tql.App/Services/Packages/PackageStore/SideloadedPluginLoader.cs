@@ -34,32 +34,13 @@ internal class SideloadedPluginLoader : IPluginLoader
             var assemblyName = AssemblyName.GetAssemblyName(fileName);
             var assembly = Assembly.Load(assemblyName);
 
-            foreach (var type in GetPackageTypes(assembly))
+            foreach (var type in PluginLoaderUtils.GetPluginTypes(assembly))
             {
                 plugins.Add(type);
             }
         }
 
         return plugins.ToImmutable();
-    }
-
-    private IEnumerable<Type> GetPackageTypes(Assembly assembly)
-    {
-        foreach (var type in assembly.GetExportedTypes())
-        {
-            var attribute = type.GetCustomAttribute(typeof(TqlPluginAttribute));
-            if (attribute == null)
-                continue;
-
-            if (!typeof(ITqlPlugin).IsAssignableFrom(type))
-            {
-                throw new InvalidOperationException(
-                    $"'{type}' does not implement '{nameof(ITqlPlugin)}'"
-                );
-            }
-
-            yield return type;
-        }
     }
 
     public ImmutableArray<ITqlPlugin> GetPlugins()

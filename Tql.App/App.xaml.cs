@@ -74,7 +74,7 @@ public partial class App
                 loggerFactory.CreateLogger<SideloadedPluginLoader>()
             );
         else if (DebugAssemblies.HasValue)
-            loader = new InstancePluginLoader(GetDebugPlugins().ToImmutableArray());
+            loader = new AssemblyPluginLoader(DebugAssemblies.Value);
         else
             loader = new PackagesPluginLoader(
                 packageStoreManager,
@@ -222,26 +222,6 @@ public partial class App
         }
 
         return false;
-    }
-
-    private IEnumerable<ITqlPlugin> GetDebugPlugins()
-    {
-        foreach (var assembly in DebugAssemblies!.Value)
-        {
-            foreach (var type in assembly.ExportedTypes)
-            {
-                var attribute = type.GetCustomAttribute<TqlPluginAttribute>();
-                if (attribute == null)
-                    continue;
-
-                if (!typeof(ITqlPlugin).IsAssignableFrom(type))
-                    throw new InvalidOperationException(
-                        $"'{type}' does not implement '{nameof(ITqlPlugin)}'"
-                    );
-
-                yield return (ITqlPlugin)Activator.CreateInstance(type)!;
-            }
-        }
     }
 
     private static void ConfigureServices(
