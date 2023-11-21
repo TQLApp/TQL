@@ -285,4 +285,8 @@
     <value>JIRA Project</value>
     <comment>Original: JIRA Project</comment>
   </data>
+  <data name="ConfigurationControl_URLHelpText" xml:space="preserve">
+    <value>Deze URL is de URL naar jouw JIRA-omgeving. Het zou vergelijkbaar met https://yourcompany.atlassian.net moeten zijn.</value>
+    <comment>Original: This URL is the URL to your JIRA environment. It should be similar to https://yourcompany.atlassian.net.</comment>
+  </data>
 </root>

@@ -269,4 +269,8 @@
     <value>Azure Work Item</value>
     <comment>Original: Azure Work Item</comment>
   </data>
+  <data name="ConfigurationControl_URLHelpText" xml:space="preserve">
+    <value>Deze URL is de URL naar jouw Azure DevOps omgeving. Het zou of https://yourcompany.visualstudio.com of https://dev.azure.com/yourcompany moeten zijn.</value>
+    <comment>Original: This URL is the URL to your Azure DevOps environment. It should be either https://yourcompany.visualstudio.com or https://dev.azure.com/yourcompany.</comment>
+  </data>
 </root>

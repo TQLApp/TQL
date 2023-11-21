@@ -678,11 +678,11 @@
     <comment>Original: Leave feedback for the developers</comment>
   </data>
   <data name="MainWindow_LeaveFeedbackHelpText" xml:space="preserve">
-    <value>Laat de ontwikkelaars weten van ideeën, wijzigings verzoeken of bugs.</value>
+    <value>Laat de ontwikkelaars weten van ideeën, wijzigingsverzoeken of bugs.</value>
     <comment>Original: Leave ideas, features suggestions or bug reports for the developers.</comment>
   </data>
   <data name="MainWindow_LinkCopied" xml:space="preserve">
-    <value>Link is gekopieërd</value>
+    <value>Link is gekopieerd</value>
     <comment>Original: Link copied</comment>
   </data>
   <data name="MainWindow_Configuration" xml:space="preserve">
@@ -746,27 +746,27 @@
     <comment>Original: Are you sure?</comment>
   </data>
   <data name="GeneralConfiguration_AreYouSureRestartTutorial" xml:space="preserve">
-    <value>Weet je het zeker dat je de snelstartgids wilt herstarten?</value>
+    <value>Weet je het zeker dat je de Quick Start tutorial wilt herstarten?</value>
     <comment>Original: Are you sure you want to restart the quick start tutorial?</comment>
   </data>
   <data name="GeneralConfiguration_RestartTutorial" xml:space="preserve">
-    <value>Herstart Snelstartgids</value>
+    <value>Tutorial Opnieuw Starten</value>
     <comment>Original: Restart Tutorial</comment>
   </data>
   <data name="GeneralConfiguration_RestartTutorialHelpText" xml:space="preserve">
-    <value>Herstart de snelstartgids.</value>
+    <value>Begin de Quick Start tutorial opnieuw.</value>
     <comment>Original: Restart the quick start tutorial.</comment>
   </data>
   <data name="PluginsConfiguration_PluginInstallationFailed" xml:space="preserve">
-    <value>Installatie van de plugin is mislukt</value>
+    <value>Installatie van de plug-in is mislukt</value>
     <comment>Original: Plugin installation failed</comment>
   </data>
   <data name="PluginManager_PluginFailedToLoad" xml:space="preserve">
-    <value>Plugin '{0}' kon niet geladen worden</value>
+    <value>Plug-in '{0}' kon niet geladen worden</value>
     <comment>Original: Plugin '{0}' failed to load</comment>
   </data>
   <data name="PluginManager_PluginFailedToLoadSubtitle" xml:space="preserve">
-    <value>De volgende fout heeft plaatsgevonden tijdens het laden van plugin '{0}': {1}.
+    <value>De volgende fout heeft plaatsgevonden tijdens het laden van plug-in '{0}': {1}.
 
 Wil je TQL herstarten om te kijken of dit het probleem oplost?</value>
     <comment>Original: The following error occurred while loading the '{0}' plugin: {1}.

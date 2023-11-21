@@ -64,6 +64,7 @@
                     <RowDefinition />
                     <RowDefinition />
                     <RowDefinition />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -91,18 +92,25 @@
                     Grid.ColumnSpan="2"
                     Margin="3"
                     TextChanged="_url_TextChanged" />
+                <TextBlock
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Grid.ColumnSpan="2"
+                    Margin="3"
+                    TextWrapping="Wrap"
+                    Text="{x:Static app:Labels.ConfigurationControl_URLHelpText}" />
 
                 <Label
                     Content="{x:Static app:Labels.ConfigurationControl_UserNameLabel}"
-                    Grid.Row="2" />
+                    Grid.Row="3" />
                 <TextBox
                     x:Name="_userName"
-                    Grid.Row="2"
+                    Grid.Row="3"
                     Grid.Column="1"
                     Margin="3"
                     TextChanged="_userName_TextChanged" />
                 <TextBlock
-                    Grid.Row="2"
+                    Grid.Row="3"
                     Grid.Column="2"
                     Margin="3">
                     <Hyperlink
@@ -115,17 +123,17 @@
 
                 <Label
                     Content="{x:Static app:Labels.ConfigurationControl_PasswordLabel}"
-                    Grid.Row="3" />
+                    Grid.Row="4" />
                 <PasswordBox
                     x:Name="_password"
-                    Grid.Row="3"
+                    Grid.Row="4"
                     Grid.Column="1"
                     Margin="3"
                     PasswordChanged="_password_PasswordChanged" />
 
                 <TextBlock
                     Margin="4"
-                    Grid.Row="4"
+                    Grid.Row="5"
                     Grid.Column="1"
                     Grid.ColumnSpan="2"
                     TextWrapping="Wrap"

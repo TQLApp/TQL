@@ -213,4 +213,8 @@
     <value>Confluence Space</value>
     <comment>Original: Confluence Space</comment>
   </data>
+  <data name="ConfigurationControl_URLHelpText" xml:space="preserve">
+    <value>Deze URL is de URL naar jouw Confluence omgeving. Het zou vergelijkbaar met https://yourcompany.atlassian.net moeten zijn.</value>
+    <comment>Original: This URL is the URL to your Confluence environment. It should be similar to https://yourcompany.atlassian.net.</comment>
+  </data>
 </root>

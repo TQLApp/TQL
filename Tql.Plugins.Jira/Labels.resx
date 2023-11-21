@@ -243,4 +243,7 @@
   <data name="ProjectsMatch_Label" xml:space="preserve">
     <value>JIRA Project</value>
   </data>
+  <data name="ConfigurationControl_URLHelpText" xml:space="preserve">
+    <value>This URL is the URL to your JIRA environment. It should be similar to https://yourcompany.atlassian.net.</value>
+  </data>
 </root>
