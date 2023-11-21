@@ -47,6 +47,10 @@ jobs:
       - name: Install DocFX
         run: dotnet tool update -g docfx
 
+      - name: Preprocess DocFX Markdown Files
+        shell: pwsh
+        run: ./Build/Preprocess-Markdown.ps1
+
       - name: Run DocFX
         run: docfx Documentation/docfx.json
 

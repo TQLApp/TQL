@@ -1,4 +1,4 @@
-# Localizing TQL
+# Localize TQL
 
 There are two sets of resources that need to be localized. The main source of
 translations is resource dictionaries. The **Tql.Localization** project can
