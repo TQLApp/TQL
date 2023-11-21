@@ -67,19 +67,7 @@ public partial class App
 
         packageStoreManager.PerformCleanup();
 
-        IPluginLoader loader;
-        if (Options.Sideload != null)
-            loader = new SideloadedPluginLoader(
-                Options.Sideload,
-                loggerFactory.CreateLogger<SideloadedPluginLoader>()
-            );
-        else if (DebugAssemblies.HasValue)
-            loader = new AssemblyPluginLoader(DebugAssemblies.Value);
-        else
-            loader = new PackagesPluginLoader(
-                packageStoreManager,
-                loggerFactory.CreateLogger<PackagesPluginLoader>()
-            );
+        var loader = CreatePluginLoader(packageStoreManager, loggerFactory);
 
         var pluginManager = new PluginManager(loader);
 
@@ -132,6 +120,28 @@ public partial class App
 
         if (!Options.IsSilent)
             _mainWindow.DoShow();
+    }
+
+    private static IPluginLoader CreatePluginLoader(
+        PackageStoreManager packageStoreManager,
+        ILoggerFactory loggerFactory
+    )
+    {
+        if (Options.Sideload != null)
+        {
+            return new SideloadedPluginLoader(
+                Options.Sideload,
+                loggerFactory.CreateLogger<SideloadedPluginLoader>()
+            );
+        }
+
+        if (DebugAssemblies.HasValue)
+            return new AssemblyPluginLoader(DebugAssemblies.Value);
+
+        return new PackagesPluginLoader(
+            packageStoreManager,
+            loggerFactory.CreateLogger<PackagesPluginLoader>()
+        );
     }
 
     private void SetCulture(CultureInfo culture)
