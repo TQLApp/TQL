@@ -8,47 +8,34 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.Jira.Categories;
 
-internal class BoardMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, ISearchableMatch
+internal class BoardMatch(
+    BoardMatchDto dto,
+    IconCacheManager iconCacheManager,
+    ICache<JiraData> cache,
+    IMatchFactory<BoardQuickFilterMatch, BoardQuickFilterMatchDto> factory
+) : IRunnableMatch, ISerializableMatch, ICopyableMatch, ISearchableMatch
 {
-    private readonly BoardMatchDto _dto;
-    private readonly ICache<JiraData> _cache;
-    private readonly IMatchFactory<BoardQuickFilterMatch, BoardQuickFilterMatchDto> _factory;
-
-    public string Text => MatchText.Path(_dto.Name, MatchUtils.GetBoardLabel(_dto));
-    public ImageSource Icon { get; }
+    public string Text => MatchText.Path(dto.Name, MatchUtils.GetBoardLabel(dto));
+    public ImageSource Icon { get; } =
+        iconCacheManager.GetIcon(new IconKey(dto.Url, dto.AvatarUrl)) ?? Images.Boards;
     public MatchTypeId TypeId => TypeIds.Board;
     public string SearchHint => Labels.BoardMatch_SearchHint;
 
-    public BoardMatch(
-        BoardMatchDto dto,
-        IconCacheManager iconCacheManager,
-        ICache<JiraData> cache,
-        IMatchFactory<BoardQuickFilterMatch, BoardQuickFilterMatchDto> factory
-    )
-    {
-        _dto = dto;
-        _cache = cache;
-        _factory = factory;
-        Icon = iconCacheManager.GetIcon(new IconKey(dto.Url, dto.AvatarUrl)) ?? Images.Boards;
-    }
-
     public Task Run(IServiceProvider serviceProvider, IWin32Window owner)
     {
-        serviceProvider.GetRequiredService<IUI>().OpenUrl(MatchUtils.GetBoardUrl(_dto));
+        serviceProvider.GetRequiredService<IUI>().OpenUrl(MatchUtils.GetBoardUrl(dto));
 
         return Task.CompletedTask;
     }
 
     public string Serialize()
     {
-        return JsonSerializer.Serialize(_dto);
+        return JsonSerializer.Serialize(dto);
     }
 
     public Task Copy(IServiceProvider serviceProvider)
     {
-        serviceProvider
-            .GetRequiredService<IClipboard>()
-            .CopyUri(Text, MatchUtils.GetBoardUrl(_dto));
+        serviceProvider.GetRequiredService<IClipboard>().CopyUri(Text, MatchUtils.GetBoardUrl(dto));
 
         return Task.CompletedTask;
     }
@@ -59,20 +46,20 @@ internal class BoardMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, 
         CancellationToken cancellationToken
     )
     {
-        var cache = await _cache.Get();
-        var connection = cache.GetConnection(_dto.Url);
+        var data = await cache.Get();
+        var connection = data.GetConnection(dto.Url);
 
-        var board = connection.Boards.Single(p => p.Id == _dto.Id);
+        var board = connection.Boards.Single(p => p.Id == dto.Id);
 
         var matches = new List<BoardQuickFilterMatch>
         {
-            _factory.Create(new BoardQuickFilterMatchDto(_dto, null, Labels.BoardMatch_AllIssues))
+            factory.Create(new BoardQuickFilterMatchDto(dto, null, Labels.BoardMatch_AllIssues))
         };
 
         matches.AddRange(
             board
                 .QuickFilters
-                .Select(p => _factory.Create(new BoardQuickFilterMatchDto(_dto, p.Id, p.Name)))
+                .Select(p => factory.Create(new BoardQuickFilterMatchDto(dto, p.Id, p.Name)))
         );
 
         return context.Filter(matches);

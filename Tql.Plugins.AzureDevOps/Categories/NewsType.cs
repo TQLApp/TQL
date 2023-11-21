@@ -6,21 +6,13 @@ using Tql.Utilities;
 namespace Tql.Plugins.AzureDevOps.Categories;
 
 [RootMatchType]
-internal class NewsType : MatchType<NewsMatch, RootItemDto>
+internal class NewsType(
+    IMatchFactory<NewsMatch, RootItemDto> factory,
+    ConfigurationManager configurationManager
+) : MatchType<NewsMatch, RootItemDto>(factory)
 {
-    private readonly ConfigurationManager _configurationManager;
-
     public override Guid Id => TypeIds.News.Id;
 
-    public NewsType(
-        IMatchFactory<NewsMatch, RootItemDto> factory,
-        ConfigurationManager configurationManager
-    )
-        : base(factory)
-    {
-        _configurationManager = configurationManager;
-    }
-
     protected override bool IsValid(RootItemDto dto) =>
-        _configurationManager.Configuration.HasConnection(dto.Url);
+        configurationManager.Configuration.HasConnection(dto.Url);
 }

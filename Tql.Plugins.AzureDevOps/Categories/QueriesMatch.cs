@@ -7,39 +7,24 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.AzureDevOps.Categories;
 
-internal class QueriesMatch : ISearchableMatch, ISerializableMatch
+internal class QueriesMatch(
+    RootItemDto dto,
+    ConfigurationManager configurationManager,
+    ICache<AzureData> cache,
+    AzureDevOpsApi api,
+    IMatchFactory<QueryMatch, QueryMatchDto> factory
+) : ISearchableMatch, ISerializableMatch
 {
-    private readonly RootItemDto _dto;
-    private readonly ConfigurationManager _configurationManager;
-    private readonly ICache<AzureData> _cache;
-    private readonly AzureDevOpsApi _api;
-    private readonly IMatchFactory<QueryMatch, QueryMatchDto> _factory;
-
     public string Text =>
         MatchUtils.GetMatchLabel(
             Labels.QueriesMatch_Label,
-            _configurationManager.Configuration,
-            _dto.Url
+            configurationManager.Configuration,
+            dto.Url
         );
 
     public ImageSource Icon => Images.Boards;
     public MatchTypeId TypeId => TypeIds.Queries;
     public string SearchHint => Labels.QueriesMatch_SearchHint;
-
-    public QueriesMatch(
-        RootItemDto dto,
-        ConfigurationManager configurationManager,
-        ICache<AzureData> cache,
-        AzureDevOpsApi api,
-        IMatchFactory<QueryMatch, QueryMatchDto> factory
-    )
-    {
-        _dto = dto;
-        _configurationManager = configurationManager;
-        _cache = cache;
-        _api = api;
-        _factory = factory;
-    }
 
     public async Task<IEnumerable<IMatch>> Search(
         ISearchContext context,
@@ -52,8 +37,8 @@ internal class QueriesMatch : ISearchableMatch, ISerializableMatch
 
         await context.DebounceDelay(cancellationToken);
 
-        var client = await _api.GetClient<WorkItemTrackingHttpClient>(_dto.Url);
-        var connection = (await _cache.Get()).GetConnection(_dto.Url);
+        var client = await api.GetClient<WorkItemTrackingHttpClient>(dto.Url);
+        var connection = (await cache.Get()).GetConnection(dto.Url);
 
         var result = new List<IMatch>();
 
@@ -72,8 +57,8 @@ internal class QueriesMatch : ISearchableMatch, ISerializableMatch
                         .Value
                         .Select(
                             p =>
-                                _factory.Create(
-                                    new QueryMatchDto(_dto.Url, project.Name, p.Id, p.Path, p.Name)
+                                factory.Create(
+                                    new QueryMatchDto(dto.Url, project.Name, p.Id, p.Path, p.Name)
                                 )
                         )
                 );
@@ -85,6 +70,6 @@ internal class QueriesMatch : ISearchableMatch, ISerializableMatch
 
     public string Serialize()
     {
-        return JsonSerializer.Serialize(_dto);
+        return JsonSerializer.Serialize(dto);
     }
 }

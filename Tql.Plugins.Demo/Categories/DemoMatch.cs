@@ -4,17 +4,11 @@ using Tql.Abstractions;
 
 namespace Tql.Plugins.Demo.Categories;
 
-internal class DemoMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
+internal class DemoMatch(DemoMatchDto dto) : IRunnableMatch, ISerializableMatch, ICopyableMatch
 {
-    private readonly DemoMatchDto _dto;
     public string Text => Labels.DemoMatch_Label;
     public ImageSource Icon => Images.SpaceShuttle;
     public MatchTypeId TypeId => TypeIds.Demo;
-
-    public DemoMatch(DemoMatchDto dto)
-    {
-        _dto = dto;
-    }
 
     public Task Run(IServiceProvider serviceProvider, IWin32Window owner)
     {
@@ -25,7 +19,7 @@ internal class DemoMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
 
     public string Serialize()
     {
-        return JsonSerializer.Serialize(_dto);
+        return JsonSerializer.Serialize(dto);
     }
 
     public Task Copy(IServiceProvider serviceProvider)

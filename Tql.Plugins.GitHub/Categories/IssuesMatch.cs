@@ -5,17 +5,22 @@ using Tql.Plugins.GitHub.Services;
 
 namespace Tql.Plugins.GitHub.Categories;
 
-internal class IssuesMatch : IssuesMatchBase<IssueMatch>
+internal class IssuesMatch(
+    RootItemDto dto,
+    GitHubApi api,
+    ICache<GitHubData> cache,
+    ConfigurationManager configurationManager,
+    IMatchFactory<IssueMatch, IssueMatchDto> factory
+)
+    : IssuesMatchBase<IssueMatch>(
+        dto,
+        api,
+        cache,
+        IssueTypeQualifier.Issue,
+        configurationManager,
+        factory
+    )
 {
     public override MatchTypeId TypeId => TypeIds.Issues;
     public override string SearchHint => Labels.IssuesMatch_SearchHint;
-
-    public IssuesMatch(
-        RootItemDto dto,
-        GitHubApi api,
-        ICache<GitHubData> cache,
-        ConfigurationManager configurationManager,
-        IMatchFactory<IssueMatch, IssueMatchDto> factory
-    )
-        : base(dto, api, cache, IssueTypeQualifier.Issue, configurationManager, factory) { }
 }

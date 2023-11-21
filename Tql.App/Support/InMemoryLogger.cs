@@ -2,17 +2,8 @@
 
 namespace Tql.App.Support;
 
-internal class InMemoryLogger : ILogger
+internal class InMemoryLogger(InMemoryLoggerProvider provider, string categoryName) : ILogger
 {
-    private readonly InMemoryLoggerProvider _provider;
-    private readonly string _categoryName;
-
-    public InMemoryLogger(InMemoryLoggerProvider provider, string categoryName)
-    {
-        _provider = provider;
-        _categoryName = categoryName;
-    }
-
     public void Log<TState>(
         LogLevel logLevel,
         EventId eventId,
@@ -24,8 +15,8 @@ internal class InMemoryLogger : ILogger
         if (!IsEnabled(logLevel))
             return;
 
-        _provider.RaiseLogged(
-            new InMemoryLogMessage(logLevel, eventId, _categoryName, formatter(state, exception))
+        provider.RaiseLogged(
+            new InMemoryLogMessage(logLevel, eventId, categoryName, formatter(state, exception))
         );
     }
 

@@ -4,21 +4,13 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.MicrosoftTeams.Categories;
 
-internal class TeamsCallType : MatchType<TeamsCallMatch, PersonDto>
+internal class TeamsCallType(
+    IMatchFactory<TeamsCallMatch, PersonDto> factory,
+    ConfigurationManager configurationManager
+) : MatchType<TeamsCallMatch, PersonDto>(factory)
 {
-    private readonly ConfigurationManager _configurationManager;
-
     public override Guid Id => TypeIds.TeamsCall.Id;
 
-    public TeamsCallType(
-        IMatchFactory<TeamsCallMatch, PersonDto> factory,
-        ConfigurationManager configurationManager
-    )
-        : base(factory)
-    {
-        _configurationManager = configurationManager;
-    }
-
     protected override bool IsValid(PersonDto dto) =>
-        _configurationManager.HasDirectory(dto.DirectoryId);
+        configurationManager.HasDirectory(dto.DirectoryId);
 }

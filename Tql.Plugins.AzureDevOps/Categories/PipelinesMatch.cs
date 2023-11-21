@@ -6,43 +6,31 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.AzureDevOps.Categories;
 
-internal class PipelinesMatch : CachedMatch<AzureData>, ISerializableMatch
+internal class PipelinesMatch(
+    RootItemDto dto,
+    ICache<AzureData> cache,
+    ConfigurationManager configurationManager,
+    IMatchFactory<PipelineMatch, PipelineMatchDto> factory
+) : CachedMatch<AzureData>(cache), ISerializableMatch
 {
-    private readonly RootItemDto _dto;
-    private readonly ConfigurationManager _configurationManager;
-    private readonly IMatchFactory<PipelineMatch, PipelineMatchDto> _factory;
-
     public override string Text =>
         MatchUtils.GetMatchLabel(
             Labels.PipelinesMatch_Label,
-            _configurationManager.Configuration,
-            _dto.Url
+            configurationManager.Configuration,
+            dto.Url
         );
 
     public override ImageSource Icon => Images.Pipelines;
     public override MatchTypeId TypeId => TypeIds.Pipelines;
     public override string SearchHint => Labels.PipelinesMatch_SearchHint;
 
-    public PipelinesMatch(
-        RootItemDto dto,
-        ICache<AzureData> cache,
-        ConfigurationManager configurationManager,
-        IMatchFactory<PipelineMatch, PipelineMatchDto> factory
-    )
-        : base(cache)
-    {
-        _dto = dto;
-        _configurationManager = configurationManager;
-        _factory = factory;
-    }
-
     protected override IEnumerable<IMatch> Create(AzureData data)
     {
-        return from project in data.GetConnection(_dto.Url).Projects
+        return from project in data.GetConnection(dto.Url).Projects
             from buildDefinition in project.BuildDefinitions
-            select _factory.Create(
+            select factory.Create(
                 new PipelineMatchDto(
-                    _dto.Url,
+                    dto.Url,
                     project.Name,
                     buildDefinition.Id,
                     buildDefinition.Path,
@@ -53,6 +41,6 @@ internal class PipelinesMatch : CachedMatch<AzureData>, ISerializableMatch
 
     public string Serialize()
     {
-        return JsonSerializer.Serialize(_dto);
+        return JsonSerializer.Serialize(dto);
     }
 }

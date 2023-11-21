@@ -1,11 +1,6 @@
 ﻿namespace Tql.App.Services;
 
-internal class ConfigurationUIEventArgs : EventArgs
+internal class ConfigurationUIEventArgs(Guid id) : EventArgs
 {
-    public Guid Id { get; }
-
-    public ConfigurationUIEventArgs(Guid id)
-    {
-        Id = id;
-    }
+    public Guid Id { get; } = id;
 }

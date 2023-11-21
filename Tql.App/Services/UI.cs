@@ -8,9 +8,8 @@ using Application = System.Windows.Application;
 
 namespace Tql.App.Services;
 
-internal class UI : IUI
+internal class UI(ILogger<UI> logger) : IUI
 {
-    private readonly ILogger<UI> _logger;
     private SynchronizationContext? _synchronizationContext;
     private volatile List<UINotification> _notifications = new();
     private readonly object _syncRoot = new();
@@ -25,11 +24,6 @@ internal class UI : IUI
 
     public event EventHandler? UINotificationsChanged;
     public event EventHandler<ConfigurationUIEventArgs>? ConfigurationUIRequested;
-
-    public UI(ILogger<UI> logger)
-    {
-        _logger = logger;
-    }
 
     public void SetSynchronizationContext(SynchronizationContext synchronizationContext)
     {
@@ -79,7 +73,7 @@ internal class UI : IUI
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to open '{Url}'", url);
+            logger.LogError(ex, "Failed to open '{Url}'", url);
         }
     }
 

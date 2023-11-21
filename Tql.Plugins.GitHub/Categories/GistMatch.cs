@@ -4,34 +4,27 @@ using Tql.Abstractions;
 
 namespace Tql.Plugins.GitHub.Categories;
 
-internal class GistMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
+internal class GistMatch(GistMatchDto dto) : IRunnableMatch, ISerializableMatch, ICopyableMatch
 {
-    private readonly GistMatchDto _dto;
-
-    public string Text => _dto.Name;
+    public string Text => dto.Name;
     public ImageSource Icon => Images.Gist;
     public MatchTypeId TypeId => TypeIds.Gist;
 
-    public GistMatch(GistMatchDto dto)
-    {
-        _dto = dto;
-    }
-
     public Task Run(IServiceProvider serviceProvider, IWin32Window owner)
     {
-        serviceProvider.GetRequiredService<IUI>().OpenUrl(_dto.Url);
+        serviceProvider.GetRequiredService<IUI>().OpenUrl(dto.Url);
 
         return Task.CompletedTask;
     }
 
     public string Serialize()
     {
-        return JsonSerializer.Serialize(_dto);
+        return JsonSerializer.Serialize(dto);
     }
 
     public Task Copy(IServiceProvider serviceProvider)
     {
-        serviceProvider.GetRequiredService<IClipboard>().CopyUri(Text, _dto.Url);
+        serviceProvider.GetRequiredService<IClipboard>().CopyUri(Text, dto.Url);
 
         return Task.CompletedTask;
     }

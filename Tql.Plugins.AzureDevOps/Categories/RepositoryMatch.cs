@@ -9,30 +9,17 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.AzureDevOps.Categories;
 
-internal class RepositoryMatch
-    : IRunnableMatch,
-        ISearchableMatch,
-        ISerializableMatch,
-        ICopyableMatch
+internal class RepositoryMatch(
+    RepositoryMatchDto dto,
+    IMatchFactory<RepositoryFilePathMatch, RepositoryFilePathMatchDto> factory
+) : IRunnableMatch, ISearchableMatch, ISerializableMatch, ICopyableMatch
 {
     private const int MaxResults = 100;
 
-    private readonly RepositoryMatchDto _dto;
-    private readonly IMatchFactory<RepositoryFilePathMatch, RepositoryFilePathMatchDto> _factory;
-
-    public string Text => MatchText.Path(_dto.ProjectName, _dto.RepositoryName);
+    public string Text => MatchText.Path(dto.ProjectName, dto.RepositoryName);
     public ImageSource Icon => Images.Repositories;
     public MatchTypeId TypeId => TypeIds.Repository;
     public string SearchHint => Labels.RepositoryMatch_FindFiles;
-
-    public RepositoryMatch(
-        RepositoryMatchDto dto,
-        IMatchFactory<RepositoryFilePathMatch, RepositoryFilePathMatchDto> factory
-    )
-    {
-        _dto = dto;
-        _factory = factory;
-    }
 
     public async Task<IEnumerable<IMatch>> Search(
         ISearchContext context,
@@ -40,7 +27,7 @@ internal class RepositoryMatch
         CancellationToken cancellationToken
     )
     {
-        var cache = context.GetDataCached($"{GetType().FullName}:{_dto}", GetRepositoryFilePaths);
+        var cache = context.GetDataCached($"{GetType().FullName}:{dto}", GetRepositoryFilePaths);
 
         if (!cache.IsCompleted)
             await context.DebounceDelay(cancellationToken);
@@ -54,39 +41,37 @@ internal class RepositoryMatch
     {
         var gitClient = await serviceProvider
             .GetRequiredService<AzureDevOpsApi>()
-            .GetClient<GitHttpClient>(_dto.Url);
+            .GetClient<GitHttpClient>(dto.Url);
 
         using var stream = await gitClient
             .GetClient()
             .GetStreamAsync(
-                $"{_dto.ProjectName}/_apis/git/repositories/{_dto.RepositoryName}/FilePaths"
+                $"{dto.ProjectName}/_apis/git/repositories/{dto.RepositoryName}/FilePaths"
             );
 
         var node = JsonNode.Parse(stream);
 
         return node!.AsObject()["paths"]!
             .AsArray()
-            .Select(
-                p => _factory.Create(new RepositoryFilePathMatchDto(_dto, p!.GetValue<string>()))
-            )
+            .Select(p => factory.Create(new RepositoryFilePathMatchDto(dto, p!.GetValue<string>())))
             .ToImmutableArray<IMatch>();
     }
 
     public Task Run(IServiceProvider serviceProvider, IWin32Window owner)
     {
-        serviceProvider.GetRequiredService<IUI>().OpenUrl(_dto.GetUrl());
+        serviceProvider.GetRequiredService<IUI>().OpenUrl(dto.GetUrl());
 
         return Task.CompletedTask;
     }
 
     public string Serialize()
     {
-        return JsonSerializer.Serialize(_dto);
+        return JsonSerializer.Serialize(dto);
     }
 
     public Task Copy(IServiceProvider serviceProvider)
     {
-        serviceProvider.GetRequiredService<IClipboard>().CopyUri(Text, _dto.GetUrl());
+        serviceProvider.GetRequiredService<IClipboard>().CopyUri(Text, dto.GetUrl());
 
         return Task.CompletedTask;
     }

@@ -6,38 +6,25 @@ namespace Tql.App.Search;
 
 internal partial class SearchContext
 {
-    private class FilteredMatches : IFilteredAsyncEnumerable
+    private class FilteredMatches(
+        SearchContext owner,
+        ImmutableArray<IMatch> matches,
+        int? maxResults = null,
+        bool internalCall = false
+    ) : IFilteredAsyncEnumerable
     {
-        private readonly SearchContext _owner;
-        private readonly ImmutableArray<IMatch> _matches;
-        private readonly int? _maxResults;
-        private readonly bool _internalCall;
-
-        public FilteredMatches(
-            SearchContext owner,
-            ImmutableArray<IMatch> matches,
-            int? maxResults = null,
-            bool internalCall = false
-        )
-        {
-            _owner = owner;
-            _matches = matches;
-            _maxResults = maxResults;
-            _internalCall = internalCall;
-        }
-
         public IFilteredAsyncEnumerable Take(int count)
         {
             return new FilteredMatches(
-                _owner,
-                _matches,
-                _maxResults.HasValue ? Math.Min(count, _maxResults.Value) : count,
-                _internalCall
+                owner,
+                matches,
+                maxResults.HasValue ? Math.Min(count, maxResults.Value) : count,
+                internalCall
             );
         }
 
         public IAsyncEnumerator<IMatch> GetAsyncEnumerator(CancellationToken cancellationToken) =>
-            new Enumerator(this, cancellationToken);
+            new Enumerator(owner, matches, maxResults, internalCall, cancellationToken);
 
         public IEnumerator<IMatch> GetEnumerator()
         {
@@ -48,25 +35,19 @@ internal partial class SearchContext
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        private class Enumerator : AsyncEnumerator<IMatch>
+        private class Enumerator(
+            SearchContext owner,
+            ImmutableArray<IMatch> matches,
+            int? maxResults,
+            bool internalCall,
+            CancellationToken cancellationToken
+        ) : AsyncEnumerator<IMatch>
         {
-            private readonly FilteredMatches _owner;
-            private readonly CancellationToken _cancellationToken;
-
-            public Enumerator(FilteredMatches owner, CancellationToken cancellationToken)
-            {
-                _owner = owner;
-                _cancellationToken = cancellationToken;
-            }
-
             protected override async Task<IEnumerable<IMatch>> GetValues()
             {
                 return await Task.Run(
-                    () =>
-                        _owner
-                            ._owner
-                            .DoFilter(_owner._matches, _owner._maxResults, _owner._internalCall),
-                    _cancellationToken
+                    () => owner.DoFilter(matches, maxResults, internalCall),
+                    cancellationToken
                 );
             }
         }

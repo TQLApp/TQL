@@ -3,7 +3,7 @@ using NPOI.XSSF.UserModel;
 
 namespace Tql.Localization;
 
-internal class Exporter : Tool
+internal class Exporter(Options options) : Tool(options)
 {
     public static readonly ImmutableArray<string> Headers = ImmutableArray.Create(
         "Project",
@@ -12,9 +12,6 @@ internal class Exporter : Tool
         "Localized Value",
         "Comment"
     );
-
-    public Exporter(Options options)
-        : base(options) { }
 
     public void Run()
     {

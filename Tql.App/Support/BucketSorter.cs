@@ -1,13 +1,8 @@
 ﻿namespace Tql.App.Support;
 
-internal class BucketSorter<T>
+internal class BucketSorter<T>(int buckets)
 {
-    private readonly List<T>?[] _buckets;
-
-    public BucketSorter(int buckets)
-    {
-        _buckets = new List<T>[buckets];
-    }
+    private readonly List<T>?[] _buckets = new List<T>[buckets];
 
     public void Add(T item, int bucket)
     {

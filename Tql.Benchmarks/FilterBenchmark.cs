@@ -53,15 +53,10 @@ public class FilterBenchmark
     }
 
     [DebuggerDisplay("Text = {Text}")]
-    private class PersonMatch : IMatch
+    private class PersonMatch(string name, string lastName) : IMatch
     {
-        public string Text { get; }
+        public string Text { get; } = $"{lastName}, {name}";
         public ImageSource Icon => throw new NotSupportedException();
         public MatchTypeId TypeId => throw new NotSupportedException();
-
-        public PersonMatch(string name, string lastName)
-        {
-            Text = $"{lastName}, {name}";
-        }
     }
 }

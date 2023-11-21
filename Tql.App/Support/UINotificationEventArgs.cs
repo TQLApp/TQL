@@ -2,12 +2,7 @@
 
 namespace Tql.App.Support;
 
-internal class UINotificationEventArgs : EventArgs
+internal class UINotificationEventArgs(UINotification notification) : EventArgs
 {
-    public UINotification Notification { get; }
-
-    public UINotificationEventArgs(UINotification notification)
-    {
-        Notification = notification;
-    }
+    public UINotification Notification { get; } = notification;
 }

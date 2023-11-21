@@ -5,18 +5,16 @@ using Tql.Abstractions;
 
 namespace Tql.Plugins.GitHub.Categories;
 
-internal abstract class IssueMatchBase : IRunnableMatch, ISerializableMatch, ICopyableMatch
+internal abstract class IssueMatchBase(IssueMatchDto dto)
+    : IRunnableMatch,
+        ISerializableMatch,
+        ICopyableMatch
 {
-    protected IssueMatchDto Dto { get; }
+    protected IssueMatchDto Dto { get; } = dto;
 
     public string Text => $"{Dto.RepositoryName}: #{Dto.Number} {Dto.Title}";
     public abstract ImageSource Icon { get; }
     public abstract MatchTypeId TypeId { get; }
-
-    protected IssueMatchBase(IssueMatchDto dto)
-    {
-        Dto = dto;
-    }
 
     public Task Run(IServiceProvider serviceProvider, IWin32Window owner)
     {

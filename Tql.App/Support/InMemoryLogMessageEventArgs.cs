@@ -2,14 +2,9 @@
 
 namespace Tql.App.Support;
 
-internal class InMemoryLogMessageEventArgs : EventArgs
+internal class InMemoryLogMessageEventArgs(InMemoryLogMessage message) : EventArgs
 {
-    public InMemoryLogMessage Message { get; }
-
-    public InMemoryLogMessageEventArgs(InMemoryLogMessage message)
-    {
-        Message = message;
-    }
+    public InMemoryLogMessage Message { get; } = message;
 }
 
 internal record InMemoryLogMessage(

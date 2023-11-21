@@ -210,18 +210,12 @@ internal partial class SearchContext : ISearchContext, IDisposable
         _cts.Dispose();
     }
 
-    private class SearchResultComparer : IComparer<SearchResult>
+    private class SearchResultComparer(CancellationToken cancellationToken)
+        : IComparer<SearchResult>
     {
-        private readonly CancellationToken _cancellationToken;
-
-        public SearchResultComparer(CancellationToken cancellationToken)
-        {
-            _cancellationToken = cancellationToken;
-        }
-
         public int Compare(SearchResult a, SearchResult b)
         {
-            _cancellationToken.ThrowIfCancellationRequested();
+            cancellationToken.ThrowIfCancellationRequested();
 
             int result = a.Penalty!.Value.CompareTo(b.Penalty!.Value);
             if (result != 0)

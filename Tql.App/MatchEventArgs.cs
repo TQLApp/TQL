@@ -2,12 +2,7 @@
 
 namespace Tql.App;
 
-internal class MatchEventArgs : EventArgs
+internal class MatchEventArgs(IMatch match) : EventArgs
 {
-    public IMatch Match { get; }
-
-    public MatchEventArgs(IMatch match)
-    {
-        Match = match;
-    }
+    public IMatch Match { get; } = match;
 }

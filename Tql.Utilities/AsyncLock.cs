@@ -54,21 +54,15 @@ public class AsyncLock : IDisposable
         }
     }
 
-    private class Release : IDisposable
+    private class Release(AsyncLock owner) : IDisposable
     {
-        private readonly AsyncLock _owner;
         private bool _disposed;
-
-        public Release(AsyncLock owner)
-        {
-            _owner = owner;
-        }
 
         public void Dispose()
         {
             if (!_disposed)
             {
-                _owner._semaphore.Release();
+                owner._semaphore.Release();
                 _disposed = true;
             }
         }

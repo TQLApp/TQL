@@ -7,42 +7,28 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.Jira.Categories;
 
-internal class BoardsMatch : CachedMatch<JiraData>, ISerializableMatch
+internal class BoardsMatch(
+    RootItemDto dto,
+    ICache<JiraData> cache,
+    ILogger<BoardsMatch> logger,
+    ConfigurationManager configurationManager,
+    IMatchFactory<BoardMatch, BoardMatchDto> factory
+) : CachedMatch<JiraData>(cache), ISerializableMatch
 {
-    private readonly RootItemDto _dto;
-    private readonly ILogger<BoardsMatch> _logger;
-    private readonly ConfigurationManager _configurationManager;
-    private readonly IMatchFactory<BoardMatch, BoardMatchDto> _factory;
-
     public override string Text =>
         MatchUtils.GetMatchLabel(
             Labels.BoardsMatch_Label,
-            _configurationManager.Configuration,
-            _dto.Url
+            configurationManager.Configuration,
+            dto.Url
         );
 
     public override ImageSource Icon => Images.Boards;
     public override MatchTypeId TypeId => TypeIds.Boards;
     public override string SearchHint => Labels.BoardsMatch_SearchHint;
 
-    public BoardsMatch(
-        RootItemDto dto,
-        ICache<JiraData> cache,
-        ILogger<BoardsMatch> logger,
-        ConfigurationManager configurationManager,
-        IMatchFactory<BoardMatch, BoardMatchDto> factory
-    )
-        : base(cache)
-    {
-        _dto = dto;
-        _logger = logger;
-        _configurationManager = configurationManager;
-        _factory = factory;
-    }
-
     protected override IEnumerable<IMatch> Create(JiraData data)
     {
-        var connection = data.GetConnection(_dto.Url);
+        var connection = data.GetConnection(dto.Url);
 
         var boards = connection.Boards;
 
@@ -65,10 +51,7 @@ internal class BoardsMatch : CachedMatch<JiraData>, ISerializableMatch
                     );
                 if (project == null)
                 {
-                    _logger.LogWarning(
-                        "No project found with key '{ProjectKey}'",
-                        board.ProjectKey
-                    );
+                    logger.LogWarning("No project found with key '{ProjectKey}'", board.ProjectKey);
                     continue;
                 }
 
@@ -84,9 +67,9 @@ internal class BoardsMatch : CachedMatch<JiraData>, ISerializableMatch
                     projectType = BoardProjectType.TeamManaged;
                 }
 
-                yield return _factory.Create(
+                yield return factory.Create(
                     new BoardMatchDto(
-                        _dto.Url,
+                        dto.Url,
                         board.Id,
                         board.Name,
                         board.ProjectKey,
@@ -102,6 +85,6 @@ internal class BoardsMatch : CachedMatch<JiraData>, ISerializableMatch
 
     public string Serialize()
     {
-        return JsonSerializer.Serialize(_dto);
+        return JsonSerializer.Serialize(dto);
     }
 }

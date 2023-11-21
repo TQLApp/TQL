@@ -6,21 +6,13 @@ using Tql.Utilities;
 namespace Tql.Plugins.AzureDevOps.Categories;
 
 [RootMatchType]
-internal class BacklogsType : MatchType<BacklogsMatch, RootItemDto>
+internal class BacklogsType(
+    IMatchFactory<BacklogsMatch, RootItemDto> factory,
+    ConfigurationManager configurationManager
+) : MatchType<BacklogsMatch, RootItemDto>(factory)
 {
-    private readonly ConfigurationManager _configurationManager;
-
     public override Guid Id => TypeIds.Backlogs.Id;
 
-    public BacklogsType(
-        IMatchFactory<BacklogsMatch, RootItemDto> factory,
-        ConfigurationManager configurationManager
-    )
-        : base(factory)
-    {
-        _configurationManager = configurationManager;
-    }
-
     protected override bool IsValid(RootItemDto dto) =>
-        _configurationManager.Configuration.HasConnection(dto.Url);
+        configurationManager.Configuration.HasConnection(dto.Url);
 }

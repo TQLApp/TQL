@@ -45,18 +45,11 @@ internal class PackageEntryResolver
         }
     }
 
-    private class Logger : MarshalByRefObject
+    private class Logger(ILogger logger) : MarshalByRefObject
     {
-        private readonly ILogger _logger;
-
-        public Logger(ILogger logger)
-        {
-            _logger = logger;
-        }
-
         public void Log(LogLevel level, string message, params object?[] args)
         {
-            _logger.Log(level, message, args);
+            logger.Log(level, message, args);
         }
     }
 

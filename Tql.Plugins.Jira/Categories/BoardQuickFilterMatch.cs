@@ -8,40 +8,21 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.Jira.Categories;
 
-internal class BoardQuickFilterMatch
-    : ISearchableMatch,
-        IRunnableMatch,
-        ICopyableMatch,
-        ISerializableMatch
+internal class BoardQuickFilterMatch(
+    BoardQuickFilterMatchDto dto,
+    IconCacheManager iconCacheManager,
+    ICache<JiraData> cache,
+    ConfigurationManager configurationManager,
+    IMatchFactory<IssueMatch, IssueMatchDto> factory
+) : ISearchableMatch, IRunnableMatch, ICopyableMatch, ISerializableMatch
 {
-    private readonly BoardQuickFilterMatchDto _dto;
-    private readonly ICache<JiraData> _cache;
-    private readonly ConfigurationManager _configurationManager;
-    private readonly IMatchFactory<IssueMatch, IssueMatchDto> _factory;
-
     public string Text =>
-        MatchText.Path(_dto.Board.Name, MatchUtils.GetBoardLabel(_dto.Board), _dto.Name);
-    public ImageSource Icon { get; }
+        MatchText.Path(dto.Board.Name, MatchUtils.GetBoardLabel(dto.Board), dto.Name);
+    public ImageSource Icon { get; } =
+        iconCacheManager.GetIcon(new IconKey(dto.Board.Url, dto.Board.AvatarUrl)) ?? Images.Boards;
+
     public MatchTypeId TypeId => TypeIds.BoardQuickFilter;
     public string SearchHint => Labels.BoardQuickFilterMatch_SearchHint;
-
-    public BoardQuickFilterMatch(
-        BoardQuickFilterMatchDto dto,
-        IconCacheManager iconCacheManager,
-        ICache<JiraData> cache,
-        ConfigurationManager configurationManager,
-        IMatchFactory<IssueMatch, IssueMatchDto> factory
-    )
-    {
-        _dto = dto;
-        _cache = cache;
-        _configurationManager = configurationManager;
-        _factory = factory;
-
-        Icon =
-            iconCacheManager.GetIcon(new IconKey(dto.Board.Url, dto.Board.AvatarUrl))
-            ?? Images.Boards;
-    }
 
     public Task Run(IServiceProvider serviceProvider, IWin32Window owner)
     {
@@ -52,7 +33,7 @@ internal class BoardQuickFilterMatch
 
     public string Serialize()
     {
-        return JsonSerializer.Serialize(_dto);
+        return JsonSerializer.Serialize(dto);
     }
 
     public Task Copy(IServiceProvider serviceProvider)
@@ -64,9 +45,9 @@ internal class BoardQuickFilterMatch
 
     private string GetUrl()
     {
-        var url = MatchUtils.GetBoardUrl(_dto.Board);
-        if (_dto.Id.HasValue)
-            url += $"?quickFilter={_dto.Id}";
+        var url = MatchUtils.GetBoardUrl(dto.Board);
+        if (dto.Id.HasValue)
+            url += $"?quickFilter={dto.Id}";
         return url;
     }
 
@@ -81,22 +62,22 @@ internal class BoardQuickFilterMatch
 
         await context.DebounceDelay(cancellationToken);
 
-        var cache = await _cache.Get();
-        var connection = cache.GetConnection(_dto.Board.Url);
-        var board = connection.Boards.Single(p => p.Id == _dto.Board.Id);
+        var data = await cache.Get();
+        var connection = data.GetConnection(dto.Board.Url);
+        var board = connection.Boards.Single(p => p.Id == dto.Board.Id);
 
-        var client = _configurationManager.GetClient(_dto.Board.Url);
+        var client = configurationManager.GetClient(dto.Board.Url);
 
         var query = $"filter = \"{board.FilterId}\" and text ~ \"{text.Replace("\"", "\\\"")}*\"";
-        if (_dto.Id.HasValue)
+        if (dto.Id.HasValue)
         {
-            var quickFilter = board.QuickFilters.Single(p => p.Id == _dto.Id);
+            var quickFilter = board.QuickFilters.Single(p => p.Id == dto.Id);
             query += $" and {quickFilter.Query}";
         }
 
         var issues = await client.SearchIssues(query, 100, cancellationToken);
 
-        return IssueUtils.CreateMatches(_dto.Board.Url, issues, _factory);
+        return IssueUtils.CreateMatches(dto.Board.Url, issues, factory);
     }
 }
 

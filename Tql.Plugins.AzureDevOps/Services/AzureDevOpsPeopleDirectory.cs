@@ -5,22 +5,12 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.AzureDevOps.Services;
 
-internal class AzureDevOpsPeopleDirectory : IPeopleDirectory
+internal class AzureDevOpsPeopleDirectory(Connection connection, AzureDevOpsApi api)
+    : IPeopleDirectory
 {
-    private readonly Connection _connection;
-    private readonly AzureDevOpsApi _api;
-
-    public string Id { get; }
-    public string Name { get; }
-
-    public AzureDevOpsPeopleDirectory(Connection connection, AzureDevOpsApi api)
-    {
-        Id = Encryption.Sha1Hash($"{AzureDevOpsPlugin.Id}/{connection.Url}");
-        Name = string.Format(Labels.AzureDevOpsPeopleDirectory_Name, connection.Name);
-
-        _connection = connection;
-        _api = api;
-    }
+    public string Id { get; } = Encryption.Sha1Hash($"{AzureDevOpsPlugin.Id}/{connection.Url}");
+    public string Name { get; } =
+        string.Format(Labels.AzureDevOpsPeopleDirectory_Name, (object)connection.Name);
 
     public async Task<ImmutableArray<IPerson>> Find(
         string search,
@@ -30,7 +20,7 @@ internal class AzureDevOpsPeopleDirectory : IPeopleDirectory
         if (search.IsWhiteSpace())
             return ImmutableArray<IPerson>.Empty;
 
-        var client = await _api.GetClient<GraphHttpClient>(_connection.Url);
+        var client = await api.GetClient<GraphHttpClient>(connection.Url);
 
         var users = await client.QuerySubjectsAsync(
             new GraphSubjectQuery(search, new[] { "User" }, new SubjectDescriptor()),

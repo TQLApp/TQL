@@ -2,17 +2,11 @@
 
 namespace Tql.Utilities;
 
-internal class AsyncBackgroundProcessor
+internal class AsyncBackgroundProcessor(ILogger logger)
 {
-    private readonly ILogger _logger;
     private readonly object _syncRoot = new();
     private readonly Queue<Func<Task>> _queue = new();
     private bool _running;
-
-    public AsyncBackgroundProcessor(ILogger logger)
-    {
-        _logger = logger;
-    }
 
     public void Enqueue(Func<Task> task)
     {
@@ -54,7 +48,7 @@ internal class AsyncBackgroundProcessor
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error while executing queued task");
+                logger.LogError(ex, "Error while executing queued task");
             }
         }
     }

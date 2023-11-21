@@ -193,15 +193,10 @@ public abstract class IconCacheManager<T>
     /// </summary>
     protected virtual void OnIconLoaded() => IconLoaded?.Invoke(this, EventArgs.Empty);
 
-    private class Cache
+    private class Cache(DateTime expiration)
     {
-        public DateTime Expiration { get; }
+        public DateTime Expiration { get; } = expiration;
         public ImageSource? ImageSource { get; set; }
-
-        public Cache(DateTime expiration)
-        {
-            Expiration = expiration;
-        }
     }
 }
 

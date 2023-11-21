@@ -5,12 +5,9 @@ using NPOI.XSSF.UserModel;
 
 namespace Tql.Localization;
 
-internal class Importer : Tool
+internal class Importer(Options options) : Tool(options)
 {
     private bool _error;
-
-    public Importer(Options options)
-        : base(options) { }
 
     public void Run()
     {

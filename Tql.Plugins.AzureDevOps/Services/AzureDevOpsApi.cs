@@ -12,18 +12,10 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.AzureDevOps.Services;
 
-internal class AzureDevOpsApi
+internal class AzureDevOpsApi(IUI ui, ILogger<AzureDevOpsApi> logger)
 {
-    private readonly IUI _ui;
-    private readonly ILogger<AzureDevOpsApi> _logger;
     private readonly AsyncLock _lock = new();
     private readonly Dictionary<string, VssConnection> _connections = new();
-
-    public AzureDevOpsApi(IUI ui, ILogger<AzureDevOpsApi> logger)
-    {
-        _ui = ui;
-        _logger = logger;
-    }
 
     public async Task<T> GetClient<T>(string collectionUri)
         where T : IVssHttpClient
@@ -39,7 +31,7 @@ internal class AzureDevOpsApi
                 }
                 catch (Exception ex) when (CredentialsExist(collectionUri))
                 {
-                    _logger.LogWarning(ex, "Connect failed, retrying");
+                    logger.LogWarning(ex, "Connect failed, retrying");
 
                     // Clear any cached credentials.
 
@@ -63,7 +55,7 @@ internal class AzureDevOpsApi
             }
             catch
             {
-                _ui.ShowNotificationBar(
+                ui.ShowNotificationBar(
                     $"{AzureDevOpsPlugin.Id}/ConnectionFailed/{collectionUri}",
                     string.Format(
                         Labels.AzureDevOpsApi_UnableToConnect,
@@ -79,7 +71,7 @@ internal class AzureDevOpsApi
             async Task<VssConnection> AttemptConnect()
             {
                 var dialogHost = new DialogHost(
-                    _ui,
+                    ui,
                     string.Format(Labels.AzureDevOpsApi_ResourceName, collectionUri)
                 );
 
@@ -134,52 +126,34 @@ internal class AzureDevOpsApi
         return key != null;
     }
 
-    private class DialogHost : IDialogHost
+    private class DialogHost(IUI ui, string apiName) : IDialogHost
     {
-        private readonly IUI _ui;
-        private readonly string _apiName;
+        private readonly string _apiName = apiName;
 
         public VssConnection? Connection { get; set; }
-
-        public DialogHost(IUI ui, string apiName)
-        {
-            _ui = ui;
-            _apiName = apiName;
-        }
 
         public async Task<bool?> InvokeDialogAsync(InvokeDialogFunc showDialog, object state)
         {
             var authentication = new InteractiveAuthentication(this, showDialog, state);
 
-            await _ui.PerformInteractiveAuthentication(authentication);
+            await ui.PerformInteractiveAuthentication(authentication);
 
             return authentication.Result;
         }
 
-        private class InteractiveAuthentication : IInteractiveAuthentication
+        private class InteractiveAuthentication(
+            DialogHost owner,
+            InvokeDialogFunc showDialog,
+            object state
+        ) : IInteractiveAuthentication
         {
-            private readonly DialogHost _owner;
-            private readonly InvokeDialogFunc _showDialog;
-            private readonly object _state;
-
             public bool? Result { get; private set; }
 
-            public string ResourceName => _owner._apiName;
-
-            public InteractiveAuthentication(
-                DialogHost owner,
-                InvokeDialogFunc showDialog,
-                object state
-            )
-            {
-                _owner = owner;
-                _showDialog = showDialog;
-                _state = state;
-            }
+            public string ResourceName => owner._apiName;
 
             public Task Authenticate(IWin32Window owner)
             {
-                Result = _showDialog(owner.Handle, _state);
+                Result = showDialog(owner.Handle, state);
 
                 return Task.CompletedTask;
             }

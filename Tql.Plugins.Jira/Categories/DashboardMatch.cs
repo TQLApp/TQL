@@ -4,34 +4,30 @@ using Tql.Abstractions;
 
 namespace Tql.Plugins.Jira.Categories;
 
-internal class DashboardMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
+internal class DashboardMatch(DashboardMatchDto dto)
+    : IRunnableMatch,
+        ISerializableMatch,
+        ICopyableMatch
 {
-    private readonly DashboardMatchDto _dto;
-
-    public string Text => string.Format(Labels.DashboardMatch_Label, _dto.Name);
+    public string Text => string.Format(Labels.DashboardMatch_Label, dto.Name);
     public ImageSource Icon => Images.Dashboards;
     public MatchTypeId TypeId => TypeIds.Dashboard;
 
-    public DashboardMatch(DashboardMatchDto dto)
-    {
-        _dto = dto;
-    }
-
     public Task Run(IServiceProvider serviceProvider, IWin32Window owner)
     {
-        serviceProvider.GetRequiredService<IUI>().OpenUrl(_dto.View);
+        serviceProvider.GetRequiredService<IUI>().OpenUrl(dto.View);
 
         return Task.CompletedTask;
     }
 
     public string Serialize()
     {
-        return JsonSerializer.Serialize(_dto);
+        return JsonSerializer.Serialize(dto);
     }
 
     public Task Copy(IServiceProvider serviceProvider)
     {
-        serviceProvider.GetRequiredService<IClipboard>().CopyUri(Text, _dto.View);
+        serviceProvider.GetRequiredService<IClipboard>().CopyUri(Text, dto.View);
 
         return Task.CompletedTask;
     }

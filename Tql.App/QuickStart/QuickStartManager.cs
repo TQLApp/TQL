@@ -270,18 +270,11 @@ internal class QuickStartManager
         _window?.Close();
     }
 
-    private class WindowCloser : IDisposable
+    private class WindowCloser(Window window) : IDisposable
     {
-        private readonly Window _window;
-
-        public WindowCloser(Window window)
-        {
-            _window = window;
-        }
-
         public void Dispose()
         {
-            _window.Close();
+            window.Close();
         }
     }
 }

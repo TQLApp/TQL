@@ -11,43 +11,26 @@ using HtmlDocument = HtmlAgilityPack.HtmlDocument;
 
 namespace Tql.Plugins.GitHub.Categories;
 
-internal class GistsMatch : ISearchableMatch, ISerializableMatch
+internal class GistsMatch(
+    RootItemDto dto,
+    GitHubApi api,
+    ICache<GitHubData> cache,
+    HttpClient httpClient,
+    ConfigurationManager configurationManager,
+    IMatchFactory<GistMatch, GistMatchDto> factory
+) : ISearchableMatch, ISerializableMatch
 {
-    private readonly RootItemDto _dto;
-    private readonly GitHubApi _api;
-    private readonly ICache<GitHubData> _cache;
-    private readonly HttpClient _httpClient;
-    private readonly ConfigurationManager _configurationManager;
-    private readonly IMatchFactory<GistMatch, GistMatchDto> _factory;
-
     public string Text =>
         MatchUtils.GetMatchLabel(
             Labels.GistsMatch_Label,
             Labels.GistsMatch_MyLabel,
-            _configurationManager.Configuration,
-            _dto
+            configurationManager.Configuration,
+            dto
         );
 
     public ImageSource Icon => Images.Gist;
     public MatchTypeId TypeId => TypeIds.Gists;
     public string SearchHint => Labels.GistsMatch_SearchHint;
-
-    public GistsMatch(
-        RootItemDto dto,
-        GitHubApi api,
-        ICache<GitHubData> cache,
-        HttpClient httpClient,
-        ConfigurationManager configurationManager,
-        IMatchFactory<GistMatch, GistMatchDto> factory
-    )
-    {
-        _dto = dto;
-        _api = api;
-        _cache = cache;
-        _httpClient = httpClient;
-        _configurationManager = configurationManager;
-        _factory = factory;
-    }
 
     public async Task<IEnumerable<IMatch>> Search(
         ISearchContext context,
@@ -55,19 +38,19 @@ internal class GistsMatch : ISearchableMatch, ISerializableMatch
         CancellationToken cancellationToken
     )
     {
-        if (_dto.Scope == RootItemScope.Global && text.IsWhiteSpace())
+        if (dto.Scope == RootItemScope.Global && text.IsWhiteSpace())
             return Array.Empty<IMatch>();
 
         await context.DebounceDelay(cancellationToken);
 
-        var search = await GitHubUtils.GetSearchPrefix(_dto, _cache, false) + text;
+        var search = await GitHubUtils.GetSearchPrefix(dto, cache, false) + text;
 
         using var request = new HttpRequestMessage(
             HttpMethod.Get,
             $"https://gist.github.com/search?q={Uri.EscapeDataString(search)}"
         );
 
-        var client = await _api.GetClient(_dto.Id);
+        var client = await api.GetClient(dto.Id);
         var connection = (Octokit.Connection)client.Connection;
 
         request
@@ -81,7 +64,7 @@ internal class GistsMatch : ISearchableMatch, ISerializableMatch
             connection.Credentials.Password
         );
 
-        using var response = await _httpClient.SendAsync(request, cancellationToken);
+        using var response = await httpClient.SendAsync(request, cancellationToken);
 
         var doc = new HtmlDocument();
 
@@ -104,9 +87,9 @@ internal class GistsMatch : ISearchableMatch, ISerializableMatch
             var name = Regex.Replace(containerElement.InnerText, @"\s+", "");
 
             matches.Add(
-                _factory.Create(
+                factory.Create(
                     new GistMatchDto(
-                        _dto.Id,
+                        dto.Id,
                         name,
                         $"https://gist.github.com/{linkElement.GetAttributeValue("href", null)}"
                     )
@@ -130,6 +113,6 @@ internal class GistsMatch : ISearchableMatch, ISerializableMatch
 
     public string Serialize()
     {
-        return JsonSerializer.Serialize(_dto);
+        return JsonSerializer.Serialize(dto);
     }
 }

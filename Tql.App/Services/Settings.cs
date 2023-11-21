@@ -5,7 +5,7 @@ using Tql.Abstractions;
 
 namespace Tql.App.Services;
 
-internal class Settings : INotifyPropertyChanged
+internal class Settings(IStore store) : INotifyPropertyChanged
 {
     public const int DefaultHistoryInRootResults = 90;
     public const int DefaultCacheUpdateInterval = 60;
@@ -22,7 +22,7 @@ internal class Settings : INotifyPropertyChanged
 
     public const int DefaultTextOuterGlowSize = 3;
 
-    private readonly RegistryKey _key;
+    private readonly RegistryKey _key = ((Store)store).CreateBaseKey();
 
     public string? HotKey
     {
@@ -121,11 +121,6 @@ internal class Settings : INotifyPropertyChanged
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
-
-    public Settings(IStore store)
-    {
-        _key = ((Store)store).CreateBaseKey();
-    }
 
     private string? GetString(string name) => _key.GetValue(name) as string;
 

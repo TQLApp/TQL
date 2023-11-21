@@ -6,36 +6,19 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.GitHub.Categories;
 
-internal class UsersMatch : ISearchableMatch, ISerializableMatch
+internal class UsersMatch(
+    RootItemDto dto,
+    GitHubApi api,
+    ConfigurationManager configurationManager,
+    IMatchFactory<UserMatch, UserMatchDto> factory
+) : ISearchableMatch, ISerializableMatch
 {
-    private readonly RootItemDto _dto;
-    private readonly GitHubApi _api;
-    private readonly ConfigurationManager _configurationManager;
-    private readonly IMatchFactory<UserMatch, UserMatchDto> _factory;
-
     public string Text =>
-        MatchUtils.GetMatchLabel(
-            Labels.UsersMatch_Label,
-            _configurationManager.Configuration,
-            _dto
-        );
+        MatchUtils.GetMatchLabel(Labels.UsersMatch_Label, configurationManager.Configuration, dto);
 
     public ImageSource Icon => Images.User;
     public MatchTypeId TypeId => TypeIds.Users;
     public string SearchHint => Labels.UsersMatch_SearchHint;
-
-    public UsersMatch(
-        RootItemDto dto,
-        GitHubApi api,
-        ConfigurationManager configurationManager,
-        IMatchFactory<UserMatch, UserMatchDto> factory
-    )
-    {
-        _dto = dto;
-        _api = api;
-        _configurationManager = configurationManager;
-        _factory = factory;
-    }
 
     public async Task<IEnumerable<IMatch>> Search(
         ISearchContext context,
@@ -48,7 +31,7 @@ internal class UsersMatch : ISearchableMatch, ISerializableMatch
 
         await context.DebounceDelay(cancellationToken);
 
-        var client = await _api.GetClient(_dto.Id);
+        var client = await api.GetClient(dto.Id);
 
         var response = await client.Search.SearchUsers(new SearchUsersRequest(text));
 
@@ -56,11 +39,11 @@ internal class UsersMatch : ISearchableMatch, ISerializableMatch
 
         return response
             .Items
-            .Select(p => _factory.Create(new UserMatchDto(_dto.Id, p.Login, p.HtmlUrl)));
+            .Select(p => factory.Create(new UserMatchDto(dto.Id, p.Login, p.HtmlUrl)));
     }
 
     public string Serialize()
     {
-        return JsonSerializer.Serialize(_dto);
+        return JsonSerializer.Serialize(dto);
     }
 }

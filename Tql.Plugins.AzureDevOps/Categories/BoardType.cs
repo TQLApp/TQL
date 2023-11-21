@@ -4,21 +4,13 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.AzureDevOps.Categories;
 
-internal class BoardType : MatchType<BoardMatch, BoardMatchDto>
+internal class BoardType(
+    IMatchFactory<BoardMatch, BoardMatchDto> factory,
+    ConfigurationManager configurationManager
+) : MatchType<BoardMatch, BoardMatchDto>(factory)
 {
-    private readonly ConfigurationManager _configurationManager;
-
     public override Guid Id => TypeIds.Board.Id;
 
-    public BoardType(
-        IMatchFactory<BoardMatch, BoardMatchDto> factory,
-        ConfigurationManager configurationManager
-    )
-        : base(factory)
-    {
-        _configurationManager = configurationManager;
-    }
-
     protected override bool IsValid(BoardMatchDto dto) =>
-        _configurationManager.Configuration.HasConnection(dto.Url);
+        configurationManager.Configuration.HasConnection(dto.Url);
 }

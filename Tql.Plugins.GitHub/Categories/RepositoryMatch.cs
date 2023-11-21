@@ -8,48 +8,33 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.GitHub.Categories;
 
-internal class RepositoryMatch
-    : IRunnableMatch,
-        ISerializableMatch,
-        ICopyableMatch,
-        ISearchableMatch
+internal class RepositoryMatch(
+    RepositoryMatchDto dto,
+    GitHubApi api,
+    IMatchFactory<IssueMatch, IssueMatchDto> factory
+) : IRunnableMatch, ISerializableMatch, ICopyableMatch, ISearchableMatch
 {
-    private readonly RepositoryMatchDto _dto;
-    private readonly GitHubApi _api;
-    private readonly IMatchFactory<IssueMatch, IssueMatchDto> _factory;
-
-    public string Text => _dto.Name;
+    public string Text => dto.Name;
     public ImageSource Icon => Images.Repository;
     public MatchTypeId TypeId => TypeIds.Repository;
 
     public string SearchHint => Labels.RepositoryMatch_SearchHint;
 
-    public RepositoryMatch(
-        RepositoryMatchDto dto,
-        GitHubApi api,
-        IMatchFactory<IssueMatch, IssueMatchDto> factory
-    )
-    {
-        _dto = dto;
-        _api = api;
-        _factory = factory;
-    }
-
     public Task Run(IServiceProvider serviceProvider, IWin32Window owner)
     {
-        serviceProvider.GetRequiredService<IUI>().OpenUrl(_dto.Url);
+        serviceProvider.GetRequiredService<IUI>().OpenUrl(dto.Url);
 
         return Task.CompletedTask;
     }
 
     public string Serialize()
     {
-        return JsonSerializer.Serialize(_dto);
+        return JsonSerializer.Serialize(dto);
     }
 
     public Task Copy(IServiceProvider serviceProvider)
     {
-        serviceProvider.GetRequiredService<IClipboard>().CopyUri(Text, _dto.Url);
+        serviceProvider.GetRequiredService<IClipboard>().CopyUri(Text, dto.Url);
 
         return Task.CompletedTask;
     }
@@ -62,13 +47,13 @@ internal class RepositoryMatch
     {
         await context.DebounceDelay(cancellationToken);
 
-        var client = await _api.GetClient(_dto.ConnectionId);
+        var client = await api.GetClient(dto.ConnectionId);
 
         var request = text.IsWhiteSpace()
             ? new SearchIssuesRequest()
             : new SearchIssuesRequest(text);
 
-        request.Repos.Add(_dto.Name);
+        request.Repos.Add(dto.Name);
 
         if (text.IsWhiteSpace())
         {
@@ -84,9 +69,9 @@ internal class RepositoryMatch
             .Items
             .Select(
                 p =>
-                    _factory.Create(
+                    factory.Create(
                         new IssueMatchDto(
-                            _dto.ConnectionId,
+                            dto.ConnectionId,
                             GitHubUtils.GetRepositoryName(p.HtmlUrl),
                             p.Number,
                             p.Title,

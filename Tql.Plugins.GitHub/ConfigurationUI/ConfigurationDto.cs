@@ -38,19 +38,12 @@ internal class ConfigurationDto
     }
 }
 
-internal class ConnectionDto
+internal class ConnectionDto(Guid id, string? patToken, string? protectedCredentials)
 {
-    public Guid Id { get; }
-    public string? PatToken { get; }
-    public string? ProtectedCredentials { get; }
+    public Guid Id { get; } = id;
+    public string? PatToken { get; } = patToken;
+    public string? ProtectedCredentials { get; } = protectedCredentials;
     public string? Name { get; set; }
-
-    public ConnectionDto(Guid id, string? patToken, string? protectedCredentials)
-    {
-        Id = id;
-        PatToken = patToken;
-        ProtectedCredentials = protectedCredentials;
-    }
 
     public bool GetIsValid()
     {

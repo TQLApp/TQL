@@ -6,15 +6,8 @@ using MicrosoftLogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Tql.App.Services.Packages;
 
-internal class NuGetLogger : LoggerBase
+internal class NuGetLogger(ILogger logger) : LoggerBase
 {
-    private readonly ILogger _logger;
-
-    public NuGetLogger(ILogger logger)
-    {
-        _logger = logger;
-    }
-
     public override void Log(ILogMessage message)
     {
         var logLevel = message.Level switch
@@ -28,7 +21,7 @@ internal class NuGetLogger : LoggerBase
             _ => throw new ArgumentOutOfRangeException()
         };
 
-        _logger.Log(logLevel, message.Message);
+        logger.Log(logLevel, message.Message);
     }
 
     public override Task LogAsync(ILogMessage message)

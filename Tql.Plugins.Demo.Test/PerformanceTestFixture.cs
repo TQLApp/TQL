@@ -39,15 +39,10 @@ internal class PerformanceTestFixture : BaseFixture
         _ = matches.Count();
     }
 
-    private class PersonMatch : IMatch
+    private class PersonMatch(string text) : IMatch
     {
-        public string Text { get; }
+        public string Text { get; } = text;
         public ImageSource Icon => throw new NotSupportedException();
         public MatchTypeId TypeId => throw new NotSupportedException();
-
-        public PersonMatch(string text)
-        {
-            Text = text;
-        }
     }
 }

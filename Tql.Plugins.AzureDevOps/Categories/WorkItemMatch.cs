@@ -6,43 +6,37 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.AzureDevOps.Categories;
 
-internal class WorkItemMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
+internal class WorkItemMatch(WorkItemMatchDto dto, AzureWorkItemIconManager iconManager)
+    : IRunnableMatch,
+        ISerializableMatch,
+        ICopyableMatch
 {
-    private readonly WorkItemMatchDto _dto;
+    public string Text => MatchText.Path(dto.ProjectName, $"{dto.Type} {dto.Id}: {dto.Title}");
 
-    public string Text => MatchText.Path(_dto.ProjectName, $"{_dto.Type} {_dto.Id}: {_dto.Title}");
-
-    public ImageSource Icon { get; }
+    public ImageSource Icon { get; } =
+        iconManager.GetWorkItemIconImage(dto.Url, dto.ProjectName, dto.Type) ?? Images.Boards;
     public MatchTypeId TypeId => TypeIds.WorkItem;
-
-    public WorkItemMatch(WorkItemMatchDto dto, AzureWorkItemIconManager iconManager)
-    {
-        _dto = dto;
-
-        Icon =
-            iconManager.GetWorkItemIconImage(dto.Url, dto.ProjectName, dto.Type) ?? Images.Boards;
-    }
 
     public Task Run(IServiceProvider serviceProvider, IWin32Window owner)
     {
-        serviceProvider.GetRequiredService<IUI>().OpenUrl(_dto.GetUrl());
+        serviceProvider.GetRequiredService<IUI>().OpenUrl(dto.GetUrl());
 
         return Task.CompletedTask;
     }
 
     public string Serialize()
     {
-        return JsonSerializer.Serialize(_dto);
+        return JsonSerializer.Serialize(dto);
     }
 
     public Task Copy(IServiceProvider serviceProvider)
     {
         var clipboard = serviceProvider.GetRequiredService<IClipboard>();
 
-        var url = _dto.GetUrl();
+        var url = dto.GetUrl();
 
         clipboard.CopyMarkdown(
-            $"[{clipboard.EscapeMarkdown(_dto.Type)} {_dto.Id}]({clipboard.EscapeMarkdown(url)}): {clipboard.EscapeMarkdown(_dto.Title)}",
+            $"[{clipboard.EscapeMarkdown(dto.Type)} {dto.Id}]({clipboard.EscapeMarkdown(url)}): {clipboard.EscapeMarkdown(dto.Title)}",
             url
         );
 

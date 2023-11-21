@@ -7,52 +7,39 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.AzureDevOps.Categories;
 
-internal class BoardMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, ISearchableMatch
+internal class BoardMatch(
+    BoardMatchDto dto,
+    ICache<AzureData> cache,
+    AzureDevOpsApi api,
+    IMatchFactory<WorkItemMatch, WorkItemMatchDto> factory
+) : IRunnableMatch, ISerializableMatch, ICopyableMatch, ISearchableMatch
 {
-    private readonly BoardMatchDto _dto;
-    private readonly ICache<AzureData> _cache;
-    private readonly AzureDevOpsApi _api;
-    private readonly IMatchFactory<WorkItemMatch, WorkItemMatchDto> _factory;
-
     public string Text =>
         MatchText.Path(
-            _dto.ProjectName,
-            _dto.TeamName,
-            string.Format(Labels.BoardMatch_Label, _dto.BoardName)
+            dto.ProjectName,
+            dto.TeamName,
+            string.Format(Labels.BoardMatch_Label, dto.BoardName)
         );
 
     public ImageSource Icon => Images.Boards;
     public MatchTypeId TypeId => TypeIds.Board;
     public string SearchHint => Labels.BoardMatch_SearchHint;
 
-    public BoardMatch(
-        BoardMatchDto dto,
-        ICache<AzureData> cache,
-        AzureDevOpsApi api,
-        IMatchFactory<WorkItemMatch, WorkItemMatchDto> factory
-    )
-    {
-        _dto = dto;
-        _cache = cache;
-        _api = api;
-        _factory = factory;
-    }
-
     public Task Run(IServiceProvider serviceProvider, IWin32Window owner)
     {
-        serviceProvider.GetRequiredService<IUI>().OpenUrl(_dto.GetUrl());
+        serviceProvider.GetRequiredService<IUI>().OpenUrl(dto.GetUrl());
 
         return Task.CompletedTask;
     }
 
     public string Serialize()
     {
-        return JsonSerializer.Serialize(_dto);
+        return JsonSerializer.Serialize(dto);
     }
 
     public Task Copy(IServiceProvider serviceProvider)
     {
-        serviceProvider.GetRequiredService<IClipboard>().CopyUri(Text, _dto.GetUrl());
+        serviceProvider.GetRequiredService<IClipboard>().CopyUri(Text, dto.GetUrl());
 
         return Task.CompletedTask;
     }
@@ -64,14 +51,14 @@ internal class BoardMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch, 
     )
     {
         return await QueryUtils.SearchInBacklog(
-            _dto.Url,
-            _dto.ProjectName,
-            _dto.TeamName,
-            _dto.BoardName,
+            dto.Url,
+            dto.ProjectName,
+            dto.TeamName,
+            dto.BoardName,
             text,
-            _api,
-            await _cache.Get(),
-            _factory,
+            api,
+            await cache.Get(),
+            factory,
             cancellationToken
         );
     }

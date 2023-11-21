@@ -4,19 +4,13 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.AzureDevOps.Services;
 
-internal class AzureWorkItemIconManager
+internal class AzureWorkItemIconManager(ICache<AzureData> cache)
 {
-    private readonly ICache<AzureData> _cache;
     private readonly Dictionary<
         (string CollectionUrl, string Project, string WorkItemType),
         ImageSource
     > _images = new();
     private readonly object _syncRoot = new();
-
-    public AzureWorkItemIconManager(ICache<AzureData> cache)
-    {
-        _cache = cache;
-    }
 
     public ImageSource? GetWorkItemIconImage(
         string collectionUrl,
@@ -35,7 +29,7 @@ internal class AzureWorkItemIconManager
             if (_images.TryGetValue(key, out var value))
                 return value;
 
-            var task = _cache.Get();
+            var task = cache.Get();
             if (!task.IsCompleted)
                 return null;
 

@@ -324,9 +324,5 @@ internal class QuickStartMarkdownRenderer
         }
     }
 
-    private class KeyInline : LiteralInline
-    {
-        public KeyInline(string text)
-            : base(text) { }
-    }
+    private class KeyInline(string text) : LiteralInline(text);
 }

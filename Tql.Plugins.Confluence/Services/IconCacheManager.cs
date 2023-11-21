@@ -4,27 +4,20 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.Confluence.Services;
 
-internal class IconCacheManager : IconCacheManager<IconKey>
-{
-    private readonly ConfigurationManager _configurationManager;
-
-    public IconCacheManager(
-        IStore store,
-        ILogger<IconCacheManager> logger,
-        ConfigurationManager configurationManager
+internal class IconCacheManager(
+    IStore store,
+    ILogger<IconCacheManager> logger,
+    ConfigurationManager configurationManager
+)
+    : IconCacheManager<IconKey>(
+        store,
+        logger,
+        new IconCacheManagerConfiguration(ConfluencePlugin.Id, TimeSpan.FromDays(3))
     )
-        : base(
-            store,
-            logger,
-            new IconCacheManagerConfiguration(ConfluencePlugin.Id, TimeSpan.FromDays(3))
-        )
-    {
-        _configurationManager = configurationManager;
-    }
-
+{
     protected override Task<IconData> LoadIcon(IconKey key)
     {
-        var client = _configurationManager.GetClient(key.ConnectionUrl);
+        var client = configurationManager.GetClient(key.ConnectionUrl);
 
         return client.DownloadFile(
             key.Url,

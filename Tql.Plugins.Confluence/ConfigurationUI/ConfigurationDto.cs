@@ -43,18 +43,13 @@ internal class ConfigurationDto
     }
 }
 
-internal class ConnectionDto
+internal class ConnectionDto(Guid id)
 {
-    public Guid Id { get; }
+    public Guid Id { get; } = id;
     public string? Name { get; set; }
     public string? Url { get; set; }
     public string? UserName { get; set; }
     public string? ProtectedPassword { get; set; }
-
-    public ConnectionDto(Guid id)
-    {
-        Id = id;
-    }
 
     public bool GetIsValid()
     {

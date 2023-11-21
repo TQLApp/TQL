@@ -2,11 +2,8 @@
 
 namespace Tql.Plugins.GitHub.Categories;
 
-internal class PullRequestMatch : IssueMatchBase
+internal class PullRequestMatch(IssueMatchDto dto) : IssueMatchBase(dto)
 {
     public override ImageSource Icon => Images.PullRequest;
     public override MatchTypeId TypeId => TypeIds.PullRequest;
-
-    public PullRequestMatch(IssueMatchDto dto)
-        : base(dto) { }
 }
