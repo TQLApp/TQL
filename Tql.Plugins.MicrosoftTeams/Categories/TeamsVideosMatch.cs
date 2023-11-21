@@ -1,6 +1,5 @@
 using Tql.Abstractions;
 using Tql.Plugins.MicrosoftTeams.Services;
-using Tql.Plugins.MicrosoftTeams.Support;
 
 namespace Tql.Plugins.MicrosoftTeams.Categories;
 
@@ -9,16 +8,15 @@ internal class TeamsVideosMatch(
     IPeopleDirectoryManager peopleDirectoryManager,
     ConfigurationManager configurationManager,
     IMatchFactory<TeamsVideoMatch, PersonDto> factory
-) : PeopleMatchBase<TeamsVideoMatch>(dto, peopleDirectoryManager, configurationManager, factory)
+)
+    : PeopleMatchBase<TeamsVideoMatch>(
+        dto,
+        Labels.TeamsVideosMatch_Label,
+        peopleDirectoryManager,
+        configurationManager,
+        factory
+    )
 {
-    public override string Text =>
-        MatchUtils.GetMatchLabel(
-            Labels.TeamsVideosMatch_Label,
-            configurationManager,
-            peopleDirectoryManager,
-            dto.Id
-        );
-
     public override ImageSource Icon => Images.Teams;
     public override MatchTypeId TypeId => TypeIds.TeamsVideos;
 }

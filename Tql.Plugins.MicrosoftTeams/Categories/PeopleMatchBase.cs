@@ -7,6 +7,7 @@ namespace Tql.Plugins.MicrosoftTeams.Categories;
 
 internal abstract class PeopleMatchBase<T>(
     RootItemDto dto,
+    string label,
     IPeopleDirectoryManager peopleDirectoryManager,
     ConfigurationManager configurationManager,
     IMatchFactory<T, PersonDto> factory
@@ -21,7 +22,9 @@ internal abstract class PeopleMatchBase<T>(
         dto.Id
     )!;
 
-    public abstract string Text { get; }
+    public string Text =>
+        MatchUtils.GetMatchLabel(label, configurationManager, peopleDirectoryManager, dto.Id);
+
     public abstract ImageSource Icon { get; }
     public abstract MatchTypeId TypeId { get; }
     public string SearchHint => Labels.PeopleMatchBase_SearchHint;
