@@ -1,4 +1,4 @@
-name: Update GitHub Pages
+name: PR build
 
 on: pull_request
 
