@@ -89,7 +89,7 @@
                     Grid.Column="1"
                     Margin="3"
                     TextChanged="_name_TextChanged" />
-                
+
                 <Label
                     Content="{x:Static app:Labels.ConfigurationControl_URLLabel}"
                     Grid.Row="1" />
