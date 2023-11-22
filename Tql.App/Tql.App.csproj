@@ -48,7 +48,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Tql.Interop\Tql.Interop.csproj" />
 		<ProjectReference Include="..\Tql.Utilities\Tql.Utilities.csproj" />
 	</ItemGroup>
 

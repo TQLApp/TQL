@@ -1,7 +1,6 @@
 ﻿using System.Windows.Interop;
 using Tql.Abstractions;
 using Tql.App.Support;
-using Tql.Interop;
 
 namespace Tql.App.QuickStart;
 

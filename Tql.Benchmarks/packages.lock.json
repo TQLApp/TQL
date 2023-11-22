@@ -1054,12 +1054,8 @@
           "NuGet.PackageManagement": "[6.8.0, )",
           "System.Data.SQLite.Core": "[1.0.118, )",
           "TQLApp.Utilities": "[0.0.0, )",
-          "Tql.Interop": "[1.0.0, )",
           "YamlDotNet": "[13.7.1, )"
         }
-      },
-      "tql.interop": {
-        "type": "Project"
       },
       "TQLApp.Abstractions": {
         "type": "Project",

@@ -3,9 +3,8 @@ using System.Windows.Forms;
 using Microsoft.Extensions.Logging;
 using Tql.Abstractions;
 using Tql.App.Support;
-using Tql.Interop;
 using Application = System.Windows.Application;
-using TaskDialogIcon = Tql.Interop.TaskDialogIcon;
+using Clipboard = System.Windows.Forms.Clipboard;
 
 namespace Tql.App.Services;
 
@@ -107,13 +106,23 @@ internal class UI(ILogger<UI> logger) : IUI
 
         try
         {
-            return TaskDialogEx.Confirm(
-                owner,
-                title,
-                subtitle,
-                (TaskDialogCommonButtons)buttons,
-                (TaskDialogIcon)icon
-            );
+            var page = new TaskDialogPage
+            {
+                Caption = Labels.ApplicationTitle,
+                Heading = title,
+                Text = subtitle,
+                AllowCancel =
+                    buttons.HasFlag(DialogCommonButtons.Cancel)
+                    || buttons.HasFlag(DialogCommonButtons.Close),
+                AllowMinimize = false
+            };
+
+            TranslateButtons(page, buttons);
+            TranslateIcon(page, icon);
+
+            var button = TaskDialog.ShowDialog(owner, page);
+
+            return TranslateResult(button);
         }
         finally
         {
@@ -133,18 +142,89 @@ internal class UI(ILogger<UI> logger) : IUI
 
         try
         {
-            return TaskDialogEx.Error(
-                owner,
-                title,
-                exception,
-                (TaskDialogIcon)icon,
-                (TaskDialogCommonButtons)buttons
-            );
+            var exceptionInformation = exception.PrintStackTrace();
+
+            var page = new TaskDialogPage
+            {
+                Caption = Labels.ApplicationTitle,
+                Heading = title,
+                Text = exception.Message,
+                AllowCancel =
+                    buttons.HasFlag(DialogCommonButtons.Cancel)
+                    || buttons.HasFlag(DialogCommonButtons.Close),
+                AllowMinimize = false,
+                Expander = new TaskDialogExpander(exceptionInformation)
+                {
+                    ExpandedButtonText = Labels.Alert_ShowExceptionDetails
+                }
+            };
+
+            TranslateButtons(page, buttons);
+            TranslateIcon(page, icon);
+
+            var copyToClipboard = new TaskDialogButton(Labels.Alert_CopyToClipboard);
+            page.Buttons.Add(copyToClipboard);
+
+            var button = TaskDialog.ShowDialog(owner, page);
+
+            if (button == copyToClipboard)
+            {
+                Clipboard.SetText(exceptionInformation);
+                return DialogResult.OK;
+            }
+
+            return TranslateResult(button);
         }
         finally
         {
             ExitModalDialog();
         }
+    }
+
+    private static void TranslateIcon(TaskDialogPage page, DialogIcon icon)
+    {
+        page.Icon = icon switch
+        {
+            DialogIcon.Warning => TaskDialogIcon.Warning,
+            DialogIcon.Error => TaskDialogIcon.Error,
+            DialogIcon.Information => TaskDialogIcon.Information,
+            DialogIcon.Shield => TaskDialogIcon.Shield,
+            _ => null
+        };
+    }
+
+    private static DialogResult TranslateResult(TaskDialogButton button)
+    {
+        if (button == TaskDialogButton.OK)
+            return DialogResult.OK;
+        if (button == TaskDialogButton.Yes)
+            return DialogResult.Yes;
+        if (button == TaskDialogButton.No)
+            return DialogResult.No;
+        if (button == TaskDialogButton.Cancel)
+            return DialogResult.Cancel;
+        if (button == TaskDialogButton.Retry)
+            return DialogResult.Retry;
+        if (button == TaskDialogButton.Close)
+            return DialogResult.Cancel;
+
+        throw new InvalidOperationException("Could not map task dialog button");
+    }
+
+    private static void TranslateButtons(TaskDialogPage page, DialogCommonButtons buttons)
+    {
+        if (buttons.HasFlag(DialogCommonButtons.OK))
+            page.Buttons.Add(TaskDialogButton.OK);
+        if (buttons.HasFlag(DialogCommonButtons.Yes))
+            page.Buttons.Add(TaskDialogButton.Yes);
+        if (buttons.HasFlag(DialogCommonButtons.No))
+            page.Buttons.Add(TaskDialogButton.No);
+        if (buttons.HasFlag(DialogCommonButtons.Cancel))
+            page.Buttons.Add(TaskDialogButton.Cancel);
+        if (buttons.HasFlag(DialogCommonButtons.Retry))
+            page.Buttons.Add(TaskDialogButton.Retry);
+        if (buttons.HasFlag(DialogCommonButtons.Close))
+            page.Buttons.Add(TaskDialogButton.Close);
     }
 
     public void ShowNotificationBar(
