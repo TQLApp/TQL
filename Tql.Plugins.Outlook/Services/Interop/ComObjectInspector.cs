@@ -3,9 +3,9 @@ using System.Runtime.InteropServices.ComTypes;
 
 namespace Tql.Plugins.Outlook.Services.Interop;
 
-internal static class COMObjectInspector
+internal static class ComObjectInspector
 {
-    public static Guid? GetCOMTypeId(dynamic comObject)
+    public static Guid? GetTypeId(dynamic comObject)
     {
         if (comObject is IDispatch dispatch)
         {

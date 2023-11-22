@@ -49,7 +49,7 @@ internal class OutlookClient : IDisposable
         {
             foreach (var contactItem in contactItems)
             {
-                var typeId = COMObjectInspector.GetCOMTypeId(contactItem);
+                var typeId = ComObjectInspector.GetTypeId(contactItem);
                 if (typeId == ContactItemId)
                 {
                     if (MayBeEmailAddress(contactItem.Email1Address))
