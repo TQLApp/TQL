@@ -13,22 +13,6 @@ internal class PackagesPluginLoader : IPluginLoader
 
     private const int ManifestVersion = 1;
 
-    public static void WritePackageManifest(string targetPath, ILogger logger)
-    {
-        logger.LogInformation("Writing package manifest");
-
-        var entries = PackageExportFinder.Resolve(targetPath, logger);
-
-        if (entries.Count == 0)
-            throw new InvalidOperationException("Could not discover assembly entry points");
-
-        var manifest = new PackageManifest(ManifestVersion, entries.ToImmutableArray());
-
-        var json = JsonSerializer.Serialize(manifest);
-
-        File.WriteAllText(Path.Combine(targetPath, ManifestFileName), json);
-    }
-
     private readonly PackageStoreManager _packageStoreManager;
     private readonly AssemblyLoadContext _assemblyLoadContext;
     private readonly ILogger _logger;
@@ -71,7 +55,12 @@ internal class PackagesPluginLoader : IPluginLoader
 
             try
             {
-                var manifestJson = File.ReadAllText(Path.Combine(packageFolder, ManifestFileName));
+                var manifestFileName = Path.Combine(packageFolder, ManifestFileName);
+
+                if (!File.Exists(manifestFileName))
+                    WritePackageManifest(packageFolder);
+
+                var manifestJson = File.ReadAllText(manifestFileName);
                 var manifest = JsonSerializer.Deserialize<PackageManifest>(manifestJson)!;
 
                 foreach (var assemblyEntries in manifest.Entries.GroupBy(p => p.FileName))
@@ -101,6 +90,38 @@ internal class PackagesPluginLoader : IPluginLoader
         }
 
         return plugins.ToImmutable();
+    }
+
+    private void WritePackageManifest(string targetPath)
+    {
+        this._logger.LogInformation("Writing package manifest");
+
+        var entries = GetPackageExports(targetPath, _logger);
+
+        if (entries.Count == 0)
+            throw new InvalidOperationException("Could not discover assembly entry points");
+
+        var manifest = new PackageManifest(ManifestVersion, entries.ToImmutableArray());
+
+        var json = JsonSerializer.Serialize(manifest);
+
+        File.WriteAllText(Path.Combine(targetPath, ManifestFileName), json);
+    }
+
+    private List<PackageExport> GetPackageExports(string path, ILogger logger)
+    {
+        using var loader = new SideloadedPluginLoader(AssemblyLoadContext.Default, path, logger);
+
+        var entries = new List<(string FileName, string TypeName)>();
+
+        foreach (var type in loader.GetPluginTypes())
+        {
+            logger.Log(LogLevel.Information, "Discovered {TypeName}", type.FullName);
+
+            entries.Add((type.Assembly.Location, type.FullName!));
+        }
+
+        return entries.Select(p => new PackageExport(p.FileName, p.TypeName)).ToList();
     }
 
     public void Dispose()
