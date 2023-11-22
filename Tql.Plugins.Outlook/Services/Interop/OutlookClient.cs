@@ -2,14 +2,14 @@
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Logging;
-using Microsoft.Office.Interop.Outlook;
 using Tql.Plugins.Outlook.Support;
-using Application = Microsoft.Office.Interop.Outlook.Application;
 
-namespace Tql.Plugins.Outlook.Services;
+namespace Tql.Plugins.Outlook.Services.Interop;
 
 internal class OutlookClient : IDisposable
 {
+    private static readonly Guid ContactItemId = Guid.Parse("00063021-0000-0000-C000-000000000046");
+
     private readonly ILogger<OutlookClient> _logger;
 
     // This is a very liberal pattern for matching email addresses. It's
@@ -18,8 +18,8 @@ internal class OutlookClient : IDisposable
     private static readonly Regex EmailRe =
         new("^[a-z0-9._%+-]+@[a-z0-9.-]+$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-    private readonly Application _application;
-    private readonly NameSpace _ns;
+    private readonly dynamic _application;
+    private readonly dynamic _ns;
 
     public OutlookClient(ILogger<OutlookClient> logger)
     {
@@ -29,9 +29,9 @@ internal class OutlookClient : IDisposable
         {
             // Only get an actively running Outlook. This prevents the welcome
             // dialog from coming up on machines that don't have Outlook setup.
-            _application = (Application)MarshalEx.GetActiveObject("Outlook.Application");
+            _application = MarshalEx.GetActiveObject("Outlook.Application");
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             throw new OutlookCacheUpdateException(Labels.OutlookClient_OutlookIsNotRunning, ex);
         }
@@ -47,19 +47,20 @@ internal class OutlookClient : IDisposable
 
         try
         {
-            foreach (var item in contactItems)
+            foreach (var contactItem in contactItems)
             {
-                if (item is ContactItem contact)
+                var typeId = COMObjectInspector.GetCOMTypeId(contactItem);
+                if (typeId == ContactItemId)
                 {
-                    if (MayBeEmailAddress(contact.Email1Address))
-                        yield return CreatePerson(contact.FullName, contact.Email1Address);
-                    if (MayBeEmailAddress(contact.Email2Address))
-                        yield return CreatePerson(contact.FullName, contact.Email2Address);
-                    if (MayBeEmailAddress(contact.Email3Address))
-                        yield return CreatePerson(contact.FullName, contact.Email3Address);
+                    if (MayBeEmailAddress(contactItem.Email1Address))
+                        yield return CreatePerson(contactItem.FullName, contactItem.Email1Address);
+                    if (MayBeEmailAddress(contactItem.Email2Address))
+                        yield return CreatePerson(contactItem.FullName, contactItem.Email2Address);
+                    if (MayBeEmailAddress(contactItem.Email3Address))
+                        yield return CreatePerson(contactItem.FullName, contactItem.Email3Address);
                 }
 
-                Marshal.ReleaseComObject(item);
+                Marshal.ReleaseComObject(contactItem);
             }
         }
         finally
@@ -79,13 +80,13 @@ internal class OutlookClient : IDisposable
 
         try
         {
-            AddressEntry addressEntry;
+            dynamic addressEntry;
 
             try
             {
                 addressEntry = addressEntries.GetFirst();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogInformation(ex, "Global address list is not available");
                 yield break;
@@ -102,9 +103,9 @@ internal class OutlookClient : IDisposable
                 {
                     var exchangeUser = addressEntry.GetExchangeUser();
 
-                    if (exchangeUser != null && MayBeEmailAddress(exchangeUser.PrimarySmtpAddress))
+                    if (exchangeUser != null && MayBeEmailAddress(exchangeUser!.PrimarySmtpAddress))
                         yield return CreatePerson(
-                            exchangeUser.Name,
+                            exchangeUser!.Name,
                             exchangeUser.PrimarySmtpAddress
                         );
                 }
@@ -125,7 +126,10 @@ internal class OutlookClient : IDisposable
 
     private Person CreatePerson(string? displayName, string emailAddress)
     {
-        return new Person(displayName ?? emailAddress, emailAddress);
+        return new Person(
+            !string.IsNullOrEmpty(displayName) ? displayName : emailAddress,
+            emailAddress
+        );
     }
 
     public void Dispose()
