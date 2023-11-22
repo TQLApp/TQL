@@ -122,12 +122,12 @@ internal partial class GeneralConfigurationControl : IConfigurationPage
 
     public void Initialize(IConfigurationPageContext context)
     {
-        context.Closed += (_, _) =>
+        context.Closed += (s, _) =>
         {
             if (_requireRestart)
             {
                 _ui.ShowTaskDialog(
-                    this,
+                    (Window)s!,
                     Labels.GeneralConfiguration_RestartRequired,
                     Labels.GeneralConfiguration_RestartRequiredHelpText,
                     DialogCommonButtons.OK,
