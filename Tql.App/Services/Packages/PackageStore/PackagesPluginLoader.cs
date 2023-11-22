@@ -1,5 +1,5 @@
 ﻿using System.IO;
-using System.Reflection;
+using System.Runtime.Loader;
 using Microsoft.Extensions.Logging;
 using Tql.Abstractions;
 using Tql.App.Services.Packages.AssemblyResolution;
@@ -30,12 +30,18 @@ internal class PackagesPluginLoader : IPluginLoader
     }
 
     private readonly PackageStoreManager _packageStoreManager;
+    private readonly AssemblyLoadContext _assemblyLoadContext;
     private readonly ILogger _logger;
     private readonly AssemblyResolver _assemblyResolver;
 
-    public PackagesPluginLoader(PackageStoreManager packageStoreManager, ILogger logger)
+    public PackagesPluginLoader(
+        PackageStoreManager packageStoreManager,
+        AssemblyLoadContext assemblyLoadContext,
+        ILogger logger
+    )
     {
         _packageStoreManager = packageStoreManager;
+        _assemblyLoadContext = assemblyLoadContext;
         _logger = logger;
 
         _assemblyResolver = AssemblyResolver.Create(
@@ -43,6 +49,7 @@ internal class PackagesPluginLoader : IPluginLoader
                 .GetInstalledPackages()
                 .Select(p => Path.Combine(_packageStoreManager.PackagesFolder, p.ToString()))
                 .Concat(new[] { Path.GetDirectoryName(GetType().Assembly.Location)! }),
+            assemblyLoadContext,
             _logger
         );
     }
@@ -56,7 +63,7 @@ internal class PackagesPluginLoader : IPluginLoader
         foreach (var packageRef in _packageStoreManager.GetInstalledPackages())
         {
             var packageFolder = Path.Combine(
-                _packageStoreManager.PackagesFolder,
+                Path.GetFullPath(_packageStoreManager.PackagesFolder),
                 packageRef.ToString()
             );
 
@@ -69,7 +76,7 @@ internal class PackagesPluginLoader : IPluginLoader
 
                 foreach (var assemblyEntries in manifest.Entries.GroupBy(p => p.FileName))
                 {
-                    var assembly = Assembly.LoadFile(
+                    var assembly = _assemblyLoadContext.LoadFromAssemblyPath(
                         Path.Combine(packageFolder, assemblyEntries.Key)
                     );
 

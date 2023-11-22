@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Net.Http;
 using System.Reflection;
+using System.Runtime.Loader;
 using System.Windows.Forms;
 using System.Windows.Markup;
 using CommandLine;
@@ -133,6 +134,7 @@ public partial class App
         if (Options.Sideload != null)
         {
             return new SideloadedPluginLoader(
+                AssemblyLoadContext.Default,
                 Options.Sideload,
                 loggerFactory.CreateLogger<SideloadedPluginLoader>()
             );
@@ -143,6 +145,7 @@ public partial class App
 
         return new PackagesPluginLoader(
             packageStoreManager,
+            AssemblyLoadContext.Default,
             loggerFactory.CreateLogger<PackagesPluginLoader>()
         );
     }

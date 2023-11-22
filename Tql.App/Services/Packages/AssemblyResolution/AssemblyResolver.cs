@@ -1,11 +1,18 @@
 ﻿using System.Reflection;
+using System.Runtime.Loader;
 using Microsoft.Extensions.Logging;
+using Tql.Abstractions;
+using Path = System.IO.Path;
 
 namespace Tql.App.Services.Packages.AssemblyResolution;
 
 internal class AssemblyResolver : IDisposable
 {
-    public static AssemblyResolver Create(IEnumerable<string> applicationBases, ILogger logger)
+    public static AssemblyResolver Create(
+        IEnumerable<string> applicationBases,
+        AssemblyLoadContext assemblyLoadContext,
+        ILogger logger
+    )
     {
         var assemblies = new Dictionary<AssemblyName, string>();
 
@@ -15,7 +22,10 @@ internal class AssemblyResolver : IDisposable
             {
                 try
                 {
-                    assemblies.Add(AssemblyName.GetAssemblyName(fileName), fileName);
+                    assemblies.Add(
+                        AssemblyName.GetAssemblyName(fileName),
+                        Path.GetFullPath(fileName)
+                    );
                 }
                 catch (Exception ex)
                 {
@@ -30,25 +40,44 @@ internal class AssemblyResolver : IDisposable
 
         var resolvedAssemblies = assemblies
             .GroupBy(p => AssemblyKey.FromName(p.Key))
-            .ToDictionary(p => p.Key, p => p.OrderByDescending(p1 => p1.Key.Version).First().Value);
+            .ToDictionary(p => p.Key, p => p.MaxBy(p1 => p1.Key.Version).Value);
 
-        return new AssemblyResolver(resolvedAssemblies, logger);
+        return new AssemblyResolver(resolvedAssemblies, assemblyLoadContext, logger);
     }
 
     private readonly ILogger _logger;
     private readonly Dictionary<AssemblyKey, string> _assemblies;
+    private readonly AssemblyLoadContext _assemblyLoadContext;
 
-    private AssemblyResolver(Dictionary<AssemblyKey, string> assemblies, ILogger logger)
+    private AssemblyResolver(
+        Dictionary<AssemblyKey, string> assemblies,
+        AssemblyLoadContext assemblyLoadContext,
+        ILogger logger
+    )
     {
         _assemblies = assemblies;
+        _assemblyLoadContext = assemblyLoadContext;
         _logger = logger;
 
-        AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+        _assemblyLoadContext.Resolving += _assemblyLoadContext_Resolving;
     }
 
-    private Assembly? CurrentDomain_AssemblyResolve(object? sender, ResolveEventArgs args)
+    private Assembly? _assemblyLoadContext_Resolving(
+        AssemblyLoadContext assemblyLoadContext,
+        AssemblyName name
+    )
     {
-        var name = new AssemblyName(args.Name);
+        // We hard code resolving the abstractions assembly. This ensures that everyone
+        // is using the same one always.
+        if (
+            string.Equals(
+                name.Name,
+                typeof(ITqlPlugin).Assembly.GetName().Name,
+                StringComparison.OrdinalIgnoreCase
+            )
+        )
+            return typeof(ITqlPlugin).Assembly;
+
         var key = AssemblyKey.FromName(name);
 
         var loadedAssembly = GetLoadedAssembly(key);
@@ -67,7 +96,7 @@ internal class AssemblyResolver : IDisposable
         {
             _logger.LogDebug("Resolved assembly to '{FileName}'", fileName);
 
-            return Assembly.LoadFile(fileName);
+            return assemblyLoadContext.LoadFromAssemblyPath(fileName);
         }
 
         return null;
@@ -75,9 +104,8 @@ internal class AssemblyResolver : IDisposable
 
     private Assembly? GetLoadedAssembly(AssemblyKey assemblyKey)
     {
-        return AppDomain
-            .CurrentDomain
-            .GetAssemblies()
+        return _assemblyLoadContext
+            .Assemblies
             .Select(p => (AssemblyName: p.GetName(), Assembly: p))
             .Where(p => AssemblyKey.FromName(p.AssemblyName).Equals(assemblyKey))
             .OrderByDescending(p => p.AssemblyName.Version)
@@ -87,6 +115,6 @@ internal class AssemblyResolver : IDisposable
 
     public void Dispose()
     {
-        AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
+        _assemblyLoadContext.Resolving -= _assemblyLoadContext_Resolving;
     }
 }
