@@ -8,7 +8,7 @@ using Tql.App.Search;
 
 namespace Tql.Benchmarks;
 
-[SimpleJob(RuntimeMoniker.Net481, warmupCount: 5, iterationCount: 20)]
+[SimpleJob(RuntimeMoniker.Net80, warmupCount: 5, iterationCount: 20)]
 public class FilterBenchmark
 {
     private IMatch[] _people = null!;
