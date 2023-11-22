@@ -299,7 +299,7 @@ public partial class App
         {
             var startInfo = new ProcessStartInfo
             {
-                FileName = Assembly.GetEntryAssembly()!.Location,
+                FileName = Path.ChangeExtension(Assembly.GetEntryAssembly()!.Location, ".exe"),
                 UseShellExecute = false
             };
             if (RestartMode == RestartMode.SilentRestart)
