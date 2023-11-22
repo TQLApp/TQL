@@ -1,10 +1,12 @@
 ﻿using System.Diagnostics;
 using System.Windows.Forms;
+using System.Windows.Interop;
 using Microsoft.Extensions.Logging;
 using Tql.Abstractions;
 using Tql.App.Support;
 using Application = System.Windows.Application;
 using Clipboard = System.Windows.Forms.Clipboard;
+using IWin32Window = System.Windows.Forms.IWin32Window;
 
 namespace Tql.App.Services;
 
@@ -270,15 +272,31 @@ internal class UI(ILogger<UI> logger) : IUI
     public void EnterModalDialog()
     {
         if (_modalDialogShowing == 0 && MainWindow != null)
-            MainWindow.ShowInTaskbar = true;
+            ShowTaskBarButton(MainWindow);
         _modalDialogShowing++;
+    }
+
+    private void ShowTaskBarButton(MainWindow window)
+    {
+        WindowInterop.AddWindowStyle(
+            new WindowInteropHelper(window).Handle,
+            WindowInterop.WS_EX_APPWINDOW
+        );
     }
 
     public void ExitModalDialog()
     {
         _modalDialogShowing--;
         if (_modalDialogShowing == 0 && MainWindow != null)
-            MainWindow.ShowInTaskbar = false;
+            HideTaskBarButton(MainWindow);
+    }
+
+    private void HideTaskBarButton(MainWindow window)
+    {
+        WindowInterop.RemoveWindowStyle(
+            new WindowInteropHelper(window).Handle,
+            WindowInterop.WS_EX_APPWINDOW
+        );
     }
 
     protected virtual void OnUINotificationsChanged() =>

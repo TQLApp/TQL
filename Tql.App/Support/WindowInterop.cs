@@ -34,11 +34,16 @@ public static class WindowInterop
         return new Rectangle(-rect.Left, -rect.Top, clientSize.Width, clientSize.Height);
     }
 
-    public static void HideFromTaskSwitcher(IntPtr handle)
+    public static void AddWindowStyle(IntPtr handle, uint style)
     {
-        // Change the extended window style to not show in Alt+Tab
         var extendedStyle = GetWindowLong(handle, GWL_EXSTYLE);
-        SetWindowLong(handle, GWL_EXSTYLE, extendedStyle | WS_EX_TOOLWINDOW);
+        SetWindowLong(handle, GWL_EXSTYLE, extendedStyle | style);
+    }
+
+    public static void RemoveWindowStyle(IntPtr handle, uint style)
+    {
+        var extendedStyle = GetWindowLong(handle, GWL_EXSTYLE);
+        SetWindowLong(handle, GWL_EXSTYLE, extendedStyle & ~style);
     }
 
     [DllImport("user32.dll")]
@@ -56,7 +61,8 @@ public static class WindowInterop
     public const int GWL_STYLE = -16;
     public const int GWL_EXSTYLE = -20;
 
-    public const uint WS_EX_TOOLWINDOW = 0x00000080;
+    public const uint WS_EX_TOOLWINDOW = 0x80;
+    public const uint WS_EX_APPWINDOW = 0x40000;
 
     [StructLayout(LayoutKind.Sequential)]
     private struct RECT

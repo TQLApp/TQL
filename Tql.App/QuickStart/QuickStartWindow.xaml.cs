@@ -92,6 +92,10 @@ internal partial class QuickStartWindow
 
     private void BaseWindow_SourceInitialized(object? sender, EventArgs e)
     {
-        WindowInterop.HideFromTaskSwitcher(new WindowInteropHelper(this).Handle);
+        // Hides the window from the task switcher.
+        WindowInterop.AddWindowStyle(
+            new WindowInteropHelper(this).Handle,
+            WindowInterop.WS_EX_TOOLWINDOW
+        );
     }
 }
