@@ -91,14 +91,14 @@ internal partial class PackageSourcesConfigurationControl : IConfigurationPage
         return Task.FromResult(SaveStatus.Success);
     }
 
-    private void _add_Click(object sender, RoutedEventArgs e)
+    private void _add_Click(object? sender, RoutedEventArgs e)
     {
         _sources.SelectedItem = null;
 
         ClearEdit();
     }
 
-    private void _delete_Click(object sender, RoutedEventArgs e)
+    private void _delete_Click(object? sender, RoutedEventArgs e)
     {
         DataContext.Sources.Remove((PackageManagerSourceDto)_sources.SelectedItem);
 
@@ -107,7 +107,7 @@ internal partial class PackageSourcesConfigurationControl : IConfigurationPage
         ClearEdit();
     }
 
-    private void _update_Click(object sender, RoutedEventArgs e)
+    private void _update_Click(object? sender, RoutedEventArgs e)
     {
         if (_sources.SelectedItem != null)
             DataContext.Sources[_sources.SelectedIndex] = CreateSourceDto();
@@ -126,7 +126,7 @@ internal partial class PackageSourcesConfigurationControl : IConfigurationPage
         _password.Password = null;
     }
 
-    private void _sources_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void _sources_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
         var connectionDto = (PackageManagerSourceDto)_sources.SelectedItem;
 
@@ -149,9 +149,9 @@ internal partial class PackageSourcesConfigurationControl : IConfigurationPage
         UpdateEnabled();
     }
 
-    private void _url_TextChanged(object sender, TextChangedEventArgs e) => UpdateEnabled();
+    private void _url_TextChanged(object? sender, TextChangedEventArgs e) => UpdateEnabled();
 
-    private void _userName_TextChanged(object sender, TextChangedEventArgs e) => UpdateEnabled();
+    private void _userName_TextChanged(object? sender, TextChangedEventArgs e) => UpdateEnabled();
 
-    private void _password_PasswordChanged(object sender, RoutedEventArgs e) => UpdateEnabled();
+    private void _password_PasswordChanged(object? sender, RoutedEventArgs e) => UpdateEnabled();
 }

@@ -54,14 +54,14 @@ internal class ShowOnScreenManager
 
     public int GetPrimaryScreenIndex()
     {
-        return GetAllScreens().ToList().IndexOf(Screen.PrimaryScreen);
+        return GetAllScreens().ToList().IndexOf(Screen.PrimaryScreen!);
     }
 
     public Screen GetScreen()
     {
         var screenIndex = GetScreenIndex();
 
-        return GetAllScreens().Skip(screenIndex).FirstOrDefault() ?? Screen.PrimaryScreen;
+        return GetAllScreens().Skip(screenIndex).FirstOrDefault() ?? Screen.PrimaryScreen!;
     }
 
     public void SetScreen(Screen? screen)

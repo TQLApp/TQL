@@ -10,8 +10,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v1
+      - name: Setup dotnet 8.0.x
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
 
       - uses: actions/cache@v3
         id: cache
@@ -37,10 +39,10 @@ jobs:
         run: ./Build/Uncommitted-changes.ps1 -tool "dotnet csharpier ."
 
       - name: Restore Solution
-        run: msbuild -nodeReuse:false -maxCpuCount -target:Restore -property:Configuration="Release" -warnaserror Tql.sln
+        run: dotnet restore -warnaserror
 
       - name: Build Solution
-        run: msbuild -nodeReuse:false -maxCpuCount -target:Build -property:Configuration="Release" -warnaserror Tql.sln
+        run: dotnet build -c Release -warnaserror
 
       - name: Preprocess DocFX Markdown Files
         shell: pwsh

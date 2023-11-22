@@ -27,7 +27,7 @@ public static class TextBoxAutoSelect
         }
     }
 
-    private static void ControlOnLoaded(object sender, RoutedEventArgs e)
+    private static void ControlOnLoaded(object? sender, RoutedEventArgs e)
     {
         if (sender is Control control)
         {

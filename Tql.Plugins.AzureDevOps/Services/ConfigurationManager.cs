@@ -6,8 +6,6 @@ namespace Tql.Plugins.AzureDevOps.Services;
 internal class ConfigurationManager
 {
     private readonly IConfigurationManager _configurationManager;
-    private readonly IPeopleDirectoryManager _peopleDirectoryManager;
-    private readonly AzureDevOpsApi _api;
     private readonly ILogger<ConfigurationManager> _logger;
 
     private volatile Configuration _configuration = Configuration.Empty;
@@ -18,14 +16,10 @@ internal class ConfigurationManager
 
     public ConfigurationManager(
         IConfigurationManager configurationManager,
-        IPeopleDirectoryManager peopleDirectoryManager,
-        AzureDevOpsApi api,
         ILogger<ConfigurationManager> logger
     )
     {
         _configurationManager = configurationManager;
-        _peopleDirectoryManager = peopleDirectoryManager;
-        _api = api;
         _logger = logger;
 
         configurationManager.ConfigurationChanged += (_, e) =>
@@ -56,25 +50,6 @@ internal class ConfigurationManager
         }
 
         _configuration = configuration ?? Configuration.Empty;
-
-        UpdatePeopleDirectoryManager();
-    }
-
-    private void UpdatePeopleDirectoryManager()
-    {
-        foreach (
-            var directory in _peopleDirectoryManager
-                .Directories
-                .OfType<AzureDevOpsPeopleDirectory>()
-        )
-        {
-            _peopleDirectoryManager.Remove(directory);
-        }
-
-        foreach (var connection in _configuration.Connections)
-        {
-            _peopleDirectoryManager.Add(new AzureDevOpsPeopleDirectory(connection, _api));
-        }
     }
 
     public void UpdateConfiguration(Configuration configuration)

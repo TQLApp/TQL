@@ -39,17 +39,17 @@ internal partial class FeedbackWindow
         _systemInformation.Text = sb.ToString().TrimEnd();
     }
 
-    private void _bugReport_Click(object sender, RoutedEventArgs e)
+    private void _bugReport_Click(object? sender, RoutedEventArgs e)
     {
         _ui.OpenUrl(Constants.BugReportUrl);
     }
 
-    private void _featureRequest_Click(object sender, RoutedEventArgs e)
+    private void _featureRequest_Click(object? sender, RoutedEventArgs e)
     {
         _ui.OpenUrl(Constants.FeatureRequestUrl);
     }
 
-    private void _copySystemInformation_Click(object sender, RoutedEventArgs e)
+    private void _copySystemInformation_Click(object? sender, RoutedEventArgs e)
     {
         Clipboard.SetText(_systemInformation.Text);
     }

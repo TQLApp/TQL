@@ -11,7 +11,7 @@ internal partial class DancingDotsUserControl
         InitializeComponent();
     }
 
-    private void UserControl_Loaded(object sender, RoutedEventArgs e)
+    private void UserControl_Loaded(object? sender, RoutedEventArgs e)
     {
         var duration = TimeSpan.FromSeconds(0.14);
 

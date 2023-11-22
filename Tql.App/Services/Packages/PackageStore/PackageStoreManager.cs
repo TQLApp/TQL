@@ -35,9 +35,8 @@ internal class PackageStoreManager
 
         foreach (var id in key.GetValueNames())
         {
-            var version = (string)key.GetValue(id);
-
-            packages.Add(new PackageRef(id, version));
+            if (key.GetValue(id) is string version)
+                packages.Add(new PackageRef(id, version));
         }
 
         return packages.ToImmutable();
@@ -63,7 +62,7 @@ internal class PackageStoreManager
 
     private List<string> GetAvailablePackages()
     {
-        return Directory.GetDirectories(PackagesFolder).Select(Path.GetFileName).ToList();
+        return Directory.GetDirectories(PackagesFolder).Select(p => Path.GetFileName(p)!).ToList();
     }
 
     public void SetPackageVersion(string packageId, Version version)

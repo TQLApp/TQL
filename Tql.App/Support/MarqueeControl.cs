@@ -27,7 +27,7 @@ internal class MarqueeControl : ContentControl
         SizeChanged += MarqueeControl_SizeChanged;
     }
 
-    private void MarqueeControl_Loaded(object sender, RoutedEventArgs e)
+    private void MarqueeControl_Loaded(object? sender, RoutedEventArgs e)
     {
         _border = this.FindVisualChild<Border>("_border")!;
         _canvas = this.FindVisualChild<Canvas>("_canvas")!;
@@ -70,9 +70,9 @@ internal class MarqueeControl : ContentControl
         Canvas.SetLeft(_content, 0);
     }
 
-    private void MarqueeControl_SizeChanged(object sender, SizeChangedEventArgs e) =>
+    private void MarqueeControl_SizeChanged(object? sender, SizeChangedEventArgs e) =>
         UpdateAnimation();
 
-    private void OnIsRunningChanged(object sender, DependencyPropertyChangedEventArgs e) =>
+    private void OnIsRunningChanged(object? sender, DependencyPropertyChangedEventArgs e) =>
         UpdateAnimation();
 }

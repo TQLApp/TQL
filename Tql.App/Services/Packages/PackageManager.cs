@@ -226,7 +226,7 @@ internal class PackageManager
 
         var abstractionsPackageIdentity = new PackageIdentity(
             "TQLApp.Abstractions",
-            new NuGetVersion(typeof(ITqlPlugin).Assembly.GetName().Version)
+            new NuGetVersion(typeof(ITqlPlugin).Assembly.GetName().Version!)
         );
 
         var installedPackages = await client.InstallPackage(

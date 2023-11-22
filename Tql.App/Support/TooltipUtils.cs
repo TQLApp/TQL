@@ -19,11 +19,15 @@ internal static class TooltipUtils
         if (string.IsNullOrEmpty(content))
             return;
 
+        // Unsure why this issue occurs, but sometimes the style can't be resolved.
+        if (self.FindResource("PopoverToolTip") is not Style popoverToolTipStyle)
+            return;
+
         var toolTip = new ToolTip
         {
             FontSize = SystemFonts.MessageFontSize,
             Content = content,
-            Style = (Style)self.FindResource("PopoverToolTip"),
+            Style = popoverToolTipStyle,
             CustomPopupPlacementCallback = PlacePopup
         };
 

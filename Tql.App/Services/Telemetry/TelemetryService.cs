@@ -38,7 +38,7 @@ internal class TelemetryService : IDisposable
 #endif
 
         _client = new TelemetryClient(_configuration);
-        _client.Context.Component.Version = GetType().Assembly.GetName().Version.ToString();
+        _client.Context.Component.Version = GetType().Assembly.GetName().Version!.ToString();
         _client.Context.Device.Id = deviceId;
         _client.Context.Session.Id = Guid.NewGuid().ToString();
         _client.Context.User.Id = userId;

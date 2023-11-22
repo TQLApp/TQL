@@ -15,15 +15,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Office.Interop.Outlook" Version="15.0.4797.1004" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<ProjectReference Include="..\Tql.Utilities\Tql.Utilities.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Reference Include="Microsoft.CSharp" />
 	</ItemGroup>
 
 	<ItemGroup>

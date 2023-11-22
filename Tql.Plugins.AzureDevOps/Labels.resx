@@ -235,6 +235,15 @@
     <value>Documentation</value>
   </data>
   <data name="ConfigurationControl_URLHelpText" xml:space="preserve">
-    <value>This URL is the URL to your Azure DevOps environment. It should be either https://yourcompany.visualstudio.com or https://dev.azure.com/yourcompany.</value>
+    <value>This URL is the URL to your Azure DevOps environment. It should similar to https://dev.azure.com/yourcompany.</value>
+  </data>
+  <data name="ConfigurationControl_PATTokenHelpText" xml:space="preserve">
+    <value>You can create a PAT token in the Azure DevOps website. You can find more information on the documentation page. Use the Documentation link above to open the documentation page.</value>
+  </data>
+  <data name="ConfigurationControl_PATTokenLabel" xml:space="preserve">
+    <value>PAT token:</value>
+  </data>
+  <data name="Confirm_DoYouWantToAddNewItem" xml:space="preserve">
+    <value>Do you want to add a new item?</value>
   </data>
 </root>

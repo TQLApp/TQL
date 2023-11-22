@@ -15,11 +15,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Reference Include="PresentationFramework.Aero2" />
-		<Reference Include="System.Web" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<EmbeddedResource Include="Services\Database\Migrations\*.sql" />
 		<None Remove="Services\Database\Migrations\*.sql" />
 	</ItemGroup>
@@ -53,7 +48,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Tql.Interop\Tql.Interop.csproj" />
 		<ProjectReference Include="..\Tql.Utilities\Tql.Utilities.csproj" />
 	</ItemGroup>
 

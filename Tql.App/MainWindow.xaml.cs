@@ -125,7 +125,7 @@ internal partial class MainWindow
         if (!double.IsNaN(_listBoxRowHeight))
             RecalculateListBoxHeight();
 
-        _notifyIconManager.ContextMenu = SetupNotifyIconContextMenu();
+        _notifyIconManager.ContextMenuStrip = SetupNotifyIconContextMenu();
         _notifyIconManager.Clicked += (_, _) => DoShow();
 
         ResetFontSize();
@@ -239,7 +239,7 @@ internal partial class MainWindow
         _ui.OpenUrl(Constants.HelpUrl);
     }
 
-    private void CacheManagerManager_LoadingChanged(object sender, EventArgs e)
+    private void CacheManagerManager_LoadingChanged(object? sender, EventArgs e)
     {
         Dispatcher.BeginInvoke(new Action(UpdateCacheManagerSpinner));
     }
@@ -251,7 +251,7 @@ internal partial class MainWindow
             : Visibility.Collapsed;
     }
 
-    private void CacheManagerManager_CacheChanged(object sender, EventArgs e)
+    private void CacheManagerManager_CacheChanged(object? sender, EventArgs e)
     {
         Dispatcher.BeginInvoke(new Action(Invoke));
 
@@ -262,7 +262,7 @@ internal partial class MainWindow
         }
     }
 
-    private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
+    private void Window_PreviewKeyDown(object? sender, KeyEventArgs e)
     {
         switch (e.Key)
         {
@@ -273,7 +273,7 @@ internal partial class MainWindow
         }
     }
 
-    private void Window_Deactivated(object sender, EventArgs e)
+    private void Window_Deactivated(object? sender, EventArgs e)
     {
         DoHide();
     }
@@ -339,7 +339,7 @@ internal partial class MainWindow
         _search.Focus();
     }
 
-    private void Window_Loaded(object sender, RoutedEventArgs e)
+    private void Window_Loaded(object? sender, RoutedEventArgs e)
     {
         //
         // HACK: Sometimes when the app starts up the first time, the content
@@ -361,14 +361,14 @@ internal partial class MainWindow
         _notificationBars.ItemsSource = _ui.UINotifications;
     }
 
-    private void Window_SourceInitialized(object sender, EventArgs e)
+    private void Window_SourceInitialized(object? sender, EventArgs e)
     {
         RepositionScreen();
 
         Activate();
     }
 
-    private void _searchManager_IsSearchingChanged(object sender, EventArgs e)
+    private void _searchManager_IsSearchingChanged(object? sender, EventArgs e)
     {
         var isSearching = SearchManager?.IsSearching ?? false;
 
@@ -378,7 +378,7 @@ internal partial class MainWindow
             _pendingEnter = false;
     }
 
-    private void _searchManager_SearchResultsChanged(object sender, EventArgs e)
+    private void _searchManager_SearchResultsChanged(object? sender, EventArgs e)
     {
         if (SearchManager == null || SearchManager.Results.Length == 0)
         {
@@ -412,7 +412,7 @@ internal partial class MainWindow
         _resultsSeparator.Visibility = visibility;
     }
 
-    private void _searchManager_StackChanged(object sender, EventArgs e)
+    private void _searchManager_StackChanged(object? sender, EventArgs e)
     {
         RenderStack();
 
@@ -508,7 +508,7 @@ internal partial class MainWindow
         }
     }
 
-    private void _search_TextChanged(object sender, TextChangedEventArgs e)
+    private void _search_TextChanged(object? sender, TextChangedEventArgs e)
     {
         _pendingEnter = false;
         SearchManager?.SetSearch(_search.Text);
@@ -524,10 +524,10 @@ internal partial class MainWindow
                 : Visibility.Visible;
     }
 
-    private void _search_PreviewKeyDown(object sender, KeyEventArgs e) =>
+    private void _search_PreviewKeyDown(object? sender, KeyEventArgs e) =>
         HandlePreviewKeyDown(e, true);
 
-    private void _results_PreviewKeyDown(object sender, KeyEventArgs e) =>
+    private void _results_PreviewKeyDown(object? sender, KeyEventArgs e) =>
         HandlePreviewKeyDown(e, false);
 
     private void HandlePreviewKeyDown(KeyEventArgs e, bool inSearch)
@@ -596,7 +596,7 @@ internal partial class MainWindow
         }
     }
 
-    private void _results_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+    private void _results_PreviewMouseDown(object? sender, MouseButtonEventArgs e)
     {
         if (e.ChangedButton != MouseButton.Left)
             return;
@@ -615,7 +615,7 @@ internal partial class MainWindow
         }
     }
 
-    private void _results_MouseUp(object sender, MouseButtonEventArgs e)
+    private void _results_MouseUp(object? sender, MouseButtonEventArgs e)
     {
         if (e.ChangedButton != MouseButton.Left)
             return;
@@ -788,7 +788,7 @@ internal partial class MainWindow
         SearchManager?.ResumeSearch();
     }
 
-    private void SearchResultUserControl_RemoveHistoryClicked(object sender, EventArgs e)
+    private void SearchResultUserControl_RemoveHistoryClicked(object? sender, EventArgs e)
     {
         var searchResult = SelectedSearchResult;
         if (searchResult?.HistoryId == null)
@@ -809,7 +809,7 @@ internal partial class MainWindow
         ReloadResults();
     }
 
-    private void SearchResultUserControl_SizeChanged(object sender, SizeChangedEventArgs e)
+    private void SearchResultUserControl_SizeChanged(object? sender, SizeChangedEventArgs e)
     {
         for (
             var current = (DependencyObject?)sender;
@@ -841,7 +841,7 @@ internal partial class MainWindow
             + _results.BorderThickness.Bottom;
     }
 
-    private void SearchResultUserControl_CopyClicked(object sender, EventArgs e)
+    private void SearchResultUserControl_CopyClicked(object? sender, EventArgs e)
     {
         var searchResult = SelectedSearchResult;
         if (searchResult?.Match is ICopyableMatch match)
@@ -850,9 +850,9 @@ internal partial class MainWindow
         _search.Focus();
     }
 
-    private void SearchResultUserControl_PinClicked(object sender, EventArgs e) => SetPinned(true);
+    private void SearchResultUserControl_PinClicked(object? sender, EventArgs e) => SetPinned(true);
 
-    private void SearchResultUserControl_UnpinClicked(object sender, EventArgs e) =>
+    private void SearchResultUserControl_UnpinClicked(object? sender, EventArgs e) =>
         SetPinned(false);
 
     private void SetPinned(bool pinned)
@@ -893,7 +893,7 @@ internal partial class MainWindow
         _search.Focus();
     }
 
-    private void NotificationBarUserControl_Activated(object sender, UINotificationEventArgs e)
+    private void NotificationBarUserControl_Activated(object? sender, UINotificationEventArgs e)
     {
         _ui.RemoveNotificationBar(e.Notification.Key);
 
@@ -902,7 +902,7 @@ internal partial class MainWindow
         e.Notification.Activate?.Invoke();
     }
 
-    private void NotificationBarUserControl_Dismissed(object sender, UINotificationEventArgs e)
+    private void NotificationBarUserControl_Dismissed(object? sender, UINotificationEventArgs e)
     {
         _ui.RemoveNotificationBar(e.Notification.Key);
 

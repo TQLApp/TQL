@@ -23,7 +23,7 @@ internal class SearchManager : IDisposable
     private readonly IUI _ui;
     private volatile History? _history;
     private readonly SynchronizationContext _synchronizationContext =
-        SynchronizationContext.Current;
+        SynchronizationContext.Current ?? throw new InvalidOperationException();
 
     private int _suspendSearch;
     private readonly Dictionary<string, object> _contextContext = new();

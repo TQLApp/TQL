@@ -34,5 +34,5 @@ internal static class Constants
     );
 
     public static NuGetFramework ApplicationFrameworkVersion =
-        new(FrameworkConstants.FrameworkIdentifiers.Net, new Version(4, 8));
+        new(FrameworkConstants.FrameworkIdentifiers.NetCore, new Version(8, 0));
 }

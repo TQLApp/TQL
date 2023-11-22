@@ -146,7 +146,7 @@ Function Copy-Output([string]$From, [string]$Target)
 {
     Write-Host "Copying $From"
 
-    Copy-Item ($Global:Root + "\" + $From + "\bin\Release\net48\*") -Destination $Target -Recurse
+    Copy-Item ($Global:Root + "\" + $From + "\bin\Release\net8.0-windows\*") -Destination $Target -Recurse
 
     Console-Update-Status "[OK]" -ForegroundColor Green
 }

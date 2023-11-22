@@ -54,7 +54,7 @@ internal partial class ProgressWindow
         InitializeComponent();
     }
 
-    private void _timer_Tick(object sender, EventArgs e)
+    private void _timer_Tick(object? sender, EventArgs e)
     {
         string log;
 
@@ -70,7 +70,7 @@ internal partial class ProgressWindow
         _log.ScrollToEnd();
     }
 
-    private void LoggerProvider_Logged(object sender, InMemoryLogMessageEventArgs e)
+    private void LoggerProvider_Logged(object? sender, InMemoryLogMessageEventArgs e)
     {
         lock (_syncRoot)
         {
@@ -80,7 +80,7 @@ internal partial class ProgressWindow
         }
     }
 
-    private void Window_Loaded(object sender, RoutedEventArgs e)
+    private void Window_Loaded(object? sender, RoutedEventArgs e)
     {
         _loggerProvider.Logged += LoggerProvider_Logged;
 
@@ -110,12 +110,12 @@ internal partial class ProgressWindow
         }
     }
 
-    private void Window_Unloaded(object sender, RoutedEventArgs e)
+    private void Window_Unloaded(object? sender, RoutedEventArgs e)
     {
         _loggerProvider.Logged -= LoggerProvider_Logged;
     }
 
-    private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+    private void Window_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
     {
         e.Cancel = !_complete;
     }

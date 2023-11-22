@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Tql.Abstractions;
 using Tql.Plugins.Outlook.Services;
+using Tql.Plugins.Outlook.Services.Interop;
 
 namespace Tql.Plugins.Outlook.Data;
 

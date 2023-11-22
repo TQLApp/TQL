@@ -201,7 +201,7 @@ internal class UpdateChecker : IDisposable
 
     private Version GetAppVersion()
     {
-        return GetType().Assembly.GetName().Version;
+        return GetType().Assembly.GetName().Version!;
     }
 
     private void InitializeRequest(HttpRequestMessage request)
@@ -256,7 +256,7 @@ internal class UpdateChecker : IDisposable
         );
     }
 
-    private void TimerCallback(object state)
+    private void TimerCallback(object? state)
     {
         try
         {

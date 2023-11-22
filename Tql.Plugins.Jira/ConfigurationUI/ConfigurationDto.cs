@@ -55,6 +55,7 @@ internal class ConnectionDto(Guid id)
     {
         return !string.IsNullOrWhiteSpace(Name)
             && !string.IsNullOrWhiteSpace(Url)
+            && Uri.TryCreate(Url, UriKind.Absolute, out _)
             && ProtectedPassword != null;
     }
 }

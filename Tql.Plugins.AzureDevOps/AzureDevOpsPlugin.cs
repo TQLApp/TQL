@@ -36,6 +36,7 @@ public class AzureDevOpsPlugin : ITqlPlugin
         services.AddSingleton<AzureDevOpsApi>();
         services.AddSingleton<ConfigurationManager>();
         services.AddSingleton<AzureWorkItemIconManager>();
+        services.AddSingleton<AzureDevOpsPeopleDirectoryManager>();
 
         services.AddTransient<ConfigurationControl>();
 

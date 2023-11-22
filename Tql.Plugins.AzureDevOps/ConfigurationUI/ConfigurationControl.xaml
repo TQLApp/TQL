@@ -73,6 +73,8 @@
                     <RowDefinition />
                     <RowDefinition />
                     <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -87,6 +89,7 @@
                     Grid.Column="1"
                     Margin="3"
                     TextChanged="_name_TextChanged" />
+
                 <Label
                     Content="{x:Static app:Labels.ConfigurationControl_URLLabel}"
                     Grid.Row="1" />
@@ -102,6 +105,22 @@
                     Margin="3"
                     TextWrapping="Wrap"
                     Text="{x:Static app:Labels.ConfigurationControl_URLHelpText}" />
+
+                <Label
+                    Content="{x:Static app:Labels.ConfigurationControl_PATTokenLabel}"
+                    Grid.Row="3" />
+                <PasswordBox
+                    x:Name="_patToken"
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    Margin="3"
+                    PasswordChanged="_patToken_PasswordChanged" />
+                <TextBlock
+                    Grid.Row="4"
+                    Grid.Column="1"
+                    Margin="3"
+                    TextWrapping="Wrap"
+                    Text="{x:Static app:Labels.ConfigurationControl_PATTokenHelpText}" />
 
                 <StackPanel
                     Grid.Column="2"

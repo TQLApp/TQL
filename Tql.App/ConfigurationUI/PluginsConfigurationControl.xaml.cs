@@ -66,9 +66,10 @@ internal partial class PluginsConfigurationControl : IConfigurationPage
         return Task.FromResult(SaveStatus.Success);
     }
 
-    private void _browseTab_Checked(object sender, RoutedEventArgs e) => SetSelectedTab(Tab.Browse);
+    private void _browseTab_Checked(object? sender, RoutedEventArgs e) =>
+        SetSelectedTab(Tab.Browse);
 
-    private void _installedTab_Checked(object sender, RoutedEventArgs e) =>
+    private void _installedTab_Checked(object? sender, RoutedEventArgs e) =>
         SetSelectedTab(Tab.Installed);
 
     private async Task ReloadPackages()
@@ -92,11 +93,11 @@ internal partial class PluginsConfigurationControl : IConfigurationPage
         }
     }
 
-    private async void _install_Click(object sender, RoutedEventArgs e)
+    private async void _install_Click(object? sender, RoutedEventArgs e)
     {
         OnInstallationStarted();
 
-        var package = (Package)((FrameworkElement)sender).DataContext;
+        var package = (Package)((FrameworkElement)sender!).DataContext;
 
         try
         {
@@ -119,11 +120,11 @@ internal partial class PluginsConfigurationControl : IConfigurationPage
         await ReloadPackages();
     }
 
-    private async void _remove_Click(object sender, RoutedEventArgs e)
+    private async void _remove_Click(object? sender, RoutedEventArgs e)
     {
         OnRemovalStarted();
 
-        var package = (Package)((FrameworkElement)sender).DataContext;
+        var package = (Package)((FrameworkElement)sender!).DataContext;
 
         _packageManager.RemovePackage(package.Identity.Id);
 
@@ -140,12 +141,12 @@ internal partial class PluginsConfigurationControl : IConfigurationPage
         _restartLabel.Visibility = Visibility.Visible;
     }
 
-    private void _restart_Click(object sender, RoutedEventArgs e)
+    private void _restart_Click(object? sender, RoutedEventArgs e)
     {
         _ui.Shutdown(RestartMode.Restart);
     }
 
-    private void _browser_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void _browser_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
         OnSelectedPackageChanged();
     }

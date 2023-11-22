@@ -6,7 +6,7 @@ internal class ReferenceEqualityComparer<T> : IEqualityComparer<T>
 {
     public static readonly ReferenceEqualityComparer<T> Instance = new();
 
-    public bool Equals(T x, T y)
+    public bool Equals(T? x, T? y)
     {
         return ReferenceEquals(x, y);
     }

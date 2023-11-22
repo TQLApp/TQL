@@ -14,8 +14,8 @@ internal static class MatchExtensions
         var assemblyName = type.Assembly.GetName();
 
         telemetry.AddProperty("Type", type.FullName!);
-        telemetry.AddProperty("Assembly", assemblyName.Name);
-        telemetry.AddProperty("Version", assemblyName.Version.ToString());
+        telemetry.AddProperty("Assembly", assemblyName.Name!);
+        telemetry.AddProperty("Version", assemblyName.Version!.ToString());
         telemetry.AddProperty(nameof(self.TypeId.Id), self.TypeId.Id.ToString());
         telemetry.AddProperty(nameof(self.TypeId.PluginId), self.TypeId.PluginId.ToString());
     }

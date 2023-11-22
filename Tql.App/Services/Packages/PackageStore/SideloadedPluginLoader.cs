@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Runtime.Loader;
 using Microsoft.Extensions.Logging;
 using Tql.Abstractions;
 using Tql.App.Services.Packages.AssemblyResolution;
@@ -8,17 +9,24 @@ namespace Tql.App.Services.Packages.PackageStore;
 
 internal class SideloadedPluginLoader : IPluginLoader
 {
+    private readonly AssemblyLoadContext _assemblyLoadContext;
     private readonly string _path;
     private readonly ILogger _logger;
     private readonly AssemblyResolver _assemblyResolver;
 
-    public SideloadedPluginLoader(string path, ILogger logger)
+    public SideloadedPluginLoader(
+        AssemblyLoadContext assemblyLoadContext,
+        string path,
+        ILogger logger
+    )
     {
+        _assemblyLoadContext = assemblyLoadContext;
         _path = path;
         _logger = logger;
 
         _assemblyResolver = AssemblyResolver.Create(
-            new[] { path, Path.GetDirectoryName(GetType().Assembly.Location) },
+            new[] { path, Path.GetDirectoryName(GetType().Assembly.Location)! },
+            assemblyLoadContext,
             _logger
         );
     }
@@ -32,7 +40,7 @@ internal class SideloadedPluginLoader : IPluginLoader
         foreach (var fileName in AssemblyUtils.GetAssemblyFileNames(Path.GetFullPath(_path)))
         {
             var assemblyName = AssemblyName.GetAssemblyName(fileName);
-            var assembly = Assembly.Load(assemblyName);
+            var assembly = _assemblyLoadContext.LoadFromAssemblyName(assemblyName);
 
             foreach (var type in PluginLoaderUtils.GetPluginTypes(assembly))
             {
@@ -46,7 +54,7 @@ internal class SideloadedPluginLoader : IPluginLoader
     public ImmutableArray<ITqlPlugin> GetPlugins()
     {
         return GetPluginTypes()
-            .Select(p => (ITqlPlugin)Activator.CreateInstance(p))
+            .Select(p => (ITqlPlugin)Activator.CreateInstance(p)!)
             .ToImmutableArray();
     }
 

@@ -7,7 +7,7 @@ internal static class NotifyPropertyChangedExtensions
     public static void AttachPropertyChanged(
         this INotifyPropertyChanged self,
         string propertyName,
-        Action<object, PropertyChangedEventArgs> action
+        Action<object?, PropertyChangedEventArgs> action
     )
     {
         self.PropertyChanged += (s, e) =>

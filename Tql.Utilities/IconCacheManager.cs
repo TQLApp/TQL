@@ -178,7 +178,7 @@ public abstract class IconCacheManager<T>
 
     private string GetCacheIconFileName(T key)
     {
-        return Path.Combine(_cachePath, Encryption.Sha1Hash(key.ToString()));
+        return Path.Combine(_cachePath, Encryption.Sha1Hash(key.ToString() ?? string.Empty));
     }
 
     /// <summary>
@@ -217,4 +217,4 @@ public record IconCacheManagerConfiguration(Guid PluginId, TimeSpan Expiration);
 /// </remarks>
 /// <param name="MediaType">Media type of the data.</param>
 /// <param name="Data">Data of the icon.</param>
-public record IconData(string MediaType, byte[] Data);
+public record IconData(string? MediaType, byte[] Data);
