@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Office.Interop.Outlook;
+using Tql.Plugins.Outlook.Support;
 using Application = Microsoft.Office.Interop.Outlook.Application;
 
 namespace Tql.Plugins.Outlook.Services;
@@ -28,7 +29,7 @@ internal class OutlookClient : IDisposable
         {
             // Only get an actively running Outlook. This prevents the welcome
             // dialog from coming up on machines that don't have Outlook setup.
-            _application = (Application)Marshal.GetActiveObject("Outlook.Application");
+            _application = (Application)MarshalEx.GetActiveObject("Outlook.Application");
         }
         catch (System.Exception ex)
         {
