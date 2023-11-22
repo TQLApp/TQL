@@ -114,15 +114,20 @@ internal partial class ConfigurationWindow
 
         var context = (Context)treeViewItem.Tag;
 
+        SetCurrentContext(context);
+
+        if (context == null && treeViewItem.Items.Count > 0)
+        {
+            treeViewItem.IsExpanded = true;
+            ((TreeViewItem)treeViewItem.Items[0]!).IsSelected = true;
+        }
+    }
+
+    private void SetCurrentContext(Context? context)
+    {
         if (context == null)
         {
             _container.Content = null;
-
-            if (treeViewItem.Items.Count > 0)
-            {
-                treeViewItem.IsExpanded = true;
-                ((TreeViewItem)treeViewItem.Items[0]).IsSelected = true;
-            }
         }
         else
         {
@@ -150,6 +155,14 @@ internal partial class ConfigurationWindow
             {
                 if (page.Tag is not Context context)
                     continue;
+
+                // If the page decides to show UI or something, this
+                // ensures that it's the current page, and that it can
+                // find its owner.
+
+                page.IsSelected = true;
+
+                SetCurrentContext(context);
 
                 var task = context.Page.Save();
 
