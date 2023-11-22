@@ -47,7 +47,7 @@ jobs:
         run: dotnet restore -warnaserror
 
       - name: Build Solution
-        run: dotnet build -property:Version="${{ steps.get-build-version.outputs.build-version }}" -warnaserror
+        run: dotnet build -c Release -property:Version="${{ steps.get-build-version.outputs.build-version }}" -warnaserror
 
       - name: Preprocess DocFX Markdown Files
         shell: pwsh
