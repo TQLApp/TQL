@@ -33,11 +33,15 @@ internal static class Constants
         "4474c041-702c-415a-8531-5460dc1b9db1"
     );
 
-    public static NuGetFramework ApplicationFrameworkVersion =
-        new(
-            FrameworkConstants.FrameworkIdentifiers.NetCoreApp,
-            new Version(8, 0),
-            FrameworkConstants.PlatformIdentifiers.Windows,
-            new Version(7, 0)
-        );
+    public static NuGetFramework ApplicationFrameworkVersion = new NuGetFramework(
+        FrameworkConstants.FrameworkIdentifiers.NetCoreApp,
+        new Version(8, 0),
+        FrameworkConstants.PlatformIdentifiers.Windows,
+        new Version(7, 0)
+    );
+
+    public static ImmutableArray<string> SystemPackageIds = ImmutableArray.Create(
+        "TQLApp.Abstractions",
+        "TQLApp.Utilities"
+    );
 }

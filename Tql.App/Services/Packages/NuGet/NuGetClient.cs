@@ -20,6 +20,8 @@ namespace Tql.App.Services.Packages.NuGet;
 internal class NuGetClient : IDisposable
 {
     private readonly ILogger _logger;
+    private readonly NuGetFramework _targetFramework;
+    private readonly ImmutableArray<string> _systemPackageIds;
     private readonly List<SourceRepository> _remoteSourceRepositories = new();
     private readonly NuGetPackageManager _packageManager;
     private readonly List<Lazy<INuGetResourceProvider>> _providers =
@@ -29,9 +31,16 @@ internal class NuGetClient : IDisposable
     private readonly ISettings _settings = NullSettings.Instance;
     private readonly string _directDownloadPath;
 
-    public NuGetClient(NuGetClientConfiguration configuration, ILogger logger)
+    public NuGetClient(
+        NuGetClientConfiguration configuration,
+        ILogger logger,
+        NuGetFramework targetFramework,
+        ImmutableArray<string> systemPackageIds
+    )
     {
         _logger = logger;
+        _targetFramework = targetFramework;
+        _systemPackageIds = systemPackageIds;
 
         _sourceCacheContext.NoCache = true;
 
@@ -63,13 +72,19 @@ internal class NuGetClient : IDisposable
         );
         Directory.CreateDirectory(_directDownloadPath);
 
+        var nuGetProject = new FolderNuGetProject(
+            packagesFolderPath,
+            new PackagePathResolver(packagesFolderPath),
+            targetFramework
+        );
+
         _packageManager = new NuGetPackageManager(
             sourceRepositoryProvider,
             _settings,
             packagesFolderPath
         )
         {
-            PackagesFolderNuGetProject = new FolderNuGetProject(packagesFolderPath),
+            PackagesFolderNuGetProject = nuGetProject,
         };
     }
 
@@ -177,11 +192,10 @@ internal class NuGetClient : IDisposable
         return packages.ToImmutable();
     }
 
-    public ImmutableArray<string> GetPackageFiles(
-        PackageIdentity packageId,
-        NuGetFramework targetFramework
-    )
+    public ImmutableArray<string> GetPackageFiles(PackageIdentity packageId)
     {
+        _logger.LogDebug($"Resolving package files for '{packageId}'");
+
         var package = LocalFolderUtility.GetPackage(
             new Uri(
                 _packageManager.PackagesFolderNuGetProject.GetInstalledPackageFilePath(packageId)
@@ -191,55 +205,29 @@ internal class NuGetClient : IDisposable
         if (package == null)
             throw new ArgumentException("Cannot find package");
 
-        var directoryName = Path.GetDirectoryName(package.Path)!;
+        var packagePath = Path.GetDirectoryName(package.Path)!;
 
         using var packageReader = package.GetReader();
 
-        var referenceItems = packageReader
-            .GetReferenceItems()
-            .Where(
-                p =>
-                    DefaultCompatibilityProvider
-                        .Instance
-                        .IsCompatible(targetFramework, p.TargetFramework)
-            )
-            .ToList();
+        return GetPackageFiles(packageReader, packagePath);
+    }
 
-        if (referenceItems.Count == 0)
-            throw new InvalidOperationException("Package does not support the specified framework");
-
-        FrameworkSpecificGroup? matchedReferenceItem;
-
-        if (referenceItems.Count == 1)
-        {
-            matchedReferenceItem = referenceItems.Single();
-        }
-        else
-        {
-            matchedReferenceItem = referenceItems
-                .Where(p => p.TargetFramework.Framework == targetFramework.Framework)
-                .OrderByDescending(p => p.TargetFramework.Version)
-                .FirstOrDefault();
-
-            if (matchedReferenceItem == null)
-            {
-                matchedReferenceItem = referenceItems
-                    .Where(
-                        p =>
-                            p.TargetFramework.Framework
-                            == FrameworkConstants.FrameworkIdentifiers.NetStandard
-                    )
-                    .OrderByDescending(p => p.TargetFramework.Version)
-                    .FirstOrDefault();
-            }
-        }
+    private ImmutableArray<string> GetPackageFiles(
+        IPackageContentReader packageReader,
+        string packagePath
+    )
+    {
+        var matchedReferenceItem = MSBuildNuGetProjectSystemUtility.GetMostCompatibleGroup(
+            _targetFramework,
+            packageReader.GetReferenceItems()
+        );
 
         if (matchedReferenceItem == null)
-            throw new InvalidOperationException("Cannot determine the correct framework version");
+            return ImmutableArray<string>.Empty;
 
         return matchedReferenceItem
             .Items
-            .Select(p => Path.Combine(directoryName, p.Replace('/', Path.DirectorySeparatorChar)))
+            .Select(p => Path.Combine(packagePath, p.Replace('/', Path.DirectorySeparatorChar)))
             .ToImmutableArray();
     }
 
@@ -270,42 +258,9 @@ internal class NuGetClient : IDisposable
         ).ToList();
 
         if (requiredDependency != null)
-        {
-            var resolvedDependency = installActions
-                .Select(p => p.PackageIdentity)
-                .Where(
-                    p =>
-                        string.Equals(
-                            p.Id,
-                            requiredDependency.Id,
-                            StringComparison.OrdinalIgnoreCase
-                        )
-                )
-                .OrderByDescending(p => p.Version.Version)
-                .FirstOrDefault();
+            VerifyRequiredDependency(identity, requiredDependency, installActions);
 
-            if (resolvedDependency == null)
-            {
-                throw new NuGetClientException(
-                    $"NuGet package '{identity.Id}' does not list '{requiredDependency.Id}' as a dependency"
-                );
-            }
-
-            var requiredVersion = requiredDependency.Version.Version;
-            var resolvedVersion = resolvedDependency.Version.Version;
-
-            // Local builds have 0.0 as the version. Skip the version check in this case.
-            if (
-                !requiredVersion.Equals(new Version(0, 0, 0, 0))
-                && resolvedVersion.CompareTo(requiredVersion) > 0
-            )
-            {
-                throw new NuGetClientException(
-                    $"NuGet package '{identity.Id}' requires version '{resolvedVersion}' of "
-                        + $"'{requiredDependency.Id}' which is higher then the supported version '{requiredVersion}'"
-                );
-            }
-        }
+        TrimSystemPackages(installActions);
 
         var logger = new LoggerAdapter(projectContext);
 
@@ -328,6 +283,67 @@ internal class NuGetClient : IDisposable
         );
 
         return installActions.Select(action => action.PackageIdentity).ToImmutableArray();
+    }
+
+    private void TrimSystemPackages(List<NuGetProjectAction> installActions)
+    {
+        var trim = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        trim.UnionWith(_systemPackageIds);
+
+        loop:
+        while (installActions.Count > 0)
+        {
+            foreach (var action in installActions.Where(p => trim.Contains(p.PackageIdentity.Id)))
+            {
+                _logger.LogInformation($"Removing system package '{action.PackageIdentity}'");
+
+                installActions.Remove(action);
+
+                if (action.PackageIdentity is SourcePackageDependencyInfo dependencyInfo)
+                    trim.UnionWith(dependencyInfo.Dependencies.Select(p => p.Id));
+
+                goto loop;
+            }
+
+            break;
+        }
+    }
+
+    private static void VerifyRequiredDependency(
+        PackageIdentity identity,
+        PackageIdentity requiredDependency,
+        List<NuGetProjectAction> installActions
+    )
+    {
+        var resolvedDependency = installActions
+            .Select(p => p.PackageIdentity)
+            .Where(
+                p => string.Equals(p.Id, requiredDependency.Id, StringComparison.OrdinalIgnoreCase)
+            )
+            .MaxBy(p => p.Version.Version);
+
+        if (resolvedDependency == null)
+        {
+            throw new NuGetClientException(
+                $"NuGet package '{identity.Id}' does not list '{requiredDependency.Id}' as a dependency"
+            );
+        }
+
+        var requiredVersion = requiredDependency.Version.Version;
+        var resolvedVersion = resolvedDependency.Version.Version;
+
+        // Local builds have 0.0 as the version. Skip the version check in this case.
+        if (
+            !requiredVersion.Equals(new Version(0, 0, 0, 0))
+            && resolvedVersion.CompareTo(requiredVersion) > 0
+        )
+        {
+            throw new NuGetClientException(
+                $"NuGet package '{identity.Id}' requires version '{resolvedVersion}' of "
+                    + $"'{requiredDependency.Id}' which is higher then the supported version '{requiredVersion}'"
+            );
+        }
     }
 
     public void Dispose()

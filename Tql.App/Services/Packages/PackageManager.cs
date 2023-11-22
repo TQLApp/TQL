@@ -108,7 +108,9 @@ internal class PackageManager
 
         return new NuGetClient(
             new NuGetClientConfiguration(packageCachePath, sources.ToImmutable()),
-            new NuGetLogger(_logger)
+            new NuGetLogger(_logger),
+            Constants.ApplicationFrameworkVersion,
+            Constants.SystemPackageIds
         );
     }
 
@@ -237,18 +239,11 @@ internal class PackageManager
 
         foreach (var installedPackage in installedPackages)
         {
-            foreach (
-                var fileName in client.GetPackageFiles(
-                    installedPackage,
-                    Constants.ApplicationFrameworkVersion
-                )
-            )
+            foreach (var fileName in client.GetPackageFiles(installedPackage))
             {
                 CopyDirectory(Path.GetDirectoryName(fileName)!, targetPath);
             }
         }
-
-        PackagesPluginLoader.WritePackageManifest(targetPath, _logger);
 
         _storeManager.SetPackageVersion(
             latestVersion.Identity.Id,
