@@ -172,6 +172,7 @@ internal partial class ConfigurationControl : IConfigurationPage
                 _logger.LogWarning(ex, "Failed to decrypt password");
                 _password.Password = null;
             }
+
             _id = connectionDto.Id;
         }
 

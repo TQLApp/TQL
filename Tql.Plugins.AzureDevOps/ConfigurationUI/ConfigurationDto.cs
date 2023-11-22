@@ -16,7 +16,15 @@ internal class ConfigurationDto
             .AddRange(
                 configuration
                     .Connections
-                    .Select(p => new ConnectionDto { Name = p.Name, Url = p.Url })
+                    .Select(
+                        p =>
+                            new ConnectionDto(p.Id)
+                            {
+                                Name = p.Name,
+                                Url = p.Url,
+                                ProtectedPATToken = p.ProtectedPATToken
+                            }
+                    )
             );
 
         return result;
@@ -25,20 +33,25 @@ internal class ConfigurationDto
     public Configuration ToConfiguration()
     {
         return new Configuration(
-            Connections.Select(p => new Connection(p.Name!, p.Url!)).ToImmutableArray()
+            Connections
+                .Select(p => new Connection(p.Id, p.Name!, p.Url!, p.ProtectedPATToken!))
+                .ToImmutableArray()
         );
     }
 }
 
-internal class ConnectionDto
+internal class ConnectionDto(Guid id)
 {
+    public Guid Id { get; } = id;
     public string? Name { get; set; }
     public string? Url { get; set; }
+    public string? ProtectedPATToken { get; set; }
 
     public bool GetIsValid()
     {
         return !string.IsNullOrWhiteSpace(Name)
             && !string.IsNullOrWhiteSpace(Url)
-            && Uri.TryCreate(Url, UriKind.Absolute, out _);
+            && Uri.TryCreate(Url, UriKind.Absolute, out _)
+            && ProtectedPATToken != null;
     }
 }

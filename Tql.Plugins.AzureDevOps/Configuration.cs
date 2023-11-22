@@ -10,4 +10,4 @@ internal record Configuration(ImmutableArray<Connection> Connections)
     }
 }
 
-internal record Connection(string Name, string Url);
+internal record Connection(Guid Id, string Name, string Url, string ProtectedPATToken);

@@ -241,6 +241,24 @@ namespace Tql.Plugins.AzureDevOps {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You can create a PAT token in the Azure DevOps website. You can find more information on the documentation page. Use the Documentation link above to open the documentation page..
+        /// </summary>
+        public static string ConfigurationControl_PATTokenHelpText {
+            get {
+                return ResourceManager.GetString("ConfigurationControl_PATTokenHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PAT token:.
+        /// </summary>
+        public static string ConfigurationControl_PATTokenLabel {
+            get {
+                return ResourceManager.GetString("ConfigurationControl_PATTokenLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to URL.
         /// </summary>
         public static string ConfigurationControl_URL {
@@ -250,7 +268,7 @@ namespace Tql.Plugins.AzureDevOps {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This URL is the URL to your Azure DevOps environment. It should be either https://yourcompany.visualstudio.com or https://dev.azure.com/yourcompany..
+        ///   Looks up a localized string similar to This URL is the URL to your Azure DevOps environment. It should similar to https://dev.azure.com/yourcompany..
         /// </summary>
         public static string ConfigurationControl_URLHelpText {
             get {
@@ -264,6 +282,15 @@ namespace Tql.Plugins.AzureDevOps {
         public static string ConfigurationControl_URLLabel {
             get {
                 return ResourceManager.GetString("ConfigurationControl_URLLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you want to add a new item?.
+        /// </summary>
+        public static string Confirm_DoYouWantToAddNewItem {
+            get {
+                return ResourceManager.GetString("Confirm_DoYouWantToAddNewItem", resourceCulture);
             }
         }
         

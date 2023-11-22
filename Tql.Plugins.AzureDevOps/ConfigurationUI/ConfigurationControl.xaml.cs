@@ -1,14 +1,19 @@
-﻿using Tql.Abstractions;
-using Tql.Plugins.AzureDevOps.Data;
+﻿using System.Windows.Forms;
+using Microsoft.Extensions.Logging;
+using Tql.Abstractions;
 using Tql.Plugins.AzureDevOps.Services;
+using Tql.Utilities;
+using Button = System.Windows.Controls.Button;
 
 namespace Tql.Plugins.AzureDevOps.ConfigurationUI;
 
 internal partial class ConfigurationControl : IConfigurationPage
 {
     private readonly ConfigurationManager _configurationManager;
-    private readonly ICache<AzureData> _cache;
     private readonly IUI _ui;
+    private readonly IEncryption _encryption;
+    private readonly ILogger<ConfigurationControl> _logger;
+    private Guid? _id;
 
     private new ConfigurationDto DataContext => (ConfigurationDto)base.DataContext;
 
@@ -18,13 +23,15 @@ internal partial class ConfigurationControl : IConfigurationPage
 
     public ConfigurationControl(
         ConfigurationManager configurationManager,
-        ICache<AzureData> cache,
-        IUI ui
+        IUI ui,
+        IEncryption encryption,
+        ILogger<ConfigurationControl> logger
     )
     {
         _configurationManager = configurationManager;
-        _cache = cache;
         _ui = ui;
+        _encryption = encryption;
+        _logger = logger;
 
         InitializeComponent();
 
@@ -41,10 +48,38 @@ internal partial class ConfigurationControl : IConfigurationPage
         _update.IsEnabled = CreateConnectionDto().GetIsValid();
     }
 
-    private ConnectionDto CreateConnectionDto() => new() { Name = _name.Text, Url = _url.Text };
+    private ConnectionDto CreateConnectionDto()
+    {
+        return new ConnectionDto(_id ?? Guid.NewGuid())
+        {
+            Name = _name.Text,
+            Url = _url.Text,
+            ProtectedPATToken = _encryption.EncryptString(_patToken.Password)
+        };
+    }
 
     public Task<SaveStatus> Save()
     {
+        if (_update.IsEnabled)
+        {
+            switch (
+                _ui.ShowConfirmation(
+                    this,
+                    Labels.Confirm_DoYouWantToAddNewItem,
+                    buttons: DialogCommonButtons.Yes
+                        | DialogCommonButtons.No
+                        | DialogCommonButtons.Cancel
+                )
+            )
+            {
+                case DialogResult.Yes:
+                    _update.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                    break;
+                case DialogResult.Cancel:
+                    return Task.FromResult(SaveStatus.Failure);
+            }
+        }
+
         _configurationManager.UpdateConfiguration(DataContext.ToConfiguration());
 
         return Task.FromResult(SaveStatus.Success);
@@ -76,6 +111,8 @@ internal partial class ConfigurationControl : IConfigurationPage
     {
         _name.Text = null;
         _url.Text = null;
+        _patToken.Password = null;
+        _id = null;
     }
 
     private void _connections_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -86,6 +123,18 @@ internal partial class ConfigurationControl : IConfigurationPage
         {
             _name.Text = connectionDto.Name;
             _url.Text = connectionDto.Url;
+
+            try
+            {
+                _patToken.Password = _encryption.DecryptString(connectionDto.ProtectedPATToken);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Failed to decrypt password");
+                _patToken.Password = null;
+            }
+
+            _id = connectionDto.Id;
         }
 
         UpdateEnabled();
@@ -94,6 +143,8 @@ internal partial class ConfigurationControl : IConfigurationPage
     private void _name_TextChanged(object sender, TextChangedEventArgs e) => UpdateEnabled();
 
     private void _url_TextChanged(object sender, TextChangedEventArgs e) => UpdateEnabled();
+
+    private void _patToken_PasswordChanged(object sender, RoutedEventArgs e) => UpdateEnabled();
 
     private void _documentation_Click(object sender, RoutedEventArgs e)
     {
