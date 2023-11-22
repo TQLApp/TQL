@@ -173,6 +173,8 @@ public partial class App
                 builder.AddDebug();
             }
 
+            var fileIndex = 0;
+
             builder.AddFile(
                 Path.Combine(store.LogFolder, "Log.log"),
                 options =>
@@ -181,6 +183,16 @@ public partial class App
                     options.FileSizeLimitBytes = 1 * 1024 * 1024;
                     options.MaxRollingFiles = 5;
 #endif
+                    options.HandleFileError = p =>
+                    {
+                        // ERROR_SHARING_VIOLATION
+                        if ((uint)p.ErrorException.HResult == 0x80070020 && fileIndex < 10)
+                        {
+                            p.UseNewLogFileName(
+                                Path.Combine(store.LogFolder, $"Log_{++fileIndex}.log")
+                            );
+                        }
+                    };
                     options.Append = true;
                 }
             );
