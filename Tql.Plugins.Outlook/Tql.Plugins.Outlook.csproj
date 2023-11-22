@@ -15,15 +15,19 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Office.Interop.Outlook" Version="15.0.4797.1004" />
+		<COMReference Include="Microsoft.Office.Interop.Outlook">
+			<WrapperTool>primary</WrapperTool>
+			<VersionMinor>6</VersionMinor>
+			<VersionMajor>9</VersionMajor>
+			<Guid>00062fff-0000-0000-c000-000000000046</Guid>
+			<Lcid>0</Lcid>
+			<Isolated>false</Isolated>
+			<EmbedInteropTypes>true</EmbedInteropTypes>
+		</COMReference>
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\Tql.Utilities\Tql.Utilities.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Reference Include="Microsoft.CSharp" />
 	</ItemGroup>
 
 	<ItemGroup>

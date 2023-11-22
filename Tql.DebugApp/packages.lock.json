@@ -494,11 +494,6 @@
         "resolved": "1.1.0",
         "contentHash": "aOZA3BWfz9RXjpzt0sRJJMjAscAUm3Hoa4UWAfceV9UTYxgwZ1lZt5nO2myFf+/jetYQo4uTP7zS8sJY67BBxg=="
       },
-      "Microsoft.Office.Interop.Outlook": {
-        "type": "Transitive",
-        "resolved": "15.0.4797.1004",
-        "contentHash": "17tdFXg/TGnbmSC9YNkIrB6P3vTSemOMI/TaUaZWQmRE1dMjHIVmBPffQhXasH/te4weHiFk8EEXUCi/NsGbuA=="
-      },
       "Microsoft.TeamFoundation.DistributedTask.Common.Contracts": {
         "type": "Transitive",
         "resolved": "19.227.0-preview",
@@ -1992,7 +1987,6 @@
       "TQLApp.Plugins.Outlook": {
         "type": "Project",
         "dependencies": {
-          "Microsoft.Office.Interop.Outlook": "[15.0.4797.1004, )",
           "TQLApp.Utilities": "[0.0.0, )"
         }
       },
