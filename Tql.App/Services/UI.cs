@@ -25,7 +25,7 @@ internal class UI(ILogger<UI> logger) : IUI
     public event EventHandler? UINotificationsChanged;
     public event EventHandler<ConfigurationUIEventArgs>? ConfigurationUIRequested;
 
-    public void SetSynchronizationContext(SynchronizationContext synchronizationContext)
+    public void SetSynchronizationContext(SynchronizationContext? synchronizationContext)
     {
         _synchronizationContext = synchronizationContext;
     }

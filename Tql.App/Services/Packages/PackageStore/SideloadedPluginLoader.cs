@@ -18,7 +18,7 @@ internal class SideloadedPluginLoader : IPluginLoader
         _logger = logger;
 
         _assemblyResolver = AssemblyResolver.Create(
-            new[] { path, Path.GetDirectoryName(GetType().Assembly.Location) },
+            new[] { path, Path.GetDirectoryName(GetType().Assembly.Location)! },
             _logger
         );
     }
@@ -46,7 +46,7 @@ internal class SideloadedPluginLoader : IPluginLoader
     public ImmutableArray<ITqlPlugin> GetPlugins()
     {
         return GetPluginTypes()
-            .Select(p => (ITqlPlugin)Activator.CreateInstance(p))
+            .Select(p => (ITqlPlugin)Activator.CreateInstance(p)!)
             .ToImmutableArray();
     }
 

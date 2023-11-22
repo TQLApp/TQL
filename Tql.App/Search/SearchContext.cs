@@ -131,7 +131,7 @@ internal partial class SearchContext : ISearchContext, IDisposable
         if (textMatch == null)
         {
             (fuzzyText, int fuzzyTextDistance) = FuzzyTextMatching.Match(
-                _levenshtein.Value,
+                _levenshtein.Value!,
                 _lowerSimplifiedSearch,
                 _distribution,
                 simpleText,
@@ -213,11 +213,11 @@ internal partial class SearchContext : ISearchContext, IDisposable
     private class SearchResultComparer(CancellationToken cancellationToken)
         : IComparer<SearchResult>
     {
-        public int Compare(SearchResult a, SearchResult b)
+        public int Compare(SearchResult? a, SearchResult? b)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            int result = a.Penalty!.Value.CompareTo(b.Penalty!.Value);
+            int result = a!.Penalty!.Value.CompareTo(b!.Penalty!.Value);
             if (result != 0)
                 return result;
 

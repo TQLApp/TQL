@@ -154,8 +154,8 @@ internal abstract class Tool
 
         foreach (DictionaryEntry entry in reader)
         {
-            var data = (ResXDataNode)entry.Value;
-            if (data.GetValue((ITypeResolutionService)null!) is string value)
+            var data = (ResXDataNode?)entry.Value;
+            if (data?.GetValue((ITypeResolutionService)null!) is string value)
             {
                 yield return (Key: (string)entry.Key, Value: value, data.Comment);
             }

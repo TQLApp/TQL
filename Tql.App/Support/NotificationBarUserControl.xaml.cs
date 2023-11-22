@@ -33,7 +33,7 @@ internal partial class NotificationBarUserControl
         });
     }
 
-    private void _hyperlink_Click(object sender, RoutedEventArgs e)
+    private void _hyperlink_Click(object? sender, RoutedEventArgs e)
     {
         if (DataContext is UINotification notification)
             OnActivated(new UINotificationEventArgs(notification));

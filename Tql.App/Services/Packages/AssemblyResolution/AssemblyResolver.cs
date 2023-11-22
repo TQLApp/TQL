@@ -46,7 +46,7 @@ internal class AssemblyResolver : IDisposable
         AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
     }
 
-    private Assembly? CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+    private Assembly? CurrentDomain_AssemblyResolve(object? sender, ResolveEventArgs args)
     {
         var name = new AssemblyName(args.Name);
         var key = AssemblyKey.FromName(name);

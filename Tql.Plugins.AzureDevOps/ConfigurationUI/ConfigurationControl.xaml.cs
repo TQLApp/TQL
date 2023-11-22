@@ -85,19 +85,19 @@ internal partial class ConfigurationControl : IConfigurationPage
         return Task.FromResult(SaveStatus.Success);
     }
 
-    private void _add_Click(object sender, RoutedEventArgs e)
+    private void _add_Click(object? sender, RoutedEventArgs e)
     {
         _connections.SelectedItem = null;
 
         ClearEdit();
     }
 
-    private void _delete_Click(object sender, RoutedEventArgs e)
+    private void _delete_Click(object? sender, RoutedEventArgs e)
     {
         DataContext.Connections.Remove((ConnectionDto)_connections.SelectedItem);
     }
 
-    private void _update_Click(object sender, RoutedEventArgs e)
+    private void _update_Click(object? sender, RoutedEventArgs e)
     {
         if (_connections.SelectedItem != null)
             DataContext.Connections[_connections.SelectedIndex] = CreateConnectionDto();
@@ -115,7 +115,7 @@ internal partial class ConfigurationControl : IConfigurationPage
         _id = null;
     }
 
-    private void _connections_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void _connections_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
         var connectionDto = (ConnectionDto)_connections.SelectedItem;
 
@@ -140,13 +140,13 @@ internal partial class ConfigurationControl : IConfigurationPage
         UpdateEnabled();
     }
 
-    private void _name_TextChanged(object sender, TextChangedEventArgs e) => UpdateEnabled();
+    private void _name_TextChanged(object? sender, TextChangedEventArgs e) => UpdateEnabled();
 
-    private void _url_TextChanged(object sender, TextChangedEventArgs e) => UpdateEnabled();
+    private void _url_TextChanged(object? sender, TextChangedEventArgs e) => UpdateEnabled();
 
-    private void _patToken_PasswordChanged(object sender, RoutedEventArgs e) => UpdateEnabled();
+    private void _patToken_PasswordChanged(object? sender, RoutedEventArgs e) => UpdateEnabled();
 
-    private void _documentation_Click(object sender, RoutedEventArgs e)
+    private void _documentation_Click(object? sender, RoutedEventArgs e)
     {
         _ui.OpenUrl("https://github.com/TQLApp/TQL/wiki/Azure-DevOps-plugin");
     }

@@ -199,7 +199,7 @@ internal class AzureCacheManager : ICacheManager<AzureData>
 
         return new AzureWorkItemIcon(
             target.ToArray(),
-            response.Content.Headers.ContentType.MediaType
+            response.Content.Headers.ContentType?.MediaType
         );
     }
 

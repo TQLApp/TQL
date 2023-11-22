@@ -12,7 +12,7 @@ internal class WindowMessageIPC : IDisposable
     private const string WindowName = "$TQL.IPC$";
 
     private readonly SynchronizationContext _synchronizationContext =
-        SynchronizationContext.Current;
+        SynchronizationContext.Current ?? throw new InvalidOperationException();
     private Window _window;
     private readonly ManualResetEventSlim _windowCreatedEvent = new();
     private readonly ManualResetEventSlim _responseReceivedEvent = new();

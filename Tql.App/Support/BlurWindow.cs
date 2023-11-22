@@ -31,7 +31,7 @@ internal class BlurWindow : BaseWindow
         IsVisibleChanged += BlurWindow_IsVisibleChanged;
     }
 
-    private void BlurWindow_SourceInitialized(object sender, EventArgs e)
+    private void BlurWindow_SourceInitialized(object? sender, EventArgs e)
     {
         EnsureAcrylicBrush();
 
@@ -61,7 +61,7 @@ internal class BlurWindow : BaseWindow
         //    Dwm.WindowBorderlessDropShadow(interop.Handle, 2);
     }
 
-    private void BlurWindow_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+    private void BlurWindow_IsVisibleChanged(object? sender, DependencyPropertyChangedEventArgs e)
     {
         if ((bool)e.NewValue)
             EnsureAcrylicBrush();

@@ -68,12 +68,12 @@ internal partial class ConfigurationControl : IConfigurationPage
         return Task.FromResult(SaveStatus.Success);
     }
 
-    private void _selectedDirectories_Checked(object sender, RoutedEventArgs e) => UpdateEnabled();
+    private void _selectedDirectories_Checked(object? sender, RoutedEventArgs e) => UpdateEnabled();
 
-    private void _selectedDirectories_Unchecked(object sender, RoutedEventArgs e) =>
+    private void _selectedDirectories_Unchecked(object? sender, RoutedEventArgs e) =>
         UpdateEnabled();
 
-    private void _documentation_Click(object sender, RoutedEventArgs e)
+    private void _documentation_Click(object? sender, RoutedEventArgs e)
     {
         _ui.OpenUrl("https://github.com/TQLApp/TQL/wiki/Microsoft-Teams-plugin");
     }

@@ -47,7 +47,7 @@ internal partial class DeviceCodeWindow
         Closed += (_, _) => _timer.Stop();
     }
 
-    private async void _timer_Tick(object sender, EventArgs e)
+    private async void _timer_Tick(object? sender, EventArgs e)
     {
         try
         {
@@ -107,12 +107,12 @@ internal partial class DeviceCodeWindow
         }
     }
 
-    private void _openPage_Click(object sender, RoutedEventArgs e)
+    private void _openPage_Click(object? sender, RoutedEventArgs e)
     {
         _ui.OpenUrl(_loginDto.VerificationUri);
     }
 
-    private void _copy_Click(object sender, RoutedEventArgs e)
+    private void _copy_Click(object? sender, RoutedEventArgs e)
     {
         Clipboard.SetText(_userCode.Text);
     }

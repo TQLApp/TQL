@@ -6,7 +6,7 @@ internal class PersonEqualityComparer : IEqualityComparer<Person>
 
     private PersonEqualityComparer() { }
 
-    public bool Equals(Person x, Person y)
+    public bool Equals(Person? x, Person? y)
     {
         if (ReferenceEquals(x, y))
             return true;

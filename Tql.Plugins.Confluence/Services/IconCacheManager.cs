@@ -28,7 +28,7 @@ internal class IconCacheManager(
 
                 await source.CopyToAsync(target);
 
-                return new IconData(p.Headers.ContentType.MediaType, target.ToArray());
+                return new IconData(p.Headers.ContentType?.MediaType, target.ToArray());
             }
         );
     }

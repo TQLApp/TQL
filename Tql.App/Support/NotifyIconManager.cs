@@ -62,7 +62,7 @@ internal class NotifyIconManager : IDisposable
         UpdateIconFromState();
     }
 
-    private void TimerCallback(object state)
+    private void TimerCallback(object? state)
     {
         _notifyIcon.Icon = _updateIcons[++_updateIconIndex % _updateIcons.Count];
     }

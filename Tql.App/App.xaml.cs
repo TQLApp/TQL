@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Net.Http;
 using System.Reflection;
+using System.Windows.Forms;
 using System.Windows.Markup;
 using CommandLine;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,6 +19,7 @@ using Tql.App.Services.Packages.PackageStore;
 using Tql.App.Services.Telemetry;
 using Tql.App.Services.Updates;
 using Tql.App.Support;
+using Application = System.Windows.Application;
 using ConfigurationManager = Tql.App.Services.ConfigurationManager;
 using Path = System.IO.Path;
 
@@ -39,9 +41,9 @@ public partial class App
         (bool)
             typeof(Application)
                 .GetProperty(nameof(IsShuttingDown), BindingFlags.NonPublic | BindingFlags.Static)!
-                .GetValue(null);
+                .GetValue(null)!;
 
-    private void Application_Startup(object sender, StartupEventArgs e)
+    private void Application_Startup(object? sender, StartupEventArgs e)
     {
         Parser.Default.ParseArguments<Options>(FixupArgs(e.Args)).WithParsed(p => Options = p);
 
@@ -53,6 +55,7 @@ public partial class App
             return;
         }
 
+        System.Windows.Forms.Application.SetHighDpiMode(HighDpiMode.PerMonitor);
         System.Windows.Forms.Application.EnableVisualStyles();
 
         var notifyIconManager = new NotifyIconManager();
@@ -272,7 +275,7 @@ public partial class App
         builder.AddTransient<PackageSourcesConfigurationControl>();
     }
 
-    private void Application_Exit(object sender, ExitEventArgs e)
+    private void Application_Exit(object? sender, ExitEventArgs e)
     {
         _host?.Dispose();
         _ipc?.Dispose();

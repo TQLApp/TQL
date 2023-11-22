@@ -98,7 +98,7 @@ internal class QuickStartManager
 
         _window.Closed += (s, _) =>
         {
-            if (_window == (Window)s)
+            if (_window == (Window?)s)
                 _window = null;
         };
 
@@ -150,7 +150,7 @@ internal class QuickStartManager
         // We base all random values on the hash code of the popup. This
         // means that the location of the popup will be stable, for a specific
         // popup.
-        var random = new Random(popup.ToString().GetHashCode());
+        var random = new Random(popup.ToString()!.GetHashCode());
 
         // Calculate the desired offset off of the center of the owner window.
         var xRange = Math.Max(ownerBounds.Width - (windowSize.Width / 2), 0);

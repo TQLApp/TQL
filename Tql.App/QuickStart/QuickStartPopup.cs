@@ -73,7 +73,7 @@ internal class QuickStartPopup : INotifyPropertyChanged
         OnPropertyChanged(nameof(Text));
     }
 
-    private void Playbook_Updated(object sender, EventArgs e) => ReloadPage();
+    private void Playbook_Updated(object? sender, EventArgs e) => ReloadPage();
 
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null) =>
         _propertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

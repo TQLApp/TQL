@@ -1,4 +1,6 @@
-﻿using System.Runtime.InteropServices;
+﻿#nullable disable
+
+using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Security;
 

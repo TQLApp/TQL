@@ -78,7 +78,7 @@ internal class GitHubApi(
 
     private async Task<GitHubClient> CreateClient(Connection connection)
     {
-        var appVersion = GetType().Assembly.GetName().Version;
+        var appVersion = GetType().Assembly.GetName().Version!;
 
         var client = new GitHubClient(new ProductHeaderValue("TQL", appVersion.ToString()));
 

@@ -25,7 +25,7 @@ internal partial class InteractiveAuthenticationWindow
         _plugin.Text = interactiveAuthentication.ResourceName;
     }
 
-    private async void _acceptButton_Click(object sender, RoutedEventArgs e)
+    private async void _acceptButton_Click(object? sender, RoutedEventArgs e)
     {
         var handle = new WindowInteropHelper(this).Handle;
 

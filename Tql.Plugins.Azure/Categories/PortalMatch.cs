@@ -75,5 +75,5 @@ internal record PortalMatchDto(
 )
 {
     public string GetUrl() =>
-        $"https://portal.azure.com/#@{Uri.EscapeUriString(DefaultDomain)}/resource/{Id.TrimStart('/')}";
+        $"https://portal.azure.com/#@{Uri.EscapeDataString(DefaultDomain)}/resource/{Id.TrimStart('/')}";
 };

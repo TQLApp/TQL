@@ -90,9 +90,9 @@ internal class TextBlockTrimmer : ContentControl
         base.OnContentChanged(oldContent, newContent);
     }
 
-    private void TextBlock_TextChanged(object sender, EventArgs e)
+    private void TextBlock_TextChanged(object? sender, EventArgs e)
     {
-        _originalText = ((TextBlock)sender).Text;
+        _originalText = ((TextBlock)sender!).Text;
         TrimText();
     }
 

@@ -22,7 +22,7 @@ internal partial class SnackBarUserControl
         InitializeComponent();
     }
 
-    private void UserControl_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+    private void UserControl_IsVisibleChanged(object? sender, DependencyPropertyChangedEventArgs e)
     {
         if (!(bool)e.NewValue)
             return;

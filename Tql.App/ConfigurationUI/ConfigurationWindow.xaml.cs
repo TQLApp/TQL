@@ -31,7 +31,7 @@ internal partial class ConfigurationWindow
         InitializeComponent();
     }
 
-    private void Window_Loaded(object sender, RoutedEventArgs e)
+    private void Window_Loaded(object? sender, RoutedEventArgs e)
     {
         var rootNode = AddCategory(
             Labels.ConfigurationCategory_Application,
@@ -96,7 +96,10 @@ internal partial class ConfigurationWindow
         yield return _serviceProvider.GetRequiredService<PackageSourcesConfigurationControl>();
     }
 
-    private void _pages_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+    private void _pages_SelectedItemChanged(
+        object? sender,
+        RoutedPropertyChangedEventArgs<object> e
+    )
     {
         if (_currentContext != null)
             _currentContext.IsVisible = false;
@@ -139,7 +142,7 @@ internal partial class ConfigurationWindow
             OnSelectedPageChanged();
     }
 
-    private async void _acceptButton_Click(object sender, RoutedEventArgs e)
+    private async void _acceptButton_Click(object? sender, RoutedEventArgs e)
     {
         try
         {
@@ -182,7 +185,7 @@ internal partial class ConfigurationWindow
         }
     }
 
-    private void Window_Closed(object sender, EventArgs e)
+    private void Window_Closed(object? sender, EventArgs e)
     {
         foreach (var treeViewItem in GetAllTreeViewItems(_pages.Items))
         {

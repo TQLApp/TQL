@@ -61,8 +61,10 @@ public class PasswordBoxHelper
         box.SetValue(InputLengthProperty, value);
     }
 
-    private static void BoxOnPasswordChanged(object sender, RoutedEventArgs e)
+    private static void BoxOnPasswordChanged(object? sender, RoutedEventArgs e)
     {
-        SetInputLength((PasswordBox)sender, ((PasswordBox)sender).SecurePassword.Length);
+        var passwordBox = (PasswordBox)sender!;
+
+        SetInputLength(passwordBox, passwordBox.SecurePassword.Length);
     }
 }

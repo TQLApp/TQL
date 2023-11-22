@@ -4,7 +4,13 @@ namespace Tql.App.Services.Packages.AssemblyResolution;
 
 internal record struct AssemblyKey(string Name, string? CultureName)
 {
-    public static AssemblyKey FromName(AssemblyName name) => new(name.Name, name.CultureName);
+    public static AssemblyKey FromName(AssemblyName name)
+    {
+        if (name.Name == null)
+            throw new ArgumentException("Assembly name cannot be null");
+
+        return new AssemblyKey(name.Name, name.CultureName);
+    }
 
     public readonly bool Equals(AssemblyKey other)
     {

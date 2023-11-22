@@ -265,7 +265,7 @@ internal partial class GeneralConfigurationControl : IConfigurationPage
         }
     }
 
-    private void _restartTutorial_Click(object sender, RoutedEventArgs e)
+    private void _restartTutorial_Click(object? sender, RoutedEventArgs e)
     {
         var result = _ui.ShowConfirmation(
             this,

@@ -76,6 +76,12 @@ internal class PackagesPluginLoader : IPluginLoader
                     foreach (var entry in assemblyEntries)
                     {
                         var type = assembly.GetType(entry.TypeName);
+                        if (type == null)
+                        {
+                            throw new InvalidOperationException(
+                                $"Cannot find type '{entry.TypeName}'"
+                            );
+                        }
 
                         plugins.Add((ITqlPlugin)Activator.CreateInstance(type)!);
                     }

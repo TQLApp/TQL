@@ -57,7 +57,7 @@ internal class GistsMatch(
             .Headers
             .UserAgent
             .Add(
-                new ProductInfoHeaderValue("TQL", GetType().Assembly.GetName().Version.ToString())
+                new ProductInfoHeaderValue("TQL", GetType().Assembly.GetName().Version!.ToString())
             );
         request.Headers.Authorization = new AuthenticationHeaderValue(
             "Bearer",

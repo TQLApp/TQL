@@ -51,18 +51,18 @@ internal partial class QuickStartWindow
         _dismiss.AttachOnClickHandler(OnDismissClicked);
     }
 
-    private void ChoiceButton_Click(object sender, RoutedEventArgs e)
+    private void ChoiceButton_Click(object? sender, RoutedEventArgs e)
     {
-        var button = (Button)sender;
+        var button = (Button)sender!;
 
         OnChoiceButtonClicked(
             new QuickStartPopupButtonEventArgs((QuickStartPopupButton)button.DataContext)
         );
     }
 
-    private void Button_Click(object sender, RoutedEventArgs e)
+    private void Button_Click(object? sender, RoutedEventArgs e)
     {
-        var button = (Button)sender;
+        var button = (Button)sender!;
 
         OnButtonClicked(
             new QuickStartPopupButtonEventArgs((QuickStartPopupButton)button.DataContext)
@@ -90,7 +90,7 @@ internal partial class QuickStartWindow
 
     protected virtual void OnDismissClicked() => DismissClicked?.Invoke(this, EventArgs.Empty);
 
-    private void BaseWindow_SourceInitialized(object sender, EventArgs e)
+    private void BaseWindow_SourceInitialized(object? sender, EventArgs e)
     {
         WindowInterop.HideFromTaskSwitcher(new WindowInteropHelper(this).Handle);
     }

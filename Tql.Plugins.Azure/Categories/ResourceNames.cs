@@ -99,7 +99,7 @@ internal static class ResourceNames
 
         if (icon.Data == null)
         {
-            if (Icons.TryGetValue(icon.Type, out icon))
+            if (Icons.TryGetValue(icon.Type, out icon!))
                 return GetIcon(icon);
             return null;
         }

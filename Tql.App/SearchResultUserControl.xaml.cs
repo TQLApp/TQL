@@ -43,7 +43,10 @@ internal partial class SearchResultUserControl
         _listBoxItem.Unselected += (_, _) => IsListBoxItemSelectedOrMouseOverChanged();
     }
 
-    private void UserControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+    private void UserControl_DataContextChanged(
+        object? sender,
+        DependencyPropertyChangedEventArgs e
+    )
     {
         var searchResult = DataContext!;
 
