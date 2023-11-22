@@ -10,8 +10,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v1
+      - name: Setup dotnet 8.0.x
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
 
       - name: Validate prettier
         run: ./runprettier.bat
@@ -37,10 +39,10 @@ jobs:
           key: ${{ runner.os }}-nuget-v2-${{ hashFiles('**/packages.lock.json') }}
 
       - name: Restore Solution
-        run: msbuild -nodeReuse:false -maxCpuCount -target:Restore -property:Configuration="Release" Tql.sln
+        run: dotnet restore -c Release
 
       - name: Build Solution
-        run: msbuild -nodeReuse:false -maxCpuCount -target:Build -property:Configuration="Release" Tql.sln
+        run: dotnet build -c Release
 
       - name: Install DocFX
         run: dotnet tool update -g docfx

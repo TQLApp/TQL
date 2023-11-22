@@ -5,8 +5,8 @@
         {
           "src": "..",
           "files": [
-            "Tql.Abstractions/bin/Release/net48/Tql.Abstractions.dll",
-            "Tql.Utilities/bin/Release/net48/Tql.Utilities.dll"
+            "Tql.Abstractions/bin/Release/net8.0-windows/Tql.Abstractions.dll",
+            "Tql.Utilities/bin/Release/net8.0-windows/Tql.Utilities.dll"
           ]
         }
       ],
