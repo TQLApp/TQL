@@ -1,6 +1,6 @@
 {
   "version": 1,
   "dependencies": {
-    ".NETFramework,Version=v4.8": {}
+    "net8.0-windows7.0": {}
   }
 }
