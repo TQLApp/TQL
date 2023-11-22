@@ -3,7 +3,6 @@ using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using Tql.Interop;
 using Application = System.Windows.Application;
-using ContextMenu = System.Windows.Forms.ContextMenu;
 using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
 using Point = System.Drawing.Point;
 using Rectangle = System.Drawing.Rectangle;
@@ -20,10 +19,10 @@ internal class NotifyIconManager : IDisposable
     private int _updateIconIndex;
     private readonly Icon _icon;
 
-    public ContextMenu? ContextMenu
+    public ContextMenuStrip? ContextMenuStrip
     {
-        get => _notifyIcon.ContextMenu;
-        set => _notifyIcon.ContextMenu = value;
+        get => _notifyIcon.ContextMenuStrip;
+        set => _notifyIcon.ContextMenuStrip = value;
     }
 
     public NotifyIconState State

@@ -1,37 +1,37 @@
-﻿using Tql.App.Services;
+﻿using System.Windows.Forms;
+using Tql.App.Services;
 using Tql.App.Support;
-using ContextMenu = System.Windows.Forms.ContextMenu;
 
 namespace Tql.App;
 
 internal partial class MainWindow
 {
-    private ContextMenu SetupNotifyIconContextMenu()
+    private ContextMenuStrip SetupNotifyIconContextMenu()
     {
-        var contextMenu = new ContextMenu();
+        var contextMenu = new ContextMenuStrip();
 
         var hotKeyMenuItem = contextMenu
-            .MenuItems
-            .Add(GetHotKeyMenuItemLabel(), (_, _) => DoShow());
+            .Items
+            .Add(GetHotKeyMenuItemLabel(), null, (_, _) => DoShow());
 
         _settings.AttachPropertyChanged(
             nameof(_settings.HotKey),
             (_, _) => hotKeyMenuItem.Text = GetHotKeyMenuItemLabel()
         );
 
-        contextMenu.MenuItems.Add("-");
+        contextMenu.Items.Add("-");
 #if DEBUG
         contextMenu
-            .MenuItems
-            .Add(Labels.NotifyMenu_InvalidateAllCachesLabel, (_, _) => InvalidateAllCaches());
+            .Items
+            .Add(Labels.NotifyMenu_InvalidateAllCachesLabel, null, (_, _) => InvalidateAllCaches());
 #endif
         contextMenu
-            .MenuItems
-            .Add(Labels.NotifyMenu_ConfigurationLabel, (_, _) => OpenConfiguration());
-        contextMenu.MenuItems.Add("-");
-        contextMenu.MenuItems.Add(Labels.NotifyMenu_HelpLabel, (_, _) => OpenHelp());
-        contextMenu.MenuItems.Add("-");
-        contextMenu.MenuItems.Add(Labels.NotifyMenu_ExitLabel, (_, _) => Close());
+            .Items
+            .Add(Labels.NotifyMenu_ConfigurationLabel, null, (_, _) => OpenConfiguration());
+        contextMenu.Items.Add("-");
+        contextMenu.Items.Add(Labels.NotifyMenu_HelpLabel, null, (_, _) => OpenHelp());
+        contextMenu.Items.Add("-");
+        contextMenu.Items.Add(Labels.NotifyMenu_ExitLabel, null, (_, _) => Close());
 
         return contextMenu;
     }

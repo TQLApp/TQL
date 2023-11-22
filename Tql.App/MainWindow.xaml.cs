@@ -125,7 +125,7 @@ internal partial class MainWindow
         if (!double.IsNaN(_listBoxRowHeight))
             RecalculateListBoxHeight();
 
-        _notifyIconManager.ContextMenu = SetupNotifyIconContextMenu();
+        _notifyIconManager.ContextMenuStrip = SetupNotifyIconContextMenu();
         _notifyIconManager.Clicked += (_, _) => DoShow();
 
         ResetFontSize();
