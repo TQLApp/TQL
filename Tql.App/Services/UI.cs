@@ -5,6 +5,7 @@ using Tql.Abstractions;
 using Tql.App.Support;
 using Tql.Interop;
 using Application = System.Windows.Application;
+using TaskDialogIcon = Tql.Interop.TaskDialogIcon;
 
 namespace Tql.App.Services;
 
@@ -69,7 +70,7 @@ internal class UI(ILogger<UI> logger) : IUI
     {
         try
         {
-            Process.Start(url);
+            Process.Start(new ProcessStartInfo { FileName = url, UseShellExecute = true });
         }
         catch (Exception ex)
         {
