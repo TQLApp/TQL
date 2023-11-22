@@ -13,15 +13,21 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1
 
+      - uses: actions/cache@v3
+        id: cache
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-v2-${{ hashFiles('**/packages.lock.json') }}
+
+      - name: Restore dotnet tools
+        run: dotnet tool restore
+
       - name: Validate prettier
         run: ./runprettier.bat
 
       - name: Check for changes by prettier
         shell: pwsh
         run: ./Build/Uncommitted-changes.ps1 -tool runprettier.bat
-
-      - name: Install CSharpier
-        run: dotnet tool restore
 
       - name: Run CSharpier
         run: dotnet csharpier .
@@ -30,24 +36,15 @@ jobs:
         shell: pwsh
         run: ./Build/Uncommitted-changes.ps1 -tool "dotnet csharpier ."
 
-      - uses: actions/cache@v3
-        id: cache
-        with:
-          path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-v2-${{ hashFiles('**/packages.lock.json') }}
-
       - name: Restore Solution
         run: msbuild -nodeReuse:false -maxCpuCount -target:Restore -property:Configuration="Release" -warnaserror Tql.sln
 
       - name: Build Solution
         run: msbuild -nodeReuse:false -maxCpuCount -target:Build -property:Configuration="Release" -warnaserror Tql.sln
 
-      - name: Install DocFX
-        run: dotnet tool update -g docfx
-
       - name: Preprocess DocFX Markdown Files
         shell: pwsh
         run: ./Build/Preprocess-Markdown.ps1
 
       - name: Run DocFX
-        run: docfx Documentation/docfx.json
+        run: dotnet docfx Documentation/docfx.json
