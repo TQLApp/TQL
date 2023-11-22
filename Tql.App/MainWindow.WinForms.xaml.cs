@@ -10,13 +10,14 @@ internal partial class MainWindow
     {
         var contextMenu = new ContextMenuStrip();
 
-        var hotKeyMenuItem = contextMenu
-            .Items
-            .Add(GetHotKeyMenuItemLabel(), null, (_, _) => DoShow());
+        var hotKeyMenuItem = (ToolStripMenuItem)
+            contextMenu.Items.Add(Labels.NotifyMenu_SearchLabel, null, (_, _) => DoShow());
+
+        hotKeyMenuItem.ShortcutKeyDisplayString = GetHotKeyMenuItemLabel();
 
         _settings.AttachPropertyChanged(
             nameof(_settings.HotKey),
-            (_, _) => hotKeyMenuItem.Text = GetHotKeyMenuItemLabel()
+            (_, _) => hotKeyMenuItem.ShortcutKeyDisplayString = GetHotKeyMenuItemLabel()
         );
 
         contextMenu.Items.Add("-");
@@ -38,9 +39,7 @@ internal partial class MainWindow
 
     private string GetHotKeyMenuItemLabel()
     {
-        var hotKey = HotKey.FromSettings(_settings);
-
-        return $"{Labels.NotifyMenu_SearchLabel}\t{hotKey.ToLabel()}";
+        return HotKey.FromSettings(_settings).ToLabel();
     }
 
     private void InvalidateAllCaches()
