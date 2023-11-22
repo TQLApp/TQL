@@ -2,6 +2,9 @@
 using Tql.Interop;
 using Clipboard = System.Windows.Forms.Clipboard;
 using IWin32Window = System.Windows.Forms.IWin32Window;
+using TaskDialog = Tql.Interop.TaskDialog;
+using TaskDialogButton = Tql.Interop.TaskDialogButton;
+using TaskDialogIcon = Tql.Interop.TaskDialogIcon;
 
 namespace Tql.App.Support;
 
