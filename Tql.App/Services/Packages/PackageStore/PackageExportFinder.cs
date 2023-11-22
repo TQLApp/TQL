@@ -7,6 +7,8 @@ internal class PackageExportFinder
 {
     public static List<PackageExport> Resolve(string path, ILogger logger)
     {
+        throw new NotImplementedException();
+        /*
         var appDomain = AppDomain.CreateDomain(
             nameof(PackageExportFinder),
             AppDomain.CurrentDomain.Evidence,
@@ -87,6 +89,6 @@ internal class PackageExportFinder
             where TState : notnull
         {
             return null;
-        }
+        }*/
     }
 }
