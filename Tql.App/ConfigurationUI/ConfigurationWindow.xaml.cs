@@ -67,7 +67,7 @@ internal partial class ConfigurationWindow
         {
             var isSelected = StartupPage == page.PageId;
 
-            var context = new Context(page);
+            var context = new Context(this, page);
 
             page.Initialize(context);
 
@@ -210,7 +210,8 @@ internal partial class ConfigurationWindow
     protected virtual void OnSelectedPageChanged() =>
         SelectedPageChanged?.Invoke(this, EventArgs.Empty);
 
-    private class Context(IConfigurationPage page) : IConfigurationPageContext
+    private class Context(ConfigurationWindow owner, IConfigurationPage page)
+        : IConfigurationPageContext
     {
         private bool _isVisible;
 
@@ -235,8 +236,8 @@ internal partial class ConfigurationWindow
         public void RaiseClosed() => OnClosed();
 
         protected virtual void OnIsVisibleChanged() =>
-            IsVisibleChanged?.Invoke(this, EventArgs.Empty);
+            IsVisibleChanged?.Invoke(owner, EventArgs.Empty);
 
-        protected virtual void OnClosed() => Closed?.Invoke(this, EventArgs.Empty);
+        protected virtual void OnClosed() => Closed?.Invoke(owner, EventArgs.Empty);
     }
 }
