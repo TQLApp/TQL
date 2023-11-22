@@ -29,8 +29,10 @@ jobs:
         shell: pwsh
         run: ./Build/GetBuildVersion.ps1
 
-      - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v1
+      - name: Setup dotnet 8.0.x
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
 
       - uses: actions/cache@v3
         id: cache
@@ -39,10 +41,10 @@ jobs:
           key: ${{ runner.os }}-nuget-v2-${{ hashFiles('**/packages.lock.json') }}
 
       - name: Restore Solution
-        run: msbuild -nodeReuse:false -maxCpuCount -target:Restore -property:Configuration="Release" -property:Version="${{ steps.get-build-version.outputs.build-version }}" -warnaserror Tql.sln
+        run: dotnet restore
 
       - name: Build Solution
-        run: msbuild -nodeReuse:false -maxCpuCount -target:Build -property:Configuration="Release" -property:Version="${{ steps.get-build-version.outputs.build-version }}" -warnaserror Tql.sln
+        run: dotnet build -property:Version="${{ steps.get-build-version.outputs.build-version }}"
 
       - name: Install DocFX
         run: dotnet tool update -g docfx
