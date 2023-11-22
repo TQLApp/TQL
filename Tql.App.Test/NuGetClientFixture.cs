@@ -18,29 +18,31 @@ internal class NuGetClientFixture
         Assert.IsTrue(packages.Any(p => p.Identity.Id == "Tql.Plugins.Demo"));
     }
 
-    [Test]
-    public async Task InstallPackages()
+    [TestCase("TQLApp.Plugins.Azure", "Tql.Plugins.Azure.dll", "0.9.1")]
+    [TestCase("TQLApp.Plugins.AzureDevOps", "Tql.Plugins.AzureDevOps.dll", "0.9.1")]
+    [TestCase("TQLApp.Plugins.Confluence", "Tql.Plugins.Confluence.dll", "0.9.1")]
+    [TestCase("TQLApp.Plugins.Jira", "Tql.Plugins.Jira.dll", "0.9.1")]
+    [TestCase("TQLApp.Plugins.GitHub", "Tql.Plugins.GitHub.dll", "0.9.1")]
+    [TestCase("TQLApp.Plugins.MicrosoftTeams", "Tql.Plugins.MicrosoftTeams.dll", "0.9.1")]
+    [TestCase("TQLApp.Plugins.Outlook", "Tql.Plugins.Outlook.dll", "0.9.1")]
+    [TestCase("TQLApp.Plugins.Demo", "Tql.Plugins.Demo.dll", "0.9.1")]
+    public async Task InstallPackages(string packageId, string dll, string version)
     {
         using var client = CreateClient();
 
-        var packageIdentity = new PackageIdentity("TQLApp.Plugins.Azure", new NuGetVersion("0.9"));
+        var packageIdentity = new PackageIdentity(packageId, new NuGetVersion(version));
 
         var installedPackageIdentities = await client.InstallPackage(packageIdentity);
 
-        var files = client.GetPackageFiles(packageIdentity, Constants.ApplicationFrameworkVersion);
+        var files = client.GetPackageFiles(packageIdentity);
 
         Assert.AreEqual(1, files.Length);
-        Assert.AreEqual("Tql.Plugins.Demo.dll", Path.GetFileName(files[0]));
+        Assert.AreEqual(dll, Path.GetFileName(files[0]));
         Assert.IsTrue(File.Exists(files[0]));
 
         foreach (var installedPackageIdentity in installedPackageIdentities)
         {
-            foreach (
-                var file in client.GetPackageFiles(
-                    installedPackageIdentity,
-                    Constants.ApplicationFrameworkVersion
-                )
-            )
+            foreach (var file in client.GetPackageFiles(installedPackageIdentity))
             {
                 Console.WriteLine(file);
             }
@@ -70,6 +72,11 @@ internal class NuGetClientFixture
             Constants.PackageSources.Select(p => new NuGetClientSource(p, null)).ToImmutableArray()
         );
 
-        return new NuGetClient(configuration, new NuGetLogger());
+        return new NuGetClient(
+            configuration,
+            new NuGetLogger(),
+            Constants.ApplicationFrameworkVersion,
+            Constants.SystemPackageIds
+        );
     }
 }
