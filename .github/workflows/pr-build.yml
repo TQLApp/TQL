@@ -47,4 +47,4 @@ jobs:
         run: ./Build/Preprocess-Markdown.ps1
 
       - name: Run DocFX
-        run: docfx Documentation/docfx.json
+        run: dotnet docfx Documentation/docfx.json

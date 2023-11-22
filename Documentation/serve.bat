@@ -2,6 +2,6 @@
 
 pushd "%~dp0"
 
-docfx docfx.json --serve
+dotnet docfx docfx.json --serve
 
 popd

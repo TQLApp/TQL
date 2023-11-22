@@ -2,8 +2,8 @@
   "profiles": {
     "DocFX": {
       "commandName": "Executable",
-      "executablePath": "docfx",
-      "commandLineArgs": "docfx.json --serve",
+      "executablePath": "dotnet",
+      "commandLineArgs": "docfx docfx.json --serve",
       "workingDirectory": "$(SolutionDir)..\\Documentation"
     }
   }
