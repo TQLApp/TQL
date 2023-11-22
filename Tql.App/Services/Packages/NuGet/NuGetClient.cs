@@ -245,20 +245,15 @@ internal class NuGetClient : IDisposable
 
     public async Task<ImmutableArray<PackageIdentity>> InstallPackage(
         PackageIdentity identity,
-        DependencyBehavior dependencyBehavior = DependencyBehavior.HighestPatch,
-        bool includePrerelease = true,
-        bool allowUnlisted = false,
-        VersionConstraints versionConstraints =
-            VersionConstraints.ExactMajor | VersionConstraints.ExactMinor,
         PackageIdentity? requiredDependency = null,
         CancellationToken cancellationToken = default
     )
     {
         var resolutionContext = new ResolutionContext(
-            dependencyBehavior,
-            includePrerelease,
-            allowUnlisted,
-            versionConstraints
+            dependencyBehavior: DependencyBehavior.Lowest,
+            includePrelease: true,
+            includeUnlisted: true,
+            versionConstraints: VersionConstraints.None
         );
         var projectContext = new BlankProjectContext(NullSettings.Instance, _logger);
 
