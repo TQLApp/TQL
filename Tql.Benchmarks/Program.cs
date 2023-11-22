@@ -3,7 +3,8 @@ using BenchmarkDotNet.Jobs;
 using BenchmarkDotNet.Running;
 using BenchmarkDotNet.Toolchains.CsProj;
 using BenchmarkDotNet.Toolchains.DotNetCli;
-using Tql.Benchmarks;
+
+// From https://github.com/dotnet/BenchmarkDotNet/issues/1535.
 
 var config = DefaultConfig
     .Instance
@@ -12,7 +13,7 @@ var config = DefaultConfig
             .WithToolchain(
                 CsProjCoreToolchain.From(
                     new NetCoreAppSettings(
-                        targetFrameworkMoniker: "net8.0-windows", // the key to make it work
+                        targetFrameworkMoniker: "net8.0-windows",
                         runtimeFrameworkVersion: null!,
                         name: "8.0"
                     )
