@@ -39,10 +39,10 @@ jobs:
           key: ${{ runner.os }}-nuget-v2-${{ hashFiles('**/packages.lock.json') }}
 
       - name: Restore Solution
-        run: dotnet restore
+        run: dotnet restore -warnaserror
 
       - name: Build Solution
-        run: dotnet build -c Release
+        run: dotnet build -c Release -warnaserror
 
       - name: Install DocFX
         run: dotnet tool update -g docfx
