@@ -23,7 +23,7 @@ internal class NuGetClientFixture
     {
         using var client = CreateClient();
 
-        var packageIdentity = new PackageIdentity("Tql.Plugins.Demo", new NuGetVersion("0.1"));
+        var packageIdentity = new PackageIdentity("TQLApp.Plugins.Azure", new NuGetVersion("0.9"));
 
         var installedPackageIdentities = await client.InstallPackage(packageIdentity);
 

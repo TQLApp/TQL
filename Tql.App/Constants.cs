@@ -34,5 +34,10 @@ internal static class Constants
     );
 
     public static NuGetFramework ApplicationFrameworkVersion =
-        new(FrameworkConstants.FrameworkIdentifiers.NetCore, new Version(8, 0));
+        new(
+            FrameworkConstants.FrameworkIdentifiers.NetCoreApp,
+            new Version(8, 0),
+            FrameworkConstants.PlatformIdentifiers.Windows,
+            new Version(7, 0)
+        );
 }
