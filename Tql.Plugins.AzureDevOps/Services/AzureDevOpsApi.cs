@@ -24,7 +24,7 @@ internal class AzureDevOpsApi(IEncryption encryption, ConfigurationManager confi
                     .Single(p => p.Url == collectionUrl);
 
                 vssConnection = new VssConnection(
-                    new Uri(connection.Url),
+                    new Uri(connection.Url.TrimEnd('/') + "/"),
                     new VssBasicCredential(
                         "",
                         encryption.DecryptString(connection.ProtectedPATToken)

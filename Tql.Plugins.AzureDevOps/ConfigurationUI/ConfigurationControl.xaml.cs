@@ -50,10 +50,14 @@ internal partial class ConfigurationControl : IConfigurationPage
 
     private ConnectionDto CreateConnectionDto()
     {
+        var url = _url.Text;
+        if (!url.IsEmpty() && !url.EndsWith("/"))
+            url += "/";
+
         return new ConnectionDto(_id ?? Guid.NewGuid())
         {
             Name = _name.Text,
-            Url = _url.Text,
+            Url = url,
             ProtectedPATToken = _encryption.EncryptString(_patToken.Password)
         };
     }
