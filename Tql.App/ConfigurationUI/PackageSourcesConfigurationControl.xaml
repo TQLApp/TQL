@@ -13,10 +13,10 @@
     d:DesignWidth="800"
     d:DataContext="{d:DesignInstance Type=configurationUi:PackageManagerConfigurationDto}">
     <UserControl.Resources>
-        <utilities:NullToBooleanConverter x:Key="N2BConverter"/>
-        <utilities:InverseBooleanConverter x:Key="IBConverter"/>
+        <utilities:NullToBooleanConverter x:Key="N2BConverter" />
+        <utilities:InverseBooleanConverter x:Key="IBConverter" />
     </UserControl.Resources>
-        <GroupBox
+    <GroupBox
         Header="{x:Static app:Labels.PackageSourcesConfiguration_PackageSources}"
         Padding="4">
         <Grid>
@@ -59,9 +59,11 @@
                 </ListView.View>
             </ListView>
 
-            <Grid x:Name="_source" Grid.Row="2"
-                  IsEnabled="{Binding Converter={StaticResource N2BConverter}}"
-                  d:DataContext="{d:DesignInstance configurationUi:PackageManagerSourceDto}">
+            <Grid
+                x:Name="_source"
+                Grid.Row="2"
+                IsEnabled="{Binding Converter={StaticResource N2BConverter}}"
+                d:DataContext="{d:DesignInstance configurationUi:PackageManagerSourceDto}">
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
@@ -88,7 +90,7 @@
                     Text="{Binding UserName}"
                     Grid.Row="1"
                     Grid.Column="1"
-                    Margin="3"/>
+                    Margin="3" />
 
                 <Label
                     Content="{x:Static app:Labels.PackageSourcesConfiguration_PasswordLabel}"

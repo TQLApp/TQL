@@ -408,10 +408,10 @@ internal partial class MainWindow
     }
 
     private void SetResultsVisibility(Visibility visibility)
-        {
-            _results.Visibility = visibility;
-            _resultsSeparator.Visibility = visibility;
-        }
+    {
+        _results.Visibility = visibility;
+        _resultsSeparator.Visibility = visibility;
+    }
 
     private void _searchManager_StackChanged(object? sender, EventArgs e)
     {
