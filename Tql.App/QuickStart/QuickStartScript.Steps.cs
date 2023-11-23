@@ -1,4 +1,5 @@
 ﻿using Tql.App.ConfigurationUI;
+using Tql.App.Search;
 using Tql.App.Services;
 using Tql.App.Support;
 using Tql.Utilities;
@@ -245,8 +246,8 @@ internal partial class QuickStartScript
     {
         quickStart.Show(window, CreateBuilder("discover-plugin", CurrentPlugin.PluginName).Build());
 
-        window.SearchManager!.SearchResultsChanged += CreateHandler(
-            () => window.SearchManager!.Search == " ",
+        window.SearchManager!.SearchCompleted += CreateHandler<SearchResultsEventArgs>(
+            e => window.SearchManager!.Search == " ",
             () => TrySomeCategory(window)
         );
     }
@@ -282,8 +283,8 @@ internal partial class QuickStartScript
                 .Build()
         );
 
-        window.SearchManager!.SearchResultsChanged += CreateHandler(
-            () => window.SearchManager!.Search.Length >= 2,
+        window.SearchManager!.SearchCompleted += CreateHandler<SearchResultsEventArgs>(
+            e => window.SearchManager!.Search.Length >= 2,
             () => PickSomeMatch(window)
         );
     }
@@ -347,8 +348,8 @@ internal partial class QuickStartScript
             CreateBuilder("search-in-history", CurrentPlugin.CategoryLabel).Build()
         );
 
-        window.SearchManager!.SearchResultsChanged += CreateHandler(
-            () => window.SearchManager!.Search.Length >= 2,
+        window.SearchManager!.SearchCompleted += CreateHandler<SearchResultsEventArgs>(
+            e => window.SearchManager!.Search.Length >= 2,
             () => PinningItems(window)
         );
     }

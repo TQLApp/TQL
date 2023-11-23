@@ -215,7 +215,7 @@ internal partial class MainWindow
             _quickStartScript.HandleMainWindow(this);
 
         // The settings may have impacted the current search results.
-        SearchManager?.DoSearch();
+        DoShow(true);
     }
 
     private void OpenFeedback()
@@ -309,7 +309,7 @@ internal partial class MainWindow
         DisposeSearchManager();
 
         SearchManager = _serviceProvider.GetRequiredService<SearchManager>();
-        SearchManager.SearchResultsChanged += _searchManager_SearchResultsChanged;
+        SearchManager.SearchCompleted += _searchManager_SearchCompleted;
         SearchManager.StackChanged += _searchManager_StackChanged;
         SearchManager.IsSearchingChanged += _searchManager_IsSearchingChanged;
 
@@ -378,18 +378,19 @@ internal partial class MainWindow
             _pendingEnter = false;
     }
 
-    private void _searchManager_SearchResultsChanged(object? sender, EventArgs e)
+    private void _searchManager_SearchCompleted(object? sender, SearchResultsEventArgs e)
     {
-        if (SearchManager == null || SearchManager.Results.Length == 0)
+        if (e.Results.Length == 0)
         {
             _results.ItemsSource = null;
-            SetResultsVisibility(Visibility.Collapsed);
+            if (!e.IsPreliminary)
+                SetResultsVisibility(Visibility.Collapsed);
             return;
         }
 
         SetResultsVisibility(Visibility.Visible);
 
-        _results.ItemsSource = SearchManager.Results;
+        _results.ItemsSource = e.Results;
 
         if (_results.Items.Count > 0)
         {
@@ -407,10 +408,10 @@ internal partial class MainWindow
     }
 
     private void SetResultsVisibility(Visibility visibility)
-    {
-        _results.Visibility = visibility;
-        _resultsSeparator.Visibility = visibility;
-    }
+        {
+            _results.Visibility = visibility;
+            _resultsSeparator.Visibility = visibility;
+        }
 
     private void _searchManager_StackChanged(object? sender, EventArgs e)
     {
@@ -500,7 +501,7 @@ internal partial class MainWindow
     {
         if (SearchManager != null)
         {
-            SearchManager.SearchResultsChanged -= _searchManager_SearchResultsChanged;
+            SearchManager.SearchCompleted -= _searchManager_SearchCompleted;
             SearchManager.StackChanged -= _searchManager_StackChanged;
             SearchManager.IsSearchingChanged -= _searchManager_IsSearchingChanged;
             SearchManager.Dispose();
@@ -659,7 +660,7 @@ internal partial class MainWindow
     private void SetSelectedIndex(int newIndex)
     {
         _results.SelectedIndex = newIndex;
-        _results.ScrollIntoView(_results.Items[newIndex]);
+        _results.ScrollIntoView(_results.Items[newIndex]!);
     }
 
     private void SelectPage(int i) => SelectItem(i * ResultItemsCount);

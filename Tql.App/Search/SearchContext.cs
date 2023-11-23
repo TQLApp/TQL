@@ -58,10 +58,26 @@ internal partial class SearchContext : ISearchContext, IDisposable
         Task.Delay(TimeSpan.FromMilliseconds(200), cancellationToken);
 
     public IFilteredAsyncEnumerable Filter(IEnumerable<IMatch> matches) =>
-        new FilteredMatches(this, matches.ToImmutableArray());
+        Filter(matches.ToList(), false);
 
     public IFilteredAsyncEnumerable FilterInternal(IEnumerable<IMatch> matches) =>
-        new FilteredMatches(this, matches.ToImmutableArray(), internalCall: true);
+        Filter(matches.ToList(), true);
+
+    private IFilteredAsyncEnumerable Filter(List<IMatch> matches, bool internalCall) =>
+        new FilteredMatches(
+            (maxResults, cancellationToken) =>
+                DoFilterAsync(matches, maxResults, internalCall, cancellationToken)
+        );
+
+    private Task<IEnumerable<IMatch>> DoFilterAsync(
+        IEnumerable<IMatch> matches,
+        int? maxResults,
+        bool internalCall,
+        CancellationToken cancellationToken
+    )
+    {
+        return Task.Run(() => DoFilter(matches, maxResults, internalCall), cancellationToken);
+    }
 
     private IEnumerable<IMatch> DoFilter(
         IEnumerable<IMatch> matches,
