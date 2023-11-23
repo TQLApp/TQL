@@ -8,7 +8,6 @@ namespace Tql.Plugins.MicrosoftTeams.Categories;
 internal abstract class PeopleMatchBase<T>(
     RootItemDto dto,
     string label,
-    IPeopleDirectoryManager peopleDirectoryManager,
     ConfigurationManager configurationManager,
     IMatchFactory<T, PersonDto> factory
 ) : ISearchableMatch, ISerializableMatch
@@ -16,14 +15,9 @@ internal abstract class PeopleMatchBase<T>(
 {
     private const int MaxResults = 100;
 
-    private readonly IPeopleDirectory _peopleDirectory = MatchUtils.GetDirectory(
-        configurationManager,
-        peopleDirectoryManager,
-        dto.Id
-    )!;
+    private readonly IPeopleDirectory _peopleDirectory = configurationManager.GetDirectory(dto.Id)!;
 
-    public string Text =>
-        MatchUtils.GetMatchLabel(label, configurationManager, peopleDirectoryManager, dto.Id);
+    public string Text => MatchUtils.GetMatchLabel(label, configurationManager, dto.Id);
 
     public abstract ImageSource Icon { get; }
     public abstract MatchTypeId TypeId { get; }

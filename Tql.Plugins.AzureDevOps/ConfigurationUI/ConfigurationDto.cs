@@ -1,5 +1,7 @@
 ﻿using System.Collections.ObjectModel;
+using Tql.Abstractions;
 using Tql.Plugins.AzureDevOps.Support;
+using Tql.Utilities;
 
 namespace Tql.Plugins.AzureDevOps.ConfigurationUI;
 
@@ -7,7 +9,10 @@ internal class ConfigurationDto
 {
     public ObservableCollection<ConnectionDto> Connections { get; } = new();
 
-    public static ConfigurationDto FromConfiguration(Configuration configuration)
+    public static ConfigurationDto FromConfiguration(
+        Configuration configuration,
+        IEncryption encryption
+    )
     {
         var result = new ConfigurationDto();
 
@@ -22,7 +27,7 @@ internal class ConfigurationDto
                             {
                                 Name = p.Name,
                                 Url = p.Url,
-                                ProtectedPATToken = p.ProtectedPATToken
+                                PATToken = encryption.DecryptString(p.ProtectedPATToken)
                             }
                     )
             );
@@ -30,28 +35,53 @@ internal class ConfigurationDto
         return result;
     }
 
-    public Configuration ToConfiguration()
+    public Configuration ToConfiguration(IEncryption encryption)
     {
         return new Configuration(
             Connections
-                .Select(p => new Connection(p.Id, p.Name!, p.Url!, p.ProtectedPATToken!))
+                .Select(
+                    p =>
+                        new Connection(p.Id, p.Name!, p.Url!, encryption.EncryptString(p.PATToken)!)
+                )
                 .ToImmutableArray()
         );
     }
 }
 
-internal class ConnectionDto(Guid id)
+internal class ConnectionDto : DtoBase
 {
-    public Guid Id { get; } = id;
-    public string? Name { get; set; }
-    public string? Url { get; set; }
-    public string? ProtectedPATToken { get; set; }
+    public Guid Id { get; }
 
-    public bool GetIsValid()
+    public string? Name
     {
-        return !string.IsNullOrWhiteSpace(Name)
-            && !string.IsNullOrWhiteSpace(Url)
-            && Uri.TryCreate(Url, UriKind.Absolute, out _)
-            && ProtectedPATToken != null;
+        get => (string?)GetValue(nameof(Name));
+        set => SetValue(nameof(Name), value);
     }
+
+    public string? Url
+    {
+        get => (string?)GetValue(nameof(Url));
+        set => SetValue(nameof(Url), value);
+    }
+
+    public string? PATToken
+    {
+        get => (string?)GetValue(nameof(PATToken));
+        set => SetValue(nameof(PATToken), value);
+    }
+
+    public ConnectionDto(Guid id)
+    {
+        Id = id;
+
+        AddProperty(nameof(Name), ValidateNotEmpty, CoerceEmptyStringToNull);
+        AddProperty(
+            nameof(Url),
+            p => ValidateNotEmpty(p) ?? ValidateUrl(p),
+            p => CoerceUrlEndsInSlash(CoerceEmptyStringToNull(p))
+        );
+        AddProperty(nameof(PATToken), ValidateNotEmpty, CoerceEmptyStringToNull);
+    }
+
+    public ConnectionDto Clone() => (ConnectionDto)Clone(new ConnectionDto(Id));
 }

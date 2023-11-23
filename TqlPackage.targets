@@ -6,7 +6,6 @@
 		<Version>0.0</Version>
 		<Authors>Pieter van Ginkel</Authors>
 		<Copyright>Copyright © 2023 Pieter van Ginkel</Copyright>
-		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<PackageIcon>Logo.png</PackageIcon>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
@@ -15,6 +14,10 @@
 		<RepositoryUrl>https://github.com/TQLApp/TQL</RepositoryUrl>
 		<IncludeSymbols>True</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)' == 'Release'">
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	</PropertyGroup>
 
 	<ItemGroup>

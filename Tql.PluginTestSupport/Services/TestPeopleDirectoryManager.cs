@@ -18,6 +18,12 @@ internal class TestPeopleDirectoryManager : IPeopleDirectoryManager
         }
     }
 
+    public event EventHandler? DirectoriesChanged
+    {
+        add { }
+        remove { }
+    }
+
     public void Add(IPeopleDirectory directory)
     {
         lock (_syncRoot)

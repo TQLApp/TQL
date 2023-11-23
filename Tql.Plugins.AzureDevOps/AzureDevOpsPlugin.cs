@@ -45,6 +45,9 @@ public class AzureDevOpsPlugin : ITqlPlugin
 
     public void Initialize(IServiceProvider serviceProvider)
     {
+        // Force setup of the people directory manager.
+        _ = serviceProvider.GetRequiredService<AzureDevOpsPeopleDirectoryManager>();
+
         _serviceProvider = serviceProvider;
 
         _matchTypeManager = _matchTypeManagerBuilder.Build(serviceProvider);

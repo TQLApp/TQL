@@ -1,9 +1,6 @@
-﻿using System.Windows.Forms;
-using Microsoft.Extensions.Logging;
-using Tql.Abstractions;
+﻿using Tql.Abstractions;
 using Tql.Plugins.Jira.Services;
 using Tql.Utilities;
-using Button = System.Windows.Controls.Button;
 
 namespace Tql.Plugins.Jira.ConfigurationUI;
 
@@ -13,86 +10,50 @@ internal partial class ConfigurationControl : IConfigurationPage
     private readonly IUI _ui;
     private readonly JiraApi _api;
     private readonly IEncryption _encryption;
-    private readonly ILogger<ConfigurationControl> _logger;
-    private Guid? _id;
-    private bool _dirty;
 
     private new ConfigurationDto DataContext => (ConfigurationDto)base.DataContext;
-    public ConfigurationPageMode PageMode => ConfigurationPageMode.AutoSize;
 
     public Guid PageId => JiraPlugin.ConfigurationPageId;
     public string Title => Labels.ConfigurationControl_General;
+    public ConfigurationPageMode PageMode => ConfigurationPageMode.AutoSize;
 
     public ConfigurationControl(
         ConfigurationManager configurationManager,
         IUI ui,
         JiraApi api,
-        IEncryption encryption,
-        ILogger<ConfigurationControl> logger
+        IEncryption encryption
     )
     {
         _configurationManager = configurationManager;
         _ui = ui;
         _api = api;
         _encryption = encryption;
-        _logger = logger;
 
         InitializeComponent();
 
-        base.DataContext = ConfigurationDto.FromConfiguration(configurationManager.Configuration);
+        base.DataContext = ConfigurationDto.FromConfiguration(
+            configurationManager.Configuration,
+            _encryption
+        );
 
-        UpdateEnabled();
+        _connection.DataContext = null;
     }
 
     public void Initialize(IConfigurationPageContext context) { }
 
-    private void UpdateEnabled()
-    {
-        _delete.IsEnabled = _connections.SelectedItem != null;
-        _update.IsEnabled = CreateConnectionDto().GetIsValid();
-    }
-
-    private ConnectionDto CreateConnectionDto()
-    {
-        var url = _url.Text;
-        if (!url.IsEmpty() && !url.EndsWith("/"))
-            url += "/";
-
-        return new ConnectionDto(_id ?? Guid.NewGuid())
-        {
-            Name = _name.Text,
-            Url = url,
-            UserName = _userName.Text,
-            ProtectedPassword = _encryption.EncryptString(_password.Password)
-        };
-    }
-
     public async Task<SaveStatus> Save()
     {
-        if (_update.IsEnabled)
+        if (_connection.DataContext != null)
         {
-            switch (
-                _ui.ShowConfirmation(
-                    this,
-                    "Do you want to add a new item?",
-                    buttons: DialogCommonButtons.Yes
-                        | DialogCommonButtons.No
-                        | DialogCommonButtons.Cancel
-                )
-            )
-            {
-                case DialogResult.Yes:
-                    _update.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
-                    break;
-                case DialogResult.Cancel:
-                    return SaveStatus.Failure;
-            }
+            _ui.ShowAlert(
+                this,
+                Labels.ConfigurationControl_EditingConnection,
+                Labels.ConfigurationControl_EditingConnectionSubtitle
+            );
+            return SaveStatus.Failure;
         }
 
-        if (!_dirty)
-            return SaveStatus.Success;
-
-        var configuration = DataContext.ToConfiguration();
+        var configuration = DataContext.ToConfiguration(_encryption);
 
         foreach (var connection in configuration.Connections)
         {
@@ -116,73 +77,42 @@ internal partial class ConfigurationControl : IConfigurationPage
     {
         _connections.SelectedItem = null;
 
-        ClearEdit();
+        _connection.DataContext = new ConnectionDto(Guid.NewGuid());
     }
 
     private void _delete_Click(object? sender, RoutedEventArgs e)
     {
         DataContext.Connections.Remove((ConnectionDto)_connections.SelectedItem);
 
-        _dirty = true;
-
-        ClearEdit();
+        _connection.DataContext = null;
     }
 
     private void _update_Click(object? sender, RoutedEventArgs e)
     {
+        var connection = (ConnectionDto)_connection.DataContext;
+
         if (_connections.SelectedItem != null)
-            DataContext.Connections[_connections.SelectedIndex] = CreateConnectionDto();
+            DataContext.Connections[_connections.SelectedIndex] = connection;
         else
-            DataContext.Connections.Add(CreateConnectionDto());
+            DataContext.Connections.Add(connection);
 
-        _dirty = true;
-
-        ClearEdit();
-    }
-
-    private void ClearEdit()
-    {
-        _name.Text = null;
-        _url.Text = null;
-        _userName.Text = null;
-        _password.Password = null;
-        _id = null;
+        _connection.DataContext = null;
+        _connections.SelectedItem = null;
     }
 
     private void _connections_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        var connectionDto = (ConnectionDto)_connections.SelectedItem;
-
-        if (connectionDto != null)
-        {
-            _name.Text = connectionDto.Name;
-            _url.Text = connectionDto.Url;
-            _userName.Text = connectionDto.UserName;
-            try
-            {
-                _password.Password = _encryption.DecryptString(connectionDto.ProtectedPassword);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogWarning(ex, "Failed to decrypt password");
-                _password.Password = null;
-            }
-            _id = connectionDto.Id;
-        }
-
-        UpdateEnabled();
+        _connection.DataContext = ((ConnectionDto?)_connections.SelectedItem)?.Clone();
     }
-
-    private void _name_TextChanged(object? sender, TextChangedEventArgs e) => UpdateEnabled();
-
-    private void _url_TextChanged(object? sender, TextChangedEventArgs e) => UpdateEnabled();
-
-    private void _userName_TextChanged(object? sender, TextChangedEventArgs e) => UpdateEnabled();
-
-    private void _password_PasswordChanged(object? sender, RoutedEventArgs e) => UpdateEnabled();
 
     private void _documentation_Click(object? sender, RoutedEventArgs e)
     {
         _ui.OpenUrl("https://github.com/TQLApp/TQL/wiki/JIRA-plugin");
+    }
+
+    private void _cancel_Click(object sender, RoutedEventArgs e)
+    {
+        _connection.DataContext = null;
+        _connections.SelectedItem = null;
     }
 }

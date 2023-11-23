@@ -5,14 +5,12 @@ namespace Tql.Plugins.MicrosoftTeams.Categories;
 
 internal class TeamsCallsMatch(
     RootItemDto dto,
-    IPeopleDirectoryManager peopleDirectoryManager,
     ConfigurationManager configurationManager,
     IMatchFactory<TeamsCallMatch, PersonDto> factory
 )
     : PeopleMatchBase<TeamsCallMatch>(
         dto,
         Labels.TeamsCallsMatch_Label,
-        peopleDirectoryManager,
         configurationManager,
         factory
     )

@@ -1,6 +1,8 @@
 ﻿using System.Collections.ObjectModel;
+using Tql.Abstractions;
 using Tql.App.Services.Packages;
 using Tql.App.Support;
+using Tql.Utilities;
 
 namespace Tql.App.ConfigurationUI;
 
@@ -9,7 +11,8 @@ internal class PackageManagerConfigurationDto
     public ObservableCollection<PackageManagerSourceDto> Sources { get; } = new();
 
     public static PackageManagerConfigurationDto FromConfiguration(
-        PackageManagerConfiguration configuration
+        PackageManagerConfiguration configuration,
+        IEncryption encryption
     )
     {
         var result = new PackageManagerConfigurationDto();
@@ -25,7 +28,7 @@ internal class PackageManagerConfigurationDto
                             {
                                 Url = p.Url,
                                 UserName = p.UserName,
-                                ProtectedPassword = p.ProtectedPassword
+                                Password = encryption.DecryptString(p.ProtectedPassword)
                             }
                     )
             );
@@ -33,24 +36,54 @@ internal class PackageManagerConfigurationDto
         return result;
     }
 
-    public PackageManagerConfiguration ToConfiguration()
+    public PackageManagerConfiguration ToConfiguration(IEncryption encryption)
     {
         return new PackageManagerConfiguration(
             Sources
-                .Select(p => new PackageManagerSource(p.Url!, p.UserName, p.ProtectedPassword))
+                .Select(
+                    p =>
+                        new PackageManagerSource(
+                            p.Url!,
+                            p.UserName,
+                            encryption.EncryptString(p.Password)
+                        )
+                )
                 .ToImmutableArray()
         );
     }
 }
 
-internal class PackageManagerSourceDto
+internal class PackageManagerSourceDto : DtoBase
 {
-    public string? Url { get; set; }
-    public string? UserName { get; set; }
-    public string? ProtectedPassword { get; set; }
-
-    public bool GetIsValid()
+    public string? Url
     {
-        return !string.IsNullOrWhiteSpace(Url);
+        get => (string?)GetValue(nameof(Url));
+        set => SetValue(nameof(Url), value);
     }
+
+    public string? UserName
+    {
+        get => (string?)GetValue(nameof(UserName));
+        set => SetValue(nameof(UserName), value);
+    }
+
+    public string? Password
+    {
+        get => (string?)GetValue(nameof(Password));
+        set => SetValue(nameof(Password), value);
+    }
+
+    public PackageManagerSourceDto()
+    {
+        AddProperty(
+            nameof(Url),
+            p => ValidateNotEmpty(p) ?? ValidateUrl(p),
+            CoerceEmptyStringToNull
+        );
+        AddProperty(nameof(UserName), null, CoerceEmptyStringToNull);
+        AddProperty(nameof(Password), null, CoerceEmptyStringToNull);
+    }
+
+    public PackageManagerSourceDto Clone() =>
+        (PackageManagerSourceDto)Clone(new PackageManagerSourceDto());
 }

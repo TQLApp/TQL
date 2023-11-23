@@ -29,8 +29,6 @@ internal class SearchManager : IDisposable
     private readonly Dictionary<string, object> _contextContext = new();
     private int _isSearchingCount;
 
-    public ImmutableArray<SearchResult> Results { get; private set; } =
-        ImmutableArray<SearchResult>.Empty;
     public ImmutableArray<ISearchableMatch> Stack { get; private set; } =
         ImmutableArray<ISearchableMatch>.Empty;
 
@@ -38,7 +36,7 @@ internal class SearchManager : IDisposable
     public SearchContext? Context { get; private set; }
     public bool IsSearching => _isSearchingCount > 0;
 
-    public event EventHandler? SearchResultsChanged;
+    public event EventHandler<SearchResultsEventArgs>? SearchCompleted;
     public event EventHandler? StackChanged;
     public event EventHandler? IsSearchingChanged;
 
@@ -149,8 +147,6 @@ internal class SearchManager : IDisposable
 
         Stack = Stack.Add(match);
 
-        ClearResults();
-
         OnStackChanged();
 
         DoSearch();
@@ -161,20 +157,11 @@ internal class SearchManager : IDisposable
         if (Stack.Length == 0)
             return;
 
-        ClearResults();
-
         Stack = Stack.RemoveAt(Stack.Length - 1);
 
         OnStackChanged();
 
         DoSearch();
-    }
-
-    private void ClearResults()
-    {
-        Results = ImmutableArray<SearchResult>.Empty;
-
-        OnSearchResultsChanged();
     }
 
     public void SetSearch(string search)
@@ -222,11 +209,11 @@ internal class SearchManager : IDisposable
             if (context != Context)
                 return;
 
-            Results = results ?? ImmutableArray<SearchResult>.Empty;
+            results ??= ImmutableArray<SearchResult>.Empty;
 
-            OnSearchResultsChanged();
+            OnSearchCompleted(new SearchResultsEventArgs(results.Value, false));
 
-            telemetry.AddProperty(nameof(Results), Results.Length.ToString());
+            telemetry.AddProperty("Results", results.Value.Length.ToString());
             telemetry.IsSuccess = true;
         }
         catch (Exception ex)
@@ -373,7 +360,9 @@ internal class SearchManager : IDisposable
             }
 
             var enumerable = await task;
-            if (enumerable is IAsyncEnumerable<IMatch> asyncEnumerable)
+            if (enumerable is FilteredMatches filteredMatches)
+                enumerable = await filteredMatches.GetValues(context.CancellationToken);
+            else if (enumerable is IAsyncEnumerable<IMatch> asyncEnumerable)
                 enumerable = await asyncEnumerable.ToListAsync();
 
             var result = enumerable.Select(context.GetSearchResult).ToList();
@@ -418,11 +407,7 @@ internal class SearchManager : IDisposable
     {
         var results = await GetPreliminaryResults();
         if (results != null)
-        {
-            Results = results.Value;
-
-            OnSearchResultsChanged();
-        }
+            OnSearchCompleted(new SearchResultsEventArgs(results.Value, true));
     }
 
     private async Task<ImmutableArray<SearchResult>?> GetPreliminaryResults()
@@ -467,8 +452,8 @@ internal class SearchManager : IDisposable
             DoSearch();
     }
 
-    protected virtual void OnSearchResultsChanged() =>
-        SearchResultsChanged?.Invoke(this, EventArgs.Empty);
+    protected virtual void OnSearchCompleted(SearchResultsEventArgs e) =>
+        SearchCompleted?.Invoke(this, e);
 
     protected virtual void OnStackChanged() => StackChanged?.Invoke(this, EventArgs.Empty);
 

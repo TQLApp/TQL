@@ -1,5 +1,6 @@
 ﻿using Tql.Abstractions;
 using Tql.Plugins.GitHub.Services;
+using Tql.Utilities;
 
 namespace Tql.Plugins.GitHub.ConfigurationUI;
 
@@ -7,7 +8,6 @@ internal partial class ConfigurationControl : IConfigurationPage
 {
     private readonly ConfigurationManager _configurationManager;
     private readonly IUI _ui;
-    private Guid? _id;
 
     private new ConfigurationDto DataContext => (ConfigurationDto)base.DataContext;
 
@@ -24,22 +24,23 @@ internal partial class ConfigurationControl : IConfigurationPage
 
         base.DataContext = ConfigurationDto.FromConfiguration(configurationManager.Configuration);
 
-        UpdateEnabled();
+        _connection.DataContext = null;
     }
 
     public void Initialize(IConfigurationPageContext context) { }
 
-    private void UpdateEnabled()
-    {
-        _delete.IsEnabled = _connections.SelectedItem != null;
-        _update.IsEnabled = CreateConnectionDto().GetIsValid();
-    }
-
-    private ConnectionDto CreateConnectionDto() =>
-        new(_id ?? Guid.NewGuid(), null, null) { Name = _name.Text };
-
     public Task<SaveStatus> Save()
     {
+        if (_connection.DataContext != null)
+        {
+            _ui.ShowAlert(
+                this,
+                Labels.ConfigurationControl_EditingConnection,
+                Labels.ConfigurationControl_EditingConnectionSubtitle
+            );
+            return Task.FromResult(SaveStatus.Failure);
+        }
+
         _configurationManager.UpdateConfiguration(DataContext.ToConfiguration());
 
         return Task.FromResult(SaveStatus.Success);
@@ -49,49 +50,42 @@ internal partial class ConfigurationControl : IConfigurationPage
     {
         _connections.SelectedItem = null;
 
-        ClearEdit();
+        _connection.DataContext = new ConnectionDto(Guid.NewGuid(), null, null);
     }
 
     private void _delete_Click(object? sender, RoutedEventArgs e)
     {
         DataContext.Connections.Remove((ConnectionDto)_connections.SelectedItem);
 
-        ClearEdit();
+        _connection.DataContext = null;
     }
 
     private void _update_Click(object? sender, RoutedEventArgs e)
     {
+        var connection = (ConnectionDto)_connection.DataContext;
+
         if (_connections.SelectedItem != null)
-            DataContext.Connections[_connections.SelectedIndex] = CreateConnectionDto();
+            DataContext.Connections[_connections.SelectedIndex] = connection;
         else
-            DataContext.Connections.Add(CreateConnectionDto());
+            DataContext.Connections.Add(connection);
 
-        ClearEdit();
-    }
-
-    private void ClearEdit()
-    {
-        _name.Text = null;
-        _id = null;
+        _connection.DataContext = null;
+        _connections.SelectedItem = null;
     }
 
     private void _connections_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        var connectionDto = (ConnectionDto)_connections.SelectedItem;
-
-        if (connectionDto != null)
-        {
-            _name.Text = connectionDto.Name;
-            _id = connectionDto.Id;
-        }
-
-        UpdateEnabled();
+        _connection.DataContext = ((ConnectionDto?)_connections.SelectedItem)?.Clone();
     }
-
-    private void _name_TextChanged(object? sender, TextChangedEventArgs e) => UpdateEnabled();
 
     private void _documentation_Click(object? sender, RoutedEventArgs e)
     {
         _ui.OpenUrl("https://github.com/TQLApp/TQL/wiki/GitHub-plugin");
+    }
+
+    private void _cancel_Click(object sender, RoutedEventArgs e)
+    {
+        _connection.DataContext = null;
+        _connections.SelectedItem = null;
     }
 }

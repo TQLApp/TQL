@@ -12,6 +12,8 @@ internal class PeopleDirectoryManager : IPeopleDirectoryManager
     // ReSharper disable once InconsistentlySynchronizedField
     public ImmutableArray<IPeopleDirectory> Directories => _directories.ToImmutableArray();
 
+    public event EventHandler? DirectoriesChanged;
+
     public void Add(IPeopleDirectory directory)
     {
         lock (_syncRoot)
@@ -23,6 +25,8 @@ internal class PeopleDirectoryManager : IPeopleDirectoryManager
 
             _directories = directories;
         }
+
+        OnDirectoriesChanged();
     }
 
     public void Remove(IPeopleDirectory directory)
@@ -34,5 +38,10 @@ internal class PeopleDirectoryManager : IPeopleDirectoryManager
             if (directories.Remove(directory))
                 _directories = directories;
         }
+
+        OnDirectoriesChanged();
     }
+
+    protected virtual void OnDirectoriesChanged() =>
+        DirectoriesChanged?.Invoke(this, EventArgs.Empty);
 }

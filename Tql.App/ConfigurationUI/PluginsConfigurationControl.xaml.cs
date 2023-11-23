@@ -61,10 +61,7 @@ internal partial class PluginsConfigurationControl : IConfigurationPage
         _ = ReloadPackages();
     }
 
-    public Task<SaveStatus> Save()
-    {
-        return Task.FromResult(SaveStatus.Success);
-    }
+    public Task<SaveStatus> Save() => Task.FromResult(SaveStatus.Success);
 
     private void _browseTab_Checked(object? sender, RoutedEventArgs e) =>
         SetSelectedTab(Tab.Browse);

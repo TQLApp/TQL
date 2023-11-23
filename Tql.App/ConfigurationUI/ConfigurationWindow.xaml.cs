@@ -69,8 +69,6 @@ internal partial class ConfigurationWindow
 
             var context = new Context(this, page);
 
-            page.Initialize(context);
-
             node.Items.Add(
                 new TreeViewItem
                 {
@@ -131,6 +129,13 @@ internal partial class ConfigurationWindow
         }
         else
         {
+            if (!context.HasBeenVisible)
+            {
+                context.HasBeenVisible = true;
+
+                context.Page.Initialize(context);
+            }
+
             context.IsVisible = true;
 
             _container.Content = context.Page;
@@ -153,7 +158,7 @@ internal partial class ConfigurationWindow
         {
             foreach (var page in GetAllTreeViewItems(_pages.Items))
             {
-                if (page.Tag is not Context context)
+                if (page.Tag is not Context { HasBeenVisible: true } context)
                     continue;
 
                 // If the page decides to show UI or something, this
@@ -216,6 +221,8 @@ internal partial class ConfigurationWindow
         private bool _isVisible;
 
         public IConfigurationPage Page { get; } = page;
+
+        public bool HasBeenVisible { get; set; }
 
         public bool IsVisible
         {

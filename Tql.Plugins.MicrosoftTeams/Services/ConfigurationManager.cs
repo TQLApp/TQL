@@ -41,7 +41,9 @@ internal class ConfigurationManager
                 LoadConnections(e.Configuration);
         };
 
-        LoadConnections(configurationManager.GetConfiguration(MicrosoftTeamsPlugin.Id));
+        peopleDirectoryManager.DirectoriesChanged += (_, _) => LoadConnections();
+
+        LoadConnections();
     }
 
     public bool HasDirectory(string id)
@@ -50,6 +52,11 @@ internal class ConfigurationManager
         {
             return _directoryIds.Contains(id);
         }
+    }
+
+    private void LoadConnections()
+    {
+        LoadConnections(_configurationManager.GetConfiguration(MicrosoftTeamsPlugin.Id));
     }
 
     private void LoadConnections(string? json)
@@ -82,7 +89,10 @@ internal class ConfigurationManager
             }
             else
             {
-                _directoryIds = configuration.DirectoryIds.ToImmutableArray();
+                _directoryIds = configuration
+                    .DirectoryIds
+                    .Where(p => _peopleDirectoryManager.Directories.Any(p1 => p1.Id == p))
+                    .ToImmutableArray();
             }
         }
     }
@@ -92,5 +102,13 @@ internal class ConfigurationManager
         var json = JsonSerializer.Serialize(configuration);
 
         _configurationManager.SetConfiguration(MicrosoftTeamsPlugin.Id, json);
+    }
+
+    public IPeopleDirectory? GetDirectory(string id)
+    {
+        if (HasDirectory(id))
+            return _peopleDirectoryManager.Directories.Single(p => p.Id == id);
+
+        return null;
     }
 }
