@@ -7,11 +7,16 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:configurationUi="clr-namespace:Tql.App.ConfigurationUI"
     xmlns:app="clr-namespace:Tql.App"
+    xmlns:utilities="clr-namespace:Tql.Utilities;assembly=Tql.Utilities"
     mc:Ignorable="d"
     d:DesignHeight="450"
     d:DesignWidth="800"
     d:DataContext="{d:DesignInstance Type=configurationUi:PackageManagerConfigurationDto}">
-    <GroupBox
+    <UserControl.Resources>
+        <utilities:NullToBooleanConverter x:Key="N2BConverter"/>
+        <utilities:InverseBooleanConverter x:Key="IBConverter"/>
+    </UserControl.Resources>
+        <GroupBox
         Header="{x:Static app:Labels.PackageSourcesConfiguration_PackageSources}"
         Padding="4">
         <Grid>
@@ -32,6 +37,7 @@
                 <Button
                     x:Name="_delete"
                     Content="{x:Static app:Labels.Button_Delete}"
+                    IsEnabled="{Binding ElementName=_sources, Path=SelectedItem, Converter={StaticResource N2BConverter}}"
                     Margin="3"
                     Click="_delete_Click" />
             </StackPanel>
@@ -53,7 +59,9 @@
                 </ListView.View>
             </ListView>
 
-            <Grid Grid.Row="2">
+            <Grid x:Name="_source" Grid.Row="2"
+                  IsEnabled="{Binding Converter={StaticResource N2BConverter}}"
+                  d:DataContext="{d:DesignInstance configurationUi:PackageManagerSourceDto}">
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
@@ -69,30 +77,27 @@
                 <Label
                     Content="{x:Static app:Labels.PackageSourcesConfiguration_URLLabel}" />
                 <TextBox
-                    x:Name="_url"
+                    Text="{Binding Url}"
                     Grid.Column="1"
-                    Margin="3"
-                    TextChanged="_url_TextChanged" />
+                    Margin="3" />
 
                 <Label
                     Content="{x:Static app:Labels.PackageSourcesConfiguration_UserNameLabel}"
                     Grid.Row="1" />
                 <TextBox
-                    x:Name="_userName"
+                    Text="{Binding UserName}"
                     Grid.Row="1"
                     Grid.Column="1"
-                    Margin="3"
-                    TextChanged="_userName_TextChanged" />
+                    Margin="3"/>
 
                 <Label
                     Content="{x:Static app:Labels.PackageSourcesConfiguration_PasswordLabel}"
                     Grid.Row="2" />
                 <PasswordBox
-                    x:Name="_password"
+                    utilities:PasswordBoxHelper.BoundPassword="{Binding Password, Mode=TwoWay}"
                     Grid.Row="2"
                     Grid.Column="1"
-                    Margin="3"
-                    PasswordChanged="_password_PasswordChanged" />
+                    Margin="3" />
 
                 <TextBlock
                     Margin="4"
@@ -107,9 +112,15 @@
                     Grid.RowSpan="999">
                     <Button
                         x:Name="_update"
+                        IsEnabled="{Binding HasErrors, Converter={StaticResource IBConverter}}"
                         Content="{x:Static app:Labels.Button_Update}"
                         Margin="3"
                         Click="_update_Click" />
+                    <Button
+                        x:Name="_cancel"
+                        Content="{x:Static app:Labels.Button_Cancel}"
+                        Margin="3"
+                        Click="_cancel_Click" />
                 </StackPanel>
             </Grid>
         </Grid>

@@ -178,15 +178,6 @@ namespace Tql.App {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Do you want to add a new item?.
-        /// </summary>
-        public static string Confirmation_AddNewItem {
-            get {
-                return ResourceManager.GetString("Confirmation_AddNewItem", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Couldn&apos;t register the hot key..
         /// </summary>
         public static string Error_CouldNotRegisterHotKey {
@@ -1227,6 +1218,24 @@ namespace Tql.App {
         public static string NotifyMenu_SearchLabel {
             get {
                 return ResourceManager.GetString("NotifyMenu_SearchLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Complete editing the package source.
+        /// </summary>
+        public static string PackageSourcesConfiguration_EditingSource {
+            get {
+                return ResourceManager.GetString("PackageSourcesConfiguration_EditingSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You&apos;re currently editing a package source. Click Update or Cancel to complete editing the package source..
+        /// </summary>
+        public static string PackageSourcesConfiguration_EditingSourceSubtitle {
+            get {
+                return ResourceManager.GetString("PackageSourcesConfiguration_EditingSourceSubtitle", resourceCulture);
             }
         }
         

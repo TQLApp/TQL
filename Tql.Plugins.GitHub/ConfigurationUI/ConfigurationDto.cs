@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using Tql.Plugins.GitHub.Support;
+using Tql.Utilities;
 
 namespace Tql.Plugins.GitHub.ConfigurationUI;
 
@@ -38,15 +39,28 @@ internal class ConfigurationDto
     }
 }
 
-internal class ConnectionDto(Guid id, string? patToken, string? protectedCredentials)
+internal class ConnectionDto : DtoBase
 {
-    public Guid Id { get; } = id;
-    public string? PatToken { get; } = patToken;
-    public string? ProtectedCredentials { get; } = protectedCredentials;
-    public string? Name { get; set; }
+    public Guid Id { get; }
 
-    public bool GetIsValid()
+    public string? Name
     {
-        return !string.IsNullOrWhiteSpace(Name);
+        get => (string?)GetValue(nameof(Name));
+        set => SetValue(nameof(Name), value);
     }
+
+    public string? PatToken { get; }
+    public string? ProtectedCredentials { get; }
+
+    public ConnectionDto(Guid id, string? patToken, string? protectedCredentials)
+    {
+        Id = id;
+        PatToken = patToken;
+        ProtectedCredentials = protectedCredentials;
+
+        AddProperty(nameof(Name), ValidateNotEmpty, CoerceEmptyStringToNull);
+    }
+
+    public ConnectionDto Clone() =>
+        (ConnectionDto)Clone(new ConnectionDto(Id, PatToken, ProtectedCredentials));
 }

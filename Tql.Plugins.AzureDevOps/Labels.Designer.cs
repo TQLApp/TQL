@@ -178,6 +178,15 @@ namespace Tql.Plugins.AzureDevOps {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string Button_Cancel {
+            get {
+                return ResourceManager.GetString("Button_Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete.
         /// </summary>
         public static string Button_Delete {
@@ -210,6 +219,24 @@ namespace Tql.Plugins.AzureDevOps {
         public static string ConfigurationControl_Documentation {
             get {
                 return ResourceManager.GetString("ConfigurationControl_Documentation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Complete editing the connection.
+        /// </summary>
+        public static string ConfigurationControl_EditingConnection {
+            get {
+                return ResourceManager.GetString("ConfigurationControl_EditingConnection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You&apos;re currently editing a connection. Click Update or Cancel to complete editing the connection..
+        /// </summary>
+        public static string ConfigurationControl_EditingConnectionSubtitle {
+            get {
+                return ResourceManager.GetString("ConfigurationControl_EditingConnectionSubtitle", resourceCulture);
             }
         }
         

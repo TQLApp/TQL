@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using Tql.Plugins.Azure.Support;
+using Tql.Utilities;
 
 namespace Tql.Plugins.Azure.ConfigurationUI;
 
@@ -30,14 +31,29 @@ internal class ConfigurationDto
     }
 }
 
-internal class ConnectionDto(Guid id)
+internal class ConnectionDto : DtoBase
 {
-    public Guid Id { get; } = id;
-    public string? Name { get; set; }
-    public string? TenantId { get; set; }
+    public Guid Id { get; }
 
-    public bool GetIsValid()
+    public string? Name
     {
-        return !string.IsNullOrWhiteSpace(Name) && !string.IsNullOrWhiteSpace(TenantId);
+        get => (string?)GetValue(nameof(Name));
+        set => SetValue(nameof(Name), value);
     }
+
+    public string? TenantId
+    {
+        get => (string?)GetValue(nameof(TenantId));
+        set => SetValue(nameof(TenantId), value);
+    }
+
+    public ConnectionDto(Guid id)
+    {
+        Id = id;
+
+        AddProperty(nameof(Name), ValidateNotEmpty, CoerceEmptyStringToNull);
+        AddProperty(nameof(TenantId), ValidateNotEmpty, CoerceEmptyStringToNull);
+    }
+
+    public ConnectionDto Clone() => (ConnectionDto)Clone(new ConnectionDto(Id));
 }

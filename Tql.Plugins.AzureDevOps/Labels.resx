@@ -246,4 +246,13 @@
   <data name="Confirm_DoYouWantToAddNewItem" xml:space="preserve">
     <value>Do you want to add a new item?</value>
   </data>
+  <data name="Button_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="ConfigurationControl_EditingConnection" xml:space="preserve">
+    <value>Complete editing the connection</value>
+  </data>
+  <data name="ConfigurationControl_EditingConnectionSubtitle" xml:space="preserve">
+    <value>You're currently editing a connection. Click Update or Cancel to complete editing the connection.</value>
+  </data>
 </root>

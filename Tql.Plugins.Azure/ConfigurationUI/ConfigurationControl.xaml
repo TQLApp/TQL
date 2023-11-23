@@ -7,10 +7,15 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:app="clr-namespace:Tql.Plugins.Azure"
     xmlns:local="clr-namespace:Tql.Plugins.Azure.ConfigurationUI"
+    xmlns:utilities="clr-namespace:Tql.Utilities;assembly=Tql.Utilities"
     mc:Ignorable="d"
     d:DesignHeight="450"
     d:DesignWidth="800"
     d:DataContext="{d:DesignInstance local:ConfigurationDto}">
+    <UserControl.Resources>
+        <utilities:NullToBooleanConverter x:Key="N2BConverter"/>
+        <utilities:InverseBooleanConverter x:Key="IBConverter"/>
+    </UserControl.Resources>
     <GroupBox
         Header="{x:Static app:Labels.ConfigurationControl_Connections}"
         Padding="4">
@@ -42,6 +47,7 @@
                 <Button
                     x:Name="_delete"
                     Content="{x:Static app:Labels.Button_Delete}"
+                    IsEnabled="{Binding ElementName=_connections, Path=SelectedItem, Converter={StaticResource N2BConverter}}"
                     Margin="3"
                     Click="_delete_Click" />
             </StackPanel>
@@ -67,7 +73,8 @@
                 </ListView.View>
             </ListView>
 
-            <Grid Grid.Row="2">
+            <Grid x:Name="_connection"   IsEnabled="{Binding Converter={StaticResource N2BConverter}}"
+                  d:DataContext="{d:DesignInstance local:ConnectionDto}" Grid.Row="2">
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
@@ -82,20 +89,18 @@
                 <Label
                     Content="{x:Static app:Labels.ConfigurationControl_NameLabel}" />
                 <TextBox
-                    x:Name="_name"
+                    Text="{Binding Name}"
                     Grid.Column="1"
-                    Margin="3"
-                    TextChanged="_name_TextChanged" />
+                    Margin="3" />
 
                 <Label
                     Content="{x:Static app:Labels.ConfigurationControl_TenantIDLabel}"
                     Grid.Row="1" />
                 <TextBox
-                    x:Name="_tenantId"
+                    Text="{Binding TenantId}"
                     Grid.Row="1"
                     Grid.Column="1"
-                    Margin="3"
-                    TextChanged="_tenantId_TextChanged" />
+                    Margin="3" />
                 <TextBlock
                     Grid.Row="2"
                     Grid.Column="1"
@@ -109,9 +114,15 @@
                     Grid.RowSpan="999">
                     <Button
                         x:Name="_update"
+                        IsEnabled="{Binding HasErrors, Converter={StaticResource IBConverter}}"
                         Content="{x:Static app:Labels.Button_Update}"
                         Margin="3"
                         Click="_update_Click" />
+                    <Button
+                        x:Name="_cancel"
+                        Content="{x:Static app:Labels.Button_Cancel}"
+                        Margin="3"
+                        Click="_cancel_Click" />
                 </StackPanel>
             </Grid>
         </Grid>

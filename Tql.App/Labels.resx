@@ -156,9 +156,6 @@
   <data name="ConfigurationWindow_Title" xml:space="preserve">
     <value>Configuration</value>
   </data>
-  <data name="Confirmation_AddNewItem" xml:space="preserve">
-    <value>Do you want to add a new item?</value>
-  </data>
   <data name="Error_CouldNotRegisterHotKey" xml:space="preserve">
     <value>Couldn't register the hot key.</value>
   </data>
@@ -661,5 +658,11 @@
     <value>The following error occurred while loading the '{0}' plugin: {1}.
 
 Do you want to restart TQL to see if this resolves the issue?</value>
+  </data>
+  <data name="PackageSourcesConfiguration_EditingSource" xml:space="preserve">
+    <value>Complete editing the package source</value>
+  </data>
+  <data name="PackageSourcesConfiguration_EditingSourceSubtitle" xml:space="preserve">
+    <value>You're currently editing a package source. Click Update or Cancel to complete editing the package source.</value>
   </data>
 </root>

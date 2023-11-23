@@ -18,4 +18,19 @@
 		<ProjectReference Include="..\Tql.Abstractions\Tql.Abstractions.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Compile Update="Labels.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>Labels.resx</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Labels.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>Labels.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	</ItemGroup>
+
 </Project>
