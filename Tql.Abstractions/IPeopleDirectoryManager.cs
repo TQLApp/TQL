@@ -39,6 +39,11 @@ public interface IPeopleDirectoryManager
     ImmutableArray<IPeopleDirectory> Directories { get; }
 
     /// <summary>
+    /// Occurs when the value of the <see cref="Directories"/> property changes.
+    /// </summary>
+    event EventHandler DirectoriesChanged;
+
+    /// <summary>
     /// Adds a people directory.
     /// </summary>
     /// <param name="directory">People directory to add.</param>
