@@ -791,7 +791,7 @@ internal partial class MainWindow
 
     private void SearchResultUserControl_RemoveHistoryClicked(object? sender, EventArgs e)
     {
-        var searchResult = SelectedSearchResult;
+        var searchResult = SearchResultFromSender(sender);
         if (searchResult?.HistoryId == null)
             return;
 
@@ -844,21 +844,21 @@ internal partial class MainWindow
 
     private void SearchResultUserControl_CopyClicked(object? sender, EventArgs e)
     {
-        var searchResult = SelectedSearchResult;
+        var searchResult = SearchResultFromSender(sender);
         if (searchResult?.Match is ICopyableMatch match)
             CopyItem(match, searchResult);
 
         _search.Focus();
     }
 
-    private void SearchResultUserControl_PinClicked(object? sender, EventArgs e) => SetPinned(true);
+    private void SearchResultUserControl_PinClicked(object? sender, EventArgs e) =>
+        SetPinned(SearchResultFromSender(sender), true);
 
     private void SearchResultUserControl_UnpinClicked(object? sender, EventArgs e) =>
-        SetPinned(false);
+        SetPinned(SearchResultFromSender(sender), false);
 
-    private void SetPinned(bool pinned)
+    private void SetPinned(SearchResult? searchResult, bool pinned)
     {
-        var searchResult = SelectedSearchResult;
         if (searchResult == null)
             return;
 
@@ -885,6 +885,12 @@ internal partial class MainWindow
         }
 
         ReloadResults();
+    }
+
+    private static SearchResult? SearchResultFromSender(object? sender)
+    {
+        var searchResult = (SearchResult?)((SearchResultUserControl?)sender)?.DataContext;
+        return searchResult;
     }
 
     private void ReloadResults()
