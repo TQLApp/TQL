@@ -45,8 +45,14 @@ jobs:
       - name: Build Solution
         run: dotnet build -c Release -property:Version="${{ steps.get-build-version.outputs.build-version }}" -warnaserror
 
+      - name: Publish NuGet packages to NuGet.org
+        run: dotnet nuget push "**/*.nupkg" --api-key "${{ secrets.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+
+      - name: Publish symbol NuGet packages to NuGet.org
+        run: dotnet nuget push "**/*.snupkg" --api-key "${{ secrets.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+
       - name: Publish App
-        run: dotnet publish -c Release -r win-x64 --self-contained Tql.App
+        run: dotnet publish -c Release -r win-x64 --self-contained Tql.App -property:Version="${{ steps.get-build-version.outputs.build-version }}" -warnaserror
 
       - name: Create MSI
         shell: pwsh
@@ -63,9 +69,3 @@ jobs:
           generate_release_notes: true
           prerelease: true
           body: ${{ steps.tag-data.outputs.git-tag-annotation }}
-
-      - name: Publish NuGet packages to NuGet.org
-        run: dotnet nuget push "**/*.nupkg" --api-key "${{ secrets.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
-
-      - name: Publish symbol NuGet packages to NuGet.org
-        run: dotnet nuget push "**/*.snupkg" --api-key "${{ secrets.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
