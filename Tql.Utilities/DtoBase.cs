@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace Tql.Utilities;
 
@@ -93,18 +94,24 @@ public class DtoBase : INotifyPropertyChanged, INotifyDataErrorInfo
     /// </summary>
     /// <param name="name">Name of the property.</param>
     /// <returns>Value of the property.</returns>
-    protected object? GetValue(string name)
+    protected object? GetValue([CallerMemberName] string? name = null)
     {
+        if (name == null)
+            throw new ArgumentNullException(nameof(name));
+
         return _properties[name].Value;
     }
 
     /// <summary>
     /// Sets the value of a property.
     /// </summary>
-    /// <param name="name">Name of the property.</param>
     /// <param name="value">Value of the property.</param>
-    protected void SetValue(string name, object? value)
+    /// <param name="name">Name of the property.</param>
+    protected void SetValue(object? value, [CallerMemberName] string? name = null)
     {
+        if (name == null)
+            throw new ArgumentNullException(nameof(name));
+
         _properties[name].SetValue(value);
 
         OnPropertyChanged(new PropertyChangedEventArgs(name));
