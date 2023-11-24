@@ -1424,6 +1424,33 @@ namespace Tql.App {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to install this plugin?.
+        /// </summary>
+        public static string PluginsConfiguration_UnverifiedSource {
+            get {
+                return ResourceManager.GetString("PluginsConfiguration_UnverifiedSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This plugin comes from an unverified source. Are you sure you want to install this plugin?.
+        /// </summary>
+        public static string PluginsConfiguration_UnverifiedSourceSubtitle {
+            get {
+                return ResourceManager.GetString("PluginsConfiguration_UnverifiedSourceSubtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This plugin comes from a verified source..
+        /// </summary>
+        public static string PluginsConfiguration_VerifiedToolTip {
+            get {
+                return ResourceManager.GetString("PluginsConfiguration_VerifiedToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Progress.
         /// </summary>
         public static string ProgressWindow_Title {
