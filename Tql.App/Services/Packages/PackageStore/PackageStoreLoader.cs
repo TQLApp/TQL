@@ -7,7 +7,7 @@ using Path = System.IO.Path;
 
 namespace Tql.App.Services.Packages.PackageStore;
 
-internal class PackagesPluginLoader : IPluginLoader
+internal class PackageStoreLoader : IPackageLoader
 {
     public const string ManifestFileName = "tqlpackage.manifest.json";
 
@@ -18,7 +18,7 @@ internal class PackagesPluginLoader : IPluginLoader
     private readonly ILogger _logger;
     private readonly AssemblyResolver _assemblyResolver;
 
-    public PackagesPluginLoader(
+    public PackageStoreLoader(
         PackageStoreManager packageStoreManager,
         AssemblyLoadContext assemblyLoadContext,
         ILogger logger
@@ -38,11 +38,11 @@ internal class PackagesPluginLoader : IPluginLoader
         );
     }
 
-    public ImmutableArray<ITqlPlugin> GetPlugins()
+    public ImmutableArray<Package> GetPackages()
     {
         _logger.LogInformation("Discovering plugins");
 
-        var plugins = ImmutableArray.CreateBuilder<ITqlPlugin>();
+        var packages = ImmutableArray.CreateBuilder<Package>();
 
         foreach (var packageRef in _packageStoreManager.GetInstalledPackages())
         {
@@ -63,6 +63,8 @@ internal class PackagesPluginLoader : IPluginLoader
                 var manifestJson = File.ReadAllText(manifestFileName);
                 var manifest = JsonSerializer.Deserialize<PackageManifest>(manifestJson)!;
 
+                var plugins = ImmutableArray.CreateBuilder<ITqlPlugin>();
+
                 foreach (var assemblyEntries in manifest.Entries.GroupBy(p => p.FileName))
                 {
                     var assembly = _assemblyLoadContext.LoadFromAssemblyPath(
@@ -82,14 +84,18 @@ internal class PackagesPluginLoader : IPluginLoader
                         plugins.Add((ITqlPlugin)Activator.CreateInstance(type)!);
                     }
                 }
+
+                packages.Add(new Package(packageRef, plugins.ToImmutable(), null));
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Failed to load plugin from '{Package}'", packageFolder);
+
+                packages.Add(new Package(packageRef, null, ex));
             }
         }
 
-        return plugins.ToImmutable();
+        return packages.ToImmutable();
     }
 
     private void WritePackageManifest(string targetPath)
@@ -110,7 +116,7 @@ internal class PackagesPluginLoader : IPluginLoader
 
     private List<PackageExport> GetPackageExports(string path, ILogger logger)
     {
-        using var loader = new SideloadedPluginLoader(AssemblyLoadContext.Default, path, logger);
+        using var loader = new SideloadedPackageLoader(AssemblyLoadContext.Default, path, logger);
 
         var entries = new List<(string FileName, string TypeName)>();
 

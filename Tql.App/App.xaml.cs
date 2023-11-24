@@ -126,27 +126,27 @@ public partial class App
             _mainWindow.DoShow();
     }
 
-    private static IPluginLoader CreatePluginLoader(
+    private static IPackageLoader CreatePluginLoader(
         PackageStoreManager packageStoreManager,
         ILoggerFactory loggerFactory
     )
     {
         if (Options.Sideload != null)
         {
-            return new SideloadedPluginLoader(
+            return new SideloadedPackageLoader(
                 AssemblyLoadContext.Default,
                 Options.Sideload,
-                loggerFactory.CreateLogger<SideloadedPluginLoader>()
+                loggerFactory.CreateLogger<SideloadedPackageLoader>()
             );
         }
 
         if (DebugAssemblies.HasValue)
-            return new AssemblyPluginLoader(DebugAssemblies.Value);
+            return new AssemblyPackageLoader(DebugAssemblies.Value);
 
-        return new PackagesPluginLoader(
+        return new PackageStoreLoader(
             packageStoreManager,
             AssemblyLoadContext.Default,
-            loggerFactory.CreateLogger<PackagesPluginLoader>()
+            loggerFactory.CreateLogger<PackageStoreLoader>()
         );
     }
 

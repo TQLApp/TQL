@@ -7,14 +7,14 @@ using Path = System.IO.Path;
 
 namespace Tql.App.Services.Packages.PackageStore;
 
-internal class SideloadedPluginLoader : IPluginLoader
+internal class SideloadedPackageLoader : IPackageLoader
 {
     private readonly AssemblyLoadContext _assemblyLoadContext;
     private readonly string _path;
     private readonly ILogger _logger;
     private readonly AssemblyResolver _assemblyResolver;
 
-    public SideloadedPluginLoader(
+    public SideloadedPackageLoader(
         AssemblyLoadContext assemblyLoadContext,
         string path,
         ILogger logger
@@ -51,11 +51,35 @@ internal class SideloadedPluginLoader : IPluginLoader
         return plugins.ToImmutable();
     }
 
-    public ImmutableArray<ITqlPlugin> GetPlugins()
+    public ImmutableArray<Package> GetPackages()
     {
-        return GetPluginTypes()
-            .Select(p => (ITqlPlugin)Activator.CreateInstance(p)!)
-            .ToImmutableArray();
+        var packages = ImmutableArray.CreateBuilder<Package>();
+
+        foreach (var group in GetPluginTypes().GroupBy(p => p.Assembly))
+        {
+            var assemblyName = group.Key.GetName();
+            var packageRef = new PackageRef(assemblyName.Name!, assemblyName.Version!.ToString());
+
+            try
+            {
+                packages.Add(
+                    new Package(
+                        packageRef,
+                        group
+                            .Select(p => (ITqlPlugin)Activator.CreateInstance(p)!)
+                            .ToImmutableArray(),
+                        null
+                    )
+                );
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to load plugins from '{AssemblyName}'", assemblyName);
+                packages.Add(new Package(packageRef, null, ex));
+            }
+        }
+
+        return packages.ToImmutable();
     }
 
     public void Dispose()
