@@ -170,7 +170,7 @@ title: Discover the {0} plugin
 Well done! With the configuration completed, we can start using the plugin.
 
 Plugins organize their search features in categories. You can list
-all categories by typing ::Space:: into the search box.
+all categories by typing ::Spacebar:: into the search box.
 
 Give this a try!
 
