@@ -65,12 +65,20 @@ internal partial class MainWindow
         // The window without content is roughly 100 units in height. Most of the time though,
         // it'll have content. Position it slightly above center so that the quick start window
         // has enough space to point at the configuration icon.
-        Top = (screen.WorkingArea.Top / scaleY) + ((screen.WorkingArea.Height / scaleY) - 140) / 2;
+        var top =
+            (screen.WorkingArea.Top / scaleY) + ((screen.WorkingArea.Height / scaleY) - 140) / 2;
 
         // The window height with content is 416 units. Move the window up somewhat if it
         // would not fit in the work area.
-        var minTop = (screen.WorkingArea.Bottom / scaleY) - (416 + 10);
-        if (Top > minTop)
-            Top = minTop;
+        var maxTop = (screen.WorkingArea.Bottom / scaleY) - (416 + 10);
+        if (top > maxTop)
+            top = maxTop;
+
+        // And ensure it doesn't go out of the screen at the top.
+        var minTop = (screen.WorkingArea.Top / scaleY) + 10;
+        if (top < minTop)
+            top = minTop;
+
+        Top = top;
     }
 }
