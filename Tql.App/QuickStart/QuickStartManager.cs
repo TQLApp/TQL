@@ -4,7 +4,6 @@ using Tql.Abstractions;
 using Tql.App.Services;
 using Tql.App.Support;
 using Tql.Utilities;
-using Xceed.Wpf.AvalonDock.Controls;
 
 namespace Tql.App.QuickStart;
 

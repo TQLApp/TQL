@@ -83,3 +83,6 @@ available!
 - The theme came from https://github.com/AngryCarrot789/WPFDarkTheme.
 - Some icons came from https://github.com/microsoft/fluentui-system-icons
   (search engine is at https://fluenticons.co/).
+- The original grab cursor came from
+  https://www.svgrepo.com/svg/372329/cursor-hand-grab. The one I'm using is
+  modified to better support high DPI.

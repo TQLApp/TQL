@@ -19,6 +19,9 @@ internal partial class QuickStartWindow
         )
     );
 
+    private Point? _startWindowPosition;
+    private Point? _startMousePosition;
+
     public string Text
     {
         get => (string)GetValue(TextProperty);
@@ -48,7 +51,7 @@ internal partial class QuickStartWindow
         InitializeComponent();
 
         _dismiss.Source = Images.QuickStartDismiss;
-        _dismiss.AttachOnClickHandler(OnDismissClicked);
+        _dismissButton.AttachOnClickHandler(OnDismissClicked);
     }
 
     private void ChoiceButton_Click(object? sender, RoutedEventArgs e)
@@ -97,5 +100,57 @@ internal partial class QuickStartWindow
             new WindowInteropHelper(this).Handle,
             WindowInterop.WS_EX_TOOLWINDOW
         );
+
+        Cursor = CursorUtils.Create(
+            Images.Grab,
+            new Point(8, 8),
+            new Size(16, 16),
+            VisualTreeHelper.GetDpi(this)
+        );
+    }
+
+    private void BaseWindow_MouseDown(object sender, MouseButtonEventArgs e)
+    {
+        if (e.ChangedButton != MouseButton.Left)
+            return;
+
+        _startWindowPosition = new Point(Left, Top);
+        _startMousePosition = GetCursorLocation(e);
+
+        CaptureMouse();
+    }
+
+    private void BaseWindow_MouseMove(object sender, MouseEventArgs e)
+    {
+        if (!IsMouseCaptured || !_startWindowPosition.HasValue || !_startMousePosition.HasValue)
+            return;
+
+        var position = GetCursorLocation(e);
+
+        var deltaX = position.X - _startMousePosition.Value.X;
+        var deltaY = position.Y - _startMousePosition.Value.Y;
+
+        Left = _startWindowPosition.Value.X + deltaX;
+        Top = _startWindowPosition.Value.Y + deltaY;
+    }
+
+    private Point GetCursorLocation(MouseEventArgs e)
+    {
+        var location = PointToScreen(e.GetPosition(this));
+
+        var dpi = VisualTreeHelper.GetDpi(this);
+
+        return new Point(location.X / dpi.DpiScaleX, location.Y / dpi.DpiScaleY);
+    }
+
+    private void BaseWindow_MouseUp(object sender, MouseButtonEventArgs e)
+    {
+        if (IsMouseCaptured)
+        {
+            ReleaseMouseCapture();
+
+            _startWindowPosition = null;
+            _startMousePosition = null;
+        }
     }
 }

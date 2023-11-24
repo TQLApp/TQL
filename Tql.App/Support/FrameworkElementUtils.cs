@@ -14,17 +14,24 @@ internal static class FrameworkElementUtils
     {
         self.Cursor = Cursors.Hand;
 
-        self.MouseDown += (_, _) => self.CaptureMouse();
+        self.MouseDown += (_, e) =>
+        {
+            e.Handled = true;
+
+            self.CaptureMouse();
+        };
 
         self.MouseUp += (s, e) =>
         {
+            e.Handled = true;
+
             if (e.ChangedButton != MouseButton.Left)
                 return;
 
-            if (self.IsMouseOver)
-                action(s, e);
-
             self.ReleaseMouseCapture();
+
+            if (self.IsMouseDirectlyOver)
+                action(s, e);
 
             e.Handled = true;
         };
