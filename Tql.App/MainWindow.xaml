@@ -126,7 +126,7 @@
                             BorderThickness="0,0.5,0,0">
                             <support:NotificationBarUserControl
                                 FontSize="11pt"
-                                Background="#400bb783"
+                                Background="#40eeb212"
                                 Activated="NotificationBarUserControl_Activated"
                                 Dismissed="NotificationBarUserControl_Dismissed" />
                         </Border>
