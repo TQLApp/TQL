@@ -13,6 +13,7 @@ internal class QuickStartManager
     private readonly UI _ui;
     private QuickStartDto _state;
     private QuickStartWindow? _window;
+    private bool _repositioning;
 
     public QuickStartDto State
     {
@@ -50,6 +51,15 @@ internal class QuickStartManager
         var ownerWindow =
             Window.GetWindow(owner) ?? throw new InvalidOperationException("Cannot resolve window");
         var ownerIsControl = ownerWindow != owner;
+
+        var adorner = default(Adorner);
+
+        if (ownerIsControl)
+        {
+            adorner = new QuickStartAdorner(owner);
+
+            AdornerLayer.GetAdornerLayer(owner)!.Add(adorner);
+        }
 
         _window = new QuickStartWindow(_ui)
         {
@@ -92,12 +102,15 @@ internal class QuickStartManager
 
         _window.Owner = ownerWindow;
 
-        _window.SourceInitialized += (_, _) => UpdateWindowLocation(owner, popup, mode);
-        ownerWindow.LocationChanged += (_, _) => UpdateWindowLocation(owner, popup, mode);
-        ownerWindow.SizeChanged += (_, _) => UpdateWindowLocation(owner, popup, mode);
+        _window.SourceInitialized += (_, _) => UpdateWindowLocation(owner, popup, mode, true);
+        ownerWindow.LocationChanged += (_, _) => UpdateWindowLocation(owner, popup, mode, false);
+        ownerWindow.SizeChanged += (_, _) => UpdateWindowLocation(owner, popup, mode, false);
 
         _window.Closed += (s, _) =>
         {
+            if (adorner != null)
+                AdornerLayer.GetAdornerLayer(owner)!.Remove(adorner);
+
             if (_window == (Window?)s)
                 _window = null;
         };
@@ -125,12 +138,32 @@ internal class QuickStartManager
     private void UpdateWindowLocation(
         FrameworkElement owner,
         QuickStartPopup popup,
-        QuickStartPopupMode mode = QuickStartPopupMode.None
+        QuickStartPopupMode mode,
+        bool initialUpdate
     )
     {
-        if (_window == null || !ReferenceEquals(_window.DataContext, popup))
+        if (_repositioning || _window == null || !ReferenceEquals(_window.DataContext, popup))
             return;
 
+        _repositioning = true;
+
+        try
+        {
+            DoUpdateWindowLocation(owner, popup, mode, initialUpdate);
+        }
+        finally
+        {
+            _repositioning = false;
+        }
+    }
+
+    private void DoUpdateWindowLocation(
+        FrameworkElement owner,
+        QuickStartPopup popup,
+        QuickStartPopupMode mode,
+        bool initialUpdate
+    )
+    {
         var ownerWindow =
             Window.GetWindow(owner) ?? throw new InvalidOperationException("Cannot resolve window");
         var ownerIsControl = ownerWindow != owner;
@@ -143,7 +176,8 @@ internal class QuickStartManager
         var scaleY = source.CompositionTarget!.TransformToDevice.M22;
 
         var ownerBounds = ScaleBounds(GetOwnerBounds());
-        var windowSize = ScaleSize(new Size(_window.ActualWidth, _window.ActualHeight));
+        var ownerWindowBounds = GetOwnerWindowBounds();
+        var windowSize = ScaleSize(new Size(_window!.ActualWidth, _window.ActualHeight));
         var showOnScreen = ShowOnScreenManager.Create(_settings.ShowOnScreen);
         var screen = showOnScreen.GetScreen();
 
@@ -169,11 +203,26 @@ internal class QuickStartManager
         // Ensure the quick start window is always this amount of pixels from
         // the owner window and the screen border.
         var edgeDistance = 10 * scaleX;
+        var repositionEdge = Edge.None;
 
         if (ownerIsControl)
         {
             x -= windowSize.Width / 2;
-            y = ownerBounds.Bottom + edgeDistance;
+            y = ownerBounds.Bottom + (QuickStartAdorner.Distance - 1) * scaleY;
+
+            // Ensure that the quick start window is visible.
+            var bottom = y + windowSize.Height + edgeDistance;
+            var overhang = bottom - screen.WorkingArea.Bottom;
+            if (overhang > 0)
+            {
+                var availableSpace =
+                    ownerWindowBounds.Top - (screen.WorkingArea.Top + edgeDistance);
+                if (overhang > availableSpace)
+                    overhang = availableSpace;
+
+                y -= overhang;
+                ownerWindow.Top -= overhang / scaleY;
+            }
         }
         else if (mode.HasFlag(QuickStartPopupMode.Modal))
         {
@@ -183,27 +232,37 @@ internal class QuickStartManager
         }
         else
         {
+            var maxEdge = 4;
+
+            // Prevent the quick start window from showing at the top of
+            // bottom if it wouldn't fit.
+            var requiredSpace = (windowSize.Height + ownerWindowBounds.Height + edgeDistance * 2);
+            if (requiredSpace > screen.WorkingArea.Height)
+                maxEdge = 2;
+
             // Put the quick start window to the side, at a random side.
-            switch (random.Next(0, 4))
+            repositionEdge = (Edge)random.Next(0, maxEdge);
+
+            switch (repositionEdge)
             {
-                case 0: // North
-                    x += xOffset;
-                    y = ownerBounds.Top - (windowSize.Height + edgeDistance);
+                case Edge.Left:
+                    x = ownerBounds.Left - (windowSize.Width + edgeDistance);
+                    y += yOffset;
                     break;
 
-                case 1: // East
+                case Edge.Right:
                     x = ownerBounds.Right + edgeDistance;
                     y += yOffset;
                     break;
 
-                case 2: // South
+                case Edge.Top:
                     x += xOffset;
-                    y = ownerBounds.Bottom + edgeDistance;
+                    y = ownerBounds.Top - (windowSize.Height + edgeDistance);
                     break;
 
-                case 3: // West
-                    x = ownerBounds.Left - (windowSize.Width + edgeDistance);
-                    y += yOffset;
+                case Edge.Bottom:
+                    x += xOffset;
+                    y = ownerBounds.Bottom + edgeDistance;
                     break;
 
                 default:
@@ -214,14 +273,63 @@ internal class QuickStartManager
         if (!ownerIsControl)
         {
             // Make sure the quick start window is visible on the screen.
-            if (x < screen.Bounds.Left + edgeDistance)
-                x = screen.Bounds.Left + edgeDistance;
-            else if (x + windowSize.Width > screen.Bounds.Right - edgeDistance)
-                x = screen.Bounds.Right - edgeDistance - windowSize.Width;
-            if (y < screen.Bounds.Top + edgeDistance)
-                y = screen.Bounds.Top + edgeDistance;
-            else if (y + windowSize.Height > screen.Bounds.Bottom - edgeDistance)
-                y = screen.Bounds.Bottom - edgeDistance - windowSize.Height;
+            if (x < screen.WorkingArea.Left + edgeDistance)
+                x = screen.WorkingArea.Left + edgeDistance;
+            else if (x + windowSize.Width > screen.WorkingArea.Right - edgeDistance)
+                x = screen.WorkingArea.Right - edgeDistance - windowSize.Width;
+            if (y < screen.WorkingArea.Top + edgeDistance)
+                y = screen.WorkingArea.Top + edgeDistance;
+            else if (y + windowSize.Height > screen.WorkingArea.Bottom - edgeDistance)
+                y = screen.WorkingArea.Bottom - edgeDistance - windowSize.Height;
+        }
+
+        // Minimize overlap with the owner window.
+        if (initialUpdate)
+        {
+            switch (repositionEdge)
+            {
+                case Edge.Left:
+                    var right = x + windowSize.Width;
+                    var overhang = right - ownerWindowBounds.Left;
+                    if (overhang > 0)
+                    {
+                        var availableSpace =
+                            screen.WorkingArea.Right - ownerWindowBounds.Right - edgeDistance;
+                        ownerWindow.Left += Math.Min(overhang, availableSpace);
+                    }
+                    break;
+
+                case Edge.Right:
+                    overhang = ownerWindowBounds.Right - x;
+                    if (overhang > 0)
+                    {
+                        var availableSpace =
+                            ownerWindowBounds.Left - screen.WorkingArea.Left - edgeDistance;
+                        ownerWindow.Left -= Math.Min(overhang, availableSpace);
+                    }
+                    break;
+
+                case Edge.Top:
+                    var bottom = y + windowSize.Height;
+                    overhang = bottom - ownerWindowBounds.Top;
+                    if (overhang > 0)
+                    {
+                        var availableSpace =
+                            screen.WorkingArea.Bottom - ownerWindowBounds.Bottom - edgeDistance;
+                        ownerWindow.Top += Math.Min(overhang, availableSpace);
+                    }
+                    break;
+
+                case Edge.Bottom:
+                    overhang = ownerWindowBounds.Bottom - y;
+                    if (overhang > 0)
+                    {
+                        var availableSpace =
+                            ownerWindowBounds.Top - screen.WorkingArea.Top - edgeDistance;
+                        ownerWindow.Top -= Math.Min(overhang, availableSpace);
+                    }
+                    break;
+            }
         }
 
         _window.Left = x / scaleX;
@@ -229,29 +337,30 @@ internal class QuickStartManager
 
         Rect GetOwnerBounds()
         {
-            if (ownerIsControl)
-            {
-                var location = owner.TransformToAncestor(ownerWindow).Transform(new Point());
+            if (!ownerIsControl)
+                return GetOwnerWindowBounds();
 
-                var clientRect = WindowInterop.GetClientRect(
-                    new WindowInteropHelper(ownerWindow).Handle
-                );
+            var location = owner.TransformToAncestor(ownerWindow).Transform(new Point());
 
-                return new Rect(
-                    ownerWindow.Left + (clientRect.Left / scaleX) + location.X,
-                    ownerWindow.Top + (clientRect.Top / scaleY) + location.Y,
-                    owner.ActualWidth,
-                    owner.ActualHeight
-                );
-            }
+            var clientRect = WindowInterop.GetClientRect(
+                new WindowInteropHelper(ownerWindow).Handle
+            );
 
             return new Rect(
+                ownerWindow.Left + (clientRect.Left / scaleX) + location.X,
+                ownerWindow.Top + (clientRect.Top / scaleY) + location.Y,
+                owner.ActualWidth,
+                owner.ActualHeight
+            );
+        }
+
+        Rect GetOwnerWindowBounds() =>
+            new(
                 ownerWindow.Left,
                 ownerWindow.Top,
                 ownerWindow.ActualWidth,
                 ownerWindow.ActualHeight
             );
-        }
 
         Rect ScaleBounds(Rect bounds) =>
             new(
@@ -275,5 +384,14 @@ internal class QuickStartManager
         {
             window.Close();
         }
+    }
+
+    private enum Edge
+    {
+        None = -1,
+        Left = 0,
+        Right,
+        Top,
+        Bottom
     }
 }
