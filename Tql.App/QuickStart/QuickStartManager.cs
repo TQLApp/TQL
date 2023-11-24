@@ -13,6 +13,7 @@ internal class QuickStartManager
     private readonly UI _ui;
     private QuickStartDto _state;
     private QuickStartWindow? _window;
+    private bool _repositioning;
 
     public QuickStartDto State
     {
@@ -140,9 +141,27 @@ internal class QuickStartManager
         QuickStartPopupMode mode = QuickStartPopupMode.None
     )
     {
-        if (_window == null || !ReferenceEquals(_window.DataContext, popup))
+        if (_repositioning || _window == null || !ReferenceEquals(_window.DataContext, popup))
             return;
 
+        _repositioning = true;
+
+        try
+        {
+            DoUpdateWindowLocation(owner, popup, mode);
+        }
+        finally
+        {
+            _repositioning = false;
+        }
+    }
+
+    private void DoUpdateWindowLocation(
+        FrameworkElement owner,
+        QuickStartPopup popup,
+        QuickStartPopupMode mode
+    )
+    {
         var ownerWindow =
             Window.GetWindow(owner) ?? throw new InvalidOperationException("Cannot resolve window");
         var ownerIsControl = ownerWindow != owner;
@@ -155,7 +174,8 @@ internal class QuickStartManager
         var scaleY = source.CompositionTarget!.TransformToDevice.M22;
 
         var ownerBounds = ScaleBounds(GetOwnerBounds());
-        var windowSize = ScaleSize(new Size(_window.ActualWidth, _window.ActualHeight));
+        var ownerWindowBounds = GetOwnerWindowBounds();
+        var windowSize = ScaleSize(new Size(_window!.ActualWidth, _window.ActualHeight));
         var showOnScreen = ShowOnScreenManager.Create(_settings.ShowOnScreen);
         var screen = showOnScreen.GetScreen();
 
@@ -185,7 +205,21 @@ internal class QuickStartManager
         if (ownerIsControl)
         {
             x -= windowSize.Width / 2;
-            y = ownerBounds.Bottom + (QuickStartAdorner.Distance - 1) * scaleX;
+            y = ownerBounds.Bottom + (QuickStartAdorner.Distance - 1) * scaleY;
+
+            // Ensure that the quick start window is visible.
+            var bottom = y + windowSize.Height + edgeDistance;
+            var overhang = bottom - screen.WorkingArea.Bottom;
+            if (overhang > 0)
+            {
+                var availableSpace =
+                    ownerWindowBounds.Top - (screen.WorkingArea.Top + edgeDistance);
+                if (overhang > availableSpace)
+                    overhang = availableSpace;
+
+                y -= overhang;
+                ownerWindow.Top -= overhang / scaleY;
+            }
         }
         else if (mode.HasFlag(QuickStartPopupMode.Modal))
         {
@@ -241,29 +275,30 @@ internal class QuickStartManager
 
         Rect GetOwnerBounds()
         {
-            if (ownerIsControl)
-            {
-                var location = owner.TransformToAncestor(ownerWindow).Transform(new Point());
+            if (!ownerIsControl)
+                return GetOwnerWindowBounds();
 
-                var clientRect = WindowInterop.GetClientRect(
-                    new WindowInteropHelper(ownerWindow).Handle
-                );
+            var location = owner.TransformToAncestor(ownerWindow).Transform(new Point());
 
-                return new Rect(
-                    ownerWindow.Left + (clientRect.Left / scaleX) + location.X,
-                    ownerWindow.Top + (clientRect.Top / scaleY) + location.Y,
-                    owner.ActualWidth,
-                    owner.ActualHeight
-                );
-            }
+            var clientRect = WindowInterop.GetClientRect(
+                new WindowInteropHelper(ownerWindow).Handle
+            );
 
             return new Rect(
+                ownerWindow.Left + (clientRect.Left / scaleX) + location.X,
+                ownerWindow.Top + (clientRect.Top / scaleY) + location.Y,
+                owner.ActualWidth,
+                owner.ActualHeight
+            );
+        }
+
+        Rect GetOwnerWindowBounds() =>
+            new(
                 ownerWindow.Left,
                 ownerWindow.Top,
                 ownerWindow.ActualWidth,
                 ownerWindow.ActualHeight
             );
-        }
 
         Rect ScaleBounds(Rect bounds) =>
             new(
