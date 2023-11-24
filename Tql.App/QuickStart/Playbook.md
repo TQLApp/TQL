@@ -113,9 +113,9 @@ connection, this name is used to distinguish between them when you use the app.
 The **URL** is the URL you use to access JIRA, e.g. https://mycompany.atlassian.net.
 
 If you can, you should use an API token to setup access to JIRA. Click
-the documentation link in the configuration page if you need help
-creating one. Once you've created the API token, paste it into
-the **Password** field and set the **User name** field to your email address.
+the **Documentation** link if you need help creating one. Once you've created the
+API token, paste it into the **Password** field and set the **User name** field
+to your email address.
 
 Once you've completed the form, click **Update** to add the connection
 and **Save** to commit your changes.
@@ -135,7 +135,10 @@ environments, you can add them at any time.
 You need to give the connection a **Name** first. If you configure more than one
 connection, this name is used to distinguish between them when you use the app.
 
-The **URL** is the URL you use to access Azure DevOps, e.g. https://mycompany.visualstudio.com.
+The **URL** is the URL you use to access Azure DevOps, e.g. https://dev.azure.com/yourcompany.
+
+You get the value for the **PAT Token** field from Azure DevOps. Click the
+**Documentation** if you need help creating one.
 
 You'll be asked to enter your credentials in a moment.
 
