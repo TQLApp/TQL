@@ -189,7 +189,7 @@
     <value>Naam</value>
     <comment>Original: Name</comment>
   </data>
-  <data name="ConfigurationControl_NameLabel" xml:space="preserve">
+  <data name="EditWindow_NameLabel" xml:space="preserve">
     <value>Naam:</value>
     <comment>Original: Name:</comment>
   </data>
@@ -197,7 +197,7 @@
     <value>URL</value>
     <comment>Original: URL</comment>
   </data>
-  <data name="ConfigurationControl_URLLabel" xml:space="preserve">
+  <data name="EditWindow_URLLabel" xml:space="preserve">
     <value>URL:</value>
     <comment>Original: URL:</comment>
   </data>
@@ -269,7 +269,7 @@
     <value>Azure Work Item</value>
     <comment>Original: Azure Work Item</comment>
   </data>
-  <data name="ConfigurationControl_URLHelpText" xml:space="preserve">
+  <data name="EditWindow_URLHelpText" xml:space="preserve">
     <value>Deze URL is de URL naar jouw Azure DevOps omgeving. Het zou of https://yourcompany.visualstudio.com of https://dev.azure.com/yourcompany moeten zijn.</value>
     <comment>Original: This URL is the URL to your Azure DevOps environment. It should be either https://yourcompany.visualstudio.com or https://dev.azure.com/yourcompany.</comment>
   </data>

@@ -171,13 +171,13 @@
   <data name="ConfigurationControl_Name" xml:space="preserve">
     <value>Name</value>
   </data>
-  <data name="ConfigurationControl_NameLabel" xml:space="preserve">
+  <data name="EditWindow_NameLabel" xml:space="preserve">
     <value>Name:</value>
   </data>
   <data name="ConfigurationControl_URL" xml:space="preserve">
     <value>URL</value>
   </data>
-  <data name="ConfigurationControl_URLLabel" xml:space="preserve">
+  <data name="EditWindow_URLLabel" xml:space="preserve">
     <value>URL:</value>
   </data>
   <data name="DashboardMatch_Label" xml:space="preserve">
@@ -231,16 +231,16 @@
   <data name="WorkItemsMatch_Label" xml:space="preserve">
     <value>Azure Work Item</value>
   </data>
-  <data name="ConfigurationControl_Documentation" xml:space="preserve">
+  <data name="Button_Documentation" xml:space="preserve">
     <value>Documentation</value>
   </data>
-  <data name="ConfigurationControl_URLHelpText" xml:space="preserve">
+  <data name="EditWindow_URLHelpText" xml:space="preserve">
     <value>This URL is the URL to your Azure DevOps environment. It should similar to https://dev.azure.com/yourcompany.</value>
   </data>
-  <data name="ConfigurationControl_PATTokenHelpText" xml:space="preserve">
+  <data name="EditWindow_PATTokenHelpText" xml:space="preserve">
     <value>You can create a PAT token in the Azure DevOps website. You can find more information on the documentation page. Use the Documentation link above to open the documentation page.</value>
   </data>
-  <data name="ConfigurationControl_PATTokenLabel" xml:space="preserve">
+  <data name="EditWindow_PATTokenLabel" xml:space="preserve">
     <value>PAT token:</value>
   </data>
   <data name="Confirm_DoYouWantToAddNewItem" xml:space="preserve">
@@ -249,10 +249,13 @@
   <data name="Button_Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
-  <data name="ConfigurationControl_EditingConnection" xml:space="preserve">
-    <value>Complete editing the connection</value>
+  <data name="Button_Edit" xml:space="preserve">
+    <value>Edit</value>
   </data>
-  <data name="ConfigurationControl_EditingConnectionSubtitle" xml:space="preserve">
-    <value>You're currently editing a connection. Click Update or Cancel to complete editing the connection.</value>
+  <data name="Button_Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="EditWindow_Title" xml:space="preserve">
+    <value>Edit Connection</value>
   </data>
 </root>

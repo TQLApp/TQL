@@ -23,7 +23,6 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <StackPanel
@@ -36,7 +35,7 @@
                         x:Name="_documentation"
                         Click="_documentation_Click">
                         <Run
-                            Text="{x:Static app:Labels.ConfigurationControl_Documentation}" />
+                            Text="{x:Static app:Labels.Button_Documentation}" />
                     </Hyperlink>
                 </TextBlock>
                 <Button
@@ -44,6 +43,12 @@
                     Content="{x:Static app:Labels.Button_Add}"
                     Margin="3"
                     Click="_add_Click" />
+                <Button
+                    x:Name="_edit"
+                    Content="{x:Static app:Labels.Button_Edit}"
+                    IsEnabled="{Binding ElementName=_connections, Path=SelectedItem, Converter={StaticResource N2BConverter}}"
+                    Margin="3"
+                    Click="_edit_Click" />
                 <Button
                     x:Name="_delete"
                     Content="{x:Static app:Labels.Button_Delete}"
@@ -57,7 +62,6 @@
                 ItemsSource="{Binding Connections}"
                 Grid.Row="1"
                 SelectionMode="Single"
-                SelectionChanged="_connections_SelectionChanged"
                 Margin="3">
                 <ListView.View>
                     <GridView>
@@ -72,80 +76,6 @@
                     </GridView>
                 </ListView.View>
             </ListView>
-
-            <Grid
-                x:Name="_connection"
-                IsEnabled="{Binding Converter={StaticResource N2BConverter}}"
-                d:DataContext="{d:DesignInstance local:ConnectionDto}"
-                Grid.Row="2">
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-
-                <Label
-                    Content="{x:Static app:Labels.ConfigurationControl_NameLabel}" />
-                <TextBox
-                    Text="{Binding Name}"
-                    Grid.Column="1"
-                    Margin="3" />
-
-                <Label
-                    Content="{x:Static app:Labels.ConfigurationControl_URLLabel}"
-                    Grid.Row="1" />
-                <TextBox
-                    Text="{Binding Url}"
-                    Grid.Row="1"
-                    Grid.Column="1"
-                    Margin="3" />
-                <TextBlock
-                    Grid.Row="2"
-                    Grid.Column="1"
-                    Margin="3"
-                    TextWrapping="Wrap"
-                    Text="{x:Static app:Labels.ConfigurationControl_URLHelpText}" />
-
-                <Label
-                    Content="{x:Static app:Labels.ConfigurationControl_PATTokenLabel}"
-                    Grid.Row="3" />
-                <PasswordBox
-                    utilities:PasswordBoxHelper.BoundPassword="{Binding PATToken, Mode=TwoWay}"
-                    Grid.Row="3"
-                    Grid.Column="1"
-                    Margin="3" />
-                <TextBlock
-                    Grid.Row="4"
-                    Grid.Column="1"
-                    Margin="3"
-                    TextWrapping="Wrap"
-                    Text="{x:Static app:Labels.ConfigurationControl_PATTokenHelpText}" />
-
-                <StackPanel
-                    Grid.Column="2"
-                    Orientation="Vertical"
-                    Grid.RowSpan="999">
-                    <Button
-                        x:Name="_update"
-                        IsEnabled="{Binding HasErrors, Converter={StaticResource IBConverter}}"
-                        Content="{x:Static app:Labels.Button_Update}"
-                        Margin="3"
-                        Click="_update_Click" />
-                    <Button
-                        x:Name="_cancel"
-                        Content="{x:Static app:Labels.Button_Cancel}"
-                        Margin="3"
-                        Click="_cancel_Click" />
-                </StackPanel>
-            </Grid>
         </Grid>
     </GroupBox>
 </UserControl>

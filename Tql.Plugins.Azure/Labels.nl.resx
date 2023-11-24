@@ -153,7 +153,7 @@
     <value>Naam</value>
     <comment>Original: Name</comment>
   </data>
-  <data name="ConfigurationControl_NameLabel" xml:space="preserve">
+  <data name="EditWindow_NameLabel" xml:space="preserve">
     <value>Naam:</value>
     <comment>Original: Name:</comment>
   </data>
@@ -161,11 +161,11 @@
     <value>Tenant-id</value>
     <comment>Original: Tenant ID</comment>
   </data>
-  <data name="ConfigurationControl_TenantIDHelpText" xml:space="preserve">
+  <data name="EditWindow_TenantIDHelpText" xml:space="preserve">
     <value>Je kunt het Azure Portal Tenant ID in Azure Portal vinden door te zoeken naar het Microsoft Entra ID, of door naar je account te gaan, op Schakelen tussen mappen te klikken en dan de Map-id te kopiëren. De Map-id is je Tenant-id.</value>
     <comment>Original: You can retrieve the Azure Portal Tenant ID by searching for the Microsoft Entra ID in Azure Portal, or click on your account, click Switch directory and copy the Directory ID. The Directory ID is your Tenant ID.</comment>
   </data>
-  <data name="ConfigurationControl_TenantIDLabel" xml:space="preserve">
+  <data name="EditWindow_TenantIDLabel" xml:space="preserve">
     <value>Tenant-id:</value>
     <comment>Original: Tenant ID:</comment>
   </data>

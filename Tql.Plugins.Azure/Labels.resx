@@ -144,16 +144,16 @@
   <data name="ConfigurationControl_Name" xml:space="preserve">
     <value>Name</value>
   </data>
-  <data name="ConfigurationControl_NameLabel" xml:space="preserve">
+  <data name="EditWindow_NameLabel" xml:space="preserve">
     <value>Name:</value>
   </data>
   <data name="ConfigurationControl_TenantID" xml:space="preserve">
     <value>Tenant ID</value>
   </data>
-  <data name="ConfigurationControl_TenantIDHelpText" xml:space="preserve">
+  <data name="EditWindow_TenantIDHelpText" xml:space="preserve">
     <value>You can retrieve the Azure Portal Tenant ID by searching for the Microsoft Entra ID in Azure Portal, or click on your account, click Switch directory and copy the Directory ID. The Directory ID is your Tenant ID.</value>
   </data>
-  <data name="ConfigurationControl_TenantIDLabel" xml:space="preserve">
+  <data name="EditWindow_TenantIDLabel" xml:space="preserve">
     <value>Tenant ID:</value>
   </data>
   <data name="PortalsMatch_SearchHint" xml:space="preserve">
@@ -162,7 +162,7 @@
   <data name="PortalsMatch_Label" xml:space="preserve">
     <value>Azure Portal</value>
   </data>
-  <data name="ConfigurationControl_Documentation" xml:space="preserve">
+  <data name="Button_Documentation" xml:space="preserve">
     <value>Documentation</value>
   </data>
   <data name="Buttons_Cancel" xml:space="preserve">

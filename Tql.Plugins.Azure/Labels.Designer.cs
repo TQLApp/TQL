@@ -115,6 +115,15 @@ namespace Tql.Plugins.Azure {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Documentation.
+        /// </summary>
+        public static string Button_Documentation {
+            get {
+                return ResourceManager.GetString("Button_Documentation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
         public static string Button_Edit {
@@ -160,15 +169,6 @@ namespace Tql.Plugins.Azure {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Documentation.
-        /// </summary>
-        public static string ConfigurationControl_Documentation {
-            get {
-                return ResourceManager.GetString("ConfigurationControl_Documentation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to General.
         /// </summary>
         public static string ConfigurationControl_General {
@@ -187,15 +187,6 @@ namespace Tql.Plugins.Azure {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Name:.
-        /// </summary>
-        public static string ConfigurationControl_NameLabel {
-            get {
-                return ResourceManager.GetString("ConfigurationControl_NameLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Tenant ID.
         /// </summary>
         public static string ConfigurationControl_TenantID {
@@ -205,20 +196,29 @@ namespace Tql.Plugins.Azure {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Name:.
+        /// </summary>
+        public static string EditWindow_NameLabel {
+            get {
+                return ResourceManager.GetString("EditWindow_NameLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You can retrieve the Azure Portal Tenant ID by searching for the Microsoft Entra ID in Azure Portal, or click on your account, click Switch directory and copy the Directory ID. The Directory ID is your Tenant ID..
         /// </summary>
-        public static string ConfigurationControl_TenantIDHelpText {
+        public static string EditWindow_TenantIDHelpText {
             get {
-                return ResourceManager.GetString("ConfigurationControl_TenantIDHelpText", resourceCulture);
+                return ResourceManager.GetString("EditWindow_TenantIDHelpText", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Tenant ID:.
         /// </summary>
-        public static string ConfigurationControl_TenantIDLabel {
+        public static string EditWindow_TenantIDLabel {
             get {
-                return ResourceManager.GetString("ConfigurationControl_TenantIDLabel", resourceCulture);
+                return ResourceManager.GetString("EditWindow_TenantIDLabel", resourceCulture);
             }
         }
         
