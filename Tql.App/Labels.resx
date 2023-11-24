@@ -665,4 +665,12 @@ Do you want to restart TQL to see if this resolves the issue?</value>
   <data name="PackageSourcesConfiguration_EditingSourceSubtitle" xml:space="preserve">
     <value>You're currently editing a package source. Click Update or Cancel to complete editing the package source.</value>
   </data>
+  <data name="PluginManager_PackageFailedToLoad" xml:space="preserve">
+    <value>Package '{0}' failed to load</value>
+  </data>
+  <data name="PluginManager_PackageFailedToLoadSubtitle" xml:space="preserve">
+    <value>The following error occurred while loading the '{0}' package: {1}.
+
+Do you want to restart TQL to see if this resolves the issue?</value>
+  </data>
 </root>

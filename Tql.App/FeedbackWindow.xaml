@@ -65,7 +65,8 @@
                     x:Name="_systemInformation"
                     Margin="3"
                     IsReadOnly="true"
-                    HorizontalScrollBarVisibility="Auto" />
+                    HorizontalScrollBarVisibility="Auto"
+                    MaxHeight="120" />
                 <Button
                     x:Name="_copySystemInformation"
                     Margin="3"

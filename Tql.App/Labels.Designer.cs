@@ -1294,6 +1294,26 @@ namespace Tql.App {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Package &apos;{0}&apos; failed to load.
+        /// </summary>
+        public static string PluginManager_PackageFailedToLoad {
+            get {
+                return ResourceManager.GetString("PluginManager_PackageFailedToLoad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The following error occurred while loading the &apos;{0}&apos; package: {1}.
+        ///
+        ///Do you want to restart TQL to see if this resolves the issue?.
+        /// </summary>
+        public static string PluginManager_PackageFailedToLoadSubtitle {
+            get {
+                return ResourceManager.GetString("PluginManager_PackageFailedToLoadSubtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Plugin &apos;{0}&apos; failed to load.
         /// </summary>
         public static string PluginManager_PluginFailedToLoad {
