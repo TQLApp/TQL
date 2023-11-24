@@ -37,14 +37,14 @@ internal class ConnectionDto : DtoBase
 
     public string? Name
     {
-        get => (string?)GetValue(nameof(Name));
-        set => SetValue(nameof(Name), value);
+        get => (string?)GetValue();
+        set => SetValue(value);
     }
 
     public string? TenantId
     {
-        get => (string?)GetValue(nameof(TenantId));
-        set => SetValue(nameof(TenantId), value);
+        get => (string?)GetValue();
+        set => SetValue(value);
     }
 
     public ConnectionDto(Guid id)

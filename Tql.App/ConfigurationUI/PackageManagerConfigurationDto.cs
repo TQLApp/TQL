@@ -57,20 +57,20 @@ internal class PackageManagerSourceDto : DtoBase
 {
     public string? Url
     {
-        get => (string?)GetValue(nameof(Url));
-        set => SetValue(nameof(Url), value);
+        get => (string?)GetValue();
+        set => SetValue(value);
     }
 
     public string? UserName
     {
-        get => (string?)GetValue(nameof(UserName));
-        set => SetValue(nameof(UserName), value);
+        get => (string?)GetValue();
+        set => SetValue(value);
     }
 
     public string? Password
     {
-        get => (string?)GetValue(nameof(Password));
-        set => SetValue(nameof(Password), value);
+        get => (string?)GetValue();
+        set => SetValue(value);
     }
 
     public PackageManagerSourceDto()

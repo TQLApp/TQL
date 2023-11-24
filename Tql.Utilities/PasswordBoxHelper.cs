@@ -16,14 +16,14 @@ public static class PasswordBoxHelper
             new PropertyMetadata(string.Empty, OnBoundPasswordChanged, CoerceBoundPassword)
         );
 
-    private static object CoerceBoundPassword(DependencyObject d, object value)
+    private static object CoerceBoundPassword(DependencyObject d, object? value)
     {
         var passwordBox = (PasswordBox)d;
 
         passwordBox.PasswordChanged -= PasswordBox_PasswordChanged;
         passwordBox.PasswordChanged += PasswordBox_PasswordChanged;
 
-        return value;
+        return value ?? string.Empty;
     }
 
     /// <summary>
