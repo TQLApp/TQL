@@ -12,8 +12,9 @@ The app hides itself automatically when you switch to a different app. You can
 get the app back by pressing ::{0}::. This by the way is how I'll show
 you which keys you can use for something.
 
-You can also get the app back by clicking on the ![](Space+Shuttle.svg)
-icon in the task tray. When you do, we continue where we left of.
+You can also get the app back by clicking on the ![](Space+Shuttle.svg) icon in the
+lower right corner of your screen, next to the clock and the WiFi symbol. You'll
+have to click small arrow (^) to reveal it. When you do, we continue where we left of.
 
 Click **OK** to start.
 
@@ -170,7 +171,7 @@ title: Discover the {0} plugin
 Well done! With the configuration completed, we can start using the plugin.
 
 Plugins organize their search features in categories. You can list
-all categories by typing ::Space:: into the search box.
+all categories by typing ::Spacebar:: into the search box.
 
 Give this a try!
 
