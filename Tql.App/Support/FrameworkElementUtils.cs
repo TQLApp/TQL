@@ -30,7 +30,7 @@ internal static class FrameworkElementUtils
 
             self.ReleaseMouseCapture();
 
-            if (self.IsMouseDirectlyOver)
+            if (self.IsMouseOver)
                 action(s, e);
 
             e.Handled = true;

@@ -56,4 +56,5 @@ internal static class Images
     public static readonly DrawingImage NuGet = GetImage("NuGet.svg");
     public static readonly DrawingImage CheckmarkCircle = GetImage("Checkmark Circle.svg");
     public static readonly DrawingImage Grab = GetImage("Grab.svg");
+    public static readonly DrawingImage Verified = GetImage("Verified.svg");
 }

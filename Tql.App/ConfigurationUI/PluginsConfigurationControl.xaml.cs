@@ -1,7 +1,9 @@
-﻿using Tql.Abstractions;
+﻿using System.Windows.Forms;
+using Tql.Abstractions;
 using Tql.App.Services.Packages;
 using Tql.App.Support;
 using Tql.Utilities;
+using Button = System.Windows.Controls.Button;
 
 namespace Tql.App.ConfigurationUI;
 
@@ -40,6 +42,11 @@ internal partial class PluginsConfigurationControl : IConfigurationPage
         IsEnabled = false;
 
         Resources.Add("CheckmarkCircle", Images.CheckmarkCircle);
+        Resources.Add("Verified", Images.Verified);
+        Resources.Add(
+            "VerifiedToolTip",
+            new PopoverToolTip(null, Labels.PluginsConfiguration_VerifiedToolTip)
+        );
 
         SetSelectedTab(Tab.Browse);
     }
@@ -92,9 +99,21 @@ internal partial class PluginsConfigurationControl : IConfigurationPage
 
     private async void _install_Click(object? sender, RoutedEventArgs e)
     {
-        OnInstallationStarted();
-
         var package = (Package)((FrameworkElement)sender!).DataContext;
+
+        if (!package.IsVerified)
+        {
+            var result = _ui.ShowConfirmation(
+                this,
+                Labels.PluginsConfiguration_UnverifiedSource,
+                Labels.PluginsConfiguration_UnverifiedSourceSubtitle
+            );
+
+            if (result != DialogResult.Yes)
+                return;
+        }
+
+        OnInstallationStarted();
 
         try
         {

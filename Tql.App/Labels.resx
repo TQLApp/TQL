@@ -673,4 +673,13 @@ Do you want to restart TQL to see if this resolves the issue?</value>
 
 Do you want to restart TQL to see if this resolves the issue?</value>
   </data>
+  <data name="PluginsConfiguration_UnverifiedSource" xml:space="preserve">
+    <value>Are you sure you want to install this plugin?</value>
+  </data>
+  <data name="PluginsConfiguration_UnverifiedSourceSubtitle" xml:space="preserve">
+    <value>This plugin comes from an unverified source. Are you sure you want to install this plugin?</value>
+  </data>
+  <data name="PluginsConfiguration_VerifiedToolTip" xml:space="preserve">
+    <value>This plugin comes from a verified source.</value>
+  </data>
 </root>

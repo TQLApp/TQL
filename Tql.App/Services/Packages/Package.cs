@@ -8,5 +8,6 @@ internal record Package(
     long DownloadCount,
     string Authors,
     ImageSource Icon,
-    bool IsInstalled
+    bool IsInstalled,
+    bool IsVerified
 );

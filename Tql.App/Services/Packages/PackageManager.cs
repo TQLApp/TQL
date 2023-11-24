@@ -138,12 +138,18 @@ internal class PackageManager
                                 package.Identity.Id,
                                 StringComparison.OrdinalIgnoreCase
                             )
-                    )
+                    ),
+                    IsVerified(package.Identity.Id)
                 )
             );
         }
 
         return packageDefinitions.ToImmutableArray();
+    }
+
+    private bool IsVerified(string identityId)
+    {
+        return identityId.StartsWith("TQLApp.", StringComparison.OrdinalIgnoreCase);
     }
 
     public async Task InstallPackage(

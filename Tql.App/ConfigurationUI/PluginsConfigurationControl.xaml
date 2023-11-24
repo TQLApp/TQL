@@ -7,9 +7,14 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:app="clr-namespace:Tql.App"
     xmlns:packages="clr-namespace:Tql.App.Services.Packages"
+    xmlns:support="clr-namespace:Tql.App.Support"
     mc:Ignorable="d"
     d:DesignHeight="450"
     d:DesignWidth="800">
+    <UserControl.Resources>
+        <support:HeightToRadiusConverter x:Key="HeightToRadiusConverter" />
+    </UserControl.Resources>
+
     <GroupBox
         Header="{x:Static app:Labels.PluginsConfiguration_Plugins}"
         Padding="4">
@@ -118,13 +123,37 @@
                                         Text="{Binding Description, Mode=OneWay}" />
                                 </TextBlock>
 
-                                <TextBlock Margin="3">
-                                    <!-- prettier-ignore-start -->
-                                    <Run Text="{Binding Identity.Version, Mode=OneWay}" />,
-                                    <Run Text="{Binding DownloadCount, Mode=OneWay}" />
-                                    <Run Text="{x:Static app:Labels.PluginsConfiguration_PluginDownloads}" />
-                                    <!-- prettier-ignore-end -->
-                                </TextBlock>
+                                <StackPanel Orientation="Horizontal">
+                                    <Border
+                                        Visibility="{Binding IsVerified, Converter={StaticResource B2VConverter}}"
+                                        Background="#579dff"
+                                        VerticalAlignment="Center"
+                                        CornerRadius="{Binding ActualHeight, RelativeSource={RelativeSource Self}, Converter={StaticResource HeightToRadiusConverter}}"
+                                        Margin="0,0,5,0"
+                                        support:PopoverToolTipUtils.PopoverToolTip="{DynamicResource VerifiedToolTip}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image
+                                                Source="{DynamicResource ResourceKey=Verified}"
+                                                Height="9"
+                                                Width="9"
+                                                Margin="3,0" />
+                                            <TextBlock
+                                                Foreground="White"
+                                                FontSize="8pt"
+                                                Margin="0,0,6,0">
+                                                Verified
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <TextBlock Margin="3">
+                                        <!-- prettier-ignore-start -->
+                                        <Run Text="{Binding Identity.Version, Mode=OneWay}" />,
+                                        <Run Text="{Binding DownloadCount, Mode=OneWay}" />
+                                        <Run Text="{x:Static app:Labels.PluginsConfiguration_PluginDownloads}" />
+                                        <!-- prettier-ignore-end -->
+                                    </TextBlock>
+                                </StackPanel>
                             </StackPanel>
 
                             <StackPanel
