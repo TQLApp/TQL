@@ -149,7 +149,7 @@
         </Grid.RowDefinitions>
         <Image
             x:Name="_arrow"
-            Height="8"
+            Height="10"
             VerticalAlignment="Center"
             SnapsToDevicePixels="True">
             <Image.Source>

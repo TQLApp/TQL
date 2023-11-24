@@ -51,6 +51,15 @@ internal class QuickStartManager
             Window.GetWindow(owner) ?? throw new InvalidOperationException("Cannot resolve window");
         var ownerIsControl = ownerWindow != owner;
 
+        var adorner = default(Adorner);
+
+        if (ownerIsControl)
+        {
+            adorner = new QuickStartAdorner(owner);
+
+            AdornerLayer.GetAdornerLayer(owner)!.Add(adorner);
+        }
+
         _window = new QuickStartWindow(_ui)
         {
             DataContext = popup,
@@ -98,6 +107,9 @@ internal class QuickStartManager
 
         _window.Closed += (s, _) =>
         {
+            if (adorner != null)
+                AdornerLayer.GetAdornerLayer(owner)!.Remove(adorner);
+
             if (_window == (Window?)s)
                 _window = null;
         };
@@ -173,7 +185,7 @@ internal class QuickStartManager
         if (ownerIsControl)
         {
             x -= windowSize.Width / 2;
-            y = ownerBounds.Bottom + edgeDistance;
+            y = ownerBounds.Bottom + (QuickStartAdorner.Distance - 1) * scaleX;
         }
         else if (mode.HasFlag(QuickStartPopupMode.Modal))
         {
