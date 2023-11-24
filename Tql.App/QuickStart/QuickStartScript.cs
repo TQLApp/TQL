@@ -2,13 +2,44 @@
 
 namespace Tql.App.QuickStart;
 
-internal partial class QuickStartScript(
-    QuickStartManager quickStart,
-    IPluginManager pluginManager,
-    Settings settings
-)
+internal partial class QuickStartScript
 {
     private readonly IPlaybook _playbook = LoadPlaybook();
+    private readonly QuickStartManager _quickStart;
+    private readonly IPluginManager _pluginManager;
+    private readonly Settings _settings;
+    private readonly List<(string TypeName, Action<Window> Action)> _windowLoadedListeners = new();
+
+    public QuickStartScript(
+        QuickStartManager quickStart,
+        IPluginManager pluginManager,
+        Settings settings
+    )
+    {
+        _quickStart = quickStart;
+        _pluginManager = pluginManager;
+        _settings = settings;
+
+        EventManager.RegisterClassHandler(
+            typeof(Window),
+            FrameworkElement.LoadedEvent,
+            new RoutedEventHandler(OnWindowLoaded)
+        );
+    }
+
+    private void OnWindowLoaded(object sender, RoutedEventArgs e)
+    {
+        if (_windowLoadedListeners.Count == 0)
+            return;
+
+        var typeName = sender.GetType().FullName;
+
+        foreach (var listener in _windowLoadedListeners.Where(p => p.TypeName == typeName).ToList())
+        {
+            listener.Action((Window)sender);
+            _windowLoadedListeners.Remove(listener);
+        }
+    }
 
     private static IPlaybook LoadPlaybook()
     {
@@ -21,15 +52,15 @@ internal partial class QuickStartScript(
 
     private QuickStartDto State
     {
-        get => quickStart.State;
-        set => quickStart.State = value;
+        get => _quickStart.State;
+        set => _quickStart.State = value;
     }
 
     private bool IsToolInstalled(QuickStartTool tool)
     {
         var plugin = GetPluginValues(tool);
 
-        return pluginManager.Plugins.Any(p => p.Id == plugin.Id);
+        return _pluginManager.Plugins.Any(p => p.Id == plugin.Id);
     }
 
     private PluginValues CurrentPlugin => GetPluginValues(State.SelectedTool);
@@ -104,6 +135,11 @@ internal partial class QuickStartScript(
         };
     }
 
+    private void WindowLoaded(string typeName, Action<Window> action)
+    {
+        _windowLoadedListeners.Add((typeName, action));
+    }
+
     private record PluginValues(
         string PluginName,
         string PackageId,
@@ -111,7 +147,8 @@ internal partial class QuickStartScript(
         Guid ConfigurationPageId,
         Guid CategoryMatchId,
         string CategoryMatchLabel,
-        string CategoryLabel
+        string CategoryLabel,
+        string EditWindowType
     )
     {
         public string PluginCode => PluginName.ToLowerInvariant().Replace(" ", "-");

@@ -133,6 +133,13 @@ You can setup connections to multiple Azure DevOps environments. We'll
 start with setting up the one you use most. If you have access to more Azure DevOps
 environments, you can add them at any time.
 
+Click the **Add** button to start adding a connection.
+
+---
+id: add-connection-azure-devops
+title: Add the connection
+---
+
 You need to give the connection a **Name** first. If you configure more than one
 connection, this name is used to distinguish between them when you use the app.
 
@@ -141,10 +148,14 @@ The **URL** is the URL you use to access Azure DevOps, e.g. https://dev.azure.co
 You get the value for the **PAT Token** field from Azure DevOps. Click the
 **Documentation** if you need help creating one.
 
-You'll be asked to enter your credentials in a moment.
+Once you've completed the form, click **Save** to add the connection.
 
-Once you've completed the form, click **Update** to add the connection
-and **Save** to commit your changes.
+---
+id: added-connection-azure-devops
+title: Save your changes
+---
+
+Now click **Save** to save your changes.
 
 ---
 id: configure-github

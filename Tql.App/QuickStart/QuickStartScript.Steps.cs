@@ -16,7 +16,8 @@ internal partial class QuickStartScript
             Guid.Parse("97f80138-0b44-4ffc-b5c2-2a40f1070e17"),
             Guid.Parse("b984b4ae-0a4d-4b77-bc95-db675a6c96e9"),
             "JIRA Board",
-            "board"
+            "board",
+            "Tql.Plugins.Jira.ConfigurationUI.EditWindow"
         );
     private static readonly PluginValues AzureDevOpsPluginValues =
         new(
@@ -26,7 +27,8 @@ internal partial class QuickStartScript
             Guid.Parse("12e42adb-7f02-40fe-b8ba-2938b49b3d81"),
             Guid.Parse("8d85fc68-ac7c-4d25-a837-7ab475b073f6"),
             "Azure Board",
-            "board"
+            "board",
+            "Tql.Plugins.AzureDevOps.ConfigurationUI.EditWindow"
         );
     private static readonly PluginValues GitHubPluginValues =
         new(
@@ -36,7 +38,8 @@ internal partial class QuickStartScript
             Guid.Parse("35954273-99ae-473c-9386-2dc220a12c45"),
             Guid.Parse("d4d42f26-f777-46c5-895b-b18287fd6fb9"),
             "My GitHub Repository",
-            "repository"
+            "repository",
+            "Tql.Plugins.AzureDevOps.GitHub.EditWindow"
         );
 
     public void HandleMainWindow(MainWindow window)
@@ -85,9 +88,9 @@ internal partial class QuickStartScript
 
     private void Welcome(MainWindow window)
     {
-        var hotKey = HotKey.FromSettings(settings).ToLabel();
+        var hotKey = HotKey.FromSettings(_settings).ToLabel();
 
-        quickStart.Show(
+        _quickStart.Show(
             window,
             CreateBuilder("welcome", hotKey)
                 .WithButton(
@@ -105,7 +108,7 @@ internal partial class QuickStartScript
 
     private void SelectTool(MainWindow window)
     {
-        var completedTools = quickStart.State.CompletedTools;
+        var completedTools = _quickStart.State.CompletedTools;
 
         var builder = CreateBuilder(
             completedTools.Length switch
@@ -125,7 +128,7 @@ internal partial class QuickStartScript
             builder.WithButton("Close Tutorial", Dismiss);
         }
 
-        quickStart.Show(window, builder.Build(), QuickStartPopupMode.Modal);
+        _quickStart.Show(window, builder.Build(), QuickStartPopupMode.Modal);
 
         void ApplySelection(QuickStartTool tool)
         {
@@ -148,13 +151,13 @@ internal partial class QuickStartScript
 
     private void Dismiss()
     {
-        quickStart.Close();
-        quickStart.State = QuickStartDto.Empty with { Step = QuickStartStep.Dismissed };
+        _quickStart.Close();
+        _quickStart.State = QuickStartDto.Empty with { Step = QuickStartStep.Dismissed };
     }
 
     private void OpenConfigurationWindowToInstallPlugin(MainWindow window)
     {
-        quickStart.Show(
+        _quickStart.Show(
             window.ConfigurationImage,
             CreateBuilder("open-configuration-window-to-install").Build()
         );
@@ -162,7 +165,7 @@ internal partial class QuickStartScript
 
     private void OpenPluginPage(ConfigurationWindow window)
     {
-        quickStart.Show(window, CreateBuilder("select-plugins-page").Build());
+        _quickStart.Show(window, CreateBuilder("select-plugins-page").Build());
 
         window.SelectedPageChanged += CreateHandler(
             () => window.SelectedPage is PluginsConfigurationControl,
@@ -172,7 +175,7 @@ internal partial class QuickStartScript
 
     private void FindPlugin(ConfigurationWindow window)
     {
-        quickStart.Show(window, CreateBuilder("find-plugin", CurrentPlugin.PluginName).Build());
+        _quickStart.Show(window, CreateBuilder("find-plugin", CurrentPlugin.PluginName).Build());
 
         var page = (PluginsConfigurationControl)window.SelectedPage!;
 
@@ -184,7 +187,7 @@ internal partial class QuickStartScript
 
     private void InstallPlugin(ConfigurationWindow window, PluginsConfigurationControl page)
     {
-        var closer = quickStart.Show(
+        var closer = _quickStart.Show(
             (FrameworkElement?)page.InstallButton ?? window,
             CreateBuilder("install-plugin", CurrentPlugin.PluginName).Build()
         );
@@ -201,12 +204,12 @@ internal partial class QuickStartScript
 
     private void InstallCompleteRestartApplication(PluginsConfigurationControl page)
     {
-        quickStart.Show(page.RestartButton, CreateBuilder("complete-install-plugin").Build());
+        _quickStart.Show(page.RestartButton, CreateBuilder("complete-install-plugin").Build());
     }
 
     private void OpenConfigurationWindowToConfigurePlugin(MainWindow window)
     {
-        quickStart.Show(
+        _quickStart.Show(
             window.ConfigurationImage,
             CreateBuilder("open-configuration-window-to-configure", CurrentPlugin.PluginName)
                 .Build()
@@ -215,7 +218,7 @@ internal partial class QuickStartScript
 
     private void OpenPluginConfigurationPage(ConfigurationWindow window)
     {
-        quickStart.Show(
+        _quickStart.Show(
             window,
             CreateBuilder("select-plugin-configuration-page", CurrentPlugin.PluginName).Build()
         );
@@ -228,7 +231,27 @@ internal partial class QuickStartScript
 
     private void ConfigurePlugin(ConfigurationWindow window)
     {
-        quickStart.Show(window, CreateBuilder($"configure-{CurrentPlugin.PluginCode}").Build());
+        _quickStart.Show(window, CreateBuilder($"configure-{CurrentPlugin.PluginCode}").Build());
+
+        WindowLoaded(CurrentPlugin.EditWindowType, p => AddConnection(window, p));
+    }
+
+    private void AddConnection(ConfigurationWindow window, Window editWindow)
+    {
+        _quickStart.Show(
+            window,
+            CreateBuilder($"add-connection-{CurrentPlugin.PluginCode}").Build()
+        );
+
+        editWindow.Closed += CreateHandler(() => AddedConnection(window));
+    }
+
+    private void AddedConnection(ConfigurationWindow window)
+    {
+        _quickStart.Show(
+            window,
+            CreateBuilder($"added-connection-{CurrentPlugin.PluginCode}").Build()
+        );
 
         window.Closed += CreateHandler(
             () => window.DialogResult == true,
@@ -244,7 +267,10 @@ internal partial class QuickStartScript
 
     private void ListAllCategories(MainWindow window)
     {
-        quickStart.Show(window, CreateBuilder("discover-plugin", CurrentPlugin.PluginName).Build());
+        _quickStart.Show(
+            window,
+            CreateBuilder("discover-plugin", CurrentPlugin.PluginName).Build()
+        );
 
         window.SearchManager!.SearchCompleted += CreateHandler<SearchResultsEventArgs>(
             e => window.SearchManager!.Search == " ",
@@ -254,7 +280,7 @@ internal partial class QuickStartScript
 
     private void TrySomeCategory(MainWindow window)
     {
-        quickStart.Show(
+        _quickStart.Show(
             window,
             CreateBuilder(
                     "select-category",
@@ -272,7 +298,7 @@ internal partial class QuickStartScript
 
     private void SearchJiraBoard(MainWindow window)
     {
-        quickStart.Show(
+        _quickStart.Show(
             window,
             CreateBuilder(
                     $"find-match",
@@ -291,9 +317,9 @@ internal partial class QuickStartScript
 
     private void PickSomeMatch(MainWindow window)
     {
-        var hotKey = HotKey.FromSettings(settings).ToLabel();
+        var hotKey = HotKey.FromSettings(_settings).ToLabel();
 
-        var closer = quickStart.Show(window, CreateBuilder("activate-match", hotKey).Build());
+        var closer = _quickStart.Show(window, CreateBuilder("activate-match", hotKey).Build());
 
         window.MatchActivated += CreateHandler<MatchEventArgs>(() =>
         {
@@ -305,7 +331,7 @@ internal partial class QuickStartScript
 
     private void SearchInsideCategory(MainWindow window)
     {
-        quickStart.Show(
+        _quickStart.Show(
             window,
             CreateBuilder(
                     "nested-categories",
@@ -324,14 +350,14 @@ internal partial class QuickStartScript
 
     private void NestedJiraSearch(MainWindow window)
     {
-        quickStart.Show(window, CreateBuilder("search-nested-category").Build());
+        _quickStart.Show(window, CreateBuilder("search-nested-category").Build());
 
         window.MatchPushed += CreateHandler<MatchEventArgs>(() => NestedJiraSearchResults(window));
     }
 
     private void NestedJiraSearchResults(MainWindow window)
     {
-        quickStart.Show(window, CreateBuilder($"search-hint-{CurrentPlugin.PluginCode}").Build());
+        _quickStart.Show(window, CreateBuilder($"search-hint-{CurrentPlugin.PluginCode}").Build());
 
         State = State with { Step = QuickStartStep.ActivateFavorite };
 
@@ -343,7 +369,7 @@ internal partial class QuickStartScript
 
     private void ActivateFavorite(MainWindow window)
     {
-        quickStart.Show(
+        _quickStart.Show(
             window,
             CreateBuilder("search-in-history", CurrentPlugin.CategoryLabel).Build()
         );
@@ -356,21 +382,21 @@ internal partial class QuickStartScript
 
     private void PinningItems(MainWindow window)
     {
-        quickStart.Show(window, CreateBuilder("pinning-items").Build());
+        _quickStart.Show(window, CreateBuilder("pinning-items").Build());
 
         window.MatchPinned += CreateHandler<MatchEventArgs>(() => UnpinItems(window));
     }
 
     private void UnpinItems(MainWindow window)
     {
-        quickStart.Show(window, CreateBuilder("unpinning-items").Build());
+        _quickStart.Show(window, CreateBuilder("unpinning-items").Build());
 
         window.MatchUnpinned += CreateHandler<MatchEventArgs>(() => RemoveFavorite(window));
     }
 
     private void RemoveFavorite(MainWindow window)
     {
-        quickStart.Show(window, CreateBuilder("remove-favorite").Build());
+        _quickStart.Show(window, CreateBuilder("remove-favorite").Build());
 
         window.MatchHistoryRemoved += CreateHandler<MatchEventArgs>(
             () => MainTutorialComplete(window)
@@ -389,16 +415,16 @@ internal partial class QuickStartScript
 
     private void UpdateStateCompletedTool()
     {
-        var completedTools = quickStart
+        var completedTools = _quickStart
             .State
             .CompletedTools
-            .Add(quickStart.State.SelectedTool!.Value);
+            .Add(_quickStart.State.SelectedTool!.Value);
 
         var toolsAvailable = EnumEx
             .GetValues<QuickStartTool>()
             .Any(p => !completedTools.Contains(p));
 
-        quickStart.State = new QuickStartDto(
+        _quickStart.State = new QuickStartDto(
             toolsAvailable ? QuickStartStep.SelectTool : QuickStartStep.Completed,
             null,
             completedTools
@@ -407,7 +433,7 @@ internal partial class QuickStartScript
 
     private void WalkthroughComplete(MainWindow window)
     {
-        quickStart.Show(
+        _quickStart.Show(
             window,
             CreateBuilder("complete").WithButton("Close Tutorial", Dismiss).Build()
         );
