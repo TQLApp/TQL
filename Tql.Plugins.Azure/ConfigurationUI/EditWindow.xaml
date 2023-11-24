@@ -1,0 +1,85 @@
+﻿<utilities:BaseWindow
+    x:Class="Tql.Plugins.Azure.ConfigurationUI.EditWindow"
+    x:ClassModifier="internal"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:Tql.Plugins.Azure.ConfigurationUI"
+    xmlns:utilities="clr-namespace:Tql.Utilities;assembly=Tql.Utilities"
+    xmlns:app="clr-namespace:Tql.Plugins.Azure"
+    ResizeMode="NoResize"
+    SizeToContent="Height"
+    WindowStartupLocation="CenterOwner"
+    mc:Ignorable="d"
+    Title="{x:Static app:Labels.EditWindow_Title}"
+    Width="500"
+    d:DataContext="{d:DesignInstance local:ConnectionDto}">
+    <Window.Resources>
+        <utilities:InverseBooleanConverter x:Key="IBConverter" />
+    </Window.Resources>
+
+    <Grid Margin="9">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Label Content="{x:Static app:Labels.ConfigurationControl_NameLabel}" />
+        <TextBox
+            Text="{Binding Name}"
+            Grid.Column="1"
+            Margin="3" />
+
+        <Label
+            Content="{x:Static app:Labels.ConfigurationControl_TenantIDLabel}"
+            Grid.Row="1" />
+        <TextBox
+            Text="{Binding TenantId}"
+            Grid.Row="1"
+            Grid.Column="1"
+            Margin="3" />
+        <TextBlock
+            Grid.Row="2"
+            Grid.Column="1"
+            Margin="3"
+            TextWrapping="Wrap"
+            Text="{x:Static app:Labels.ConfigurationControl_TenantIDHelpText}" />
+
+        <StackPanel
+            Orientation="Horizontal"
+            HorizontalAlignment="Right"
+            Margin="0,3,0,0"
+            Grid.Row="3"
+            Grid.ColumnSpan="2">
+            <TextBlock
+                Margin="9,3"
+                VerticalAlignment="Center">
+                <Hyperlink
+                    x:Name="_documentation"
+                    Click="_documentation_Click">
+                    <Run
+                        Text="{x:Static app:Labels.ConfigurationControl_Documentation}" />
+                </Hyperlink>
+            </TextBlock>
+
+            <Button
+                x:Name="_acceptButton"
+                IsEnabled="{Binding HasErrors, Converter={StaticResource IBConverter}}"
+                Content="{x:Static app:Labels.Button_Save}"
+                Margin="3"
+                IsDefault="true"
+                Click="_acceptButton_Click" />
+            <Button
+                Content="{x:Static app:Labels.Button_Cancel}"
+                Margin="3"
+                IsCancel="true" />
+        </StackPanel>
+    </Grid>
+</utilities:BaseWindow>
