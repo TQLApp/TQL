@@ -38,6 +38,7 @@ public class JiraPlugin : ITqlPlugin
         services.AddSingleton<ICacheManager<JiraData>, JiraCacheManager>();
 
         services.AddTransient<ConfigurationControl>();
+        services.AddTransient<ConnectionEditWindow>();
 
         _matchTypeManagerBuilder.ConfigureServices(services);
     }

@@ -88,6 +88,33 @@ namespace Tql.Plugins.GitHub {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Documentation.
+        /// </summary>
+        public static string Button_Documentation {
+            get {
+                return ResourceManager.GetString("Button_Documentation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        public static string Button_Edit {
+            get {
+                return ResourceManager.GetString("Button_Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        public static string Button_Save {
+            get {
+                return ResourceManager.GetString("Button_Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Update.
         /// </summary>
         public static string Button_Update {
@@ -102,33 +129,6 @@ namespace Tql.Plugins.GitHub {
         public static string ConfigurationControl_Connections {
             get {
                 return ResourceManager.GetString("ConfigurationControl_Connections", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Documentation.
-        /// </summary>
-        public static string ConfigurationControl_Documentation {
-            get {
-                return ResourceManager.GetString("ConfigurationControl_Documentation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Complete editing the connection.
-        /// </summary>
-        public static string ConfigurationControl_EditingConnection {
-            get {
-                return ResourceManager.GetString("ConfigurationControl_EditingConnection", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to You&apos;re currently editing a connection. Click Update or Cancel to complete editing the connection..
-        /// </summary>
-        public static string ConfigurationControl_EditingConnectionSubtitle {
-            get {
-                return ResourceManager.GetString("ConfigurationControl_EditingConnectionSubtitle", resourceCulture);
             }
         }
         
@@ -153,9 +153,18 @@ namespace Tql.Plugins.GitHub {
         /// <summary>
         ///   Looks up a localized string similar to Name:.
         /// </summary>
-        public static string ConfigurationControl_NameLabel {
+        public static string ConnectionEditWindow_NameLabel {
             get {
-                return ResourceManager.GetString("ConfigurationControl_NameLabel", resourceCulture);
+                return ResourceManager.GetString("ConnectionEditWindow_NameLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Connection.
+        /// </summary>
+        public static string ConnectionEditWindow_Title {
+            get {
+                return ResourceManager.GetString("ConnectionEditWindow_Title", resourceCulture);
             }
         }
         

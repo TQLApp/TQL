@@ -26,6 +26,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Compile Update="ConfigurationUI\ConnectionEditWindow.xaml.cs">
+		  <SubType>Code</SubType>
+		</Compile>
 		<Compile Update="Labels.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>

@@ -176,15 +176,15 @@ internal class QuickStartManager
         var scaleY = source.CompositionTarget!.TransformToDevice.M22;
 
         var ownerBounds = ScaleBounds(GetOwnerBounds());
-        var ownerWindowBounds = GetOwnerWindowBounds();
+        var ownerWindowBounds = ScaleBounds(GetOwnerWindowBounds());
         var windowSize = ScaleSize(new Size(_window!.ActualWidth, _window.ActualHeight));
         var showOnScreen = ShowOnScreenManager.Create(_settings.ShowOnScreen);
-        var screen = showOnScreen.GetScreen();
+        var workingArea = showOnScreen.GetScreen().WorkingArea;
 
-        // We base all random values on the hash code of the popup. This
+        // We base all random values on the hash code of the ID of the popup. This
         // means that the location of the popup will be stable, for a specific
-        // popup.
-        var random = new Random(popup.ToString()!.GetHashCode());
+        // popup. We can't use GetHashCode for this because that's randomized.
+        var random = new Random(HashCode.Combine(popup.Id.ToCharArray()));
 
         // Calculate the desired offset off of the center of the owner window.
         var xRange = Math.Max(ownerBounds.Width - (windowSize.Width / 2), 0);
@@ -212,11 +212,10 @@ internal class QuickStartManager
 
             // Ensure that the quick start window is visible.
             var bottom = y + windowSize.Height + edgeDistance;
-            var overhang = bottom - screen.WorkingArea.Bottom;
+            var overhang = bottom - workingArea.Bottom;
             if (overhang > 0)
             {
-                var availableSpace =
-                    ownerWindowBounds.Top - (screen.WorkingArea.Top + edgeDistance);
+                var availableSpace = ownerWindowBounds.Top - (workingArea.Top + edgeDistance);
                 if (overhang > availableSpace)
                     overhang = availableSpace;
 
@@ -237,7 +236,7 @@ internal class QuickStartManager
             // Prevent the quick start window from showing at the top of
             // bottom if it wouldn't fit.
             var requiredSpace = (windowSize.Height + ownerWindowBounds.Height + edgeDistance * 2);
-            if (requiredSpace > screen.WorkingArea.Height)
+            if (requiredSpace > workingArea.Height)
                 maxEdge = 2;
 
             // Put the quick start window to the side, at a random side.
@@ -273,14 +272,14 @@ internal class QuickStartManager
         if (!ownerIsControl)
         {
             // Make sure the quick start window is visible on the screen.
-            if (x < screen.WorkingArea.Left + edgeDistance)
-                x = screen.WorkingArea.Left + edgeDistance;
-            else if (x + windowSize.Width > screen.WorkingArea.Right - edgeDistance)
-                x = screen.WorkingArea.Right - edgeDistance - windowSize.Width;
-            if (y < screen.WorkingArea.Top + edgeDistance)
-                y = screen.WorkingArea.Top + edgeDistance;
-            else if (y + windowSize.Height > screen.WorkingArea.Bottom - edgeDistance)
-                y = screen.WorkingArea.Bottom - edgeDistance - windowSize.Height;
+            if (x < workingArea.Left + edgeDistance)
+                x = workingArea.Left + edgeDistance;
+            else if (x + windowSize.Width > workingArea.Right - edgeDistance)
+                x = workingArea.Right - edgeDistance - windowSize.Width;
+            if (y < workingArea.Top + edgeDistance)
+                y = workingArea.Top + edgeDistance;
+            else if (y + windowSize.Height > workingArea.Bottom - edgeDistance)
+                y = workingArea.Bottom - edgeDistance - windowSize.Height;
         }
 
         // Minimize overlap with the owner window.
@@ -294,7 +293,7 @@ internal class QuickStartManager
                     if (overhang > 0)
                     {
                         var availableSpace =
-                            screen.WorkingArea.Right - ownerWindowBounds.Right - edgeDistance;
+                            workingArea.Right - ownerWindowBounds.Right - edgeDistance;
                         ownerWindow.Left += Math.Min(overhang, availableSpace);
                     }
                     break;
@@ -304,7 +303,7 @@ internal class QuickStartManager
                     if (overhang > 0)
                     {
                         var availableSpace =
-                            ownerWindowBounds.Left - screen.WorkingArea.Left - edgeDistance;
+                            ownerWindowBounds.Left - workingArea.Left - edgeDistance;
                         ownerWindow.Left -= Math.Min(overhang, availableSpace);
                     }
                     break;
@@ -315,7 +314,7 @@ internal class QuickStartManager
                     if (overhang > 0)
                     {
                         var availableSpace =
-                            screen.WorkingArea.Bottom - ownerWindowBounds.Bottom - edgeDistance;
+                            workingArea.Bottom - ownerWindowBounds.Bottom - edgeDistance;
                         ownerWindow.Top += Math.Min(overhang, availableSpace);
                     }
                     break;
@@ -324,8 +323,7 @@ internal class QuickStartManager
                     overhang = ownerWindowBounds.Bottom - y;
                     if (overhang > 0)
                     {
-                        var availableSpace =
-                            ownerWindowBounds.Top - screen.WorkingArea.Top - edgeDistance;
+                        var availableSpace = ownerWindowBounds.Top - workingArea.Top - edgeDistance;
                         ownerWindow.Top -= Math.Min(overhang, availableSpace);
                     }
                     break;

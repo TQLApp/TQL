@@ -39,6 +39,7 @@ public class AzureDevOpsPlugin : ITqlPlugin
         services.AddSingleton<AzureDevOpsPeopleDirectoryManager>();
 
         services.AddTransient<ConfigurationControl>();
+        services.AddTransient<ConnectionEditWindow>();
 
         _matchTypeManagerBuilder.ConfigureServices(services);
     }

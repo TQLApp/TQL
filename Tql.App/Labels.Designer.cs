@@ -133,6 +133,15 @@ namespace Tql.App {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        public static string Button_Edit {
+            get {
+                return ResourceManager.GetString("Button_Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to OK.
         /// </summary>
         public static string Button_OK {
@@ -1222,20 +1231,47 @@ namespace Tql.App {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Complete editing the package source.
+        ///   Looks up a localized string similar to If you&apos;re using a PAT token to connect to an Azure DevOps private artifact feed, enter it into the password field and enter the part of your email address before the @ into the user name field..
         /// </summary>
-        public static string PackageSourcesConfiguration_EditingSource {
+        public static string PackageSourceEditWindow_PasswordHelpText {
             get {
-                return ResourceManager.GetString("PackageSourcesConfiguration_EditingSource", resourceCulture);
+                return ResourceManager.GetString("PackageSourceEditWindow_PasswordHelpText", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You&apos;re currently editing a package source. Click Update or Cancel to complete editing the package source..
+        ///   Looks up a localized string similar to Password:.
         /// </summary>
-        public static string PackageSourcesConfiguration_EditingSourceSubtitle {
+        public static string PackageSourceEditWindow_PasswordLabel {
             get {
-                return ResourceManager.GetString("PackageSourcesConfiguration_EditingSourceSubtitle", resourceCulture);
+                return ResourceManager.GetString("PackageSourceEditWindow_PasswordLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Package Source.
+        /// </summary>
+        public static string PackageSourceEditWindow_Title {
+            get {
+                return ResourceManager.GetString("PackageSourceEditWindow_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to URL:.
+        /// </summary>
+        public static string PackageSourceEditWindow_URLLabel {
+            get {
+                return ResourceManager.GetString("PackageSourceEditWindow_URLLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User name:.
+        /// </summary>
+        public static string PackageSourceEditWindow_UserNameLabel {
+            get {
+                return ResourceManager.GetString("PackageSourceEditWindow_UserNameLabel", resourceCulture);
             }
         }
         
@@ -1249,47 +1285,11 @@ namespace Tql.App {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If you&apos;re using a PAT token to connect to an Azure DevOps private artifact feed, enter it into the password field and enter the part of your email address before the @ into the user name field..
-        /// </summary>
-        public static string PackageSourcesConfiguration_PasswordHelpText {
-            get {
-                return ResourceManager.GetString("PackageSourcesConfiguration_PasswordHelpText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Password:.
-        /// </summary>
-        public static string PackageSourcesConfiguration_PasswordLabel {
-            get {
-                return ResourceManager.GetString("PackageSourcesConfiguration_PasswordLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to URL.
         /// </summary>
         public static string PackageSourcesConfiguration_URL {
             get {
                 return ResourceManager.GetString("PackageSourcesConfiguration_URL", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to URL:.
-        /// </summary>
-        public static string PackageSourcesConfiguration_URLLabel {
-            get {
-                return ResourceManager.GetString("PackageSourcesConfiguration_URLLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to User name:.
-        /// </summary>
-        public static string PackageSourcesConfiguration_UserNameLabel {
-            get {
-                return ResourceManager.GetString("PackageSourcesConfiguration_UserNameLabel", resourceCulture);
             }
         }
         

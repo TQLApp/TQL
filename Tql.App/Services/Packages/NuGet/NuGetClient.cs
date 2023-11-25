@@ -46,7 +46,7 @@ internal class NuGetClient : IDisposable
 
         foreach (var source in configuration.Sources)
         {
-            var packageSource = new PackageSource(source.Source)
+            var packageSource = new global::NuGet.Configuration.PackageSource(source.Source)
             {
                 Credentials = source.Credentials
             };

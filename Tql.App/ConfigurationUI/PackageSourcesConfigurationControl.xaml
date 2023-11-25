@@ -14,7 +14,6 @@
     d:DataContext="{d:DesignInstance Type=configurationUi:PackageManagerConfigurationDto}">
     <UserControl.Resources>
         <utilities:NullToBooleanConverter x:Key="N2BConverter" />
-        <utilities:InverseBooleanConverter x:Key="IBConverter" />
     </UserControl.Resources>
     <GroupBox
         Header="{x:Static app:Labels.PackageSourcesConfiguration_PackageSources}"
@@ -23,7 +22,6 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <StackPanel
@@ -34,6 +32,12 @@
                     Content="{x:Static app:Labels.Button_Add}"
                     Margin="3"
                     Click="_add_Click" />
+                <Button
+                    x:Name="_edit"
+                    Content="{x:Static app:Labels.Button_Edit}"
+                    IsEnabled="{Binding ElementName=_sources, Path=SelectedItem, Converter={StaticResource N2BConverter}}"
+                    Margin="3"
+                    Click="_edit_Click" />
                 <Button
                     x:Name="_delete"
                     Content="{x:Static app:Labels.Button_Delete}"
@@ -48,7 +52,7 @@
                 Grid.Row="1"
                 SelectionMode="Single"
                 Margin="3"
-                SelectionChanged="_sources_SelectionChanged">
+                MouseDoubleClick="_sources_MouseDoubleClick">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn
@@ -58,73 +62,6 @@
                     </GridView>
                 </ListView.View>
             </ListView>
-
-            <Grid
-                x:Name="_source"
-                Grid.Row="2"
-                IsEnabled="{Binding Converter={StaticResource N2BConverter}}"
-                d:DataContext="{d:DesignInstance configurationUi:PackageManagerSourceDto}">
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-
-                <Label
-                    Content="{x:Static app:Labels.PackageSourcesConfiguration_URLLabel}" />
-                <TextBox
-                    Text="{Binding Url}"
-                    Grid.Column="1"
-                    Margin="3" />
-
-                <Label
-                    Content="{x:Static app:Labels.PackageSourcesConfiguration_UserNameLabel}"
-                    Grid.Row="1" />
-                <TextBox
-                    Text="{Binding UserName}"
-                    Grid.Row="1"
-                    Grid.Column="1"
-                    Margin="3" />
-
-                <Label
-                    Content="{x:Static app:Labels.PackageSourcesConfiguration_PasswordLabel}"
-                    Grid.Row="2" />
-                <PasswordBox
-                    utilities:PasswordBoxHelper.BoundPassword="{Binding Password, Mode=TwoWay}"
-                    Grid.Row="2"
-                    Grid.Column="1"
-                    Margin="3" />
-
-                <TextBlock
-                    Margin="4"
-                    Grid.Row="3"
-                    Grid.Column="1"
-                    TextWrapping="Wrap"
-                    Text="{x:Static app:Labels.PackageSourcesConfiguration_PasswordHelpText}" />
-
-                <StackPanel
-                    Grid.Column="2"
-                    Orientation="Vertical"
-                    Grid.RowSpan="999">
-                    <Button
-                        x:Name="_update"
-                        IsEnabled="{Binding HasErrors, Converter={StaticResource IBConverter}}"
-                        Content="{x:Static app:Labels.Button_Update}"
-                        Margin="3"
-                        Click="_update_Click" />
-                    <Button
-                        x:Name="_cancel"
-                        Content="{x:Static app:Labels.Button_Cancel}"
-                        Margin="3"
-                        Click="_cancel_Click" />
-                </StackPanel>
-            </Grid>
         </Grid>
     </GroupBox>
 </UserControl>

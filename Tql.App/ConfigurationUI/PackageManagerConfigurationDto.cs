@@ -8,7 +8,7 @@ namespace Tql.App.ConfigurationUI;
 
 internal class PackageManagerConfigurationDto
 {
-    public ObservableCollection<PackageManagerSourceDto> Sources { get; } = new();
+    public ObservableCollection<PackageSourceDto> Sources { get; } = new();
 
     public static PackageManagerConfigurationDto FromConfiguration(
         PackageManagerConfiguration configuration,
@@ -24,7 +24,7 @@ internal class PackageManagerConfigurationDto
                     .Sources
                     .Select(
                         p =>
-                            new PackageManagerSourceDto
+                            new PackageSourceDto
                             {
                                 Url = p.Url,
                                 UserName = p.UserName,
@@ -41,19 +41,14 @@ internal class PackageManagerConfigurationDto
         return new PackageManagerConfiguration(
             Sources
                 .Select(
-                    p =>
-                        new PackageManagerSource(
-                            p.Url!,
-                            p.UserName,
-                            encryption.EncryptString(p.Password)
-                        )
+                    p => new PackageSource(p.Url!, p.UserName, encryption.EncryptString(p.Password))
                 )
                 .ToImmutableArray()
         );
     }
 }
 
-internal class PackageManagerSourceDto : DtoBase
+internal class PackageSourceDto : DtoBase
 {
     public string? Url
     {
@@ -73,7 +68,7 @@ internal class PackageManagerSourceDto : DtoBase
         set => SetValue(value);
     }
 
-    public PackageManagerSourceDto()
+    public PackageSourceDto()
     {
         AddProperty(
             nameof(Url),
@@ -84,6 +79,5 @@ internal class PackageManagerSourceDto : DtoBase
         AddProperty(nameof(Password), null, CoerceEmptyStringToNull);
     }
 
-    public PackageManagerSourceDto Clone() =>
-        (PackageManagerSourceDto)Clone(new PackageManagerSourceDto());
+    public PackageSourceDto Clone() => (PackageSourceDto)Clone(new PackageSourceDto());
 }

@@ -1,14 +1,15 @@
-﻿using Tql.Abstractions;
+﻿using System.Windows.Controls.Primitives;
+using Microsoft.Extensions.DependencyInjection;
+using Tql.Abstractions;
 using Tql.App.Services.Packages;
-using Tql.Utilities;
 
 namespace Tql.App.ConfigurationUI;
 
 internal partial class PackageSourcesConfigurationControl : IConfigurationPage
 {
-    private readonly IUI _ui;
     private readonly IEncryption _encryption;
     private readonly PackageManager _packageManager;
+    private readonly IServiceProvider _serviceProvider;
 
     private new PackageManagerConfigurationDto DataContext =>
         (PackageManagerConfigurationDto)base.DataContext;
@@ -18,14 +19,14 @@ internal partial class PackageSourcesConfigurationControl : IConfigurationPage
     public ConfigurationPageMode PageMode => ConfigurationPageMode.AutoSize;
 
     public PackageSourcesConfigurationControl(
-        IUI ui,
         IEncryption encryption,
-        PackageManager packageManager
+        PackageManager packageManager,
+        IServiceProvider serviceProvider
     )
     {
-        _ui = ui;
         _encryption = encryption;
         _packageManager = packageManager;
+        _serviceProvider = serviceProvider;
 
         InitializeComponent();
 
@@ -33,64 +34,47 @@ internal partial class PackageSourcesConfigurationControl : IConfigurationPage
             _packageManager.Configuration,
             _encryption
         );
-
-        _source.DataContext = null;
     }
 
     public void Initialize(IConfigurationPageContext context) { }
 
     public Task<SaveStatus> Save()
     {
-        if (_source.DataContext != null)
-        {
-            _ui.ShowAlert(
-                this,
-                Labels.PackageSourcesConfiguration_EditingSource,
-                Labels.PackageSourcesConfiguration_EditingSourceSubtitle
-            );
-            return Task.FromResult(SaveStatus.Failure);
-        }
-
         _packageManager.UpdateConfiguration(DataContext.ToConfiguration(_encryption));
 
         return Task.FromResult(SaveStatus.Success);
     }
 
-    private void _add_Click(object? sender, RoutedEventArgs e)
-    {
-        _sources.SelectedItem = null;
+    private void _add_Click(object? sender, RoutedEventArgs e) => Edit(null);
 
-        _source.DataContext = new PackageManagerSourceDto();
+    private void _edit_Click(object sender, RoutedEventArgs e) =>
+        Edit((PackageSourceDto)_sources.SelectedItem);
+
+    private void Edit(PackageSourceDto? connection)
+    {
+        var editConnection = connection?.Clone() ?? new PackageSourceDto();
+
+        var window = _serviceProvider.GetRequiredService<PackageSourceEditWindow>();
+        window.Owner = Window.GetWindow(this);
+        window.DataContext = editConnection;
+
+        if (window.ShowDialog().GetValueOrDefault())
+        {
+            if (connection != null)
+                DataContext.Sources[_sources.SelectedIndex] = editConnection;
+            else
+                DataContext.Sources.Add(editConnection);
+        }
     }
 
     private void _delete_Click(object? sender, RoutedEventArgs e)
     {
-        DataContext.Sources.Remove((PackageManagerSourceDto)_sources.SelectedItem);
-
-        _source.DataContext = null;
+        DataContext.Sources.Remove((PackageSourceDto)_sources.SelectedItem);
     }
 
-    private void _update_Click(object? sender, RoutedEventArgs e)
+    private void _sources_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
-        var source = (PackageManagerSourceDto)_source.DataContext;
-
-        if (_sources.SelectedItem != null)
-            DataContext.Sources[_sources.SelectedIndex] = source;
-        else
-            DataContext.Sources.Add(source);
-
-        _source.DataContext = null;
-        _sources.SelectedItem = null;
-    }
-
-    private void _sources_SelectionChanged(object? sender, SelectionChangedEventArgs e)
-    {
-        _source.DataContext = ((PackageManagerSourceDto?)_sources.SelectedItem)?.Clone();
-    }
-
-    private void _cancel_Click(object sender, RoutedEventArgs e)
-    {
-        _source.DataContext = null;
-        _sources.SelectedItem = null;
+        if (e.ChangedButton == MouseButton.Left && _edit.IsEnabled)
+            _edit.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
     }
 }

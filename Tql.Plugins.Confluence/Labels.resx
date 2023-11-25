@@ -129,13 +129,13 @@
   <data name="Button_Update" xml:space="preserve">
     <value>Update</value>
   </data>
-  <data name="ConfigurationControl_BasicCredentialsDocumentation" xml:space="preserve">
+  <data name="ConnectionEditWindow_BasicCredentialsDocumentation" xml:space="preserve">
     <value>If you're using an API token or your own password, you have to enter your username as well. If you're using a PAT token, leave the user name field empty.</value>
   </data>
   <data name="ConfigurationControl_Connections" xml:space="preserve">
     <value>Connections</value>
   </data>
-  <data name="ConfigurationControl_Documentation" xml:space="preserve">
+  <data name="Button_Documentation" xml:space="preserve">
     <value>Documentation</value>
   </data>
   <data name="ConfigurationControl_General" xml:space="preserve">
@@ -144,19 +144,19 @@
   <data name="ConfigurationControl_Name" xml:space="preserve">
     <value>Name</value>
   </data>
-  <data name="ConfigurationControl_NameLabel" xml:space="preserve">
+  <data name="ConnectionEditWindow_NameLabel" xml:space="preserve">
     <value>Name:</value>
   </data>
-  <data name="ConfigurationControl_PasswordLabel" xml:space="preserve">
+  <data name="ConnectionEditWindow_PasswordLabel" xml:space="preserve">
     <value>Password:</value>
   </data>
   <data name="ConfigurationControl_URL" xml:space="preserve">
     <value>URL</value>
   </data>
-  <data name="ConfigurationControl_URLLabel" xml:space="preserve">
+  <data name="ConnectionEditWindow_URLLabel" xml:space="preserve">
     <value>URL:</value>
   </data>
-  <data name="ConfigurationControl_UserNameLabel" xml:space="preserve">
+  <data name="ConnectionEditWindow_UserNameLabel" xml:space="preserve">
     <value>User name:</value>
   </data>
   <data name="ConfluenceClient_ResourceName" xml:space="preserve">
@@ -186,16 +186,19 @@
   <data name="SpacesMatch_Label" xml:space="preserve">
     <value>Confluence Space</value>
   </data>
-  <data name="ConfigurationControl_URLHelpText" xml:space="preserve">
+  <data name="ConnectionEditWindow_URLHelpText" xml:space="preserve">
     <value>This URL is the URL to your Confluence environment. It should be similar to https://yourcompany.atlassian.net/wiki.</value>
   </data>
   <data name="Button_Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
-  <data name="ConfigurationControl_EditingConnection" xml:space="preserve">
-    <value>Complete editing the connection</value>
+  <data name="Button_Edit" xml:space="preserve">
+    <value>Edit</value>
   </data>
-  <data name="ConfigurationControl_EditingConnectionSubtitle" xml:space="preserve">
-    <value>You're currently editing a connection. Click Update or Cancel to complete editing the connection.</value>
+  <data name="Button_Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="ConnectionEditWindow_Title" xml:space="preserve">
+    <value>Edit Connection</value>
   </data>
 </root>

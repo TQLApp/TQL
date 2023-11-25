@@ -144,16 +144,16 @@
   <data name="ConfigurationControl_Name" xml:space="preserve">
     <value>Name</value>
   </data>
-  <data name="ConfigurationControl_NameLabel" xml:space="preserve">
+  <data name="ConnectionEditWindow_NameLabel" xml:space="preserve">
     <value>Name:</value>
   </data>
   <data name="ConfigurationControl_TenantID" xml:space="preserve">
     <value>Tenant ID</value>
   </data>
-  <data name="ConfigurationControl_TenantIDHelpText" xml:space="preserve">
+  <data name="ConnectionEditWindow_TenantIDHelpText" xml:space="preserve">
     <value>You can retrieve the Azure Portal Tenant ID by searching for the Microsoft Entra ID in Azure Portal, or click on your account, click Switch directory and copy the Directory ID. The Directory ID is your Tenant ID.</value>
   </data>
-  <data name="ConfigurationControl_TenantIDLabel" xml:space="preserve">
+  <data name="ConnectionEditWindow_TenantIDLabel" xml:space="preserve">
     <value>Tenant ID:</value>
   </data>
   <data name="PortalsMatch_SearchHint" xml:space="preserve">
@@ -162,19 +162,19 @@
   <data name="PortalsMatch_Label" xml:space="preserve">
     <value>Azure Portal</value>
   </data>
-  <data name="ConfigurationControl_Documentation" xml:space="preserve">
+  <data name="Button_Documentation" xml:space="preserve">
     <value>Documentation</value>
-  </data>
-  <data name="Buttons_Cancel" xml:space="preserve">
-    <value>Cancel</value>
   </data>
   <data name="Button_Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
-  <data name="ConfigurationControl_EditingConnection" xml:space="preserve">
-    <value>Complete editing the connection</value>
+  <data name="Button_Edit" xml:space="preserve">
+    <value>Edit</value>
   </data>
-  <data name="ConfigurationControl_EditingConnectionSubtitle" xml:space="preserve">
-    <value>You're currently editing a connection. Click Update or Cancel to complete editing the connection.</value>
+  <data name="Button_Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="ConnectionEditWindow_Title" xml:space="preserve">
+    <value>Edit Connection</value>
   </data>
 </root>

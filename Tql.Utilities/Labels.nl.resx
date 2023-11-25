@@ -58,24 +58,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DemoesMatch_Label" xml:space="preserve">
-    <value>Demo Plug-in</value>
-    <comment>Original: Demo Plugin</comment>
+  <data name="ValidateNotEmpty" xml:space="preserve">
+    <value>Mag niet leeg zijn</value>
+    <comment>Original: Cannot be empty</comment>
   </data>
-  <data name="DemoesMatch_SearchHint" xml:space="preserve">
-    <value>Vind demo data</value>
-    <comment>Original: Find demo data</comment>
-  </data>
-  <data name="DemoMatch_Label" xml:space="preserve">
-    <value>TQL Website</value>
-    <comment>Original: TQL Website</comment>
-  </data>
-  <data name="DemoPeopleDirectory_Label" xml:space="preserve">
-    <value>Demo</value>
-    <comment>Original: Demo</comment>
-  </data>
-  <data name="DemoPlugin_Label" xml:space="preserve">
-    <value>Demo Plug-in</value>
-    <comment>Original: Demo Plugin</comment>
+  <data name="ValidateUrl" xml:space="preserve">
+    <value>Moet een geldige URL zijn</value>
+    <comment>Original: Must be a valid URL</comment>
   </data>
 </root>
