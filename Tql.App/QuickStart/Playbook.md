@@ -97,16 +97,23 @@ view to the left.
 Select the **{0}** configuration page.
 
 ---
-id: configure-jira
+id: configure-plugin
 title: Configure the plugin
 ---
 
-Fantastic work, you've found the JIRA configuration page! You can now use this page to setup
-the JIRA plugin.
+Fantastic work, you've found the {0} configuration page! You can now use this page to setup
+the {0} plugin.
 
-You can setup connections to multiple JIRA environments. We'll
-start with setting up the one you use most. If you have access to more JIRA
+You can setup connections to multiple {0} environments. We'll
+start with setting up the one you use most. If you have access to more {0}
 environments, you can add them at any time.
+
+Click the **Add** button to start adding a connection.
+
+---
+id: add-connection-jira
+title: Configure the plugin
+---
 
 You need to give the connection a **Name** first. If you configure more than one
 connection, this name is used to distinguish between them when you use the app.
@@ -118,22 +125,7 @@ the **Documentation** link if you need help creating one. Once you've created th
 API token, paste it into the **Password** field and set the **User name** field
 to your email address.
 
-Once you've completed the form, click **Update** to add the connection
-and **Save** to commit your changes.
-
----
-id: configure-azure-devops
-title: Configure the plugin
----
-
-Fantastic work, you've found the Azure DevOps configuration page! You can now use this page to setup
-the Azure DevOps plugin.
-
-You can setup connections to multiple Azure DevOps environments. We'll
-start with setting up the one you use most. If you have access to more Azure DevOps
-environments, you can add them at any time.
-
-Click the **Add** button to start adding a connection.
+Once you've completed the form, click **Save** to add the connection.
 
 ---
 id: add-connection-azure-devops
@@ -155,20 +147,12 @@ id: configure-github
 title: Configure the plugin
 ---
 
-Fantastic work, you've found the GitHub configuration page! You can now use this page to setup
-the GitHub plugin.
-
-You can setup connections to multiple GitHub accounts. We'll
-start with setting up the one you use most. If you have access to more GitHub
-accounts, you can add them at any time.
-
 For now, you only have to give the connection a name in the **Name** field. If you configure more than one
 connection, this name is used to distinguish between them when you use the app.
 
 You'll be asked to enter your credentials in a moment.
 
-Once you've completed the form, click **Update** to add the connection
-and **Save** to commit your changes.
+Once you've completed the form, click **Save** to add the connection.
 
 ---
 id: added-connection

@@ -231,7 +231,10 @@ internal partial class QuickStartScript
 
     private void ConfigurePlugin(ConfigurationWindow window)
     {
-        _quickStart.Show(window, CreateBuilder($"configure-{CurrentPlugin.PluginCode}").Build());
+        _quickStart.Show(
+            window,
+            CreateBuilder("configure-plugin", CurrentPlugin.PluginName).Build()
+        );
 
         WindowLoaded(CurrentPlugin.EditWindowType, p => AddConnection(window, p));
     }
