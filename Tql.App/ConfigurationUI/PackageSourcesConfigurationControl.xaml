@@ -51,7 +51,8 @@
                 ItemsSource="{Binding Sources}"
                 Grid.Row="1"
                 SelectionMode="Single"
-                Margin="3">
+                Margin="3"
+                MouseDoubleClick="_sources_MouseDoubleClick">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn

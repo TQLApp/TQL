@@ -133,7 +133,7 @@
     <value>Bijwerken</value>
     <comment>Original: Update</comment>
   </data>
-  <data name="ConfigurationControl_BasicCredentialsDocumentation" xml:space="preserve">
+  <data name="ConnectionEditWindow_BasicCredentialsDocumentation" xml:space="preserve">
     <value>Als je een API-token of je eigen wachtwoord gebruikt, moet je ook je gebruikersnaam invullen. Als je een PAT token gebruikt moet je je gebruikersnaam leeg laten.</value>
     <comment>Original: If you're using an API token or your own password, you have to enter your username as well. If you're using a PAT token, leave the user name field empty.</comment>
   </data>
@@ -153,11 +153,11 @@
     <value>Naam</value>
     <comment>Original: Name</comment>
   </data>
-  <data name="ConfigurationControl_NameLabel" xml:space="preserve">
+  <data name="ConnectionEditWindow_NameLabel" xml:space="preserve">
     <value>Naam:</value>
     <comment>Original: Name:</comment>
   </data>
-  <data name="ConfigurationControl_PasswordLabel" xml:space="preserve">
+  <data name="ConnectionEditWindow_PasswordLabel" xml:space="preserve">
     <value>Wachtwoord:</value>
     <comment>Original: Password:</comment>
   </data>
@@ -165,11 +165,11 @@
     <value>URL</value>
     <comment>Original: URL</comment>
   </data>
-  <data name="ConfigurationControl_URLLabel" xml:space="preserve">
+  <data name="ConnectionEditWindow_URLLabel" xml:space="preserve">
     <value>URL:</value>
     <comment>Original: URL:</comment>
   </data>
-  <data name="ConfigurationControl_UserNameLabel" xml:space="preserve">
+  <data name="ConnectionEditWindow_UserNameLabel" xml:space="preserve">
     <value>Gebruikersnaam:</value>
     <comment>Original: User name:</comment>
   </data>
@@ -213,7 +213,7 @@
     <value>Confluence Space</value>
     <comment>Original: Confluence Space</comment>
   </data>
-  <data name="ConfigurationControl_URLHelpText" xml:space="preserve">
+  <data name="ConnectionEditWindow_URLHelpText" xml:space="preserve">
     <value>Deze URL is de URL naar jouw Confluence omgeving. Het zou vergelijkbaar met https://yourcompany.atlassian.net/wiki moeten zijn.</value>
     <comment>Original: This URL is the URL to your Confluence environment. It should be similar to https://yourcompany.atlassian.net/wiki.</comment>
   </data>

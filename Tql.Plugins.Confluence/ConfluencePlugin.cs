@@ -38,6 +38,7 @@ public class ConfluencePlugin : ITqlPlugin
         services.AddSingleton<ICacheManager<ConfluenceData>, ConfluenceCacheManager>();
 
         services.AddTransient<ConfigurationControl>();
+        services.AddTransient<ConnectionEditWindow>();
 
         _matchTypeManagerBuilder.ConfigureServices(services);
     }

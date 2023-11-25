@@ -97,6 +97,33 @@ namespace Tql.Plugins.Confluence {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Documentation.
+        /// </summary>
+        public static string Button_Documentation {
+            get {
+                return ResourceManager.GetString("Button_Documentation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        public static string Button_Edit {
+            get {
+                return ResourceManager.GetString("Button_Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        public static string Button_Save {
+            get {
+                return ResourceManager.GetString("Button_Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Update.
         /// </summary>
         public static string Button_Update {
@@ -106,47 +133,11 @@ namespace Tql.Plugins.Confluence {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If you&apos;re using an API token or your own password, you have to enter your username as well. If you&apos;re using a PAT token, leave the user name field empty..
-        /// </summary>
-        public static string ConfigurationControl_BasicCredentialsDocumentation {
-            get {
-                return ResourceManager.GetString("ConfigurationControl_BasicCredentialsDocumentation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Connections.
         /// </summary>
         public static string ConfigurationControl_Connections {
             get {
                 return ResourceManager.GetString("ConfigurationControl_Connections", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Documentation.
-        /// </summary>
-        public static string ConfigurationControl_Documentation {
-            get {
-                return ResourceManager.GetString("ConfigurationControl_Documentation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Complete editing the connection.
-        /// </summary>
-        public static string ConfigurationControl_EditingConnection {
-            get {
-                return ResourceManager.GetString("ConfigurationControl_EditingConnection", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to You&apos;re currently editing a connection. Click Update or Cancel to complete editing the connection..
-        /// </summary>
-        public static string ConfigurationControl_EditingConnectionSubtitle {
-            get {
-                return ResourceManager.GetString("ConfigurationControl_EditingConnectionSubtitle", resourceCulture);
             }
         }
         
@@ -169,56 +160,11 @@ namespace Tql.Plugins.Confluence {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Name:.
-        /// </summary>
-        public static string ConfigurationControl_NameLabel {
-            get {
-                return ResourceManager.GetString("ConfigurationControl_NameLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Password:.
-        /// </summary>
-        public static string ConfigurationControl_PasswordLabel {
-            get {
-                return ResourceManager.GetString("ConfigurationControl_PasswordLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to URL.
         /// </summary>
         public static string ConfigurationControl_URL {
             get {
                 return ResourceManager.GetString("ConfigurationControl_URL", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This URL is the URL to your Confluence environment. It should be similar to https://yourcompany.atlassian.net/wiki..
-        /// </summary>
-        public static string ConfigurationControl_URLHelpText {
-            get {
-                return ResourceManager.GetString("ConfigurationControl_URLHelpText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to URL:.
-        /// </summary>
-        public static string ConfigurationControl_URLLabel {
-            get {
-                return ResourceManager.GetString("ConfigurationControl_URLLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to User name:.
-        /// </summary>
-        public static string ConfigurationControl_UserNameLabel {
-            get {
-                return ResourceManager.GetString("ConfigurationControl_UserNameLabel", resourceCulture);
             }
         }
         
@@ -246,6 +192,69 @@ namespace Tql.Plugins.Confluence {
         public static string ConfluencePlugin_Label {
             get {
                 return ResourceManager.GetString("ConfluencePlugin_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If you&apos;re using an API token or your own password, you have to enter your username as well. If you&apos;re using a PAT token, leave the user name field empty..
+        /// </summary>
+        public static string ConnectionEditWindow_BasicCredentialsDocumentation {
+            get {
+                return ResourceManager.GetString("ConnectionEditWindow_BasicCredentialsDocumentation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name:.
+        /// </summary>
+        public static string ConnectionEditWindow_NameLabel {
+            get {
+                return ResourceManager.GetString("ConnectionEditWindow_NameLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password:.
+        /// </summary>
+        public static string ConnectionEditWindow_PasswordLabel {
+            get {
+                return ResourceManager.GetString("ConnectionEditWindow_PasswordLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Connection.
+        /// </summary>
+        public static string ConnectionEditWindow_Title {
+            get {
+                return ResourceManager.GetString("ConnectionEditWindow_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This URL is the URL to your Confluence environment. It should be similar to https://yourcompany.atlassian.net/wiki..
+        /// </summary>
+        public static string ConnectionEditWindow_URLHelpText {
+            get {
+                return ResourceManager.GetString("ConnectionEditWindow_URLHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to URL:.
+        /// </summary>
+        public static string ConnectionEditWindow_URLLabel {
+            get {
+                return ResourceManager.GetString("ConnectionEditWindow_URLLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User name:.
+        /// </summary>
+        public static string ConnectionEditWindow_UserNameLabel {
+            get {
+                return ResourceManager.GetString("ConnectionEditWindow_UserNameLabel", resourceCulture);
             }
         }
         

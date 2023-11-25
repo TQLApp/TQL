@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Windows.Controls.Primitives;
+using Microsoft.Extensions.DependencyInjection;
 using Tql.Abstractions;
 using Tql.App.Services.Packages;
 
@@ -69,5 +70,11 @@ internal partial class PackageSourcesConfigurationControl : IConfigurationPage
     private void _delete_Click(object? sender, RoutedEventArgs e)
     {
         DataContext.Sources.Remove((PackageSourceDto)_sources.SelectedItem);
+    }
+
+    private void _sources_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+    {
+        if (e.ChangedButton == MouseButton.Left && _edit.IsEnabled)
+            _edit.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
     }
 }

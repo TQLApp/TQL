@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Windows.Controls.Primitives;
+using Microsoft.Extensions.DependencyInjection;
 using Tql.Abstractions;
 using Tql.Plugins.Azure.Services;
 
@@ -71,5 +72,11 @@ internal partial class ConfigurationControl : IConfigurationPage
     private void _documentation_Click(object? sender, RoutedEventArgs e)
     {
         _ui.OpenUrl("https://github.com/TQLApp/TQL/wiki/Azure-plugin");
+    }
+
+    private void _connections_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+    {
+        if (e.ChangedButton == MouseButton.Left && _edit.IsEnabled)
+            _edit.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
     }
 }
