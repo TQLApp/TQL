@@ -81,8 +81,7 @@
                 <Hyperlink
                     x:Name="_documentation"
                     Click="_documentation_Click">
-                    <Run
-                        Text="{x:Static app:Labels.Button_Documentation}" />
+                    <Run Text="{x:Static app:Labels.Button_Documentation}" />
                 </Hyperlink>
             </TextBlock>
 
