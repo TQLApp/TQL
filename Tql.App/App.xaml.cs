@@ -288,6 +288,7 @@ public partial class App
         builder.AddTransient<GeneralConfigurationControl>();
         builder.AddTransient<PluginsConfigurationControl>();
         builder.AddTransient<PackageSourcesConfigurationControl>();
+        builder.AddTransient<PackageSourceEditWindow>();
     }
 
     private void Application_Exit(object? sender, ExitEventArgs e)

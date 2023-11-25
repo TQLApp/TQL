@@ -1,6 +1,6 @@
 ﻿namespace Tql.App.Services.Packages;
 
-internal record PackageManagerConfiguration(ImmutableArray<PackageManagerSource> Sources)
+internal record PackageManagerConfiguration(ImmutableArray<PackageSource> Sources)
 {
     public static readonly PackageManagerConfiguration Default = CreateDefault();
 
@@ -9,10 +9,10 @@ internal record PackageManagerConfiguration(ImmutableArray<PackageManagerSource>
         return new PackageManagerConfiguration(
             Constants
                 .PackageSources
-                .Select(p => new PackageManagerSource(p, null, null))
+                .Select(p => new PackageSource(p, null, null))
                 .ToImmutableArray()
         );
     }
 }
 
-internal record PackageManagerSource(string Url, string? UserName, string? ProtectedPassword);
+internal record PackageSource(string Url, string? UserName, string? ProtectedPassword);

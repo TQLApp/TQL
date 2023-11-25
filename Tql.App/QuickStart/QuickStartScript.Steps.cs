@@ -243,15 +243,18 @@ internal partial class QuickStartScript
             CreateBuilder($"add-connection-{CurrentPlugin.PluginCode}").Build()
         );
 
-        editWindow.Closed += CreateHandler(() => AddedConnection(window));
+        editWindow.Closed += CreateHandler(() =>
+        {
+            if (editWindow.DialogResult.GetValueOrDefault())
+                AddedConnection(window);
+            else
+                ConfigurePlugin(window);
+        });
     }
 
     private void AddedConnection(ConfigurationWindow window)
     {
-        _quickStart.Show(
-            window,
-            CreateBuilder($"added-connection-{CurrentPlugin.PluginCode}").Build()
-        );
+        _quickStart.Show(window, CreateBuilder("added-connection").Build());
 
         window.Closed += CreateHandler(
             () => window.DialogResult == true,

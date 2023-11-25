@@ -1,4 +1,5 @@
-﻿using Tql.Abstractions;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Tql.Abstractions;
 using Tql.Plugins.Azure.Services;
 
 namespace Tql.Plugins.Azure.ConfigurationUI;
@@ -7,6 +8,7 @@ internal partial class ConfigurationControl : IConfigurationPage
 {
     private readonly ConfigurationManager _configurationManager;
     private readonly IUI _ui;
+    private readonly IServiceProvider _serviceProvider;
 
     private new ConfigurationDto DataContext => (ConfigurationDto)base.DataContext;
 
@@ -14,10 +16,15 @@ internal partial class ConfigurationControl : IConfigurationPage
     public string Title => Labels.ConfigurationControl_General;
     public ConfigurationPageMode PageMode => ConfigurationPageMode.AutoSize;
 
-    public ConfigurationControl(ConfigurationManager configurationManager, IUI ui)
+    public ConfigurationControl(
+        ConfigurationManager configurationManager,
+        IUI ui,
+        IServiceProvider serviceProvider
+    )
     {
         _configurationManager = configurationManager;
         _ui = ui;
+        _serviceProvider = serviceProvider;
 
         InitializeComponent();
 
@@ -42,11 +49,10 @@ internal partial class ConfigurationControl : IConfigurationPage
     {
         var editConnection = connection?.Clone() ?? new ConnectionDto(Guid.NewGuid());
 
-        var window = new EditWindow(_ui)
-        {
-            Owner = Window.GetWindow(this),
-            DataContext = editConnection
-        };
+        var window = _serviceProvider.GetRequiredService<ConnectionEditWindow>();
+
+        window.Owner = Window.GetWindow(this);
+        window.DataContext = editConnection;
 
         if (window.ShowDialog().GetValueOrDefault())
         {

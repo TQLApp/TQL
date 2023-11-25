@@ -277,6 +277,60 @@ namespace Tql.Plugins.AzureDevOps {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Name:.
+        /// </summary>
+        public static string ConnectionEditWindow_NameLabel {
+            get {
+                return ResourceManager.GetString("ConnectionEditWindow_NameLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You can create a PAT token in the Azure DevOps website. You can find more information on the documentation page. Use the Documentation link above to open the documentation page..
+        /// </summary>
+        public static string ConnectionEditWindow_PATTokenHelpText {
+            get {
+                return ResourceManager.GetString("ConnectionEditWindow_PATTokenHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PAT token:.
+        /// </summary>
+        public static string ConnectionEditWindow_PATTokenLabel {
+            get {
+                return ResourceManager.GetString("ConnectionEditWindow_PATTokenLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Connection.
+        /// </summary>
+        public static string ConnectionEditWindow_Title {
+            get {
+                return ResourceManager.GetString("ConnectionEditWindow_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This URL is the URL to your Azure DevOps environment. It should similar to https://dev.azure.com/yourcompany..
+        /// </summary>
+        public static string ConnectionEditWindow_URLHelpText {
+            get {
+                return ResourceManager.GetString("ConnectionEditWindow_URLHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to URL:.
+        /// </summary>
+        public static string ConnectionEditWindow_URLLabel {
+            get {
+                return ResourceManager.GetString("ConnectionEditWindow_URLLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} Dashboard.
         /// </summary>
         public static string DashboardMatch_Label {
@@ -300,60 +354,6 @@ namespace Tql.Plugins.AzureDevOps {
         public static string DashboardsMatch_SearchHint {
             get {
                 return ResourceManager.GetString("DashboardsMatch_SearchHint", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name:.
-        /// </summary>
-        public static string EditWindow_NameLabel {
-            get {
-                return ResourceManager.GetString("EditWindow_NameLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to You can create a PAT token in the Azure DevOps website. You can find more information on the documentation page. Use the Documentation link above to open the documentation page..
-        /// </summary>
-        public static string EditWindow_PATTokenHelpText {
-            get {
-                return ResourceManager.GetString("EditWindow_PATTokenHelpText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to PAT token:.
-        /// </summary>
-        public static string EditWindow_PATTokenLabel {
-            get {
-                return ResourceManager.GetString("EditWindow_PATTokenLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Edit Connection.
-        /// </summary>
-        public static string EditWindow_Title {
-            get {
-                return ResourceManager.GetString("EditWindow_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This URL is the URL to your Azure DevOps environment. It should similar to https://dev.azure.com/yourcompany..
-        /// </summary>
-        public static string EditWindow_URLHelpText {
-            get {
-                return ResourceManager.GetString("EditWindow_URLHelpText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to URL:.
-        /// </summary>
-        public static string EditWindow_URLLabel {
-            get {
-                return ResourceManager.GetString("EditWindow_URLLabel", resourceCulture);
             }
         }
         

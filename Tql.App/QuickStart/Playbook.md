@@ -151,13 +151,6 @@ You get the value for the **PAT Token** field from Azure DevOps. Click the
 Once you've completed the form, click **Save** to add the connection.
 
 ---
-id: added-connection-azure-devops
-title: Save your changes
----
-
-Now click **Save** to save your changes.
-
----
 id: configure-github
 title: Configure the plugin
 ---
@@ -176,6 +169,15 @@ You'll be asked to enter your credentials in a moment.
 
 Once you've completed the form, click **Update** to add the connection
 and **Save** to commit your changes.
+
+---
+id: added-connection
+title: Save your changes
+---
+
+Great, the connection has been added to the list.
+
+Now click **Save** to save your changes.
 
 ---
 id: discover-plugin

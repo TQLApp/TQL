@@ -198,36 +198,36 @@ namespace Tql.Plugins.Azure {
         /// <summary>
         ///   Looks up a localized string similar to Name:.
         /// </summary>
-        public static string EditWindow_NameLabel {
+        public static string ConnectionEditWindow_NameLabel {
             get {
-                return ResourceManager.GetString("EditWindow_NameLabel", resourceCulture);
+                return ResourceManager.GetString("ConnectionEditWindow_NameLabel", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to You can retrieve the Azure Portal Tenant ID by searching for the Microsoft Entra ID in Azure Portal, or click on your account, click Switch directory and copy the Directory ID. The Directory ID is your Tenant ID..
         /// </summary>
-        public static string EditWindow_TenantIDHelpText {
+        public static string ConnectionEditWindow_TenantIDHelpText {
             get {
-                return ResourceManager.GetString("EditWindow_TenantIDHelpText", resourceCulture);
+                return ResourceManager.GetString("ConnectionEditWindow_TenantIDHelpText", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Tenant ID:.
         /// </summary>
-        public static string EditWindow_TenantIDLabel {
+        public static string ConnectionEditWindow_TenantIDLabel {
             get {
-                return ResourceManager.GetString("EditWindow_TenantIDLabel", resourceCulture);
+                return ResourceManager.GetString("ConnectionEditWindow_TenantIDLabel", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Edit Connection.
         /// </summary>
-        public static string EditWindow_Title {
+        public static string ConnectionEditWindow_Title {
             get {
-                return ResourceManager.GetString("EditWindow_Title", resourceCulture);
+                return ResourceManager.GetString("ConnectionEditWindow_Title", resourceCulture);
             }
         }
         

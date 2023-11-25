@@ -545,11 +545,11 @@
     <value>Pakketbronnen</value>
     <comment>Original: Package Sources</comment>
   </data>
-  <data name="PackageSourcesConfiguration_PasswordHelpText" xml:space="preserve">
+  <data name="PackageSourceEditWindow_PasswordHelpText" xml:space="preserve">
     <value>Als je een PAT token gebruikt naar een Azure DevOps privé artifact feed te verbinden, gebruik je dit als het wachtwoord en gebruik je het deel voor de @ in je email adres als de gebruikersnaam.</value>
     <comment>Original: If you're using a PAT token to connect to an Azure DevOps private artifact feed, enter it into the password field and enter the part of your email address before the @ into the user name field.</comment>
   </data>
-  <data name="PackageSourcesConfiguration_PasswordLabel" xml:space="preserve">
+  <data name="PackageSourceEditWindow_PasswordLabel" xml:space="preserve">
     <value>Wachtwoord:</value>
     <comment>Original: Password:</comment>
   </data>
@@ -557,11 +557,11 @@
     <value>URL</value>
     <comment>Original: URL</comment>
   </data>
-  <data name="PackageSourcesConfiguration_URLLabel" xml:space="preserve">
+  <data name="PackageSourceEditWindow_URLLabel" xml:space="preserve">
     <value>URL:</value>
     <comment>Original: URL:</comment>
   </data>
-  <data name="PackageSourcesConfiguration_UserNameLabel" xml:space="preserve">
+  <data name="PackageSourceEditWindow_UserNameLabel" xml:space="preserve">
     <value>Gebruikersnaam:</value>
     <comment>Original: User name:</comment>
   </data>

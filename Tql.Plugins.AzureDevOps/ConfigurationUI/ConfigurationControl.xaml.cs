@@ -1,4 +1,5 @@
-﻿using Tql.Abstractions;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Tql.Abstractions;
 using Tql.Plugins.AzureDevOps.Services;
 
 namespace Tql.Plugins.AzureDevOps.ConfigurationUI;
@@ -8,6 +9,7 @@ internal partial class ConfigurationControl : IConfigurationPage
     private readonly ConfigurationManager _configurationManager;
     private readonly IUI _ui;
     private readonly IEncryption _encryption;
+    private readonly IServiceProvider _serviceProvider;
 
     private new ConfigurationDto DataContext => (ConfigurationDto)base.DataContext;
 
@@ -18,12 +20,14 @@ internal partial class ConfigurationControl : IConfigurationPage
     public ConfigurationControl(
         ConfigurationManager configurationManager,
         IUI ui,
-        IEncryption encryption
+        IEncryption encryption,
+        IServiceProvider serviceProvider
     )
     {
         _configurationManager = configurationManager;
         _ui = ui;
         _encryption = encryption;
+        _serviceProvider = serviceProvider;
 
         InitializeComponent();
 
@@ -51,11 +55,10 @@ internal partial class ConfigurationControl : IConfigurationPage
     {
         var editConnection = connection?.Clone() ?? new ConnectionDto(Guid.NewGuid());
 
-        var window = new EditWindow(_ui)
-        {
-            Owner = Window.GetWindow(this),
-            DataContext = editConnection
-        };
+        var window = _serviceProvider.GetRequiredService<ConnectionEditWindow>();
+
+        window.Owner = Window.GetWindow(this);
+        window.DataContext = editConnection;
 
         if (window.ShowDialog().GetValueOrDefault())
         {

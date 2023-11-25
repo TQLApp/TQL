@@ -1,12 +1,12 @@
 ﻿using Tql.Abstractions;
 
-namespace Tql.Plugins.Azure.ConfigurationUI;
+namespace Tql.Plugins.AzureDevOps.ConfigurationUI;
 
-internal partial class EditWindow
+internal partial class ConnectionEditWindow
 {
     private readonly IUI _ui;
 
-    public EditWindow(IUI ui)
+    public ConnectionEditWindow(IUI ui)
     {
         _ui = ui;
 
@@ -20,6 +20,6 @@ internal partial class EditWindow
 
     private void _documentation_Click(object sender, RoutedEventArgs e)
     {
-        _ui.OpenUrl("https://github.com/TQLApp/TQL/wiki/Azure-plugin");
+        _ui.OpenUrl("https://github.com/TQLApp/TQL/wiki/Azure-DevOps-plugin");
     }
 }

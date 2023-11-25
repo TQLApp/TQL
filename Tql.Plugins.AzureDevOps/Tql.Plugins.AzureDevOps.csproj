@@ -26,7 +26,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Compile Update="ConfigurationUI\EditWindow.xaml.cs">
+		<Compile Update="ConfigurationUI\ConnectionEditWindow.xaml.cs">
 		  <SubType>Code</SubType>
 		</Compile>
 		<Compile Update="Labels.Designer.cs">

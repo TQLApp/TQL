@@ -52,6 +52,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Compile Update="ConfigurationUI\PackageSourceEditWindow.xaml.cs">
+		  <SubType>Code</SubType>
+		</Compile>
 		<Compile Update="ConfigurationUI\PackageSourcesConfigurationControl.xaml.cs">
 			<SubType>Code</SubType>
 		</Compile>

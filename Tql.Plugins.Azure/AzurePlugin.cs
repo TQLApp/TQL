@@ -35,6 +35,7 @@ public class AzurePlugin : ITqlPlugin
         services.AddSingleton<ConfigurationManager>();
 
         services.AddTransient<ConfigurationControl>();
+        services.AddTransient<ConnectionEditWindow>();
 
         _matchTypeManagerBuilder.ConfigureServices(services);
     }
