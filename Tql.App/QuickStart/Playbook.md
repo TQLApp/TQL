@@ -297,7 +297,7 @@ Let's try something else. When we started out this list was empty, but not
 anymore. But by now a few items will have appeared.
 
 Whenever you activate a search result or open a category, it's automatically
-added your history. The items you see here come from there. They're ordered
+added to your history. The items you see here come from there. They're ordered
 chronologically, so the top item is the one you last used.
 
 You can search in this list the same way as you've searched in categories. This
