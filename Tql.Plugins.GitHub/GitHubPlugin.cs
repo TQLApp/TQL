@@ -37,6 +37,7 @@ public class GitHubPlugin : ITqlPlugin
         services.AddSingleton<ICacheManager<GitHubData>, GitHubCacheManager>();
 
         services.AddTransient<ConfigurationControl>();
+        services.AddTransient<ConnectionEditWindow>();
 
         _matchTypeManagerBuilder.ConfigureServices(services);
     }

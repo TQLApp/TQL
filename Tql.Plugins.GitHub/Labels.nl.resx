@@ -141,7 +141,7 @@
     <value>Naam</value>
     <comment>Original: Name</comment>
   </data>
-  <data name="ConfigurationControl_NameLabel" xml:space="preserve">
+  <data name="ConnectionEditWindow_NameLabel" xml:space="preserve">
     <value>Naam:</value>
     <comment>Original: Name:</comment>
   </data>
