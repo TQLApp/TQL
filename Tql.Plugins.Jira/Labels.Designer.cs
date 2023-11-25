@@ -205,15 +205,6 @@ namespace Tql.Plugins.Jira {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Do you want to add a new item?.
-        /// </summary>
-        public static string Confirm_DoYouWantToAddNewItem {
-            get {
-                return ResourceManager.GetString("Confirm_DoYouWantToAddNewItem", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to If you&apos;re using an API token or your own password, you have to enter your username as well. If you&apos;re using a PAT token, leave the user name field empty..
         /// </summary>
         public static string ConnectionEditWindow_BasicCredentialsDocumentation {

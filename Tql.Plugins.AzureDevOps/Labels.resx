@@ -243,9 +243,6 @@
   <data name="ConnectionEditWindow_PATTokenLabel" xml:space="preserve">
     <value>PAT token:</value>
   </data>
-  <data name="Confirm_DoYouWantToAddNewItem" xml:space="preserve">
-    <value>Do you want to add a new item?</value>
-  </data>
   <data name="Button_Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>

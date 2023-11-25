@@ -15,6 +15,9 @@ internal class Exporter(Options options) : Tool(options)
 
     public void Run()
     {
+        if (File.Exists(Options.FileName))
+            throw new InvalidOperationException("Export file already exists");
+
         var resourceStrings = GetResourceStrings();
 
         WriteWorkbook(resourceStrings);

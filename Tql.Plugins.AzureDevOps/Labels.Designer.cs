@@ -268,15 +268,6 @@ namespace Tql.Plugins.AzureDevOps {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Do you want to add a new item?.
-        /// </summary>
-        public static string Confirm_DoYouWantToAddNewItem {
-            get {
-                return ResourceManager.GetString("Confirm_DoYouWantToAddNewItem", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Name:.
         /// </summary>
         public static string ConnectionEditWindow_NameLabel {

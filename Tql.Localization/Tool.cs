@@ -96,7 +96,7 @@ internal abstract class Tool
                         Console
                             .Error
                             .WriteLine(
-                                $"Warning: comment of localized resource '{resourceString.Key}' is empty"
+                                $"[{localizedResource?.FileName}] Warning: comment of localized resource '{resourceString.Key}' is empty"
                             );
                     }
                     else
@@ -107,7 +107,7 @@ internal abstract class Tool
                             Console
                                 .Error
                                 .WriteLine(
-                                    $"Warning: comment of localized resource '{resourceString.Key}' should start with '{prefix}'"
+                                    $"[{localizedResource?.FileName}] Warning: comment of localized resource '{resourceString.Key}' should start with '{prefix}'"
                                 );
                         }
                         else
@@ -118,7 +118,7 @@ internal abstract class Tool
                                 Console
                                     .Error
                                     .WriteLine(
-                                        $"Warning: ignoring localized value of resource '{resourceString.Key}' because it's a translation off of a different source string"
+                                        $"[{localizedResource?.FileName}] Warning: ignoring localized value of resource '{resourceString.Key}' because it's a translation off of a different source string"
                                     );
                                 localizedResourceString = default;
                             }

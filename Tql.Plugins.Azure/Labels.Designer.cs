@@ -151,15 +151,6 @@ namespace Tql.Plugins.Azure {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cancel.
-        /// </summary>
-        public static string Buttons_Cancel {
-            get {
-                return ResourceManager.GetString("Buttons_Cancel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Connections.
         /// </summary>
         public static string ConfigurationControl_Connections {

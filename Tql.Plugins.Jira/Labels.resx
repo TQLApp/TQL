@@ -246,9 +246,6 @@
   <data name="ConnectionEditWindow_URLHelpText" xml:space="preserve">
     <value>This URL is the URL to your JIRA environment. It should be similar to https://yourcompany.atlassian.net.</value>
   </data>
-  <data name="Confirm_DoYouWantToAddNewItem" xml:space="preserve">
-    <value>Do you want to add a new item?</value>
-  </data>
   <data name="Button_Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
