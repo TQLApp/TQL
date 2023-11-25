@@ -176,15 +176,15 @@ internal class QuickStartManager
         var scaleY = source.CompositionTarget!.TransformToDevice.M22;
 
         var ownerBounds = ScaleBounds(GetOwnerBounds());
-        var ownerWindowBounds = GetOwnerWindowBounds();
+        var ownerWindowBounds = ScaleBounds(GetOwnerWindowBounds());
         var windowSize = ScaleSize(new Size(_window!.ActualWidth, _window.ActualHeight));
         var showOnScreen = ShowOnScreenManager.Create(_settings.ShowOnScreen);
         var screen = showOnScreen.GetScreen();
 
-        // We base all random values on the hash code of the popup. This
+        // We base all random values on the hash code of the ID of the popup. This
         // means that the location of the popup will be stable, for a specific
-        // popup.
-        var random = new Random(popup.ToString()!.GetHashCode());
+        // popup. We can't use GetHashCode for this because that's randomized.
+        var random = new Random(HashCode.Combine(popup.Id.ToCharArray()));
 
         // Calculate the desired offset off of the center of the owner window.
         var xRange = Math.Max(ownerBounds.Width - (windowSize.Width / 2), 0);
