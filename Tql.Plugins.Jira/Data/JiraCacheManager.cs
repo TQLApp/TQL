@@ -1,4 +1,6 @@
 ﻿using System.Globalization;
+using System.Net;
+using System.Net.Http;
 using Microsoft.Extensions.Logging;
 using Tql.Abstractions;
 using Tql.Plugins.Jira.Services;
@@ -80,37 +82,7 @@ internal class JiraCacheManager : ICacheManager<JiraData>
             );
         }
 
-        var boards = ImmutableArray.CreateBuilder<JiraBoard>();
-
-        foreach (var board in await client.GetAgileBoards())
-        {
-            var location = board.Location;
-            if (location == null)
-                continue;
-
-            var boardConfig = await client.GetAgileBoardsConfiguration(board.Id);
-            var xBoardConfig = await client.GetXBoardConfig(board.Id);
-
-            boards.Add(
-                new JiraBoard(
-                    board.Id,
-                    board.Name,
-                    board.Type,
-                    location.Name,
-                    location.ProjectKey,
-                    location.ProjectTypeKey,
-                    location.AvatarUri,
-                    boardConfig.Filter.Id,
-                    xBoardConfig.CurrentViewConfig.IsIssueListBacklog,
-                    xBoardConfig.CurrentViewConfig.SprintSupportEnabled,
-                    xBoardConfig
-                        .CurrentViewConfig
-                        .QuickFilters
-                        .Select(p => new JiraQuickFilter(p.Id, p.Name, p.Query))
-                        .ToImmutableArray()
-                )
-            );
-        }
+        var boards = await GetAgileBoards(client);
 
         ImmutableArray<JiraFilterDto> apiFilters;
 
@@ -135,9 +107,55 @@ internal class JiraCacheManager : ICacheManager<JiraData>
             connection.Url,
             dashboards,
             projects.ToImmutable(),
-            boards.ToImmutable(),
+            boards,
             filters
         );
+    }
+
+    private async Task<ImmutableArray<JiraBoard>> GetAgileBoards(JiraClient client)
+    {
+        try
+        {
+            var boards = ImmutableArray.CreateBuilder<JiraBoard>();
+
+            foreach (var board in await client.GetAgileBoards())
+            {
+                var location = board.Location;
+                if (location == null)
+                    continue;
+
+                var boardConfig = await client.GetAgileBoardsConfiguration(board.Id);
+                var xBoardConfig = await client.GetXBoardConfig(board.Id);
+
+                boards.Add(
+                    new JiraBoard(
+                        board.Id,
+                        board.Name,
+                        board.Type,
+                        location.Name,
+                        location.ProjectKey,
+                        location.ProjectTypeKey,
+                        location.AvatarUri,
+                        boardConfig.Filter.Id,
+                        xBoardConfig.CurrentViewConfig.IsIssueListBacklog,
+                        xBoardConfig.CurrentViewConfig.SprintSupportEnabled,
+                        xBoardConfig
+                            .CurrentViewConfig
+                            .QuickFilters
+                            .Select(p => new JiraQuickFilter(p.Id, p.Name, p.Query))
+                            .ToImmutableArray()
+                    )
+                );
+            }
+
+            return boards.ToImmutable();
+        }
+        catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.Unauthorized)
+        {
+            _logger.LogWarning(ex, "Failed to get access to JIRA boards");
+
+            return ImmutableArray<JiraBoard>.Empty;
+        }
     }
 
     private string SelectAvatarUrl(JiraProjectDto project)
@@ -145,8 +163,7 @@ internal class JiraCacheManager : ICacheManager<JiraData>
         return project
             .AvatarUrls
             .Select(p => (Size: GetSize(p.Key), Url: p.Value))
-            .OrderByDescending(p => p.Size)
-            .First()
+            .MaxBy(p => p.Size)
             .Url;
 
         int GetSize(string key) =>
