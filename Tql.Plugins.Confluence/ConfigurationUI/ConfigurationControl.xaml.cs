@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows.Controls.Primitives;
+﻿using System.Windows.Controls.Primitives;
 using Microsoft.Extensions.DependencyInjection;
 using Tql.Abstractions;
 using Tql.Plugins.Confluence.Services;

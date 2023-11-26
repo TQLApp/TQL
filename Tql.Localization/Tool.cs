@@ -8,6 +8,7 @@ internal abstract class Tool
 {
     protected Options Options { get; }
     protected string BasePath { get; }
+    protected bool HadError { get; private set; }
 
     protected Tool(Options options)
     {
@@ -69,6 +70,7 @@ internal abstract class Tool
         foreach (var resource in GetAllResources())
         {
             var baseResourceStrings = ReadResourceFile(resource.FileName).ToList();
+
             var localizedResource = resource
                 .Resources
                 .SingleOrDefault(
@@ -93,33 +95,30 @@ internal abstract class Tool
                     var localizedComment = localizedResourceString.Comment;
                     if (string.IsNullOrEmpty(localizedComment))
                     {
-                        Console
-                            .Error
-                            .WriteLine(
-                                $"[{localizedResource?.FileName}] Warning: comment of localized resource '{resourceString.Key}' is empty"
-                            );
+                        LogWarning(
+                            $"Warning: comment of localized resource '{resourceString.Key}' is empty",
+                            localizedResource?.FileName!
+                        );
                     }
                     else
                     {
                         const string prefix = "Original: ";
                         if (!localizedComment.StartsWith(prefix))
                         {
-                            Console
-                                .Error
-                                .WriteLine(
-                                    $"[{localizedResource?.FileName}] Warning: comment of localized resource '{resourceString.Key}' should start with '{prefix}'"
-                                );
+                            LogWarning(
+                                $"Warning: comment of localized resource '{resourceString.Key}' should start with '{prefix}'",
+                                localizedResource?.FileName!
+                            );
                         }
                         else
                         {
                             var originalValue = localizedComment.Substring(prefix.Length);
                             if (originalValue != resourceString.Value)
                             {
-                                Console
-                                    .Error
-                                    .WriteLine(
-                                        $"[{localizedResource?.FileName}] Warning: ignoring localized value of resource '{resourceString.Key}' because it's a translation off of a different source string"
-                                    );
+                                LogWarning(
+                                    $"Warning: ignoring localized value of resource '{resourceString.Key}' because it's a translation off of a different source string",
+                                    localizedResource?.FileName!
+                                );
                                 localizedResourceString = default;
                             }
                         }
@@ -140,7 +139,7 @@ internal abstract class Tool
         return resourceStrings;
     }
 
-    private static IEnumerable<(string Key, string Value, string Comment)> ReadResourceFile(
+    protected static IEnumerable<(string Key, string Value, string Comment)> ReadResourceFile(
         string? fileName
     )
     {
@@ -160,6 +159,63 @@ internal abstract class Tool
                 yield return (Key: (string)entry.Key, Value: value, data.Comment);
             }
         }
+    }
+
+    protected void LogError(string message, string? fileName = null)
+    {
+        Log(LogLevel.Error, message, fileName);
+        HadError = true;
+    }
+
+    protected void LogWarning(string message, string? fileName = null) =>
+        Log(LogLevel.Warning, message, fileName);
+
+    protected void LogInfo(string message, string? fileName = null) =>
+        Log(LogLevel.Info, message, fileName);
+
+    private void Log(LogLevel level, string message, string? fileName)
+    {
+        var sb = new StringBuilder();
+
+        if (Options.IsPipeline)
+        {
+            sb.Append("::")
+                .Append(
+                    level switch
+                    {
+                        LogLevel.Error => "error",
+                        LogLevel.Warning => "warning",
+                        LogLevel.Info => "notice",
+                        _ => throw new ArgumentOutOfRangeException(nameof(level), level, null)
+                    }
+                );
+
+            if (fileName != null)
+            {
+                sb.Append(" file=").Append(fileName);
+            }
+
+            sb.Append(":: ").Append(message);
+        }
+        else
+        {
+            if (fileName != null)
+                sb.Append('[').Append(fileName).Append("] ");
+
+            sb.Append(level).Append(": ").Append(message);
+        }
+
+        if (level == LogLevel.Error)
+            Console.Error.WriteLine(sb.ToString());
+        else
+            Console.WriteLine(sb.ToString());
+    }
+
+    private enum LogLevel
+    {
+        Error,
+        Warning,
+        Info
     }
 }
 

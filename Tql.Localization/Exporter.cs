@@ -1,4 +1,5 @@
-﻿using NPOI.SS.UserModel;
+﻿using System.Text.RegularExpressions;
+using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 
 namespace Tql.Localization;
@@ -13,14 +14,97 @@ internal class Exporter(Options options) : Tool(options)
         "Comment"
     );
 
-    public void Run()
+    public int Run()
     {
+        if (ReportUnusedResourceStrings())
+        {
+            LogError("There are unused resource strings");
+            return 1;
+        }
+
         if (File.Exists(Options.FileName))
-            throw new InvalidOperationException("Export file already exists");
+        {
+            LogError("Export file already exists");
+            return 2;
+        }
 
         var resourceStrings = GetResourceStrings();
 
+        if (resourceStrings.All(p => !string.IsNullOrEmpty(p.LocalizedValue)))
+        {
+            LogInfo("Nothing to translate");
+            return 0;
+        }
+
         WriteWorkbook(resourceStrings);
+
+        LogWarning("Found untranslated strings");
+
+        return 3;
+    }
+
+    private bool ReportUnusedResourceStrings()
+    {
+        var anyUnused = false;
+
+        foreach (var resource in GetAllResources())
+        {
+            var baseResourceStrings = ReadResourceFile(resource.FileName).ToList();
+
+            var unused = ReportUnusedResourceStrings(
+                baseResourceStrings.Select(p => p.Key).ToList(),
+                resource.FileName
+            );
+
+            anyUnused = anyUnused || unused;
+        }
+
+        return anyUnused;
+    }
+
+    private bool ReportUnusedResourceStrings(List<string> keys, string resourceFileName)
+    {
+        var projectFolder = GetProjectFolder(resourceFileName);
+        var extensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".cs", ".xaml" };
+
+        var resourceClass = Regex.Escape(Path.GetFileNameWithoutExtension(resourceFileName));
+        var re = new Regex($@"{resourceClass}\.([A-Za-z_][A-Za-z0-9_]*)");
+
+        var seen = new HashSet<string>();
+
+        foreach (
+            var fileName in Directory
+                .EnumerateFiles(projectFolder, "*", SearchOption.AllDirectories)
+                .Where(p => extensions.Contains(Path.GetExtension(p)))
+        )
+        {
+            foreach (Match match in re.Matches(File.ReadAllText(fileName)))
+            {
+                seen.Add(match.Groups[1].Value);
+            }
+        }
+
+        var unused = keys.Where(p => !seen.Contains(p)).ToList();
+
+        foreach (var key in unused)
+        {
+            LogError($"Warning: resource string '{key}' is not in use", resourceFileName);
+        }
+
+        return unused.Count > 0;
+    }
+
+    private string GetProjectFolder(string fileName)
+    {
+        var folder = Path.GetDirectoryName(fileName);
+
+        while (!string.IsNullOrEmpty(folder))
+        {
+            if (Directory.GetFiles(folder, "*.csproj").Length > 0)
+                return folder;
+        }
+
+        throw new InvalidOperationException("Cannot find project folder");
     }
 
     private void WriteWorkbook(List<ResourceString> resourceStrings)
