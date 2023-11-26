@@ -109,7 +109,7 @@
                                 <TextBlock Margin="3">
                                     <Run
                                         FontWeight="Bold"
-                                        Text="{Binding Identity.Id, Mode=OneWay}" />
+                                        Text="{Binding Title, Mode=OneWay}" />
                                     <Run
                                         Text="{x:Static app:Labels.PluginsConfiguration_PluginBy}" />
                                     <Run
