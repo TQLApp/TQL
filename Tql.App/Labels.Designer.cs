@@ -61,15 +61,6 @@ namespace Tql.App {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An unexpected error occurred.
-        /// </summary>
-        public static string Alert_AnUnexpectedErrorOccurred {
-            get {
-                return ResourceManager.GetString("Alert_AnUnexpectedErrorOccurred", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Copy to Clipboard.
         /// </summary>
         public static string Alert_CopyToClipboard {
@@ -156,15 +147,6 @@ namespace Tql.App {
         public static string Button_Save {
             get {
                 return ResourceManager.GetString("Button_Save", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Update.
-        /// </summary>
-        public static string Button_Update {
-            get {
-                return ResourceManager.GetString("Button_Update", resourceCulture);
             }
         }
         

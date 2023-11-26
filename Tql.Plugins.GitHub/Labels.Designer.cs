@@ -115,15 +115,6 @@ namespace Tql.Plugins.GitHub {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Update.
-        /// </summary>
-        public static string Button_Update {
-            get {
-                return ResourceManager.GetString("Button_Update", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Connections.
         /// </summary>
         public static string ConfigurationControl_Connections {
@@ -300,15 +291,6 @@ namespace Tql.Plugins.GitHub {
         public static string IssuesMatchBase_PullRequestLabel {
             get {
                 return ResourceManager.GetString("IssuesMatchBase_PullRequestLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Find item to create.
-        /// </summary>
-        public static string NewsMatch_SearchHint {
-            get {
-                return ResourceManager.GetString("NewsMatch_SearchHint", resourceCulture);
             }
         }
         

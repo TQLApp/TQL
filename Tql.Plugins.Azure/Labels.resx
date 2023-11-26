@@ -132,9 +132,6 @@
   <data name="Button_Delete" xml:space="preserve">
     <value>Delete</value>
   </data>
-  <data name="Button_Update" xml:space="preserve">
-    <value>Update</value>
-  </data>
   <data name="ConfigurationControl_Connections" xml:space="preserve">
     <value>Connections</value>
   </data>

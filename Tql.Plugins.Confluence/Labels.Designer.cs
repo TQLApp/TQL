@@ -124,15 +124,6 @@ namespace Tql.Plugins.Confluence {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Update.
-        /// </summary>
-        public static string Button_Update {
-            get {
-                return ResourceManager.GetString("Button_Update", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Connections.
         /// </summary>
         public static string ConfigurationControl_Connections {
