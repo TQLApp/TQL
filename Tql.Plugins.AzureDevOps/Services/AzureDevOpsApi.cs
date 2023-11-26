@@ -1,12 +1,18 @@
-﻿using Microsoft.VisualStudio.Services.Common;
+﻿using Microsoft.TeamFoundation.Core.WebApi;
+using Microsoft.VisualStudio.Services.Common;
 using Microsoft.VisualStudio.Services.WebApi;
 using Tql.Abstractions;
+using Tql.Utilities;
 
 namespace Tql.Plugins.AzureDevOps.Services;
 
-internal class AzureDevOpsApi(IEncryption encryption, ConfigurationManager configurationManager)
+internal class AzureDevOpsApi(
+    IEncryption encryption,
+    ConfigurationManager configurationManager,
+    IUI ui
+)
 {
-    private readonly object _syncRoot = new();
+    private readonly AsyncLock _lock = new();
     private readonly Dictionary<string, VssConnection> _connections = new();
 
     public async Task<T> GetClient<T>(string collectionUrl)
@@ -14,7 +20,7 @@ internal class AzureDevOpsApi(IEncryption encryption, ConfigurationManager confi
     {
         VssConnection? vssConnection;
 
-        lock (_syncRoot)
+        using (_lock)
         {
             if (!_connections.TryGetValue(collectionUrl, out vssConnection))
             {
@@ -30,10 +36,40 @@ internal class AzureDevOpsApi(IEncryption encryption, ConfigurationManager confi
                         encryption.DecryptString(connection.ProtectedPATToken)
                     )
                 );
+
+                try
+                {
+                    await EnsureCanConnect(vssConnection);
+                }
+                catch
+                {
+                    ui.ShowNotificationBar(
+                        $"{AzureDevOpsPlugin.Id}/ConnectionFailed/{collectionUrl}",
+                        string.Format(
+                            Labels.AzureDevOpsApi_UnableToConnect,
+                            string.Format(Labels.AzureDevOpsApi_ResourceName, collectionUrl),
+                            Labels.AzureDevOpsPlugin_Title
+                        ),
+                        () => ui.OpenConfiguration(AzureDevOpsPlugin.ConfigurationPageId)
+                    );
+                    throw;
+                }
+
                 _connections.Add(collectionUrl, vssConnection);
             }
         }
 
         return await vssConnection.GetClientAsync<T>();
+    }
+
+    private static async Task EnsureCanConnect(VssConnection vssConnection)
+    {
+        await vssConnection.ConnectAsync();
+
+        // Force authentication.
+
+        var client = await vssConnection.GetClientAsync<ProjectHttpClient>();
+
+        await client.GetProjects();
     }
 }
