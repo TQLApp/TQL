@@ -77,7 +77,7 @@ internal partial class QuickStartScript
         switch (State.Step)
         {
             case QuickStartStep.Welcome:
-                Welcome(window);
+                WelcomeInstructions(window);
                 break;
             case QuickStartStep.SelectTool:
                 SelectTool(window);
@@ -118,13 +118,43 @@ internal partial class QuickStartScript
         }
     }
 
-    private void Welcome(MainWindow window)
+    private void WelcomeInstructions(MainWindow window)
     {
         var hotKey = HotKey.FromSettings(_settings).ToLabel();
 
         _quickStart.Show(
             window,
-            CreateBuilder("welcome", hotKey).WithButton("OK", () => SelectTool(window)).Build(),
+            CreateBuilder("welcome-instructions", hotKey)
+                .WithButton("OK", () => WelcomeScope(window))
+                .Build(),
+            QuickStartPopupMode.Modal
+        );
+    }
+
+    private void WelcomeScope(MainWindow window)
+    {
+        var hotKey = HotKey.FromSettings(_settings).ToLabel();
+
+        _quickStart.Show(
+            window,
+            CreateBuilder("welcome-scope", hotKey)
+                .WithButton("OK", () => WelcomeOpenApp(window))
+                .WithBack(() => WelcomeInstructions(window))
+                .Build(),
+            QuickStartPopupMode.Modal
+        );
+    }
+
+    private void WelcomeOpenApp(MainWindow window)
+    {
+        var hotKey = HotKey.FromSettings(_settings).ToLabel();
+
+        _quickStart.Show(
+            window,
+            CreateBuilder("welcome-open-app", hotKey)
+                .WithButton("OK", () => SelectTool(window))
+                .WithBack(() => WelcomeScope(window))
+                .Build(),
             QuickStartPopupMode.Modal
         );
     }
@@ -151,7 +181,7 @@ internal partial class QuickStartScript
         if (completedTools.Length > 0)
             builder.WithButton("Close Tutorial", Dismiss);
         else
-            builder.WithBack(() => Welcome(window));
+            builder.WithBack(() => WelcomeOpenApp(window));
 
         _quickStart.Show(window, builder.Build(), QuickStartPopupMode.Modal);
 
@@ -324,7 +354,10 @@ internal partial class QuickStartScript
 
     private void ListAllPlugins(MainWindow window)
     {
-        _quickStart.Show(window, CreateBuilder("list-all-categories").Build());
+        _quickStart.Show(
+            window,
+            CreateBuilder("list-all-categories").WithBack(() => UsingTheApp(window)).Build()
+        );
 
         window.SearchManager!.SearchCompleted += CreateHandler<SearchResultsEventArgs>(
             _ => window.SearchManager!.Search == " ",

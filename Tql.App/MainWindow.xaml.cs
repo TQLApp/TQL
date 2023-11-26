@@ -477,11 +477,6 @@ internal partial class MainWindow
                 haveChildWindow = true;
         }
 
-#if DEBUG
-        if (haveQuickStartChildWindow)
-            haveChildWindow = true;
-#endif
-
         if (haveChildWindow || _ui.IsModalDialogShowing)
             return;
 

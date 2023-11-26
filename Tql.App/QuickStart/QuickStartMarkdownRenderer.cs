@@ -228,10 +228,9 @@ internal class QuickStartMarkdownRenderer
                             new InlineUIContainer
                             {
                                 BaselineAlignment = BaselineAlignment.Center,
-                                Child = new Border
+                                Child = new KeyboardKey
                                 {
-                                    Style = (Style)renderer.Owner.FindResource("ButtonBorder"),
-                                    Child = new TextBlock(renderer.CreateRun(item)),
+                                    Content = new TextBlock(renderer.CreateRun(item)),
                                     VerticalAlignment = VerticalAlignment.Center
                                 }
                             }
