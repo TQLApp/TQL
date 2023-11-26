@@ -184,7 +184,7 @@ internal class QuickStartManager
         // We base all random values on the hash code of the ID of the popup. This
         // means that the location of the popup will be stable, for a specific
         // popup. We can't use GetHashCode for this because that's randomized.
-        var random = new Random(HashCode.Combine(popup.Id.ToCharArray()));
+        var random = new Random(popup.Id.GetStableHashCode());
 
         // Calculate the desired offset off of the center of the owner window.
         var xRange = Math.Max(ownerBounds.Width - (windowSize.Width / 2), 0);

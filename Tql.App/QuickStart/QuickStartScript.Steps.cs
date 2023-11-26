@@ -17,7 +17,7 @@ internal partial class QuickStartScript
             Guid.Parse("b984b4ae-0a4d-4b77-bc95-db675a6c96e9"),
             "JIRA Board",
             "board",
-            "Tql.Plugins.Jira.ConfigurationUI.EditWindow"
+            "Tql.Plugins.Jira.ConfigurationUI.ConnectionEditWindow"
         );
     private static readonly PluginValues AzureDevOpsPluginValues =
         new(
@@ -28,7 +28,7 @@ internal partial class QuickStartScript
             Guid.Parse("8d85fc68-ac7c-4d25-a837-7ab475b073f6"),
             "Azure Board",
             "board",
-            "Tql.Plugins.AzureDevOps.ConfigurationUI.EditWindow"
+            "Tql.Plugins.AzureDevOps.ConfigurationUI.ConnectionEditWindow"
         );
     private static readonly PluginValues GitHubPluginValues =
         new(
@@ -39,7 +39,7 @@ internal partial class QuickStartScript
             Guid.Parse("d4d42f26-f777-46c5-895b-b18287fd6fb9"),
             "My GitHub Repository",
             "repository",
-            "Tql.Plugins.AzureDevOps.GitHub.EditWindow"
+            "Tql.Plugins.AzureDevOps.GitHub.ConnectionEditWindow"
         );
 
     public void HandleMainWindow(MainWindow window)
@@ -242,7 +242,7 @@ internal partial class QuickStartScript
     private void AddConnection(ConfigurationWindow window, Window editWindow)
     {
         _quickStart.Show(
-            window,
+            editWindow,
             CreateBuilder($"add-connection-{CurrentPlugin.PluginCode}").Build()
         );
 

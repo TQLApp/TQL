@@ -1,4 +1,5 @@
-﻿using Tql.App.Services;
+﻿using System.Windows.Threading;
+using Tql.App.Services;
 
 namespace Tql.App.QuickStart;
 
@@ -32,12 +33,14 @@ internal partial class QuickStartScript
         if (_windowLoadedListeners.Count == 0)
             return;
 
-        var typeName = sender.GetType().FullName;
+        var window = (Window)sender;
+        var typeName = window.GetType().FullName;
 
         foreach (var listener in _windowLoadedListeners.Where(p => p.TypeName == typeName).ToList())
         {
-            listener.Action((Window)sender);
             _windowLoadedListeners.Remove(listener);
+
+            window.Dispatcher.BeginInvoke(() => listener.Action(window), DispatcherPriority.Loaded);
         }
     }
 
