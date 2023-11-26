@@ -216,9 +216,6 @@ public partial class App
         DispatcherUnhandledException += (_, e) =>
         {
             logger.LogCritical(e.Exception, "Unhandled dispatcher exception");
-
-            if (!IsDebugMode)
-                e.Handled = true;
         };
 
         TaskScheduler.UnobservedTaskException += (_, e) =>
