@@ -127,6 +127,7 @@ internal class PackageManager
             packageDefinitions.Add(
                 new Package(
                     package.Identity,
+                    package.Title,
                     package.Description,
                     package.DownloadCount.GetValueOrDefault(),
                     package.Authors,
