@@ -72,6 +72,7 @@
                 Margin="3"
                 Grid.Row="1"
                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                ScrollViewer.CanContentScroll="False"
                 SelectionChanged="_browser_SelectionChanged">
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
