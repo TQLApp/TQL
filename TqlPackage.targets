@@ -9,12 +9,17 @@
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<PackageIcon>Logo.png</PackageIcon>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<Title>$(Product)</Title>
-		<PackageProjectUrl>$(RepositoryUrl)</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/TQLApp/TQL</RepositoryUrl>
 		<IncludeSymbols>True</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 	</PropertyGroup>
+
+	<Target Name="DeferredProperties" BeforeTargets="Build">
+		<PropertyGroup>
+			<Title>$(Product)</Title>
+			<PackageProjectUrl>$(RepositoryUrl)</PackageProjectUrl>
+		</PropertyGroup>
+	</Target>
 
 	<PropertyGroup Condition="'$(Configuration)' == 'Release'">
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
