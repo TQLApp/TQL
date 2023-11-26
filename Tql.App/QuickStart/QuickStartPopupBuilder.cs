@@ -6,6 +6,7 @@ internal class QuickStartPopupBuilder(IPlaybook playbook, string id, object[] ar
         ImmutableArray.CreateBuilder<QuickStartPopupButton>();
     private readonly ImmutableArray<QuickStartPopupButton>.Builder _buttons =
         ImmutableArray.CreateBuilder<QuickStartPopupButton>();
+    private Action? _back;
 
     public QuickStartPopupBuilder WithChoiceButton(string label, Action action)
     {
@@ -19,6 +20,12 @@ internal class QuickStartPopupBuilder(IPlaybook playbook, string id, object[] ar
         return this;
     }
 
+    public QuickStartPopupBuilder WithBack(Action? back)
+    {
+        _back = back;
+        return this;
+    }
+
     public QuickStartPopup Build()
     {
         return new QuickStartPopup(
@@ -26,7 +33,8 @@ internal class QuickStartPopupBuilder(IPlaybook playbook, string id, object[] ar
             id,
             args,
             _choiceButtons.ToImmutable(),
-            _buttons.ToImmutable()
+            _buttons.ToImmutable(),
+            _back
         );
     }
 }

@@ -10,6 +10,7 @@ internal partial class QuickStartScript
     private readonly IPluginManager _pluginManager;
     private readonly Settings _settings;
     private readonly List<(string TypeName, Action<Window> Action)> _windowLoadedListeners = new();
+    private int _cookie;
 
     public QuickStartScript(
         QuickStartManager quickStart,
@@ -80,15 +81,21 @@ internal partial class QuickStartScript
     private QuickStartPopupBuilder CreateBuilder(string id, params object[] args) =>
         QuickStartPopup.CreateBuilder(_playbook, id, args);
 
+    private void InvalidateHandlers()
+    {
+        // Invalidate any attached handlers.
+        _cookie++;
+    }
+
     private EventHandler CreateHandler(Action action)
     {
-        var handled = false;
+        var cookie = ++_cookie;
 
         return (_, _) =>
         {
-            if (!handled)
+            if (cookie == _cookie)
             {
-                handled = true;
+                cookie = -1;
                 action();
             }
         };
@@ -97,13 +104,13 @@ internal partial class QuickStartScript
     private EventHandler<T> CreateHandler<T>(Action action)
         where T : EventArgs
     {
-        var handled = false;
+        var cookie = ++_cookie;
 
         return (_, _) =>
         {
-            if (!handled)
+            if (cookie == _cookie)
             {
-                handled = true;
+                cookie = -1;
                 action();
             }
         };
@@ -111,13 +118,13 @@ internal partial class QuickStartScript
 
     private EventHandler CreateHandler(Func<bool> condition, Action action)
     {
-        var handled = false;
+        var cookie = ++_cookie;
 
         return (_, _) =>
         {
-            if (!handled && condition())
+            if (cookie == _cookie && condition())
             {
-                handled = true;
+                cookie = -1;
                 action();
             }
         };
@@ -126,13 +133,13 @@ internal partial class QuickStartScript
     private EventHandler<T> CreateHandler<T>(Func<T, bool> condition, Action action)
         where T : EventArgs
     {
-        var handled = false;
+        var cookie = ++_cookie;
 
         return (_, e) =>
         {
-            if (!handled && condition(e))
+            if (cookie == _cookie && condition(e))
             {
-                handled = true;
+                cookie = -1;
                 action();
             }
         };
@@ -143,17 +150,28 @@ internal partial class QuickStartScript
         _windowLoadedListeners.Add((typeName, action));
     }
 
+    private void SetCurrentStep(QuickStartStep step)
+    {
+        State = State with { Step = step };
+    }
+
     private record PluginValues(
         string PluginName,
         string PackageId,
         Guid Id,
         Guid ConfigurationPageId,
-        Guid CategoryMatchId,
-        string CategoryMatchLabel,
-        string CategoryLabel,
+        PluginMatchType SimpleCategory,
+        PluginMatchType NestedCategory,
         string EditWindowType
     )
     {
         public string PluginCode => PluginName.ToLowerInvariant().Replace(" ", "-");
     }
+
+    private record PluginMatchType(
+        Guid MatchId,
+        string MatchLabel,
+        string SingularLabel,
+        string PluralLabel
+    );
 }

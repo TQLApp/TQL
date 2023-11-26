@@ -147,7 +147,8 @@
                 BorderThickness="0"
                 PreviewKeyDown="_results_PreviewKeyDown"
                 PreviewMouseDown="_results_PreviewMouseDown"
-                MouseUp="_results_MouseUp">
+                MouseUp="_results_MouseUp"
+                SelectionChanged="_results_SelectionChanged">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <app:SearchResultUserControl

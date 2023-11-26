@@ -43,7 +43,8 @@ internal class QuickStartMarkdownRenderer
         public IUI UI { get; }
         public List<TextBlock> TextBlocks { get; } = new();
         public InlineCollection? CurrentInlines { get; set; }
-        public Run? CurrentRun { get; set; }
+        public FontStyle? FontStyle { get; set; }
+        public FontWeight? FontWeight { get; set; }
 
         public TextBlockRenderer(FrameworkElement owner, IUI ui)
         {
@@ -76,11 +77,21 @@ internal class QuickStartMarkdownRenderer
                 inline = inline.NextSibling;
             }
         }
+
+        public Run CreateRun(string? text = null)
+        {
+            var run = new Run(text);
+            if (FontStyle.HasValue)
+                run.FontStyle = FontStyle.Value;
+            if (FontWeight.HasValue)
+                run.FontWeight = FontWeight.Value;
+            return run;
+        }
     }
 
     private abstract class TextBlockObjectRenderer<TObject>
         : MarkdownObjectRenderer<TextBlockRenderer, TObject>
-        where TObject : MarkdownObject { }
+        where TObject : MarkdownObject;
 
     private class ParagraphRenderer : TextBlockObjectRenderer<ParagraphBlock>
     {
@@ -101,27 +112,28 @@ internal class QuickStartMarkdownRenderer
     {
         protected override void Write(TextBlockRenderer renderer, EmphasisInline obj)
         {
-            var owner = renderer.CurrentRun == null;
-            if (owner)
+            var oldFontStyle = renderer.FontStyle;
+            var oldFontWeight = renderer.FontWeight;
+
+            try
             {
-                renderer.CurrentRun = new Run();
-                renderer.CurrentInlines!.Add(renderer.CurrentRun);
-            }
+                if (obj.DelimiterChar is '*' or '_')
+                {
+                    Debug.Assert(obj.DelimiterCount <= 2);
 
-            if (obj.DelimiterChar is '*' or '_')
+                    if (obj.DelimiterCount == 1)
+                        renderer.FontStyle = FontStyles.Italic;
+                    else
+                        renderer.FontWeight = FontWeights.Bold;
+                }
+
+                renderer.WriteChildren(obj);
+            }
+            finally
             {
-                Debug.Assert(obj.DelimiterCount <= 2);
-
-                if (obj.DelimiterCount == 1)
-                    renderer.CurrentRun!.FontStyle = FontStyles.Italic;
-                else
-                    renderer.CurrentRun!.FontWeight = FontWeights.Bold;
+                renderer.FontStyle = oldFontStyle;
+                renderer.FontWeight = oldFontWeight;
             }
-
-            renderer.WriteChildren(obj);
-
-            if (owner)
-                renderer.CurrentRun = null;
         }
     }
 
@@ -129,14 +141,7 @@ internal class QuickStartMarkdownRenderer
     {
         protected override void Write(TextBlockRenderer renderer, LineBreakInline obj)
         {
-            var owner = renderer.CurrentRun == null;
-            var run = renderer.CurrentRun ?? new Run();
-
-            Debug.Assert(string.IsNullOrEmpty(run.Text));
-            run.Text = " ";
-
-            if (owner)
-                renderer.CurrentInlines!.Add(run);
+            renderer.CurrentInlines!.Add(renderer.CreateRun(" "));
         }
     }
 
@@ -152,7 +157,6 @@ internal class QuickStartMarkdownRenderer
 
         private void WriteImage(TextBlockRenderer renderer, LinkInline obj)
         {
-            Debug.Assert(renderer.CurrentRun == null);
             Debug.Assert(obj.Url != null);
 
             var color = default(Color?);
@@ -193,7 +197,6 @@ internal class QuickStartMarkdownRenderer
 
         private static void WriteLink(TextBlockRenderer renderer, LinkInline obj)
         {
-            Debug.Assert(renderer.CurrentRun == null);
             Debug.Assert(obj.Url != null);
 
             var hyperlink = new Hyperlink();
@@ -215,15 +218,9 @@ internal class QuickStartMarkdownRenderer
     {
         protected override void Write(TextBlockRenderer renderer, LiteralInline obj)
         {
-            var owner = renderer.CurrentRun == null;
-            var run = renderer.CurrentRun ?? new Run();
-
             if (obj is KeyInline)
             {
-                if (!owner)
-                    throw new InvalidOperationException("Cannot add keys into other inlines");
-
-                foreach (var item in obj.Content.ToString().Split('+'))
+                foreach (var item in obj.Content.ToString()!.Split('+'))
                 {
                     renderer
                         .CurrentInlines!
@@ -234,7 +231,7 @@ internal class QuickStartMarkdownRenderer
                                 Child = new Border
                                 {
                                     Style = (Style)renderer.Owner.FindResource("ButtonBorder"),
-                                    Child = new TextBlock(new Run(item)),
+                                    Child = new TextBlock(renderer.CreateRun(item)),
                                     VerticalAlignment = VerticalAlignment.Center
                                 }
                             }
@@ -243,9 +240,6 @@ internal class QuickStartMarkdownRenderer
             }
             else if (obj is EmojiInline)
             {
-                if (!owner)
-                    throw new InvalidOperationException("Cannot add emojis into other inlines");
-
                 renderer
                     .CurrentInlines!
                     .Add(
@@ -259,11 +253,7 @@ internal class QuickStartMarkdownRenderer
             }
             else
             {
-                Debug.Assert(string.IsNullOrEmpty(run.Text));
-                run.Text = obj.Content.ToString();
-
-                if (owner)
-                    renderer.CurrentInlines!.Add(run);
+                renderer.CurrentInlines!.Add(renderer.CreateRun(obj.Content.ToString()));
             }
         }
     }
