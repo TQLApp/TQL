@@ -138,9 +138,6 @@
   <data name="Button_Delete" xml:space="preserve">
     <value>Delete</value>
   </data>
-  <data name="Button_Update" xml:space="preserve">
-    <value>Update</value>
-  </data>
   <data name="ConnectionEditWindow_BasicCredentialsDocumentation" xml:space="preserve">
     <value>If you're using an API token or your own password, you have to enter your username as well. If you're using a PAT token, leave the user name field empty.</value>
   </data>

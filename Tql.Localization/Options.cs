@@ -15,4 +15,7 @@ internal class Options
 
     [Option("filename", Required = true, HelpText = "File name")]
     public string FileName { get; set; } = default!;
+
+    [Option("pipeline")]
+    public bool IsPipeline { get; set; }
 }

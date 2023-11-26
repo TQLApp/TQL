@@ -1,6 +1,4 @@
-﻿using Tql.Abstractions;
-
-namespace Tql.App.ConfigurationUI;
+﻿namespace Tql.App.ConfigurationUI;
 
 internal partial class PackageSourceEditWindow
 {

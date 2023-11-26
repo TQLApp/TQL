@@ -30,6 +30,7 @@ jobs:
       - name: Check for changes by prettier
         shell: pwsh
         run: ./Build/Uncommitted-changes.ps1 -tool runprettier.bat
+        continue-on-error: true
 
       - name: Run CSharpier
         run: dotnet csharpier .
@@ -37,6 +38,7 @@ jobs:
       - name: Check for changes by CSharpier
         shell: pwsh
         run: ./Build/Uncommitted-changes.ps1 -tool "dotnet csharpier ."
+        continue-on-error: true
 
       - name: Restore Solution
         run: dotnet restore -warnaserror
@@ -44,9 +46,18 @@ jobs:
       - name: Build Solution
         run: dotnet build -c Release -warnaserror
 
+      - name: Check localization status
+        shell: pwsh
+        run: .\Tql.Localization\bin\Release\net8.0-windows\Tql.Localization.exe --export --filename Strings.xlsx --locale nl --pipeline
+        continue-on-error: true
+
       - name: Preprocess DocFX Markdown Files
         shell: pwsh
         run: ./Build/Preprocess-Markdown.ps1
 
       - name: Run DocFX
         run: dotnet docfx Documentation/docfx.json
+
+      - name: Check for errors
+        if: ${{ failure() }}
+        run: exit 1

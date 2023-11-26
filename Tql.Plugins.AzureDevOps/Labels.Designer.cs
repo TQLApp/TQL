@@ -70,7 +70,7 @@ namespace Tql.Plugins.AzureDevOps {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unable to connect to {0}. Click here to reconnect..
+        ///   Looks up a localized string similar to Unable to connect to {0}. Click here to open the {1} settings screen and validate your credentials..
         /// </summary>
         public static string AzureDevOpsApi_UnableToConnect {
             get {
@@ -219,15 +219,6 @@ namespace Tql.Plugins.AzureDevOps {
         public static string Button_Save {
             get {
                 return ResourceManager.GetString("Button_Save", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Update.
-        /// </summary>
-        public static string Button_Update {
-            get {
-                return ResourceManager.GetString("Button_Update", resourceCulture);
             }
         }
         

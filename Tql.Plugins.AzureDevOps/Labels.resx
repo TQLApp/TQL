@@ -121,7 +121,7 @@
     <value>Azure DevOps - {0}</value>
   </data>
   <data name="AzureDevOpsApi_UnableToConnect" xml:space="preserve">
-    <value>Unable to connect to {0}. Click here to reconnect.</value>
+    <value>Unable to connect to {0}. Click here to open the {1} settings screen and validate your credentials.</value>
   </data>
   <data name="AzureDevOpsPeopleDirectory_Name" xml:space="preserve">
     <value>Azure DevOps - {0}</value>
@@ -158,9 +158,6 @@
   </data>
   <data name="Button_Delete" xml:space="preserve">
     <value>Delete</value>
-  </data>
-  <data name="Button_Update" xml:space="preserve">
-    <value>Update</value>
   </data>
   <data name="ConfigurationControl_Connections" xml:space="preserve">
     <value>Connections</value>

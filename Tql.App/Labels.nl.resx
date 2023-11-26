@@ -98,10 +98,6 @@
     <value>Opslaan</value>
     <comment>Original: Save</comment>
   </data>
-  <data name="Button_Update" xml:space="preserve">
-    <value>Bijwerken</value>
-    <comment>Original: Update</comment>
-  </data>
   <data name="ConfigurationCategory_Application" xml:space="preserve">
     <value>Applicatie</value>
     <comment>Original: Application</comment>

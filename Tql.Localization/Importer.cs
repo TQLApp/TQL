@@ -7,24 +7,24 @@ namespace Tql.Localization;
 
 internal class Importer(Options options) : Tool(options)
 {
-    private bool _error;
-
-    public void Run()
+    public int Run()
     {
         var newResourceStrings = ParseWorkbook();
 
-        if (_error)
-            return;
+        if (HadError)
+            return 1;
 
         var resourceStrings = GetResourceStrings();
         var updatedComments = GetUpdatedComments(resourceStrings, newResourceStrings);
 
-        if (_error)
-            return;
+        if (HadError)
+            return 2;
 
         WriteUpdatedComments(updatedComments, resourceStrings);
 
         WriteUpdatedResources(newResourceStrings, resourceStrings);
+
+        return 0;
     }
 
     private void WriteUpdatedResources(
@@ -170,8 +170,7 @@ internal class Importer(Options options) : Tool(options)
 
     private void WriteError(int row, string message)
     {
-        Console.Error.WriteLine($"Row {row + 1}: {message}");
-        _error = true;
+        LogError($"Row {row + 1}: {message}", Options.FileName);
     }
 
     private bool ArrayEquals(string?[] a, string?[] b)

@@ -123,9 +123,6 @@
   <data name="Button_Delete" xml:space="preserve">
     <value>Delete</value>
   </data>
-  <data name="Button_Update" xml:space="preserve">
-    <value>Update</value>
-  </data>
   <data name="ConfigurationControl_Connections" xml:space="preserve">
     <value>Connections</value>
   </data>
@@ -182,9 +179,6 @@
   </data>
   <data name="IssuesMatchBase_PullRequestLabel" xml:space="preserve">
     <value>GitHub Pull Request</value>
-  </data>
-  <data name="NewsMatch_SearchHint" xml:space="preserve">
-    <value>Find item to create</value>
   </data>
   <data name="PullRequestsMatch_SearchHint" xml:space="preserve">
     <value>Find pull requests</value>

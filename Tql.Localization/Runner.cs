@@ -2,12 +2,12 @@
 
 internal class Runner(Options options)
 {
-    public void Run()
+    public int Run()
     {
         if (options.Export)
-            new Exporter(options).Run();
+            return new Exporter(options).Run();
         else if (options.Import)
-            new Importer(options).Run();
+            return new Importer(options).Run();
         else
             throw new InvalidOperationException("Either export or import must be specified");
     }
