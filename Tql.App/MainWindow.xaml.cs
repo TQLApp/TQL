@@ -212,10 +212,10 @@ internal partial class MainWindow
         }
 
         if (!App.IsShuttingDown)
-            _quickStartScript.HandleMainWindow(this);
-
-        // The settings may have impacted the current search results.
-        DoShow(true);
+        {
+            // The settings may have impacted the current search results.
+            DoShow(true);
+        }
     }
 
     private void OpenFeedback()
