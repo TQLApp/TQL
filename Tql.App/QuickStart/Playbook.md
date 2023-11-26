@@ -1,24 +1,45 @@
 ﻿---
-id: welcome
+id: welcome-instructions
 title: Welcome to Techie's Quick Launcher
 ---
 
-:wave: Hi there! I'm here to help you get setup with Techie's Quick Launcher.
+:wave: Hi there! I'm here to help you use Techie's Quick Launcher.
 
-Techie's Quick Launcher supports different tools. I'll walk you through the
-setup of the one you want to use. After that we'll explore the functionality of
-the app.
+In this tutorial, I'll show you how to use the app.
+
+When you need to use the keyboard, I'll put a ![](Keyboard.svg?color=true) icon
+in front of the instructions. I'll indicate keys by putting a box around the
+text, e.g. ::Enter:: for the enter key.
+
+When you need to use the mouse, I'll put a ![](Cursor.svg?color=true) or
+![](Cursor+Click.svg?color=true) icon in front of the instructions.
+
+![](Cursor+Click.svg?color=true) Click **OK** to go to the next step.
+
+---
+id: welcome-scope
+title: What we'll be doing
+---
+
+The app has support for different tools. I'll walk you through the setup of the
+one you want to use. After that we'll explore the functionality of the app.
+
+![](Cursor+Click.svg?color=true) Click **OK** to go to the next step.
+
+---
+id: welcome-open-app
+title: Opening the app
+---
 
 The app hides itself automatically when you switch to a different app. You can
-get the app back by pressing ::{0}::. This by the way is how I'll show you which
-keys you can use for something.
+get the app back by pressing ::{0}::.
 
-You can also get the app back by clicking on the ![](Space+Shuttle.svg) icon in
-the lower right corner of your screen, next to the clock and the WiFi symbol.
-You'll have to click small arrow (^) to reveal it. When you do, we continue
-where we left of.
+You can also open the app by clicking on the ![](Space+Shuttle.svg) icon in the
+lower right corner of your screen, next to the clock and the WiFi symbol. You'll
+have to click small arrow (^) to reveal it. When you do, we'll continue where we
+left of.
 
-![](Cursor+Click.svg?color=true) Click **OK** to start.
+![](Cursor+Click.svg?color=true) Click **OK** to go to the next step.
 
 ---
 id: select-tool
