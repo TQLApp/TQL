@@ -56,7 +56,14 @@ internal class PackageStoreManager
                 package
             );
 
-            Directory.Delete(Path.Combine(PackagesFolder, package), true);
+            try
+            {
+                Directory.Delete(Path.Combine(PackagesFolder, package), true);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Failed to delete unused package");
+            }
         }
     }
 
