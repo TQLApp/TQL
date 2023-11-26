@@ -230,10 +230,6 @@
     <value>Deze URL is de URL naar jouw JIRA-omgeving. Het zou vergelijkbaar met https://yourcompany.atlassian.net moeten zijn.</value>
     <comment>Original: This URL is the URL to your JIRA environment. It should be similar to https://yourcompany.atlassian.net.</comment>
   </data>
-  <data name="Confirm_DoYouWantToAddNewItem" xml:space="preserve">
-    <value />
-    <comment>Original: Do you want to add a new item?</comment>
-  </data>
   <data name="Button_Cancel" xml:space="preserve">
     <value>Annuleren</value>
     <comment>Original: Cancel</comment>
