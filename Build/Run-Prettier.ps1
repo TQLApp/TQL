@@ -7,7 +7,7 @@ Function Split-Playbook
     foreach ($Child in Get-ChildItem "Tql.App\QuickStart\Playbook*.md")
     {
         $Index = 0
-        $Content = Get-Content $Child.FullName
+        $Content = Get-Content $Child.FullName -Encoding UTF8
         $Part = @()
         $First = $true
 
@@ -40,7 +40,7 @@ Function Write-Playbook-Part([string]$Name, [int]$Index, [array]$Part)
 {
     if ($Part.Count -gt 0)
     {
-        Set-Content (Get-Playbook-Part-FileName -Name $Name -Index $Index) $Part
+        Set-Content (Get-Playbook-Part-FileName -Name $Name -Index $Index) $Part -Encoding UTF8
     }
 }
 
@@ -53,7 +53,7 @@ Function Merge-Playbook
         for ($Index = 1; ; $Index += 1)
         {
             $Part = Read-Playbook-Part -Name $Child.Name -Index $Index
-
+            
             if ($Part -eq $null)
             {
                 break
@@ -67,7 +67,7 @@ Function Merge-Playbook
             $Content += $Part
         }
 
-        Set-Content $Child.FullName $Content
+        Set-Content $Child.FullName $Content -Encoding UTF8
     }
 }
 
@@ -80,7 +80,7 @@ Function Read-Playbook-Part([string]$Name, [int]$Index)
         return $null
     }
 
-    return Get-Content $FileName
+    return Get-Content $FileName -Encoding UTF8
 }
 
 Function Get-Playbook-Part-FileName([string]$Name, [int]$Index)

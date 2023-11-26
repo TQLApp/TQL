@@ -1,4 +1,4 @@
----
+﻿---
 id: welcome
 title: Welcome to Techie's Quick Launcher
 ---
@@ -223,7 +223,7 @@ tutorial.
 
 ::Enter:: will pick the first item of the list by default. This is the item
 that's currently highlighted. If you want an item lower down in the list, use
-the ::?:: and ::?:: keys to highlight it and then press ::Enter::.
+the ::↑:: and ::↓:: keys to highlight it and then press ::Enter::.
 
 ---
 id: nested-categories
