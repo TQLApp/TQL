@@ -132,13 +132,29 @@ internal partial class QuickStartWindow
 
     private void BaseWindow_SourceInitialized(object? sender, EventArgs e)
     {
+        var handle = new WindowInteropHelper(this).Handle;
+        HwndSource.FromHwnd(handle)!.AddHook(WndProc);
+
         // Hides the window from the task switcher.
-        WindowInterop.AddWindowStyle(
-            new WindowInteropHelper(this).Handle,
-            WindowInterop.WS_EX_TOOLWINDOW
-        );
+        WindowInterop.AddWindowStyle(handle, WindowInterop.WS_EX_TOOLWINDOW);
 
         UpdateCursor();
+    }
+
+    private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wparam, IntPtr lparam, ref bool handled)
+    {
+        // Prevent the quick start window from stealing focus. Controls
+        // that have Focusable set to true will still steal focus. The
+        // buttons have this set to false, but this may cause issues if
+        // the quick start window is changed later on.
+
+        if (msg == WindowInterop.WM_MOUSEACTIVATE)
+        {
+            handled = true;
+            return WindowInterop.MA_NOACTIVATE;
+        }
+
+        return IntPtr.Zero;
     }
 
     private void UpdateCursor()

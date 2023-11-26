@@ -64,6 +64,10 @@ public static class WindowInterop
     public const uint WS_EX_TOOLWINDOW = 0x80;
     public const uint WS_EX_APPWINDOW = 0x40000;
 
+    public const int WM_MOUSEACTIVATE = 0x0021;
+
+    public const int MA_NOACTIVATE = 0x0003;
+
     [StructLayout(LayoutKind.Sequential)]
     private struct RECT
     {
