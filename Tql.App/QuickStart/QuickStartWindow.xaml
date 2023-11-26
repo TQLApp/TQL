@@ -124,25 +124,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style
-            x:Key="ButtonBorder"
-            TargetType="Border">
-            <Setter
-                Property="BorderBrush"
-                Value="#50ffffff" />
-            <Setter
-                Property="BorderThickness"
-                Value="1" />
-            <Setter
-                Property="CornerRadius"
-                Value="3" />
-            <Setter
-                Property="Background"
-                Value="#20ffffff" />
-            <Setter
-                Property="Padding"
-                Value="4,0" />
-        </Style>
     </Window.Resources>
 
     <Grid>

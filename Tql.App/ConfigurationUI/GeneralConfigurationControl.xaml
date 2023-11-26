@@ -7,30 +7,10 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
     xmlns:app="clr-namespace:Tql.App"
+    xmlns:support="clr-namespace:Tql.App.Support"
     mc:Ignorable="d"
     d:DesignHeight="450"
     d:DesignWidth="800">
-    <UserControl.Resources>
-        <Style
-            x:Key="ButtonBorder"
-            TargetType="Border">
-            <Setter
-                Property="BorderBrush"
-                Value="#50ffffff" />
-            <Setter
-                Property="BorderThickness"
-                Value="1" />
-            <Setter
-                Property="CornerRadius"
-                Value="3" />
-            <Setter
-                Property="Background"
-                Value="#20ffffff" />
-            <Setter
-                Property="Padding"
-                Value="6,0,6,1" />
-        </Style>
-    </UserControl.Resources>
     <StackPanel Orientation="Vertical">
         <GroupBox
             Header="{x:Static app:Labels.GeneralConfiguration_General}"
@@ -81,33 +61,33 @@
                     <ToggleButton
                         x:Name="_hotKeyWindows"
                         Margin="3">
-                        <Border Style="{StaticResource ButtonBorder}">
+                        <support:KeyboardKey>
                             <TextBlock
                                 Text="{x:Static app:Labels.HotKeyWindows}" />
-                        </Border>
+                        </support:KeyboardKey>
                     </ToggleButton>
                     <ToggleButton
                         x:Name="_hotKeyControl"
                         Margin="3">
-                        <Border Style="{StaticResource ButtonBorder}">
+                        <support:KeyboardKey>
                             <TextBlock
                                 Text="{x:Static app:Labels.HotKeyControl}" />
-                        </Border>
+                        </support:KeyboardKey>
                     </ToggleButton>
                     <ToggleButton
                         x:Name="_hotKeyAlt"
                         Margin="3">
-                        <Border Style="{StaticResource ButtonBorder}">
+                        <support:KeyboardKey>
                             <TextBlock Text="{x:Static app:Labels.HotKeyAlt}" />
-                        </Border>
+                        </support:KeyboardKey>
                     </ToggleButton>
                     <ToggleButton
                         x:Name="_hotKeyShift"
                         Margin="3">
-                        <Border Style="{StaticResource ButtonBorder}">
+                        <support:KeyboardKey>
                             <TextBlock
                                 Text="{x:Static app:Labels.HotKeyShift}" />
-                        </Border>
+                        </support:KeyboardKey>
                     </ToggleButton>
                     <ComboBox
                         x:Name="_hotKeyKey"
