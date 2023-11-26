@@ -44,6 +44,10 @@ jobs:
       - name: Build Solution
         run: dotnet build -c Release -warnaserror
 
+      - name: Check localization status
+        shell: pwsh
+        run: .\Tql.Localization\bin\Release\net8.0-windows\Tql.Localization.exe --export --filename Strings.xlsx --locale nl --pipeline
+
       - name: Preprocess DocFX Markdown Files
         shell: pwsh
         run: ./Build/Preprocess-Markdown.ps1
