@@ -16,8 +16,8 @@
 
 	<Target Name="DeferredProperties" BeforeTargets="Build">
 		<PropertyGroup>
-			<Title>$(Product)</Title>
-			<PackageProjectUrl>$(RepositoryUrl)</PackageProjectUrl>
+			<Title Condition="'$(Title)' == ''">$(Product)</Title>
+			<PackageProjectUrl Condition="'$(PackageProjectUrl)' == ''">$(RepositoryUrl)</PackageProjectUrl>
 		</PropertyGroup>
 	</Target>
 
