@@ -1442,6 +1442,15 @@ namespace Tql.App {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Go back to the previous step..
+        /// </summary>
+        public static string QuickStartWindow_PreviousStep {
+            get {
+                return ResourceManager.GetString("QuickStartWindow_PreviousStep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Search failed with an error.
         /// </summary>
         public static string SearchManager_SearchFailedWithError {

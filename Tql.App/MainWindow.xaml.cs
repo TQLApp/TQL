@@ -49,6 +49,7 @@ internal partial class MainWindow
     public SearchManager? SearchManager { get; private set; }
     public Image ConfigurationImage => _configurationImage;
 
+    public event EventHandler<MatchEventArgs>? SelectedMatchChanged;
     public event EventHandler<MatchEventArgs>? MatchActivated;
     public event EventHandler<MatchEventArgs>? MatchPushed;
     public event EventHandler<MatchEventArgs>? MatchPopped;
@@ -918,6 +919,13 @@ internal partial class MainWindow
         e.Notification.Dismiss?.Invoke();
     }
 
+    private void _results_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        var match = SelectedSearchResult?.Match;
+        if (match != null)
+            OnSelectedMatchChanged(new MatchEventArgs(match));
+    }
+
     protected virtual void OnMatchActivated(MatchEventArgs e) => MatchActivated?.Invoke(this, e);
 
     protected virtual void OnMatchPushed(MatchEventArgs e) => MatchPushed?.Invoke(this, e);
@@ -932,4 +940,7 @@ internal partial class MainWindow
     protected virtual void OnMatchPinned(MatchEventArgs e) => MatchPinned?.Invoke(this, e);
 
     protected virtual void OnMatchUnpinned(MatchEventArgs e) => MatchUnpinned?.Invoke(this, e);
+
+    protected virtual void OnSelectedMatchChanged(MatchEventArgs e) =>
+        SelectedMatchChanged?.Invoke(this, e);
 }

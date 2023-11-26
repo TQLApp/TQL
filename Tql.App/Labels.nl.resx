@@ -738,4 +738,8 @@ Do you want to restart TQL to see if this resolves the issue?</comment>
     <value>Bewerk Pakketbron</value>
     <comment>Original: Edit Package Source</comment>
   </data>
+  <data name="QuickStartWindow_PreviousStep" xml:space="preserve">
+    <value>Ga terug naar de vorige stap.</value>
+    <comment>Original: Go back to the previous step.</comment>
+  </data>
 </root>

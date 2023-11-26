@@ -19,6 +19,20 @@ internal partial class QuickStartWindow
         )
     );
 
+    public static readonly DependencyProperty CanMoveProperty = DependencyProperty.Register(
+        nameof(CanMove),
+        typeof(bool),
+        typeof(QuickStartWindow),
+        new PropertyMetadata(true, (d, e) => ((QuickStartWindow)d).OnCanMoveChanged(e))
+    );
+
+    public static readonly DependencyProperty CanGoBackProperty = DependencyProperty.Register(
+        nameof(CanGoBack),
+        typeof(bool),
+        typeof(QuickStartWindow),
+        new PropertyMetadata(false)
+    );
+
     private Point? _startWindowPosition;
     private Point? _startMousePosition;
 
@@ -28,8 +42,21 @@ internal partial class QuickStartWindow
         set => SetValue(TextProperty, value);
     }
 
+    public bool CanMove
+    {
+        get => (bool)GetValue(CanMoveProperty);
+        set => SetValue(CanMoveProperty, value);
+    }
+
+    public bool CanGoBack
+    {
+        get => (bool)GetValue(CanGoBackProperty);
+        set => SetValue(CanGoBackProperty, value);
+    }
+
     public event EventHandler<QuickStartPopupButtonEventArgs>? ChoiceButtonClicked;
     public event EventHandler<QuickStartPopupButtonEventArgs>? ButtonClicked;
+    public event EventHandler? BackClicked;
     public event EventHandler? DismissClicked;
 
     public Visibility ArrowVisibility
@@ -50,8 +77,16 @@ internal partial class QuickStartWindow
 
         InitializeComponent();
 
+        _back.Source = Images.QuickStartArrowLeft;
+        _backButton.AttachOnClickHandler(OnBackClicked);
+        _backButton.SetPopoverToolTip(Labels.QuickStartWindow_PreviousStep);
         _dismiss.Source = Images.QuickStartDismiss;
         _dismissButton.AttachOnClickHandler(OnDismissClicked);
+    }
+
+    private void OnCanMoveChanged(DependencyPropertyChangedEventArgs e)
+    {
+        UpdateCursor();
     }
 
     private void ChoiceButton_Click(object? sender, RoutedEventArgs e)
@@ -91,6 +126,8 @@ internal partial class QuickStartWindow
     protected virtual void OnButtonClicked(QuickStartPopupButtonEventArgs e) =>
         ButtonClicked?.Invoke(this, e);
 
+    protected virtual void OnBackClicked() => BackClicked?.Invoke(this, EventArgs.Empty);
+
     protected virtual void OnDismissClicked() => DismissClicked?.Invoke(this, EventArgs.Empty);
 
     private void BaseWindow_SourceInitialized(object? sender, EventArgs e)
@@ -101,17 +138,32 @@ internal partial class QuickStartWindow
             WindowInterop.WS_EX_TOOLWINDOW
         );
 
-        Cursor = CursorUtils.Create(
-            Images.Grab,
-            new Point(8, 8),
-            new Size(16, 16),
-            VisualTreeHelper.GetDpi(this)
-        );
+        UpdateCursor();
+    }
+
+    private void UpdateCursor()
+    {
+        if (new WindowInteropHelper(this).Handle == IntPtr.Zero)
+            return;
+
+        if (CanMove)
+        {
+            Cursor = CursorUtils.Create(
+                Images.Grab,
+                new Point(8, 8),
+                new Size(16, 16),
+                VisualTreeHelper.GetDpi(this)
+            );
+        }
+        else
+        {
+            ClearValue(CursorProperty);
+        }
     }
 
     private void BaseWindow_MouseDown(object sender, MouseButtonEventArgs e)
     {
-        if (e.ChangedButton != MouseButton.Left)
+        if (e.ChangedButton != MouseButton.Left || !CanMove)
             return;
 
         _startWindowPosition = new Point(Left, Top);

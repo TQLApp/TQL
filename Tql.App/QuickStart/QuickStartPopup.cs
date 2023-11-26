@@ -19,6 +19,7 @@ internal class QuickStartPopup : INotifyPropertyChanged
     public string Id { get; }
     public ImmutableArray<QuickStartPopupButton> ChoiceButtons { get; }
     public ImmutableArray<QuickStartPopupButton> Buttons { get; }
+    public Action? Back { get; }
 
     public string Title { get; private set; } = null!;
     public string Text { get; private set; } = null!;
@@ -44,7 +45,8 @@ internal class QuickStartPopup : INotifyPropertyChanged
         string id,
         object[] args,
         ImmutableArray<QuickStartPopupButton> choiceButtons,
-        ImmutableArray<QuickStartPopupButton> buttons
+        ImmutableArray<QuickStartPopupButton> buttons,
+        Action? back
     )
     {
         _args = args;
@@ -52,6 +54,7 @@ internal class QuickStartPopup : INotifyPropertyChanged
         Id = id;
         ChoiceButtons = choiceButtons;
         Buttons = buttons;
+        Back = back;
 
         ReloadPage();
     }

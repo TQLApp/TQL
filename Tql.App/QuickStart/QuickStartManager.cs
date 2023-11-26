@@ -64,7 +64,9 @@ internal class QuickStartManager
         _window = new QuickStartWindow(_ui)
         {
             DataContext = popup,
-            ArrowVisibility = ownerIsControl ? Visibility.Visible : Visibility.Collapsed
+            ArrowVisibility = ownerIsControl ? Visibility.Visible : Visibility.Collapsed,
+            CanMove = !ownerIsControl,
+            CanGoBack = popup.Back != null
         };
 
         if (ownerIsControl)
@@ -98,6 +100,12 @@ internal class QuickStartManager
                 _window.Close();
                 State = State with { Step = QuickStartStep.Dismissed };
             }
+        };
+
+        _window.BackClicked += (_, _) =>
+        {
+            _window.Close();
+            popup.Back!();
         };
 
         _window.Owner = ownerWindow;
@@ -178,8 +186,7 @@ internal class QuickStartManager
         var ownerBounds = ScaleBounds(GetOwnerBounds());
         var ownerWindowBounds = ScaleBounds(GetOwnerWindowBounds());
         var windowSize = ScaleSize(new Size(_window!.ActualWidth, _window.ActualHeight));
-        var showOnScreen = ShowOnScreenManager.Create(_settings.ShowOnScreen);
-        var workingArea = showOnScreen.GetScreen().WorkingArea;
+        var workingArea = GetScreen(ownerWindowBounds).WorkingArea;
 
         // We base all random values on the hash code of the ID of the popup. This
         // means that the location of the popup will be stable, for a specific
@@ -369,6 +376,35 @@ internal class QuickStartManager
             );
 
         Size ScaleSize(Size size) => new(size.Width * scaleX, size.Height * scaleY);
+    }
+
+    private Screen GetScreen(Rect bounds)
+    {
+        var center = new System.Drawing.Point(
+            (int)(bounds.Left + bounds.Width / 2),
+            (int)(bounds.Top + bounds.Height / 2)
+        );
+
+        foreach (var screen in Screen.AllScreens)
+        {
+            if (screen.Bounds.Contains(center))
+                return screen;
+        }
+
+        var drawingBounds = new System.Drawing.Rectangle(
+            (int)bounds.Left,
+            (int)bounds.Top,
+            (int)bounds.Width,
+            (int)bounds.Height
+        );
+
+        foreach (var screen in Screen.AllScreens)
+        {
+            if (screen.Bounds.IntersectsWith(drawingBounds))
+                return screen;
+        }
+
+        return Screen.PrimaryScreen!;
     }
 
     public void Close()

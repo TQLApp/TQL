@@ -18,7 +18,7 @@ the lower right corner of your screen, next to the clock and the WiFi symbol.
 You'll have to click small arrow (^) to reveal it. When you do, we continue
 where we left of.
 
-Click **OK** to start.
+![](Cursor+Click.svg?color=true) Click **OK** to start.
 
 ---
 id: select-tool
@@ -37,8 +37,8 @@ title: Open the configuration window
 
 :ok_hand: Excellent. Let's go!
 
-Open the **Configuration** window by clicking the ![](Settings.svg?color=true)
-icon.
+![](Cursor+Click.svg?color=true) Click the ![](Settings.svg?color=true) icon to
+open the **Configuration** window.
 
 ---
 id: select-plugins-page
@@ -48,8 +48,10 @@ title: Select the plugins page
 The configuration window is organized into pages. These are shown in the tree
 view to the left.
 
-To set you up with a tool, you have to install it first. Select the **Plugins**
-page to open the page where you install and remove plugins.
+To set you up with a tool, you have to install it first.
+
+![](Cursor+Click.svg?color=true) Select the **Plugins** page to open the page
+where you install and remove plugins.
 
 ---
 id: find-plugin
@@ -59,14 +61,15 @@ title: Find the plugin
 Good, you've found the plugin page. This page shows all plugins supported by
 Techie's Quick Launcher. For now we'll just install the **{0}** plugin.
 
-See if you can find the {0} plugin in the list and select it.
+![](Cursor+Click.svg?color=true) Find the {0} plugin in the list and select it.
 
 ---
 id: install-plugin
 title: Install the plugin
 ---
 
-Now click **Install** to install the {0} plugin. This will take a moment.
+![](Cursor+Click.svg?color=true) Now click **Install** to install the {0}
+plugin. This will take a moment.
 
 ---
 id: complete-install-plugin
@@ -76,8 +79,8 @@ title: Restart TQL
 You're doing great. Installation of the plugin has completed successfully and
 you can now restart the application.
 
-Click the **Restart** button to restart the app. We'll pick up once the app has
-restarted. This may take a moment.
+![](Cursor+Click.svg?color=true) Click the **Restart** button to restart the
+app. We'll pick up once the app has restarted. This may take a moment.
 
 ---
 id: open-configuration-window-to-configure
@@ -87,8 +90,8 @@ title: Open the configuration window
 :wave: Welcome back. The plugin has now been installed. It's not yet ready for
 use though. First you have to set it up with your credentials.
 
-Click on the ![](Settings.svg?color=true) icon again to open the
-**Configuration** window.
+![](Cursor+Click.svg?color=true) Click on the ![](Settings.svg?color=true) icon
+again to open the **Configuration** window.
 
 ---
 id: select-plugin-configuration-page
@@ -99,7 +102,7 @@ If a plugin requires setup, it'll add a configuration page on installation. In
 this case, a new configuration page called {0} has been added to the tree view
 to the left.
 
-Select the **{0}** configuration page.
+![](Cursor+Click.svg?color=true) Select the **{0}** configuration page.
 
 ---
 id: configure-plugin
@@ -113,7 +116,8 @@ You can setup connections to multiple {0} environments. We'll start with setting
 up the one you use most. If you have access to more {0} environments, you can
 add them at any time.
 
-Click the **Add** button to start adding a connection.
+![](Cursor+Click.svg?color=true) Click the **Add** button to start adding a
+connection.
 
 ---
 id: add-connection-jira
@@ -131,7 +135,8 @@ If you can, you should use an API token to setup access to JIRA. Click the
 API token, paste it into the **Password** field and set the **User name** field
 to your email address.
 
-Once you've completed the form, click **Save** to add the connection.
+![](Cursor+Click.svg?color=true) Once you've completed the form, click **Save**
+to add the connection.
 
 ---
 id: add-connection-azure-devops
@@ -147,7 +152,8 @@ https://dev.azure.com/yourcompany.
 You get the value for the **PAT Token** field from Azure DevOps. Click the
 **Documentation** if you need help creating one.
 
-Once you've completed the form, click **Save** to add the connection.
+![](Cursor+Click.svg?color=true) Once you've completed the form, click **Save**
+to add the connection.
 
 ---
 id: configure-github
@@ -160,7 +166,8 @@ them when you use the app.
 
 You'll be asked to enter your credentials in a moment.
 
-Once you've completed the form, click **Save** to add the connection.
+![](Cursor+Click.svg?color=true) Once you've completed the form, click **Save**
+to add the connection.
 
 ---
 id: added-connection
@@ -169,19 +176,29 @@ title: Save your changes
 
 Great, the connection has been added to the list.
 
-Now click **Save** to save your changes.
+![](Cursor+Click.svg?color=true) Now click **Save** to save your changes.
 
 ---
-id: discover-plugin
-title: Discover the {0} plugin
+id: using-the-app
+title: Using Techie's Quick Launcher
 ---
 
 Well done! With the configuration completed, we can start using the plugin.
 
-Plugins organize their search features in categories. You can list all
-categories by typing ::Spacebar:: into the search box.
+The app works best if you use the keyboard. We'll practice this in the remainder
+of the tutorial.
 
-Give this a try!
+![](Cursor+Click.svg?color=true) Click **OK** to continue.
+
+---
+id: list-all-categories
+title: List all categories
+---
+
+Plugins organize their search features in categories. You can list these.
+
+![](Keyboard.svg?color=true) Press ::Spacebar:: to list all available
+categories.
 
 ---
 id: select-category
@@ -191,8 +208,15 @@ title: Select a category
 Great job! This list shows all search types of the {0} plugin. We call these
 categories. Let's try the **{1}** category!
 
-Find the item in the list. You may need to scroll down a little bit to get it
-into view. Once you've found it, click it to select {1} as the current category.
+![](Keyboard.svg?color=true) Use the ::↑:: and ::↓:: keys to highlight the
+category.
+
+---
+id: enter-category
+title: Enter a category
+---
+
+![](Keyboard.svg?color=true) Now press ::Tab:: to enter the **{0}** category.
 
 ---
 id: find-match
@@ -203,90 +227,92 @@ Did you notice that the search box changed? It now shows **{0}** with the {2}
 icon. This way you can see that you're searching in a category.
 
 The list shows all {1} that you have access to. The list may be quite long, so
-we need a better way to find items than just scrolling through the list.
+we need a better way to find items than using the arrow keys. We'll use the
+search function instead.
 
-Instead, try finding a {2} by typing in part of the name. You can type in the
-whole name of the {2}, or part of it. Just try a few different things.
+![](Keyboard.svg?color=true) Type in the name of a {2}.
 
 ---
 id: activate-match
 title: Activate a search result
 ---
 
-As you type, the list is filtered down to include only the items that match what
-you've typed. Once you've found the item you're looking for, activate it by
-pressing ::Enter::.
+As you type, the list is filtered to include only the items that match what
+you've typed.
 
-When you activate a search result, the app will close. You open the app again by
-pressing ::{0}::. Do this after you activate the search result to resume the
-tutorial.
+![](Keyboard.svg?color=true) Use the ::↑:: and ::↓:: keys to highlight the item
+you want to open.
 
-::Enter:: will pick the first item of the list by default. This is the item
-that's currently highlighted. If you want an item lower down in the list, use
-the ::↑:: and ::↓:: keys to highlight it and then press ::Enter::.
+![](Keyboard.svg?color=true) Press ::Enter:: to activate the selected item.
+
+The app will close when you activate an item.
+
+![](Keyboard.svg?color=true) Press ::{0}:: to open the app again.
 
 ---
 id: nested-categories
 title: Nested categories
 ---
 
-{0} {1} are a bit special. Most of the time, search results can only be
-activated. Sometimes though, search results themselves are categories. Go back
-into the **{2}** category and I'll show you how this works.
+We'll now look at the {0} category. This is a nested category. I'll show you
+what I mean.
+
+![](Keyboard.svg?color=true) Press ::Spacebar:: again to show the list of
+categories.
+
+![](Keyboard.svg?color=true) Use the ::↑:: and ::↓:: keys to highlight the
+**{0}** category and press ::Tab:: to enter it.
 
 ---
 id: search-nested-category
 title: Nested categories
 ---
 
-If you look at the highlighted board, you'll find that there are icons next to
-it to the far right. These are also shown in the cheat sheet at the bottom of
-the window.
+If you look at the highlighted board, you'll find that there are icons to the
+right of it. These are also shown in the cheat sheet at the bottom of the
+window.
 
-The ![](Person+Running.svg?color=true) icon indicates that you can activate the
-search result. That's how we opened the board before.
+Search results are identified by the ![](Person+Running.svg?color=true) icon,
+and categories by the ![](Apps+List.svg?color=true) icon.
 
-The ![](Apps+List.svg?color=true) icon indicates that the search result is also
-a category. If you highlight it and press ::Tab::, you will enter the category.
-Try this now.
+![](Keyboard.svg?color=true) Press ::Tab:: to enter the lighlighted category.
 
 ---
 id: search-hint-jira
 title: Search hint
 ---
 
-Nested categories will show a search hint telling you what you can search for.
-In this case, you can search for quick filters. If you activate one, the JIRA
-board will be opened with that quick filter selected.
+Categories show a search hint explaining what you can search for. In this case,
+you can search for quick filters. If you activate one, the JIRA board will be
+opened with that quick filter selected.
 
 You can also go a level further, into the quick filter, and find issues matching
 the quick filter.
 
-You can back out of a category by pressing ::Esc::. Try this now to go back to
-the main search results.
+![](Keyboard.svg?color=true) Press ::Esc:: twice to go back to the main search
+results.
 
 ---
 id: search-hint-azure-devops
 title: Search hint
 ---
 
-Nested categories will show a search hint telling you what you can search for.
-In this case, you can search for work items shown on the board you've selected.
+Categories show a search hint explaining what you can search for. In this case,
+you can search for work items shown on the board you've selected.
 
-You can back out of a category by pressing ::Esc::. Try this now to go back to
-the main search results.
+![](Keyboard.svg?color=true) Press ::Esc:: twice to go back to the main search
+results.
 
 ---
 id: search-hint-github
 title: Search hint
 ---
 
-Nested categories will show a search hint telling you what you can search for.
-In this case, you can search for issues created for the repository you've
-selected.
+Categories show a search hint explaining what you can search for. In this case,
+you can search for issues created for the repository you've selected.
 
-You can back out of a category by pressing ::Esc::. Try this now to go back to
-the main search results.
+![](Keyboard.svg?color=true) Press ::Esc:: twice to go back to the main search
+results.
 
 ---
 id: search-in-history
@@ -294,17 +320,17 @@ title: Using the history
 ---
 
 Let's try something else. When we started out this list was empty, but not
-anymore. But by now a few items will have appeared.
+anymore. By now a few items are shown.
 
-Whenever you activate a search result or open a category, it's automatically
-added to your history. The items you see here come from there. They're ordered
-chronologically, so the top item is the one you last used.
+Whenever you use a search result or category, it's automatically added to your
+history. These are shown in the list.
 
-You can search in this list the same way as you've searched in categories. This
-way you can quickly find things you've found before.
+You can search in this list the same way you search in categories. This way you
+can quickly find things you've found before.
 
-Give this a try. Type in part of the name of the {0} again. You'll find that you
-get far fewer search results now.
+![](Keyboard.svg?color=true) Type in part of the name of the **{0}** again.
+
+You'll find that you get far fewer search results now.
 
 ---
 id: pinning-items
@@ -317,8 +343,10 @@ be influenced by how often you've used them.
 If you find that you want certain items to appear at the top of the list, you
 can pin them.
 
-Try this now. Hover your mouse over the **second** item in the list click the
-![](Pin.svg?color=true) icon.
+![](Cursor.svg?color=true) Hover your mouse over the **second** item in the
+list.
+
+![](Cursor+Click.svg?color=true) Click the ![](Pin.svg?color=true) icon.
 
 ---
 id: unpinning-items
@@ -327,9 +355,11 @@ title: Unpinning items
 
 The item is now at the top of the list instead of one down.
 
-If you hover over the ![](Pin.svg?color=true) icon again, you'll see that it
-changes to a the ![](Pin+Off.svg?color=true) icon. Clicking this will unpin the
-item. Give this a try!
+![](Cursor.svg?color=true) Hover over the ![](Pin.svg?color=true) icon of the
+**first** item.
+
+![](Cursor+Click.svg?color=true) Click the ![](Pin+Off.svg?color=true) icon to
+unpin the item.
 
 ---
 id: remove-favorite
@@ -344,7 +374,7 @@ If you hover over this, it turns into a ![](Dismiss.svg?color=true) icon. If you
 click this, the item disappears from the list entirely and you will have to go
 into a category again to find it.
 
-Let's try this out!
+![](Cursor+Click.svg?color=true) Click the ![](Dismiss.svg?color=true) icon.
 
 ---
 id: complete-more-tools

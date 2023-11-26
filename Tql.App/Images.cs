@@ -38,7 +38,10 @@ internal static class Images
     public static readonly DrawingImage Run = GetImage("Person Running.svg");
     public static readonly DrawingImage Star = GetImage("Star.svg");
     public static readonly DrawingImage Dismiss = GetImage("Dismiss.svg");
-    public static readonly DrawingImage QuickStartDismiss = GetImage("Quick Start Dismiss.svg");
+    public static readonly DrawingImage QuickStartDismiss = GetImage(
+        "Dismiss.svg",
+        Color.FromRgb(20, 79, 162)
+    );
     public static readonly DrawingImage Category = GetImage("Apps List.svg");
     public static readonly DrawingImage Copy = GetImage("Copy.svg");
     public static readonly DrawingImage Backspace = GetImage("Backspace.svg");
@@ -57,4 +60,8 @@ internal static class Images
     public static readonly DrawingImage CheckmarkCircle = GetImage("Checkmark Circle.svg");
     public static readonly DrawingImage Grab = GetImage("Grab.svg");
     public static readonly DrawingImage Verified = GetImage("Verified.svg");
+    public static readonly DrawingImage QuickStartArrowLeft = GetImage(
+        "Arrow Left.svg",
+        Color.FromRgb(20, 79, 162)
+    );
 }

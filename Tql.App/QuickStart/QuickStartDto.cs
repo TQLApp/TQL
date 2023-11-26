@@ -21,7 +21,14 @@ internal record QuickStartDto(
         if (quickStart == null)
             return Empty;
 
-        return JsonSerializer.Deserialize<QuickStartDto>(quickStart, JsonSerializerOptions)!;
+        try
+        {
+            return JsonSerializer.Deserialize<QuickStartDto>(quickStart, JsonSerializerOptions)!;
+        }
+        catch
+        {
+            return Empty;
+        }
     }
 
     public string ToJson() => JsonSerializer.Serialize(this, JsonSerializerOptions);
@@ -40,7 +47,7 @@ internal enum QuickStartStep
     SelectTool,
     InstallPlugin,
     ConfigurePlugin,
-    ListAllCategories,
+    UsingTheApp,
     SearchInsideCategory,
     ActivateFavorite,
     Completed,
