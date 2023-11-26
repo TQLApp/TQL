@@ -18,7 +18,23 @@ internal class AssemblyResolver : IDisposable
 
         foreach (var applicationBase in applicationBases)
         {
-            foreach (var fileName in AssemblyUtils.GetAssemblyFileNames(applicationBase))
+            List<string> assemblyFileNames;
+
+            try
+            {
+                assemblyFileNames = AssemblyUtils.GetAssemblyFileNames(applicationBase).ToList();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(
+                    ex,
+                    "Skipping application base '{ApplicationBase}' because of exception",
+                    applicationBase
+                );
+                continue;
+            }
+
+            foreach (var fileName in assemblyFileNames)
             {
                 try
                 {
