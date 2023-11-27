@@ -66,10 +66,6 @@
     <value>Verwijder</value>
     <comment>Original: Delete</comment>
   </data>
-  <data name="Button_Update" xml:space="preserve">
-    <value>Bijwerken</value>
-    <comment>Original: Update</comment>
-  </data>
   <data name="ConfigurationControl_Connections" xml:space="preserve">
     <value>Verbindingen</value>
     <comment>Original: Connections</comment>
@@ -145,10 +141,6 @@
   <data name="IssuesMatchBase_PullRequestLabel" xml:space="preserve">
     <value>GitHub Pull Request</value>
     <comment>Original: GitHub Pull Request</comment>
-  </data>
-  <data name="NewsMatch_SearchHint" xml:space="preserve">
-    <value>Vind item om aan te maken</value>
-    <comment>Original: Find item to create</comment>
   </data>
   <data name="PullRequestsMatch_SearchHint" xml:space="preserve">
     <value>Vind pull requests</value>

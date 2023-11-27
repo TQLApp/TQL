@@ -11,6 +11,7 @@ using NuGet.ProjectManagement;
 using NuGet.Protocol;
 using NuGet.Protocol.Core.Types;
 using NuGet.Resolver;
+using Tql.App.Support;
 using Path = System.IO.Path;
 
 namespace Tql.App.Services.Packages.NuGet;
@@ -30,6 +31,7 @@ internal class NuGetClient : IDisposable
     private readonly SourceCacheContext _sourceCacheContext = new();
     private readonly ISettings _settings = NullSettings.Instance;
     private readonly string _directDownloadPath;
+    private readonly MyFolderNuGetProject _nuGetProject;
 
     public NuGetClient(
         NuGetClientConfiguration configuration,
@@ -72,7 +74,7 @@ internal class NuGetClient : IDisposable
         );
         Directory.CreateDirectory(_directDownloadPath);
 
-        var nuGetProject = new FolderNuGetProject(
+        _nuGetProject = new MyFolderNuGetProject(
             packagesFolderPath,
             new PackagePathResolver(packagesFolderPath),
             targetFramework
@@ -84,7 +86,7 @@ internal class NuGetClient : IDisposable
             packagesFolderPath
         )
         {
-            PackagesFolderNuGetProject = nuGetProject,
+            PackagesFolderNuGetProject = _nuGetProject,
         };
     }
 
@@ -233,8 +235,8 @@ internal class NuGetClient : IDisposable
 
     public async Task<ImmutableArray<PackageIdentity>> InstallPackage(
         PackageIdentity identity,
-        PackageIdentity? requiredDependency = null,
-        CancellationToken cancellationToken = default
+        PackageIdentity? requiredDependency,
+        IProgress progress
     )
     {
         var resolutionContext = new ResolutionContext(
@@ -245,6 +247,8 @@ internal class NuGetClient : IDisposable
         );
         var projectContext = new BlankProjectContext(NullSettings.Instance, _logger);
 
+        progress.SetProgress(Labels.NuGetClient_FindingDependencies, 0);
+
         var installActions = (
             await _packageManager.PreviewInstallPackageAsync(
                 _packageManager.PackagesFolderNuGetProject,
@@ -253,7 +257,7 @@ internal class NuGetClient : IDisposable
                 projectContext,
                 _remoteSourceRepositories,
                 Array.Empty<SourceRepository>(),
-                cancellationToken
+                progress.CancellationToken
             )
         ).ToList();
 
@@ -274,13 +278,29 @@ internal class NuGetClient : IDisposable
             ClientPolicyContext = ClientPolicyContext.GetClientPolicy(_settings, logger)
         };
 
-        await _packageManager.ExecuteNuGetProjectActionsAsync(
-            _packageManager.PackagesFolderNuGetProject,
-            installActions,
-            projectContext,
-            downloadContext,
-            cancellationToken
+        progress.SetProgress(Labels.NuGetClient_Installing, 0.1);
+
+        var tracker = new InstallationTracker(
+            installActions.Select(p => p.PackageIdentity),
+            progress.GetSubProgress(0.1, 1)
         );
+
+        _nuGetProject.PackageInstalled += tracker.PackageInstalled;
+
+        try
+        {
+            await _packageManager.ExecuteNuGetProjectActionsAsync(
+                _packageManager.PackagesFolderNuGetProject,
+                installActions,
+                projectContext,
+                downloadContext,
+                progress.CancellationToken
+            );
+        }
+        finally
+        {
+            _nuGetProject.PackageInstalled -= tracker.PackageInstalled;
+        }
 
         return installActions.Select(action => action.PackageIdentity).ToImmutableArray();
     }
@@ -349,5 +369,31 @@ internal class NuGetClient : IDisposable
     public void Dispose()
     {
         _sourceCacheContext.Dispose();
+    }
+
+    private class InstallationTracker
+    {
+        private readonly IProgress _progress;
+        private readonly HashSet<string> _ids;
+        private readonly int _count;
+
+        public InstallationTracker(IEnumerable<PackageIdentity> ids, IProgress progress)
+        {
+            _progress = progress;
+            _ids = ids.Select(p => p.Id).ToHashSet(StringComparer.OrdinalIgnoreCase);
+            _count = _ids.Count;
+        }
+
+        public void PackageInstalled(object? sender, PackageIdentityEventArgs e)
+        {
+            _ids.Remove(e.Id.Id);
+
+            var offset = _count - _ids.Count;
+
+            _progress.SetProgress(
+                string.Format(Labels.NuGetClient_PackageInstalled, e.Id),
+                (double)offset / _count
+            );
+        }
     }
 }

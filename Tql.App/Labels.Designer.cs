@@ -1213,6 +1213,51 @@ namespace Tql.App {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Finding dependencies....
+        /// </summary>
+        public static string NuGetClient_FindingDependencies {
+            get {
+                return ResourceManager.GetString("NuGetClient_FindingDependencies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Installing....
+        /// </summary>
+        public static string NuGetClient_Installing {
+            get {
+                return ResourceManager.GetString("NuGetClient_Installing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Installed {0}.
+        /// </summary>
+        public static string NuGetClient_PackageInstalled {
+            get {
+                return ResourceManager.GetString("NuGetClient_PackageInstalled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deploying package....
+        /// </summary>
+        public static string PackageManager_DeployingPackage {
+            get {
+                return ResourceManager.GetString("PackageManager_DeployingPackage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Getting package metadata....
+        /// </summary>
+        public static string PackageManager_GettingPackageMetadata {
+            get {
+                return ResourceManager.GetString("PackageManager_GettingPackageMetadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to If you&apos;re using a PAT token to connect to an Azure DevOps private artifact feed, enter it into the password field and enter the part of your email address before the @ into the user name field..
         /// </summary>
         public static string PackageSourceEditWindow_PasswordHelpText {
@@ -1429,6 +1474,15 @@ namespace Tql.App {
         public static string PluginsConfiguration_VerifiedToolTip {
             get {
                 return ResourceManager.GetString("PluginsConfiguration_VerifiedToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to One moment please....
+        /// </summary>
+        public static string ProgressWindow_OneMomentPlease {
+            get {
+                return ResourceManager.GetString("ProgressWindow_OneMomentPlease", resourceCulture);
             }
         }
         

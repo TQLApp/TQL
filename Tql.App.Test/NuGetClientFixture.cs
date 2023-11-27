@@ -2,6 +2,7 @@
 using NuGet.Packaging.Core;
 using NuGet.Versioning;
 using Tql.App.Services.Packages.NuGet;
+using Tql.App.Support;
 
 namespace Tql.App.Test;
 
@@ -32,7 +33,11 @@ internal class NuGetClientFixture
 
         var packageIdentity = new PackageIdentity(packageId, new NuGetVersion(version));
 
-        var installedPackageIdentities = await client.InstallPackage(packageIdentity);
+        var installedPackageIdentities = await client.InstallPackage(
+            packageIdentity,
+            null,
+            NullProgress.Instance
+        );
 
         var files = client.GetPackageFiles(packageIdentity);
 

@@ -9,15 +9,17 @@ using Tql.Abstractions;
 using Tql.App.Services.Packages.NuGet;
 using Tql.App.Services.Packages.PackageStore;
 using Tql.App.Services.Telemetry;
+using Tql.App.Support;
 using Tql.Utilities;
 using Path = System.IO.Path;
 
 namespace Tql.App.Services.Packages;
 
-internal class PackageManager
+internal class PackageManager : IDisposable
 {
     private static readonly char[] SpaceSeparator = { ' ' };
     private const string TagName = "tql-plugin";
+    private const string PackageCacheFolderName = "TQL Package Source";
 
     private readonly HttpClient _httpClient;
     private readonly ILogger<PackageManager> _logger;
@@ -45,6 +47,8 @@ internal class PackageManager
         _configurationManager = configurationManager;
         _telemetryService = telemetryService;
         _encryption = encryption;
+
+        CleanupPackageSource();
 
         configurationManager.ConfigurationChanged += (_, e) =>
         {
@@ -104,7 +108,7 @@ internal class PackageManager
             sources.Add(new NuGetClientSource(source.Url, credentials));
         }
 
-        var packageCachePath = Path.Combine(Path.GetTempPath(), "TQL Package Source");
+        var packageCachePath = Path.Combine(Path.GetTempPath(), PackageCacheFolderName);
 
         return new NuGetClient(
             new NuGetClientConfiguration(packageCachePath, sources.ToImmutable()),
@@ -153,11 +157,10 @@ internal class PackageManager
         return identityId.StartsWith("TQLApp.", StringComparison.OrdinalIgnoreCase);
     }
 
-    public async Task InstallPackage(
-        string packageId,
-        CancellationToken cancellationToken = default
-    )
+    public async Task InstallPackage(string packageId, IProgress progress)
     {
+        progress.CanCancel = true;
+
         _logger.LogInformation("Installing '{Id}'", packageId);
 
         if (_storeManager.GetInstalledVersion(packageId) != null)
@@ -171,17 +174,21 @@ internal class PackageManager
             @event.AddProperty("Package Id", packageId);
         }
 
-        await EnsureInstalled(packageId, cancellationToken);
+        await EnsureInstalled(packageId, progress);
     }
 
-    private async Task<bool> EnsureInstalled(
-        string packageId,
-        CancellationToken cancellationToken = default
-    )
+    private async Task<bool> EnsureInstalled(string packageId, IProgress progress)
     {
         using var client = GetClient();
 
-        var packages = await client.GetPackageMetadata(packageId, false, false, cancellationToken);
+        progress.SetProgress(Labels.PackageManager_GettingPackageMetadata, 0);
+
+        var packages = await client.GetPackageMetadata(
+            packageId,
+            false,
+            false,
+            progress.CancellationToken
+        );
         if (packages.Length == 0)
             throw new InvalidOperationException($"Cannot find package '{packageId}'");
 
@@ -241,16 +248,22 @@ internal class PackageManager
         var installedPackages = await client.InstallPackage(
             latestVersion.Identity,
             requiredDependency: abstractionsPackageIdentity,
-            cancellationToken: cancellationToken
+            progress.GetSubProgress(0.1, 0.9)
         );
+
+        progress.SetProgress(Labels.PackageManager_DeployingPackage, 0.9);
 
         foreach (var installedPackage in installedPackages)
         {
             foreach (var fileName in client.GetPackageFiles(installedPackage))
             {
+                progress.CancellationToken.ThrowIfCancellationRequested();
+
                 CopyDirectory(Path.GetDirectoryName(fileName)!, targetPath);
             }
         }
+
+        progress.CancellationToken.ThrowIfCancellationRequested();
 
         _storeManager.SetPackageVersion(
             latestVersion.Identity.Id,
@@ -349,10 +362,44 @@ internal class PackageManager
 
         foreach (var installed in _storeManager.GetInstalledPackages())
         {
-            if (await EnsureInstalled(installed.Id, cancellationToken))
+            if (
+                await EnsureInstalled(
+                    installed.Id,
+                    NullProgress.FromCancellationToken(cancellationToken)
+                )
+            )
                 anyUpdated = true;
         }
 
         return anyUpdated;
+    }
+
+    private void CleanupPackageSource()
+    {
+        try
+        {
+            var packageCachePath = Path.Combine(Path.GetTempPath(), PackageCacheFolderName);
+
+            if (!Directory.Exists(packageCachePath))
+                return;
+
+            var altPackageCachePath = packageCachePath + "~";
+
+            if (Directory.Exists(altPackageCachePath))
+                Directory.Delete(altPackageCachePath, true);
+
+            Directory.Move(packageCachePath, altPackageCachePath);
+
+            Directory.Delete(altPackageCachePath, true);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Failed to delete package cache folder");
+        }
+    }
+
+    public void Dispose()
+    {
+        CleanupPackageSource();
     }
 }
