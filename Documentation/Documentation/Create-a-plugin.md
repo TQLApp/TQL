@@ -20,8 +20,7 @@ computer.
 
    ![=2x](../Images/Configure-your-new-project.png)
 
-4. In **Framework**, pick the latest framework. TQL plugins must be .NET
-   Framework 4.8. We'll change to that in a bit:
+4. Use .NET 8 as the framework:
 
    ![=2x](../Images/Set-the-target-framework.png)
 
@@ -36,10 +35,10 @@ computer.
    ```xml
    <Project Sdk="Microsoft.NET.Sdk">
      <PropertyGroup>
-       <TargetFramework>net48</TargetFramework>
+       <TargetFramework>net8.0-windows</TargetFramework>
        <ImplicitUsings>enable</ImplicitUsings>
        <Nullable>enable</Nullable>
-       <LangVersion>latest</LangVersion>
+       <LangVersion>12.0</LangVersion>
        <UseWPF>true</UseWPF>
        <UseWindowsForms>true</UseWindowsForms>
        <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
@@ -48,8 +47,8 @@ computer.
    ```
 
    - This makes the following changes to the project:
-     - The target framework is .NET 4.8.
-     - We use the latest C# language version.
+     - The target framework is .NET 8, Windows specific.
+     - Use C# 12.
      - WPF and Windows Forms is enabled.
      - NuGet lock files are enabled.
 
@@ -313,18 +312,11 @@ this.
 
    namespace TqlNuGetPlugin;
 
-   internal class PackageMatch : IRunnableMatch
+   internal class PackageMatch(PackageDto dto) : IRunnableMatch
    {
-       private readonly PackageDto _dto;
-
-       public string Text => _dto.PackageId;
+       public string Text => dto.PackageId;
        public ImageSource Icon => Images.NuGetLogo;
        public MatchTypeId TypeId => TypeIds.Package;
-
-       public PackageMatch(PackageDto dto)
-       {
-           _dto = dto;
-       }
 
        public Task Run(IServiceProvider serviceProvider, IWin32Window owner)
        {
@@ -335,18 +327,7 @@ this.
    internal record PackageDto(string PackageId);
    ```
 
-2. Because our project is a .NET Framework project, we need to add a missing
-   attribute to our class project for us to be able to use `record` types. Add a
-   new file called **CompilerServices** and paste in the following content:
-
-   ```cs
-   namespace System.Runtime.CompilerServices
-   {
-       internal static class IsExternalInit { }
-   }
-   ```
-
-3. Add the following code to the `TypeIds` class:
+2. Add the following code to the `TypeIds` class:
 
    ```cs
    public static readonly MatchTypeId Package = new MatchTypeId(
@@ -381,15 +362,11 @@ We'll implement search using the NuGet client NuGet packages.
 
    internal class NuGetClient
    {
-       private readonly SourceRepository _sourceRepository;
-
-       public NuGetClient()
-       {
-           _sourceRepository = new SourceRepository(
+       private readonly SourceRepository _sourceRepository =
+           new(
                new PackageSource("https://api.nuget.org/v3/index.json"),
                Repository.Provider.GetCoreV3()
            );
-       }
 
        public async Task<IEnumerable<IPackageSearchMetadata>> Search(
            string query,
@@ -413,6 +390,7 @@ We'll implement search using the NuGet client NuGet packages.
            );
        }
    }
+
    ```
 
 3. Update the `ConfigureServices` method in the `Plugin` class to the following:
@@ -427,16 +405,11 @@ We'll implement search using the NuGet client NuGet packages.
 
    This adds both the `NuGetClient` class and the `PackagesMatch` class.
 
-4. Add the following constructor to the `PackagesMatch` class to have an
-   instance of the `NuGetClient` injected into it:
+4. Add a primary constructor to the `PackagesMatch` class to have an instance of
+   the `NuGetClient` injected into it:
 
    ```cs
-   private readonly NuGetClient _client;
-
-   public PackagesMatch(NuGetClient client)
-   {
-       _client = client;
-   }
+   internal class PackagesMatch(NuGetClient client) : ISearchableMatch
    ```
 
 5. This does require us to make a few more updates to the `Plugin` class to
@@ -472,7 +445,7 @@ We'll implement search using the NuGet client NuGet packages.
 
        await context.DebounceDelay(cancellationToken);
 
-       return from package in await _client.Search(text, cancellationToken)
+       return from package in await client.Search(text, cancellationToken)
            select new PackageMatch(new PackageDto(package.Identity.Id));
    }
    ```
@@ -523,7 +496,7 @@ called. We'll implement this now.
    ```cs
    public Task Run(IServiceProvider serviceProvider, IWin32Window owner)
    {
-       var url = $"https://www.nuget.org/packages/{Uri.EscapeUriString(_dto.PackageId)}";
+       var url = $"https://www.nuget.org/packages/{Uri.EscapeDataString(dto.PackageId)}";
 
        serviceProvider.GetRequiredService<IUI>().OpenUrl(url);
 
@@ -570,7 +543,7 @@ deserialization to our plugin.
    ```cs
    public string Serialize()
    {
-       return JsonSerializer.Serialize(_dto);
+       return JsonSerializer.Serialize(dto);
    }
    ```
 
@@ -689,10 +662,10 @@ And after we activate it:
 
 ## Copying matches
 
-The `ICoppyableMatch` interface gives TQL a way to copy matches. If you
-implement this interface, a copy icon will be added next to your match. If the
-user clicks it, TQL calls into the `Copy` method on the interface to allow you
-to copy something to the clipboard.
+The `ICopyableMatch` interface gives TQL a way to copy matches. If you implement
+this interface, a copy icon will be added next to your match. If the user clicks
+it, TQL calls into the `Copy` method on the interface to allow you to copy
+something to the clipboard.
 
 > [!TIP] The example here implements the standard pattern for copyable matches.
 > The URL is the same as the one in the `Run` method.
@@ -709,7 +682,7 @@ to copy something to the clipboard.
    ```cs
    public Task Copy(IServiceProvider serviceProvider)
    {
-       var url = $"https://www.nuget.org/packages/{Uri.EscapeUriString(_dto.PackageId)}";
+       var url = $"https://www.nuget.org/packages/{Uri.EscapeDataString(dto.PackageId)}";
 
        serviceProvider.GetRequiredService<IClipboard>().CopyUri(Text, url);
 
