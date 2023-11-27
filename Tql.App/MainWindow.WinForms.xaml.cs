@@ -59,6 +59,13 @@ internal partial class MainWindow
         var scaleX = source.CompositionTarget!.TransformToDevice.M11;
         var scaleY = source.CompositionTarget!.TransformToDevice.M22;
 
+        // I've seen it happen that width of the screen was wrong. This should fix it,
+        // but I can't reproduce it, so I'm not sure. This won't hurt though.
+
+        // ReSharper disable once CompareOfFloatsByEqualityOperator
+        if (Width != _loadedWidth)
+            Width = _loadedWidth;
+
         Left =
             (screen.WorkingArea.Left / scaleX) + ((screen.WorkingArea.Width / scaleX) - Width) / 2;
 
