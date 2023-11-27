@@ -43,6 +43,7 @@ internal partial class MainWindow
     private bool _pendingEnter;
     private SearchResult? _mouseDownSearchResult;
     private IPageViewTelemetry? _pageView;
+    private readonly double _loadedWidth;
 
     private SearchResult? SelectedSearchResult => (SearchResult?)_results.SelectedItem;
 
@@ -87,6 +88,8 @@ internal partial class MainWindow
         cacheManagerManager.CacheChanged += CacheManagerManager_CacheChanged;
 
         InitializeComponent();
+
+        _loadedWidth = Width;
 
         Tint = ParseMainWindowTint();
 
