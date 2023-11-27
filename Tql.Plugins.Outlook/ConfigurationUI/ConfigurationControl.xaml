@@ -1,0 +1,48 @@
+﻿<UserControl
+    x:Class="Tql.Plugins.Outlook.ConfigurationUI.ConfigurationControl"
+    x:ClassModifier="internal"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:app="clr-namespace:Tql.Plugins.Outlook"
+    mc:Ignorable="d"
+    d:DesignHeight="450"
+    d:DesignWidth="800">
+    <GroupBox
+        Header="{x:Static app:Labels.ConfigurationControl_General}"
+        Padding="4">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Content="{x:Static app:Labels.ConfigurationControl_NameFormatLabel}" Margin="3"/>
+            <ComboBox x:Name="_nameFormat"
+                      Margin="3"
+                      Grid.Column="1"/>
+            <TextBlock
+                
+                      Margin="3"
+
+                       Text="{x:Static app:Labels.ConfigurationControl_NameFormatHelpText}" Grid.Row="1" Grid.Column="1" />
+
+            <TextBlock
+                Margin="3"
+            Grid.Row="2" Grid.ColumnSpan="2">
+                <Hyperlink
+                    x:Name="_documentation"
+                    Click="_documentation_Click">
+                    <Run
+                        Text="{x:Static app:Labels.Button_Documentation}" />
+                </Hyperlink>
+            </TextBlock>
+        </Grid>
+    </GroupBox>
+</UserControl>

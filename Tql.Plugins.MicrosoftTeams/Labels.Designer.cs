@@ -61,20 +61,20 @@ namespace Tql.Plugins.MicrosoftTeams {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Documentation.
+        /// </summary>
+        public static string Button_Documentation {
+            get {
+                return ResourceManager.GetString("Button_Documentation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Directories.
         /// </summary>
         public static string ConfigurationControl_Directories {
             get {
                 return ResourceManager.GetString("ConfigurationControl_Directories", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Documentation.
-        /// </summary>
-        public static string ConfigurationControl_Documentation {
-            get {
-                return ResourceManager.GetString("ConfigurationControl_Documentation", resourceCulture);
             }
         }
         

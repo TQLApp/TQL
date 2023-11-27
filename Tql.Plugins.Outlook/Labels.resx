@@ -117,11 +117,29 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Button_Documentation" xml:space="preserve">
+    <value>Documentation</value>
+  </data>
+  <data name="ConfigurationControl_General" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="ConfigurationControl_NameFormatHelpText" xml:space="preserve">
+    <value>Specify the format in which people's names are stored in Outlook. If you specify e.g. "Last name, First name", the names will be changed to "First name Last name".</value>
+  </data>
+  <data name="ConfigurationControl_NameFormatLabel" xml:space="preserve">
+    <value>Name format:</value>
+  </data>
   <data name="EmailsMatch_Label" xml:space="preserve">
     <value>Email</value>
   </data>
   <data name="EmailsMatch_SearchHint" xml:space="preserve">
     <value>Find people</value>
+  </data>
+  <data name="NameFormat_LastNameCommaFirstName" xml:space="preserve">
+    <value>Last name, First name</value>
+  </data>
+  <data name="NameFormat_None" xml:space="preserve">
+    <value>None</value>
   </data>
   <data name="OutlookClient_OutlookIsNotRunning" xml:space="preserve">
     <value>Outlook isn't running</value>

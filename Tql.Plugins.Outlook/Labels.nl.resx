@@ -58,6 +58,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Button_Documentation" xml:space="preserve">
+    <value>Documentatie</value>
+    <comment>Original: Documentation</comment>
+  </data>
+  <data name="ConfigurationControl_General" xml:space="preserve">
+    <value>Algemeen</value>
+    <comment>Original: General</comment>
+  </data>
+  <data name="ConfigurationControl_NameFormatHelpText" xml:space="preserve">
+    <value>Specifieer het formaat van de namen van de mensen in Outlook. Als je b.v. "Achternaam, Voornaam" specificeert, worden de namen aangepast naar "Voornaam Achternaam".</value>
+    <comment>Original: Specify the format in which people's names are stored in Outlook. If you specify e.g. "Last name, First name", the names will be changed to "First name Last name".</comment>
+  </data>
+  <data name="ConfigurationControl_NameFormatLabel" xml:space="preserve">
+    <value>Naam formaat:</value>
+    <comment>Original: Name format:</comment>
+  </data>
   <data name="EmailsMatch_Label" xml:space="preserve">
     <value>E-mail</value>
     <comment>Original: Email</comment>
@@ -65,6 +81,14 @@
   <data name="EmailsMatch_SearchHint" xml:space="preserve">
     <value>Vind personen</value>
     <comment>Original: Find people</comment>
+  </data>
+  <data name="NameFormat_LastNameCommaFirstName" xml:space="preserve">
+    <value>Achternaam, Voornaam</value>
+    <comment>Original: Last name, First name</comment>
+  </data>
+  <data name="NameFormat_None" xml:space="preserve">
+    <value>Geen</value>
+    <comment>Original: None</comment>
   </data>
   <data name="OutlookClient_OutlookIsNotRunning" xml:space="preserve">
     <value>Outlook is niet opgestart</value>
