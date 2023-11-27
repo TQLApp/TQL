@@ -10,21 +10,22 @@ namespace Tql.App;
 
 internal partial class SplashScreenWindow
 {
+    private int _index;
     private readonly List<ImageResource> _images;
     private readonly DispatcherTimer _timer;
-    private readonly Random _random = new();
 
     public SplashScreenWindow()
     {
         InitializeComponent();
 
-        _images = LoadImages().ToList();
+        var random = new Random();
+        _images = LoadImages().OrderBy(_ => random.Next()).ToList();
 
         _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
         _timer.Tick += _timer_Tick;
         _timer.Start();
 
-        _image1.Source = _image2.Source = GetRandomImage();
+        _image1.Source = _image2.Source = GetNextImage();
     }
 
     private void _timer_Tick(object? sender, EventArgs e)
@@ -34,7 +35,7 @@ internal partial class SplashScreenWindow
         Canvas.SetLeft(_image1, 0);
         Canvas.SetLeft(_image2, _image1.Width);
 
-        _image2.Source = GetRandomImage();
+        _image2.Source = GetNextImage();
 
         var animation1 = new DoubleAnimation
         {
@@ -55,9 +56,9 @@ internal partial class SplashScreenWindow
         _image2.BeginAnimation(Canvas.LeftProperty, animation2);
     }
 
-    private DrawingImage GetRandomImage()
+    private DrawingImage GetNextImage()
     {
-        var imageResource = _images[_random.Next(0, _images.Count)];
+        var imageResource = _images[_index++ % _images.Count];
 
         imageResource.LoadedImage ??= ImageFactory.CreateSvgImage(imageResource.Stream);
 

@@ -682,4 +682,22 @@ Do you want to restart TQL to see if this resolves the issue?</value>
   <data name="SplashScreenWindow_Starting" xml:space="preserve">
     <value>Techie's Quick Launcher is starting...</value>
   </data>
+  <data name="NuGetClient_FindingDependencies" xml:space="preserve">
+    <value>Finding dependencies...</value>
+  </data>
+  <data name="NuGetClient_Installing" xml:space="preserve">
+    <value>Installing...</value>
+  </data>
+  <data name="NuGetClient_PackageInstalled" xml:space="preserve">
+    <value>Installed {0}</value>
+  </data>
+  <data name="PackageManager_DeployingPackage" xml:space="preserve">
+    <value>Deploying package...</value>
+  </data>
+  <data name="PackageManager_GettingPackageMetadata" xml:space="preserve">
+    <value>Getting package metadata...</value>
+  </data>
+  <data name="ProgressWindow_OneMomentPlease" xml:space="preserve">
+    <value>One moment please...</value>
+  </data>
 </root>
