@@ -23,7 +23,7 @@ Function Copy-Output([string]$From, [string]$Target)
 {
     Write-Host "Copying $From"
 
-    Copy-Item "$Global:Root\$From\bin\Release\net8.0-windows\win-x64" -Destination $Target -Recurse
+    Copy-Item "$Global:Root\$From\bin\Release\net8.0-windows\win-x64\publish" -Destination $Target -Recurse
     
     Get-ChildItem $Target
 }
