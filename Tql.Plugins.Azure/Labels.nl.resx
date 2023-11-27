@@ -78,10 +78,6 @@
     <value>Verwijder</value>
     <comment>Original: Delete</comment>
   </data>
-  <data name="Button_Update" xml:space="preserve">
-    <value>Bijwerken</value>
-    <comment>Original: Update</comment>
-  </data>
   <data name="ConfigurationControl_Connections" xml:space="preserve">
     <value>Verbindingen</value>
     <comment>Original: Connections</comment>
