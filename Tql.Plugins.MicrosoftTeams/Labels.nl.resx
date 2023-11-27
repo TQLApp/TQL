@@ -58,13 +58,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Button_Documentation" xml:space="preserve">
+    <value>Documentatie</value>
+    <comment>Original: Documentation</comment>
+  </data>
   <data name="ConfigurationControl_Directories" xml:space="preserve">
     <value>Gebruikerslijsten</value>
     <comment>Original: Directories</comment>
-  </data>
-  <data name="ConfigurationControl_Documentation" xml:space="preserve">
-    <value>Documentatie</value>
-    <comment>Original: Documentation</comment>
   </data>
   <data name="ConfigurationControl_EnableAllDirectoriesLabel" xml:space="preserve">
     <value>Gebruik alle gebruikerslijsten</value>
