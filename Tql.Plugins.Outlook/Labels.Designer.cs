@@ -61,6 +61,42 @@ namespace Tql.Plugins.Outlook {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Documentation.
+        /// </summary>
+        public static string Button_Documentation {
+            get {
+                return ResourceManager.GetString("Button_Documentation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to General.
+        /// </summary>
+        public static string ConfigurationControl_General {
+            get {
+                return ResourceManager.GetString("ConfigurationControl_General", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Specify the format in which people&apos;s names are stored in Outlook. If you specify e.g. &quot;Last name, First name&quot;, the names will be changed to &quot;First name Last name&quot;..
+        /// </summary>
+        public static string ConfigurationControl_NameFormatHelpText {
+            get {
+                return ResourceManager.GetString("ConfigurationControl_NameFormatHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name format:.
+        /// </summary>
+        public static string ConfigurationControl_NameFormatLabel {
+            get {
+                return ResourceManager.GetString("ConfigurationControl_NameFormatLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email.
         /// </summary>
         public static string EmailsMatch_Label {
@@ -75,6 +111,24 @@ namespace Tql.Plugins.Outlook {
         public static string EmailsMatch_SearchHint {
             get {
                 return ResourceManager.GetString("EmailsMatch_SearchHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last name, First name.
+        /// </summary>
+        public static string NameFormat_LastNameCommaFirstName {
+            get {
+                return ResourceManager.GetString("NameFormat_LastNameCommaFirstName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to None.
+        /// </summary>
+        public static string NameFormat_None {
+            get {
+                return ResourceManager.GetString("NameFormat_None", resourceCulture);
             }
         }
         

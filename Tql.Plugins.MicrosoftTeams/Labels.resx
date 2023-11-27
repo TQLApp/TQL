@@ -117,12 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Button_Documentation" xml:space="preserve">
+    <value>Documentation</value>
+  </data>
   <data name="ConfigurationControl_Directories" xml:space="preserve">
     <value>Directories</value>
     <comment>These are people directories, e.g. your Outlook contacts, users in JIRA and Azure DevOps, etc.</comment>
-  </data>
-  <data name="ConfigurationControl_Documentation" xml:space="preserve">
-    <value>Documentation</value>
   </data>
   <data name="ConfigurationControl_EnableAllDirectoriesLabel" xml:space="preserve">
     <value>Enable all directories</value>
