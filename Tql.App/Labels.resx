@@ -679,4 +679,7 @@ Do you want to restart TQL to see if this resolves the issue?</value>
   <data name="QuickStartWindow_PreviousStep" xml:space="preserve">
     <value>Go back to the previous step.</value>
   </data>
+  <data name="SplashScreenWindow_Starting" xml:space="preserve">
+    <value>Techie's Quick Launcher is starting...</value>
+  </data>
 </root>

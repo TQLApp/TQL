@@ -59,6 +59,8 @@ public partial class App
         System.Windows.Forms.Application.SetHighDpiMode(HighDpiMode.PerMonitor);
         System.Windows.Forms.Application.EnableVisualStyles();
 
+        using var splashScreen = Options.IsSilent ? null : new SplashScreen();
+
         var notifyIconManager = new NotifyIconManager();
 
         var store = new Store(Options.Environment);
@@ -69,11 +71,17 @@ public partial class App
             loggerFactory.CreateLogger<PackageStoreManager>()
         );
 
+        splashScreen?.SetProgress(0.1);
+
         packageStoreManager.PerformCleanup();
+
+        splashScreen?.SetProgress(0.2);
 
         var loader = CreatePluginLoader(packageStoreManager, loggerFactory);
 
         var pluginManager = new PluginManager(loader);
+
+        splashScreen?.SetProgress(0.3);
 
         var builder = Host.CreateApplicationBuilder(e.Args);
 
@@ -85,7 +93,11 @@ public partial class App
 
         pluginManager.ConfigureServices(builder.Services);
 
+        splashScreen?.SetProgress(0.4);
+
         _host = builder.Build();
+
+        splashScreen?.SetProgress(0.5);
 
         var settings = _host.Services.GetRequiredService<Settings>();
 
@@ -93,6 +105,8 @@ public partial class App
             SetCulture(CultureInfo.GetCultureInfo(settings.Language));
 
         ThemeManager.SetTheme(ThemeManager.ParseTheme(settings.Theme));
+
+        splashScreen?.SetProgress(0.6);
 
         var logger = _host.Services.GetRequiredService<ILogger<App>>();
 
@@ -108,6 +122,8 @@ public partial class App
             notifyIconManager.State = NotifyIconState.Running;
         }
 
+        splashScreen?.SetProgress(0.8);
+
         logger.LogInformation("Initializing plugins");
 
         ((UI)_host.Services.GetRequiredService<IUI>()).SetSynchronizationContext(
@@ -116,11 +132,15 @@ public partial class App
 
         pluginManager.Initialize(_host.Services);
 
+        splashScreen?.SetProgress(0.9);
+
         logger.LogInformation("Startup complete");
 
         _mainWindow = _host.Services.GetRequiredService<MainWindow>();
 
         _ipc.Received += (_, _) => _mainWindow.DoShow();
+
+        splashScreen?.Dispose();
 
         if (!Options.IsSilent)
             _mainWindow.DoShow();
@@ -216,9 +236,6 @@ public partial class App
         DispatcherUnhandledException += (_, e) =>
         {
             logger.LogCritical(e.Exception, "Unhandled dispatcher exception");
-
-            if (!IsDebugMode)
-                e.Handled = true;
         };
 
         TaskScheduler.UnobservedTaskException += (_, e) =>

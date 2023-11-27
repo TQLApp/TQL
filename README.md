@@ -79,7 +79,7 @@ I've used assets from other projects in this app. Thank you for making this
 available!
 
 - The logo and some other icons for the application came from
-  https://iconduck.com/sets/universe-icons.
+  https://www.flaticon.com/packs/universe-16.
 - The theme came from https://github.com/AngryCarrot789/WPFDarkTheme.
 - Some icons came from https://github.com/microsoft/fluentui-system-icons
   (search engine is at https://fluenticons.co/).
