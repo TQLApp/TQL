@@ -54,6 +54,10 @@ jobs:
       - name: Publish App
         run: dotnet publish -c Release -r win-x64 --self-contained Tql.App -property:Version="${{ steps.get-build-version.outputs.build-version }}" -warnaserror
 
+      - name: Validate file versions
+        shell: pwsh
+        run: ./Build/Validate-File-Versions.ps1 -Version "${{ steps.get-build-version.outputs.build-version }}"
+
       - name: Create MSI
         shell: pwsh
         run: ./Build/Create-MSI.ps1
