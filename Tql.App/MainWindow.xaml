@@ -10,14 +10,11 @@
     xmlns:app="clr-namespace:Tql.App"
     mc:Ignorable="d"
     Title="{x:Static app:Labels.ApplicationTitle}"
-    Width="800"
+    Width="800" 
     SizeToContent="Height"
     Foreground="White"
-    Background="Transparent"
     PreviewKeyDown="Window_PreviewKeyDown"
-    Deactivated="Window_Deactivated"
-    SourceInitialized="Window_SourceInitialized"
-    Loaded="Window_Loaded">
+    Deactivated="Window_Deactivated">
     <Window.Resources>
         <Style TargetType="TextBlock">
             <Setter

@@ -11,8 +11,26 @@ namespace Tql.Plugins.Azure.ResourcesConverter;
 
 internal class Converter
 {
+    private const string ResourcesFileName = "..\\..\\..\\Resources.json";
+    private const string RequireConfigFileName = "..\\..\\..\\RequireConfig.js";
+
     public async Task Run()
     {
+        if (!File.Exists(ResourcesFileName) || !File.Exists(RequireConfigFileName))
+        {
+            if (!File.Exists(ResourcesFileName))
+                File.WriteAllText(ResourcesFileName, "READ THE README!");
+            if (!File.Exists(RequireConfigFileName))
+                File.WriteAllText(RequireConfigFileName, "READ THE README!");
+
+            Console
+                .Error
+                .Write(
+                    "Created empty resource files. Please read the README to understand how to use these."
+                );
+            return;
+        }
+
         var assetTypes = ConvertResources();
         var icons = await ConvertRequireConfig();
 
@@ -37,7 +55,7 @@ internal class Converter
 
     private List<AssetType> ConvertResources()
     {
-        var obj = JObject.Parse(File.ReadAllText("..\\..\\..\\Resources.json"));
+        var obj = JObject.Parse(File.ReadAllText(ResourcesFileName));
         var manifestJson = (JObject)obj["manifest"]!;
         var assetTypes = new List<AssetType>();
         var seenResourceTypes = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -95,7 +113,7 @@ internal class Converter
 
     private async Task<List<AssetIcon>> ConvertRequireConfig()
     {
-        var js = File.ReadAllText("..\\..\\..\\RequireConfig.js");
+        var js = File.ReadAllText(RequireConfigFileName);
 
         var assets = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 

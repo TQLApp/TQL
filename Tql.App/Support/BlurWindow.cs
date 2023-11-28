@@ -14,8 +14,6 @@ internal class BlurWindow : BaseWindow
         new PropertyMetadata(Colors.Transparent, (d, _) => ((BlurWindow)d).UpdateMainWindowTint())
     );
 
-    private (double DpiScaleX, double DpiScaleY)? _acrylicDpi;
-
     public Color Tint
     {
         get => (Color)GetValue(TintProperty);
@@ -26,21 +24,32 @@ internal class BlurWindow : BaseWindow
     {
         WindowStyle = WindowStyle.None;
         ResizeMode = ResizeMode.NoResize;
+        Background = Brushes.Transparent;
+
+        if (Environment.OSVersion.Version.CompareTo(OSVersions.Windows10) >= 0)
+        {
+            // This is required for the blur behind to work!
+            AllowsTransparency = true;
+        }
 
         SourceInitialized += BlurWindow_SourceInitialized;
-        IsVisibleChanged += BlurWindow_IsVisibleChanged;
     }
 
     private void BlurWindow_SourceInitialized(object? sender, EventArgs e)
     {
-        EnsureAcrylicBrush();
-
         UpdateMainWindowTint();
 
-        var interop = new WindowInteropHelper(this);
-
-        if (Environment.OSVersion.Version.Major >= 6)
+        if (Environment.OSVersion.Version.CompareTo(OSVersions.Windows10) >= 0)
         {
+            if (!AllowsTransparency)
+            {
+                throw new InvalidOperationException(
+                    "AllowTransparency must be set to true for blur behind to work"
+                );
+            }
+
+            var interop = new WindowInteropHelper(this);
+
             Dwm.Windows10EnableBlurBehind(interop.Handle);
 
             int cornerPreference = (int)Dwm.DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_ROUND;
@@ -51,31 +60,6 @@ internal class BlurWindow : BaseWindow
                 Marshal.SizeOf<int>()
             );
         }
-        else
-        {
-            Dwm.WindowEnableBlurBehind(interop.Handle);
-        }
-
-        //// Set Drop shadow of a border-less Form
-        //if (WindowStyle == WindowStyle.None)
-        //    Dwm.WindowBorderlessDropShadow(interop.Handle, 2);
-    }
-
-    private void BlurWindow_IsVisibleChanged(object? sender, DependencyPropertyChangedEventArgs e)
-    {
-        if ((bool)e.NewValue)
-            EnsureAcrylicBrush();
-    }
-
-    private void EnsureAcrylicBrush()
-    {
-        var dpiScale = VisualTreeHelper.GetDpi(this);
-        var acrylicDpi = (dpiScale.DpiScaleX, dpiScale.DpiScaleY);
-
-        if (_acrylicDpi != acrylicDpi)
-            Background = WpfUtils.GetAcrylicBrush(this);
-
-        _acrylicDpi = acrylicDpi;
     }
 
     private void UpdateMainWindowTint()
