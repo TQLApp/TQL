@@ -14,8 +14,6 @@ text, e.g. ::Enter:: for the enter key.
 When you need to use the mouse, I'll put a ![](Cursor.svg?color=true) or
 ![](Cursor+Click.svg?color=true) icon in front of the instructions.
 
-![](Cursor+Click.svg?color=true) Click **OK** to go to the next step.
-
 ---
 id: welcome-scope
 title: What we'll be doing
@@ -23,8 +21,6 @@ title: What we'll be doing
 
 The app has support for different tools. I'll walk you through the setup of the
 one you want to use. After that we'll explore the functionality of the app.
-
-![](Cursor+Click.svg?color=true) Click **OK** to go to the next step.
 
 ---
 id: welcome-open-app
@@ -38,8 +34,6 @@ You can also open the app by clicking on the ![](Space+Shuttle.svg) icon in the
 lower right corner of your screen, next to the clock and the WiFi symbol. You'll
 have to click small arrow (^) to reveal it. When you do, we'll continue where we
 left of.
-
-![](Cursor+Click.svg?color=true) Click **OK** to go to the next step.
 
 ---
 id: select-tool
@@ -208,8 +202,6 @@ Well done! With the configuration completed, we can start using the plugin.
 
 The app works best if you use the keyboard. We'll practice this in the remainder
 of the tutorial.
-
-![](Cursor+Click.svg?color=true) Click **OK** to continue.
 
 ---
 id: list-all-categories
