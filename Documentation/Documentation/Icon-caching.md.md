@@ -6,8 +6,6 @@ from GitHub and show them in the matches. The
 [TQLApp.Utilities](https://www.nuget.org/packages/TQLApp.Utilities) NuGet
 package contains functionality to simplify this work.
 
-## Create a IconCacheManager
-
 Cache management is done using the `IconCacheManager<T>` class. To use this
 class, a new class must be created that inherits from it.
 

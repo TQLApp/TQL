@@ -12,3 +12,5 @@
   href: Create-a-plugin.md
 - name: Icon caching
   href: Icon-caching.md
+- name: Configuration UI
+  href: Configuration-UI.md

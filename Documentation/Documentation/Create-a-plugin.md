@@ -558,15 +558,13 @@ NuGet package has some infrastructure to simplify this. We'll use that instead.
    ```cs
    using Tql.Abstractions;
    using Tql.Utilities;
-
+   
    namespace TqlNuGetPlugin;
-
-   internal class PackagesType : MatchType<PackagesMatch, PackagesDto>
+   
+   internal class PackagesType(IMatchFactory<PackagesMatch, PackagesDto> factory)
+       : MatchType<PackagesMatch, PackagesDto>(factory)
    {
        public override Guid Id => TypeIds.Packages.Id;
-
-       public PackagesType(IMatchFactory<PackagesMatch, PackagesDto> factory)
-           : base(factory) { }
    }
    ```
 
@@ -575,16 +573,14 @@ NuGet package has some infrastructure to simplify this. We'll use that instead.
    ```cs
    using Tql.Abstractions;
    using Tql.Utilities;
-
+   
    namespace TqlNuGetPlugin;
-
-   internal class PackageType : MatchType<PackageMatch, PackageDto>
+   
+   internal class PackageType(IMatchFactory<PackageMatch, PackageDto> factory)
+       : MatchType<PackageMatch, PackageDto>(factory)
    {
        public override Guid Id => TypeIds.Package.Id;
-
-       public PackageType(IMatchFactory<PackageMatch, PackageDto> factory)
-           : base(factory) { }
-   }
+   }   
    ```
 
 > [!TIP] The `MatchType` class handles deserialization for you. These
