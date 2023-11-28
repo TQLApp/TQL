@@ -48,6 +48,9 @@ public partial class App
     {
         Parser.Default.ParseArguments<Options>(FixupArgs(e.Args)).WithParsed(p => Options = p);
 
+        if (Options.Sideload != null)
+            IsDebugMode = true;
+
         _ipc = new WindowMessageIPC(Options.Environment);
 
         if (!_ipc.IsFirstRunner)

@@ -21,11 +21,18 @@ internal partial class MainWindow
         );
 
         contextMenu.Items.Add("-");
-#if DEBUG
-        contextMenu
-            .Items
-            .Add(Labels.NotifyMenu_InvalidateAllCachesLabel, null, (_, _) => InvalidateAllCaches());
-#endif
+
+        if (App.IsDebugMode)
+        {
+            contextMenu
+                .Items
+                .Add(
+                    Labels.NotifyMenu_InvalidateAllCachesLabel,
+                    null,
+                    (_, _) => InvalidateAllCaches()
+                );
+        }
+
         contextMenu
             .Items
             .Add(Labels.NotifyMenu_ConfigurationLabel, null, (_, _) => OpenConfiguration());
