@@ -10,3 +10,11 @@
 - name: Plugin development
 - name: Create a plugin
   href: Create-a-plugin.md
+- name: Icon caching
+  href: Icon-caching.md
+- name: Configuration UI
+  href: Configuration-UI.md
+- name: Data caching
+  href: Data-caching.md
+- name: Publishing plugins
+  href: Publishing-plugins.md
