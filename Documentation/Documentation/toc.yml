@@ -10,3 +10,5 @@
 - name: Plugin development
 - name: Create a plugin
   href: Create-a-plugin.md
+- name: Icon caching
+  href: Icon-caching.md
