@@ -182,8 +182,7 @@ internal partial class MainWindow
 
         var keyLabel = HotKey.AvailableKeys.Single(p => p.Key == hotKey.Key).Label;
 
-        _hotKeyName.Inlines.Clear();
-        _hotKeyName.Inlines.Add(keyLabel);
+        _hotKeyName.DataContext = keyLabel;
     }
 
     private void ResetFontSize()

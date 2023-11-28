@@ -17,6 +17,8 @@
                 <ResourceDictionary Source="Themes/Controls.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
+            <CornerRadius x:Key="KeyboardKeyCornerRadius">6</CornerRadius>
+
             <Style TargetType="support:MarqueeControl">
                 <Setter Property="Template">
                     <Setter.Value>

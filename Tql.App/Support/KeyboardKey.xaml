@@ -13,20 +13,24 @@
         <ControlTemplate TargetType="{x:Type local:KeyboardKey}">
             <Border
                 BorderBrush="#50ffffff"
-                BorderThickness="1"
-                CornerRadius="3"
-                Background="#20ffffff">
-                <Border
-                    BorderBrush="#50ffffff"
-                    BorderThickness="1"
-                    CornerRadius="2"
-                    Margin="3,-1,3,2"
-                    Padding="3,0">
-                    <ContentPresenter
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center" />
-                </Border>
+                BorderThickness="1,1,1,2"
+                CornerRadius="{StaticResource KeyboardKeyCornerRadius}"
+                Background="#20ffffff"
+                Padding="5,3,5,1">
+                <ContentPresenter
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center" />
             </Border>
         </ControlTemplate>
     </UserControl.Template>
+    <UserControl.Resources>
+        <Style TargetType="TextBlock">
+            <Setter
+                Property="FontSize"
+                Value="9pt" />
+            <Setter
+                Property="FontFamily"
+                Value="Consolas" />
+        </Style>
+    </UserControl.Resources>
 </UserControl>
