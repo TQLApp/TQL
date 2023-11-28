@@ -208,3 +208,17 @@ results appear when this completes:
 
 You'll notice that the results now appear immediately and are updated as you
 type.
+
+> [!TIP] When TQL is configured with a sideloaded plugin, the app is put into
+> debug mode. Debug mode makes a few changes:
+>
+> - Automatic updates are disabled.
+> - Console and trace logging is enabled.
+> - The **Invalidate All Caches** option is added to the notification icon menu:
+>
+>   ![=2x](../Images/Invalidate-all-caches.png)
+>
+> The last option is useful for testing your cache. It forces the cache to be
+> rebuilt without you having to increment the version number. Note that this
+> only works if the **ICacheManager** has been instantiated, so you need to go
+> into a match category that uses the cache before you invalidate the cache.
