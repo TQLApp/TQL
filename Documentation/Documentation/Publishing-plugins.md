@@ -1,6 +1,7 @@
 # Publishing plugins
 
-Plugins are published as NuGet packages. TQL will show plugins that have the `tql-plugin` tag set.
+Plugins are published as NuGet packages. TQL will show plugins that have the
+`tql-plugin` tag set.
 
 TQL has the following requirements of a plugin:
 
@@ -8,52 +9,68 @@ TQL has the following requirements of a plugin:
 - It must have `net8.0-windows` as the target framework.
 - It must have a dependency on the **TQLApp.Abstractions** NuGet package.
 
-> [!IMPORTANT]
-> When installing a plugin, TQL will automatically resolve and install any dependencies. It uses the native NuGet libraries for this. If there are conflicts of dependencies between plugins or with TQL itself, the highest version will be selected.
+> [!IMPORTANT] When installing a plugin, TQL will automatically resolve and
+> install any dependencies. It uses the native NuGet libraries for this. If
+> there are conflicts of dependencies between plugins or with TQL itself, the
+> highest version will be selected.
 
-In this guide, I'm publishing the NuGet package to a private artifact feed hosted on a free Azure DevOps account. TQL supports private artifacts feeds and the guide shows how to set one up.
+In this guide, I'm publishing the NuGet package to a private artifact feed
+hosted on a free Azure DevOps account. TQL supports private artifacts feeds and
+the guide shows how to set one up.
 
-1. Configure the project to generate packages on build and add the tag. Edit the **.csproj** file and add the following lines to the bottom of the **PropertyGroup** element:
-   
+1. Configure the project to generate packages on build and add the tag. Edit the
+   **.csproj** file and add the following lines to the bottom of the
+   **PropertyGroup** element:
+
    ```xml
    <PropertyGroup>
-       ...
-
-       <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-       <PackageTags>tql-plugin</PackageTags>
+     ...
+     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+     <PackageTags>tql-plugin</PackageTags>
    </PropertyGroup>
    ```
 
-   > [!HINT]
-   > NuGet has many more options you can configure. You should configure all of these just like you would configure normal NuGet packages.
+   > [!TIP] NuGet has many more options you can configure. You should configure
+   > all of these just like you would configure normal NuGet packages.
 
-2. Add a **nuget.config** file to the root of your solution. In my case I'm using the following contents, but you'll have to update this to specify your on artifact feed. If you're publishing your NuGet package to https://nuget.org, you can skip this step.
-   
+2. Add a **nuget.config** file to the root of your solution. In my case I'm
+   using the following contents, but you'll have to update this to specify your
+   on artifact feed. If you're publishing your NuGet package to
+   https://nuget.org, you can skip this step.
+
    ```xml
-   <?xml version="1.0" encoding="utf-8"?>
+   <?xml version="1.0" encoding="utf-8" ?>
    <configuration>
-       <packageSources>
-           <add key="TQLPlugins" value="https://pkgs.dev.azure.com/pvginkel/Launcher/_packaging/TQLPlugins/nuget/v3/index.json" />
-       </packageSources>
+     <packageSources>
+       <add
+         key="TQLPlugins"
+         value="https://pkgs.dev.azure.com/pvginkel/Launcher/_packaging/TQLPlugins/nuget/v3/index.json" />
+     </packageSources>
    </configuration>
    ```
 
-3. Download the **nuget.exe** application from the [NuGet downloads](https://www.nuget.org/downloads) page.
+3. Download the **nuget.exe** application from the
+   [NuGet downloads](https://www.nuget.org/downloads) page.
 
 4. Push the NuGet package:
-   
+
    ```bat
    nuget.exe push -Source "TQLPlugins" -ApiKey az ...\TqlNuGetPlugin.1.0.0.nupkg
    ```
 
-5. Open the configuration window of the TQL App. Don't do this through the debug profile setup for the guide. Instead, use your primary TQL environment.
+5. Open the configuration window of the TQL App. Don't do this through the debug
+   profile setup for the guide. Instead, use your primary TQL environment.
 
-6. Navigate to the **Package Sources** configuration page and add a package source. Enter all required fields and save the package source and configuration:
-   
-   ![=2x](Add-package-source.png)
+6. Navigate to the **Package Sources** configuration page and add a package
+   source. Enter all required fields and save the package source and
+   configuration:
 
-7. Open the configuration window again and go the **Plugins** page. The published plugin will now show:
-   
-   ![=2x](Install-plugin.png)
+   ![=2x](../Images/Add-package-source.png)
 
-8. Install the plugin. The new categories will be available once TQL has restarted.
+7. Open the configuration window again and go the **Plugins** page. The
+   published plugin will now show:
+
+   ![=2x](../Images/Install-plugin.png)
+
+8. Install the plugin. The new categories will be available once TQL has
+   restarted.

@@ -16,3 +16,5 @@
   href: Configuration-UI.md
 - name: Data caching
   href: Data-caching.md
+- name: Publishing plugins
+  href: Publishing-plugins.md
