@@ -51,7 +51,11 @@ internal partial class MainWindow
     {
         var source = PresentationSource.FromVisual(this);
         if (source == null)
+        {
+            // Delay repositioning until the source is initialized.
+            SourceInitialized += (_, _) => RepositionScreen();
             return;
+        }
 
         var showOnScreen = ShowOnScreenManager.Create(_settings.ShowOnScreen);
         var screen = showOnScreen.GetScreen();
