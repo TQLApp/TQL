@@ -125,7 +125,7 @@ internal partial class QuickStartScript
         _quickStart.Show(
             window,
             CreateBuilder("welcome-instructions", hotKey)
-                .WithButton("OK", () => WelcomeScope(window))
+                .WithButton("Next", () => WelcomeScope(window))
                 .Build(),
             QuickStartPopupMode.Modal
         );
@@ -138,7 +138,7 @@ internal partial class QuickStartScript
         _quickStart.Show(
             window,
             CreateBuilder("welcome-scope", hotKey)
-                .WithButton("OK", () => WelcomeOpenApp(window))
+                .WithButton("Next", () => WelcomeOpenApp(window))
                 .WithBack(() => WelcomeInstructions(window))
                 .Build(),
             QuickStartPopupMode.Modal
@@ -152,7 +152,7 @@ internal partial class QuickStartScript
         _quickStart.Show(
             window,
             CreateBuilder("welcome-open-app", hotKey)
-                .WithButton("OK", () => SelectTool(window))
+                .WithButton("Next", () => SelectTool(window))
                 .WithBack(() => WelcomeScope(window))
                 .Build(),
             QuickStartPopupMode.Modal
@@ -346,7 +346,7 @@ internal partial class QuickStartScript
         _quickStart.Show(
             window,
             CreateBuilder("using-the-app", CurrentPlugin.PluginName)
-                .WithButton("OK", () => ListAllPlugins(window))
+                .WithButton("Next", () => ListAllPlugins(window))
                 .WithBack(() => OpenConfigurationWindowToConfigurePlugin(window))
                 .Build(),
             QuickStartPopupMode.Modal
