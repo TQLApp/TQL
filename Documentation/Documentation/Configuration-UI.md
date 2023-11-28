@@ -136,6 +136,7 @@ packages of which the user is the owner.
 
 3. Update **ConfigurationService** method in the **Plugin** to register the
    configuration manager and control:
+
    ```cs
    public void ConfigureServices(IServiceCollection services)
    {
@@ -144,6 +145,7 @@ packages of which the user is the owner.
 
        ...
    ```
+
 4. Replace the **GetConfigurationPages** method class in the **Plugin** class to
    return the new configuration page:
 
@@ -157,7 +159,7 @@ packages of which the user is the owner.
 If you now start the app and open the configuration page, the configuration page
 will show:
 
-![](../Images/Configuration-UI.png)
+![=2x](../Images/Configuration-UI.png)
 
 Enter your user name and verify that's it's being saved.
 
