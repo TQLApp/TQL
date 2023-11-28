@@ -3,6 +3,7 @@
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Security;
+using Tql.App.Support;
 
 // ReSharper disable UnusedMember.Local
 // ReSharper disable UnusedMember.Global
@@ -97,7 +98,7 @@ public class Dwm
         ACCENT_ENABLE_GRADIENT = 1,
         ACCENT_ENABLE_TRANSPARENTGRADIENT = 2,
         ACCENT_ENABLE_BLURBEHIND = 3,
-        ACCENT_INVALID_STATE = 4
+        ACCENT_ENABLE_ACRYLICBLURBEHIND = 4
     }
 
     public enum DWMACCENTFLAGS
@@ -288,18 +289,22 @@ public class Dwm
 
     public static void Windows10EnableBlurBehind(IntPtr hWnd)
     {
-        DWMNCRENDERINGPOLICY policy = DWMNCRENDERINGPOLICY.Enabled;
-        WindowSetAttribute(hWnd, DWMWINDOWATTRIBUTE.NCRenderingPolicy, (int)policy);
+        var isCreatorsUpdate =
+            Environment.OSVersion.Version.CompareTo(OSVersions.Windows10_April2018_CreatorsUpdate)
+            >= 0;
 
-        AccentPolicy accPolicy = new AccentPolicy()
+        var accPolicy = new AccentPolicy
         {
-            AccentState = DWMACCENTSTATE.ACCENT_ENABLE_BLURBEHIND,
+            AccentState = isCreatorsUpdate
+                ? DWMACCENTSTATE.ACCENT_ENABLE_ACRYLICBLURBEHIND
+                : DWMACCENTSTATE.ACCENT_ENABLE_BLURBEHIND,
             AccentFlags = DWMACCENTFLAGS.DrawAllBorders
         };
 
         int accentSize = Marshal.SizeOf(accPolicy);
         IntPtr accentPtr = Marshal.AllocHGlobal(accentSize);
         Marshal.StructureToPtr(accPolicy, accentPtr, false);
+
         var data = new WinCompositionAttrData(
             DWMWINDOWATTRIBUTE.AccentPolicy,
             accentPtr,
@@ -307,17 +312,8 @@ public class Dwm
         );
 
         SetWindowCompositionAttribute(hWnd, ref data);
+
         Marshal.FreeHGlobal(accentPtr);
-    }
-
-    public static bool WindowEnableBlurBehind(IntPtr hWnd)
-    {
-        DWMNCRENDERINGPOLICY policy = DWMNCRENDERINGPOLICY.Enabled;
-        WindowSetAttribute(hWnd, DWMWINDOWATTRIBUTE.NCRenderingPolicy, (int)policy);
-
-        DWM_BLURBEHIND dwm_BB = new DWM_BLURBEHIND(true);
-        int result = DwmEnableBlurBehindWindow(hWnd, ref dwm_BB);
-        return result == 0;
     }
 
     public static bool WindowExtendIntoClientArea(IntPtr hWnd, MARGINS margins)
