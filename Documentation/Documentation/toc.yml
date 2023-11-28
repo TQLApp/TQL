@@ -14,3 +14,5 @@
   href: Icon-caching.md
 - name: Configuration UI
   href: Configuration-UI.md
+- name: Data caching
+  href: Data-caching.md
