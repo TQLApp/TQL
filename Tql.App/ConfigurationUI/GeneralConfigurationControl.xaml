@@ -8,6 +8,7 @@
     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
     xmlns:app="clr-namespace:Tql.App"
     xmlns:support="clr-namespace:Tql.App.Support"
+    xmlns:ap="clr-namespace:Tql.App.Themes.Attached"
     mc:Ignorable="d"
     d:DesignHeight="450"
     d:DesignWidth="800">
@@ -56,6 +57,9 @@
                             <Setter
                                 Property="Padding"
                                 Value="0" />
+                            <Setter
+                                Property="ap:CornerRadiusHelper.Value"
+                                Value="{StaticResource KeyboardKeyCornerRadius}" />
                         </Style>
                     </StackPanel.Resources>
                     <ToggleButton

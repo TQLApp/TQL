@@ -348,7 +348,8 @@ internal partial class QuickStartScript
             CreateBuilder("using-the-app", CurrentPlugin.PluginName)
                 .WithButton("OK", () => ListAllPlugins(window))
                 .WithBack(() => OpenConfigurationWindowToConfigurePlugin(window))
-                .Build()
+                .Build(),
+            QuickStartPopupMode.Modal
         );
     }
 
@@ -559,7 +560,8 @@ internal partial class QuickStartScript
     {
         _quickStart.Show(
             window,
-            CreateBuilder("complete").WithButton("Close Tutorial", Dismiss).Build()
+            CreateBuilder("complete").WithButton("Close Tutorial", Dismiss).Build(),
+            QuickStartPopupMode.Modal
         );
     }
 }

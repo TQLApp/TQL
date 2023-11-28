@@ -10,7 +10,7 @@
     xmlns:app="clr-namespace:Tql.App"
     mc:Ignorable="d"
     Title="{x:Static app:Labels.ApplicationTitle}"
-    Width="800" 
+    Width="800"
     SizeToContent="Height"
     Foreground="White"
     PreviewKeyDown="Window_PreviewKeyDown"
@@ -225,7 +225,7 @@
             <Border
                 BorderBrush="#60ffffff"
                 BorderThickness="0,0.5,0,0"
-                Padding="20,8,20,10"
+                Padding="20,8"
                 Background="#10ffffff">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -249,65 +249,35 @@
                                 Property="Margin"
                                 Value="0,2,0,0" />
                         </Style>
-                        <Style
-                            x:Key="ButtonBorder"
-                            TargetType="Border">
-                            <Setter
-                                Property="BorderBrush"
-                                Value="#50ffffff" />
-                            <Setter
-                                Property="BorderThickness"
-                                Value="1" />
-                            <Setter
-                                Property="CornerRadius"
-                                Value="3" />
-                            <Setter
-                                Property="Background"
-                                Value="#20ffffff" />
-                            <Setter
-                                Property="Padding"
-                                Value="6,0,6,1" />
-                            <Setter
-                                Property="Margin"
-                                Value="0,2,0,0" />
-                        </Style>
                     </Grid.Resources>
 
                     <StackPanel Orientation="Horizontal">
-                        <Border
-                            x:Name="_hotKeyWin"
-                            Style="{StaticResource ButtonBorder}">
+                        <support:KeyboardKey x:Name="_hotKeyWin">
                             <TextBlock
                                 Text="{x:Static app:Labels.HotKeyWindows}" />
-                        </Border>
-                        <Border
-                            x:Name="_hotKeyControl"
-                            Style="{StaticResource ButtonBorder}">
+                        </support:KeyboardKey>
+                        <support:KeyboardKey x:Name="_hotKeyControl">
                             <TextBlock
                                 Text="{x:Static app:Labels.HotKeyControl}" />
-                        </Border>
-                        <Border
-                            x:Name="_hotKeyAlt"
-                            Style="{StaticResource ButtonBorder}">
+                        </support:KeyboardKey>
+                        <support:KeyboardKey x:Name="_hotKeyAlt">
                             <TextBlock Text="{x:Static app:Labels.HotKeyAlt}" />
-                        </Border>
-                        <Border
-                            x:Name="_hotKeyShift"
-                            Style="{StaticResource ButtonBorder}">
+                        </support:KeyboardKey>
+                        <support:KeyboardKey x:Name="_hotKeyShift">
                             <TextBlock
                                 Text="{x:Static app:Labels.HotKeyShift}" />
-                        </Border>
-                        <Border Style="{StaticResource ButtonBorder}">
-                            <TextBlock x:Name="_hotKeyName" />
-                        </Border>
+                        </support:KeyboardKey>
+                        <support:KeyboardKey x:Name="_hotKeyName">
+                            <TextBlock Text="{Binding}" />
+                        </support:KeyboardKey>
                         <TextBlock
                             Margin="8,0,20,0"
                             Text="{x:Static app:Labels.MainWindow_OpenTQL}" />
 
-                        <Border Style="{StaticResource ButtonBorder}">
+                        <support:KeyboardKey>
                             <TextBlock
                                 Text="{x:Static app:Labels.HotKeyEnterKey}" />
-                        </Border>
+                        </support:KeyboardKey>
                         <TextBlock
                             Margin="8,0,4,0"
                             Text="{x:Static app:Labels.MainWindow_LaunchRunnablePrefix}" />
@@ -319,10 +289,10 @@
                             Margin="4,0,20,0"
                             Text="{x:Static app:Labels.MainWindow_LaunchRunnablePostfix}" />
 
-                        <Border Style="{StaticResource ButtonBorder}">
+                        <support:KeyboardKey>
                             <TextBlock
                                 Text="{x:Static app:Labels.HotKeyTabKey}" />
-                        </Border>
+                        </support:KeyboardKey>
                         <TextBlock
                             Margin="8,0,6,0"
                             Text="{x:Static app:Labels.MainWindow_OpenCategoryPrefix}" />

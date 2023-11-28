@@ -46,6 +46,12 @@ internal class QuickStartManager
         QuickStartPopupMode mode = QuickStartPopupMode.None
     )
     {
+        if (
+            (popup.Buttons.Length > 0 || popup.ChoiceButtons.Length > 0)
+            && !mode.HasFlag(QuickStartPopupMode.Modal)
+        )
+            throw new ArgumentException("Windows with buttons should be modal", nameof(mode));
+
         _window?.Close();
 
         var ownerWindow =
