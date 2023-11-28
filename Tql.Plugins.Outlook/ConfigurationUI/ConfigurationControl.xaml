@@ -19,28 +19,31 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Label Content="{x:Static app:Labels.ConfigurationControl_NameFormatLabel}" Margin="3"/>
-            <ComboBox x:Name="_nameFormat"
-                      Margin="3"
-                      Grid.Column="1"/>
+            <Label
+                Content="{x:Static app:Labels.ConfigurationControl_NameFormatLabel}"
+                Margin="3" />
+            <ComboBox
+                x:Name="_nameFormat"
+                Margin="3"
+                Grid.Column="1" />
             <TextBlock
-                
-                      Margin="3"
-
-                       Text="{x:Static app:Labels.ConfigurationControl_NameFormatHelpText}" Grid.Row="1" Grid.Column="1" />
+                Margin="3"
+                Text="{x:Static app:Labels.ConfigurationControl_NameFormatHelpText}"
+                Grid.Row="1"
+                Grid.Column="1" />
 
             <TextBlock
                 Margin="3"
-            Grid.Row="2" Grid.ColumnSpan="2">
+                Grid.Row="2"
+                Grid.ColumnSpan="2">
                 <Hyperlink
                     x:Name="_documentation"
                     Click="_documentation_Click">
-                    <Run
-                        Text="{x:Static app:Labels.Button_Documentation}" />
+                    <Run Text="{x:Static app:Labels.Button_Documentation}" />
                 </Hyperlink>
             </TextBlock>
         </Grid>
