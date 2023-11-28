@@ -1,6 +1,6 @@
 # Data caching
 
-In the [Icon caching](Icon-caching.md.md) guide we looked at caching icons. In this guide we'll look at caching data. This guide builds on the changes made to the sample plugin in [Configuration UI](Configuration-UI.md.md).
+In the [Icon caching](Icon-caching.md) guide we looked at caching icons. In this guide we'll look at caching data. This guide builds on the changes made to the sample plugin in [Configuration UI](Configuration-UI.md).
 
 This guide adds a cache to the plugin. This will cache the user's NuGet packages to increase the performance of the My NuGet Packages category.
 
