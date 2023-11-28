@@ -30,6 +30,7 @@
             x:Name="_pages"
             Margin="3"
             ap:TreeViewHelper.ShowLines="false"
+            VirtualizingStackPanel.IsVirtualizing="false"
             SelectedItemChanged="_pages_SelectedItemChanged" />
         <ScrollViewer
             x:Name="_container"
