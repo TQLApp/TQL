@@ -16,14 +16,18 @@ internal class Converter
 
     public async Task Run()
     {
-        if (!File.Exists(ResourcesFileName))
+        if (!File.Exists(ResourcesFileName) || !File.Exists(RequireConfigFileName))
         {
-            File.WriteAllText(ResourcesFileName, "READ THE README!");
-            return;
-        }
-        if (!File.Exists(RequireConfigFileName))
-        {
-            File.WriteAllText(RequireConfigFileName, "READ THE README!");
+            if (!File.Exists(ResourcesFileName))
+                File.WriteAllText(ResourcesFileName, "READ THE README!");
+            if (!File.Exists(RequireConfigFileName))
+                File.WriteAllText(RequireConfigFileName, "READ THE README!");
+
+            Console
+                .Error
+                .Write(
+                    "Created empty resource files. Please read the README to understand how to use these."
+                );
             return;
         }
 
