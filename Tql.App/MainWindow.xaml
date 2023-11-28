@@ -10,7 +10,7 @@
     xmlns:app="clr-namespace:Tql.App"
     mc:Ignorable="d"
     Title="{x:Static app:Labels.ApplicationTitle}"
-    Width="800" 
+    Width="800"
     SizeToContent="Height"
     Foreground="White"
     PreviewKeyDown="Window_PreviewKeyDown"
