@@ -1,3 +1,3 @@
-Run the app:
-
-- Run the Manual Testing environment.
+> Run the app:
+>
+> - Run the Manual Testing environment.
