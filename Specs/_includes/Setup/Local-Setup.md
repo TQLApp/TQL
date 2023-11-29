@@ -1,1 +1,0 @@
-- Local environment has been setup as described in the [TQL documentation]().

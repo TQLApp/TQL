@@ -11,13 +11,13 @@ Create a shortcut to a dedicated manual testing environment:
 1. Create a new Windows Shortcut, e.g. on your desktop.
 
 2. Enter the following location:
-   
+
    ```batch
-   %LOCALAPPDATA%\Programs\TQL\Tql.App.exe --env ManualTesting`
+   %LOCALAPPDATA%\Programs\TQL\Tql.App.exe --env ManualTesting
    ```
 
 3. Enter the following name:
-   
+
    **TQL - Manual Testing**
 
 4. Complete the wizard.
@@ -27,13 +27,13 @@ Create a shortcut to reset the manual testing environment:
 1. Create a new Windows Shortcut, e.g. on your desktop.
 
 2. Enter the following location:
-   
+
    ```batch
-   %LOCALAPPDATA%\Programs\TQL\Tql.App.exe --env ManualTesting --reset`
+   %LOCALAPPDATA%\Programs\TQL\Tql.App.exe --env ManualTesting --reset
    ```
 
 3. Enter the following name:
-   
+
    **TQL - Manual Testing - Reset**
 
 4. Complete the wizard.

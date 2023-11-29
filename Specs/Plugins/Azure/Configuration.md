@@ -1,6 +1,6 @@
 ---
 testspace:
-title: Configuration
+title: Azure - Configuration
 description: Configure the Azure plugin.
 ---
 
@@ -10,11 +10,11 @@ description: Configure the Azure plugin.
 
 ## [setup]
 
-{% include Setup/Running-App.md %}
+{% include Setup/Run-App.md %}
 
 ## Configuration
 
-Create a new connection.
+Create a new connection:
 
 - Open the **Configuration** window.
 - Navigate to **Azure Portal**. The **Azure Portal | General** page is highlighted.
@@ -26,14 +26,18 @@ Create a new connection.
 
 ## Validate configuration
 
-Validate that the connection has been saved.
+Validate that the connection has been saved:
 
 - Open the **Configuration** window.
 - Navigate to **Azure Portal**. The **Azure Portal | General** page is highlighted.
 - Highlight the connection and click **Edit**.
-- Validate that the values are as they were entered.
+- Validate that the the values are as follows:
+  - Name: `pvginkel`
+  - Tenant ID: `4bfd811a-711a-4de5-afa8-9c904fca2045`
 
 ## Complete interactive authentication
+
+Complete first time authentication with Azure Portal:
 
 - Open the app.
 - Type in `Azure`. The **Azure Portal** category must appear.
@@ -44,12 +48,16 @@ Validate that the connection has been saved.
 
 ## Find resource
 
+Find a resource in Azure Portal:
+
 - Open the app.
 - Enter the **Azure Portal** category.
 - Type in `tql-ai`. At least the **tql-rg/tql-ai** resource appears with a purple light bulb icon.
 - **Activate** the **tql-rg/tql-ai** resource. The resource opens in Azure Portal.
 
 ## Find resource group
+
+Find a resource group in Azure Portal:
 
 - Open the app.
 - Enter the **Azure Portal** category.
