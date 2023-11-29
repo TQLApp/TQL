@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Diagnostics;
+using System.Text.RegularExpressions;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 
@@ -39,6 +40,8 @@ internal class Exporter(Options options) : Tool(options)
         WriteWorkbook(resourceStrings);
 
         LogWarning("Found untranslated strings");
+
+        Process.Start(new ProcessStartInfo { FileName = Options.FileName, UseShellExecute = true });
 
         return 3;
     }
