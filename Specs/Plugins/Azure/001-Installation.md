@@ -1,6 +1,6 @@
 ---
 testspace:
-title: Azure - Installation
+title: Plugins \ Azure \ 001 - Installation
 description: Install the Azure plugin.
 ---
 
