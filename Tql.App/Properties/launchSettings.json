@@ -10,6 +10,14 @@
     "TQL Quick Start": {
       "commandName": "Project",
       "commandLineArgs": "--env QuickStart"
+    },
+    "TQL Manual Testing": {
+      "commandName": "Project",
+      "commandLineArgs": "--env ManualTesting"
+    },
+    "TQL Reset Manual Testing": {
+      "commandName": "Project",
+      "commandLineArgs": "--env ManualTesting --reset"
     }
   }
 }

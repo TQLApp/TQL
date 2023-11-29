@@ -22,6 +22,7 @@ using Tql.App.Services.Updates;
 using Tql.App.Support;
 using Application = System.Windows.Application;
 using ConfigurationManager = Tql.App.Services.ConfigurationManager;
+using MessageBox = System.Windows.Forms.MessageBox;
 using Path = System.IO.Path;
 
 namespace Tql.App;
@@ -51,7 +52,72 @@ public partial class App
         if (Options.Sideload != null)
             IsDebugMode = true;
 
-        _ipc = new WindowMessageIPC(Options.Environment);
+        System.Windows.Forms.Application.SetHighDpiMode(HighDpiMode.PerMonitor);
+        System.Windows.Forms.Application.EnableVisualStyles();
+
+        if (Options.RequestReset)
+        {
+            if (Options.Environment == null)
+            {
+                MessageBox.Show(
+                    Labels.App_CannotResetMainEnvironment,
+                    Labels.ApplicationTitle,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+                Shutdown(1);
+                return;
+            }
+
+            var result = MessageBox.Show(
+                string.Format(Labels.App_AreYouSureResetEnvironment, Options.Environment),
+                Labels.ApplicationTitle,
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning
+            );
+
+            if (result != DialogResult.Yes)
+            {
+                Shutdown(1);
+                return;
+            }
+        }
+
+        _ipc = new WindowMessageIPC(
+            Options.Environment,
+            Options.RequestReset,
+            TraceLogger.Instance
+        );
+
+        if (Options.RequestReset)
+        {
+            try
+            {
+                PerformReset();
+
+                MessageBox.Show(
+                    Labels.App_ResetCompletedSuccessfully,
+                    Labels.ApplicationTitle,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    string.Format(
+                        Labels.App_ResetFailed,
+                        $"{ex.Message} ({ex.GetType().FullName})"
+                    ),
+                    Labels.ApplicationTitle,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+            }
+
+            Shutdown(1);
+            return;
+        }
 
         if (!_ipc.IsFirstRunner)
         {
@@ -59,14 +125,11 @@ public partial class App
             return;
         }
 
-        System.Windows.Forms.Application.SetHighDpiMode(HighDpiMode.PerMonitor);
-        System.Windows.Forms.Application.EnableVisualStyles();
-
         using var splashScreen = Options.IsSilent ? null : new SplashScreen();
 
         var notifyIconManager = new NotifyIconManager();
 
-        var store = new Store(Options.Environment);
+        var store = new Store(Options.Environment, TraceLogger.Instance);
         var (loggerFactory, inMemoryLoggerProvider) = SetupLogging(store);
 
         var packageStoreManager = new PackageStoreManager(
@@ -147,6 +210,11 @@ public partial class App
 
         if (!Options.IsSilent)
             _mainWindow.DoShow();
+    }
+
+    private void PerformReset()
+    {
+        new Store(Options.Environment, TraceLogger.Instance).Reset();
     }
 
     private static IPackageLoader CreatePluginLoader(

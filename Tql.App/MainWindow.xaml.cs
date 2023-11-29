@@ -44,6 +44,7 @@ internal partial class MainWindow
     private SearchResult? _mouseDownSearchResult;
     private IPageViewTelemetry? _pageView;
     private readonly double _loadedWidth;
+    private bool _resetShowInTaskbar;
 
     private SearchResult? SelectedSearchResult => (SearchResult?)_results.SelectedItem;
 
@@ -330,6 +331,8 @@ internal partial class MainWindow
 
         UpdateLayout();
 
+        ResetShowInTaskbar();
+
         Show();
 
         Activate();
@@ -340,6 +343,40 @@ internal partial class MainWindow
         );
 
         _search.Focus();
+    }
+
+    private void ResetShowInTaskbar()
+    {
+        // See SetShowInTaskbar.
+
+        if (_resetShowInTaskbar)
+        {
+            _resetShowInTaskbar = false;
+
+            ShowInTaskbar = true;
+            ShowInTaskbar = false;
+        }
+    }
+
+    public void SetShowInTaskbar(bool visible)
+    {
+        // If you use the ShowInTaskbar property to set whether the
+        // taskbar icon should be visible, it hides and re-shows the
+        // window to work around a Windows bug.
+        // See https://github.com/dotnet/wpf/blob/main/src/Microsoft.DotNet.Wpf/src/PresentationFramework/System/Windows/Window.cs#L4988.
+        //
+        // You can set the style by setting the WS_EX_APPWINDOW style
+        // on the window directly. This however has the effect of
+        // the taskbar button re-appearing next time the app is opened.
+        // Maybe that's the bug they mean.
+        //
+        // The work around is that the next time we show the app, we
+        // reset the ShowInTaskbar property "properly" (see the
+        // ResetShowInTaskbar method). This seems to work fine.
+
+        _resetShowInTaskbar = true;
+
+        WindowInterop.SetTaskbarButtonWindowStyle(this, visible);
     }
 
     private void ReloadNotifications()

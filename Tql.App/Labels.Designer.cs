@@ -79,6 +79,44 @@ namespace Tql.App {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to reset the &apos;{0}&apos;? This will delete all your data for this environment. This action cannot be undone..
+        /// </summary>
+        public static string App_AreYouSureResetEnvironment {
+            get {
+                return ResourceManager.GetString("App_AreYouSureResetEnvironment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The main environment cannot be reset..
+        /// </summary>
+        public static string App_CannotResetMainEnvironment {
+            get {
+                return ResourceManager.GetString("App_CannotResetMainEnvironment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The environment has been reset..
+        /// </summary>
+        public static string App_ResetCompletedSuccessfully {
+            get {
+                return ResourceManager.GetString("App_ResetCompletedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The environment reset has failed with the following error:
+        ///
+        ///{0}.
+        /// </summary>
+        public static string App_ResetFailed {
+            get {
+                return ResourceManager.GetString("App_ResetFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Techie&apos;s Quick Launcher.
         /// </summary>
         public static string ApplicationTitle {

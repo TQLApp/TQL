@@ -766,4 +766,24 @@ Do you want to restart TQL to see if this resolves the issue?</comment>
     <value>Een moment alsjeblieft…</value>
     <comment>Original: One moment please...</comment>
   </data>
+  <data name="App_AreYouSureResetEnvironment" xml:space="preserve">
+    <value>Weet je zeker dat je de '{0}' omgeving wilt resetten? Dit verwijderd al je data voor deze omgeving. Deze actie kan niet ongedaan gemaakt worden.</value>
+    <comment>Original: Are you sure you want to reset the '{0}'? This will delete all your data for this environment. This action cannot be undone.</comment>
+  </data>
+  <data name="App_CannotResetMainEnvironment" xml:space="preserve">
+    <value>De hoofdomgeving kan niet gereset worden.</value>
+    <comment>Original: The main environment cannot be reset.</comment>
+  </data>
+  <data name="App_ResetCompletedSuccessfully" xml:space="preserve">
+    <value>De omgeving is gereset.</value>
+    <comment>Original: The environment has been reset.</comment>
+  </data>
+  <data name="App_ResetFailed" xml:space="preserve">
+    <value>De volgende foutmelding heeft plaatsgevonden tijdens het resetten van de omgeving:
+
+{0}</value>
+    <comment>Original: The environment reset has failed with the following error:
+
+{0}</comment>
+  </data>
 </root>
