@@ -7,6 +7,13 @@
   href: Localize-TQL.md
 - name: Data persistence
   href: Data-persistence.md
+
+- name: Manual testing
+- name: Authoring manual tests
+  href: Authoring-manual-tests.md
+- name: Running manual tests
+  href: Running-manual-tests.md
+
 - name: Plugin development
 - name: Create a plugin
   href: Create-a-plugin.md
