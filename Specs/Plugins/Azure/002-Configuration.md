@@ -4,6 +4,8 @@ title: Plugins \ Azure \ 002 - Configuration
 description: Configure the Azure plugin.
 ---
 
+{% include Configuration/Plugins/Azure.md %}
+
 # {{ spec.title }}
 
 {{ spec.description }}
@@ -17,8 +19,8 @@ Create a new connection:
 - Open the **Configuration** window.
 - Navigate to **Azure Portal**. The **Azure Portal | General** page is highlighted.
 - **Add** a new connection with the following information:
-  - Name: `pvginkel`
-  - Tenant ID: `4bfd811a-711a-4de5-afa8-9c904fca2045`
+  - Name: `{{ azure_name }}`
+  - Tenant ID: `{{ azure_tenant_id }}`
 - Click **Save**.
 - Click **Save**.
 
@@ -30,8 +32,8 @@ Validate that the connection has been saved:
 - Navigate to **Azure Portal**. The **Azure Portal | General** page is highlighted.
 - Highlight the connection and click **Edit**.
 - Validate that the the values are as follows:
-  - Name: `pvginkel`
-  - Tenant ID: `4bfd811a-711a-4de5-afa8-9c904fca2045`
+  - Name: `{{ azure_name }}`
+  - Tenant ID: `{{ azure_tenant_id }}`
 
 ## Complete interactive authentication
 
