@@ -8,8 +8,6 @@ description: Install the Azure plugin.
 
 {{ spec.description }}
 
-## [setup]
-
 {% include Setup/Clean-Setup.md %}
 
 ## Installation

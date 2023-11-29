@@ -8,8 +8,6 @@ description: Configure the Azure plugin.
 
 {{ spec.description }}
 
-## [setup]
-
 {% include Setup/Run-App.md %}
 
 ## Configuration
