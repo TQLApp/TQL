@@ -1,7 +1,7 @@
 ---
 testspace:
-title: Plugins / Azure / 001 - Installation
-description: Install the Azure plugin.
+title: App / Quick Start / 001 Out-of-box experience
+description: Validate the out-of-box experience of the quick start tutorial.
 ---
 
 # {{ spec.title }}
@@ -10,21 +10,9 @@ description: Install the Azure plugin.
 
 {% include Setup/Clean-Setup.md %}
 
-## Installation
+## Verify quick start window opens
 
-Install the Azure Portal plugin:
+Verify that the quick start window opens the first time the app starts:
 
-- Open the **Configuration** window.
-- Navigate to **Application | Plugins**.
-- Select the **TQL Azure Plugin** plugin.
-- **Install** the plugin.
-- **Restart** the application when requested.
-
-## Verify installation
-
-Verify that the Azure Portal plugin has been installed:
-
-- Open the **Configuration** window.
-- Navigate to **Application | Plugins**.
-- Switch to the **Installed** tab. The **TQL Azure Plugin** plugin shows as installed.
-- Navigate to the **Azure Portal** configuration page. The configuration page opens.
+- Open the app. The quick start window must open.
+- Verify that you cannot interact with the app and that you cannot close the app without interacting with the quick start window.
