@@ -7,6 +7,9 @@ internal class Options
     [Option("silent")]
     public bool IsSilent { get; set; }
 
+    [Option("reset")]
+    public bool RequestReset { get; set; }
+
     [Option("env")]
     public string? Environment { get; set; }
 

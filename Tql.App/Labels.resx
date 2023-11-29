@@ -700,4 +700,18 @@ Do you want to restart TQL to see if this resolves the issue?</value>
   <data name="ProgressWindow_OneMomentPlease" xml:space="preserve">
     <value>One moment please...</value>
   </data>
+  <data name="App_AreYouSureResetEnvironment" xml:space="preserve">
+    <value>Are you sure you want to reset the '{0}'? This will delete all your data for this environment. This action cannot be undone.</value>
+  </data>
+  <data name="App_CannotResetMainEnvironment" xml:space="preserve">
+    <value>The main environment cannot be reset.</value>
+  </data>
+  <data name="App_ResetCompletedSuccessfully" xml:space="preserve">
+    <value>The environment has been reset.</value>
+  </data>
+  <data name="App_ResetFailed" xml:space="preserve">
+    <value>The environment reset has failed with the following error:
+
+{0}</value>
+  </data>
 </root>

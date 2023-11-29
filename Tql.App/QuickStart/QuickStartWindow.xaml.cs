@@ -136,7 +136,7 @@ internal partial class QuickStartWindow
         HwndSource.FromHwnd(handle)!.AddHook(WndProc);
 
         // Hides the window from the task switcher.
-        WindowInterop.AddWindowStyle(handle, WindowInterop.WS_EX_TOOLWINDOW);
+        WindowInterop.SetToolWindowStyle(this);
 
         UpdateCursor();
     }

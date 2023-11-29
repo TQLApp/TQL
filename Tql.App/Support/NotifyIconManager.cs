@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
+using JetBrains.Annotations;
 using Application = System.Windows.Application;
 using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
 using Point = System.Drawing.Point;
@@ -48,7 +49,7 @@ internal class NotifyIconManager : IDisposable
         _updateIcons = CreateUpdateIcons(_icon);
 
         _notifyIcon.Icon = _icon;
-        _notifyIcon.Text = Labels.ApplicationTitle;
+        SetNotificationIconText(Labels.ApplicationTitle);
         _notifyIcon.Visible = true;
 
         _notifyIcon.Click += (_, e) =>
@@ -178,24 +179,32 @@ internal class NotifyIconManager : IDisposable
         switch (_state)
         {
             case NotifyIconState.Starting:
-                _notifyIcon.Text = Labels.NotifyIconManager_ApplicationIsStarting;
+                SetNotificationIconText(Labels.NotifyIconManager_ApplicationIsStarting);
                 _notifyIcon.Icon = _icon;
                 _timer.Change(Timeout.Infinite, Timeout.Infinite);
                 break;
 
             case NotifyIconState.Updating:
-                _notifyIcon.Text = Labels.NotifyIconManager_ApplicationIsUpdating;
+                SetNotificationIconText(Labels.NotifyIconManager_ApplicationIsUpdating);
                 _updateIconIndex = 0;
                 _notifyIcon.Icon = _updateIcons[_updateIconIndex];
                 _timer.Change(TimeSpan.FromSeconds(0.4), TimeSpan.FromSeconds(0.4));
                 break;
 
             default:
-                _notifyIcon.Text = Labels.ApplicationTitle;
+                SetNotificationIconText(Labels.ApplicationTitle);
                 _notifyIcon.Icon = _icon;
                 _timer.Change(Timeout.Infinite, Timeout.Infinite);
                 break;
         }
+    }
+
+    private void SetNotificationIconText(string text)
+    {
+        if (App.Options.Environment != null)
+            text = $"{text} [{App.Options.Environment}]";
+
+        _notifyIcon.Text = text;
     }
 
     protected virtual void OnClicked() => Clicked?.Invoke(this, EventArgs.Empty);
