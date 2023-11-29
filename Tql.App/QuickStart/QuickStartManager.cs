@@ -123,7 +123,7 @@ internal class QuickStartManager
         _window.Closed += (s, _) =>
         {
             if (adorner != null)
-                AdornerLayer.GetAdornerLayer(owner)!.Remove(adorner);
+                AdornerLayer.GetAdornerLayer(owner)?.Remove(adorner);
 
             if (_window == (Window?)s)
                 _window = null;
