@@ -1,6 +1,6 @@
 ---
 testspace:
-title: Plugins \ Azure \ 002 - Configuration
+title: Plugins / Azure / 002 - Configuration
 description: Configure the Azure plugin.
 ---
 

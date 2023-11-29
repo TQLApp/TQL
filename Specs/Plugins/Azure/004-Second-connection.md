@@ -1,6 +1,6 @@
 ---
 testspace:
-title: Plugins \ Azure \ 004 - Second connection
+title: Plugins / Azure / 004 - Second connection
 description: Configure a second connection.
 ---
 

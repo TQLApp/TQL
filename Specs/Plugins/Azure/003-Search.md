@@ -1,6 +1,6 @@
 ---
 testspace:
-title: Plugins \ Azure \ 003 - Search
+title: Plugins / Azure / 003 - Search
 description: Verify search features.
 ---
 
