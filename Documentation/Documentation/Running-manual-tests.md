@@ -2,7 +2,7 @@
 
 The manual regression test suite expects a certain setup on your machine. This page describes how to prepare this setup.
 
-## Setup
+## Setup using production build
 
 1. Ensure that the latest version of TQL is installed.
 
@@ -38,6 +38,43 @@ Create a shortcut to reset the manual testing environment:
 
 4. Complete the wizard.
 
+## Setup using local build
+
+1. Clone the TQL repository into `C:\Projects\TQL`.
+
+2. Perform a local build by running the `Build\Local Build.bat` script.
+
+Create a shortcut to a dedicated manual testing environment:
+
+1. Create a new Windows Shortcut, e.g. on your desktop.
+
+2. Enter the following location:
+
+   ```batch
+   C:\Projects\TQL\Build\Distrib\App\Tql.App.exe --env ManualTesting
+   ```
+
+3. Enter the following name:
+
+   **TQL - Manual Testing**
+
+4. Complete the wizard.
+
+Create a shortcut to reset the manual testing environment:
+
+1. Create a new Windows Shortcut, e.g. on your desktop.
+
+2. Enter the following location:
+
+   ```batch
+   C:\Projects\TQL\Build\Distrib\App\Tql.App.exe --env ManualTesting --reset
+   ```
+
+3. Enter the following name:
+
+   **TQL - Manual Testing - Reset**
+
+4. Complete the wizard.
 ## Usage
 
 When you execute a test suite, run the **TQL - Manual Testing** shortcut to start TQL with a dedicated environment.
