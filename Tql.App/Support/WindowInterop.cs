@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using System.Windows.Interop;
 using Rectangle = System.Drawing.Rectangle;
 using Size = System.Drawing.Size;
 
@@ -34,13 +35,30 @@ public static class WindowInterop
         return new Rectangle(-rect.Left, -rect.Top, clientSize.Width, clientSize.Height);
     }
 
-    public static void AddWindowStyle(IntPtr handle, uint style)
+    public static void SetTaskbarButtonWindowStyle(Window window, bool visible)
+    {
+        var handle = new WindowInteropHelper(window).Handle;
+
+        if (visible)
+            AddWindowExStyle(handle, WS_EX_APPWINDOW);
+        else
+            RemoveWindowExStyle(handle, WS_EX_APPWINDOW);
+    }
+
+    public static void SetToolWindowStyle(Window window)
+    {
+        var handle = new WindowInteropHelper(window).Handle;
+
+        AddWindowExStyle(handle, WS_EX_TOOLWINDOW);
+    }
+
+    private static void AddWindowExStyle(IntPtr handle, uint style)
     {
         var extendedStyle = GetWindowLong(handle, GWL_EXSTYLE);
         SetWindowLong(handle, GWL_EXSTYLE, extendedStyle | style);
     }
 
-    public static void RemoveWindowStyle(IntPtr handle, uint style)
+    private static void RemoveWindowExStyle(IntPtr handle, uint style)
     {
         var extendedStyle = GetWindowLong(handle, GWL_EXSTYLE);
         SetWindowLong(handle, GWL_EXSTYLE, extendedStyle & ~style);

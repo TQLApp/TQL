@@ -272,31 +272,15 @@ internal class UI(ILogger<UI> logger) : IUI
     public void EnterModalDialog()
     {
         if (_modalDialogShowing == 0 && MainWindow != null)
-            ShowTaskBarButton(MainWindow);
+            MainWindow.SetShowInTaskbar(true);
         _modalDialogShowing++;
-    }
-
-    private void ShowTaskBarButton(MainWindow window)
-    {
-        WindowInterop.AddWindowStyle(
-            new WindowInteropHelper(window).Handle,
-            WindowInterop.WS_EX_APPWINDOW
-        );
     }
 
     public void ExitModalDialog()
     {
         _modalDialogShowing--;
         if (_modalDialogShowing == 0 && MainWindow != null)
-            HideTaskBarButton(MainWindow);
-    }
-
-    private void HideTaskBarButton(MainWindow window)
-    {
-        WindowInterop.RemoveWindowStyle(
-            new WindowInteropHelper(window).Handle,
-            WindowInterop.WS_EX_APPWINDOW
-        );
+            MainWindow.SetShowInTaskbar(false);
     }
 
     protected virtual void OnUINotificationsChanged() =>
