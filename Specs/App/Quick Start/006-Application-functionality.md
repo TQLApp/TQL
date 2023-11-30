@@ -6,6 +6,7 @@ description:
   functionality.
 ---
 
+{% if page %}{% assign spec = page %}{% endif %}
 {% include Configuration/Plugins/JIRA.md %}
 
 # {{ spec.title }}

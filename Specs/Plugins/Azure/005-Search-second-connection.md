@@ -4,6 +4,7 @@ title: Plugins / Azure / 005 - Search second connection
 description: Verify functionality with a second connection.
 ---
 
+{% if page %}{% assign spec = page %}{% endif %}
 {% include Configuration/Plugins/Azure.md %}
 
 # {{ spec.title }}

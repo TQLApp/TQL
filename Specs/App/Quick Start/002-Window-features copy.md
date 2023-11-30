@@ -4,6 +4,8 @@ title: App / Quick Start / 002 - Window features
 description: Validate the features of the quick start window.
 ---
 
+{% if page %}{% assign spec = page %}{% endif %}
+
 # {{ spec.title }}
 
 {{ spec.description }}

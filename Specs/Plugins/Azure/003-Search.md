@@ -4,6 +4,8 @@ title: Plugins / Azure / 003 - Search
 description: Verify search features.
 ---
 
+{% if page %}{% assign spec = page %}{% endif %}
+
 # {{ spec.title }}
 
 {{ spec.description }}

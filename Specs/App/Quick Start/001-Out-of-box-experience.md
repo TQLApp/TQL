@@ -4,6 +4,8 @@ title: App / Quick Start / 001 - Out-of-box experience
 description: Validate the out-of-box experience of the quick start tutorial.
 ---
 
+{% if page %}{% assign spec = page %}{% endif %}
+
 # {{ spec.title }}
 
 {{ spec.description }}

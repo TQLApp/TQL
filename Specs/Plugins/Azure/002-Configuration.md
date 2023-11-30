@@ -4,6 +4,7 @@ title: Plugins / Azure / 002 - Configuration
 description: Configure the Azure plugin.
 ---
 
+{% if page %}{% assign spec = page %}{% endif %}
 {% include Configuration/Plugins/Azure.md %}
 
 # {{ spec.title }}

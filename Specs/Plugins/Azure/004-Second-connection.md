@@ -4,6 +4,7 @@ title: Plugins / Azure / 004 - Second connection
 description: Configure a second connection.
 ---
 
+{% if page %}{% assign spec = page %}{% endif %}
 {% include Configuration/Plugins/Azure.md %}
 
 # {{ spec.title }}

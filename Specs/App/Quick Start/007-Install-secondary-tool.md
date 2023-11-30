@@ -16,6 +16,7 @@ description:
 
 ## Setup the quick start tutorial
 
+{% if page %}{% assign spec = page %}{% endif %}
 {% include Setup/App/QuickStart/Reset-quick-start.md %}
 
 Configure JIRA:

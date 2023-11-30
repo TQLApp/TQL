@@ -4,6 +4,8 @@ title: Plugins / Azure / 001 - Installation
 description: Install the Azure plugin.
 ---
 
+{% if page %}{% assign spec = page %}{% endif %}
+
 # {{ spec.title }}
 
 {{ spec.description }}

@@ -5,6 +5,7 @@ description:
   Validate that the quick start tutorial will set you up with Azure DevOps.
 ---
 
+{% if page %}{% assign spec = page %}{% endif %}
 {% include Configuration/Plugins/Azure-DevOps.md %}
 
 # {{ spec.title }}

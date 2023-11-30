@@ -4,6 +4,7 @@ title: App / Quick Start / 005 - GitHub setup
 description: Validate that the quick start tutorial will set you up with GitHub.
 ---
 
+{% if page %}{% assign spec = page %}{% endif %}
 {% include Configuration/Plugins/GitHub.md %}
 
 # {{ spec.title }}
