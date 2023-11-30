@@ -17,16 +17,20 @@ description: Verify functionality with a second connection.
 Verify that the history of the connections are isolated:
 
 - Open the app.
-- **Enter** the **Azure Portal ({{ azure_name }})** category. The **tql-rg/tql-ai** item and **tql-rg** item appear in the history.
-- **Enter** the **Azure Portal ({{ azure_alt_name }})** category. No history must appear.
+- **Enter** the **Azure Portal ({{ azure_name }})** category. The
+  **tql-rg/tql-ai** item and **tql-rg** item appear in the history.
+- **Enter** the **Azure Portal ({{ azure_alt_name }})** category. No history
+  must appear.
 
 ## Delete connection
 
 Verify that the connection can be deleted"
 
 - Open the **Configuration** window.
-- Navigate to **Azure Portal**. The **Azure Portal | General** page is highlighted.
-- Higlight the **{{ azure_alt_name }}** connection and click **Delete**. The connection must be deleted.
+- Navigate to **Azure Portal**. The **Azure Portal | General** page is
+  highlighted.
+- Higlight the **{{ azure_alt_name }}** connection and click **Delete**. The
+  connection must be deleted.
 - Click **Save**.
 
 ## Verify single connection

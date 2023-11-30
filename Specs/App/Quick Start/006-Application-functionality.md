@@ -1,7 +1,9 @@
 ---
 testspace:
 title: App / Quick Start / 006 - Application functionality
-description: Validate that the quick start tutorial helps you understand the applications functionality.
+description:
+  Validate that the quick start tutorial helps you understand the applications
+  functionality.
 ---
 
 {% include Configuration/Plugins/JIRA.md %}
@@ -19,12 +21,15 @@ description: Validate that the quick start tutorial helps you understand the app
 Configure JIRA:
 
 - Open the app. The quick start window must open.
-- Complete the quick start tutorial, picking JIRA and using the following configuration:
+- Complete the quick start tutorial, picking JIRA and using the following
+  configuration:
   - Name: `{{ jira_name }}`
   - URL: `{{ jira_url }}`
   - User name: `{{ jira_user_name }}`
   - Password: `{{ jira_password }}`
-- Progress the tutorial until you get to a step called **Using Techie's Quick Launcher**. This step shows immediately after you've saved the configuration window. Click **Next**.
+- Progress the tutorial until you get to a step called **Using Techie's Quick
+  Launcher**. This step shows immediately after you've saved the configuration
+  window. Click **Next**.
 
 ## Validate the quick start tutorial
 
@@ -45,6 +50,7 @@ Validate that the quick start tutorial helps you with the following:
 
 ## Closing the tutorial
 
-When all these steps have been completed, the completion step shows with a **Close Tutorial** button:
+When all these steps have been completed, the completion step shows with a
+**Close Tutorial** button:
 
 - Click the **Close Tutorial** button. The tutorial closes.

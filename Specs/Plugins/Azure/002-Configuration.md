@@ -17,7 +17,8 @@ description: Configure the Azure plugin.
 Create a new connection:
 
 - Open the **Configuration** window.
-- Navigate to **Azure Portal**. The **Azure Portal | General** page is highlighted.
+- Navigate to **Azure Portal**. The **Azure Portal | General** page is
+  highlighted.
 - **Add** a new connection with the following information:
   - Name: `{{ azure_name }}`
   - Tenant ID: `{{ azure_tenant_id }}`
@@ -29,7 +30,8 @@ Create a new connection:
 Validate that the connection has been saved:
 
 - Open the **Configuration** window.
-- Navigate to **Azure Portal**. The **Azure Portal | General** page is highlighted.
+- Navigate to **Azure Portal**. The **Azure Portal | General** page is
+  highlighted.
 - Highlight the connection and click **Edit**.
 - Validate that the the values are as follows:
   - Name: `{{ azure_name }}`

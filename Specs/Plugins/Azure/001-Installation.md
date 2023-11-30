@@ -26,5 +26,7 @@ Verify that the Azure Portal plugin has been installed:
 
 - Open the **Configuration** window.
 - Navigate to **Application | Plugins**.
-- Switch to the **Installed** tab. The **TQL Azure Plugin** plugin shows as installed.
-- Navigate to the **Azure Portal** configuration page. The configuration page opens.
+- Switch to the **Installed** tab. The **TQL Azure Plugin** plugin shows as
+  installed.
+- Navigate to the **Azure Portal** configuration page. The configuration page
+  opens.

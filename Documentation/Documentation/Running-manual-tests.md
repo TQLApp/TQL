@@ -1,6 +1,7 @@
 # Running manual tests
 
-The manual regression test suite expects a certain setup on your machine. This page describes how to prepare this setup.
+The manual regression test suite expects a certain setup on your machine. This
+page describes how to prepare this setup.
 
 ## Setup using production build
 
@@ -75,11 +76,14 @@ Create a shortcut to reset the manual testing environment:
    **TQL - Manual Testing - Reset**
 
 4. Complete the wizard.
+
 ## Usage
 
-When you execute a test suite, run the **TQL - Manual Testing** shortcut to start TQL with a dedicated environment.
+When you execute a test suite, run the **TQL - Manual Testing** shortcut to
+start TQL with a dedicated environment.
 
-If you require the dedicated environment to be reset, use the **TQL - Manual Testing - Reset** shortcut. This will reset the following:
+If you require the dedicated environment to be reset, use the **TQL - Manual
+Testing - Reset** shortcut. This will reset the following:
 
 - All configuration.
 - All data (including your history).

@@ -17,7 +17,8 @@ description: Configure a second connection.
 Create a new connection:
 
 - Open the **Configuration** window.
-- Navigate to **Azure Portal**. The **Azure Portal | General** page is highlighted.
+- Navigate to **Azure Portal**. The **Azure Portal | General** page is
+  highlighted.
 - **Add** a new connection with the following information:
   - Name: `{{ azure_alt_name }}`
   - Tenant ID: `{{ azure_tenant_id }}`
@@ -29,7 +30,8 @@ Create a new connection:
 Verify that there are multiple **Azure Portal** entries:
 
 - Open the app.
-- Type in `Azure`. One **Azure Portal ({{ azure_name }})** entry and one **Azure Portal ({{ azure_alt_name }})** entry must appear.
+- Type in `Azure`. One **Azure Portal ({{ azure_name }})** entry and one **Azure
+  Portal ({{ azure_alt_name }})** entry must appear.
 
 ## Complete interactive authentication
 
