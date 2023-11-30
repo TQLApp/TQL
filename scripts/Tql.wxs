@@ -32,9 +32,9 @@
       InstallScope="perUser"
     />
 
-    <WixVariable Id="WixUILicenseRtf" Value="..\Assets\LICENSE.rtf" />
-    <WixVariable Id="WixUIDialogBmp" Value="..\Assets\WixUIDialogBmp.png" />
-    <WixVariable Id="WixUIBannerBmp" Value="..\Assets\WixUIBannerBmp.png" />
+    <WixVariable Id="WixUILicenseRtf" Value="..\scripts\Assets\LICENSE.rtf" />
+    <WixVariable Id="WixUIDialogBmp" Value="..\scripts\Assets\WixUIDialogBmp.png" />
+    <WixVariable Id="WixUIBannerBmp" Value="..\scripts\Assets\WixUIBannerBmp.png" />
 
     <Media Id="1" Cabinet="Product.cab" EmbedCab="yes" />
 

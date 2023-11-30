@@ -23,7 +23,7 @@ Function Copy-Output([string]$From, [string]$Target)
 {
     Write-Host "Copying $From"
 
-    Copy-Item "$Global:Root\$From\bin\Release\net8.0-windows\win-x64\publish" -Destination $Target -Recurse
+    Copy-Item "$Global:Src\$From\bin\Release\net8.0-windows\win-x64\publish" -Destination $Target -Recurse
     
     Get-ChildItem $Target
 }
@@ -65,7 +65,7 @@ Function Run-WiX-Command([string]$File, [string]$ArgumentList, [string]$WorkingD
 
 Function Get-App-Version
 {
-    $Content = [System.IO.File]::ReadAllText("$Global:Root\Build\Version.wxi")
+    $Content = [System.IO.File]::ReadAllText("$Global:Scripts\Version.wxi")
 
     if (-not ($Content -match "Version=`"(.*?)`""))
     {
@@ -91,14 +91,14 @@ Function Create-MSI
 
     Run-WiX-Command `
         -File "candle.exe" `
-        -ArgumentList "-nologo -v $Global:Root\Build\Tql.wxs" `
+        -ArgumentList "-nologo -v $Global:Scripts\Tql.wxs" `
         -WorkingDirectory $Global:Distrib
 
     Write-Host "Compiling AppFiles.wxs"
 
     Run-WiX-Command `
         -File "candle.exe" `
-        -ArgumentList "-nologo -v $Global:Root\Build\Distrib\AppFiles.wxs" `
+        -ArgumentList "-nologo -v $Global:Distrib\AppFiles.wxs" `
         -WorkingDirectory $Global:Distrib
 
     $Version = Get-App-Version
@@ -118,7 +118,9 @@ Function Create-MSI
 
 $Global:Root = (Get-Item (Get-Script-Directory)).Parent.FullName
 $Global:DefaultBuildTarget = "Build"
-$Global:Distrib = "$Global:Root\Build\Distrib"
+$Global:Src = "$Global:Root\src"
+$Global:Scripts = "$Global:Root\scripts"
+$Global:Distrib = "$Global:Root\build"
 
 Get-ChildItem -Path $Global:Distrib -Recurse | Remove-Item -Force -Recurse
 Copy-Output -From "Tql.App" -Target "$Global:Distrib\SourceDir"
