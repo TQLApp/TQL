@@ -4,7 +4,7 @@ Techie's Quick Launcher (TQL) is a launcher app for modern software development
 tools. It's useful for anybody doing software development, from developers to
 testers and product owners.
 
-![](Documentation/Images/Screenshot.png)
+![](docs/Images/Screenshot.png)
 
 The primary use of the app is to quickly navigate to things you need every day,
 like Agile boards in JIRA or Azure DevOps, work items and issues, Azure Portal
@@ -39,7 +39,7 @@ see how you can get yourself up and running.
 When you first run the app, the quick start tutorial will guide you through the
 setup of TQL. Just follow the steps to start using Techie's Quick Launcher.
 
-![](Documentation/Images/Quick-Start-screenshot.png)
+![](docs/Images/Quick-Start-screenshot.png)
 
 There's more in depth documentation available at
 [the wiki](https://github.com/TQLApp/TQL/wiki).

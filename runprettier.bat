@@ -2,7 +2,7 @@
 
 pushd "%~dp0"
 
-cd Build
+cd scripts
 
 powershell -executionpolicy bypass -file ./Run-Prettier.ps1
 

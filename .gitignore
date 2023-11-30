@@ -1,6 +1,4 @@
 /.vs
-/*/bin
-/*/obj
 /nuget.config
+.obsidian
 *.user
-/.obsidian
