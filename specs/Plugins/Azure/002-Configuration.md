@@ -43,7 +43,7 @@ Validate that the connection has been saved:
 Complete first time authentication with Azure Portal:
 
 - Open the app.
-- Type in `Azure`. The **Azure Portal** category must appear.
+- Type in `azure`. The **Azure Portal** category must appear.
 - **Enter** the **Azure Portal** category. No items should appear.
 - Type in `tql`. A dialog shows requesting credentials.
 - Click **OK**.

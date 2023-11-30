@@ -31,8 +31,8 @@ Create a new connection:
 Verify that there are multiple **Azure Portal** entries:
 
 - Open the app.
-- Type in `Azure`. One **Azure Portal ({{ azure_name }})** entry and one **Azure
-  Portal ({{ azure_alt_name }})** entry must appear.
+- Type in `azure`. One **Azure Portal ({{ azure_name }})** item and one **Azure
+  Portal ({{ azure_alt_name }})** item must appear.
 
 ## Complete interactive authentication
 
