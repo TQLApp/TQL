@@ -1,6 +1,4 @@
-param(
-  [string]$Tag
-)
+param($Tag)
 
 . "$PSScriptRoot\Include.ps1"
 
@@ -53,7 +51,7 @@ else
 
   if ($Version -eq $null)
   {
-    Write-Host "Invalid tag ref"
+    Write-Host "Invalid tag ref '$Tag'"
     exit 1
   }
 }
