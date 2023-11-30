@@ -29,14 +29,14 @@ jobs:
 
       - name: Check for changes by prettier
         shell: pwsh
-        run: ./Build/Uncommitted-changes.ps1 -tool runprettier.bat
+        run: ./scripts/Uncommitted-changes.ps1 -Tool runprettier.bat
 
       - name: Run CSharpier
         run: dotnet csharpier .
 
       - name: Check for changes by CSharpier
         shell: pwsh
-        run: ./Build/Uncommitted-changes.ps1 -tool "dotnet csharpier ."
+        run: ./scripts/Uncommitted-changes.ps1 -Tool "dotnet csharpier ."
 
       - name: Restore Solution
         run: dotnet restore -warnaserror
@@ -46,11 +46,11 @@ jobs:
 
       - name: Check localization status
         shell: pwsh
-        run: .\Tql.Localization\bin\Release\net8.0-windows\Tql.Localization.exe --export --filename Strings.xlsx --locale nl --pipeline
+        run: .\src\Tql.Localization\bin\Release\net8.0-windows\Tql.Localization.exe --export --filename Strings.xlsx --locale nl --pipeline
 
       - name: Preprocess DocFX Markdown Files
         shell: pwsh
-        run: ./Build/Preprocess-Markdown.ps1
+        run: ./scripts/Preprocess-Markdown.ps1
 
       - name: Run DocFX
-        run: dotnet docfx Documentation/docfx.json
+        run: dotnet docfx docs/docfx.json

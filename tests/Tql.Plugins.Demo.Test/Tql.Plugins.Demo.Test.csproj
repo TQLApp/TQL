@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<Import Project="..\..\Tql.targets" />
+
+	<ItemGroup>
+	  <PackageReference Include="AsyncEnumerator" Version="4.0.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\src\Tql.Plugins.Demo\Tql.Plugins.Demo.csproj" />
+		<ProjectReference Include="..\Tql.PluginTestSupport\Tql.PluginTestSupport.csproj" />
+	</ItemGroup>
+
+</Project>

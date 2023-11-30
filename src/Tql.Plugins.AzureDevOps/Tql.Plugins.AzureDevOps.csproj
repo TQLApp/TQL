@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<Import Project="..\..\TqlPluginPackage.targets" />
+
+	<PropertyGroup>
+		<NoWarn>NU5104</NoWarn>
+		<Product>TQL Azure DevOps Plugin</Product>
+		<Description>Techie's Quick Launcher plugin for Azure DevOps.</Description>
+		<PackageId>TQLApp.Plugins.AzureDevOps</PackageId>
+		<PackageProjectUrl>https://github.com/TQLApp/TQL/wiki/Azure-DevOps-plugin</PackageProjectUrl>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Include="Resources\**\*" />
+		<None Remove="Resources\**\*" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.TeamFoundationServer.Client" Version="19.227.0-preview" />
+		<PackageReference Include="Microsoft.VisualStudio.Services.ExtensionManagement.WebApi" Version="19.227.0-preview" />
+		<PackageReference Include="Microsoft.VisualStudio.Services.Search.Client" Version="19.227.0-preview" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Tql.Utilities\Tql.Utilities.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="ConfigurationUI\ConnectionEditWindow.xaml.cs">
+		  <SubType>Code</SubType>
+		</Compile>
+		<Compile Update="Labels.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Labels.resx</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Update="Labels.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>Labels.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
+
+</Project>

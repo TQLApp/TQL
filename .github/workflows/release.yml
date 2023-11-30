@@ -26,7 +26,7 @@ jobs:
       - name: Get Build Version
         id: get-build-version
         shell: pwsh
-        run: ./Build/GetBuildVersion.ps1 -tag ${{ github.ref }}
+        run: ./scripts/GetBuildVersion.ps1 -Tag ${{ github.ref }}
 
       - name: Setup dotnet 8.0.x
         uses: actions/setup-dotnet@v3
@@ -56,11 +56,11 @@ jobs:
 
       - name: Validate file versions
         shell: pwsh
-        run: ./Build/Validate-File-Versions.ps1 -Version "${{ steps.get-build-version.outputs.build-version }}"
+        run: ./scripts/Validate-File-Versions.ps1 -Version "${{ steps.get-build-version.outputs.build-version }}"
 
       - name: Create MSI
         shell: pwsh
-        run: ./Build/Create-MSI.ps1
+        run: ./scripts/Create-MSI.ps1
 
       - name: Get Tag Annotation
         uses: ericcornelissen/git-tag-annotation-action@v2
@@ -69,7 +69,7 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          files: Build/Distrib/Tql*.msi
+          files: ./build/Tql*.msi
           generate_release_notes: true
           prerelease: true
           body: ${{ steps.tag-data.outputs.git-tag-annotation }}

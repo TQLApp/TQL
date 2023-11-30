@@ -27,7 +27,7 @@ jobs:
       - name: Get Build Version
         id: get-build-version
         shell: pwsh
-        run: ./Build/GetBuildVersion.ps1
+        run: ./scripts/GetBuildVersion.ps1
 
       - name: Setup dotnet 8.0.x
         uses: actions/setup-dotnet@v3
@@ -51,10 +51,10 @@ jobs:
 
       - name: Preprocess DocFX Markdown Files
         shell: pwsh
-        run: ./Build/Preprocess-Markdown.ps1
+        run: ./scripts/Preprocess-Markdown.ps1
 
       - name: Run DocFX
-        run: dotnet docfx Documentation/docfx.json
+        run: dotnet docfx docs/docfx.json
 
       - name: Setup Pages
         uses: actions/configure-pages@v3
@@ -62,7 +62,7 @@ jobs:
       - name: Upload DocFX Pages Artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          path: "Documentation/_site"
+          path: "docs/_site"
 
   deploy-pages:
     needs: build

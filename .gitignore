@@ -1,8 +1,5 @@
 /.vs
-/*/bin
-/*/obj
 /nuget.config
+/build
+.obsidian
 *.user
-/node_modules
-/package-lock.json
-/.obsidian

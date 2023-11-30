@@ -1,0 +1,84 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<Import Project="..\..\Tql.targets" />
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<ApplicationIcon>mainicon.ico</ApplicationIcon>
+		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Resource Include="Resources\**\*" />
+		<None Remove="Resources\**\*" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Include="Services\Database\Migrations\*.sql" />
+		<None Remove="Services\Database\Migrations\*.sql" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Remove="QuickStart\Playbook*.md" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Include="QuickStart\Playbook*.md" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Resource Include="mainicon.ico" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="AsyncEnumerator" Version="4.0.2" />
+		<PackageReference Include="CommandLineParser" Version="2.9.1" />
+		<PackageReference Include="Dapper" Version="2.1.21" />
+		<PackageReference Include="Emoji.Wpf" Version="0.3.4" />
+		<PackageReference Include="Extended.Wpf.Toolkit" Version="4.5.1" />
+		<PackageReference Include="Markdig" Version="0.33.0" />
+		<PackageReference Include="Microsoft.ApplicationInsights" Version="2.21.0" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
+		<PackageReference Include="NReco.Logging.File" Version="1.1.7" />
+		<PackageReference Include="NuGet.PackageManagement" Version="6.8.0" />
+		<PackageReference Include="System.Data.SQLite.Core" Version="1.0.118" />
+		<PackageReference Include="YamlDotNet" Version="13.7.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Tql.Utilities\Tql.Utilities.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="ConfigurationUI\PackageSourceEditWindow.xaml.cs">
+		  <SubType>Code</SubType>
+		</Compile>
+		<Compile Update="ConfigurationUI\PackageSourcesConfigurationControl.xaml.cs">
+			<SubType>Code</SubType>
+		</Compile>
+		<Compile Update="ConfigurationUI\PluginsConfigurationControl.xaml.cs">
+			<SubType>Code</SubType>
+		</Compile>
+		<Compile Update="ConfigurationUI\GeneralConfigurationControl.xaml.cs">
+			<SubType>Code</SubType>
+		</Compile>
+		<Compile Update="MainWindow.WinForms.xaml.cs">
+			<DependentUpon>MainWindow.xaml</DependentUpon>
+		</Compile>
+		<Compile Update="Labels.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Labels.resx</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Update="Labels.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>Labels.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
+
+</Project>

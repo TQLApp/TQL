@@ -2,8 +2,12 @@
 
 pushd "%~dp0"
 
-powershell -executionpolicy bypass -file ./Build/Run-Prettier.ps1
+cd scripts
 
-pause
+powershell -executionpolicy bypass -file ./Run-Prettier.ps1
+
+if "%TERM_PROGRAM%" neq "vscode" (
+    pause
+)
 
 popd

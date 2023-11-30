@@ -1,0 +1,41 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "src": "../src",
+          "files": [
+            "Tql.Abstractions/bin/Release/net8.0-windows/Tql.Abstractions.dll",
+            "Tql.Utilities/bin/Release/net8.0-windows/Tql.Utilities.dll"
+          ]
+        }
+      ],
+      "dest": "API"
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": ["**/*.{md,yml}"],
+        "exclude": ["_site/**"]
+      }
+    ],
+    "resource": [
+      {
+        "files": ["Images/**"]
+      }
+    ],
+    "output": "_site",
+    "template": ["default", "modern", "Template"],
+    "postProcessors": ["FixImageTags"],
+    "globalMetadata": {
+      "_appName": "Techie's Quick Launcher",
+      "_appTitle": "Techie's Quick Launcher",
+      "_appLogoPath": "Images/Logo.svg",
+      "_appFaviconPath": "Images/favicon.ico",
+      "_disableContribution": true,
+      "_enableSearch": true,
+      "pdf": false
+    }
+  }
+}

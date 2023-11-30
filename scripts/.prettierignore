@@ -1,0 +1,4 @@
+../src/Tql.App/Themes/**/*
+../src/Tql.App/QuickStart/Playbook*.md
+../.github/ISSUE_TEMPLATE/*
+../Specs/_includes/Configuration/**/*

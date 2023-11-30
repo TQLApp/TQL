@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<Import Project="..\..\Tql.targets" />
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="CommandLineParser" Version="2.9.1" />
+		<PackageReference Include="NPOI" Version="2.6.2" />
+		<PackageReference Include="System.Collections.Immutable" Version="8.0.0" />
+	</ItemGroup>
+
+</Project>
