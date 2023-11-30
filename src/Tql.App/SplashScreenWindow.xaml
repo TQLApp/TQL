@@ -79,7 +79,7 @@
                                 x:Name="PART_Indicator"
                                 ClipToBounds="true"
                                 HorizontalAlignment="Left"
-                                Margin="1,1">
+                                Margin="2, 2">
                                 <Rectangle
                                     x:Name="Indicator"
                                     Fill="{TemplateBinding Foreground}" />
@@ -132,34 +132,30 @@
             Orientation="Horizontal"
             Margin="5">
             <Canvas
+                x:Name="_canvas"
                 Height="64"
                 Width="64"
                 Margin="5"
-                ClipToBounds="True">
-                <Image
-                    x:Name="_image1"
-                    Height="64"
-                    Width="64" />
-                <Image
-                    x:Name="_image2"
-                    Height="64"
-                    Width="64"
-                    Canvas.Left="64" />
-            </Canvas>
+                ClipToBounds="True"/>
 
             <StackPanel
                 Orientation="Vertical"
                 VerticalAlignment="Center"
                 Margin="0,0,7,0">
                 <TextBlock
+                    x:Name="_label"
                     Text="{x:Static app:Labels.SplashScreenWindow_Starting}"
                     Margin="5"
-                    Foreground="{x:Static SystemColors.ControlTextBrush}" />
+                    Foreground="{x:Static SystemColors.ControlTextBrush}"
+                    TextWrapping="NoWrap"
+                    TextTrimming="CharacterEllipsis"
+                    Width="260"/>
                 <ProgressBar
                     x:Name="_progressBar"
                     Margin="5"
                     Height="15"
                     Minimum="0"
+                    Value="0.5"
                     Maximum="1" />
             </StackPanel>
         </StackPanel>
