@@ -52,7 +52,7 @@ jobs:
         run: dotnet nuget push "**/*.snupkg" --api-key "${{ secrets.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
 
       - name: Publish App
-        run: dotnet publish -c Release -r win-x64 --self-contained Tql.App -property:Version="${{ steps.get-build-version.outputs.build-version }}" -warnaserror
+        run: dotnet publish -c Release -r win-x64 --self-contained src\Tql.App -property:Version="${{ steps.get-build-version.outputs.build-version }}" -warnaserror
 
       - name: Validate file versions
         shell: pwsh
