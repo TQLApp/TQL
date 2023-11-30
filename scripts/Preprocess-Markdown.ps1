@@ -1,32 +1,10 @@
-################################################################################
-# SUPPORT
-################################################################################
-
-Function Get-Script-Directory
-{
-    $Scope = 1
-    
-    while ($True)
-    {
-        $Invoction = (Get-Variable MyInvocation -Scope $Scope).Value
-        
-        if ($Invoction.MyCommand.Path -Ne $Null)
-        {
-            Return Split-Path $Invoction.MyCommand.Path
-        }
-        
-        $Scope = $Scope + 1
-    }
-}
+. "$PSScriptRoot\Include.ps1"
 
 ################################################################################
 # ENTRY POINT
 ################################################################################
 
-$Global:Root = (Get-Item (Get-Script-Directory)).Parent.FullName
-$Global:Documentation = "$Global:Root\Documentation"
-
-foreach ($Child in Get-ChildItem $Global:Documentation -Filter "*.md" -Recurse -File)
+foreach ($Child in Get-ChildItem $Global:Docs -Filter "*.md" -Recurse -File)
 {
     $Lines = Get-Content $Child.FullName
 

@@ -1,33 +1,20 @@
-param($tag)
+param(
+  [string]$Tag
+)
+
+. "$PSScriptRoot\Include.ps1"
 
 ################################################################################
 # SUPPORT
 ################################################################################
 
-Function Get-Script-Directory
-{
-    $Scope = 1
-    
-    while ($True)
-    {
-        $Invoction = (Get-Variable MyInvocation -Scope $Scope).Value
-        
-        if ($Invoction.MyCommand.Path -Ne $Null)
-        {
-            Return Split-Path $Invoction.MyCommand.Path
-        }
-        
-        $Scope = $Scope + 1
-    }
-}
-
 Function Get-Version-From-Tag([string]$Tag)
 {
-  if ($tag -match "tags/v(.*)")
+  if ($Tag -match "tags/v(.*)")
   {
     return $Matches[1]
   }
-  if ($tag -match "^v(.*)")
+  if ($Tag -match "^v(.*)")
   {
     return $Matches[1]
   }
@@ -39,9 +26,7 @@ Function Get-Version-From-Tag([string]$Tag)
 # ENTRY POINT
 ################################################################################
 
-$Global:Root = (Get-Item (Get-Script-Directory)).Parent.FullName
-
-if ($tag -eq $null)
+if ($Tag -eq $null)
 {
   $Tags = git for-each-ref --sort=-creatordate --format '%(refname:short)' refs/tags
 
@@ -64,7 +49,7 @@ if ($tag -eq $null)
 }
 else
 {
-  $Version = Get-Version-From-Tag $tag
+  $Version = Get-Version-From-Tag $Tag
 
   if ($Version -eq $null)
   {
@@ -83,6 +68,6 @@ $Content = @"
 </Include>
 "@
 
-Set-Content -Path "$Global:Root\Build\Version.wxi" -Value $Content
+Set-Content -Path "$Global:Scripts\Version.wxi" -Value $Content
 
 Write-Output "build-version=$Version" >> $env:GITHUB_OUTPUT

@@ -1,27 +1,12 @@
+. "$PSScriptRoot\Include.ps1"
+
 ################################################################################
 # SUPPORT
 ################################################################################
 
-Function Get-Script-Directory
-{
-    $Scope = 1
-    
-    while ($True)
-    {
-        $Invoction = (Get-Variable MyInvocation -Scope $Scope).Value
-        
-        if ($Invoction.MyCommand.Path -Ne $Null)
-        {
-            Return Split-Path $Invoction.MyCommand.Path
-        }
-        
-        $Scope = $Scope + 1
-    }
-}
-
 Function Split-Playbook
 {
-    foreach ($Child in Get-ChildItem "$Global:Root\Tql.App\QuickStart\Playbook*.md")
+    foreach ($Child in Get-ChildItem "$Global:Src\Tql.App\QuickStart\Playbook*.md")
     {
         $Index = 0
         $Content = Get-Content $Child.FullName -Encoding UTF8
@@ -68,7 +53,7 @@ Function Write-Playbook-Part([string]$Name, [int]$Index, $Part)
 
 Function Merge-Playbook
 {
-    foreach ($Child in Get-ChildItem "$Global:Root\Tql.App\QuickStart\Playbook*.md")
+    foreach ($Child in Get-ChildItem "$Global:Src\Tql.App\QuickStart\Playbook*.md")
     {
         $Content = @()
 
@@ -109,14 +94,12 @@ Function Get-Playbook-Part-FileName([string]$Name, [int]$Index)
 {
     $Name = $Name.Substring(0, $Name.Length - 3)
 
-    return "$Global:Root\Tql.App\QuickStart\Split$Name-$Index.md"
+    return "$Global:Src\Tql.App\QuickStart\Split$Name-$Index.md"
 }
 
 ################################################################################
 # ENTRY POINT
 ################################################################################
-
-$Global:Root = (Get-Item (Get-Script-Directory)).Parent.FullName
 
 $IsVSCode = ($env:TERM_PROGRAM -eq "vscode")
 
@@ -129,7 +112,7 @@ else
     npm install --save-dev prettier @prettier/plugin-xml
 }
 
-rm "$Global:Root\Tql.App\QuickStart\SplitPlaybook*.md"
+rm "$Global:Src\Tql.App\QuickStart\SplitPlaybook*.md"
 
 Split-Playbook
 
@@ -146,4 +129,4 @@ npx prettier `
 
 Merge-Playbook
 
-rm "$Global:Root\Tql.App\QuickStart\SplitPlaybook*.md"
+rm "$Global:Src\Tql.App\QuickStart\SplitPlaybook*.md"

@@ -26,7 +26,7 @@ jobs:
       - name: Get Build Version
         id: get-build-version
         shell: pwsh
-        run: ./Build/GetBuildVersion.ps1 -tag ${{ github.ref }}
+        run: ./Build/GetBuildVersion.ps1 -Tag ${{ github.ref }}
 
       - name: Setup dotnet 8.0.x
         uses: actions/setup-dotnet@v3

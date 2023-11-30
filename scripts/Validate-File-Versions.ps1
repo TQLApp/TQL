@@ -2,26 +2,12 @@ param(
     [Parameter(Mandatory = $true)][string]$Version
 )
 
+. "$PSScriptRoot\Include.ps1"
+
 ################################################################################
 # SUPPORT
 ################################################################################
 
-Function Get-Script-Directory
-{
-    $Scope = 1
-    
-    while ($True)
-    {
-        $Invoction = (Get-Variable MyInvocation -Scope $Scope).Value
-        
-        if ($Invoction.MyCommand.Path -Ne $Null)
-        {
-            Return Split-Path $Invoction.MyCommand.Path
-        }
-        
-        $Scope = $Scope + 1
-    }
-}
 
 Function Prepare-Directory([string]$Path)
 {
@@ -168,16 +154,14 @@ Function Validate-Version([string]$Path, $Version, [string]$File)
 # ENTRY POINT
 ################################################################################
 
-$Global:Root = (Get-Item (Get-Script-Directory)).Parent.FullName
 $Global:DefaultBuildTarget = "Build"
-$Global:Distrib = "$Global:Root\Build\Distrib"
 $Global:WebClient = New-Object System.Net.WebClient
 
 Prepare-Directory -Path "$Global:Distrib\VersionCheck"
 
 $OldVersion = Get-Latest-Published-Version
 $OldFiles = Download-Release-Files -Version $OldVersion
-$NewFiles = "$Global:Root\Tql.App\bin\Release\net8.0-windows\win-x64\publish"
+$NewFiles = "$Global:Src\Tql.App\bin\Release\net8.0-windows\win-x64\publish"
 
 Compare-Folders -Old (Get-BinPath -Path $OldFiles) -New $NewFiles
 

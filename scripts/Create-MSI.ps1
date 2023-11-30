@@ -1,23 +1,8 @@
+. "$PSScriptRoot\Include.ps1"
+
 ################################################################################
 # SUPPORT
 ################################################################################
-
-Function Get-Script-Directory
-{
-    $Scope = 1
-    
-    while ($True)
-    {
-        $Invoction = (Get-Variable MyInvocation -Scope $Scope).Value
-        
-        if ($Invoction.MyCommand.Path -Ne $Null)
-        {
-            Return Split-Path $Invoction.MyCommand.Path
-        }
-        
-        $Scope = $Scope + 1
-    }
-}
 
 Function Copy-Output([string]$From, [string]$Target)
 {
@@ -116,13 +101,10 @@ Function Create-MSI
 # ENTRY POINT
 ################################################################################
 
-$Global:Root = (Get-Item (Get-Script-Directory)).Parent.FullName
 $Global:DefaultBuildTarget = "Build"
-$Global:Src = "$Global:Root\src"
-$Global:Scripts = "$Global:Root\scripts"
-$Global:Distrib = "$Global:Root\build"
 
-Get-ChildItem -Path $Global:Distrib -Recurse | Remove-Item -Force -Recurse
+Prepare-Directory $Global:Distrib
+
 Copy-Output -From "Tql.App" -Target "$Global:Distrib\SourceDir"
 
 Ensure-WiX

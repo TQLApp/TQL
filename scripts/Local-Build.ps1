@@ -1,33 +1,8 @@
+. "$PSScriptRoot\Include.ps1"
+
 ################################################################################
 # SUPPORT
 ################################################################################
-
-Function Get-Script-Directory
-{
-    $Scope = 1
-    
-    while ($True)
-    {
-        $Invoction = (Get-Variable MyInvocation -Scope $Scope).Value
-        
-        if ($Invoction.MyCommand.Path -Ne $Null)
-        {
-            Return Split-Path $Invoction.MyCommand.Path
-        }
-        
-        $Scope = $Scope + 1
-    }
-}
-
-Function Prepare-Directory([string]$Path)
-{
-    if (Test-Path -Path $Path)
-    {
-        Remove-Item -Recurse -Force $Path
-    }
-
-    [void](New-Item -Type directory $Path)
-}
 
 Function Copy-Output([string]$From, [string]$Target)
 {
@@ -35,19 +10,16 @@ Function Copy-Output([string]$From, [string]$Target)
 
     [void](New-Item -Type directory $Target)
 
-    Copy-Item ($Global:Root + "\" + $From + "\bin\Release\net8.0-windows\*") -Destination $Target -Recurse
+    Copy-Item "$Global:Src\$From\bin\Release\net8.0-windows\*" -Destination $Target -Recurse
 }
 
 ################################################################################
 # ENTRY POINT
 ################################################################################
 
-$Global:Root = (Get-Item (Get-Script-Directory)).Parent.FullName
-$Global:Distrib = $Global:Root + "\Build\Distrib"
-
 Prepare-Directory -Path $Global:Distrib
 
-Set-Location $Global:Root
+cd $Global:Root
 
 dotnet restore
 

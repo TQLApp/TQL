@@ -29,14 +29,14 @@ jobs:
 
       - name: Check for changes by prettier
         shell: pwsh
-        run: ./Build/Uncommitted-changes.ps1 -tool runprettier.bat
+        run: ./Build/Uncommitted-changes.ps1 -Tool runprettier.bat
 
       - name: Run CSharpier
         run: dotnet csharpier .
 
       - name: Check for changes by CSharpier
         shell: pwsh
-        run: ./Build/Uncommitted-changes.ps1 -tool "dotnet csharpier ."
+        run: ./Build/Uncommitted-changes.ps1 -Tool "dotnet csharpier ."
 
       - name: Restore Solution
         run: dotnet restore -warnaserror
