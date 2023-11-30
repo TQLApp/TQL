@@ -53,4 +53,4 @@ jobs:
         run: ./scripts/Preprocess-Markdown.ps1
 
       - name: Run DocFX
-        run: dotnet docfx docs/docfx.json
+        run: dotnet docfx docs/docfx.json --warningsAsErrors true

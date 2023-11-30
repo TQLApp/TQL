@@ -13,6 +13,9 @@
       "dest": "API"
     }
   ],
+  "rules": {
+    "InvalidAssemblyReference": "info"
+  },
   "build": {
     "content": [
       {
