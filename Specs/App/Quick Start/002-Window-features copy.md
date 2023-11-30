@@ -1,6 +1,6 @@
 ---
 testspace:
-title: App / Quick Start / 002 Quick start window features
+title: App / Quick Start / 002 - Window features
 description: Validate the features of the quick start window.
 ---
 
@@ -12,13 +12,7 @@ description: Validate the features of the quick start window.
 
 ## [setup]
 
-Restart the quick start tutorial:
-
-- If the quick start window doesn't show:
-  - Open the **Configuration** window.
-  - Navigate to the **Application | General** configuration page.
-  - Click the **Restart Tutorial** button and click **Yes**.
-  - Click **Cancel**. The quick start tutorial will now restart.
+{% include Setup/App/QuickStart/Reset-quick-start.md %}
 
 ## Can close
 
@@ -39,7 +33,8 @@ Verify that cancelling closing the quick start window doesn't close it:
 Verify that the quick start window opens the first time the app starts:
 
 - Open the app. The quick start window must open.
-- Verify that you cannot interact with the app and that you cannot close the app without interacting with the quick start window.
+- Try to interact with the app, by clicking on the search text box. The search box does not get focus and you cannot use the app.
+- Move focus away from the app, by clicking on the Windows desktop. The app stays open.
 
 ## Verify visual appearance
 
@@ -109,3 +104,11 @@ Verify that anchoring works as expected in the configuration window:
   - The configuration window can move freely.
   - The quick start window keeps its position relative to the configuration window.
   - The quick start window does not stay on the screen. It moves off of the screen if you move the configuration window, e.g. moving the anchored control off of the screen.
+
+## Verify quick start continues
+
+Verify that the quick start tutorial continues if the user closes and re-opens the app:
+
+- Progress the quick start tutorial until the quick start window is anchored to a control in the configuration window, e.g. after you've selected the plugin you're installing.
+- Move focus away from the app, by clicking the Windows dashboard. The app closes.
+- Open the app again by pressing the hotkey. The app and quick start tutorial opens again.
