@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="copy $(OutDir)\$(TargetFileName) $(SolutionDir)..\Documentation\Template\Plugins" />
+    <Exec Command="copy $(OutDir)\$(TargetFileName) $(SolutionDir)..\..\docs\Template\Plugins" />
   </Target>
 
 </Project>
