@@ -786,4 +786,20 @@ Do you want to restart TQL to see if this resolves the issue?</comment>
 
 {0}</comment>
   </data>
+  <data name="PackageManager_UpdatingPackage" xml:space="preserve">
+    <value>{0} wordt geupdate…</value>
+    <comment>Original: Updating {0}...</comment>
+  </data>
+  <data name="PackageStoreLoader_InitializingPackage" xml:space="preserve">
+    <value>Nieuwe plugin wordt geïnitialiseerd…</value>
+    <comment>Original: Initializing new plugin...</comment>
+  </data>
+  <data name="UpdateChecker_DownloadingUpdate" xml:space="preserve">
+    <value>Update wordt gedownload…</value>
+    <comment>Original: Downloading update...</comment>
+  </data>
+  <data name="UpdateChecker_InstallingUpdate" xml:space="preserve">
+    <value>Update wordt geïnstalleerd…</value>
+    <comment>Original: Installing update...</comment>
+  </data>
 </root>

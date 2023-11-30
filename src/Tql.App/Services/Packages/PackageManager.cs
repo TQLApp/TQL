@@ -157,7 +157,11 @@ internal class PackageManager : IDisposable
         return identityId.StartsWith("TQLApp.", StringComparison.OrdinalIgnoreCase);
     }
 
-    public async Task InstallPackage(string packageId, IProgress progress)
+    public async Task InstallPackage(
+        string packageId,
+        IProgress progress,
+        PackageProgressMode progressMode
+    )
     {
         progress.CanCancel = true;
 
@@ -174,14 +178,19 @@ internal class PackageManager : IDisposable
             @event.AddProperty("Package Id", packageId);
         }
 
-        await EnsureInstalled(packageId, progress);
+        await EnsureInstalled(packageId, progress, progressMode);
     }
 
-    private async Task<bool> EnsureInstalled(string packageId, IProgress progress)
+    private async Task<bool> EnsureInstalled(
+        string packageId,
+        IProgress progress,
+        PackageProgressMode progressMode
+    )
     {
         using var client = GetClient();
 
-        progress.SetProgress(Labels.PackageManager_GettingPackageMetadata, 0);
+        if (progressMode == PackageProgressMode.Install)
+            progress.SetProgress(Labels.PackageManager_GettingPackageMetadata, 0);
 
         var packages = await client.GetPackageMetadata(
             packageId,
@@ -245,13 +254,24 @@ internal class PackageManager : IDisposable
             new NuGetVersion(typeof(ITqlPlugin).Assembly.GetName().Version!)
         );
 
+        if (progressMode == PackageProgressMode.Update)
+        {
+            progress.SetProgress(
+                string.Format(Labels.PackageManager_UpdatingPackage, latestVersion.Title),
+                0
+            );
+        }
+
         var installedPackages = await client.InstallPackage(
             latestVersion.Identity,
             requiredDependency: abstractionsPackageIdentity,
-            progress.GetSubProgress(0.1, 0.9)
+            progressMode == PackageProgressMode.Install
+                ? progress.GetSubProgress(0.1, 0.9)
+                : NullProgress.FromCancellationToken(progress.CancellationToken)
         );
 
-        progress.SetProgress(Labels.PackageManager_DeployingPackage, 0.9);
+        if (progressMode == PackageProgressMode.Install)
+            progress.SetProgress(Labels.PackageManager_DeployingPackage, 0.9);
 
         foreach (var installedPackage in installedPackages)
         {
@@ -354,7 +374,7 @@ internal class PackageManager : IDisposable
         return false;
     }
 
-    public async Task<bool> UpdatePlugins(CancellationToken cancellationToken = default)
+    public async Task<bool> UpdatePlugins(IProgress progress, PackageProgressMode progressMode)
     {
         _logger.LogInformation("Checking for plugin updates");
 
@@ -362,12 +382,7 @@ internal class PackageManager : IDisposable
 
         foreach (var installed in _storeManager.GetInstalledPackages())
         {
-            if (
-                await EnsureInstalled(
-                    installed.Id,
-                    NullProgress.FromCancellationToken(cancellationToken)
-                )
-            )
+            if (await EnsureInstalled(installed.Id, progress, progressMode))
                 anyUpdated = true;
         }
 

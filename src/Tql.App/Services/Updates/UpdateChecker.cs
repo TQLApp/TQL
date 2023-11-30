@@ -41,7 +41,7 @@ internal class UpdateChecker : IDisposable
         _timer = new Timer(TimerCallback, null, UpdateCheckInterval, UpdateCheckInterval);
     }
 
-    public bool TryStartUpdate()
+    public bool TryStartUpdate(IProgress progress)
     {
         _notifyIconManager.State = NotifyIconState.Updating;
 
@@ -49,7 +49,7 @@ internal class UpdateChecker : IDisposable
 
         try
         {
-            result = TaskUtils.RunSynchronously(TryStartUpdateAsync);
+            result = TaskUtils.RunSynchronously(() => TryStartUpdateAsync(progress));
         }
         finally
         {
@@ -60,12 +60,12 @@ internal class UpdateChecker : IDisposable
         return result;
     }
 
-    private async Task<bool> TryStartUpdateAsync()
+    private async Task<bool> TryStartUpdateAsync(IProgress progress)
     {
-        return await TryStartApplicationUpdate() || await TryStartPluginUpdate();
+        return await TryStartApplicationUpdate(progress) || await TryStartPluginUpdate(progress);
     }
 
-    private async Task<bool> TryStartApplicationUpdate()
+    private async Task<bool> TryStartApplicationUpdate(IProgress progress)
     {
         var installPrerelease = _settings.InstallPrerelease.GetValueOrDefault();
 
@@ -107,7 +107,14 @@ internal class UpdateChecker : IDisposable
                 return false;
         }
 
-        var target = await Download(assets.Single());
+        progress.SetProgress(Labels.UpdateChecker_DownloadingUpdate, 0);
+
+        var target = await Download(assets.Single(), progress);
+
+        progress.SetProgress(Labels.UpdateChecker_InstallingUpdate, 1);
+
+        // Give the user a chance to see the message.
+        await Task.Delay(TimeSpan.FromSeconds(0.5));
 
         Install(target);
 
@@ -176,15 +183,15 @@ internal class UpdateChecker : IDisposable
                 break;
         }
 
-        return releases
-            .Where(p => p.Prerelease)
-            .OrderByDescending(p => p.CreatedAt)
-            .FirstOrDefault();
+        return releases.Where(p => p.Prerelease).MaxBy(p => p.CreatedAt);
     }
 
-    private async Task<bool> TryStartPluginUpdate()
+    private async Task<bool> TryStartPluginUpdate(IProgress progress)
     {
-        var updatesAvailable = await _packageManager.UpdatePlugins();
+        var updatesAvailable = await _packageManager.UpdatePlugins(
+            progress,
+            PackageProgressMode.Update
+        );
 
         if (updatesAvailable)
         {
@@ -212,7 +219,7 @@ internal class UpdateChecker : IDisposable
             .Add(new ProductInfoHeaderValue("TQL", GetAppVersion().ToString()));
     }
 
-    private async Task<string> Download(ReleaseAssetDto asset)
+    private async Task<string> Download(ReleaseAssetDto asset, IProgress progress)
     {
         _logger.LogInformation("Downloading setup from {Url}", asset.Url);
 
@@ -234,8 +241,8 @@ internal class UpdateChecker : IDisposable
 
         response.EnsureSuccessStatusCode();
 
-        using var source = await response.Content.ReadAsStreamAsync();
-        using var target = File.Create(targetFileName);
+        await using var source = await response.Content.ReadAsStreamAsync();
+        await using var target = File.Create(targetFileName);
 
         await source.CopyToAsync(target);
 
@@ -260,7 +267,7 @@ internal class UpdateChecker : IDisposable
     {
         try
         {
-            if (TryStartUpdate())
+            if (TryStartUpdate(NullProgress.Instance))
             {
                 _logger.LogInformation("Updating is running; shutting down");
 

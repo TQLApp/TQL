@@ -1296,6 +1296,15 @@ namespace Tql.App {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Updating {0}....
+        /// </summary>
+        public static string PackageManager_UpdatingPackage {
+            get {
+                return ResourceManager.GetString("PackageManager_UpdatingPackage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to If you&apos;re using a PAT token to connect to an Azure DevOps private artifact feed, enter it into the password field and enter the part of your email address before the @ into the user name field..
         /// </summary>
         public static string PackageSourceEditWindow_PasswordHelpText {
@@ -1355,6 +1364,15 @@ namespace Tql.App {
         public static string PackageSourcesConfiguration_URL {
             get {
                 return ResourceManager.GetString("PackageSourcesConfiguration_URL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initializing new plugin....
+        /// </summary>
+        public static string PackageStoreLoader_InitializingPackage {
+            get {
+                return ResourceManager.GetString("PackageStoreLoader_InitializingPackage", resourceCulture);
             }
         }
         
@@ -1674,6 +1692,24 @@ namespace Tql.App {
         public static string ThemeSystem {
             get {
                 return ResourceManager.GetString("ThemeSystem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Downloading update....
+        /// </summary>
+        public static string UpdateChecker_DownloadingUpdate {
+            get {
+                return ResourceManager.GetString("UpdateChecker_DownloadingUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Installing update....
+        /// </summary>
+        public static string UpdateChecker_InstallingUpdate {
+            get {
+                return ResourceManager.GetString("UpdateChecker_InstallingUpdate", resourceCulture);
             }
         }
     }

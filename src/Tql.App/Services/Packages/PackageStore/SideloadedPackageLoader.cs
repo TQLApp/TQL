@@ -3,6 +3,7 @@ using System.Runtime.Loader;
 using Microsoft.Extensions.Logging;
 using Tql.Abstractions;
 using Tql.App.Services.Packages.AssemblyResolution;
+using Tql.App.Support;
 using Path = System.IO.Path;
 
 namespace Tql.App.Services.Packages.PackageStore;
@@ -51,7 +52,7 @@ internal class SideloadedPackageLoader : IPackageLoader
         return plugins.ToImmutable();
     }
 
-    public ImmutableArray<Package> GetPackages()
+    public ImmutableArray<Package> GetPackages(IProgress progress)
     {
         var packages = ImmutableArray.CreateBuilder<Package>();
 

@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Tql.Abstractions;
 using Tql.App.Services.Packages;
 using Tql.App.Services.Packages.PackageStore;
+using Tql.App.Support;
 using Tql.Utilities;
 
 namespace Tql.App.Services;
@@ -30,7 +31,7 @@ internal class PluginManager : IPluginManager, IDisposable
         }
     }
 
-    public PluginManager(IPackageLoader loader)
+    public PluginManager(IPackageLoader loader, IProgress progress)
     {
         // We need to keep a reference to the loader because it's also responsible
         // for resolving assemblies.
@@ -39,7 +40,7 @@ internal class PluginManager : IPluginManager, IDisposable
         var packages = ImmutableArray.CreateBuilder<IAvailablePackage>();
         var plugins = ImmutableArray.CreateBuilder<AvailablePlugin>();
 
-        foreach (var package in loader.GetPackages())
+        foreach (var package in loader.GetPackages(progress))
         {
             if (package.Plugins.HasValue)
             {

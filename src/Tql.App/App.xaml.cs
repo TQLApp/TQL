@@ -148,7 +148,10 @@ public partial class App
 
         var loader = CreatePluginLoader(packageStoreManager, loggerFactory);
 
-        var pluginManager = new PluginManager(loader);
+        var pluginManager = new PluginManager(
+            loader,
+            splashScreen.Progress.GetSubProgress(0.2, 0.3)
+        );
 
         splashScreen.Progress.SetProgress(0.3);
 
@@ -183,7 +186,7 @@ public partial class App
         {
             logger.LogInformation("Checking for updates");
 
-            if (TryStartUpdate(logger))
+            if (TryStartUpdate(splashScreen.Progress.GetSubProgress(0.6, 0.8), logger))
                 return;
         }
         else
@@ -323,11 +326,11 @@ public partial class App
         return (loggerFactory, inMemoryLoggerProvider);
     }
 
-    private bool TryStartUpdate(ILogger<App> logger)
+    private bool TryStartUpdate(IProgress progress, ILogger<App> logger)
     {
         try
         {
-            if (_host!.Services.GetRequiredService<UpdateChecker>().TryStartUpdate())
+            if (_host!.Services.GetRequiredService<UpdateChecker>().TryStartUpdate(progress))
             {
                 logger.LogInformation("Update is running; shutting down");
 
