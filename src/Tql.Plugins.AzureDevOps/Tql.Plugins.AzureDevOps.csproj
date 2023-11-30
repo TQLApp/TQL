@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<Import Project="..\TqlPluginPackage.targets" />
+	<Import Project="..\..\TqlPluginPackage.targets" />
 
 	<PropertyGroup>
 		<NoWarn>NU5104</NoWarn>

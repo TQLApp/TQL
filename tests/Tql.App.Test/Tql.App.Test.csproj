@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-	<Import Project="..\Tql.targets" />
+	<Import Project="..\..\Tql.targets" />
 
 	<ItemGroup>
 	  <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
@@ -8,7 +8,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Tql.App\Tql.App.csproj" />
+	  <ProjectReference Include="..\..\src\Tql.App\Tql.App.csproj" />
 	</ItemGroup>
 
 </Project>

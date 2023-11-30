@@ -1,9 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-	<Import Project="..\Tql.targets" />
+	<Import Project="..\..\Tql.targets" />
 
 	<ItemGroup>
-		<ProjectReference Include="..\Tql.Plugins.GitHub\Tql.Plugins.GitHub.csproj" />
+		<ProjectReference Include="..\..\src\Tql.Plugins.GitHub\Tql.Plugins.GitHub.csproj" />
 		<ProjectReference Include="..\Tql.PluginTestSupport\Tql.PluginTestSupport.csproj" />
 	</ItemGroup>
 

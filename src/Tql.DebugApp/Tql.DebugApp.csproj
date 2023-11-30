@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-	<Import Project="..\Tql.targets" />
+	<Import Project="..\..\Tql.targets" />
 
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>

@@ -890,9 +890,6 @@
           "System.Runtime": "4.3.0"
         }
       },
-      "tql.interop": {
-        "type": "Project"
-      },
       "TQLApp.Abstractions": {
         "type": "Project",
         "dependencies": {

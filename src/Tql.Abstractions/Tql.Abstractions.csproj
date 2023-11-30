@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<Import Project="..\TqlSupportPackage.targets" />
+	<Import Project="..\..\TqlSupportPackage.targets" />
 
 	<PropertyGroup>
 		<Product>TQL Plugin Abstractions</Product>
