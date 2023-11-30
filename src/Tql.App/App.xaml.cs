@@ -125,7 +125,10 @@ public partial class App
             return;
         }
 
-        using var splashScreen = Options.IsSilent ? null : new SplashScreen();
+        using var splashScreen = new SplashScreen();
+
+        if (!Options.IsSilent)
+            splashScreen.Show();
 
         var notifyIconManager = new NotifyIconManager();
 
@@ -137,17 +140,17 @@ public partial class App
             loggerFactory.CreateLogger<PackageStoreManager>()
         );
 
-        splashScreen?.SetProgress(0.1);
+        splashScreen.Progress.SetProgress(0.1);
 
         packageStoreManager.PerformCleanup();
 
-        splashScreen?.SetProgress(0.2);
+        splashScreen.Progress.SetProgress(0.2);
 
         var loader = CreatePluginLoader(packageStoreManager, loggerFactory);
 
         var pluginManager = new PluginManager(loader);
 
-        splashScreen?.SetProgress(0.3);
+        splashScreen.Progress.SetProgress(0.3);
 
         var builder = Host.CreateApplicationBuilder(e.Args);
 
@@ -159,11 +162,11 @@ public partial class App
 
         pluginManager.ConfigureServices(builder.Services);
 
-        splashScreen?.SetProgress(0.4);
+        splashScreen.Progress.SetProgress(0.4);
 
         _host = builder.Build();
 
-        splashScreen?.SetProgress(0.5);
+        splashScreen.Progress.SetProgress(0.5);
 
         var settings = _host.Services.GetRequiredService<Settings>();
 
@@ -172,7 +175,7 @@ public partial class App
 
         ThemeManager.SetTheme(ThemeManager.ParseTheme(settings.Theme));
 
-        splashScreen?.SetProgress(0.6);
+        splashScreen.Progress.SetProgress(0.6);
 
         var logger = _host.Services.GetRequiredService<ILogger<App>>();
 
@@ -188,7 +191,7 @@ public partial class App
             notifyIconManager.State = NotifyIconState.Running;
         }
 
-        splashScreen?.SetProgress(0.8);
+        splashScreen.Progress.SetProgress(0.8);
 
         logger.LogInformation("Initializing plugins");
 
@@ -198,7 +201,7 @@ public partial class App
 
         pluginManager.Initialize(_host.Services);
 
-        splashScreen?.SetProgress(0.9);
+        splashScreen.Progress.SetProgress(0.9);
 
         logger.LogInformation("Startup complete");
 
@@ -206,7 +209,7 @@ public partial class App
 
         _ipc.Received += (_, _) => _mainWindow.DoShow();
 
-        splashScreen?.Dispose();
+        splashScreen.Dispose();
 
         if (!Options.IsSilent)
             _mainWindow.DoShow();

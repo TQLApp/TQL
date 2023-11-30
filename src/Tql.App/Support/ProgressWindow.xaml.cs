@@ -98,11 +98,6 @@ internal partial class ProgressWindow
         });
     }
 
-    private void SetTitle(string value)
-    {
-        Dispatcher.BeginInvoke(() => Title = value);
-    }
-
     private void SetCanCancel(bool value)
     {
         Dispatcher.BeginInvoke(() => _cancelButton.IsEnabled = value);
@@ -116,21 +111,7 @@ internal partial class ProgressWindow
 
     private class Progress(ProgressWindow owner) : IProgress
     {
-        private string _title = owner.Title;
         private bool _canCancel = owner._cancelButton.IsEnabled;
-
-        public string Title
-        {
-            get => _title;
-            set
-            {
-                if (_title != value)
-                {
-                    _title = value;
-                    owner.SetTitle(value);
-                }
-            }
-        }
 
         public bool CanCancel
         {

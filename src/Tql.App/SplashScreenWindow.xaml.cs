@@ -90,7 +90,7 @@ internal partial class SplashScreenWindow
         public DrawingImage? LoadedImage { get; set; }
     }
 
-    public void SetProgress(double progress)
+    public void SetProgress(string? status, double progress)
     {
         _progressBar.Value = progress;
     }

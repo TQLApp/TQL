@@ -7,7 +7,6 @@ internal class NullProgress : IProgress
     public static NullProgress FromCancellationToken(CancellationToken cancellationToken) =>
         new NullProgress(cancellationToken);
 
-    public string Title { get; set; } = "";
     public bool CanCancel { get; set; }
     public CancellationToken CancellationToken { get; }
 
