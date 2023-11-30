@@ -794,6 +794,10 @@ Do you want to restart TQL to see if this resolves the issue?</comment>
     <value>Nieuwe plugin wordt geïnitialiseerd…</value>
     <comment>Original: Initializing new plugin...</comment>
   </data>
+  <data name="SideloadedPackageLoader_LoadingPackage" xml:space="preserve">
+    <value>Plugin wordt gesideload…</value>
+    <comment>Original: Sideloading plugin...</comment>
+  </data>
   <data name="UpdateChecker_DownloadingUpdate" xml:space="preserve">
     <value>Update wordt gedownload…</value>
     <comment>Original: Downloading update...</comment>

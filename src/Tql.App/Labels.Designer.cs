@@ -1660,6 +1660,15 @@ namespace Tql.App {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sideloading plugin....
+        /// </summary>
+        public static string SideloadedPackageLoader_LoadingPackage {
+            get {
+                return ResourceManager.GetString("SideloadedPackageLoader_LoadingPackage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Techie&apos;s Quick Launcher is starting....
         /// </summary>
         public static string SplashScreenWindow_Starting {

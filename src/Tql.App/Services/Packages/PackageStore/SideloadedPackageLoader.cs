@@ -54,6 +54,8 @@ internal class SideloadedPackageLoader : IPackageLoader
 
     public ImmutableArray<Package> GetPackages(IProgress progress)
     {
+        progress.SetProgress(Labels.SideloadedPackageLoader_LoadingPackage, 0);
+
         var packages = ImmutableArray.CreateBuilder<Package>();
 
         foreach (var group in GetPluginTypes().GroupBy(p => p.Assembly))
