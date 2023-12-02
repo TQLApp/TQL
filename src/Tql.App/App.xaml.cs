@@ -59,36 +59,8 @@ public partial class App
 
         SetUICulture(store);
 
-        if (Options.RequestReset)
-        {
-            if (Options.Environment == null)
-            {
-                MessageBox.Show(
-                    Labels.App_CannotResetMainEnvironment,
-                    Labels.ApplicationTitle,
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
-                Shutdown(1);
-                return;
-            }
-
-            if (!Options.IsSilent)
-            {
-                var result = MessageBox.Show(
-                    string.Format(Labels.App_AreYouSureResetEnvironment, Options.Environment),
-                    Labels.ApplicationTitle,
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Warning
-                );
-
-                if (result != DialogResult.Yes)
-                {
-                    Shutdown(1);
-                    return;
-                }
-            }
-        }
+        if (Options.RequestReset && ConfirmReset())
+            return;
 
         _ipc = new WindowMessageIPC(
             Options.Environment,
@@ -98,38 +70,7 @@ public partial class App
 
         if (Options.RequestReset)
         {
-            if (Options.IsSilent)
-            {
-                PerformReset();
-            }
-            else
-            {
-                try
-                {
-                    PerformReset();
-
-                    MessageBox.Show(
-                        Labels.App_ResetCompletedSuccessfully,
-                        Labels.ApplicationTitle,
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information
-                    );
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(
-                        string.Format(
-                            Labels.App_ResetFailed,
-                            $"{ex.Message} ({ex.GetType().FullName})"
-                        ),
-                        Labels.ApplicationTitle,
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Error
-                    );
-                }
-            }
-
-            Shutdown(1);
+            PerformReset(store);
             return;
         }
 
@@ -173,8 +114,11 @@ public partial class App
         builder.Services.AddSingleton(loggerFactory);
         builder.Services.AddSingleton(inMemoryLoggerProvider);
         builder.Services.AddSingleton(notifyIconManager);
+        builder.Services.AddSingleton<IStore>(store);
+        builder.Services.AddSingleton<IPluginManager>(pluginManager);
+        builder.Services.AddSingleton(packageStoreManager);
 
-        ConfigureServices(builder.Services, store, packageStoreManager, pluginManager);
+        ConfigureServices(builder.Services);
 
         pluginManager.ConfigureServices(builder.Services);
 
@@ -222,10 +166,89 @@ public partial class App
 
         _ipc.Received += (_, _) => _mainWindow.DoShow();
 
-        splashScreen.Dispose();
+        splashScreen.Hide();
 
         if (!Options.IsSilent)
             _mainWindow.DoShow();
+    }
+
+    private bool ConfirmReset()
+    {
+        if (Options.IsSilent)
+        {
+            if (Options.Environment == null)
+            {
+                Shutdown(1);
+                return true;
+            }
+        }
+        else
+        {
+            if (Options.Environment == null)
+            {
+                MessageBox.Show(
+                    Labels.App_CannotResetMainEnvironment,
+                    Labels.ApplicationTitle,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+
+                Shutdown(1);
+                return true;
+            }
+
+            var result = MessageBox.Show(
+                string.Format(Labels.App_AreYouSureResetEnvironment, Options.Environment),
+                Labels.ApplicationTitle,
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning
+            );
+
+            if (result != DialogResult.Yes)
+            {
+                Shutdown(1);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private void PerformReset(Store store)
+    {
+        try
+        {
+            store.Reset();
+
+            if (!Options.IsSilent)
+            {
+                MessageBox.Show(
+                    Labels.App_ResetCompletedSuccessfully,
+                    Labels.ApplicationTitle,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
+            }
+
+            Shutdown(0);
+        }
+        catch (Exception ex)
+        {
+            if (!Options.IsSilent)
+            {
+                MessageBox.Show(
+                    string.Format(
+                        Labels.App_ResetFailed,
+                        $"{ex.Message} ({ex.GetType().FullName})"
+                    ),
+                    Labels.ApplicationTitle,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+            }
+
+            Shutdown(1);
+        }
     }
 
     private void SetUICulture(Store store)
@@ -244,11 +267,6 @@ public partial class App
                 window.Language = XmlLanguage.GetLanguage(culture.IetfLanguageTag);
             }
         }
-    }
-
-    private void PerformReset()
-    {
-        new Store(Options.Environment, TraceLogger.Instance).Reset();
     }
 
     private static IPackageLoader CreatePluginLoader(
@@ -363,14 +381,8 @@ public partial class App
         return false;
     }
 
-    private static void ConfigureServices(
-        IServiceCollection builder,
-        Store store,
-        PackageStoreManager packageStoreManager,
-        PluginManager pluginManager
-    )
+    private static void ConfigureServices(IServiceCollection builder)
     {
-        builder.AddSingleton<IStore>(store);
         builder.AddSingleton<IDb, Db>();
         builder.AddSingleton<Settings>();
         builder.AddSingleton<IConfigurationManager, ConfigurationManager>();
@@ -382,9 +394,7 @@ public partial class App
         builder.AddSingleton<TelemetryService>();
         builder.AddSingleton<IPeopleDirectoryManager, PeopleDirectoryManager>();
         builder.AddSingleton<HotKeyService>();
-        builder.AddSingleton<IPluginManager>(pluginManager);
         builder.AddSingleton<PackageManager>();
-        builder.AddSingleton(packageStoreManager);
         builder.AddSingleton<QuickStartManager>();
         builder.AddSingleton<QuickStartScript>();
         builder.AddSingleton<IEncryption, Encryption>();
