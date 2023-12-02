@@ -73,17 +73,20 @@ public partial class App
                 return;
             }
 
-            var result = MessageBox.Show(
-                string.Format(Labels.App_AreYouSureResetEnvironment, Options.Environment),
-                Labels.ApplicationTitle,
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Warning
-            );
-
-            if (result != DialogResult.Yes)
+            if (!Options.IsSilent)
             {
-                Shutdown(1);
-                return;
+                var result = MessageBox.Show(
+                    string.Format(Labels.App_AreYouSureResetEnvironment, Options.Environment),
+                    Labels.ApplicationTitle,
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning
+                );
+
+                if (result != DialogResult.Yes)
+                {
+                    Shutdown(1);
+                    return;
+                }
             }
         }
 
@@ -95,28 +98,35 @@ public partial class App
 
         if (Options.RequestReset)
         {
-            try
+            if (Options.IsSilent)
             {
                 PerformReset();
-
-                MessageBox.Show(
-                    Labels.App_ResetCompletedSuccessfully,
-                    Labels.ApplicationTitle,
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information
-                );
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show(
-                    string.Format(
-                        Labels.App_ResetFailed,
-                        $"{ex.Message} ({ex.GetType().FullName})"
-                    ),
-                    Labels.ApplicationTitle,
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
+                try
+                {
+                    PerformReset();
+
+                    MessageBox.Show(
+                        Labels.App_ResetCompletedSuccessfully,
+                        Labels.ApplicationTitle,
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information
+                    );
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(
+                        string.Format(
+                            Labels.App_ResetFailed,
+                            $"{ex.Message} ({ex.GetType().FullName})"
+                        ),
+                        Labels.ApplicationTitle,
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error
+                    );
+                }
             }
 
             Shutdown(1);
