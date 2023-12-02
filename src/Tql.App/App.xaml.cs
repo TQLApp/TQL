@@ -55,6 +55,10 @@ public partial class App
         System.Windows.Forms.Application.SetHighDpiMode(HighDpiMode.PerMonitor);
         System.Windows.Forms.Application.EnableVisualStyles();
 
+        var store = new Store(Options.Environment, TraceLogger.Instance);
+
+        SetUICulture(store);
+
         if (Options.RequestReset)
         {
             if (Options.Environment == null)
@@ -132,7 +136,6 @@ public partial class App
 
         var notifyIconManager = new NotifyIconManager();
 
-        var store = new Store(Options.Environment, TraceLogger.Instance);
         var (loggerFactory, inMemoryLoggerProvider) = SetupLogging(store);
 
         var packageStoreManager = new PackageStoreManager(
@@ -172,9 +175,6 @@ public partial class App
         splashScreen.Progress.SetProgress(0.5);
 
         var settings = _host.Services.GetRequiredService<Settings>();
-
-        if (settings.Language != null)
-            SetCulture(CultureInfo.GetCultureInfo(settings.Language));
 
         ThemeManager.SetTheme(ThemeManager.ParseTheme(settings.Theme));
 
@@ -218,6 +218,24 @@ public partial class App
             _mainWindow.DoShow();
     }
 
+    private void SetUICulture(Store store)
+    {
+        using var key = store.CreateBaseKey();
+
+        if (key.GetValue(nameof(Settings.Language)) is string language)
+        {
+            var culture = CultureInfo.GetCultureInfo(language);
+
+            Thread.CurrentThread.CurrentUICulture = culture;
+            CultureInfo.DefaultThreadCurrentUICulture = culture;
+
+            foreach (Window window in Current.Windows)
+            {
+                window.Language = XmlLanguage.GetLanguage(culture.IetfLanguageTag);
+            }
+        }
+    }
+
     private void PerformReset()
     {
         new Store(Options.Environment, TraceLogger.Instance).Reset();
@@ -245,17 +263,6 @@ public partial class App
             AssemblyLoadContext.Default,
             loggerFactory.CreateLogger<PackageStoreLoader>()
         );
-    }
-
-    private void SetCulture(CultureInfo culture)
-    {
-        Thread.CurrentThread.CurrentUICulture = culture;
-        CultureInfo.DefaultThreadCurrentUICulture = culture;
-
-        foreach (Window window in Current.Windows)
-        {
-            window.Language = XmlLanguage.GetLanguage(culture.IetfLanguageTag);
-        }
     }
 
     private (ILoggerFactory, InMemoryLoggerProvider) SetupLogging(Store store)
