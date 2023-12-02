@@ -136,7 +136,7 @@
                 Height="64"
                 Width="64"
                 Margin="5"
-                ClipToBounds="True"/>
+                ClipToBounds="True" />
 
             <StackPanel
                 Orientation="Vertical"
@@ -149,7 +149,7 @@
                     Foreground="{x:Static SystemColors.ControlTextBrush}"
                     TextWrapping="NoWrap"
                     TextTrimming="CharacterEllipsis"
-                    Width="260"/>
+                    Width="260" />
                 <ProgressBar
                     x:Name="_progressBar"
                     Margin="5"
