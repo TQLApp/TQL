@@ -120,7 +120,12 @@ internal partial class PluginsConfigurationControl : IConfigurationPage
             ProgressWindow.Show(
                 _serviceProvider,
                 this,
-                p => _packageManager.InstallPackage(package.Identity.Id, p)
+                p =>
+                    _packageManager.InstallPackage(
+                        package.Identity.Id,
+                        p,
+                        PackageProgressMode.Install
+                    )
             );
         }
         catch (Exception ex)

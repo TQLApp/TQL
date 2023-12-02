@@ -1,11 +1,12 @@
 ﻿using System.Reflection;
 using Tql.Abstractions;
+using Tql.App.Support;
 
 namespace Tql.App.Services.Packages.PackageStore;
 
 internal class AssemblyPackageLoader(ImmutableArray<Assembly> assemblies) : IPackageLoader
 {
-    public ImmutableArray<Package> GetPackages()
+    public ImmutableArray<Package> GetPackages(IProgress progress)
     {
         // We're not splitting these up into separate packages. This
         // package loader is only for the debug app, so it's less

@@ -7,12 +7,6 @@ internal static class ProgressExtensions
 
     private class DelegateProgress(IProgress owner) : IProgress
     {
-        public virtual string Title
-        {
-            get => owner.Title;
-            set => owner.Title = value;
-        }
-
         public virtual bool CanCancel
         {
             get => owner.CanCancel;

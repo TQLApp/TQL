@@ -714,4 +714,19 @@ Do you want to restart TQL to see if this resolves the issue?</value>
 
 {0}</value>
   </data>
+  <data name="PackageManager_UpdatingPackage" xml:space="preserve">
+    <value>Updating {0}...</value>
+  </data>
+  <data name="PackageStoreLoader_InitializingPackage" xml:space="preserve">
+    <value>Initializing new plugin...</value>
+  </data>
+  <data name="SideloadedPackageLoader_LoadingPackage" xml:space="preserve">
+    <value>Sideloading plugin...</value>
+  </data>
+  <data name="UpdateChecker_DownloadingUpdate" xml:space="preserve">
+    <value>Downloading update...</value>
+  </data>
+  <data name="UpdateChecker_InstallingUpdate" xml:space="preserve">
+    <value>Installing update...</value>
+  </data>
 </root>

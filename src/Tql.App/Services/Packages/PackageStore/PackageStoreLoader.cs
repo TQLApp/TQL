@@ -3,6 +3,7 @@ using System.Runtime.Loader;
 using Microsoft.Extensions.Logging;
 using Tql.Abstractions;
 using Tql.App.Services.Packages.AssemblyResolution;
+using Tql.App.Support;
 using Path = System.IO.Path;
 
 namespace Tql.App.Services.Packages.PackageStore;
@@ -38,7 +39,7 @@ internal class PackageStoreLoader : IPackageLoader
         );
     }
 
-    public ImmutableArray<Package> GetPackages()
+    public ImmutableArray<Package> GetPackages(IProgress progress)
     {
         _logger.LogInformation("Discovering plugins");
 
@@ -58,7 +59,11 @@ internal class PackageStoreLoader : IPackageLoader
                 var manifestFileName = Path.Combine(packageFolder, ManifestFileName);
 
                 if (!File.Exists(manifestFileName))
+                {
+                    progress.SetProgress(Labels.PackageStoreLoader_InitializingPackage, 0);
+
                     WritePackageManifest(packageFolder);
+                }
 
                 var manifestJson = File.ReadAllText(manifestFileName);
                 var manifest = JsonSerializer.Deserialize<PackageManifest>(manifestJson)!;

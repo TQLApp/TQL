@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Microsoft.Extensions.Logging;
 using Application = System.Windows.Forms.Application;
@@ -16,12 +15,14 @@ internal class WindowMessageIPC : IDisposable
 
     private readonly SynchronizationContext _synchronizationContext =
         SynchronizationContext.Current ?? throw new InvalidOperationException();
-    private Window _window;
+    private IPCForm? _form;
+    private IntPtr _handle;
     private readonly ManualResetEventSlim _windowCreatedEvent = new();
     private readonly ManualResetEventSlim _responseReceivedEvent = new();
     private readonly uint _windowMessage;
     private readonly uint _killWindowMessage;
     private readonly uint _responseWindowMessage;
+    private readonly Thread _thread;
 
     public bool IsFirstRunner { get; }
 
@@ -38,10 +39,10 @@ internal class WindowMessageIPC : IDisposable
         // pump messages while the main thread is working, or, doing a synchronous
         // wait for an event like we do below.
 
-        var thread = new Thread(ThreadProc) { IsBackground = true };
+        _thread = new Thread(ThreadProc) { IsBackground = true };
 
-        thread.SetApartmentState(ApartmentState.STA);
-        thread.Start();
+        _thread.SetApartmentState(ApartmentState.STA);
+        _thread.Start();
 
         _windowCreatedEvent.Wait();
 
@@ -61,7 +62,7 @@ internal class WindowMessageIPC : IDisposable
                 // Set the window caption to the right window name to
                 // indicate we're the first runner.
 
-                _window!.SetCaption(GetFullName(WindowName));
+                _form!.BeginInvoke(() => _form!.Text = GetFullName(WindowName));
 
                 IsFirstRunner = true;
                 return;
@@ -71,12 +72,7 @@ internal class WindowMessageIPC : IDisposable
 
             logger.LogDebug("[IPC] Sending message to current first runner");
 
-            PostMessage(
-                handle,
-                kill ? _killWindowMessage : _windowMessage,
-                IntPtr.Zero,
-                _window!.Handle
-            );
+            PostMessage(handle, kill ? _killWindowMessage : _windowMessage, IntPtr.Zero, _handle);
 
             var raised = _responseReceivedEvent.Wait(TimeSpan.FromSeconds(1));
             if (raised)
@@ -105,7 +101,7 @@ internal class WindowMessageIPC : IDisposable
         // This window doesn't have the right name yet. It's here just to
         // receive the response. We only set the name if we become the owner.
 
-        _window = new Window(
+        _form = new IPCForm(
             this,
             p =>
             {
@@ -124,10 +120,14 @@ internal class WindowMessageIPC : IDisposable
             }
         );
 
+        _handle = _form.Handle;
+
+        _form.FormClosed += (_, _) => Application.ExitThread();
+
         _windowCreatedEvent.Set();
 
         _logger.LogInformation(
-            $"[IPC] Registering IPC window with handle {_window.Handle.ToInt64():x}"
+            $"[IPC] Registering IPC window with handle {_form.Handle.ToInt64():x}"
         );
 
         Application.Run();
@@ -144,54 +144,35 @@ internal class WindowMessageIPC : IDisposable
 
     public void Dispose()
     {
-        _window.Dispose();
+        _form?.BeginInvoke(() => _form.Close());
+        _thread.Join();
         _responseReceivedEvent.Dispose();
     }
 
-    private sealed class Window : NativeWindow, IDisposable
+    private sealed class IPCForm(
+        WindowMessageIPC owner,
+        Action<IntPtr> messageReceived,
+        Action responseMessageReceived,
+        Action<IntPtr> killMessageReceived
+    ) : Form
     {
-        private readonly WindowMessageIPC _owner;
-        private readonly Action<IntPtr> _messageReceived;
-        private readonly Action _responseMessageReceived;
-        private readonly Action<IntPtr> _killMessageReceived;
-
-        public Window(
-            WindowMessageIPC owner,
-            Action<IntPtr> messageReceived,
-            Action responseMessageReceived,
-            Action<IntPtr> killMessageReceived
-        )
-        {
-            _owner = owner;
-            _messageReceived = messageReceived;
-            _responseMessageReceived = responseMessageReceived;
-            _killMessageReceived = killMessageReceived;
-
-            CreateHandle(new CreateParams());
-        }
-
         protected override void WndProc(ref Message m)
         {
-            _owner._logger.LogInformation($"[IPC] Received window message {m.Msg}");
+            owner._logger.LogInformation($"[IPC] Received window message {m.Msg}");
 
             base.WndProc(ref m);
 
-            if (m.Msg == _owner._windowMessage)
-                _messageReceived(m.LParam);
-            if (m.Msg == _owner._responseWindowMessage)
-                _responseMessageReceived();
-            if (m.Msg == _owner._killWindowMessage)
-                _killMessageReceived(m.LParam);
+            if (m.Msg == owner._windowMessage)
+                messageReceived(m.LParam);
+            if (m.Msg == owner._responseWindowMessage)
+                responseMessageReceived();
+            if (m.Msg == owner._killWindowMessage)
+                killMessageReceived(m.LParam);
         }
 
-        public void SetCaption(string caption)
+        protected override void SetVisibleCore(bool value)
         {
-            SetWindowText(Handle, caption);
-        }
-
-        public void Dispose()
-        {
-            DestroyHandle();
+            base.SetVisibleCore(false);
         }
     }
 
@@ -203,7 +184,4 @@ internal class WindowMessageIPC : IDisposable
 
     [DllImport("user32.dll", SetLastError = true)]
     private static extern bool PostMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
-
-    [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-    private static extern bool SetWindowText(IntPtr hWnd, string lpString);
 }
