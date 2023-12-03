@@ -14,20 +14,19 @@ description: Install the JIRA plugin.
 
 ## Installation
 
-Install the JIRA plugin:
-
-- Open the **Configuration** window.
-- Navigate to **Application | Plugins**.
-- Select the **TQL JIRA Plugin** plugin.
-- **Install** the plugin.
-- **Restart** the application when requested.
+| Action                                      | Expected result |
+| ------------------------------------------- | --------------- |
+| Open the **Configuration** window.          |                 |
+| Navigate to **Application > Plugins**.      |                 |
+| Select the **TQL JIRA Plugin** plugin.      |                 |
+| **Install** the plugin.                     |                 |
+| **Restart** the application when requested. |                 |
 
 ## Verify installation
 
-Verify that the JIRA plugin has been installed:
-
-- Open the **Configuration** window.
-- Navigate to **Application | Plugins**.
-- Switch to the **Installed** tab. The **TQL JIRA Plugin** plugin shows as
-  installed.
-- Navigate to the **JIRA** configuration page. The configuration page opens.
+| Action                                       | Expected result                                    |
+| -------------------------------------------- | -------------------------------------------------- |
+| Open the **Configuration** window.           |                                                    |
+| Navigate to **Application > Plugins**.       |                                                    |
+| Switch to the **Installed** tab.             | The **TQL JIRA Plugin** plugin shows as installed. |
+| Navigate to the **JIRA** configuration page. | The configuration page opens.                      |

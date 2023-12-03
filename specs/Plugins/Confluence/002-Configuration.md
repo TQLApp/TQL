@@ -15,26 +15,29 @@ description: Configure the Confluence plugin.
 
 ## Configuration
 
-Create a new connection:
+| Action                                            | Expected result                                   |
+| ------------------------------------------------- | ------------------------------------------------- |
+| Open the **Configuration** window.                |                                                   |
+| Navigate to **Confluence**.                       | The **Confluence > General** page is highlighted. |
+| **Add** a new connection with the settings below. |                                                   |
+| Click **Save**.                                   |                                                   |
+| Click **Save**.                                   |                                                   |
 
-- Open the **Configuration** window.
-- Navigate to **Confluence**. The **Confluence | General** page is highlighted.
-- **Add** a new connection with the following information:
+- Connection settings:
   - Name: `{{ confluence_name }}`
   - URL: `{{ confluence_url }}`
   - User name: `{{ confluence_user_name }}`
   - Password: `{{ confluence_password }}`
-- Click **Save**.
-- Click **Save**.
 
 ## Validate configuration
 
-Validate that the connection has been saved:
+| Action                                       | Expected result                                   |
+| -------------------------------------------- | ------------------------------------------------- |
+| Open the **Configuration** window.           |                                                   |
+| Navigate to **Confluence**.                  | The **Confluence > General** page is highlighted. |
+| Highlight the connection and click **Edit**. | The settings conform to the settings below.       |
 
-- Open the **Configuration** window.
-- Navigate to **Confluence**. The **Confluence | General** page is highlighted.
-- Highlight the connection and click **Edit**.
-- Validate that the the values are as follows:
+- Connection settings:
   - Name: `{{ confluence_name }}`
   - URL: `{{ confluence_url }}`
   - User name: `{{ confluence_user_name }}`
@@ -42,9 +45,9 @@ Validate that the connection has been saved:
 
 ## Validate authentication
 
-Validate access to Confluence:
-
-- Open the app.
-- Type in `confluence`. The **Confluence Search** category must appear.
-- **Enter** the **Confluence Search** category. No items should appear.
-- Type in `pieter`. At least one search result appears.
+| Action                                        | Expected result                             |
+| --------------------------------------------- | ------------------------------------------- |
+| Open the app.                                 |                                             |
+| Type in `confluence`.                         | The **Confluence Search** category appears. |
+| **Enter** the **Confluence Search** category. | No items appear.                            |
+| Type in `pieter`.                             | At least one search result appears.         |

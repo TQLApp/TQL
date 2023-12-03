@@ -14,41 +14,37 @@ description: Verify search features.
 
 ## Find page
 
-Find a page in Confluence:
-
-- Open the app.
-- Enter the **Confluence Search** category.
-- Type in `pieter`. At least a **Pieter van Ginkel › Overview** search result
-  appears.
-- **Activate** the **Pieter van Ginkel › Overview** item. The confluence page
-  opens in the browser.
+| Action                                                  | Expected result                                                    |
+| ------------------------------------------------------- | ------------------------------------------------------------------ |
+| Open the app.                                           |                                                                    |
+| Enter the **Confluence Search** category.               |                                                                    |
+| Type in `pieter`.                                       | At least a **Pieter van Ginkel › Overview** search result appears. |
+| **Activate** the **Pieter van Ginkel › Overview** item. | The confluence page opens.                                         |
 
 ## Find person
 
-Find a person in Confluence:
-
-- Open the app.
-- Enter the **Confluence Search** category.
-- Type in `pieter`. At least a **Pieter van Ginkel** search result appears.
-- **Activate** the **Pieter van Ginkel** item. The person space for Pieter van
-  Ginkel opens in the browser.
+| Action                                       | Expected result                                         |
+| -------------------------------------------- | ------------------------------------------------------- |
+| Open the app.                                |                                                         |
+| Enter the **Confluence Search** category.    |                                                         |
+| Type in `pieter`.                            | At least a **Pieter van Ginkel** search result appears. |
+| **Activate** the **Pieter van Ginkel** item. | The person space for Pieter van Ginkel opens.           |
 
 ## Verify history
 
-Verify that the activated items are in the history:
-
-- Open the app.
-- Enter the **Confluence Search** category. The **Pieter van Ginkel** and
-  **Pieter van Ginkel › Overview** items appear in the history.
+| Action                                    | Expected result                                                                             |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------- |
+| Open the app.                             |                                                                                             |
+| Enter the **Confluence Search** category. | The **Pieter van Ginkel** and **Pieter van Ginkel › Overview** items appear in the history. |
 
 ## Find space
 
-Find a space in Confluence:
+| Action                                             | Expected result                                                                    |
+| -------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| Open the app.                                      |                                                                                    |
+| Enter the **Confluence Space** category.           |                                                                                    |
+| Type in `pieter`.                                  | At least a **Pieter van Ginkel Space** search result appears with a custom avatar. |
+| **Activate** the **Pieter van Ginkel Space** item. | The space opens.                                                                   |
 
-- Open the app.
-- Enter the **Confluence Space** category.
-- Type in `pieter`. At least a **Pieter van Ginkel Space** search result appears
-  with a custom avatar. This may not appear the first time. If not, close the
-  app and search again. It should appear the second time.
-- **Activate** the **Pieter van Ginkel Space** item. The space opens in the
-  browser.
+The avatar may not appear the first time. If this happens, close the app and
+search again. It should appear the second time.

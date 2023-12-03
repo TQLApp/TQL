@@ -12,43 +12,68 @@ description: Verify search features.
 
 {% include Setup/Run-App.md %}
 
-## Find page
+## Find board
 
-Find a page in JIRA:
+| Action                             | Expected result           |
+| ---------------------------------- | ------------------------- |
+| Open the app.                      |                           |
+| Enter the **JIRA Board** category. | A list of boards appears. |
+| Activate a board.                  | The board opens.          |
 
-- Open the app.
-- Enter the **JIRA Search** category.
-- Type in `pieter`. At least a **Pieter van Ginkel › Overview** search result
-  appears.
-- **Activate** the **Pieter van Ginkel › Overview** item. The confluence page
-  opens in the browser.
+## Find board quick filter
 
-## Find person
+| Action                                          | Expected result                                               |
+| ----------------------------------------------- | ------------------------------------------------------------- |
+| Open the app.                                   |                                                               |
+| Enter the **JIRA Board** category.              |                                                               |
+| Enter the **CM Board - Kanban board** category. | A list of quick filters and a category **All Issue** appears. |
+| Activate the **All Issues** item.               | The board opens without a quick filter selected.              |
+| Activate a quick filter.                        | The board opens with the quick filter selected.               |
 
-Find a person in JIRA:
+## Find issue on a board
 
-- Open the app.
-- Enter the **JIRA Search** category.
-- Type in `pieter`. At least a **Pieter van Ginkel** search result appears.
-- **Activate** the **Pieter van Ginkel** item. The person space for Pieter van
-  Ginkel opens in the browser.
+| Action                                          | Expected result                                     |
+| ----------------------------------------------- | --------------------------------------------------- |
+| Open the app.                                   |                                                     |
+| Enter the **JIRA Board** category.              |                                                     |
+| Enter the **CM Board - Kanban board** category. |                                                     |
+| Enter the **All Issues** category.              | All issues on the board appear, last updated first. |
+| Enter a search term.                            | All issues matching the search term appear.         |
 
-## Verify history
+## Find issue in a quick filter
 
-Verify that the activated items are in the history:
+| Action                                          | Expected result                                                   |
+| ----------------------------------------------- | ----------------------------------------------------------------- |
+| Open the app.                                   |                                                                   |
+| Enter the **JIRA Board** category.              |                                                                   |
+| Enter the **CM Board - Kanban board** category. |                                                                   |
+| Enter the quick filter category.                | All issues matching the quick filter appear.                      |
+| Enter a search term.                            | Only issues matching the search term and the quick filter appear. |
 
-- Open the app.
-- Enter the **JIRA Search** category. The **Pieter van Ginkel** and **Pieter van
-  Ginkel › Overview** items appear in the history.
+## Find dashboard
 
-## Find space
+| Action                                 | Expected result              |
+| -------------------------------------- | ---------------------------- |
+| Open the app.                          |                              |
+| Enter the **JIRA Dashboard** category. | A list of dashboards appear. |
+| Activate a dashboard.                  | The dashboard opens.         |
 
-Find a space in JIRA:
+## Find filter
 
-- Open the app.
-- Enter the **JIRA Space** category.
-- Type in `pieter`. At least a **Pieter van Ginkel Space** search result appears
-  with a custom avatar. This may not appear the first time. If not, close the
-  app and search again. It should appear the second time.
-- **Activate** the **Pieter van Ginkel Space** item. The space opens in the
-  browser.
+| Action                              | Expected result           |
+| ----------------------------------- | ------------------------- |
+| Open the app.                       |                           |
+| Enter the **JIRA Filter** category. | A list of filters appear. |
+| Activate a filter.                  | The filter opens.         |
+
+## Find issue in a filter
+
+| Action                              | Expected result                                            |
+| ----------------------------------- | ---------------------------------------------------------- |
+| Open the app.                       |                                                            |
+| Enter the **JIRA Filter** category. |                                                            |
+| Enter a filter.                     | All issues matching the filter appear.                     |
+| Enter a search term.                | All issues matching the filter and the search term appear. |
+| Activate an issue.                  | The issue opens.                                           |
+
+**TODO**

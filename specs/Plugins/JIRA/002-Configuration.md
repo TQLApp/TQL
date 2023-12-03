@@ -15,26 +15,29 @@ description: Configure the JIRA plugin.
 
 ## Configuration
 
-Create a new connection:
+| Action                                            | Expected result                             |
+| ------------------------------------------------- | ------------------------------------------- |
+| Open the **Configuration** window.                |                                             |
+| Navigate to **JIRA**.                             | The **JIRA > General** page is highlighted. |
+| **Add** a new connection with the settings below. |                                             |
+| Click **Save**.                                   |                                             |
+| Click **Save**.                                   |                                             |
 
-- Open the **Configuration** window.
-- Navigate to **JIRA**. The **JIRA | General** page is highlighted.
-- **Add** a new connection with the following information:
+- Connection settings:
   - Name: `{{ jira_name }}`
   - URL: `{{ jira_url }}`
   - User name: `{{ jira_user_name }}`
   - Password: `{{ jira_password }}`
-- Click **Save**.
-- Click **Save**.
 
 ## Validate configuration
 
-Validate that the connection has been saved:
+| Action                                       | Expected result                             |
+| -------------------------------------------- | ------------------------------------------- |
+| Open the **Configuration** window.           |                                             |
+| Navigate to **JIRA**.                        | The **JIRA > General** page is highlighted. |
+| Highlight the connection and click **Edit**. | The settings conform to the settings below. |
 
-- Open the **Configuration** window.
-- Navigate to **JIRA**. The **JIRA | General** page is highlighted.
-- Highlight the connection and click **Edit**.
-- Validate that the the values are as follows:
+- Connection settings:
   - Name: `{{ jira_name }}`
   - URL: `{{ jira_url }}`
   - User name: `{{ jira_user_name }}`
@@ -42,8 +45,8 @@ Validate that the connection has been saved:
 
 ## Validate authentication
 
-Validate access to JIRA:
-
-- Open the app.
-- Type in `jira`. The **JIRA Board** category must appear.
-- **Enter** the **JIRA Board** category. A list of boards should appear.
+| Action                                 | Expected result                      |
+| -------------------------------------- | ------------------------------------ |
+| Open the app.                          |                                      |
+| Type in `jira`.                        | The **JIRA Board** category appears. |
+| **Enter** the **JIRA Board** category. | A list of boards appears.            |

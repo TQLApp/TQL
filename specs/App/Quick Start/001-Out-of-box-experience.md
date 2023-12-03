@@ -14,8 +14,7 @@ description: Validate the out-of-box experience of the quick start tutorial.
 
 ## Verify quick start window opens
 
-Verify that the quick start window opens the first time the app starts:
-
-- Open the app. The quick start window must open.
-- Verify that you cannot interact with the app and that you cannot close the app
-  without interacting with the quick start window.
+| Action                        | Expected result                                                                                            |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| Open the app.                 | The quick start window opens.                                                                              |
+| Try to interact with the app. | You cannot interact with the app or close the app without interacting with closing the quick start window. |

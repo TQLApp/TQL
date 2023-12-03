@@ -15,36 +15,37 @@ description: Configure the Azure plugin.
 
 ## Configuration
 
-Create a new connection:
+| Action                                            | Expected result                                     |
+| ------------------------------------------------- | --------------------------------------------------- |
+| Open the **Configuration** window.                |                                                     |
+| Navigate to **Azure Portal**.                     | The **Azure Portal > General** page is highlighted. |
+| **Add** a new connection with the settings below. |                                                     |
+| Click **Save**.                                   |                                                     |
+| Click **Save**.                                   |                                                     |
 
-- Open the **Configuration** window.
-- Navigate to **Azure Portal**. The **Azure Portal | General** page is
-  highlighted.
-- **Add** a new connection with the following information:
+- Connection settings:
   - Name: `{{ azure_name }}`
   - Tenant ID: `{{ azure_tenant_id }}`
-- Click **Save**.
-- Click **Save**.
 
 ## Validate configuration
 
-Validate that the connection has been saved:
+| Action                                       | Expected result                                        |
+| -------------------------------------------- | ------------------------------------------------------ |
+| Open the **Configuration** window.           |                                                        |
+| Navigate to **Azure Portal**.                | The **Azure Portal > General** page is highlighted.    |
+| Highlight the connection and click **Edit**. | The settings conform to the connection settings below. |
 
-- Open the **Configuration** window.
-- Navigate to **Azure Portal**. The **Azure Portal | General** page is
-  highlighted.
-- Highlight the connection and click **Edit**.
-- Validate that the the values are as follows:
+- Connection settings:
   - Name: `{{ azure_name }}`
   - Tenant ID: `{{ azure_tenant_id }}`
 
 ## Complete interactive authentication
 
-Complete first time authentication with Azure Portal:
-
-- Open the app.
-- Type in `azure`. The **Azure Portal** category must appear.
-- **Enter** the **Azure Portal** category. No items should appear.
-- Type in `tql`. A dialog shows requesting credentials.
-- Click **OK**.
-- Complete authentication with Azure.
+| Action                                   | Expected result                        |
+| ---------------------------------------- | -------------------------------------- |
+| Open the app.                            |                                        |
+| Type in `azure`.                         | The **Azure Portal** category appears. |
+| **Enter** the **Azure Portal** category. | No items appear.                       |
+| Type in `tql`.                           | A dialog shows requesting credentials. |
+| Click **OK**.                            |                                        |
+| Complete authentication with Azure.      | Items matching the search term appear. |

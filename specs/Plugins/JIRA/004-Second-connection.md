@@ -15,22 +15,23 @@ description: Configure a second connection.
 
 ## Create connection
 
-Create a new connection:
+| Action                                            | Expected result                             |
+| ------------------------------------------------- | ------------------------------------------- |
+| Open the **Configuration** window.                |                                             |
+| Navigate to **JIRA**.                             | The **JIRA > General** page is highlighted. |
+| **Add** a new connection with the settings below. |                                             |
+| Click **Save**.                                   |                                             |
+| Click **Save**.                                   |                                             |
 
-- Open the **Configuration** window.
-- Navigate to **JIRA**. The **JIRA | General** page is highlighted.
-- **Add** a new connection with the following information:
+- Connection settings:
   - Name: `{{ jira_alt_name }}`
   - URL: `{{ jira_url }}`
   - User name: `{{ jira_user_name }}`
   - Password: `{{ jira_password }}`
-- Click **Save**.
-- Click **Save**.
 
 ## Verify multiple connections
 
-Verify that there are multiple **JIRA** entries:
-
-- Open the app.
-- Type in `confluence`. One **JIRA Search ({{ jira_name }})** item and one
-  **JIRA Search ({{ jira_alt_name }})** entry must item.
+| Action          | Expected result                                                                                         |
+| --------------- | ------------------------------------------------------------------------------------------------------- |
+| Open the app.   |                                                                                                         |
+| Type in `jira`. | One **JIRA Board ({{ jira_name }})** item and one **JIRA Board ({{ jira_alt_name }})** entry must item. |

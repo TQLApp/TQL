@@ -19,18 +19,18 @@ description:
 
 {% include Setup/App/QuickStart/Reset-quick-start.md %}
 
-Configure JIRA:
+| Action                                                                                  | Expected result                                                          |
+| --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| Open the app.                                                                           | The quick start window must open.                                        |
+| Complete the quick start tutorial, picking JIRA and using the settings below.           |                                                                          |
+| Progress the tutorial until you get to a step called **Using Techie's Quick Launcher**. | This step shows immediately after you've saved the configuration window. |
+| Click **Next**.                                                                         |                                                                          |
 
-- Open the app. The quick start window must open.
-- Complete the quick start tutorial, picking JIRA and using the following
-  configuration:
+- Connection settings:
   - Name: `{{ jira_name }}`
   - URL: `{{ jira_url }}`
   - User name: `{{ jira_user_name }}`
   - Password: `{{ jira_password }}`
-- Progress the tutorial until you get to a step called **Using Techie's Quick
-  Launcher**. This step shows immediately after you've saved the configuration
-  window. Click **Next**.
 
 ## Validate the quick start tutorial
 
@@ -51,7 +51,7 @@ Validate that the quick start tutorial helps you with the following:
 
 ## Closing the tutorial
 
-When all these steps have been completed, the completion step shows with a
-**Close Tutorial** button:
-
-- Click the **Close Tutorial** button. The tutorial closes.
+| Action                               | Expected result                                             |
+| ------------------------------------ | ----------------------------------------------------------- |
+| Complete all steps in the tutorial.  | The completion step shows with a **Close Tutorial** button. |
+| Click the **Close Tutorial** button. | The tutorial closes.                                        |

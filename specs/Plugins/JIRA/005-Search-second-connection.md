@@ -15,25 +15,24 @@ description: Verify functionality with a second connection.
 
 ## Verify history of the connections
 
-Verify that the history of the connections are isolated:
-
-- Open the app.
-- **Enter** the **JIRA Search ({{ jira_name }})** category. The **Pieter van
-  Ginkel** and **Pieter van Ginkel › Overview** items appear in the history.
-- **Enter** the **JIRA Search ({{ jira_alt_name }})** category. No history must
-  appear.
+| Action                                                        | Expected result                                       |
+| ------------------------------------------------------------- | ----------------------------------------------------- |
+| Open the app.                                                 |                                                       |
+| **Enter** the **JIRA Board ({{ jira_name }})** category.      | The previously selected board appears in the history. |
+| **Enter** the **JIRA Search ({{ jira_alt_name }})** category. | No history appears.                                   |
 
 ## Delete connection
 
-Verify that the connection can be deleted"
-
-- Open the **Configuration** window.
-- Navigate to **JIRA**. The **JIRA | General** page is highlighted.
-- Highlight the **{{ jira_alt_name }}** connection and click **Delete**. The
-  connection must be deleted.
-- Click **Save**.
+| Action                                                                 | Expected result                             |
+| ---------------------------------------------------------------------- | ------------------------------------------- |
+| Open the **Configuration** window.                                     |                                             |
+| Navigate to **JIRA**.                                                  | The **JIRA > General** page is highlighted. |
+| Highlight the **{{ jira_alt_name }}** connection and click **Delete**. | The connection is deleted.                  |
+| Click **Save**.                                                        |                                             |
 
 ## Verify single connection
 
-- Open the app.
-- Type in `confluence`. Only a **JIRA Search** item must appear.
+| Action          | Expected result                                                                                                                  |
+| --------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| Open the app.   |                                                                                                                                  |
+| Type in `jira`. | Only a **JIRA Board** item must appear instead of the **JIRA Board ({{ jira_name }})** and **JIRA Board ({{ jira_alt_name }})**. |
