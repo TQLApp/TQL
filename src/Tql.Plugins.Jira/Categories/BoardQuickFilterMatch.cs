@@ -57,9 +57,6 @@ internal class BoardQuickFilterMatch(
         CancellationToken cancellationToken
     )
     {
-        if (text.IsWhiteSpace())
-            return Array.Empty<IMatch>();
-
         await context.DebounceDelay(cancellationToken);
 
         var data = await cache.Get();
@@ -68,12 +65,17 @@ internal class BoardQuickFilterMatch(
 
         var client = configurationManager.GetClient(dto.Board.Url);
 
-        var query = $"filter = \"{board.FilterId}\" and text ~ \"{text.Replace("\"", "\\\"")}*\"";
+        var query = $"filter = \"{board.FilterId}\"";
         if (dto.Id.HasValue)
         {
             var quickFilter = board.QuickFilters.Single(p => p.Id == dto.Id);
             query += $" and {quickFilter.Query}";
         }
+
+        if (!text.IsWhiteSpace())
+            query += $" and text ~ \"{text.Replace("\"", "\\\"")}*\"";
+        else
+            query += " order by updated desc";
 
         var issues = await client.SearchIssues(query, 100, cancellationToken);
 
