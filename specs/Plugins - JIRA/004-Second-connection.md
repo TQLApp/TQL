@@ -31,7 +31,7 @@ description: Configure a second connection.
 
 ## Verify multiple connections
 
-| Action          | Expected result                                                                                         |
-| --------------- | ------------------------------------------------------------------------------------------------------- |
-| Open the app.   |                                                                                                         |
-| Type in `jira`. | One **JIRA Board ({{ jira_name }})** item and one **JIRA Board ({{ jira_alt_name }})** entry must item. |
+| Action                | Expected result                                                                                         |
+| --------------------- | ------------------------------------------------------------------------------------------------------- |
+| Open the app.         |                                                                                                         |
+| Type in `jira board`. | One **JIRA Board ({{ jira_name }})** item and one **JIRA Board ({{ jira_alt_name }})** entry must item. |
