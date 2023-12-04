@@ -806,4 +806,12 @@ Do you want to restart TQL to see if this resolves the issue?</comment>
     <value>Update wordt geïnstalleerd…</value>
     <comment>Original: Installing update...</comment>
   </data>
+  <data name="App_CouldNotRegisterHotKey" xml:space="preserve">
+    <value>De snelkoppeling kon niet geregistreerd worden</value>
+    <comment>Original: Could not register hot key</comment>
+  </data>
+  <data name="App_CouldNotRegisterHotKeySubtitle" xml:space="preserve">
+    <value>De snelkoppeling {0} kon niet geregistreerd worden. De reden is waarschijnlijk dat hij al in gebruik is. De snelkoppeling is uigeschakeld. Je kunt deze wijzigen in de configuratie.</value>
+    <comment>Original: Could not register the hot key {0}. The reason likely is that it's in use already. The hot key is disabled. You can change the hot key in the configuration.</comment>
+  </data>
 </root>
