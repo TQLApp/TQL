@@ -18,4 +18,7 @@ internal class Options
 
     [Option("pipeline")]
     public bool IsPipeline { get; set; }
+
+    [Option("all")]
+    public bool IsAll { get; set; }
 }

@@ -37,6 +37,9 @@ internal class Exporter(Options options) : Tool(options)
             return 0;
         }
 
+        if (!Options.IsAll)
+            resourceStrings.RemoveAll(p => !string.IsNullOrEmpty(p.LocalizedValue));
+
         WriteWorkbook(resourceStrings);
 
         LogWarning("Found untranslated strings");
