@@ -1,6 +1,6 @@
 ---
 testspace:
-title: Plugins / JIRA / 002 - Configuration
+title: Plugins - JIRA / 002 - Configuration
 description: Configure the JIRA plugin.
 ---
 

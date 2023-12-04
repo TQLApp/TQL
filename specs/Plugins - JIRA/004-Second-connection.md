@@ -1,6 +1,6 @@
 ---
 testspace:
-title: Plugins / JIRA / 004 - Second connection
+title: Plugins - JIRA / 004 - Second connection
 description: Configure a second connection.
 ---
 

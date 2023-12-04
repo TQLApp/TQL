@@ -1,6 +1,6 @@
 ---
 testspace:
-title: App / Quick Start / 001 - Out-of-box experience
+title: App - Quick Start / 001 - Out-of-box experience
 description: Validate the out-of-box experience of the quick start tutorial.
 ---
 

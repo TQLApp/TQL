@@ -1,6 +1,6 @@
 ---
 testspace:
-title: App / Quick Start / 007 - Install secondary tool
+title: App - Quick Start / 007 - Install secondary tool
 description:
   Validate that you can restart the tutorial to install a secondary tool.
 ---

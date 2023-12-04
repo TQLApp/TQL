@@ -1,6 +1,6 @@
 ---
 testspace:
-title: App / Quick Start / 003 - JIRA setup
+title: App - Quick Start / 003 - JIRA setup
 description: Validate that the quick start tutorial will set you up with JIRA.
 ---
 

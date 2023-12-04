@@ -1,6 +1,6 @@
 ---
 testspace:
-title: Plugins / Confluence / 002 - Configuration
+title: Plugins - Confluence / 002 - Configuration
 description: Configure the Confluence plugin.
 ---
 

@@ -1,6 +1,6 @@
 ---
 testspace:
-title: App / Quick Start / 004 - Azure DevOps setup
+title: App - Quick Start / 004 - Azure DevOps setup
 description:
   Validate that the quick start tutorial will set you up with Azure DevOps.
 ---

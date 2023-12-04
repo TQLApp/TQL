@@ -1,6 +1,6 @@
 ---
 testspace:
-title: App / Quick Start / 002 - Window features
+title: App - Quick Start / 002 - Window features
 description: Validate the features of the quick start window.
 ---
 

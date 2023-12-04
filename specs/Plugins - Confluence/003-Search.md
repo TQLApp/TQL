@@ -1,6 +1,6 @@
 ---
 testspace:
-title: Plugins / Confluence / 003 - Search
+title: Plugins - Confluence / 003 - Search
 description: Verify search features.
 ---
 

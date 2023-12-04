@@ -1,6 +1,6 @@
 ---
 testspace:
-title: Plugins / Confluence / 004 - Second connection
+title: Plugins - Confluence / 004 - Second connection
 description: Configure a second connection.
 ---
 

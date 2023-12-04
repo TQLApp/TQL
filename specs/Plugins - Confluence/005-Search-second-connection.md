@@ -1,6 +1,6 @@
 ---
 testspace:
-title: Plugins / Confluence / 005 - Search second connection
+title: Plugins - Confluence / 005 - Search second connection
 description: Verify functionality with a second connection.
 ---
 

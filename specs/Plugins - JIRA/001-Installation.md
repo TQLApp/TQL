@@ -1,6 +1,6 @@
 ---
 testspace:
-title: Plugins / JIRA / 001 - Installation
+title: Plugins - JIRA / 001 - Installation
 description: Install the JIRA plugin.
 ---
 

@@ -1,6 +1,6 @@
 ---
 testspace:
-title: Plugins / Confluence / 001 - Installation
+title: Plugins - Confluence / 001 - Installation
 description: Install the Confluence plugin.
 ---
 

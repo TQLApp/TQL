@@ -1,6 +1,6 @@
 ---
 testspace:
-title: App / Quick Start / 006 - Application functionality
+title: App - Quick Start / 006 - Application functionality
 description:
   Validate that the quick start tutorial helps you understand the applications
   functionality.

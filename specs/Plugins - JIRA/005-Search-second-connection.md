@@ -1,6 +1,6 @@
 ---
 testspace:
-title: Plugins / JIRA / 005 - Search second connection
+title: Plugins - JIRA / 005 - Search second connection
 description: Verify functionality with a second connection.
 ---
 

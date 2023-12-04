@@ -1,6 +1,6 @@
 ---
 testspace:
-title: Plugins / JIRA / 003 - Search
+title: Plugins - JIRA / 003 - Search
 description: Verify search features.
 ---
 
