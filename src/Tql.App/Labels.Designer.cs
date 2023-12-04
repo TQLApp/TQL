@@ -97,6 +97,24 @@ namespace Tql.App {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not register hot key.
+        /// </summary>
+        public static string App_CouldNotRegisterHotKey {
+            get {
+                return ResourceManager.GetString("App_CouldNotRegisterHotKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not register the hot key {0}. The reason likely is that it&apos;s in use already. The hot key is disabled. You can change the hot key in the configuration..
+        /// </summary>
+        public static string App_CouldNotRegisterHotKeySubtitle {
+            get {
+                return ResourceManager.GetString("App_CouldNotRegisterHotKeySubtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The environment has been reset..
         /// </summary>
         public static string App_ResetCompletedSuccessfully {

@@ -20,6 +20,7 @@ using Tql.App.Services.Packages.PackageStore;
 using Tql.App.Services.Telemetry;
 using Tql.App.Services.Updates;
 using Tql.App.Support;
+using Tql.Utilities;
 using Application = System.Windows.Application;
 using ConfigurationManager = Tql.App.Services.ConfigurationManager;
 using MessageBox = System.Windows.Forms.MessageBox;
@@ -164,12 +165,37 @@ public partial class App
 
         _mainWindow = _host.Services.GetRequiredService<MainWindow>();
 
+        RegisterHotKey(logger);
+
         _ipc.Received += (_, _) => _mainWindow.DoShow();
 
         splashScreen.Hide();
 
         if (!Options.IsSilent)
             _mainWindow.DoShow();
+    }
+
+    private void RegisterHotKey(ILogger<App> logger)
+    {
+        var settings = _host!.Services.GetRequiredService<Settings>();
+        var hotKey = HotKey.FromSettings(settings);
+
+        try
+        {
+            _host!.Services.GetRequiredService<HotKeyService>().RegisterHotKey(hotKey);
+        }
+        catch (Exception ex)
+        {
+            logger.LogWarning(ex, "Could not register hot key");
+
+            var ui = _host!.Services.GetRequiredService<IUI>();
+
+            ui.ShowAlert(
+                _mainWindow!,
+                Labels.App_CouldNotRegisterHotKey,
+                string.Format(Labels.App_CouldNotRegisterHotKeySubtitle, hotKey.ToLabel())
+            );
+        }
     }
 
     private bool ConfirmReset()
@@ -397,7 +423,7 @@ public partial class App
         builder.AddSingleton<PackageManager>();
         builder.AddSingleton<QuickStartManager>();
         builder.AddSingleton<QuickStartScript>();
-        builder.AddSingleton<IEncryption, Encryption>();
+        builder.AddSingleton<IEncryption, Services.Encryption>();
 
         builder.Add(ServiceDescriptor.Singleton(typeof(ICache<>), typeof(Cache<>)));
         builder.Add(ServiceDescriptor.Singleton(typeof(IMatchFactory<,>), typeof(MatchFactory<,>)));

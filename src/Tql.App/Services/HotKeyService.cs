@@ -9,12 +9,10 @@ internal class HotKeyService : IDisposable
 
     public event EventHandler? Pressed;
 
-    public HotKeyService(Settings settings)
+    public HotKeyService()
     {
         _keyboardHook = new KeyboardHook();
         _keyboardHook.KeyPressed += (_, _) => OnPressed();
-
-        RegisterHotKey(HotKey.FromSettings(settings));
     }
 
     public void RegisterHotKey(HotKey hotKey)
