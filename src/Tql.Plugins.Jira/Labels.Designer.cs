@@ -412,20 +412,29 @@ namespace Tql.Plugins.Jira {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New {0}.
+        /// </summary>
+        public static string NewMatch_NewIssueType {
+            get {
+                return ResourceManager.GetString("NewMatch_NewIssueType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Query.
+        /// </summary>
+        public static string NewMatch_NewQuery {
+            get {
+                return ResourceManager.GetString("NewMatch_NewQuery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to JIRA New.
         /// </summary>
         public static string NewsMatch_Label {
             get {
                 return ResourceManager.GetString("NewsMatch_Label", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Query.
-        /// </summary>
-        public static string NewsMatch_Query {
-            get {
-                return ResourceManager.GetString("NewsMatch_Query", resourceCulture);
             }
         }
         

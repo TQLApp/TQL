@@ -34,7 +34,7 @@ internal class NewsMatch(
                     project.Name,
                     project.Id,
                     NewMatchType.Query,
-                    Labels.NewsMatch_Query,
+                    null,
                     null,
                     null
                 )

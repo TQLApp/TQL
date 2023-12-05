@@ -115,7 +115,7 @@ namespace Tql.Plugins.AzureDevOps {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Azure Backlog.
+        ///   Looks up a localized string similar to Azure DevOps Backlog.
         /// </summary>
         public static string BacklogsMatch_Label {
             get {
@@ -151,7 +151,7 @@ namespace Tql.Plugins.AzureDevOps {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Azure Board.
+        ///   Looks up a localized string similar to Azure DevOps Board.
         /// </summary>
         public static string BoardsMatch_Label {
             get {
@@ -322,7 +322,7 @@ namespace Tql.Plugins.AzureDevOps {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Azure Dashboard.
+        ///   Looks up a localized string similar to Azure DevOps Dashboard.
         /// </summary>
         public static string DashboardsMatch_Label {
             get {
@@ -358,7 +358,7 @@ namespace Tql.Plugins.AzureDevOps {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Azure New.
+        ///   Looks up a localized string similar to Azure DevOps New.
         /// </summary>
         public static string NewsMatch_Label {
             get {
@@ -376,7 +376,7 @@ namespace Tql.Plugins.AzureDevOps {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Azure Pipeline.
+        ///   Looks up a localized string similar to Azure DevOps Pipeline.
         /// </summary>
         public static string PipelinesMatch_Label {
             get {
@@ -394,7 +394,7 @@ namespace Tql.Plugins.AzureDevOps {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Azure Query.
+        ///   Looks up a localized string similar to Azure DevOps Query.
         /// </summary>
         public static string QueriesMatch_Label {
             get {
@@ -421,7 +421,7 @@ namespace Tql.Plugins.AzureDevOps {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Azure Repository.
+        ///   Looks up a localized string similar to Azure DevOps Repository.
         /// </summary>
         public static string RepositoriesMatch_Label {
             get {
@@ -448,7 +448,7 @@ namespace Tql.Plugins.AzureDevOps {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Azure Work Item.
+        ///   Looks up a localized string similar to Azure DevOps Work Item.
         /// </summary>
         public static string WorkItemsMatch_Label {
             get {

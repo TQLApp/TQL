@@ -87,8 +87,8 @@
     <comment>Original: Find backlogs</comment>
   </data>
   <data name="BacklogsMatch_Label" xml:space="preserve">
-    <value>Azure Backlog</value>
-    <comment>Original: Azure Backlog</comment>
+    <value>Azure DevOps Backlog</value>
+    <comment>Original: Azure DevOps Backlog</comment>
   </data>
   <data name="BoardMatch_Label" xml:space="preserve">
     <value>{0} Board</value>
@@ -103,8 +103,8 @@
     <comment>Original: Find boards</comment>
   </data>
   <data name="BoardsMatch_Label" xml:space="preserve">
-    <value>Azure Board</value>
-    <comment>Original: Azure Board</comment>
+    <value>Azure DevOps Board</value>
+    <comment>Original: Azure DevOps Board</comment>
   </data>
   <data name="Button_Add" xml:space="preserve">
     <value>Nieuw</value>
@@ -147,8 +147,8 @@
     <comment>Original: Find dashboards</comment>
   </data>
   <data name="DashboardsMatch_Label" xml:space="preserve">
-    <value>Azure Dashboard</value>
-    <comment>Original: Azure Dashboard</comment>
+    <value>Azure DevOps Dashboard</value>
+    <comment>Original: Azure DevOps Dashboard</comment>
   </data>
   <data name="NewMatch_NewIssueType" xml:space="preserve">
     <value>Nieuwe {0}</value>
@@ -163,24 +163,24 @@
     <comment>Original: Find item to create</comment>
   </data>
   <data name="NewsMatch_Label" xml:space="preserve">
-    <value>Azure Nieuw</value>
-    <comment>Original: Azure New</comment>
+    <value>Azure DevOps New</value>
+    <comment>Original: Azure DevOps New</comment>
   </data>
   <data name="PipelinesMatch_SearchHint" xml:space="preserve">
     <value>Vind pipelines</value>
     <comment>Original: Find pipelines</comment>
   </data>
   <data name="PipelinesMatch_Label" xml:space="preserve">
-    <value>Azure Pipeline</value>
-    <comment>Original: Azure Pipeline</comment>
+    <value>Azure DevOps Pipeline</value>
+    <comment>Original: Azure DevOps Pipeline</comment>
   </data>
   <data name="QueriesMatch_SearchHint" xml:space="preserve">
     <value>Vind queries</value>
     <comment>Original: Find queries</comment>
   </data>
   <data name="QueriesMatch_Label" xml:space="preserve">
-    <value>Azure Query</value>
-    <comment>Original: Azure Query</comment>
+    <value>Azure DevOps Query</value>
+    <comment>Original: Azure DevOps Query</comment>
   </data>
   <data name="QueryMatch_SearchHint" xml:space="preserve">
     <value>Vind work items</value>
@@ -191,8 +191,8 @@
     <comment>Original: Find repositories</comment>
   </data>
   <data name="RepositoriesMatch_Label" xml:space="preserve">
-    <value>Azure Repository</value>
-    <comment>Original: Azure Repository</comment>
+    <value>Azure DevOps Repository</value>
+    <comment>Original: Azure DevOps Repository</comment>
   </data>
   <data name="RepositoryMatch_FindFiles" xml:space="preserve">
     <value>Zoek bestanden</value>
@@ -203,8 +203,8 @@
     <comment>Original: Find work items</comment>
   </data>
   <data name="WorkItemsMatch_Label" xml:space="preserve">
-    <value>Azure Work Item</value>
-    <comment>Original: Azure Work Item</comment>
+    <value>Azure DevOps Work Item</value>
+    <comment>Original: Azure DevOps Work Item</comment>
   </data>
   <data name="Button_Documentation" xml:space="preserve">
     <value>Documentatie</value>
