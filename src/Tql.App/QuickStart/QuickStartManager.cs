@@ -223,17 +223,20 @@ internal class QuickStartManager
             x -= windowSize.Width / 2;
             y = ownerBounds.Bottom + (QuickStartAdorner.Distance - 1) * scaleY;
 
-            // Ensure that the quick start window is visible.
-            var bottom = y + windowSize.Height + edgeDistance;
-            var overhang = bottom - workingArea.Bottom;
-            if (overhang > 0)
+            if (initialUpdate)
             {
-                var availableSpace = ownerWindowBounds.Top - (workingArea.Top + edgeDistance);
-                if (overhang > availableSpace)
-                    overhang = availableSpace;
+                // Ensure that the quick start window is visible.
+                var bottom = y + windowSize.Height + edgeDistance;
+                var overhang = bottom - workingArea.Bottom;
+                if (overhang > 0)
+                {
+                    var availableSpace = ownerWindowBounds.Top - (workingArea.Top + edgeDistance);
+                    if (overhang > availableSpace)
+                        overhang = availableSpace;
 
-                y -= overhang;
-                ownerWindow.Top -= overhang / scaleY;
+                    y -= overhang;
+                    ownerWindow.Top -= overhang / scaleY;
+                }
             }
         }
         else if (mode.HasFlag(QuickStartPopupMode.Modal))
