@@ -2,10 +2,11 @@
 using Tql.Abstractions;
 using Tql.App.Services.Database;
 using Tql.App.Support;
+using Tql.Utilities;
 
 namespace Tql.App.Search;
 
-internal partial class SearchContext : ISearchContext, IDisposable
+internal class SearchContext : ISearchContext, IDisposable
 {
     private readonly ConcurrentDictionary<IMatch, SearchResult> _results =
         new(ReferenceEqualityComparer<IMatch>.Instance);
@@ -243,6 +244,13 @@ internal partial class SearchContext : ISearchContext, IDisposable
                 if (result != 0)
                     return result;
             }
+
+            var aPathDepth = MatchText.GetPathDepth(a.Text);
+            var bPathDepth = MatchText.GetPathDepth(b.Text);
+
+            result = aPathDepth.CompareTo(bPathDepth);
+            if (result != 0)
+                return result;
 
             result = string.Compare(
                 a.SimpleText,
