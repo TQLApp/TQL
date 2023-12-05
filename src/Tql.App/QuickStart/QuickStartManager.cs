@@ -178,8 +178,17 @@ internal class QuickStartManager
         bool initialUpdate
     )
     {
-        var ownerWindow =
-            Window.GetWindow(owner) ?? throw new InvalidOperationException("Cannot resolve window");
+        var ownerWindow = Window.GetWindow(owner);
+        if (ownerWindow == null)
+        {
+            // This happens if the user breaks the quick start flow. He'll
+            // take a step that makes the tutorial create a new window anchored
+            // to a control, and then deviate from the tutorial.
+            //
+            // We can't do too much now, so we don't do anything.
+            return;
+        }
+
         var ownerIsControl = ownerWindow != owner;
 
         // Get all bounds and sizes, and the screen we're working with,
@@ -223,17 +232,20 @@ internal class QuickStartManager
             x -= windowSize.Width / 2;
             y = ownerBounds.Bottom + (QuickStartAdorner.Distance - 1) * scaleY;
 
-            // Ensure that the quick start window is visible.
-            var bottom = y + windowSize.Height + edgeDistance;
-            var overhang = bottom - workingArea.Bottom;
-            if (overhang > 0)
+            if (initialUpdate)
             {
-                var availableSpace = ownerWindowBounds.Top - (workingArea.Top + edgeDistance);
-                if (overhang > availableSpace)
-                    overhang = availableSpace;
+                // Ensure that the quick start window is visible.
+                var bottom = y + windowSize.Height + edgeDistance;
+                var overhang = bottom - workingArea.Bottom;
+                if (overhang > 0)
+                {
+                    var availableSpace = ownerWindowBounds.Top - (workingArea.Top + edgeDistance);
+                    if (overhang > availableSpace)
+                        overhang = availableSpace;
 
-                y -= overhang;
-                ownerWindow.Top -= overhang / scaleY;
+                    y -= overhang;
+                    ownerWindow.Top -= overhang / scaleY;
+                }
             }
         }
         else if (mode.HasFlag(QuickStartPopupMode.Modal))
