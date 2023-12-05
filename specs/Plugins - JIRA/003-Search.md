@@ -87,29 +87,29 @@ description: Verify search features.
 
 ## Create query
 
-| Action                               | Expected result                                                             |
-| ------------------------------------ | --------------------------------------------------------------------------- |
-| Open the app.                        |                                                                             |
-| **Enter** the **JIRA New** category. | A list of things to create appears.                                         |
-| Type in `query`.                     | One or more **... › Query** categories appear.                              |
-| **Activate** a **... › Query** item. | The query editor opens with the selected project pre-selected in the query. |
+| Action                                   | Expected result                                                             |
+| ---------------------------------------- | --------------------------------------------------------------------------- |
+| Open the app.                            |                                                                             |
+| **Enter** the **JIRA New** category.     | A list of things to create appears.                                         |
+| **Type** in `query`.                     | One or more **... › New Query** categories appear.                          |
+| **Activate** a **... › New Query** item. | The query editor opens with the selected project pre-selected in the query. |
 
 ## Create issue
 
-| Action                               | Expected result                                |
-| ------------------------------------ | ---------------------------------------------- |
-| Open the app.                        |                                                |
-| **Enter** the **JIRA New** category. | A list of things to create appears.            |
-| Type in `story`.                     | One or more **... › Story** categories appear. |
-| **Activate** a **... › Story** item  | The new story editor opens.                    |
+| Action                                  | Expected result                                    |
+| --------------------------------------- | -------------------------------------------------- |
+| Open the app.                           |                                                    |
+| **Enter** the **JIRA New** category.    | A list of things to create appears.                |
+| **Type** in `story`.                    | One or more **... › New Story** categories appear. |
+| **Activate** a **... › New Story** item | The new story editor opens.                        |
 
 ## Find project
 
-| Action                               | Expected result                  |
-| ------------------------------------ | -------------------------------- |
-| Open the app.                        |                                  |
-| Enter the **JIRA Project** category. | A list of projects appear.       |
-| **Activate** a project.              | The board for the project opens. |
+| Action                                   | Expected result                  |
+| ---------------------------------------- | -------------------------------- |
+| Open the app.                            |                                  |
+| **Enter** the **JIRA Project** category. | A list of projects appear.       |
+| **Activate** a project.                  | The board for the project opens. |
 
 ## Find issues in project
 
