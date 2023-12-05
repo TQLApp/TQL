@@ -1,6 +1,4 @@
 ﻿using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
-using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
-using Microsoft.VisualStudio.Services.TestManagement.TestPlanning.WebApi;
 using Tql.Abstractions;
 using Tql.Plugins.AzureDevOps.Data;
 using Tql.Plugins.AzureDevOps.Services;
