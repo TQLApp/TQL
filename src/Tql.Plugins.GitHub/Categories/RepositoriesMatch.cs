@@ -33,7 +33,34 @@ internal class RepositoriesMatch(
         CancellationToken cancellationToken
     )
     {
-        if (dto.Scope == RootItemScope.Global && text.IsWhiteSpace())
+        if (dto.Scope == RootItemScope.User)
+        {
+            var data = await cache.Get();
+            var connection = data.GetConnection(dto.Id);
+
+            if (text.IsWhiteSpace())
+            {
+                return connection
+                    .Repositories
+                    .OrderByDescending(p => p.UpdatedAt)
+                    .Select(CreateMatch);
+            }
+
+            return context.Filter(connection.Repositories.Select(CreateMatch));
+
+            RepositoryMatch CreateMatch(GitHubRepository repository)
+            {
+                return factory.Create(
+                    new RepositoryMatchDto(
+                        dto.Id,
+                        $"{repository.Owner}/{repository.Name}",
+                        repository.HtmlUrl
+                    )
+                );
+            }
+        }
+
+        if (text.IsWhiteSpace())
             return Array.Empty<IMatch>();
 
         await context.DebounceDelay(cancellationToken);
@@ -43,12 +70,6 @@ internal class RepositoriesMatch(
         var request = new SearchRepositoriesRequest(
             await GitHubUtils.GetSearchPrefix(dto, cache) + text
         );
-
-        if (text.IsWhiteSpace())
-        {
-            request.SortField = RepoSearchSort.Updated;
-            request.Order = SortDirection.Descending;
-        }
 
         var response = await client.Search.SearchRepo(request);
 

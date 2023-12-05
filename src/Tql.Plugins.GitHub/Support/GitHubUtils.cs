@@ -34,13 +34,24 @@ internal static class GitHubUtils
         if (connectionData == null)
             return string.Empty;
 
+        var userName = connectionData.UserName;
+
+        var organizations = default(ImmutableArray<string>?);
+        if (includeOrganizations)
+            organizations = connectionData.Organizations;
+
+        return GetSearchPrefix(userName, organizations);
+    }
+
+    public static string GetSearchPrefix(string userName, ImmutableArray<string>? organizations)
+    {
         var sb = StringBuilderCache.Acquire();
 
-        sb.Append("user:").Append(connectionData.UserName).Append(' ');
+        sb.Append("user:").Append(userName).Append(' ');
 
-        if (includeOrganizations)
+        if (organizations.HasValue)
         {
-            foreach (var organization in connectionData.Organizations)
+            foreach (var organization in organizations.Value)
             {
                 sb.Append("org:").Append(organization).Append(' ');
             }

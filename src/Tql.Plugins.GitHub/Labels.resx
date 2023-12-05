@@ -219,4 +219,31 @@
   <data name="ConnectionEditWindow_Title" xml:space="preserve">
     <value>Edit Connection</value>
   </data>
+  <data name="NewMatch_ImportRepository" xml:space="preserve">
+    <value>Import Repository</value>
+  </data>
+  <data name="NewMatch_NewCodespace" xml:space="preserve">
+    <value>New Codespace</value>
+  </data>
+  <data name="NewMatch_NewGist" xml:space="preserve">
+    <value>New Gist</value>
+  </data>
+  <data name="NewMatch_NewIssue" xml:space="preserve">
+    <value>New Issue</value>
+  </data>
+  <data name="NewMatch_NewOrganization" xml:space="preserve">
+    <value>New Organization</value>
+  </data>
+  <data name="NewMatch_NewPullRequest" xml:space="preserve">
+    <value>New Pull Request</value>
+  </data>
+  <data name="NewMatch_NewRepository" xml:space="preserve">
+    <value>New Repository</value>
+  </data>
+  <data name="NewsMatch_Label" xml:space="preserve">
+    <value>GitHub New</value>
+  </data>
+  <data name="NewsMatch_SearchHint" xml:space="preserve">
+    <value>Find item to create</value>
+  </data>
 </root>
