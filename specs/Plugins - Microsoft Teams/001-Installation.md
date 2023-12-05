@@ -4,8 +4,6 @@ title: Plugins - Microsoft Teams / 001 - Installation
 description: Install the Microsoft Teams plugin.
 ---
 
----
-
 {% if page %}{% assign spec = page %}{% endif %}
 
 # {{ spec.title }}
