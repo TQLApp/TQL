@@ -94,6 +94,24 @@ public static class MatchText
     }
 
     /// <summary>
+    /// Calculates the path depth of the provided label.
+    /// </summary>
+    /// <param name="label">Label to calculate the path depth for.</param>
+    /// <returns>Path depth of the label.</returns>
+    public static int GetPathDepth(string label)
+    {
+        var depth = 1;
+
+        foreach (var c in label)
+        {
+            if (c == '›')
+                depth++;
+        }
+
+        return depth;
+    }
+
+    /// <summary>
     /// Formats a match label that is local to a connection.
     /// </summary>
     /// <remarks>

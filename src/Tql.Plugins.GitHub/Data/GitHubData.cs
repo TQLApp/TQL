@@ -1,6 +1,9 @@
 ﻿namespace Tql.Plugins.GitHub.Data;
 
-internal record GitHubData(ImmutableArray<GitHubConnectionData> Connections);
+internal record GitHubData(ImmutableArray<GitHubConnectionData> Connections)
+{
+    public GitHubConnectionData GetConnection(Guid id) => Connections.Single(p => p.Id == id);
+}
 
 internal record GitHubConnectionData(
     Guid Id,

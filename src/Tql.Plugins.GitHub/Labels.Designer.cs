@@ -295,6 +295,87 @@ namespace Tql.Plugins.GitHub {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Import Repository.
+        /// </summary>
+        public static string NewMatch_ImportRepository {
+            get {
+                return ResourceManager.GetString("NewMatch_ImportRepository", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Codespace.
+        /// </summary>
+        public static string NewMatch_NewCodespace {
+            get {
+                return ResourceManager.GetString("NewMatch_NewCodespace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Gist.
+        /// </summary>
+        public static string NewMatch_NewGist {
+            get {
+                return ResourceManager.GetString("NewMatch_NewGist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Issue.
+        /// </summary>
+        public static string NewMatch_NewIssue {
+            get {
+                return ResourceManager.GetString("NewMatch_NewIssue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Organization.
+        /// </summary>
+        public static string NewMatch_NewOrganization {
+            get {
+                return ResourceManager.GetString("NewMatch_NewOrganization", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Pull Request.
+        /// </summary>
+        public static string NewMatch_NewPullRequest {
+            get {
+                return ResourceManager.GetString("NewMatch_NewPullRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Repository.
+        /// </summary>
+        public static string NewMatch_NewRepository {
+            get {
+                return ResourceManager.GetString("NewMatch_NewRepository", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GitHub New.
+        /// </summary>
+        public static string NewsMatch_Label {
+            get {
+                return ResourceManager.GetString("NewsMatch_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find item to create.
+        /// </summary>
+        public static string NewsMatch_SearchHint {
+            get {
+                return ResourceManager.GetString("NewsMatch_SearchHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Find pull requests.
         /// </summary>
         public static string PullRequestsMatch_SearchHint {

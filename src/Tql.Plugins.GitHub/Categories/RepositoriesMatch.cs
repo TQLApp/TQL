@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Octokit;
+﻿using Octokit;
 using Tql.Abstractions;
 using Tql.Plugins.GitHub.Data;
 using Tql.Plugins.GitHub.Services;
@@ -37,7 +36,7 @@ internal class RepositoriesMatch(
         if (dto.Scope == RootItemScope.User)
         {
             var data = await cache.Get();
-            var connection = data.Connections.Single(p => p.Id == dto.Id);
+            var connection = data.GetConnection(dto.Id);
 
             if (text.IsWhiteSpace())
             {
