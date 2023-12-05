@@ -194,4 +194,40 @@
     <value>Bewerk Verbinding</value>
     <comment>Original: Edit Connection</comment>
   </data>
+  <data name="NewMatch_ImportRepository" xml:space="preserve">
+    <value>Importeer Repository</value>
+    <comment>Original: Import Repository</comment>
+  </data>
+  <data name="NewMatch_NewCodespace" xml:space="preserve">
+    <value>Nieuwe Codespace</value>
+    <comment>Original: New Codespace</comment>
+  </data>
+  <data name="NewMatch_NewGist" xml:space="preserve">
+    <value>Nieuwe Gist</value>
+    <comment>Original: New Gist</comment>
+  </data>
+  <data name="NewMatch_NewIssue" xml:space="preserve">
+    <value>Nieuw Issue</value>
+    <comment>Original: New Issue</comment>
+  </data>
+  <data name="NewMatch_NewOrganization" xml:space="preserve">
+    <value>Nieuwe Organisatie</value>
+    <comment>Original: New Organization</comment>
+  </data>
+  <data name="NewMatch_NewPullRequest" xml:space="preserve">
+    <value>Nieuwe Pull Request</value>
+    <comment>Original: New Pull Request</comment>
+  </data>
+  <data name="NewMatch_NewRepository" xml:space="preserve">
+    <value>Nieuwe Repository</value>
+    <comment>Original: New Repository</comment>
+  </data>
+  <data name="NewsMatch_Label" xml:space="preserve">
+    <value>GitHub Nieuw</value>
+    <comment>Original: GitHub New</comment>
+  </data>
+  <data name="NewsMatch_SearchHint" xml:space="preserve">
+    <value>Vind item om aan te maken</value>
+    <comment>Original: Find item to create</comment>
+  </data>
 </root>
