@@ -14,11 +14,11 @@ description: Verify search features.
 
 ## Find board
 
-| Action                             | Expected result         |
-| ---------------------------------- | ----------------------- |
-| Open the app.                      |                         |
-| Enter the **JIRA Board** category. | A list of boards shows. |
-| **Activate** a board.              | The board opens.        |
+| Action                                 | Expected result         |
+| -------------------------------------- | ----------------------- |
+| Open the app.                          |                         |
+| **Enter** the **JIRA Board** category. | A list of boards shows. |
+| **Activate** a board.                  | The board opens.        |
 
 ## Find board quick filter
 
@@ -60,11 +60,11 @@ description: Verify search features.
 
 ## Find filter
 
-| Action                              | Expected result         |
-| ----------------------------------- | ----------------------- |
-| Open the app.                       |                         |
-| Enter the **JIRA Filter** category. | A list of filters show. |
-| Activate a filter.                  | The filter opens.       |
+| Action                                  | Expected result         |
+| --------------------------------------- | ----------------------- |
+| Open the app.                           |                         |
+| **Enter** the **JIRA Filter** category. | A list of filters show. |
+| **Activate** a filter.                  | The filter opens.       |
 
 ## Find issue in a filter
 
@@ -113,9 +113,9 @@ description: Verify search features.
 
 ## Find issues in project
 
-| Action                               | Expected result                                     |
-| ------------------------------------ | --------------------------------------------------- |
-| Open the app.                        |                                                     |
-| Enter the **JIRA Project** category. | A list of projects show.                            |
-| **Enter** a project.                 | All issues of the project show, last updated first. |
-| **Type** a search term.              | All issues matching the search term show.           |
+| Action                                   | Expected result                                     |
+| ---------------------------------------- | --------------------------------------------------- |
+| Open the app.                            |                                                     |
+| **Enter** the **JIRA Project** category. | A list of projects show.                            |
+| **Enter** a project.                     | All issues of the project show, last updated first. |
+| **Type** a search term.                  | All issues matching the search term show.           |
