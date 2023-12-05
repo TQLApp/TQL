@@ -139,7 +139,7 @@
     <value>Find backlogs</value>
   </data>
   <data name="BacklogsMatch_Label" xml:space="preserve">
-    <value>Azure Backlog</value>
+    <value>Azure DevOps Backlog</value>
   </data>
   <data name="BoardMatch_Label" xml:space="preserve">
     <value>{0} Board</value>
@@ -151,7 +151,7 @@
     <value>Find boards</value>
   </data>
   <data name="BoardsMatch_Label" xml:space="preserve">
-    <value>Azure Board</value>
+    <value>Azure DevOps Board</value>
   </data>
   <data name="Button_Add" xml:space="preserve">
     <value>Add</value>
@@ -184,7 +184,7 @@
     <value>Find dashboards</value>
   </data>
   <data name="DashboardsMatch_Label" xml:space="preserve">
-    <value>Azure Dashboard</value>
+    <value>Azure DevOps Dashboard</value>
   </data>
   <data name="NewMatch_NewIssueType" xml:space="preserve">
     <value>New {0}</value>
@@ -196,19 +196,19 @@
     <value>Find item to create</value>
   </data>
   <data name="NewsMatch_Label" xml:space="preserve">
-    <value>Azure New</value>
+    <value>Azure DevOps New</value>
   </data>
   <data name="PipelinesMatch_SearchHint" xml:space="preserve">
     <value>Find pipelines</value>
   </data>
   <data name="PipelinesMatch_Label" xml:space="preserve">
-    <value>Azure Pipeline</value>
+    <value>Azure DevOps Pipeline</value>
   </data>
   <data name="QueriesMatch_SearchHint" xml:space="preserve">
     <value>Find queries</value>
   </data>
   <data name="QueriesMatch_Label" xml:space="preserve">
-    <value>Azure Query</value>
+    <value>Azure DevOps Query</value>
   </data>
   <data name="QueryMatch_SearchHint" xml:space="preserve">
     <value>Find work items</value>
@@ -217,7 +217,7 @@
     <value>Find repositories</value>
   </data>
   <data name="RepositoriesMatch_Label" xml:space="preserve">
-    <value>Azure Repository</value>
+    <value>Azure DevOps Repository</value>
   </data>
   <data name="RepositoryMatch_FindFiles" xml:space="preserve">
     <value>Find files</value>
@@ -226,7 +226,7 @@
     <value>Find work items</value>
   </data>
   <data name="WorkItemsMatch_Label" xml:space="preserve">
-    <value>Azure Work Item</value>
+    <value>Azure DevOps Work Item</value>
   </data>
   <data name="Button_Documentation" xml:space="preserve">
     <value>Documentation</value>

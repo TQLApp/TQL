@@ -194,10 +194,6 @@
     <value>Tijdlijn</value>
     <comment>Original: Timeline</comment>
   </data>
-  <data name="NewsMatch_Query" xml:space="preserve">
-    <value>Query</value>
-    <comment>Original: Query</comment>
-  </data>
   <data name="NewsMatch_SearchHint" xml:space="preserve">
     <value>Vind item om aan te maken</value>
     <comment>Original: Find item to create</comment>
@@ -241,5 +237,13 @@
   <data name="ConnectionEditWindow_Title" xml:space="preserve">
     <value>Bewerk Verbinding</value>
     <comment>Original: Edit Connection</comment>
+  </data>
+  <data name="NewMatch_NewIssueType" xml:space="preserve">
+    <value>Nieuwe {0}</value>
+    <comment>Original: New {0}</comment>
+  </data>
+  <data name="NewMatch_NewQuery" xml:space="preserve">
+    <value>Nieuwe Query</value>
+    <comment>Original: New Query</comment>
   </data>
 </root>

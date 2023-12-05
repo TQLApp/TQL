@@ -13,7 +13,18 @@ internal class NewMatch : IRunnableMatch, ISerializableMatch, ICopyableMatch
     private readonly NewMatchDto _dto;
     private readonly ICache<JiraData> _cache;
 
-    public string Text => MatchText.Path(_dto.ProjectName, _dto.Name);
+    public string Text =>
+        _dto.Type switch
+        {
+            NewMatchType.Issue
+                => MatchText.Path(
+                    _dto.ProjectName,
+                    string.Format(Labels.NewMatch_NewIssueType, _dto.Name)
+                ),
+            NewMatchType.Query => MatchText.Path(_dto.ProjectName, Labels.NewMatch_NewQuery),
+            _ => throw new ArgumentOutOfRangeException()
+        };
+
     public ImageSource Icon { get; }
     public MatchTypeId TypeId => TypeIds.New;
 
@@ -72,7 +83,7 @@ internal record NewMatchDto(
     string ProjectName,
     string ProjectId,
     NewMatchType Type,
-    string Name,
+    string? Name,
     string? Id,
     string? IconUrl
 );

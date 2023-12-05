@@ -44,18 +44,18 @@ internal class ProjectMatch(
         CancellationToken cancellationToken
     )
     {
-        if (text.IsWhiteSpace())
-            return Array.Empty<IMatch>();
-
         await context.DebounceDelay(cancellationToken);
 
         var client = configurationManager.GetClient(dto.Url);
 
-        var issues = await client.SearchIssues(
-            $"project = \"{dto.Key}\" and text ~ \"{text.Replace("\"", "\\\"")}*\"",
-            100,
-            cancellationToken
-        );
+        var jql = $"project = \"{dto.Key}\" ";
+
+        if (text.IsWhiteSpace())
+            jql += "order by updated desc";
+        else
+            jql += $"and text ~ \"{text.Replace("\"", "\\\"")}*\"";
+
+        var issues = await client.SearchIssues(jql, 100, cancellationToken);
 
         return IssueUtils.CreateMatches(dto.Url, issues, factory);
     }

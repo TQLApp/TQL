@@ -4,13 +4,14 @@ namespace Tql.Plugins.Demo.Services;
 
 internal static class PersonNames
 {
-    public static IEnumerable<Person> Generate() => Generate(new Random());
+    public static IEnumerable<Person> Generate(string locale = "en") =>
+        Generate(new Random(), locale);
 
-    public static IEnumerable<Person> Generate(Random random)
+    public static IEnumerable<Person> Generate(Random random, string locale = "en")
     {
         Randomizer.Seed = random;
 
-        var faker = new Faker<Person>().CustomInstantiator(
+        var faker = new Faker<Person>(locale).CustomInstantiator(
             p => new Person(p.Name.FirstName(), p.Name.LastName())
         );
 
