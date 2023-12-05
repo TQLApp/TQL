@@ -20,7 +20,7 @@ description: Verify search features.
 | Enter the **Azure DevOps Backlog** category. | A list of backlogs shows. |
 | **Activate** a backlog.                      | The backlog opens.        |
 
-## Find issue in a backlog
+## Find work item in a backlog
 
 | Action                                           | Expected result                               |
 | ------------------------------------------------ | --------------------------------------------- |
@@ -38,7 +38,7 @@ description: Verify search features.
 | **Enter** the **Azure DevOps Board** category. | A list of boards shows. |
 | **Activate** a board.                          | The board opens.        |
 
-## Find issue in a board
+## Find work item in a board
 
 | Action                                         | Expected result                               |
 | ---------------------------------------------- | --------------------------------------------- |

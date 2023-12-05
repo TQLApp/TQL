@@ -15,11 +15,11 @@ description: Verify functionality with a second connection.
 
 ## Verify history of the connections
 
-| Action                                                                       | Expected result                                       |
-| ---------------------------------------------------------------------------- | ----------------------------------------------------- |
-| Open the app.                                                                |                                                       |
-| **Enter** the **Azure DevOps Board ({{ azure_devops_name }})** category.     | The previously selected board appears in the history. |
-| **Enter** the **Azure DevOps Board ({{ azure_devops_alt_name }})** category. | No history appears.                                   |
+| Action                                                                       | Expected result                                     |
+| ---------------------------------------------------------------------------- | --------------------------------------------------- |
+| Open the app.                                                                |                                                     |
+| **Enter** the **Azure DevOps Board ({{ azure_devops_name }})** category.     | The previously selected board shows in the history. |
+| **Enter** the **Azure DevOps Board ({{ azure_devops_alt_name }})** category. | No history shows.                                   |
 
 ## Delete connection
 
@@ -32,7 +32,7 @@ description: Verify functionality with a second connection.
 
 ## Verify single connection
 
-| Action                        | Expected result                                                                                                                                                          |
-| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Open the app.                 |                                                                                                                                                                          |
-| Type in `azure devops board`. | Only a **Azure DevOps Board** item must appear instead of the **Azure DevOps Board ({{ azure_devops_name }})** and **Azure DevOps Board ({{ azure_devops_alt_name }})**. |
+| Action                        | Expected result                                                                                                                                                        |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Open the app.                 |                                                                                                                                                                        |
+| Type in `azure devops board`. | Only a **Azure DevOps Board** item must show instead of the **Azure DevOps Board ({{ azure_devops_name }})** and **Azure DevOps Board ({{ azure_devops_alt_name }})**. |

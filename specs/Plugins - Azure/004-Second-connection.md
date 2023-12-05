@@ -29,10 +29,10 @@ description: Configure a second connection.
 
 ## Verify multiple connections
 
-| Action           | Expected result                                                                                                |
-| ---------------- | -------------------------------------------------------------------------------------------------------------- |
-| Open the app.    |                                                                                                                |
-| Type in `azure`. | One **Azure Portal ({{ azure_name }})** item and one **Azure Portal ({{ azure_alt_name }})** item must appear. |
+| Action           | Expected result                                                                                              |
+| ---------------- | ------------------------------------------------------------------------------------------------------------ |
+| Open the app.    |                                                                                                              |
+| Type in `azure`. | One **Azure Portal ({{ azure_name }})** item and one **Azure Portal ({{ azure_alt_name }})** item must show. |
 
 ## Complete interactive authentication
 
@@ -42,4 +42,4 @@ description: Configure a second connection.
 | **Enter** the **Azure Portal ({{ azure_alt_name }})** category. |                                        |
 | Type in `tql`.                                                  | A dialog shows requesting credentials. |
 | Click **OK**.                                                   |                                        |
-| Complete authentication with Azure.                             | Items matching the search term appear. |
+| Complete authentication with Azure.                             | Items matching the search term show.   |

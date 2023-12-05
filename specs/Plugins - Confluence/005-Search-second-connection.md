@@ -15,11 +15,11 @@ description: Verify functionality with a second connection.
 
 ## Verify history of the connections
 
-| Action                                                                    | Expected result                                                                             |
-| ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| Open the app.                                                             |                                                                                             |
-| **Enter** the **Confluence Search ({{ confluence_name }})** category.     | The **Pieter van Ginkel** and **Pieter van Ginkel › Overview** items appear in the history. |
-| **Enter** the **Confluence Search ({{ confluence_alt_name }})** category. | No history appears.                                                                         |
+| Action                                                                    | Expected result                                                                           |
+| ------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| Open the app.                                                             |                                                                                           |
+| **Enter** the **Confluence Search ({{ confluence_name }})** category.     | The **Pieter van Ginkel** and **Pieter van Ginkel › Overview** items show in the history. |
+| **Enter** the **Confluence Search ({{ confluence_alt_name }})** category. | No history shows.                                                                         |
 
 ## Delete connection
 
@@ -32,7 +32,7 @@ description: Verify functionality with a second connection.
 
 ## Verify single connection
 
-| Action                | Expected result                            |
-| --------------------- | ------------------------------------------ |
-| Open the app.         |                                            |
-| Type in `confluence`. | Only a **Confluence Search** item appears. |
+| Action                | Expected result                          |
+| --------------------- | ---------------------------------------- |
+| Open the app.         |                                          |
+| Type in `confluence`. | Only a **Confluence Search** item shows. |

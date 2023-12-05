@@ -44,8 +44,8 @@ description: Configure the Azure plugin.
 | Action                                   | Expected result                        |
 | ---------------------------------------- | -------------------------------------- |
 | Open the app.                            |                                        |
-| Type in `azure`.                         | The **Azure Portal** category appears. |
-| **Enter** the **Azure Portal** category. | No items appear.                       |
+| Type in `azure`.                         | The **Azure Portal** category shows.   |
+| **Enter** the **Azure Portal** category. | No items show.                         |
 | Type in `tql`.                           | A dialog shows requesting credentials. |
 | Click **OK**.                            |                                        |
-| Complete authentication with Azure.      | Items matching the search term appear. |
+| Complete authentication with Azure.      | Items matching the search term show.   |

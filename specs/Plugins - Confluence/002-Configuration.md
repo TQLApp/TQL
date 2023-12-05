@@ -45,9 +45,9 @@ description: Configure the Confluence plugin.
 
 ## Validate authentication
 
-| Action                                        | Expected result                             |
-| --------------------------------------------- | ------------------------------------------- |
-| Open the app.                                 |                                             |
-| Type in `confluence`.                         | The **Confluence Search** category appears. |
-| **Enter** the **Confluence Search** category. | No items appear.                            |
-| Type in `pieter`.                             | At least one search result appears.         |
+| Action                                        | Expected result                           |
+| --------------------------------------------- | ----------------------------------------- |
+| Open the app.                                 |                                           |
+| Type in `confluence`.                         | The **Confluence Search** category shows. |
+| **Enter** the **Confluence Search** category. | No items show.                            |
+| Type in `pieter`.                             | At least one search result shows.         |

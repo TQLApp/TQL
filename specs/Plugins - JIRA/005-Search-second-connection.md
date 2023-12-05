@@ -15,11 +15,11 @@ description: Verify functionality with a second connection.
 
 ## Verify history of the connections
 
-| Action                                                       | Expected result                                       |
-| ------------------------------------------------------------ | ----------------------------------------------------- |
-| Open the app.                                                |                                                       |
-| **Enter** the **JIRA Board ({{ jira_name }})** category.     | The previously selected board appears in the history. |
-| **Enter** the **JIRA Board ({{ jira_alt_name }})** category. | No history appears.                                   |
+| Action                                                       | Expected result                                     |
+| ------------------------------------------------------------ | --------------------------------------------------- |
+| Open the app.                                                |                                                     |
+| **Enter** the **JIRA Board ({{ jira_name }})** category.     | The previously selected board shows in the history. |
+| **Enter** the **JIRA Board ({{ jira_alt_name }})** category. | No history shows.                                   |
 
 ## Delete connection
 
@@ -32,7 +32,7 @@ description: Verify functionality with a second connection.
 
 ## Verify single connection
 
-| Action                | Expected result                                                                                                                  |
-| --------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| Open the app.         |                                                                                                                                  |
-| Type in `jira board`. | Only a **JIRA Board** item must appear instead of the **JIRA Board ({{ jira_name }})** and **JIRA Board ({{ jira_alt_name }})**. |
+| Action                | Expected result                                                                                                                |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| Open the app.         |                                                                                                                                |
+| Type in `jira board`. | Only a **JIRA Board** item must show instead of the **JIRA Board ({{ jira_name }})** and **JIRA Board ({{ jira_alt_name }})**. |

@@ -43,8 +43,8 @@ description: Configure the Azure DevOps plugin.
 
 ## Validate authentication
 
-| Action                                         | Expected result                              |
-| ---------------------------------------------- | -------------------------------------------- |
-| Open the app.                                  |                                              |
-| Type in `azure devops`.                        | The **Azure DevOps Board** category appears. |
-| **Enter** the **Azure DevOps Board** category. | A list of boards appears.                    |
+| Action                                         | Expected result                            |
+| ---------------------------------------------- | ------------------------------------------ |
+| Open the app.                                  |                                            |
+| Type in `azure devops`.                        | The **Azure DevOps Board** category shows. |
+| **Enter** the **Azure DevOps Board** category. | A list of boards shows.                    |

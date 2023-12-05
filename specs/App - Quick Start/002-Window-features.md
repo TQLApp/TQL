@@ -40,7 +40,7 @@ description: Validate the features of the quick start window.
 | Try to interact with the app, by clicking on the search text box. | The search box does not get focus and you cannot use the app. |
 | Move focus away from the app, by clicking on the Windows desktop. | The app stays open.                                           |
 
-## Verify visual appearance
+## Verify visual showance
 
 | Action        | Expected result                                                                   |
 | ------------- | --------------------------------------------------------------------------------- |
@@ -64,7 +64,7 @@ work.
 | Action                                                           | Expected result                   |
 | ---------------------------------------------------------------- | --------------------------------- |
 | Open the app.                                                    | The quick start window must open. |
-| Hover the mouse over the quick start window, not over a control. | A **Grab** mouse cursor appears.  |
+| Hover the mouse over the quick start window, not over a control. | A **Grab** mouse cursor shows.    |
 | Hold the left mouse button down and drag the window.             | The window moves.                 |
 
 ## Verify the next and back buttons

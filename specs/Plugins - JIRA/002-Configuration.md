@@ -45,8 +45,8 @@ description: Configure the JIRA plugin.
 
 ## Validate authentication
 
-| Action                                 | Expected result                      |
-| -------------------------------------- | ------------------------------------ |
-| Open the app.                          |                                      |
-| Type in `jira`.                        | The **JIRA Board** category appears. |
-| **Enter** the **JIRA Board** category. | A list of boards appears.            |
+| Action                                 | Expected result                    |
+| -------------------------------------- | ---------------------------------- |
+| Open the app.                          |                                    |
+| Type in `jira`.                        | The **JIRA Board** category shows. |
+| **Enter** the **JIRA Board** category. | A list of boards shows.            |
