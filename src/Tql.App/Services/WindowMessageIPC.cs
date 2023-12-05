@@ -105,14 +105,16 @@ internal class WindowMessageIPC : IDisposable
             this,
             p =>
             {
-                SendResponse(p);
+                if (p != IntPtr.Zero)
+                    SendResponse(p);
 
                 _synchronizationContext.Post(_ => OnReceived(), null);
             },
             () => _responseReceivedEvent.Set(),
             p =>
             {
-                SendResponse(p);
+                if (p != IntPtr.Zero)
+                    SendResponse(p);
 
                 _logger.LogInformation("[IPC] Immediate shutdown requested");
 

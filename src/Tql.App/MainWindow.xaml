@@ -13,6 +13,7 @@
     Width="800"
     SizeToContent="Height"
     Foreground="White"
+    AutomationProperties.AutomationId="MainWindow"
     PreviewKeyDown="Window_PreviewKeyDown"
     Deactivated="Window_Deactivated">
     <Window.Resources>
@@ -317,7 +318,9 @@
                             x:Name="_configurationImage"
                             Height="16"
                             Width="16"
-                            Margin="12,0,0,0" />
+                            Margin="12,0,0,0"
+                            AutomationProperties.AutomationId="ConfigurationButton"
+                            />
                         <Image
                             x:Name="_helpImage"
                             Height="16"

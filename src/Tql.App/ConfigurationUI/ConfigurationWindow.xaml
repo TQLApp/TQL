@@ -14,6 +14,7 @@
     Width="800"
     WindowStartupLocation="CenterScreen"
     Icon="pack://application:,,,/Tql.App;component/mainicon.ico"
+    AutomationProperties.AutomationId="ConfigurationWindow"
     Loaded="Window_Loaded"
     Closed="Window_Closed">
     <Grid Margin="9">

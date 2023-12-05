@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:app="clr-namespace:Tql.App"
     mc:Ignorable="d"
-    Title="SplashWindow"
+    Title="{x:Static app:Labels.ApplicationTitle}"
     ResizeMode="NoResize"
     WindowStyle="None"
     SizeToContent="WidthAndHeight"
@@ -16,7 +16,8 @@
     UseLayoutRounding="True"
     SnapsToDevicePixels="True"
     ShowInTaskbar="False"
-    RenderOptions.ClearTypeHint="Enabled">
+    RenderOptions.ClearTypeHint="Enabled"
+    AutomationProperties.AutomationId="SplashWindow">
     <Window.Resources>
         <Style TargetType="{x:Type ProgressBar}">
             <Setter
