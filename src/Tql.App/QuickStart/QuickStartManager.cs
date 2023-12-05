@@ -178,8 +178,17 @@ internal class QuickStartManager
         bool initialUpdate
     )
     {
-        var ownerWindow =
-            Window.GetWindow(owner) ?? throw new InvalidOperationException("Cannot resolve window");
+        var ownerWindow = Window.GetWindow(owner);
+        if (ownerWindow == null)
+        {
+            // This happens if the user breaks the quick start flow. He'll
+            // take a step that makes the tutorial create a new window anchored
+            // to a control, and then deviate from the tutorial.
+            //
+            // We can't do too much now, so we don't do anything.
+            return;
+        }
+
         var ownerIsControl = ownerWindow != owner;
 
         // Get all bounds and sizes, and the screen we're working with,
