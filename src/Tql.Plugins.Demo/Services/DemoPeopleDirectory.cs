@@ -4,25 +4,14 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.Demo.Services;
 
-internal class DemoPeopleDirectory : IPeopleDirectory
+internal class DemoPeopleDirectory(string name, string locale) : IPeopleDirectory
 {
     private static readonly Regex WhitespaceRe = new(@"\s+", RegexOptions.Compiled);
 
-    private readonly ImmutableArray<IPerson> _people;
+    private ImmutableArray<IPerson>? _people;
 
-    public string Id => Encryption.Sha1Hash(DemoPlugin.Id.ToString());
-    public string Name => Labels.DemoPeopleDirectory_Label;
-
-    public DemoPeopleDirectory()
-    {
-        _people = (
-            from name in PersonNames.Generate().Take(45_000)
-            select new Person(
-                $"{name.Surname}, {name.Name}",
-                WhitespaceRe.Replace($"{name.Name}.{name.Surname}@example.com", "")
-            )
-        ).ToImmutableArray<IPerson>();
-    }
+    public string Id { get; } = Encryption.Sha1Hash($"{DemoPlugin.Id}|{locale}");
+    public string Name { get; } = name;
 
     public Task<ImmutableArray<IPerson>> Find(
         string search,
@@ -30,15 +19,26 @@ internal class DemoPeopleDirectory : IPeopleDirectory
     )
     {
         if (search.IsWhiteSpace())
-            return Task.FromResult(_people);
+            return Task.FromResult(GetPeople());
 
         return Task.FromResult(
-            _people
+            GetPeople()
                 .Where(
                     p => p.DisplayName.Contains(search, StringComparison.CurrentCultureIgnoreCase)
                 )
                 .ToImmutableArray()
         );
+    }
+
+    private ImmutableArray<IPerson> GetPeople()
+    {
+        return _people ??= (
+            from personName in PersonNames.Generate(locale).Take(45_000)
+            select new Person(
+                $"{personName.Surname}, {personName.Name}",
+                WhitespaceRe.Replace($"{personName.Name}.{personName.Surname}@example.com", "")
+            )
+        ).ToImmutableArray<IPerson>();
     }
 
     private record Person(string DisplayName, string EmailAddress) : IPerson;

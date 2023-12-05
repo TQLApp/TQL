@@ -70,9 +70,13 @@
     <value>TQL Website</value>
     <comment>Original: TQL Website</comment>
   </data>
-  <data name="DemoPeopleDirectory_Label" xml:space="preserve">
-    <value>Demo</value>
-    <comment>Original: Demo</comment>
+  <data name="DemoPeopleDirectory_EnglishLabel" xml:space="preserve">
+    <value>Engelse Demo</value>
+    <comment>Original: English Demo</comment>
+  </data>
+  <data name="DemoPeopleDirectory_FrenchLabel" xml:space="preserve">
+    <value>Franse Demo</value>
+    <comment>Original: French Demo</comment>
   </data>
   <data name="DemoPlugin_Label" xml:space="preserve">
     <value>Demo Plug-in</value>

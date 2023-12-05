@@ -126,8 +126,11 @@
   <data name="DemoMatch_Label" xml:space="preserve">
     <value>TQL Website</value>
   </data>
-  <data name="DemoPeopleDirectory_Label" xml:space="preserve">
-    <value>Demo</value>
+  <data name="DemoPeopleDirectory_EnglishLabel" xml:space="preserve">
+    <value>English Demo</value>
+  </data>
+  <data name="DemoPeopleDirectory_FrenchLabel" xml:space="preserve">
+    <value>French Demo</value>
   </data>
   <data name="DemoPlugin_Label" xml:space="preserve">
     <value>Demo Plugin</value>

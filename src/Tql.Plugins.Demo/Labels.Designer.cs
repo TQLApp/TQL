@@ -88,11 +88,20 @@ namespace Tql.Plugins.Demo {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Demo.
+        ///   Looks up a localized string similar to English Demo.
         /// </summary>
-        public static string DemoPeopleDirectory_Label {
+        public static string DemoPeopleDirectory_EnglishLabel {
             get {
-                return ResourceManager.GetString("DemoPeopleDirectory_Label", resourceCulture);
+                return ResourceManager.GetString("DemoPeopleDirectory_EnglishLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to French Demo.
+        /// </summary>
+        public static string DemoPeopleDirectory_FrenchLabel {
+            get {
+                return ResourceManager.GetString("DemoPeopleDirectory_FrenchLabel", resourceCulture);
             }
         }
         

@@ -30,9 +30,14 @@ public class DemoPlugin : ITqlPlugin
 
     public void Initialize(IServiceProvider serviceProvider)
     {
-        serviceProvider
-            .GetRequiredService<IPeopleDirectoryManager>()
-            .Add(new DemoPeopleDirectory());
+        var peopleDirectoryManager = serviceProvider.GetRequiredService<IPeopleDirectoryManager>();
+
+        peopleDirectoryManager.Add(
+            new DemoPeopleDirectory(Labels.DemoPeopleDirectory_EnglishLabel, "en")
+        );
+        peopleDirectoryManager.Add(
+            new DemoPeopleDirectory(Labels.DemoPeopleDirectory_FrenchLabel, "fr")
+        );
 
         _matchTypeManager = _matchTypeManagerBuilder.Build(serviceProvider);
         _factory = serviceProvider.GetRequiredService<IMatchFactory<DemoesMatch, DemoesMatchDto>>();
