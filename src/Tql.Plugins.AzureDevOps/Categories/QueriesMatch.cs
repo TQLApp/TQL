@@ -1,4 +1,6 @@
 ﻿using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
+using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
+using Microsoft.VisualStudio.Services.TestManagement.TestPlanning.WebApi;
 using Tql.Abstractions;
 using Tql.Plugins.AzureDevOps.Data;
 using Tql.Plugins.AzureDevOps.Services;
@@ -40,32 +42,26 @@ internal class QueriesMatch(
         var client = await api.GetClient<WorkItemTrackingHttpClient>(dto.Url);
         var connection = (await cache.Get()).GetConnection(dto.Url);
 
-        var result = new List<IMatch>();
-
-        foreach (var project in connection.Projects)
-        {
-            if (project.Features.Contains(AzureFeature.Boards))
-            {
-                var queries = await client.SearchQueriesAsync(
+        var results = (
+            from project in connection.Projects
+            where project.Features.Contains(AzureFeature.Boards)
+            select (
+                Project: project,
+                Items: client.SearchQueriesAsync(
                     project.Id,
                     text,
                     cancellationToken: cancellationToken
-                );
+                )
+            )
+        ).ToList();
 
-                result.AddRange(
-                    queries
-                        .Value
-                        .Select(
-                            p =>
-                                factory.Create(
-                                    new QueryMatchDto(dto.Url, project.Name, p.Id, p.Path, p.Name)
-                                )
-                        )
-                );
-            }
-        }
+        await Task.WhenAll(results.Select(p => p.Items));
 
-        return result;
+        return from result in results
+            from query in result.Items.Result.Value
+            select factory.Create(
+                new QueryMatchDto(dto.Url, result.Project.Name, query.Id, query.Path, query.Name)
+            );
     }
 
     public string Serialize()
