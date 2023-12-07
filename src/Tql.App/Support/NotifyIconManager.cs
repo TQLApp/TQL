@@ -155,8 +155,14 @@ internal class NotifyIconManager : IDisposable
 
     private Icon LoadIcon()
     {
+#if DEBUG
+        const string resourceName = "bugicon.ico";
+#else
+        const string resourceName = "mainicon.ico";
+#endif
+
         using var stream = Application
-            .GetResourceStream(new Uri("pack://application:,,,/Tql.App;component/mainicon.ico"))!
+            .GetResourceStream(new Uri($"pack://application:,,,/Tql.App;component/{resourceName}"))!
             .Stream;
 
         return new Icon(stream);

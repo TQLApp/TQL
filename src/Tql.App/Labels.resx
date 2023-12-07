@@ -735,4 +735,10 @@ Do you want to restart TQL to see if this resolves the issue?</value>
   <data name="App_CouldNotRegisterHotKeySubtitle" xml:space="preserve">
     <value>Could not register the hot key {0}. The reason likely is that it's in use already. The hot key is disabled. You can change the hot key in the configuration.</value>
   </data>
+  <data name="PackageManager_RestoringPackage" xml:space="preserve">
+    <value>Restoring {0}...</value>
+  </data>
+  <data name="PackageStoreManager_DeletingUnusedFiles" xml:space="preserve">
+    <value>Deleting unused files...</value>
+  </data>
 </root>

@@ -28,6 +28,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="bugicon.ico" />
+	  <None Remove="mainicon.ico" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Resource Include="bugicon.ico" />
 		<Resource Include="mainicon.ico" />
 	</ItemGroup>
 

@@ -205,10 +205,20 @@ internal class PackageManager : IDisposable
 
         var installedVersion = _storeManager.GetInstalledVersion(packageId);
 
-        if (
+        var isLatestInstalled =
             installedVersion != null
-            && new Version(installedVersion).Equals(latestVersion.Identity.Version.Version)
-        )
+            && new Version(installedVersion).Equals(latestVersion.Identity.Version.Version);
+
+        var isPresent =
+            installedVersion != null
+            && _storeManager
+                .GetAvailablePackages()
+                .Contains(
+                    new PackageRef(packageId, installedVersion).ToString(),
+                    StringComparer.OrdinalIgnoreCase
+                );
+
+        if (isPresent && isLatestInstalled)
         {
             _logger.LogInformation("Package '{Package}' is already up to date", packageId);
             return false;
@@ -257,7 +267,9 @@ internal class PackageManager : IDisposable
         if (progressMode == PackageProgressMode.Update)
         {
             progress.SetProgress(
-                string.Format(Labels.PackageManager_UpdatingPackage, latestVersion.Title),
+                isLatestInstalled
+                    ? string.Format(Labels.PackageManager_RestoringPackage, latestVersion.Title)
+                    : string.Format(Labels.PackageManager_UpdatingPackage, latestVersion.Title),
                 0
             );
         }
