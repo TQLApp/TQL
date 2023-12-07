@@ -450,10 +450,15 @@ public partial class App
                 FileName = Path.ChangeExtension(Assembly.GetEntryAssembly()!.Location, ".exe"),
                 UseShellExecute = false
             };
+
             if (RestartMode == RestartMode.SilentRestart)
-                startInfo.Arguments += " --silent";
+                startInfo.ArgumentList.Add("--silent");
+
             if (Options.Environment != null)
-                startInfo.Arguments += $" --env \"{Options.Environment}\"";
+            {
+                startInfo.ArgumentList.Add("--env");
+                startInfo.ArgumentList.Add(Options.Environment);
+            }
 
             Process.Start(startInfo);
         }
