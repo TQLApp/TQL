@@ -125,7 +125,7 @@ internal partial class QuickStartScript
         _quickStart.Show(
             window,
             CreateBuilder("welcome-instructions", hotKey)
-                .WithButton("Next", () => WelcomeScope(window))
+                .WithButton("Next", true, () => WelcomeScope(window))
                 .Build(),
             QuickStartPopupMode.Modal
         );
@@ -138,7 +138,7 @@ internal partial class QuickStartScript
         _quickStart.Show(
             window,
             CreateBuilder("welcome-scope", hotKey)
-                .WithButton("Next", () => WelcomeOpenApp(window))
+                .WithButton("Next", true, () => WelcomeOpenApp(window))
                 .WithBack(() => WelcomeInstructions(window))
                 .Build(),
             QuickStartPopupMode.Modal
@@ -152,7 +152,7 @@ internal partial class QuickStartScript
         _quickStart.Show(
             window,
             CreateBuilder("welcome-open-app", hotKey)
-                .WithButton("Next", () => SelectTool(window))
+                .WithButton("Next", true, () => SelectTool(window))
                 .WithBack(() => WelcomeScope(window))
                 .Build(),
             QuickStartPopupMode.Modal
@@ -179,7 +179,7 @@ internal partial class QuickStartScript
         AddTool(QuickStartTool.GitHub, "GitHub");
 
         if (completedTools.Length > 0)
-            builder.WithButton("Close Tutorial", Dismiss);
+            builder.WithButton("Close Tutorial", true, Dismiss);
         else
             builder.WithBack(() => WelcomeOpenApp(window));
 
@@ -346,7 +346,7 @@ internal partial class QuickStartScript
         _quickStart.Show(
             window,
             CreateBuilder("using-the-app", CurrentPlugin.PluginName)
-                .WithButton("Next", () => ListAllPlugins(window))
+                .WithButton("Next", true, () => ListAllPlugins(window))
                 .WithBack(() => OpenConfigurationWindowToConfigurePlugin(window))
                 .Build(),
             QuickStartPopupMode.Modal
@@ -560,7 +560,7 @@ internal partial class QuickStartScript
     {
         _quickStart.Show(
             window,
-            CreateBuilder("complete").WithButton("Close Tutorial", Dismiss).Build(),
+            CreateBuilder("complete").WithButton("Close Tutorial", true, Dismiss).Build(),
             QuickStartPopupMode.Modal
         );
     }

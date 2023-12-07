@@ -237,6 +237,7 @@
                                 Content="{Binding Label}"
                                 Margin="5"
                                 Focusable="False"
+                                IsDefault="{Binding IsDefault}"
                                 Click="Button_Click" />
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>

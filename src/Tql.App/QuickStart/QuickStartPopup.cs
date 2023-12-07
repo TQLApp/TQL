@@ -82,4 +82,4 @@ internal class QuickStartPopup : INotifyPropertyChanged
         _propertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 }
 
-internal record QuickStartPopupButton(string Label, Action Action);
+internal record QuickStartPopupButton(string Label, bool IsDefault, Action Action);
