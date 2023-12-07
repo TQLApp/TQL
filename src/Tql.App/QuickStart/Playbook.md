@@ -9,10 +9,10 @@ In this tutorial, I'll show you how to use the app.
 
 When you need to use the keyboard, I'll put a ![](Keyboard.svg?color=true) icon
 in front of the instructions. I'll indicate keys by putting a box around the
-text, e.g. ::Enter:: for the enter key.
-
-When you need to use the mouse, I'll put a ![](Cursor.svg?color=true) or
-![](Cursor+Click.svg?color=true) icon in front of the instructions.
+text, e.g. ::Enter:: for the enter key. If you need to click something, I'll use
+the ![](Cursor+Click.svg?color=true) icon and if you need to do something else
+with the mouse like point at something, I'll use the ![](Cursor.svg?color=true)
+icon.
 
 ---
 id: welcome-scope
