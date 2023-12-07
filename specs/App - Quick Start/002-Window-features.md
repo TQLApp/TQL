@@ -122,9 +122,9 @@ work.
 
 ## Verify quick start continues
 
-| Action                                                                                                                                                                        | Expected result                               |
-| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------- |
-| Open the app.                                                                                                                                                                 | The quick start window must open.             |
-| Progress the quick start tutorial until the quick start window is anchored to a control in the configuration window, e.g. after you've selected the plugin you're installing. |                                               |
-| Move focus away from the app, by clicking the Windows dashboard.                                                                                                              | The app closes.                               |
-| Open the app again by pressing the hotkey.                                                                                                                                    | The app and quick start tutorial opens again. |
+| Action                                                                                                                                                                                                | Expected result                               |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------- |
+| Open the app.                                                                                                                                                                                         | The quick start window must open.             |
+| Progress the quick start tutorial until the quick start window is anchored to a control in the main window, e.g. when it asks you to open the configuration window and it's anchored to the cog icon. |                                               |
+| Move focus away from the app, by clicking the Windows dashboard.                                                                                                                                      | The app closes.                               |
+| Open the app again by pressing the hotkey.                                                                                                                                                            | The app and quick start tutorial opens again. |
