@@ -10,13 +10,18 @@ internal class QuickStartPopupBuilder(IPlaybook playbook, string id, object[] ar
 
     public QuickStartPopupBuilder WithChoiceButton(string label, Action action)
     {
-        _choiceButtons.Add(new QuickStartPopupButton(label, action));
+        _choiceButtons.Add(new QuickStartPopupButton(label, false, action));
         return this;
     }
 
     public QuickStartPopupBuilder WithButton(string label, Action action)
     {
-        _buttons.Add(new QuickStartPopupButton(label, action));
+        return WithButton(label, false, action);
+    }
+
+    public QuickStartPopupBuilder WithButton(string label, bool isDefault, Action action)
+    {
+        _buttons.Add(new QuickStartPopupButton(label, isDefault, action));
         return this;
     }
 
