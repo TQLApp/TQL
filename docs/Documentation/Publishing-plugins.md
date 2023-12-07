@@ -10,9 +10,26 @@ TQL has the following requirements of a plugin:
 - It must have a dependency on the **TQLApp.Abstractions** NuGet package.
 
 > [!IMPORTANT] When installing a plugin, TQL will automatically resolve and
-> install any dependencies. It uses the native NuGet libraries for this. If
-> there are conflicts of dependencies between plugins or with TQL itself, the
-> highest version will be selected.
+> install any dependencies. It uses the native NuGet libraries for this.
+
+> [!IMPORTANT]
+>
+> Plugins are not isolated from each other. They are all loaded into the same
+> TQL app. Because of this, assembly conflicts can occur.
+>
+> TQL resolves assembly conflicts as follows:
+>
+> - If any plugin requests a DLL that is installed as part of TQL itself, that
+>   version is used regardless of the version of the DLL the plugin uses.
+> - Otherwise, the highest version across all plugins is used. If two plugins
+>   have the same DLL, the DLL with the highest version is used regardless of
+>   which plugin is requesting the DLL.
+>
+> Tests were done to load multiple versions of the the same DLL. This should
+> technically be possible, but caused unexpected behavior.
+>
+> The chance is small this should ever cause an issue for you. If it does,
+> please raise an issue on GitHub.
 
 In this guide, I'm publishing the NuGet package to a private artifact feed
 hosted on a free Azure DevOps account. TQL supports private artifacts feeds and
