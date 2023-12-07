@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
+using Tql.App.Support;
 using Path = System.IO.Path;
 
 namespace Tql.App.Services.Packages.PackageStore;
@@ -42,7 +43,7 @@ internal class PackageStoreManager
         return packages.ToImmutable();
     }
 
-    public void PerformCleanup()
+    public void PerformCleanup(IProgress progress)
     {
         var actual = GetAvailablePackages();
         var expected = GetInstalledPackages()
@@ -51,6 +52,8 @@ internal class PackageStoreManager
 
         foreach (var package in actual.Where(p => !expected.Contains(p)))
         {
+            progress.SetProgress(Labels.PackageStoreManager_DeletingUnusedFiles, 0);
+
             _logger.LogInformation(
                 "Deleting unused package folder for package '{Package}'",
                 package
@@ -67,9 +70,12 @@ internal class PackageStoreManager
         }
     }
 
-    private List<string> GetAvailablePackages()
+    public ImmutableArray<string> GetAvailablePackages()
     {
-        return Directory.GetDirectories(PackagesFolder).Select(p => Path.GetFileName(p)!).ToList();
+        return Directory
+            .GetDirectories(PackagesFolder)
+            .Select(p => Path.GetFileName(p)!)
+            .ToImmutableArray();
     }
 
     public void SetPackageVersion(string packageId, Version version)

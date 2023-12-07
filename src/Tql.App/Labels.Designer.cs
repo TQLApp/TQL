@@ -1314,6 +1314,15 @@ namespace Tql.App {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Restoring {0}....
+        /// </summary>
+        public static string PackageManager_RestoringPackage {
+            get {
+                return ResourceManager.GetString("PackageManager_RestoringPackage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Updating {0}....
         /// </summary>
         public static string PackageManager_UpdatingPackage {
@@ -1391,6 +1400,15 @@ namespace Tql.App {
         public static string PackageStoreLoader_InitializingPackage {
             get {
                 return ResourceManager.GetString("PackageStoreLoader_InitializingPackage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deleting unused files....
+        /// </summary>
+        public static string PackageStoreManager_DeletingUnusedFiles {
+            get {
+                return ResourceManager.GetString("PackageStoreManager_DeletingUnusedFiles", resourceCulture);
             }
         }
         

@@ -52,6 +52,15 @@ internal class PackageStoreLoader : IPackageLoader
                 packageRef.ToString()
             );
 
+            if (!Directory.Exists(packageFolder))
+            {
+                _logger.LogInformation(
+                    "Skipping missing plugin folder '{PackageFolder}'; it'll be restored in a moment",
+                    packageFolder
+                );
+                continue;
+            }
+
             _logger.LogInformation("Loading plugins from '{PackageFolder}'", packageFolder);
 
             try

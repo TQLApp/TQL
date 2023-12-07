@@ -97,7 +97,7 @@ public partial class App
 
         splashScreen.Progress.SetProgress(0.1);
 
-        packageStoreManager.PerformCleanup();
+        packageStoreManager.PerformCleanup(splashScreen.Progress.GetSubProgress(0.1, 0.2));
 
         splashScreen.Progress.SetProgress(0.2);
 
