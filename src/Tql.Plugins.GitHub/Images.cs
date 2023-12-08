@@ -20,4 +20,9 @@ internal static class Images
     public static readonly ImageSource Organization = LoadImage("Organization.svg");
     public static readonly ImageSource Codespace = LoadImage("Codespace.svg");
     public static readonly ImageSource ImportRepository = LoadImage("Import Repository.svg");
+    public static readonly ImageSource Project = LoadImage("Project.svg");
+    public static readonly ImageSource OpenPullRequest = LoadImage("Open Pull Request.svg");
+    public static readonly ImageSource ClosedPullRequest = LoadImage("Closed Pull Request.svg");
+    public static readonly ImageSource MergedPullRequest = LoadImage("Merged Pull Request.svg");
+    public static readonly ImageSource DraftIssue = LoadImage("Draft Issue.svg");
 }

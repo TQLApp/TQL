@@ -246,4 +246,13 @@
   <data name="NewsMatch_SearchHint" xml:space="preserve">
     <value>Find item to create</value>
   </data>
+  <data name="ProjectMatch_SearchHint" xml:space="preserve">
+    <value>Find issues and pull requests in the project</value>
+  </data>
+  <data name="ProjectsMatch_Label" xml:space="preserve">
+    <value>GitHub Project</value>
+  </data>
+  <data name="ProjectsMatch_SearchHint" xml:space="preserve">
+    <value>Find projects</value>
+  </data>
 </root>

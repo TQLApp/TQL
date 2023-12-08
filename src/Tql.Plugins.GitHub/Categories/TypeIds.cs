@@ -31,4 +31,10 @@ internal static class TypeIds
 
     public static readonly MatchTypeId News = CreateId("d5561f08-6bbf-4133-8ab4-d55cd1c97d57");
     public static readonly MatchTypeId New = CreateId("0141215a-4947-4d12-9e45-ba929314178d");
+
+    public static readonly MatchTypeId Projects = CreateId("0c3b2a6c-123b-49c9-a3dd-cee663deda7c");
+    public static readonly MatchTypeId Project = CreateId("b3e3f65c-b264-438b-a6d7-49b460acb1af");
+    public static readonly MatchTypeId ProjectItem = CreateId(
+        "abcade5d-3c5a-4b87-8219-46c3568d30d5"
+    );
 }

@@ -230,4 +230,16 @@
     <value>Vind item om aan te maken</value>
     <comment>Original: Find item to create</comment>
   </data>
+  <data name="ProjectMatch_SearchHint" xml:space="preserve">
+    <value>Vind issues en pull requests in het project</value>
+    <comment>Original: Find issues and pull requests in the project</comment>
+  </data>
+  <data name="ProjectsMatch_Label" xml:space="preserve">
+    <value>GitHub Project</value>
+    <comment>Original: GitHub Project</comment>
+  </data>
+  <data name="ProjectsMatch_SearchHint" xml:space="preserve">
+    <value>Vind projecten</value>
+    <comment>Original: Find projects</comment>
+  </data>
 </root>
