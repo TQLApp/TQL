@@ -8,16 +8,18 @@
     xmlns:utilities="clr-namespace:Tql.Utilities;assembly=Tql.Utilities"
     xmlns:app="clr-namespace:Tql.App"
     xmlns:configurationUi="clr-namespace:Tql.App.ConfigurationUI"
+    xmlns:support="clr-namespace:Tql.App.Support"
     ResizeMode="NoResize"
     SizeToContent="Height"
     WindowStartupLocation="CenterOwner"
     mc:Ignorable="d"
     Title="{x:Static app:Labels.ProfileEditWindow_Title}"
     Width="500"
-    d:DataContext="{d:DesignInstance configurationUi:ProfileDto}"
-    DataContextChanged="BaseWindow_DataContextChanged">
+    d:DataContext="{d:DesignInstance configurationUi:ProfileDto}">
     <Window.Resources>
         <utilities:InverseBooleanConverter x:Key="IBConverter" />
+        <utilities:NullToBooleanConverter x:Key="N2BConverter" />
+        <support:IconNameToDrawingConverter x:Key="TC2DConverter" />
     </Window.Resources>
 
     <Grid Margin="9">
@@ -33,8 +35,8 @@
 
         <Label Content="{x:Static app:Labels.ProfileEditWindow_TitleLabel}" />
         <TextBox
-            x:Name="_title"
             Text="{Binding Title}"
+            IsEnabled="{Binding Name, Converter={StaticResource N2BConverter}}"
             Grid.Column="1"
             Margin="3" />
 
@@ -43,16 +45,16 @@
             Grid.Row="1" />
         <ComboBox
             x:Name="_icons"
+            SelectedValue="{Binding IconName}"
             Grid.Row="1"
             Grid.Column="1"
             Margin="3">
             <ComboBox.ItemTemplate>
-                <DataTemplate
-                    DataType="{x:Type configurationUi:ProfileEditIcon}">
+                <DataTemplate>
                     <Image
                         Width="32"
                         Height="32"
-                        Source="{Binding Icon}"
+                        Source="{Binding ., Converter={StaticResource TC2DConverter}}"
                         Margin="2" />
                 </DataTemplate>
             </ComboBox.ItemTemplate>

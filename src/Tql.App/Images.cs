@@ -8,7 +8,7 @@ namespace Tql.App;
 
 internal static class Images
 {
-    public const string DefaultUniverseIcon = "Universe%20Icons/051-space-shuttle-1.svg";
+    public const string DefaultUniverseIcon = "universe%20icons/051-space-shuttle-1.svg";
 
     private static readonly ConcurrentDictionary<
         (string ResourceName, Color? Color),
@@ -64,7 +64,7 @@ internal static class Images
                 StringComparison.OrdinalIgnoreCase
             );
             if (pos != -1)
-                imageNames.Add(resourceName.Substring(pos + 1));
+                imageNames.Add(resourceName.Substring(pos + 1).ToLowerInvariant());
         }
 
         return imageNames.ToImmutable();
