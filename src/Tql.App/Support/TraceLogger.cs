@@ -29,4 +29,4 @@ internal class TraceLogger : ILogger
     }
 }
 
-internal class TraceLogger<T> : TraceLogger, ILogger<T> { }
+internal class TraceLogger<T> : TraceLogger, ILogger<T>;

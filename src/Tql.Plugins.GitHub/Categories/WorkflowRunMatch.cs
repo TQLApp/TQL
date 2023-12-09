@@ -8,8 +8,14 @@ namespace Tql.Plugins.GitHub.Categories;
 internal class WorkflowRunMatch(WorkflowRunMatchDto dto)
     : IRunnableMatch,
         ISerializableMatch,
-        ICopyableMatch
+        ICopyableMatch,
+        IHasMatchAttributes
 {
+    private static readonly MatchAttributes InProgressRunAttributes = MatchAttributes
+        .CreateBuilder()
+        .WithImageRotationAnimation(TimeSpan.FromSeconds(1))
+        .Build();
+
     public string Text =>
         MatchText.Path(
             $"{dto.Owner}/{dto.RepositoryName}",
@@ -28,6 +34,13 @@ internal class WorkflowRunMatch(WorkflowRunMatchDto dto)
         };
 
     public MatchTypeId TypeId => TypeIds.WorkflowRun;
+
+    public MatchAttributes Attributes =>
+        dto.Status switch
+        {
+            WorkflowRunMatchStatus.InProgress => InProgressRunAttributes,
+            _ => MatchAttributes.Empty
+        };
 
     public Task Run(IServiceProvider serviceProvider, IWin32Window owner)
     {
