@@ -74,7 +74,7 @@ internal class WorkflowRunsMatch(
                             => WorkflowRunMatchStatus.Queued,
                         WorkflowRunStatus.InProgress => WorkflowRunMatchStatus.InProgress,
                         WorkflowRunStatus.Completed
-                            => run.Conclusion.Value.Value switch
+                            => run.Conclusion?.Value switch
                             {
                                 WorkflowRunConclusion.Success => WorkflowRunMatchStatus.Success,
                                 WorkflowRunConclusion.Failure => WorkflowRunMatchStatus.Failure,
