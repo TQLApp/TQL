@@ -29,8 +29,17 @@ internal static class GitHubUtils
         if (dto.Scope == RootItemScope.Global)
             return string.Empty;
 
+        return await GetSearchPrefix(dto.Id, cache, includeOrganizations);
+    }
+
+    public static async Task<string> GetSearchPrefix(
+        Guid connectionId,
+        ICache<GitHubData> cache,
+        bool includeOrganizations = true
+    )
+    {
         var data = await cache.Get();
-        var connectionData = data.Connections.SingleOrDefault(p => p.Id == dto.Id);
+        var connectionData = data.Connections.SingleOrDefault(p => p.Id == connectionId);
         if (connectionData == null)
             return string.Empty;
 

@@ -8,28 +8,24 @@ using Tql.Utilities;
 namespace Tql.Plugins.GitHub.Categories;
 
 internal abstract class IssuesMatchBase<T>(
-    RootItemDto dto,
+    RepositoryItemMatchDto dto,
     GitHubApi api,
     ICache<GitHubData> cache,
     IssueTypeQualifier type,
-    ConfigurationManager configurationManager,
     IMatchFactory<T, IssueMatchDto> factory
 ) : ISearchableMatch, ISerializableMatch
     where T : IssueMatchBase
 {
     public string Text =>
-        MatchUtils.GetMatchLabel(
+        MatchText.Path(
+            dto.RepositoryName,
             type == IssueTypeQualifier.Issue
                 ? Labels.IssuesMatchBase_IssueLabel
-                : Labels.IssuesMatchBase_PullRequestLabel,
-            type == IssueTypeQualifier.Issue
-                ? Labels.IssuesMatchBase_MyIssueLabel
-                : Labels.IssuesMatchBase_MyPullRequestLabel,
-            configurationManager.Configuration,
-            dto
+                : Labels.IssuesMatchBase_PullRequestLabel
         );
 
-    public ImageSource Icon => Images.Issue;
+    public ImageSource Icon => type == IssueTypeQualifier.Issue ? Images.Issue : Images.PullRequest;
+
     public abstract MatchTypeId TypeId { get; }
     public abstract string SearchHint { get; }
 
@@ -39,17 +35,16 @@ internal abstract class IssuesMatchBase<T>(
         CancellationToken cancellationToken
     )
     {
-        if (dto.Scope == RootItemScope.Global && text.IsWhiteSpace())
-            return Array.Empty<IMatch>();
-
         await context.DebounceDelay(cancellationToken);
 
-        var client = await api.GetClient(dto.Id);
+        var client = await api.GetClient(dto.ConnectionId);
 
-        var request = new SearchIssuesRequest(await GitHubUtils.GetSearchPrefix(dto, cache) + text)
-        {
-            Type = type
-        };
+        var request = string.IsNullOrEmpty(text)
+            ? new SearchIssuesRequest()
+            : new SearchIssuesRequest(text);
+
+        request.Type = type;
+        request.Repos.Add(dto.Owner, dto.RepositoryName);
 
         if (text.IsWhiteSpace())
         {
@@ -67,7 +62,7 @@ internal abstract class IssuesMatchBase<T>(
                 p =>
                     factory.Create(
                         new IssueMatchDto(
-                            dto.Id,
+                            dto.ConnectionId,
                             GitHubUtils.GetRepositoryName(p.HtmlUrl),
                             p.Number,
                             p.Title,

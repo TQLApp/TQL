@@ -53,7 +53,8 @@ internal class RepositoriesMatch(
                 return factory.Create(
                     new RepositoryMatchDto(
                         dto.Id,
-                        $"{repository.Owner}/{repository.Name}",
+                        repository.Owner,
+                        repository.Name,
                         repository.HtmlUrl
                     )
                 );
@@ -77,7 +78,10 @@ internal class RepositoriesMatch(
 
         return response
             .Items
-            .Select(p => factory.Create(new RepositoryMatchDto(dto.Id, p.FullName, p.HtmlUrl)));
+            .Select(
+                p =>
+                    factory.Create(new RepositoryMatchDto(dto.Id, p.Owner.Login, p.Name, p.HtmlUrl))
+            );
     }
 
     public string Serialize()

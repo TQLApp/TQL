@@ -4,9 +4,8 @@ using Tql.Plugins.GitHub.Support;
 
 namespace Tql.Plugins.GitHub.Categories;
 
-[RootMatchType(SupportsUserScope = true)]
 internal class IssuesType(
-    IMatchFactory<IssuesMatch, RootItemDto> factory,
+    IMatchFactory<IssuesMatch, RepositoryItemMatchDto> factory,
     ConfigurationManager configurationManager
 ) : IssuesTypeBase<IssuesMatch, IssueMatch>(factory, configurationManager)
 {

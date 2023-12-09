@@ -259,7 +259,7 @@ namespace Tql.Plugins.GitHub {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to GitHub Issue.
+        ///   Looks up a localized string similar to Issue.
         /// </summary>
         public static string IssuesMatchBase_IssueLabel {
             get {
@@ -268,25 +268,7 @@ namespace Tql.Plugins.GitHub {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to My GitHub Issue.
-        /// </summary>
-        public static string IssuesMatchBase_MyIssueLabel {
-            get {
-                return ResourceManager.GetString("IssuesMatchBase_MyIssueLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to My GitHub Pull Request.
-        /// </summary>
-        public static string IssuesMatchBase_MyPullRequestLabel {
-            get {
-                return ResourceManager.GetString("IssuesMatchBase_MyPullRequestLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to GitHub Pull Request.
+        ///   Looks up a localized string similar to Pull Request.
         /// </summary>
         public static string IssuesMatchBase_PullRequestLabel {
             get {

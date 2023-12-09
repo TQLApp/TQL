@@ -169,16 +169,10 @@
     <value>Find issues</value>
   </data>
   <data name="IssuesMatchBase_IssueLabel" xml:space="preserve">
-    <value>GitHub Issue</value>
-  </data>
-  <data name="IssuesMatchBase_MyIssueLabel" xml:space="preserve">
-    <value>My GitHub Issue</value>
-  </data>
-  <data name="IssuesMatchBase_MyPullRequestLabel" xml:space="preserve">
-    <value>My GitHub Pull Request</value>
+    <value>Issue</value>
   </data>
   <data name="IssuesMatchBase_PullRequestLabel" xml:space="preserve">
-    <value>GitHub Pull Request</value>
+    <value>Pull Request</value>
   </data>
   <data name="PullRequestsMatch_SearchHint" xml:space="preserve">
     <value>Find pull requests</value>

@@ -5,12 +5,12 @@ using Tql.Utilities;
 namespace Tql.Plugins.GitHub.Categories;
 
 internal abstract class IssuesTypeBase<TCategory, TMatch>(
-    IMatchFactory<TCategory, RootItemDto> factory,
+    IMatchFactory<TCategory, RepositoryItemMatchDto> factory,
     ConfigurationManager configurationManager
-) : MatchType<TCategory, RootItemDto>(factory)
+) : MatchType<TCategory, RepositoryItemMatchDto>(factory)
     where TCategory : IssuesMatchBase<TMatch>
     where TMatch : IssueMatchBase
 {
-    protected override bool IsValid(RootItemDto dto) =>
-        configurationManager.Configuration.HasConnection(dto.Id);
+    protected override bool IsValid(RepositoryItemMatchDto dto) =>
+        configurationManager.Configuration.HasConnection(dto.ConnectionId);
 }
