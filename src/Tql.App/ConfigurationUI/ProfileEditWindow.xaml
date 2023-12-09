@@ -1,0 +1,80 @@
+﻿<utilities:BaseWindow
+    x:Class="Tql.App.ConfigurationUI.ProfileEditWindow"
+    x:ClassModifier="internal"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:utilities="clr-namespace:Tql.Utilities;assembly=Tql.Utilities"
+    xmlns:app="clr-namespace:Tql.App"
+    xmlns:configurationUi="clr-namespace:Tql.App.ConfigurationUI"
+    ResizeMode="NoResize"
+    SizeToContent="Height"
+    WindowStartupLocation="CenterOwner"
+    mc:Ignorable="d"
+    Title="{x:Static app:Labels.ProfileEditWindow_Title}"
+    Width="500"
+    d:DataContext="{d:DesignInstance configurationUi:ProfileDto}"
+    DataContextChanged="BaseWindow_DataContextChanged">
+    <Window.Resources>
+        <utilities:InverseBooleanConverter x:Key="IBConverter" />
+    </Window.Resources>
+
+    <Grid Margin="9">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Label Content="{x:Static app:Labels.ProfileEditWindow_TitleLabel}" />
+        <TextBox
+            x:Name="_title"
+            Text="{Binding Title}"
+            Grid.Column="1"
+            Margin="3" />
+
+        <Label
+            Content="{x:Static app:Labels.ProfileEditWindow_IconLabel}"
+            Grid.Row="1" />
+        <ComboBox
+            x:Name="_icons"
+            Grid.Row="1"
+            Grid.Column="1"
+            Margin="3">
+            <ComboBox.ItemTemplate>
+                <DataTemplate
+                    DataType="{x:Type configurationUi:ProfileEditIcon}">
+                    <Image
+                        Width="32"
+                        Height="32"
+                        Source="{Binding Icon}"
+                        Margin="2" />
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+
+        <StackPanel
+            Orientation="Horizontal"
+            HorizontalAlignment="Right"
+            Margin="0,3,0,0"
+            Grid.Row="2"
+            Grid.ColumnSpan="2">
+            <Button
+                x:Name="_acceptButton"
+                IsEnabled="{Binding HasErrors, Converter={StaticResource IBConverter}}"
+                Content="{x:Static app:Labels.Button_Save}"
+                Margin="3"
+                IsDefault="true"
+                Click="_acceptButton_Click" />
+            <Button
+                Content="{x:Static app:Labels.Button_Cancel}"
+                Margin="3"
+                IsCancel="true" />
+        </StackPanel>
+    </Grid>
+</utilities:BaseWindow>

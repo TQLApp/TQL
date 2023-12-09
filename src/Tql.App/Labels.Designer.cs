@@ -135,6 +135,15 @@ namespace Tql.App {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Quick Launcher for Techies.
+        /// </summary>
+        public static string ApplicationShellLinkDescription {
+            get {
+                return ResourceManager.GetString("ApplicationShellLinkDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Techie&apos;s Quick Launcher.
         /// </summary>
         public static string ApplicationTitle {
@@ -1566,6 +1575,107 @@ namespace Tql.App {
         public static string PluginsConfiguration_VerifiedToolTip {
             get {
                 return ResourceManager.GetString("PluginsConfiguration_VerifiedToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Icon:.
+        /// </summary>
+        public static string ProfileEditWindow_IconLabel {
+            get {
+                return ResourceManager.GetString("ProfileEditWindow_IconLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Profile.
+        /// </summary>
+        public static string ProfileEditWindow_Title {
+            get {
+                return ResourceManager.GetString("ProfileEditWindow_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Title:.
+        /// </summary>
+        public static string ProfileEditWindow_TitleLabel {
+            get {
+                return ResourceManager.GetString("ProfileEditWindow_TitleLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Default Profile.
+        /// </summary>
+        public static string ProfileManager_DefaultProfile {
+            get {
+                return ResourceManager.GetString("ProfileManager_DefaultProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure?.
+        /// </summary>
+        public static string ProfilesConfiguration_AreYouSureDeleteProfile {
+            get {
+                return ResourceManager.GetString("ProfilesConfiguration_AreYouSureDeleteProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete this profile? All data associated with this profile will be deleted..
+        /// </summary>
+        public static string ProfilesConfiguration_AreYouSureDeleteProfileSubtitle {
+            get {
+                return ResourceManager.GetString("ProfilesConfiguration_AreYouSureDeleteProfileSubtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The default profile cannot be deleted.
+        /// </summary>
+        public static string ProfilesConfiguration_CannotDeleteDefaultProfile {
+            get {
+                return ResourceManager.GetString("ProfilesConfiguration_CannotDeleteDefaultProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The new profile has been created.
+        /// </summary>
+        public static string ProfilesConfiguration_CreatedNewProfile {
+            get {
+                return ResourceManager.GetString("ProfilesConfiguration_CreatedNewProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A new shortcut has been added to the start menu. You can open the app with your new profile by opening the shortcut. The profile will also start automatically when your computer starts up.
+        ///
+        ///Don&apos;t forget to change the hotkey for your new profile. You can do this in the general configuration page..
+        /// </summary>
+        public static string ProfilesConfiguration_CreatedNewProfileSubtitle {
+            get {
+                return ResourceManager.GetString("ProfilesConfiguration_CreatedNewProfileSubtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profiles.
+        /// </summary>
+        public static string ProfilesConfiguration_Profiles {
+            get {
+                return ResourceManager.GetString("ProfilesConfiguration_Profiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Title.
+        /// </summary>
+        public static string ProfilesConfiguration_Title {
+            get {
+                return ResourceManager.GetString("ProfilesConfiguration_Title", resourceCulture);
             }
         }
         

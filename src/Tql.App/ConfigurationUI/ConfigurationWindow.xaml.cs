@@ -92,6 +92,7 @@ internal partial class ConfigurationWindow
         yield return _serviceProvider.GetRequiredService<GeneralConfigurationControl>();
         yield return _serviceProvider.GetRequiredService<PluginsConfigurationControl>();
         yield return _serviceProvider.GetRequiredService<PackageSourcesConfigurationControl>();
+        yield return _serviceProvider.GetRequiredService<ProfilesConfigurationControl>();
     }
 
     private void _pages_SelectedItemChanged(

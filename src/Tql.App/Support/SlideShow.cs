@@ -1,17 +1,12 @@
-﻿using System.Collections;
-using System.Globalization;
-using System.IO;
-using System.Resources;
-using System.Windows.Media.Animation;
+﻿using System.Windows.Media.Animation;
 using System.Windows.Threading;
-using Tql.Utilities;
 
 namespace Tql.App.Support;
 
 internal class SlideShow : IDisposable
 {
     private int _index;
-    private readonly List<ImageResource> _images;
+    private readonly List<string> _images;
     private readonly DispatcherTimer _timer;
     private readonly Image _image1 = new();
     private readonly Image _image2 = new();
@@ -19,7 +14,7 @@ internal class SlideShow : IDisposable
     public SlideShow(Canvas canvas)
     {
         var random = new Random();
-        _images = LoadImages().OrderBy(_ => random.Next()).ToList();
+        _images = Images.UniverseImages.OrderBy(_ => random.Next()).ToList();
 
         _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
         _timer.Tick += _timer_Tick;
@@ -73,40 +68,11 @@ internal class SlideShow : IDisposable
 
     private DrawingImage GetNextImage()
     {
-        var imageResource = _images[_index++ % _images.Count];
-
-        imageResource.LoadedImage ??= ImageFactory.CreateSvgImage(imageResource.Stream);
-
-        return imageResource.LoadedImage;
-    }
-
-    private IEnumerable<ImageResource> LoadImages()
-    {
-        var resourceManager = new ResourceManager(
-            $"{GetType().Assembly.GetName().Name}.g",
-            GetType().Assembly
-        );
-        foreach (
-            var resource in resourceManager
-                .GetResourceSet(CultureInfo.CurrentUICulture, true, true)!
-                .Cast<DictionaryEntry>()
-        )
-        {
-            var resourceName = (string)resource.Key;
-            var resourceStream = (Stream)resource.Value!;
-
-            if (resourceName.Contains("/universe%20icons/", StringComparison.OrdinalIgnoreCase))
-                yield return new ImageResource(resourceStream);
-        }
+        return Images.GetImage(_images[_index++ % _images.Count]);
     }
 
     public void Dispose()
     {
         _timer.Stop();
-    }
-
-    private record ImageResource(Stream Stream)
-    {
-        public DrawingImage? LoadedImage { get; set; }
     }
 }
