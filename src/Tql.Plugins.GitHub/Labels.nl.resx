@@ -127,20 +127,12 @@
     <comment>Original: Find issues</comment>
   </data>
   <data name="IssuesMatchBase_IssueLabel" xml:space="preserve">
-    <value>GitHub Issue</value>
-    <comment>Original: GitHub Issue</comment>
-  </data>
-  <data name="IssuesMatchBase_MyIssueLabel" xml:space="preserve">
-    <value>Mijn GitHub Issue</value>
-    <comment>Original: My GitHub Issue</comment>
-  </data>
-  <data name="IssuesMatchBase_MyPullRequestLabel" xml:space="preserve">
-    <value>Mijn GitHub Pull Request</value>
-    <comment>Original: My GitHub Pull Request</comment>
+    <value>Issue</value>
+    <comment>Original: Issue</comment>
   </data>
   <data name="IssuesMatchBase_PullRequestLabel" xml:space="preserve">
-    <value>GitHub Pull Request</value>
-    <comment>Original: GitHub Pull Request</comment>
+    <value>Pull Request</value>
+    <comment>Original: Pull Request</comment>
   </data>
   <data name="PullRequestsMatch_SearchHint" xml:space="preserve">
     <value>Vind pull requests</value>
@@ -241,5 +233,25 @@
   <data name="ProjectsMatch_SearchHint" xml:space="preserve">
     <value>Vind projecten</value>
     <comment>Original: Find projects</comment>
+  </data>
+  <data name="MilestonesMatch_Label" xml:space="preserve">
+    <value>Milestone</value>
+    <comment>Original: Milestone</comment>
+  </data>
+  <data name="MilestonesMatch_SearchHint" xml:space="preserve">
+    <value>Vind milestones</value>
+    <comment>Original: Find milestones</comment>
+  </data>
+  <data name="MilestoneMatch_SearchHint" xml:space="preserve">
+    <value>Vind issues in de milestone</value>
+    <comment>Original: Find issues in the milestone</comment>
+  </data>
+  <data name="WorkflowRunsMatch_Label" xml:space="preserve">
+    <value>Workflow Run</value>
+    <comment>Original: Workflow Run</comment>
+  </data>
+  <data name="WorkflowRunsMatch_SearchHint" xml:space="preserve">
+    <value>Vind workflow runs</value>
+    <comment>Original: Find workflow runs</comment>
   </data>
 </root>
