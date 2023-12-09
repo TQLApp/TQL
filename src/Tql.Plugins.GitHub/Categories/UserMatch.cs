@@ -59,7 +59,10 @@ internal class UserMatch(
         return response
             .Items
             .Select(
-                p => factory.Create(new RepositoryMatchDto(dto.ConnectionId, p.FullName, p.HtmlUrl))
+                p =>
+                    factory.Create(
+                        new RepositoryMatchDto(dto.ConnectionId, p.Owner.Login, p.Name, p.HtmlUrl)
+                    )
             );
     }
 }

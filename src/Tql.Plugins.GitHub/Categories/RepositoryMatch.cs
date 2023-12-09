@@ -1,20 +1,18 @@
 ﻿using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
-using Octokit;
 using Tql.Abstractions;
-using Tql.Plugins.GitHub.Services;
-using Tql.Plugins.GitHub.Support;
-using Tql.Utilities;
 
 namespace Tql.Plugins.GitHub.Categories;
 
 internal class RepositoryMatch(
     RepositoryMatchDto dto,
-    GitHubApi api,
-    IMatchFactory<IssueMatch, IssueMatchDto> factory
+    IMatchFactory<IssuesMatch, RepositoryItemMatchDto> issuesFactory,
+    IMatchFactory<PullRequestsMatch, RepositoryItemMatchDto> pullRequestsFactory,
+    IMatchFactory<MilestonesMatch, RepositoryItemMatchDto> milestonesFactory,
+    IMatchFactory<WorkflowRunsMatch, RepositoryItemMatchDto> workflowRunsFactory
 ) : IRunnableMatch, ISerializableMatch, ICopyableMatch, ISearchableMatch
 {
-    public string Text => dto.Name;
+    public string Text => $"{dto.Owner}/{dto.RepositoryName}";
     public ImageSource Icon => Images.Repository;
     public MatchTypeId TypeId => TypeIds.Repository;
 
@@ -39,48 +37,33 @@ internal class RepositoryMatch(
         return Task.CompletedTask;
     }
 
-    public async Task<IEnumerable<IMatch>> Search(
+    public Task<IEnumerable<IMatch>> Search(
         ISearchContext context,
         string text,
         CancellationToken cancellationToken
     )
     {
-        await context.DebounceDelay(cancellationToken);
+        var itemDto = new RepositoryItemMatchDto(dto.ConnectionId, dto.Owner, dto.RepositoryName);
 
-        var client = await api.GetClient(dto.ConnectionId);
-
-        var request = text.IsWhiteSpace()
-            ? new SearchIssuesRequest()
-            : new SearchIssuesRequest(text);
-
-        request.Repos.Add(dto.Name);
-
-        if (text.IsWhiteSpace())
-        {
-            request.SortField = IssueSearchSort.Created;
-            request.Order = SortDirection.Descending;
-        }
-
-        var response = await client.Search.SearchIssues(request);
-
-        cancellationToken.ThrowIfCancellationRequested();
-
-        return response
-            .Items
-            .Select(
-                p =>
-                    factory.Create(
-                        new IssueMatchDto(
-                            dto.ConnectionId,
-                            GitHubUtils.GetRepositoryName(p.HtmlUrl),
-                            p.Number,
-                            p.Title,
-                            p.HtmlUrl,
-                            p.State.Value
-                        )
-                    )
-            );
+        return Task.FromResult<IEnumerable<IMatch>>(
+            context.Filter(
+                new IMatch[]
+                {
+                    issuesFactory.Create(itemDto),
+                    pullRequestsFactory.Create(itemDto),
+                    milestonesFactory.Create(itemDto),
+                    workflowRunsFactory.Create(itemDto)
+                }
+            )
+        );
     }
 }
 
-internal record RepositoryMatchDto(Guid ConnectionId, string Name, string Url);
+internal record RepositoryMatchDto(
+    Guid ConnectionId,
+    string Owner,
+    string RepositoryName,
+    string Url
+);
+
+internal record RepositoryItemMatchDto(Guid ConnectionId, string Owner, string RepositoryName);

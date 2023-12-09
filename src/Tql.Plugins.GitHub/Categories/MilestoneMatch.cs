@@ -1,4 +1,6 @@
-﻿using Octokit;
+﻿using System.Windows.Forms;
+using Microsoft.Extensions.DependencyInjection;
+using Octokit;
 using Tql.Abstractions;
 using Tql.Plugins.GitHub.Services;
 using Tql.Plugins.GitHub.Support;
@@ -6,26 +8,37 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.GitHub.Categories;
 
-internal abstract class IssuesMatchBase<T>(
-    RepositoryItemMatchDto dto,
+internal class MilestoneMatch(
+    MilestoneMatchDto dto,
     GitHubApi api,
-    IssueTypeQualifier type,
-    IMatchFactory<T, IssueMatchDto> factory
-) : ISearchableMatch, ISerializableMatch
-    where T : IssueMatchBase
+    IMatchFactory<IssueMatch, IssueMatchDto> factory
+) : IRunnableMatch, ISerializableMatch, ICopyableMatch, ISearchableMatch
 {
-    public string Text =>
-        MatchText.Path(
-            $"{dto.Owner}/{dto.RepositoryName}",
-            type == IssueTypeQualifier.Issue
-                ? Labels.IssuesMatchBase_IssueLabel
-                : Labels.IssuesMatchBase_PullRequestLabel
-        );
+    public string Text => MatchText.Path($"{dto.Owner}/{dto.RepositoryName}", dto.Title);
+    public ImageSource Icon => Images.Milestone;
+    public MatchTypeId TypeId => TypeIds.Milestone;
+    public string SearchHint => Labels.MilestoneMatch_SearchHint;
 
-    public ImageSource Icon => type == IssueTypeQualifier.Issue ? Images.Issue : Images.PullRequest;
+    public Task Run(IServiceProvider serviceProvider, IWin32Window owner)
+    {
+        serviceProvider.GetRequiredService<IUI>().OpenUrl(dto.Url);
 
-    public abstract MatchTypeId TypeId { get; }
-    public abstract string SearchHint { get; }
+        return Task.CompletedTask;
+    }
+
+    public string Serialize()
+    {
+        return JsonSerializer.Serialize(dto);
+    }
+
+    public Task Copy(IServiceProvider serviceProvider)
+    {
+        var clipboard = serviceProvider.GetRequiredService<IClipboard>();
+
+        clipboard.CopyMarkdown(Text, dto.Url);
+
+        return Task.CompletedTask;
+    }
 
     public async Task<IEnumerable<IMatch>> Search(
         ISearchContext context,
@@ -41,7 +54,7 @@ internal abstract class IssuesMatchBase<T>(
             ? new SearchIssuesRequest()
             : new SearchIssuesRequest(text);
 
-        request.Type = type;
+        request.Milestone = dto.Title;
         request.Repos.Add(dto.Owner, dto.RepositoryName);
 
         if (text.IsWhiteSpace())
@@ -70,9 +83,12 @@ internal abstract class IssuesMatchBase<T>(
                     )
             );
     }
-
-    public string Serialize()
-    {
-        return JsonSerializer.Serialize(dto);
-    }
 }
+
+internal record MilestoneMatchDto(
+    Guid ConnectionId,
+    string Owner,
+    string RepositoryName,
+    string Title,
+    string Url
+);

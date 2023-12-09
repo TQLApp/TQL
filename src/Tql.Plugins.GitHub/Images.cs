@@ -25,4 +25,11 @@ internal static class Images
     public static readonly ImageSource ClosedPullRequest = LoadImage("Closed Pull Request.svg");
     public static readonly ImageSource MergedPullRequest = LoadImage("Merged Pull Request.svg");
     public static readonly ImageSource DraftIssue = LoadImage("Draft Issue.svg");
+    public static readonly ImageSource Milestone = LoadImage("Milestone.svg");
+    public static readonly ImageSource QueuedWorkflow = LoadImage("Queued Workflow.svg");
+    public static readonly ImageSource InProgressWorkflow = LoadImage("In Progress Workflow.svg");
+    public static readonly ImageSource SucceededWorkflow = LoadImage("Succeeded Workflow.svg");
+    public static readonly ImageSource FailedWorkflow = LoadImage("Failed Workflow.svg");
+    public static readonly ImageSource CancelledWorkflow = LoadImage("Cancelled Workflow.svg");
+    public static readonly ImageSource Workflow = LoadImage("Workflow.svg");
 }

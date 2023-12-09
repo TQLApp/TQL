@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Octokit;
 using Tql.Abstractions;
+using Tql.Utilities;
 
 namespace Tql.Plugins.GitHub.Categories;
 
@@ -12,7 +13,7 @@ internal abstract class IssueMatchBase(IssueMatchDto dto)
 {
     protected IssueMatchDto Dto { get; } = dto;
 
-    public string Text => $"{Dto.RepositoryName}: #{Dto.Number} {Dto.Title}";
+    public string Text => MatchText.Path(Dto.RepositoryName, $"#{Dto.Number} {Dto.Title}");
     public abstract ImageSource Icon { get; }
     public abstract MatchTypeId TypeId { get; }
 

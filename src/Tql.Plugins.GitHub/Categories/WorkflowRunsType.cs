@@ -4,13 +4,13 @@ using Tql.Utilities;
 
 namespace Tql.Plugins.GitHub.Categories;
 
-internal abstract class IssuesTypeBase<TCategory, TMatch>(
-    IMatchFactory<TCategory, RepositoryItemMatchDto> factory,
+internal class WorkflowRunsType(
+    IMatchFactory<WorkflowRunsMatch, RepositoryItemMatchDto> factory,
     ConfigurationManager configurationManager
-) : MatchType<TCategory, RepositoryItemMatchDto>(factory)
-    where TCategory : IssuesMatchBase<TMatch>
-    where TMatch : IssueMatchBase
+) : MatchType<WorkflowRunsMatch, RepositoryItemMatchDto>(factory)
 {
+    public override Guid Id => TypeIds.WorkflowRuns.Id;
+
     protected override bool IsValid(RepositoryItemMatchDto dto) =>
         configurationManager.Configuration.HasConnection(dto.ConnectionId);
 }

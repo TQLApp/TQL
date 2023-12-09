@@ -259,7 +259,7 @@ namespace Tql.Plugins.GitHub {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to GitHub Issue.
+        ///   Looks up a localized string similar to Issue.
         /// </summary>
         public static string IssuesMatchBase_IssueLabel {
             get {
@@ -268,29 +268,38 @@ namespace Tql.Plugins.GitHub {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to My GitHub Issue.
-        /// </summary>
-        public static string IssuesMatchBase_MyIssueLabel {
-            get {
-                return ResourceManager.GetString("IssuesMatchBase_MyIssueLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to My GitHub Pull Request.
-        /// </summary>
-        public static string IssuesMatchBase_MyPullRequestLabel {
-            get {
-                return ResourceManager.GetString("IssuesMatchBase_MyPullRequestLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to GitHub Pull Request.
+        ///   Looks up a localized string similar to Pull Request.
         /// </summary>
         public static string IssuesMatchBase_PullRequestLabel {
             get {
                 return ResourceManager.GetString("IssuesMatchBase_PullRequestLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find issues in the milestone.
+        /// </summary>
+        public static string MilestoneMatch_SearchHint {
+            get {
+                return ResourceManager.GetString("MilestoneMatch_SearchHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Milestone.
+        /// </summary>
+        public static string MilestonesMatch_Label {
+            get {
+                return ResourceManager.GetString("MilestonesMatch_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find milestones.
+        /// </summary>
+        public static string MilestonesMatch_SearchHint {
+            get {
+                return ResourceManager.GetString("MilestonesMatch_SearchHint", resourceCulture);
             }
         }
         
@@ -471,6 +480,24 @@ namespace Tql.Plugins.GitHub {
         public static string UsersMatch_SearchHint {
             get {
                 return ResourceManager.GetString("UsersMatch_SearchHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Workflow Run.
+        /// </summary>
+        public static string WorkflowRunsMatch_Label {
+            get {
+                return ResourceManager.GetString("WorkflowRunsMatch_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find workflow runs.
+        /// </summary>
+        public static string WorkflowRunsMatch_SearchHint {
+            get {
+                return ResourceManager.GetString("WorkflowRunsMatch_SearchHint", resourceCulture);
             }
         }
     }
