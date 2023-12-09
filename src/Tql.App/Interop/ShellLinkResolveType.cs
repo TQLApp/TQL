@@ -6,7 +6,6 @@ namespace Tql.App.Interop;
 /// Specifies flags to be used when resolving a shell link type.
 /// </summary>
 [Flags]
-[CLSCompliant(false)]
 internal enum ShellLinkResolveType : uint
 {
     /// <summary>

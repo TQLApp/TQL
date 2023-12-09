@@ -386,7 +386,6 @@ internal sealed class ShellLink : IDisposable
     /// Get or sets the initial display mode when the shortcut is
     /// run.
     /// </summary>
-    [CLSCompliant(false)]
     public LinkDisplayMode DisplayMode
     {
         get
@@ -491,7 +490,6 @@ internal sealed class ShellLink : IDisposable
     /// <param name="linkFile">The path to load the shortcut from.</param>
     /// <param name="hWnd">The window handle of the application's UI, if any.</param>
     /// <param name="resolveFlags">Flags controlling resolution behavior.</param>
-    [CLSCompliant(false)]
     public void Open(string linkFile, IntPtr hWnd, ShellLinkResolveType resolveFlags)
     {
         Open(linkFile, hWnd, resolveFlags, 1);
@@ -505,7 +503,6 @@ internal sealed class ShellLink : IDisposable
     /// <param name="hWnd">The window handle of the application's UI, if any.</param>
     /// <param name="resolveFlags">Flags controlling resolution behavior.</param>
     /// <param name="timeout">Timeout if <c>SLR_NO_UI</c> is specified, in milliseconds.</param>
-    [CLSCompliant(false)]
     public void Open(
         string linkFile,
         IntPtr hWnd,

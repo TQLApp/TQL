@@ -5,7 +5,6 @@ namespace Tql.App.Interop;
 /// <summary>
 /// The initial display mode used when a shortcut is executed.
 /// </summary>
-[CLSCompliant(false)]
 internal enum LinkDisplayMode : uint
 {
     SW_HIDE = 0,
