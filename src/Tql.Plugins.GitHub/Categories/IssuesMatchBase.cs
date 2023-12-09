@@ -1,6 +1,5 @@
 ﻿using Octokit;
 using Tql.Abstractions;
-using Tql.Plugins.GitHub.Data;
 using Tql.Plugins.GitHub.Services;
 using Tql.Plugins.GitHub.Support;
 using Tql.Utilities;
@@ -10,7 +9,6 @@ namespace Tql.Plugins.GitHub.Categories;
 internal abstract class IssuesMatchBase<T>(
     RepositoryItemMatchDto dto,
     GitHubApi api,
-    ICache<GitHubData> cache,
     IssueTypeQualifier type,
     IMatchFactory<T, IssueMatchDto> factory
 ) : ISearchableMatch, ISerializableMatch

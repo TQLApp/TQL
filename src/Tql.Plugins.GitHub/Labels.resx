@@ -258,4 +258,10 @@
   <data name="MilestoneMatch_SearchHint" xml:space="preserve">
     <value>Find issues in the milestone</value>
   </data>
+  <data name="WorkflowRunsMatch_Label" xml:space="preserve">
+    <value>Workflow Run</value>
+  </data>
+  <data name="WorkflowRunsMatch_SearchHint" xml:space="preserve">
+    <value>Find workflow runs</value>
+  </data>
 </root>

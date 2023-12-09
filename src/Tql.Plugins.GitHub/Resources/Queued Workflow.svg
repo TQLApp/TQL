@@ -1,0 +1,5 @@
+﻿<svg viewBox="0 0 16 16" fill="#DBAB0A">
+	<!-- This rect is a workaround to not have the dot blown up to fill the available space. -->
+	<rect x="0" y="0" width="16" height="16" fill="none" stroke="white" opacity="0"/>
+	<path d="M8 4a4 4 0 1 1 0 8 4 4 0 0 1 0-8Z"></path>
+</svg>

@@ -482,5 +482,23 @@ namespace Tql.Plugins.GitHub {
                 return ResourceManager.GetString("UsersMatch_SearchHint", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Workflow Run.
+        /// </summary>
+        public static string WorkflowRunsMatch_Label {
+            get {
+                return ResourceManager.GetString("WorkflowRunsMatch_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find workflow runs.
+        /// </summary>
+        public static string WorkflowRunsMatch_SearchHint {
+            get {
+                return ResourceManager.GetString("WorkflowRunsMatch_SearchHint", resourceCulture);
+            }
+        }
     }
 }

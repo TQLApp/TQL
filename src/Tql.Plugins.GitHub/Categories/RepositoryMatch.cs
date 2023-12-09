@@ -1,7 +1,6 @@
 ﻿using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
 using Tql.Abstractions;
-using Tql.Plugins.GitHub.Services;
 
 namespace Tql.Plugins.GitHub.Categories;
 
@@ -9,7 +8,8 @@ internal class RepositoryMatch(
     RepositoryMatchDto dto,
     IMatchFactory<IssuesMatch, RepositoryItemMatchDto> issuesFactory,
     IMatchFactory<PullRequestsMatch, RepositoryItemMatchDto> pullRequestsFactory,
-    IMatchFactory<MilestonesMatch, RepositoryItemMatchDto> milestonesFactory
+    IMatchFactory<MilestonesMatch, RepositoryItemMatchDto> milestonesFactory,
+    IMatchFactory<WorkflowRunsMatch, RepositoryItemMatchDto> workflowRunsFactory
 ) : IRunnableMatch, ISerializableMatch, ICopyableMatch, ISearchableMatch
 {
     public string Text => $"{dto.Owner}/{dto.RepositoryName}";
@@ -51,7 +51,8 @@ internal class RepositoryMatch(
                 {
                     issuesFactory.Create(itemDto),
                     pullRequestsFactory.Create(itemDto),
-                    milestonesFactory.Create(itemDto)
+                    milestonesFactory.Create(itemDto),
+                    workflowRunsFactory.Create(itemDto)
                 }
             )
         );
