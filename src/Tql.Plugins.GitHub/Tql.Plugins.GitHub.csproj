@@ -7,6 +7,7 @@
 		<Description>Techie's Quick Launcher plugin for GitHub.</Description>
 		<PackageId>TQLApp.Plugins.GitHub</PackageId>
 		<PackageProjectUrl>https://github.com/TQLApp/TQL/wiki/GitHub-plugin</PackageProjectUrl>
+		<NoWarn>NU5104</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>
