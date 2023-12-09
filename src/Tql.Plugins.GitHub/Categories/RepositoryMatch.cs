@@ -8,7 +8,8 @@ namespace Tql.Plugins.GitHub.Categories;
 internal class RepositoryMatch(
     RepositoryMatchDto dto,
     IMatchFactory<IssuesMatch, RepositoryItemMatchDto> issuesFactory,
-    IMatchFactory<PullRequestsMatch, RepositoryItemMatchDto> pullRequestsFactory
+    IMatchFactory<PullRequestsMatch, RepositoryItemMatchDto> pullRequestsFactory,
+    IMatchFactory<MilestonesMatch, RepositoryItemMatchDto> milestonesFactory
 ) : IRunnableMatch, ISerializableMatch, ICopyableMatch, ISearchableMatch
 {
     public string Text => $"{dto.Owner}/{dto.RepositoryName}";
@@ -46,7 +47,12 @@ internal class RepositoryMatch(
 
         return Task.FromResult<IEnumerable<IMatch>>(
             context.Filter(
-                new IMatch[] { issuesFactory.Create(itemDto), pullRequestsFactory.Create(itemDto) }
+                new IMatch[]
+                {
+                    issuesFactory.Create(itemDto),
+                    pullRequestsFactory.Create(itemDto),
+                    milestonesFactory.Create(itemDto)
+                }
             )
         );
     }

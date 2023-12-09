@@ -25,4 +25,5 @@ internal static class Images
     public static readonly ImageSource ClosedPullRequest = LoadImage("Closed Pull Request.svg");
     public static readonly ImageSource MergedPullRequest = LoadImage("Merged Pull Request.svg");
     public static readonly ImageSource DraftIssue = LoadImage("Draft Issue.svg");
+    public static readonly ImageSource Milestone = LoadImage("Milestone.svg");
 }

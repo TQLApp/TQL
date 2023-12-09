@@ -37,4 +37,9 @@ internal static class TypeIds
     public static readonly MatchTypeId ProjectItem = CreateId(
         "abcade5d-3c5a-4b87-8219-46c3568d30d5"
     );
+
+    public static readonly MatchTypeId Milestones = CreateId(
+        "60b8e412-15ac-4ceb-a484-b8856008b4a8"
+    );
+    public static readonly MatchTypeId Milestone = CreateId("c3228fb6-f28d-4a36-87f8-f83cbb0bbab6");
 }

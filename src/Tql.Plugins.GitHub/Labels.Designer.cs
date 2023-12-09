@@ -277,6 +277,33 @@ namespace Tql.Plugins.GitHub {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Find issues in the milestone.
+        /// </summary>
+        public static string MilestoneMatch_SearchHint {
+            get {
+                return ResourceManager.GetString("MilestoneMatch_SearchHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Milestone.
+        /// </summary>
+        public static string MilestonesMatch_Label {
+            get {
+                return ResourceManager.GetString("MilestonesMatch_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find milestones.
+        /// </summary>
+        public static string MilestonesMatch_SearchHint {
+            get {
+                return ResourceManager.GetString("MilestonesMatch_SearchHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Import Repository.
         /// </summary>
         public static string NewMatch_ImportRepository {

@@ -249,4 +249,13 @@
   <data name="ProjectsMatch_SearchHint" xml:space="preserve">
     <value>Find projects</value>
   </data>
+  <data name="MilestonesMatch_Label" xml:space="preserve">
+    <value>Milestone</value>
+  </data>
+  <data name="MilestonesMatch_SearchHint" xml:space="preserve">
+    <value>Find milestones</value>
+  </data>
+  <data name="MilestoneMatch_SearchHint" xml:space="preserve">
+    <value>Find issues in the milestone</value>
+  </data>
 </root>
