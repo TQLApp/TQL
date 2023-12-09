@@ -1,4 +1,5 @@
-﻿using Tql.Abstractions;
+﻿using System.Windows.Media.Animation;
+using Tql.Abstractions;
 using Tql.App.Search;
 using Tql.App.Support;
 
@@ -48,6 +49,29 @@ internal static class SearchResultUtils
             Margin = new Thickness(0, 0, 6, 0),
             VerticalAlignment = VerticalAlignment.Center
         };
+
+        var imageRotationAnimationAttribute = (match as IHasMatchAttributes)
+            ?.Attributes
+            .GetAttribute<ImageRotationAnimationAttribute>();
+
+        if (imageRotationAnimationAttribute != null)
+        {
+            icon.RenderTransform = new RotateTransform
+            {
+                CenterX = icon.Width / 2,
+                CenterY = icon.Height / 2
+            };
+            icon.RenderTransform.BeginAnimation(
+                RotateTransform.AngleProperty,
+                new DoubleAnimation
+                {
+                    From = 0,
+                    To = 360,
+                    Duration = new Duration(imageRotationAnimationAttribute.Duration),
+                    RepeatBehavior = RepeatBehavior.Forever
+                }
+            );
+        }
 
         var textBlock = new TextBlock();
 
