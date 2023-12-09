@@ -7,6 +7,7 @@ using Octokit;
 using Tql.Abstractions;
 using Tql.Plugins.GitHub.ConfigurationUI;
 using Tql.Utilities;
+using GraphQLConnection = Octokit.GraphQL.Connection;
 using IWin32Window = System.Windows.Forms.IWin32Window;
 using ProductHeaderValue = Octokit.ProductHeaderValue;
 
@@ -16,52 +17,74 @@ internal class GitHubApi(
     ILogger<GitHubApi> logger,
     IUI ui,
     ConfigurationManager configurationManager,
-    IStore store,
     HttpClient httpClient,
     IEncryption encryption
 )
 {
     private const string ClientId = "b5cf8dfb10c01dcfd22f";
-    private const string RedirectUrl = "http://127.0.0.1:23119/complete";
-    private const string Scope = "repo,project";
+    private const string Scope = "repo,project,read:org";
 
-    private readonly IStore _store = store;
     private readonly AsyncLock _lock = new();
     private readonly Dictionary<Guid, GitHubClient> _clients = new();
+    private readonly Dictionary<Guid, GraphQLConnection> _connections = new();
 
     public async Task<GitHubClient> GetClient(Guid id)
     {
         using (await _lock.LockAsync())
         {
-            if (!_clients.TryGetValue(id, out var client))
+            return await GetClientUnsafe(id);
+        }
+    }
+
+    public async Task<GraphQLConnection> GetConnection(Guid id)
+    {
+        using (await _lock.LockAsync())
+        {
+            if (!_connections.TryGetValue(id, out var connection))
             {
-                var connection = configurationManager
-                    .Configuration
-                    .Connections
-                    .Single(p => p.Id == id);
+                var appVersion = GetType().Assembly.GetName().Version!;
 
-                try
-                {
-                    client = await CreateClient(connection);
-                }
-                catch
-                {
-                    ui.ShowNotificationBar(
-                        $"{GitHubPlugin.Id}/ConnectionFailed/{id}",
-                        string.Format(
-                            Labels.GitHubApi_UnableToConnect,
-                            string.Format(Labels.GitHubApi_ResourceName, connection.Name)
-                        ),
-                        () => RetryConnect(id)
-                    );
-                    throw;
-                }
+                var client = await GetClientUnsafe(id);
 
-                _clients[id] = client;
+                connection = new GraphQLConnection(
+                    new Octokit.GraphQL.ProductHeaderValue("TQL", appVersion.ToString()),
+                    client.Connection.Credentials.Password
+                );
+
+                _connections.Add(id, connection);
             }
 
-            return client;
+            return connection;
         }
+    }
+
+    private async Task<GitHubClient> GetClientUnsafe(Guid id)
+    {
+        if (!_clients.TryGetValue(id, out var client))
+        {
+            var connection = configurationManager.Configuration.Connections.Single(p => p.Id == id);
+
+            try
+            {
+                client = await CreateClient(connection);
+            }
+            catch
+            {
+                ui.ShowNotificationBar(
+                    $"{GitHubPlugin.Id}/ConnectionFailed/{id}",
+                    string.Format(
+                        Labels.GitHubApi_UnableToConnect,
+                        string.Format(Labels.GitHubApi_ResourceName, connection.Name)
+                    ),
+                    () => RetryConnect(id)
+                );
+                throw;
+            }
+
+            _clients[id] = client;
+        }
+
+        return client;
     }
 
     private async void RetryConnect(Guid id)

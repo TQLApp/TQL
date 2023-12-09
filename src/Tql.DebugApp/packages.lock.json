@@ -775,6 +775,14 @@
         "resolved": "9.0.0",
         "contentHash": "mQZMCTZavxd9IzTkRaRLxJtFE5uTOJ2Uia5KDwnHiBBFjvnG4BJf56RV1aPZsVdqiKlqRmxbLrkU8DVlmRDrSA=="
       },
+      "Octokit.GraphQL": {
+        "type": "Transitive",
+        "resolved": "0.3.0-beta",
+        "contentHash": "UfdP4Cb/dA8kziz5elYpK3aCDw7lpenL9j8LqnkLqs6GuB3Nl3/RCuntCfaFQq39q+eat23fMUJwf7iEWQjHHg==",
+        "dependencies": {
+          "Newtonsoft.Json": "13.0.1"
+        }
+      },
       "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl": {
         "type": "Transitive",
         "resolved": "4.3.0",
@@ -1933,6 +1941,7 @@
         "dependencies": {
           "HtmlAgilityPack": "[1.11.54, )",
           "Octokit": "[9.0.0, )",
+          "Octokit.GraphQL": "[0.3.0-beta, )",
           "TQLApp.Utilities": "[0.0.0, )"
         }
       },

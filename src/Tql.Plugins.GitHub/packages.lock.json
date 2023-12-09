@@ -14,6 +14,15 @@
         "resolved": "9.0.0",
         "contentHash": "mQZMCTZavxd9IzTkRaRLxJtFE5uTOJ2Uia5KDwnHiBBFjvnG4BJf56RV1aPZsVdqiKlqRmxbLrkU8DVlmRDrSA=="
       },
+      "Octokit.GraphQL": {
+        "type": "Direct",
+        "requested": "[0.3.0-beta, )",
+        "resolved": "0.3.0-beta",
+        "contentHash": "UfdP4Cb/dA8kziz5elYpK3aCDw7lpenL9j8LqnkLqs6GuB3Nl3/RCuntCfaFQq39q+eat23fMUJwf7iEWQjHHg==",
+        "dependencies": {
+          "Newtonsoft.Json": "13.0.1"
+        }
+      },
       "JetBrains.Annotations": {
         "type": "Transitive",
         "resolved": "2023.3.0",
@@ -31,6 +40,11 @@
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.0"
         }
+      },
+      "Newtonsoft.Json": {
+        "type": "Transitive",
+        "resolved": "13.0.1",
+        "contentHash": "ppPFpBcvxdsfUonNcvITKqLl3bqxWbDCZIzDWHzjpdAHRFfZe0Dw9HmA0+za13IdyrgJwpkDTDA9fHaxOrt20A=="
       },
       "SharpVectors.Wpf": {
         "type": "Transitive",

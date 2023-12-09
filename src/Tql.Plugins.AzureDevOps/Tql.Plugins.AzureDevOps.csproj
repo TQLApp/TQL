@@ -3,11 +3,11 @@
 	<Import Project="..\..\TqlPluginPackage.targets" />
 
 	<PropertyGroup>
-		<NoWarn>NU5104</NoWarn>
 		<Product>TQL Azure DevOps Plugin</Product>
 		<Description>Techie's Quick Launcher plugin for Azure DevOps.</Description>
 		<PackageId>TQLApp.Plugins.AzureDevOps</PackageId>
 		<PackageProjectUrl>https://github.com/TQLApp/TQL/wiki/Azure-DevOps-plugin</PackageProjectUrl>
+		<NoWarn>NU5104</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>

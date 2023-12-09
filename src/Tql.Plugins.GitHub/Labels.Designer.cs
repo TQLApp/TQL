@@ -376,6 +376,33 @@ namespace Tql.Plugins.GitHub {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Find issues and pull requests in the project.
+        /// </summary>
+        public static string ProjectMatch_SearchHint {
+            get {
+                return ResourceManager.GetString("ProjectMatch_SearchHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GitHub Project.
+        /// </summary>
+        public static string ProjectsMatch_Label {
+            get {
+                return ResourceManager.GetString("ProjectsMatch_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find projects.
+        /// </summary>
+        public static string ProjectsMatch_SearchHint {
+            get {
+                return ResourceManager.GetString("ProjectsMatch_SearchHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Find pull requests.
         /// </summary>
         public static string PullRequestsMatch_SearchHint {

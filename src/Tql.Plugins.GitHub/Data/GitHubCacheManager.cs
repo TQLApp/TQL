@@ -1,7 +1,11 @@
 ﻿using Octokit;
+using Octokit.GraphQL;
+using Octokit.GraphQL.Model;
 using Tql.Abstractions;
 using Tql.Plugins.GitHub.Services;
 using Tql.Plugins.GitHub.Support;
+using GraphQLConnection = Octokit.GraphQL.Connection;
+using User = Octokit.User;
 
 namespace Tql.Plugins.GitHub.Data;
 
@@ -10,7 +14,7 @@ internal class GitHubCacheManager : ICacheManager<GitHubData>
     private readonly ConfigurationManager _configurationManager;
     private readonly GitHubApi _api;
 
-    public int Version => 2;
+    public int Version => 3;
 
     public event EventHandler<CacheInvalidationRequiredEventArgs>? CacheInvalidationRequired;
 
@@ -30,6 +34,7 @@ internal class GitHubCacheManager : ICacheManager<GitHubData>
         foreach (var connection in _configurationManager.Configuration.Connections)
         {
             var client = await _api.GetClient(connection.Id);
+            var graphQlConnection = await _api.GetConnection(connection.Id);
 
             var user = await client.User.Current();
             var organizations = (
@@ -39,8 +44,16 @@ internal class GitHubCacheManager : ICacheManager<GitHubData>
 
             var repositories = await GetRepositories(user, organizations, client);
 
+            var projects = await GetProjects(user, organizations, graphQlConnection);
+
             connections.Add(
-                new GitHubConnectionData(connection.Id, user.Login, organizations, repositories)
+                new GitHubConnectionData(
+                    connection.Id,
+                    user.Login,
+                    organizations,
+                    repositories,
+                    projects
+                )
             );
         }
 
@@ -78,6 +91,57 @@ internal class GitHubCacheManager : ICacheManager<GitHubData>
         }
 
         return repositories.ToImmutable();
+    }
+
+    private async Task<ImmutableArray<GitHubProject>> GetProjects(
+        User user,
+        ImmutableArray<string> organizations,
+        GraphQLConnection graphQlConnection
+    )
+    {
+        var result = ImmutableArray.CreateBuilder<GitHubProject>();
+
+        result.AddRange(await QueryProjects(user.Login, new Query().User(user.Login).ProjectsV2()));
+
+        foreach (var organization in organizations)
+        {
+            result.AddRange(
+                await QueryProjects(
+                    organization,
+                    new Query().Organization(organization).ProjectsV2()
+                )
+            );
+        }
+
+        return result.ToImmutable();
+
+        async Task<IEnumerable<GitHubProject>> QueryProjects(
+            string owner,
+            ProjectV2Connection projectsQuery
+        )
+        {
+            var query = projectsQuery
+                .AllPages()
+                .Select(
+                    p =>
+                        new
+                        {
+                            p.Number,
+                            p.Title,
+                            p.Url,
+                            p.UpdatedAt
+                        }
+                );
+
+            return from project in await graphQlConnection.Run(query)
+                select new GitHubProject(
+                    owner,
+                    project.Number,
+                    project.Title,
+                    project.Url,
+                    project.UpdatedAt
+                );
+        }
     }
 
     protected virtual void OnCacheInvalidationRequired(CacheInvalidationRequiredEventArgs e) =>
