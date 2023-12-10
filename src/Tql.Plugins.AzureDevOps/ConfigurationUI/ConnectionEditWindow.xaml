@@ -35,7 +35,7 @@
 
         <Label Content="{x:Static app:Labels.ConnectionEditWindow_NameLabel}" />
         <TextBox
-            Text="{Binding Name}"
+            Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
             Grid.Column="1"
             Margin="3" />
 
@@ -43,7 +43,7 @@
             Content="{x:Static app:Labels.ConnectionEditWindow_URLLabel}"
             Grid.Row="1" />
         <TextBox
-            Text="{Binding Url}"
+            Text="{Binding Url, UpdateSourceTrigger=PropertyChanged}"
             Grid.Row="1"
             Grid.Column="1"
             Margin="3" />
@@ -58,7 +58,7 @@
             Content="{x:Static app:Labels.ConnectionEditWindow_PATTokenLabel}"
             Grid.Row="3" />
         <PasswordBox
-            utilities:PasswordBoxHelper.BoundPassword="{Binding PATToken, Mode=TwoWay}"
+            utilities:PasswordBoxHelper.BoundPassword="{Binding PATToken, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             Grid.Row="3"
             Grid.Column="1"
             Margin="3" />

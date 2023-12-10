@@ -78,7 +78,7 @@ internal class ConnectionDto : DtoBase
         AddProperty(
             nameof(Url),
             p => ValidateNotEmpty(p) ?? ValidateUrl(p),
-            p => CoerceUrlEndsInSlash(CoerceEmptyStringToNull(p))
+            CoerceEmptyStringToNull
         );
         AddProperty(nameof(PATToken), ValidateNotEmpty, CoerceEmptyStringToNull);
     }

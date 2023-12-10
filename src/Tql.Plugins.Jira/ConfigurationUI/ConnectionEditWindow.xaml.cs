@@ -15,6 +15,10 @@ internal partial class ConnectionEditWindow
 
     private void _acceptButton_Click(object sender, RoutedEventArgs e)
     {
+        var dto = (ConnectionDto)DataContext;
+        if (!dto.Url!.EndsWith("/"))
+            dto.Url += "/";
+
         DialogResult = true;
     }
 

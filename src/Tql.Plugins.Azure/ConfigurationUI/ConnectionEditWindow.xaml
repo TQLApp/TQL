@@ -33,7 +33,7 @@
 
         <Label Content="{x:Static app:Labels.ConnectionEditWindow_NameLabel}" />
         <TextBox
-            Text="{Binding Name}"
+            Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
             Grid.Column="1"
             Margin="3" />
 
@@ -41,7 +41,7 @@
             Content="{x:Static app:Labels.ConnectionEditWindow_TenantIDLabel}"
             Grid.Row="1" />
         <TextBox
-            Text="{Binding TenantId}"
+            Text="{Binding TenantId, UpdateSourceTrigger=PropertyChanged}"
             Grid.Row="1"
             Grid.Column="1"
             Margin="3" />
