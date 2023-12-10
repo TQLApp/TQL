@@ -29,7 +29,7 @@ description:
 | Progress the tutorial to setup a connection. Use the settings below to setup the connection.  |                                                                          |
 | Progress the tutorial until you get to a step called **Using Techie's Quick Launcher**.       | This step shows immediately after you've saved the configuration window. |
 | **Dismiss** the quick start tutorial.                                                         |                                                                          |
-| Search for `azure board`.                                                                     | A category with the name **Azure Board** shows.                          |
+| Search for `azure devops board`.                                                              | A category with the name **Azure DevOps Board** shows.                   |
 
 - Connection settings:
   - Name: `{{ azure_devops_name }}`

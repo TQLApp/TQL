@@ -36,13 +36,13 @@ internal partial class QuickStartScript
             Guid.Parse("12e42adb-7f02-40fe-b8ba-2938b49b3d81"),
             new PluginMatchType(
                 Guid.Parse("3d57f05c-fbdd-4383-b305-3f48b2f018d2"),
-                "Azure Work Item",
+                "Azure DevOps Work Item",
                 "work item",
                 "work items"
             ),
             new PluginMatchType(
                 Guid.Parse("8d85fc68-ac7c-4d25-a837-7ab475b073f6"),
-                "Azure Board",
+                "Azure DevOps Board",
                 "board",
                 "boards"
             ),
