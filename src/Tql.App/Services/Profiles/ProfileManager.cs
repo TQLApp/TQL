@@ -2,15 +2,84 @@
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
+using Tql.Abstractions;
 using Tql.App.Interop;
 using Tql.App.Support;
+using Tql.Utilities;
 using Path = System.IO.Path;
 
 namespace Tql.App.Services.Profiles;
 
-internal class ProfileManager(ILogger<ProfileManager> logger)
+internal class ProfileManager(ILogger<ProfileManager> logger) : IProfileManager
 {
+    private static volatile IProfileConfiguration? _currentProfile;
+
+    public static IProfileConfiguration GetCurrentProfile()
+    {
+        // Suppressing the warning because this should never be an
+        // issue. The current profile will only be null on initial
+        // load, and there's no risk loading the profile twice.
+
+        // ReSharper disable once NonAtomicCompoundOperator
+        _currentProfile ??= LoadCurrentProfile();
+
+        return _currentProfile;
+    }
+
+    private static IProfileConfiguration LoadCurrentProfile()
+    {
+        using var key = CreateKey();
+
+        var configuration = key.GetValue(App.Options.Environment) is string json
+            ? JsonSerializer.Deserialize<ProfileConfiguration>(json)!
+            : new ProfileConfiguration(
+                App.Options.Environment,
+                App.Options.Environment,
+                Images.DefaultUniverseIcon
+            );
+
+        DrawingImage image;
+
+        try
+        {
+            image = Images.GetImage(configuration.IconName);
+        }
+        catch
+        {
+            image = Images.GetImage(Images.DefaultUniverseIcon);
+        }
+
+        using var iconStream = IconBuilder.Build(image);
+
+        var icon = ImageFactory.CreateBitmapImage(iconStream);
+
+        return new CurrentProfileConfiguration(
+            configuration.Name,
+            configuration.Title ?? Labels.ProfileManager_DefaultProfile,
+            image,
+            icon
+        );
+    }
+
+    private static RegistryKey CreateKey()
+    {
+        return Registry
+            .CurrentUser
+            .CreateSubKey($@"{Store.RegistryRoot}\{Store.GetEnvironmentName(null)}\Profiles");
+    }
+
     private readonly object _syncRoot = new();
+
+    public IProfileConfiguration CurrentProfile => GetCurrentProfile();
+
+    public event EventHandler? CurrentProfileChanged;
+
+    private void UpdateCurrentProfile()
+    {
+        _currentProfile = LoadCurrentProfile();
+
+        OnCurrentProfileChanged();
+    }
 
     public ImmutableArray<ProfileConfiguration> GetProfiles()
     {
@@ -28,6 +97,20 @@ internal class ProfileManager(ILogger<ProfileManager> logger)
                         new ProfileConfiguration(
                             null,
                             Labels.ProfileManager_DefaultProfile,
+                            Images.DefaultUniverseIcon
+                        )
+                    )
+                );
+            }
+
+            if (App.Options.Environment != null && key.GetValue(App.Options.Environment) == null)
+            {
+                key.SetValue(
+                    App.Options.Environment,
+                    JsonSerializer.Serialize(
+                        new ProfileConfiguration(
+                            App.Options.Environment,
+                            App.Options.Environment,
                             Images.DefaultUniverseIcon
                         )
                     )
@@ -69,6 +152,9 @@ internal class ProfileManager(ILogger<ProfileManager> logger)
         }
 
         CreateIcons(profile, GetTargetFileName());
+
+        if (IsCurrentProfile(profile.Name))
+            UpdateCurrentProfile();
     }
 
     public void UpdateProfile(ProfileConfiguration profile)
@@ -94,13 +180,16 @@ internal class ProfileManager(ILogger<ProfileManager> logger)
 
         DeleteIcons(oldProfile);
         CreateIcons(profile, targetFileName);
+
+        if (IsCurrentProfile(profile.Name))
+            UpdateCurrentProfile();
     }
 
     public void DeleteProfile(string name)
     {
         if (string.IsNullOrEmpty(name))
             throw new InvalidOperationException("The default profile cannot be deleted");
-        if (string.Equals(App.Options.Environment, name, StringComparison.OrdinalIgnoreCase))
+        if (IsCurrentProfile(name))
             throw new InvalidOperationException("The current profile cannot be deleted");
 
         ProfileConfiguration? profile;
@@ -124,6 +213,9 @@ internal class ProfileManager(ILogger<ProfileManager> logger)
         DeleteFolder(Store.GetLocalDataFolder(profile.Name));
         DeleteRegistryKey(Store.GetEnvironmentName(profile.Name));
     }
+
+    private static bool IsCurrentProfile(string? name) =>
+        string.Equals(App.Options.Environment, name, StringComparison.OrdinalIgnoreCase);
 
     private void DeleteFolder(string path)
     {
@@ -201,11 +293,10 @@ internal class ProfileManager(ILogger<ProfileManager> logger)
     {
         var image = Images.GetImage(iconName);
 
-        var icon = IconBuilder.Build(image);
+        using var source = IconBuilder.Build(image);
+        using var target = File.Create(fileName);
 
-        using var stream = File.Create(fileName);
-
-        icon.Save(stream);
+        source.CopyTo(target);
     }
 
     private void DeleteIcons(ProfileConfiguration profile)
@@ -253,13 +344,6 @@ internal class ProfileManager(ILogger<ProfileManager> logger)
         return $"{fileName}.lnk";
     }
 
-    private RegistryKey CreateKey()
-    {
-        return Registry
-            .CurrentUser
-            .CreateSubKey($@"{Store.RegistryRoot}\{Store.GetEnvironmentName(null)}\Profiles");
-    }
-
     public string GetNextProfileName()
     {
         var profileNames = GetProfiles()
@@ -274,4 +358,14 @@ internal class ProfileManager(ILogger<ProfileManager> logger)
                 return profileName;
         }
     }
+
+    private record CurrentProfileConfiguration(
+        string? Name,
+        string Title,
+        ImageSource Image,
+        ImageSource Icon
+    ) : IProfileConfiguration;
+
+    protected virtual void OnCurrentProfileChanged() =>
+        CurrentProfileChanged?.Invoke(this, EventArgs.Empty);
 }

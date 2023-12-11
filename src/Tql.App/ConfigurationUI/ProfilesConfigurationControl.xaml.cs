@@ -20,18 +20,18 @@ internal partial class ProfilesConfigurationControl : IConfigurationPage
     public ConfigurationPageMode PageMode => ConfigurationPageMode.AutoSize;
 
     public ProfilesConfigurationControl(
-        ProfileManager profileManager,
+        IProfileManager profileManager,
         IServiceProvider serviceProvider,
         IUI ui
     )
     {
-        _profileManager = profileManager;
+        _profileManager = (ProfileManager)profileManager;
         _serviceProvider = serviceProvider;
         _ui = ui;
 
         InitializeComponent();
 
-        base.DataContext = ProfileConfigurationDto.FromConfiguration(profileManager);
+        base.DataContext = ProfileConfigurationDto.FromConfiguration(_profileManager);
     }
 
     public void Initialize(IConfigurationPageContext context) { }

@@ -128,6 +128,8 @@ public partial class App
 
         _host = builder.Build();
 
+        notifyIconManager.Initialize(_host.Services);
+
         splashScreen.Progress.SetProgress(0.5);
 
         var settings = _host.Services.GetRequiredService<Settings>();
@@ -425,7 +427,7 @@ public partial class App
         builder.AddSingleton<QuickStartManager>();
         builder.AddSingleton<QuickStartScript>();
         builder.AddSingleton<IEncryption, Services.Encryption>();
-        builder.AddSingleton<ProfileManager>();
+        builder.AddSingleton<IProfileManager, ProfileManager>();
 
         builder.Add(ServiceDescriptor.Singleton(typeof(ICache<>), typeof(Cache<>)));
         builder.Add(ServiceDescriptor.Singleton(typeof(IMatchFactory<,>), typeof(MatchFactory<,>)));

@@ -7,14 +7,14 @@ internal static class IconBuilder
 {
     private static readonly int[] Resolutions = { 16, 24, 32, 48, 256 };
 
-    public static Icon Build(ImageSource image, params ImageSource[] overlays)
+    public static Stream Build(ImageSource image, params ImageSource[] overlays)
     {
         var bitmaps = Resolutions
             .Select(p => RenderImage(p, image, overlays))
             .Select(p => (Frame: p, Stream: GetBitmapStream(p)))
             .ToList();
 
-        using var stream = new MemoryStream();
+        var stream = new MemoryStream();
 
         // ICO header
         stream.Write([0, 0, 1, 0, (byte)bitmaps.Count, 0], 0, 6);
@@ -43,7 +43,7 @@ internal static class IconBuilder
 
         stream.Position = 0;
 
-        return new Icon(stream);
+        return stream;
     }
 
     private static BitmapFrame RenderImage(
