@@ -64,4 +64,5 @@ internal static class Images
         "Arrow Left.svg",
         Color.FromRgb(20, 79, 162)
     );
+    public static readonly DrawingImage Folder = GetImage("Folder.svg");
 }

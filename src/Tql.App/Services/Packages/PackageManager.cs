@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
+using System.IO.Compression;
 using System.Net.Http;
 using Microsoft.Extensions.Logging;
 using NuGet.Configuration;
@@ -126,8 +128,11 @@ internal class PackageManager : IDisposable
 
         var packageDefinitions = new List<Package>();
 
-        foreach (var package in packages)
+        foreach (var (package, source) in packages)
         {
+            var isLocal = source.IsLocal;
+            var isVerified = !isLocal && IsVerified(package.Identity.Id);
+
             packageDefinitions.Add(
                 new Package(
                     package.Identity,
@@ -144,7 +149,8 @@ internal class PackageManager : IDisposable
                                 StringComparison.OrdinalIgnoreCase
                             )
                     ),
-                    IsVerified(package.Identity.Id)
+                    isVerified,
+                    isLocal
                 )
             );
         }
@@ -351,9 +357,10 @@ internal class PackageManager : IDisposable
 
         try
         {
-            using var stream = await _httpClient.GetStreamAsync(iconUrl);
+            if (string.Equals(iconUrl.Scheme, "file", StringComparison.OrdinalIgnoreCase))
+                return await GetIconFromFile(iconUrl);
 
-            return ImageFactory.CreateBitmapImage(stream);
+            return await GetIconFromHttp(iconUrl);
         }
         catch
         {
@@ -361,13 +368,48 @@ internal class PackageManager : IDisposable
         }
     }
 
-    private async Task<List<IPackageSearchMetadata>> GetUpstreamPackages()
+    private async Task<ImageSource> GetIconFromFile(Uri iconUrl)
+    {
+        if (!iconUrl.Fragment.StartsWith("#"))
+        {
+            throw new ArgumentException(
+                "Icon URL must have a fragment starting with a '#'",
+                nameof(iconUrl)
+            );
+        }
+
+        await using var stream = File.OpenRead(iconUrl.LocalPath);
+        using var archive = new ZipArchive(stream, ZipArchiveMode.Read);
+
+        var entryName = iconUrl.Fragment.Substring(1);
+        var entry = archive.GetEntry(entryName);
+        if (entry == null)
+        {
+            throw new ArgumentException(
+                $"Cannot find entry '{entryName}' in package",
+                nameof(iconUrl)
+            );
+        }
+
+        await using var entryStream = entry.Open();
+
+        return ImageFactory.CreateBitmapImage(entryStream);
+    }
+
+    private async Task<ImageSource> GetIconFromHttp(Uri iconUrl)
+    {
+        using var stream = await _httpClient.GetStreamAsync(iconUrl);
+
+        return ImageFactory.CreateBitmapImage(stream);
+    }
+
+    private async Task<List<NuGetSearchResult>> GetUpstreamPackages()
     {
         using var client = GetClient();
 
         var packages = await client.SearchPackages($"tags:{TagName}", "Tql", false, false, 1000);
 
-        return packages.Where(p => HasTag(p, TagName)).ToList();
+        return packages.Where(p => HasTag(p.Package, TagName)).ToList();
     }
 
     private bool HasTag(IPackageSearchMetadata package, string expectedTag)
