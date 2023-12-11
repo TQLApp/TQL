@@ -131,8 +131,9 @@ internal class NotifyIconManager : IDisposable
 
     private void SetNotificationIconText(string text)
     {
+        // Only show the profile title for the non-default profiles.
         if (_profile.Name != null)
-            text = $"{text} [{_profile.Title}]";
+            text = $"{text} - {_profile.Title}";
 
         _notifyIcon.Text = text;
     }
