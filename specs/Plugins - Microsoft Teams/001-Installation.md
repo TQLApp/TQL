@@ -14,6 +14,8 @@ description: Install the Microsoft Teams plugin.
 
 ## Prerequisite
 
+{% include Setup/Local-package-source.md %}
+
 The demo plugin is necessary to get demo people directories.
 
 | Action                                      | Expected result |
@@ -25,6 +27,8 @@ The demo plugin is necessary to get demo people directories.
 | **Restart** the application when requested. |                 |
 
 ## Installation
+
+{% include Setup/Local-package-source.md %}
 
 | Action                                            | Expected result |
 | ------------------------------------------------- | --------------- |
