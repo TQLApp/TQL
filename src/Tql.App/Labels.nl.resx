@@ -822,4 +822,16 @@ Do you want to restart TQL to see if this resolves the issue?</comment>
     <value>Bestanden worden opgeschoond…</value>
     <comment>Original: Deleting unused files...</comment>
   </data>
+  <data name="PluginsConfiguration_Local" xml:space="preserve">
+    <value>Lokaal</value>
+    <comment>Original: Local</comment>
+  </data>
+  <data name="PluginsConfiguration_LocalToolTip" xml:space="preserve">
+    <value>De plug-in komt van een lokale pakketbron.</value>
+    <comment>Original: This plugin comes from a local package source.</comment>
+  </data>
+  <data name="PluginsConfiguration_Verified" xml:space="preserve">
+    <value>Geverifieerd</value>
+    <comment>Original: Verified</comment>
+  </data>
 </root>
