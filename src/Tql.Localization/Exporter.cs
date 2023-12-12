@@ -34,15 +34,18 @@ internal class Exporter(Options options) : Tool(options)
         if (resourceStrings.All(p => !string.IsNullOrEmpty(p.LocalizedValue)))
         {
             LogInfo("Nothing to translate");
-            return 0;
+            if (!Options.IsAll)
+                return 0;
+        }
+        else
+        {
+            LogWarning("Found untranslated strings");
         }
 
         if (!Options.IsAll)
             resourceStrings.RemoveAll(p => !string.IsNullOrEmpty(p.LocalizedValue));
 
         WriteWorkbook(resourceStrings);
-
-        LogWarning("Found untranslated strings");
 
         Process.Start(new ProcessStartInfo { FileName = Options.FileName, UseShellExecute = true });
 

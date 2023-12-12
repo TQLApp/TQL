@@ -779,4 +779,10 @@ Don't forget to change the hotkey for your new profile. You can do this in the g
   <data name="ProfilesConfiguration_Title" xml:space="preserve">
     <value>Title</value>
   </data>
+  <data name="ProfilesConfiguration_CannotDeleteCurrentProfile" xml:space="preserve">
+    <value>The current profile cannot be deleted</value>
+  </data>
+  <data name="ProfilesConfiguration_CannotDeleteCurrentProfileSubtitle" xml:space="preserve">
+    <value>The profile you're trying to delete is the current profile of the app. If you want to delete this profile, you need to close the current app and delete it from a different profile.</value>
+  </data>
 </root>
