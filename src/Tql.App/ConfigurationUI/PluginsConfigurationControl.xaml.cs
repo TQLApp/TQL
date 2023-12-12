@@ -47,6 +47,11 @@ internal partial class PluginsConfigurationControl : IConfigurationPage
             "VerifiedToolTip",
             new PopoverToolTip(null, Labels.PluginsConfiguration_VerifiedToolTip)
         );
+        Resources.Add("Folder", Images.Folder);
+        Resources.Add(
+            "LocalToolTip",
+            new PopoverToolTip(null, Labels.PluginsConfiguration_LocalToolTip)
+        );
 
         SetSelectedTab(Tab.Browse);
     }

@@ -788,4 +788,13 @@ Don't forget to change the hotkey for your new profile. You can do this in the g
   <data name="ProfilesConfiguration_CouldNotDeleteProfile" xml:space="preserve">
     <value>The profile could not be deleted. Make sure you close the instance of the app with this profile before you delete the profile.</value>
   </data>
+  <data name="PluginsConfiguration_Local" xml:space="preserve">
+    <value>Local</value>
+  </data>
+  <data name="PluginsConfiguration_LocalToolTip" xml:space="preserve">
+    <value>This plugin comes from a local package source.</value>
+  </data>
+  <data name="PluginsConfiguration_Verified" xml:space="preserve">
+    <value>Verified</value>
+  </data>
 </root>

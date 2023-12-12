@@ -46,5 +46,5 @@ description: Configure the Azure DevOps plugin.
 | Action                                         | Expected result                            |
 | ---------------------------------------------- | ------------------------------------------ |
 | Open the app.                                  |                                            |
-| Type in `azure devops`.                        | The **Azure DevOps Board** category shows. |
+| Type in `azure devops board`.                  | The **Azure DevOps Board** category shows. |
 | **Enter** the **Azure DevOps Board** category. | A list of boards shows.                    |

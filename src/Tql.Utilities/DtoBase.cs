@@ -78,18 +78,6 @@ public class DtoBase : INotifyPropertyChanged, INotifyDataErrorInfo
         string.Empty.Equals(value) ? null : value;
 
     /// <summary>
-    /// Utility method to ensure that URLs end in a slash.
-    /// </summary>
-    /// <param name="value">Value to coerce.</param>
-    /// <returns>Coerced value.</returns>
-    protected object? CoerceUrlEndsInSlash(object? value)
-    {
-        if (value is string stringValue && !stringValue.IsEmpty() && !stringValue.EndsWith('/'))
-            return stringValue + "/";
-        return value;
-    }
-
-    /// <summary>
     /// Gets the value of a property.
     /// </summary>
     /// <param name="name">Name of the property.</param>

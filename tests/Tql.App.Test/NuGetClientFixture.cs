@@ -16,7 +16,7 @@ internal class NuGetClientFixture
 
         var packages = await client.SearchPackages("tags:tql-plugin", "Tql", false, false, 1000);
 
-        Assert.IsTrue(packages.Any(p => p.Identity.Id == "Tql.Plugins.Demo"));
+        Assert.IsTrue(packages.Any(p => p.Package.Identity.Id == "Tql.Plugins.Demo"));
     }
 
     [TestCase("TQLApp.Plugins.Azure", "Tql.Plugins.Azure.dll", "0.9.1")]

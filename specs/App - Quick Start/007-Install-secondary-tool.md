@@ -17,6 +17,8 @@ description:
 
 ## Setup the quick start tutorial
 
+{% include Setup/Local-package-source.md %}
+
 {% include Setup/App/QuickStart/Reset-quick-start.md %}
 
 | Action                                                                                                                                     | Expected result                                                          |
@@ -34,6 +36,8 @@ description:
   - Password: `{{ jira_password }}`
 
 ## Configure secondary tool
+
+{% include Setup/Local-package-source.md %}
 
 Validate that you can restart the tutorial, configuring a secondary tool:
 

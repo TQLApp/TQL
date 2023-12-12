@@ -886,4 +886,16 @@ Don't forget to change the hotkey for your new profile. You can do this in the g
     <value>Het profiel kon niet verwijderd worden. Controleer of er geen app met dit profiel meer draait en probeert het opnieuw.</value>
     <comment>Original: The profile could not be deleted. Make sure you close the instance of the app with this profile before you delete the profile.</comment>
   </data>
+  <data name="PluginsConfiguration_Local" xml:space="preserve">
+    <value>Lokaal</value>
+    <comment>Original: Local</comment>
+  </data>
+  <data name="PluginsConfiguration_LocalToolTip" xml:space="preserve">
+    <value>De plug-in komt van een lokale pakketbron.</value>
+    <comment>Original: This plugin comes from a local package source.</comment>
+  </data>
+  <data name="PluginsConfiguration_Verified" xml:space="preserve">
+    <value>Geverifieerd</value>
+    <comment>Original: Verified</comment>
+  </data>
 </root>

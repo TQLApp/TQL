@@ -16,6 +16,8 @@ using Path = System.IO.Path;
 
 namespace Tql.App.Services.Packages.NuGet;
 
+using PackageSource = global::NuGet.Configuration.PackageSource;
+
 // Heavily based on https://gist.github.com/cpyfferoen/74092a74b165e85aed5ca1d51973b9d2.
 
 internal class NuGetClient : IDisposable
@@ -48,7 +50,7 @@ internal class NuGetClient : IDisposable
 
         foreach (var source in configuration.Sources)
         {
-            var packageSource = new global::NuGet.Configuration.PackageSource(source.Source)
+            var packageSource = new PackageSource(source.Source)
             {
                 Credentials = source.Credentials
             };
@@ -90,7 +92,7 @@ internal class NuGetClient : IDisposable
         };
     }
 
-    public async Task<ImmutableArray<IPackageSearchMetadata>> SearchPackages(
+    public async Task<ImmutableArray<NuGetSearchResult>> SearchPackages(
         string nuGetOrgSearchTerm,
         string otherSearchTerm,
         bool includePrerelease,
@@ -99,7 +101,7 @@ internal class NuGetClient : IDisposable
         CancellationToken cancellationToken = default
     )
     {
-        var packages = ImmutableArray.CreateBuilder<IPackageSearchMetadata>();
+        var packages = ImmutableArray.CreateBuilder<NuGetSearchResult>();
 
         foreach (var remoteNuGetFeed in _remoteSourceRepositories)
         {
@@ -117,7 +119,7 @@ internal class NuGetClient : IDisposable
                 };
 
                 packages.AddRange(
-                    await searchResource.SearchAsync(
+                    from package in await searchResource.SearchAsync(
                         searchTerm,
                         searchFilter,
                         0,
@@ -125,6 +127,7 @@ internal class NuGetClient : IDisposable
                         _logger,
                         cancellationToken
                     )
+                    select new NuGetSearchResult(package, remoteNuGetFeed.PackageSource)
                 );
             }
             else
@@ -146,7 +149,9 @@ internal class NuGetClient : IDisposable
 
                 while (await enumerator.MoveNextAsync())
                 {
-                    packages.Add(enumerator.Current);
+                    packages.Add(
+                        new NuGetSearchResult(enumerator.Current, remoteNuGetFeed.PackageSource)
+                    );
                 }
             }
         }
@@ -397,3 +402,5 @@ internal class NuGetClient : IDisposable
         }
     }
 }
+
+internal record NuGetSearchResult(IPackageSearchMetadata Package, PackageSource Source);

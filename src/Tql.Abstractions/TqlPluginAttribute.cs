@@ -8,4 +8,4 @@
 /// See <see cref="ITqlPlugin"/> for more information.
 /// </remarks>
 [AttributeUsage(AttributeTargets.Class)]
-public class TqlPluginAttribute : Attribute { }
+public class TqlPluginAttribute : Attribute;
