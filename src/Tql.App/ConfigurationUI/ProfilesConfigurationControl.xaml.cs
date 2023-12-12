@@ -87,9 +87,26 @@ internal partial class ProfilesConfigurationControl : IConfigurationPage
     private void _delete_Click(object? sender, RoutedEventArgs e)
     {
         var profileDto = (ProfileDto)_sources.SelectedItem;
+
         if (string.IsNullOrEmpty(profileDto.Name))
         {
             _ui.ShowAlert(this, Labels.ProfilesConfiguration_CannotDeleteDefaultProfile);
+            return;
+        }
+
+        if (
+            string.Equals(
+                profileDto.Name,
+                App.Options.Environment,
+                StringComparison.OrdinalIgnoreCase
+            )
+        )
+        {
+            _ui.ShowAlert(
+                this,
+                Labels.ProfilesConfiguration_CannotDeleteCurrentProfile,
+                Labels.ProfilesConfiguration_CannotDeleteCurrentProfileSubtitle
+            );
             return;
         }
 

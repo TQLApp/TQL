@@ -1633,6 +1633,24 @@ namespace Tql.App {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The current profile cannot be deleted.
+        /// </summary>
+        public static string ProfilesConfiguration_CannotDeleteCurrentProfile {
+            get {
+                return ResourceManager.GetString("ProfilesConfiguration_CannotDeleteCurrentProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The profile you&apos;re trying to delete is the current profile of the app. If you want to delete this profile, you need to close the current app and delete it from a different profile..
+        /// </summary>
+        public static string ProfilesConfiguration_CannotDeleteCurrentProfileSubtitle {
+            get {
+                return ResourceManager.GetString("ProfilesConfiguration_CannotDeleteCurrentProfileSubtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The default profile cannot be deleted.
         /// </summary>
         public static string ProfilesConfiguration_CannotDeleteDefaultProfile {
