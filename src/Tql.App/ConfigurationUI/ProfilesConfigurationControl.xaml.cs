@@ -115,12 +115,21 @@ internal partial class ProfilesConfigurationControl : IConfigurationPage
             Labels.ProfilesConfiguration_AreYouSureDeleteProfile,
             Labels.ProfilesConfiguration_AreYouSureDeleteProfileSubtitle
         );
-        if (result == DialogResult.Yes)
+
+        if (result != DialogResult.Yes)
+            return;
+
+        try
         {
             _profileManager.DeleteProfile(profileDto.Name);
-
-            DataContext.Profiles.Remove(profileDto);
         }
+        catch (Exception ex)
+        {
+            _ui.ShowException(this, Labels.ProfilesConfiguration_CouldNotDeleteProfile, ex);
+            return;
+        }
+
+        DataContext.Profiles.Remove(profileDto);
     }
 
     private void _sources_MouseDoubleClick(object sender, MouseButtonEventArgs e)

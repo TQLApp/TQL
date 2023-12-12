@@ -251,28 +251,55 @@ internal class ProfileManager : IProfileManager
         if (IsCurrentProfile(name))
             throw new InvalidOperationException("The current profile cannot be deleted");
 
-        ProfileConfiguration? profile;
+        var profile = GetProfiles()
+            .SingleOrDefault(p => string.Equals(p.Name, name, StringComparison.OrdinalIgnoreCase));
+        if (profile == null)
+            throw new InvalidOperationException("Profile with name does not exists");
+
+        // Rename the data folder. This is the make sure the app isn't running.
+        var dataFolder = Store.GetDataFolder(profile.Name);
+        var renamedDataFolder = GetRenamedDataFolder(dataFolder);
+
+        try
+        {
+            Directory.Move(dataFolder, renamedDataFolder);
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException(
+                "The profile data could not be deleted. The app with this profile may still be running. Close it and try again.",
+                ex
+            );
+        }
 
         lock (_syncRoot)
         {
-            profile = GetProfiles()
-                .SingleOrDefault(
-                    p => string.Equals(p.Name, name, StringComparison.OrdinalIgnoreCase)
-                );
-            if (profile == null)
-                throw new InvalidOperationException("Profile with name does not exists");
-
             using var key = CreateKey();
 
             key.DeleteValue(name);
         }
 
         DeleteIcons(profile);
-        DeleteFolder(Store.GetDataFolder(profile.Name));
+        DeleteFolder(renamedDataFolder);
         DeleteFolder(Store.GetLocalDataFolder(profile.Name));
         DeleteRegistryKey(Store.GetEnvironmentName(profile.Name));
 
         TrackEvent("ProfileDeleted", profile.Name, profile.IconName);
+    }
+
+    private static string GetRenamedDataFolder(string dataFolder)
+    {
+        var baseFolderName = $"{dataFolder}-DELETE";
+
+        for (var i = 0; ; i++)
+        {
+            var folderName = baseFolderName;
+            if (i > 0)
+                folderName += i;
+
+            if (!Directory.Exists(folderName))
+                return folderName;
+        }
     }
 
     private static bool IsCurrentProfile(string? name) =>

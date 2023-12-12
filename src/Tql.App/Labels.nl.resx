@@ -882,4 +882,8 @@ Don't forget to change the hotkey for your new profile. You can do this in the g
     <value>Het profiel dat je probeert te verwijderen is het huidige profiel van de app. Als je dit profiel wilt verwijderen, moet je de huidige app afsluiten en het via een ander profiel verwijderen.</value>
     <comment>Original: The profile you're trying to delete is the current profile of the app. If you want to delete this profile, you need to close the current app and delete it from a different profile.</comment>
   </data>
+  <data name="ProfilesConfiguration_CouldNotDeleteProfile" xml:space="preserve">
+    <value>Het profiel kon niet verwijderd worden. Controleer of er geen app met dit profiel meer draait en probeert het opnieuw.</value>
+    <comment>Original: The profile could not be deleted. Make sure you close the instance of the app with this profile before you delete the profile.</comment>
+  </data>
 </root>

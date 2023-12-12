@@ -1660,6 +1660,15 @@ namespace Tql.App {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The profile could not be deleted. Make sure you close the instance of the app with this profile before you delete the profile..
+        /// </summary>
+        public static string ProfilesConfiguration_CouldNotDeleteProfile {
+            get {
+                return ResourceManager.GetString("ProfilesConfiguration_CouldNotDeleteProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The new profile has been created.
         /// </summary>
         public static string ProfilesConfiguration_CreatedNewProfile {
