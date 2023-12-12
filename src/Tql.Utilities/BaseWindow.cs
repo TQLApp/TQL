@@ -1,7 +1,5 @@
 ﻿using System.Runtime.InteropServices;
 using System.Windows.Interop;
-using Microsoft.Extensions.DependencyInjection;
-using Tql.Abstractions;
 using Color = System.Windows.Media.Color;
 
 namespace Tql.Utilities;
@@ -15,13 +13,10 @@ namespace Tql.Utilities;
 /// </remarks>
 public class BaseWindow : Window
 {
-    private readonly IProfileManager _profileManager;
-
     /// <summary>
     /// Initializes a new <see cref="BaseWindow"/>.
     /// </summary>
-    /// <param name="serviceProvider">Reference to the service provider.</param>
-    public BaseWindow(IServiceProvider serviceProvider)
+    public BaseWindow()
     {
         TextOptions.SetTextFormattingMode(this, TextFormattingMode.Display);
         UseLayoutRounding = true;
@@ -29,22 +24,6 @@ public class BaseWindow : Window
         ShowInTaskbar = false;
         RenderOptions.SetClearTypeHint(this, ClearTypeHint.Enabled);
         Style = (Style)FindResource("CustomWindowStyle");
-
-        _profileManager = serviceProvider.GetRequiredService<IProfileManager>();
-
-        Icon = _profileManager.CurrentProfile.Icon;
-
-        _profileManager.CurrentProfileChanged += ProfileManager_CurrentProfileChanged;
-
-        Unloaded += (_, _) =>
-        {
-            _profileManager.CurrentProfileChanged -= ProfileManager_CurrentProfileChanged;
-        };
-    }
-
-    private void ProfileManager_CurrentProfileChanged(object? sender, EventArgs e)
-    {
-        Icon = _profileManager.CurrentProfile.Icon;
     }
 
     /// <inheritdoc/>

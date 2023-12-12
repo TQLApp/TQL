@@ -12,9 +12,12 @@ using Path = System.IO.Path;
 
 namespace Tql.App.Services.Profiles;
 
-internal class ProfileManager(ILogger<ProfileManager> logger, TelemetryService telemetryService)
-    : IProfileManager
+internal class ProfileManager : IProfileManager
 {
+    private static readonly uint TaskbarButtonCreatedMessage = NativeMethods.RegisterWindowMessage(
+        "TaskbarButtonCreated"
+    );
+
     private static volatile CurrentProfileConfiguration? _currentProfile;
 
     public static IProfileConfiguration GetCurrentProfile()
@@ -68,10 +71,47 @@ internal class ProfileManager(ILogger<ProfileManager> logger, TelemetryService t
     }
 
     private readonly object _syncRoot = new();
+    private readonly ILogger<ProfileManager> _logger;
+    private readonly TelemetryService _telemetryService;
 
     public IProfileConfiguration CurrentProfile => GetCurrentProfile();
 
     public event EventHandler? CurrentProfileChanged;
+
+    public ProfileManager(ILogger<ProfileManager> logger, TelemetryService telemetryService)
+    {
+        _logger = logger;
+        _telemetryService = telemetryService;
+
+        EventManager.RegisterClassHandler(
+            typeof(Window),
+            FrameworkElement.LoadedEvent,
+            new RoutedEventHandler(OnWindowLoaded)
+        );
+    }
+
+    private void OnWindowLoaded(object sender, RoutedEventArgs e)
+    {
+        var window = (Window)sender;
+
+        window.Icon = CurrentProfile.Icon;
+
+        var interop = new WindowInteropHelper(window);
+        var hwndSource = HwndSource.FromHwnd(interop.Handle);
+
+        var synchronizer = new WindowSynchronizer(window, this);
+
+        synchronizer.InitializeWindowProperties(interop.Handle);
+
+        CurrentProfileChanged += synchronizer.CurrentProfileChanged;
+
+        window.Unloaded += (_, _) =>
+        {
+            CurrentProfileChanged -= synchronizer.CurrentProfileChanged;
+        };
+
+        hwndSource!.AddHook(synchronizer.Hook);
+    }
 
     private void UpdateCurrentProfile()
     {
@@ -84,7 +124,7 @@ internal class ProfileManager(ILogger<ProfileManager> logger, TelemetryService t
 
     private void TrackEvent(string name, string? profileName, string iconName)
     {
-        using var @event = telemetryService.CreateEvent(name);
+        using var @event = _telemetryService.CreateEvent(name);
 
         @event.AddProperty(
             "ProfileNameHash",
@@ -246,7 +286,7 @@ internal class ProfileManager(ILogger<ProfileManager> logger, TelemetryService t
         }
         catch (Exception ex)
         {
-            logger.LogWarning(ex, "Could not delete folder '{Folder}'", path);
+            _logger.LogWarning(ex, "Could not delete folder '{Folder}'", path);
         }
     }
 
@@ -260,7 +300,7 @@ internal class ProfileManager(ILogger<ProfileManager> logger, TelemetryService t
         }
         catch (Exception ex)
         {
-            logger.LogWarning(ex, "Could not registry key '{Name}'", name);
+            _logger.LogWarning(ex, "Could not registry key '{Name}'", name);
         }
     }
 
@@ -312,6 +352,8 @@ internal class ProfileManager(ILogger<ProfileManager> logger, TelemetryService t
 
     private void CreateIconFile(string fileName, string iconName)
     {
+        Directory.CreateDirectory(Path.GetDirectoryName(fileName)!);
+
         var image = Images.GetImage(iconName);
 
         using var source = IconBuilder.Build(image);
@@ -338,7 +380,7 @@ internal class ProfileManager(ILogger<ProfileManager> logger, TelemetryService t
             }
             catch (Exception ex)
             {
-                logger.LogWarning(ex, "Cannot delete file '{Path}'", path);
+                _logger.LogWarning(ex, "Cannot delete file '{Path}'", path);
             }
         }
     }
@@ -419,4 +461,27 @@ internal class ProfileManager(ILogger<ProfileManager> logger, TelemetryService t
 
     protected virtual void OnCurrentProfileChanged() =>
         CurrentProfileChanged?.Invoke(this, EventArgs.Empty);
+
+    private class WindowSynchronizer(Window window, ProfileManager owner)
+    {
+        public void CurrentProfileChanged(object? sender, EventArgs e)
+        {
+            window.Icon = owner.CurrentProfile.Icon;
+        }
+
+        public IntPtr Hook(IntPtr hwnd, int msg, IntPtr wparam, IntPtr lparam, ref bool handled)
+        {
+            if (msg == TaskbarButtonCreatedMessage)
+                InitializeWindowProperties(hwnd);
+
+            return IntPtr.Zero;
+        }
+
+        public void InitializeWindowProperties(IntPtr hwnd)
+        {
+            using var propertyStore = new WindowPropertyStore(hwnd);
+
+            propertyStore.SetValue(PropertyStoreProperty.AppUserModel_PreventPinning, true);
+        }
+    }
 }

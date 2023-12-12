@@ -20,8 +20,7 @@ internal class BlurWindow : BaseWindow
         set => SetValue(TintProperty, value);
     }
 
-    public BlurWindow(IServiceProvider serviceProvider)
-        : base(serviceProvider)
+    public BlurWindow()
     {
         WindowStyle = WindowStyle.None;
         ResizeMode = ResizeMode.NoResize;

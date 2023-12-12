@@ -23,7 +23,6 @@ internal partial class ConfigurationWindow
         IPluginManager pluginManager,
         QuickStartScript quickStartScript
     )
-        : base(serviceProvider)
     {
         _serviceProvider = serviceProvider;
         _pluginManager = pluginManager;

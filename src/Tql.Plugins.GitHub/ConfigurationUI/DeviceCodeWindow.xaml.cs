@@ -26,10 +26,8 @@ internal partial class DeviceCodeWindow
         DeviceCodeLoginDto loginDto,
         string clientId,
         IUI ui,
-        HttpClient httpClient,
-        IServiceProvider serviceProvider
+        HttpClient httpClient
     )
-        : base(serviceProvider)
     {
         _loginDto = loginDto;
         _clientId = clientId;

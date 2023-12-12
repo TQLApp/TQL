@@ -18,8 +18,7 @@ internal class GitHubApi(
     IUI ui,
     ConfigurationManager configurationManager,
     HttpClient httpClient,
-    IEncryption encryption,
-    IServiceProvider serviceProvider
+    IEncryption encryption
 )
 {
     private const string ClientId = "b5cf8dfb10c01dcfd22f";
@@ -142,8 +141,7 @@ internal class GitHubApi(
                     string.Format(Labels.GitHubApi_ResourceName, connection.Name),
                     client,
                     httpClient,
-                    ui,
-                    serviceProvider
+                    ui
                 )
             );
 
@@ -189,8 +187,7 @@ internal class GitHubApi(
         string resourceName,
         GitHubClient client,
         HttpClient httpClient,
-        IUI ui,
-        IServiceProvider serviceProvider
+        IUI ui
     ) : IInteractiveAuthentication
     {
         public string ResourceName { get; } = resourceName;
@@ -212,7 +209,7 @@ internal class GitHubApi(
 
             var dto = JsonSerializer.Deserialize<DeviceCodeLoginDto>(stream)!;
 
-            var window = new DeviceCodeWindow(dto, ClientId, ui, httpClient, serviceProvider)
+            var window = new DeviceCodeWindow(dto, ClientId, ui, httpClient)
             {
                 Owner = HwndSource.FromHwnd(owner.Handle)?.RootVisual as Window
             };

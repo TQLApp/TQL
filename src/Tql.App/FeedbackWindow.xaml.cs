@@ -7,8 +7,7 @@ internal partial class FeedbackWindow
 {
     private readonly IUI _ui;
 
-    public FeedbackWindow(IUI ui, IPluginManager pluginManager, IServiceProvider serviceProvider)
-        : base(serviceProvider)
+    public FeedbackWindow(IUI ui, IPluginManager pluginManager)
     {
         _ui = ui;
 

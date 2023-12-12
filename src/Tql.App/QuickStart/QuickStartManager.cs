@@ -10,7 +10,6 @@ namespace Tql.App.QuickStart;
 internal class QuickStartManager
 {
     private readonly Settings _settings;
-    private readonly IServiceProvider _serviceProvider;
     private readonly UI _ui;
     private QuickStartDto _state;
     private QuickStartWindow? _window;
@@ -29,10 +28,9 @@ internal class QuickStartManager
         }
     }
 
-    public QuickStartManager(Settings settings, IUI ui, IServiceProvider serviceProvider)
+    public QuickStartManager(Settings settings, IUI ui)
     {
         _settings = settings;
-        _serviceProvider = serviceProvider;
         _ui = (UI)ui;
         _state = QuickStartDto.FromSettings(settings);
 
@@ -69,7 +67,7 @@ internal class QuickStartManager
             AdornerLayer.GetAdornerLayer(owner)!.Add(adorner);
         }
 
-        _window = new QuickStartWindow(_ui, _serviceProvider)
+        _window = new QuickStartWindow(_ui)
         {
             DataContext = popup,
             ArrowVisibility = ownerIsControl ? Visibility.Visible : Visibility.Collapsed,

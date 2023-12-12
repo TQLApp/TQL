@@ -2,11 +2,15 @@
 
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
+using System.Security;
+using Tql.App.Support;
 
 namespace Tql.App.Interop;
 
 internal static class NativeMethods
 {
+    public const string IID_IPropertyStore = "886D8EEB-8CF2-4446-8D02-CDBA1DBDCF99";
+
     /// <summary>
     /// Allow any match during resolution.  Has no effect
     /// on ME/2000 or above, use the other flags instead.
@@ -119,6 +123,42 @@ internal static class NativeMethods
         uint nSize,
         int argumentsLong
     );
+
+    [DllImport("ole32")]
+    public static extern int PropVariantClear(PROPVARIANT pvar);
+
+    [DllImport("shell32")]
+    public static extern int SHGetPropertyStoreForWindow(
+        IntPtr hwnd,
+        ref Guid iid, /*IID_IPropertyStore*/
+        [Out, MarshalAs(UnmanagedType.Interface)] out IPropertyStore propertyStore
+    );
+
+    [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+    public static extern uint RegisterWindowMessage(string lpString);
+
+    public static PKEY GetPkey(PropertyStoreProperty property)
+    {
+        switch (property)
+        {
+            case PropertyStoreProperty.AppUserModel_ID:
+                return PKEY.AppUserModel_ID;
+            case PropertyStoreProperty.AppUserModel_IsDestListSeparator:
+                return PKEY.AppUserModel_IsDestListSeparator;
+            case PropertyStoreProperty.AppUserModel_RelaunchCommand:
+                return PKEY.AppUserModel_RelaunchCommand;
+            case PropertyStoreProperty.AppUserModel_RelaunchDisplayNameResource:
+                return PKEY.AppUserModel_RelaunchDisplayNameResource;
+            case PropertyStoreProperty.AppUserModel_RelaunchIconResource:
+                return PKEY.AppUserModel_RelaunchIconResource;
+            case PropertyStoreProperty.AppUserModel_PreventPinning:
+                return PKEY.AppUserModel_PreventPinning;
+            case PropertyStoreProperty.Title:
+                return PKEY.Title;
+            default:
+                throw new ArgumentOutOfRangeException("property");
+        }
+    }
 
     [ComImport]
     [Guid("0000010B-0000-0000-C000-000000000046")]
@@ -447,5 +487,154 @@ internal static class NativeMethods
 
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 80)]
         public string szTypeName;
+    }
+
+    [SuppressUnmanagedCodeSecurity]
+    [ComImport]
+    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    [Guid(IID_IPropertyStore)]
+    public interface IPropertyStore
+    {
+        uint GetCount();
+        PKEY GetAt(uint iProp);
+        void GetValue([In] ref PKEY pkey, [In, Out] PROPVARIANT pv);
+        void SetValue([In] ref PKEY pkey, PROPVARIANT pv);
+        void Commit();
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    public struct PKEY
+    {
+        /// <summary>fmtid</summary>
+        private readonly Guid _fmtid;
+
+        /// <summary>pid</summary>
+        private readonly uint _pid;
+
+        private PKEY(Guid fmtid, uint pid)
+        {
+            _fmtid = fmtid;
+            _pid = pid;
+        }
+
+        /// <summary>PKEY_Title</summary>
+        public static readonly PKEY Title = new PKEY(
+            new Guid("F29F85E0-4FF9-1068-AB91-08002B27B3D9"),
+            2
+        );
+
+        /// <summary>PKEY_AppUserModel_ID</summary>
+        public static readonly PKEY AppUserModel_ID = new PKEY(
+            new Guid("9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3"),
+            5
+        );
+
+        /// <summary>PKEY_AppUserModel_IsDestListSeparator</summary>
+        public static readonly PKEY AppUserModel_IsDestListSeparator = new PKEY(
+            new Guid("9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3"),
+            6
+        );
+
+        /// <summary>PKEY_AppUserModel_RelaunchCommand</summary>
+        public static readonly PKEY AppUserModel_RelaunchCommand = new PKEY(
+            new Guid("9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3"),
+            2
+        );
+
+        /// <summary>PKEY_AppUserModel_RelaunchDisplayNameResource</summary>
+        public static readonly PKEY AppUserModel_RelaunchDisplayNameResource = new PKEY(
+            new Guid("9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3"),
+            4
+        );
+
+        /// <summary>PKEY_AppUserModel_RelaunchIconResource</summary>
+        public static readonly PKEY AppUserModel_RelaunchIconResource = new PKEY(
+            new Guid("9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3"),
+            3
+        );
+
+        /// <summary>PKEY_AppUserModel_PreventPinning</summary>
+        public static readonly PKEY AppUserModel_PreventPinning = new PKEY(
+            new Guid("9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3"),
+            9
+        );
+    }
+
+    [SecurityCritical]
+    [StructLayout(LayoutKind.Explicit)]
+    public class PROPVARIANT : IDisposable
+    {
+        [FieldOffset(0)]
+        private ushort vt;
+
+        [FieldOffset(8)]
+        private IntPtr pointerVal;
+
+        [FieldOffset(8)]
+        private byte byteVal;
+
+        [FieldOffset(8)]
+        private long longVal;
+
+        [FieldOffset(8)]
+        private short boolVal;
+
+        public VarEnum VarType
+        {
+            [SecurityCritical]
+            get { return (VarEnum)vt; }
+        }
+
+        [SecurityCritical]
+        public string GetValue()
+        {
+            if (vt == (ushort)VarEnum.VT_LPWSTR)
+            {
+                return Marshal.PtrToStringUni(pointerVal);
+            }
+
+            return null;
+        }
+
+        [SecurityCritical]
+        public void SetValue(bool f)
+        {
+            Clear();
+            vt = (ushort)VarEnum.VT_BOOL;
+            boolVal = (short)(f ? -1 : 0);
+        }
+
+        [SecurityCritical]
+        public void SetValue(string val)
+        {
+            Clear();
+            vt = (ushort)VarEnum.VT_LPWSTR;
+            pointerVal = Marshal.StringToCoTaskMemUni(val);
+        }
+
+        [SecurityCritical]
+        public void Clear()
+        {
+            PropVariantClear(this);
+        }
+
+        [SecurityCritical]
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        [SecurityCritical]
+        ~PROPVARIANT()
+        {
+            Dispose(false);
+        }
+
+        [SecurityCritical]
+        private void Dispose(bool disposing)
+        {
+            Clear();
+        }
     }
 }
