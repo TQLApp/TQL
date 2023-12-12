@@ -70,11 +70,7 @@ internal class PackageSourceDto : DtoBase
 
     public PackageSourceDto()
     {
-        AddProperty(
-            nameof(Url),
-            p => ValidateNotEmpty(p) ?? ValidateUrl(p),
-            CoerceEmptyStringToNull
-        );
+        AddProperty(nameof(Url), ValidateNotEmpty, CoerceEmptyStringToNull);
         AddProperty(nameof(UserName), null, CoerceEmptyStringToNull);
         AddProperty(nameof(Password), null, CoerceEmptyStringToNull);
     }

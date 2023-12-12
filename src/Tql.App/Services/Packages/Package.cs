@@ -10,5 +10,6 @@ internal record Package(
     string Authors,
     ImageSource Icon,
     bool IsInstalled,
-    bool IsVerified
+    bool IsVerified,
+    bool IsLocal
 );

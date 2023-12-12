@@ -20,6 +20,8 @@ description:
 
 ## Successfully setup Azure DevOps
 
+{% include Setup/Local-package-source.md %}
+
 | Action                                                                                        | Expected result                                                          |
 | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
 | Open the app.                                                                                 | The quick start window opens.                                            |

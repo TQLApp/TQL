@@ -141,9 +141,28 @@
                                             <TextBlock
                                                 Foreground="White"
                                                 FontSize="8pt"
-                                                Margin="0,0,6,0">
-                                                Verified
-                                            </TextBlock>
+                                                Margin="0,0,6,0"
+                                                Text="{x:Static app:Labels.PluginsConfiguration_Verified}" />
+                                        </StackPanel>
+                                    </Border>
+                                    <Border
+                                        Visibility="{Binding IsLocal, Converter={StaticResource B2VConverter}}"
+                                        Background="#f89f49"
+                                        VerticalAlignment="Center"
+                                        CornerRadius="{Binding ActualHeight, RelativeSource={RelativeSource Self}, Converter={StaticResource HeightToRadiusConverter}}"
+                                        Margin="0,0,5,0"
+                                        support:PopoverToolTipUtils.PopoverToolTip="{DynamicResource LocalToolTip}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image
+                                                Source="{DynamicResource ResourceKey=Folder}"
+                                                Height="9"
+                                                Width="9"
+                                                Margin="5,0,3,0" />
+                                            <TextBlock
+                                                Foreground="White"
+                                                FontSize="8pt"
+                                                Margin="0,0,6,0"
+                                                Text="{x:Static app:Labels.PluginsConfiguration_Local}" />
                                         </StackPanel>
                                     </Border>
 

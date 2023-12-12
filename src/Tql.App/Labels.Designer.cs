@@ -1480,6 +1480,24 @@ namespace Tql.App {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Local.
+        /// </summary>
+        public static string PluginsConfiguration_Local {
+            get {
+                return ResourceManager.GetString("PluginsConfiguration_Local", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This plugin comes from a local package source..
+        /// </summary>
+        public static string PluginsConfiguration_LocalToolTip {
+            get {
+                return ResourceManager.GetString("PluginsConfiguration_LocalToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to by.
         /// </summary>
         public static string PluginsConfiguration_PluginBy {
@@ -1557,6 +1575,15 @@ namespace Tql.App {
         public static string PluginsConfiguration_UnverifiedSourceSubtitle {
             get {
                 return ResourceManager.GetString("PluginsConfiguration_UnverifiedSourceSubtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verified.
+        /// </summary>
+        public static string PluginsConfiguration_Verified {
+            get {
+                return ResourceManager.GetString("PluginsConfiguration_Verified", resourceCulture);
             }
         }
         

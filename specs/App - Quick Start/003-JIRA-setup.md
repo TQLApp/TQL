@@ -19,6 +19,8 @@ description: Validate that the quick start tutorial will set you up with JIRA.
 
 ## Successfully setup JIRA
 
+{% include Setup/Local-package-source.md %}
+
 | Action                                                                                        | Expected result                                                          |
 | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
 | Open the app. The quick start window opens.                                                   |                                                                          |

@@ -741,4 +741,13 @@ Do you want to restart TQL to see if this resolves the issue?</value>
   <data name="PackageStoreManager_DeletingUnusedFiles" xml:space="preserve">
     <value>Deleting unused files...</value>
   </data>
+  <data name="PluginsConfiguration_Local" xml:space="preserve">
+    <value>Local</value>
+  </data>
+  <data name="PluginsConfiguration_LocalToolTip" xml:space="preserve">
+    <value>This plugin comes from a local package source.</value>
+  </data>
+  <data name="PluginsConfiguration_Verified" xml:space="preserve">
+    <value>Verified</value>
+  </data>
 </root>

@@ -14,6 +14,8 @@ description: Install the JIRA plugin.
 
 ## Installation
 
+{% include Setup/Local-package-source.md %}
+
 | Action                                      | Expected result |
 | ------------------------------------------- | --------------- |
 | Open the **Configuration** window.          |                 |
