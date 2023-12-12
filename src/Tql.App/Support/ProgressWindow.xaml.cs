@@ -30,7 +30,7 @@ internal partial class ProgressWindow
     {
         var ui = (UI)serviceProvider.GetRequiredService<IUI>();
 
-        var window = new ProgressWindow(action) { Owner = GetWindow(owner) };
+        var window = new ProgressWindow(action, serviceProvider) { Owner = GetWindow(owner) };
 
         ui.EnterModalDialog();
         try
@@ -45,7 +45,8 @@ internal partial class ProgressWindow
         window._exception?.Throw();
     }
 
-    private ProgressWindow(Action<IProgress> action)
+    private ProgressWindow(Action<IProgress> action, IServiceProvider serviceProvider)
+        : base(serviceProvider)
     {
         _action = action;
 

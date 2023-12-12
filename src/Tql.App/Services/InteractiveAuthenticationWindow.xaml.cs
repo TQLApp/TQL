@@ -14,8 +14,10 @@ internal partial class InteractiveAuthenticationWindow
 
     public InteractiveAuthenticationWindow(
         IInteractiveAuthentication interactiveAuthentication,
-        IUI ui
+        IUI ui,
+        IServiceProvider serviceProvider
     )
+        : base(serviceProvider)
     {
         _interactiveAuthentication = interactiveAuthentication;
         _ui = ui;

@@ -6,7 +6,8 @@ internal partial class ConnectionEditWindow
 {
     private readonly IUI _ui;
 
-    public ConnectionEditWindow(IUI ui)
+    public ConnectionEditWindow(IUI ui, IServiceProvider serviceProvider)
+        : base(serviceProvider)
     {
         _ui = ui;
 

@@ -2,7 +2,8 @@
 
 internal partial class PackageSourceEditWindow
 {
-    public PackageSourceEditWindow()
+    public PackageSourceEditWindow(IServiceProvider serviceProvider)
+        : base(serviceProvider)
     {
         InitializeComponent();
     }

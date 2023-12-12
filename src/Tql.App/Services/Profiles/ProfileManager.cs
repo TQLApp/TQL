@@ -1,11 +1,12 @@
-﻿using System.IO;
+﻿using System.Drawing;
+using System.IO;
 using System.Text.RegularExpressions;
+using System.Windows.Interop;
 using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
 using Tql.Abstractions;
 using Tql.App.Interop;
 using Tql.App.Support;
-using Tql.Utilities;
 using Path = System.IO.Path;
 
 namespace Tql.App.Services.Profiles;
@@ -49,15 +50,10 @@ internal class ProfileManager(ILogger<ProfileManager> logger) : IProfileManager
             image = Images.GetImage(Images.DefaultUniverseIcon);
         }
 
-        using var iconStream = IconBuilder.Build(image);
-
-        var icon = ImageFactory.CreateBitmapImage(iconStream);
-
         return new CurrentProfileConfiguration(
             configuration.Name,
             configuration.Title ?? Labels.ProfileManager_DefaultProfile,
-            image,
-            icon
+            image
         );
     }
 
@@ -359,12 +355,33 @@ internal class ProfileManager(ILogger<ProfileManager> logger) : IProfileManager
         }
     }
 
-    private record CurrentProfileConfiguration(
-        string? Name,
-        string Title,
-        ImageSource Image,
-        ImageSource Icon
-    ) : IProfileConfiguration;
+    private class CurrentProfileConfiguration : IProfileConfiguration
+    {
+        private readonly Icon _icon;
+
+        public string? Name { get; }
+        public string Title { get; }
+        public ImageSource Image { get; }
+        public ImageSource Icon { get; }
+
+        public CurrentProfileConfiguration(string? name, string title, ImageSource image)
+        {
+            Name = name;
+            Title = title;
+            Image = image;
+
+            using (var iconStream = IconBuilder.Build(image))
+            {
+                _icon = new Icon(iconStream);
+            }
+
+            Icon = Imaging.CreateBitmapSourceFromHIcon(
+                _icon.Handle,
+                Int32Rect.Empty,
+                BitmapSizeOptions.FromEmptyOptions()
+            );
+        }
+    }
 
     protected virtual void OnCurrentProfileChanged() =>
         CurrentProfileChanged?.Invoke(this, EventArgs.Empty);

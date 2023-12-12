@@ -73,6 +73,7 @@ internal partial class MainWindow
         QuickStartManager quickStartManager,
         NotifyIconManager notifyIconManager
     )
+        : base(serviceProvider)
     {
         _settings = settings;
         _serviceProvider = serviceProvider;

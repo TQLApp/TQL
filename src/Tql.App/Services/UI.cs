@@ -9,7 +9,7 @@ using IWin32Window = System.Windows.Forms.IWin32Window;
 
 namespace Tql.App.Services;
 
-internal class UI(ILogger<UI> logger) : IUI
+internal class UI(ILogger<UI> logger, IServiceProvider serviceProvider) : IUI
 {
     private SynchronizationContext? _synchronizationContext;
     private volatile List<UINotification> _notifications = new();
@@ -40,7 +40,11 @@ internal class UI(ILogger<UI> logger) : IUI
         _synchronizationContext!.Post(
             _ =>
             {
-                var window = new InteractiveAuthenticationWindow(interactiveAuthentication, this)
+                var window = new InteractiveAuthenticationWindow(
+                    interactiveAuthentication,
+                    this,
+                    serviceProvider
+                )
                 {
                     Owner = MainWindow
                 };

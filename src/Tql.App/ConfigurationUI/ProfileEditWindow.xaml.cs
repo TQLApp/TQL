@@ -2,7 +2,8 @@
 
 internal partial class ProfileEditWindow
 {
-    public ProfileEditWindow()
+    public ProfileEditWindow(IServiceProvider serviceProvider)
+        : base(serviceProvider)
     {
         InitializeComponent();
 

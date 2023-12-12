@@ -71,7 +71,8 @@ internal partial class QuickStartWindow
         set => _content.Width = value;
     }
 
-    public QuickStartWindow(IUI ui)
+    public QuickStartWindow(IUI ui, IServiceProvider serviceProvider)
+        : base(serviceProvider)
     {
         _ui = ui;
 
