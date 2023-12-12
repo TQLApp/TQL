@@ -11,7 +11,6 @@
     Title="{x:Static app:Labels.ApplicationTitle}"
     WindowStartupLocation="CenterScreen"
     ResizeMode="NoResize"
-    Icon="pack://application:,,,/Tql.App;component/mainicon.ico"
     Height="175"
     Width="400">
     <Grid Margin="9">

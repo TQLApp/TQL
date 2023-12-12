@@ -17,6 +17,7 @@ using Tql.App.Services;
 using Tql.App.Services.Database;
 using Tql.App.Services.Packages;
 using Tql.App.Services.Packages.PackageStore;
+using Tql.App.Services.Profiles;
 using Tql.App.Services.Telemetry;
 using Tql.App.Services.Updates;
 using Tql.App.Support;
@@ -126,6 +127,8 @@ public partial class App
         splashScreen.Progress.SetProgress(0.4);
 
         _host = builder.Build();
+
+        notifyIconManager.Initialize(_host.Services);
 
         splashScreen.Progress.SetProgress(0.5);
 
@@ -424,6 +427,7 @@ public partial class App
         builder.AddSingleton<QuickStartManager>();
         builder.AddSingleton<QuickStartScript>();
         builder.AddSingleton<IEncryption, Services.Encryption>();
+        builder.AddSingleton<IProfileManager, ProfileManager>();
 
         builder.Add(ServiceDescriptor.Singleton(typeof(ICache<>), typeof(Cache<>)));
         builder.Add(ServiceDescriptor.Singleton(typeof(IMatchFactory<,>), typeof(MatchFactory<,>)));
@@ -436,6 +440,8 @@ public partial class App
         builder.AddTransient<PluginsConfigurationControl>();
         builder.AddTransient<PackageSourcesConfigurationControl>();
         builder.AddTransient<PackageSourceEditWindow>();
+        builder.AddTransient<ProfilesConfigurationControl>();
+        builder.AddTransient<ProfileEditWindow>();
     }
 
     private void Application_Exit(object? sender, ExitEventArgs e)

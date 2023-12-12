@@ -1,10 +1,15 @@
-﻿using System.Collections.Concurrent;
+﻿using System.Collections;
+using System.Collections.Concurrent;
+using System.Globalization;
+using System.Resources;
 using Tql.Utilities;
 
 namespace Tql.App;
 
 internal static class Images
 {
+    public const string DefaultUniverseIcon = "universe%20icons/051-space-shuttle-1.svg";
+
     private static readonly ConcurrentDictionary<
         (string ResourceName, Color? Color),
         DrawingImage
@@ -33,6 +38,36 @@ internal static class Images
             fill = new SolidColorBrush(color.Value);
 
         return ImageFactory.CreateSvgImage(stream!, fill, null);
+    }
+
+    public static ImmutableArray<string> UniverseImages = GetUniverseImageNames();
+
+    private static ImmutableArray<string> GetUniverseImageNames()
+    {
+        var resourceManager = new ResourceManager(
+            $"{typeof(Images).Assembly.GetName().Name}.g",
+            typeof(Images).Assembly
+        );
+
+        var imageNames = ImmutableArray.CreateBuilder<string>();
+
+        foreach (
+            var resource in resourceManager
+                .GetResourceSet(CultureInfo.CurrentUICulture, true, true)!
+                .Cast<DictionaryEntry>()
+        )
+        {
+            var resourceName = (string)resource.Key;
+
+            var pos = resourceName.IndexOf(
+                "/universe%20icons/",
+                StringComparison.OrdinalIgnoreCase
+            );
+            if (pos != -1)
+                imageNames.Add(resourceName.Substring(pos + 1).ToLowerInvariant());
+        }
+
+        return imageNames.ToImmutable();
     }
 
     public static readonly DrawingImage Run = GetImage("Person Running.svg");

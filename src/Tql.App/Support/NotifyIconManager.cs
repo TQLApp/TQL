@@ -1,10 +1,9 @@
 ﻿using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Windows.Forms;
-using Application = System.Windows.Application;
+using Microsoft.Extensions.DependencyInjection;
+using Tql.Abstractions;
+using Tql.App.Services.Profiles;
 using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
-using Point = System.Drawing.Point;
-using Rectangle = System.Drawing.Rectangle;
 using Timer = System.Threading.Timer;
 
 namespace Tql.App.Support;
@@ -14,9 +13,9 @@ internal class NotifyIconManager : IDisposable
     private readonly NotifyIcon _notifyIcon;
     private NotifyIconState _state;
     private readonly Timer _timer;
-    private readonly List<Icon> _updateIcons;
     private int _updateIconIndex;
-    private readonly Icon _icon;
+    private volatile Icon[] _icons;
+    private volatile IProfileConfiguration _profile;
 
     public ContextMenuStrip? ContextMenuStrip
     {
@@ -43,11 +42,11 @@ internal class NotifyIconManager : IDisposable
     {
         _notifyIcon = new NotifyIcon();
 
-        _icon = LoadIcon();
+        _profile = ProfileManager.GetCurrentProfile();
 
-        _updateIcons = CreateUpdateIcons(_icon);
+        _icons = LoadIcons();
 
-        _notifyIcon.Icon = _icon;
+        _notifyIcon.Icon = _icons[0];
         SetNotificationIconText(Labels.ApplicationTitle);
         _notifyIcon.Visible = true;
 
@@ -62,121 +61,47 @@ internal class NotifyIconManager : IDisposable
         UpdateIconFromState();
     }
 
+    public void Initialize(IServiceProvider services)
+    {
+        var profileManager = services.GetRequiredService<IProfileManager>();
+
+        profileManager.CurrentProfileChanged += (_, _) =>
+        {
+            _profile = profileManager.CurrentProfile;
+
+            _icons = LoadIcons();
+
+            UpdateIconFromState();
+        };
+    }
+
     private void TimerCallback(object? state)
     {
-        _notifyIcon.Icon = _updateIcons[++_updateIconIndex % _updateIcons.Count];
+        _notifyIcon.Icon = _icons[(++_updateIconIndex % (_icons.Length - 1)) + 1];
     }
 
-    private List<Icon> CreateUpdateIcons(Icon icon)
+    private Icon[] LoadIcons()
     {
-        var taskbarScreenDpi = Win32Utils.GetTaskbarScreenDpi();
-
-        var iconSize = taskbarScreenDpi.DpiX > 96 ? 32 : 16;
-
         var icons = new List<Icon>();
 
-        using var arrow = LoadBitmap($"Arrow {iconSize}.png");
+        var bugOverlay = Images.GetImage("Bug Overlay.svg");
 
-        using var iconBitmap = GetIconBitmap(icon, iconSize);
-
-        for (var i = 0; i < 4; i++)
+        for (var i = 0; i < 5; i++)
         {
-            using var rotated = RotateBitmap(arrow, i);
-            using var overlayed = OverlayBitmap(iconBitmap, rotated);
-
-            icons.Add(Icon.FromHandle(overlayed.GetHicon()));
-        }
-
-        return icons;
-    }
-
-    private Bitmap OverlayBitmap(Bitmap icon, Bitmap bitmap)
-    {
-        var result = new Bitmap(icon.Width, icon.Height);
-
-        using (var g = Graphics.FromImage(result))
-        {
-            g.InterpolationMode = InterpolationMode.NearestNeighbor;
-
-            g.DrawImageUnscaled(icon, new Point());
-            g.DrawImageUnscaled(
-                bitmap,
-                new Rectangle(
-                    icon.Width - bitmap.Width,
-                    icon.Height - bitmap.Height,
-                    bitmap.Width,
-                    bitmap.Height
-                )
-            );
-        }
-
-        return result;
-    }
-
-    private Bitmap RotateBitmap(Bitmap bitmap, int step)
-    {
-        var result = new Bitmap(bitmap.Width, bitmap.Height);
-
-        bitmap.SetResolution(result.HorizontalResolution, result.VerticalResolution);
-        result.MakeTransparent();
-
-        var center = new Point(bitmap.Width / 2, bitmap.Height / 2);
-
-        using (var g = Graphics.FromImage(result))
-        {
-            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            g.SmoothingMode = SmoothingMode.AntiAlias;
-
-            g.TranslateTransform(center.X, center.Y);
-            g.RotateTransform(step * 45);
-            g.TranslateTransform(-center.X, -center.Y);
-
-            g.DrawImage(bitmap, new Point());
-        }
-
-        return result;
-    }
-
-    private Bitmap GetIconBitmap(Icon icon, int size)
-    {
-        var bitmap = new Bitmap(size, size);
-
-        using (var g = Graphics.FromImage(bitmap))
-        {
-            g.InterpolationMode = InterpolationMode.NearestNeighbor;
-
-            using var sizedIcon = new Icon(icon, size, size);
-
-            g.DrawIconUnstretched(sizedIcon, new Rectangle(0, 0, size, size));
-        }
-
-        return bitmap;
-    }
-
-    private Icon LoadIcon()
-    {
+            var overlays = new List<ImageSource>();
 #if DEBUG
-        const string resourceName = "bugicon.ico";
-#else
-        const string resourceName = "mainicon.ico";
+            overlays.Add(bugOverlay);
 #endif
 
-        using var stream = Application
-            .GetResourceStream(new Uri($"pack://application:,,,/Tql.App;component/{resourceName}"))!
-            .Stream;
+            if (i > 0)
+                overlays.Add(Images.GetImage($"Arrow Overlay {i}.svg"));
 
-        return new Icon(stream);
-    }
+            using var stream = IconBuilder.Build(_profile.Image, overlays.ToArray());
 
-    private Bitmap LoadBitmap(string name)
-    {
-        using var stream = Application
-            .GetResourceStream(
-                new Uri($"pack://application:,,,/Tql.App;component/Resources/{name}")
-            )!
-            .Stream;
+            icons.Add(new Icon(stream));
+        }
 
-        return new Bitmap(stream);
+        return icons.ToArray();
     }
 
     private void UpdateIconFromState()
@@ -185,20 +110,20 @@ internal class NotifyIconManager : IDisposable
         {
             case NotifyIconState.Starting:
                 SetNotificationIconText(Labels.NotifyIconManager_ApplicationIsStarting);
-                _notifyIcon.Icon = _icon;
+                _notifyIcon.Icon = _icons[0];
                 _timer.Change(Timeout.Infinite, Timeout.Infinite);
                 break;
 
             case NotifyIconState.Updating:
                 SetNotificationIconText(Labels.NotifyIconManager_ApplicationIsUpdating);
                 _updateIconIndex = 0;
-                _notifyIcon.Icon = _updateIcons[_updateIconIndex];
+                _notifyIcon.Icon = _icons[_updateIconIndex + 1];
                 _timer.Change(TimeSpan.FromSeconds(0.4), TimeSpan.FromSeconds(0.4));
                 break;
 
             default:
                 SetNotificationIconText(Labels.ApplicationTitle);
-                _notifyIcon.Icon = _icon;
+                _notifyIcon.Icon = _icons[0];
                 _timer.Change(Timeout.Infinite, Timeout.Infinite);
                 break;
         }
@@ -206,8 +131,9 @@ internal class NotifyIconManager : IDisposable
 
     private void SetNotificationIconText(string text)
     {
-        if (App.Options.Environment != null)
-            text = $"{text} [{App.Options.Environment}]";
+        // Only show the profile title for the non-default profiles.
+        if (_profile.Name != null)
+            text = $"{text} - {_profile.Title}";
 
         _notifyIcon.Text = text;
     }

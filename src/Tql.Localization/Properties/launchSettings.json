@@ -4,6 +4,10 @@
       "commandName": "Project",
       "commandLineArgs": "--export --filename ..\\..\\..\\..\\Strings.xlsx --locale nl"
     },
+    "Export All": {
+      "commandName": "Project",
+      "commandLineArgs": "--export --filename ..\\..\\..\\..\\Strings.xlsx --locale nl --all"
+    },
     "Import": {
       "commandName": "Project",
       "commandLineArgs": "--import --filename ..\\..\\..\\..\\Strings.xlsx --locale nl"

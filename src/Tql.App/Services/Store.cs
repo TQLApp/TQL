@@ -8,7 +8,27 @@ namespace Tql.App.Services;
 
 internal class Store : IStore
 {
-    private const string RegistryRoot = "Software";
+    public const string RegistryRoot = "Software";
+
+    public static string GetEnvironmentName(string? environment)
+    {
+        var environmentName = "TQL";
+        if (environment != null)
+            environmentName += $" - {environment}";
+        return environmentName;
+    }
+
+    public static string GetDataFolder(string? environment) =>
+        Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+            GetEnvironmentName(environment)
+        );
+
+    public static string GetLocalDataFolder(string? environment) =>
+        Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            GetEnvironmentName(environment)
+        );
 
     private readonly ILogger _logger;
     private readonly string _environmentName;
@@ -22,9 +42,7 @@ internal class Store : IStore
     public Store(string? environment, ILogger logger)
     {
         _logger = logger;
-        _environmentName = "TQL";
-        if (environment != null)
-            _environmentName += $" - {environment}";
+        _environmentName = GetEnvironmentName(environment);
 
         DataFolder = EnsureFolder(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),

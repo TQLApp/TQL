@@ -155,11 +155,11 @@
     <comment>Original: History interval:</comment>
   </data>
   <data name="GeneralConfiguration_HotKeyLabel" xml:space="preserve">
-    <value>Snelkoppeling:</value>
+    <value>Sneltoets:</value>
     <comment>Original: Hot key:</comment>
   </data>
   <data name="GeneralConfiguration_HotKeyResetHelpText" xml:space="preserve">
-    <value>Kies de snelkoppeling om de applicatie te openen.</value>
+    <value>Kies de sneltoets om de applicatie te openen.</value>
     <comment>Original: Specify the hot key used to bring up the app.</comment>
   </data>
   <data name="GeneralConfiguration_MainWindowTintLabel" xml:space="preserve">
@@ -231,7 +231,7 @@
     <comment>Original: Unable to set hot key</comment>
   </data>
   <data name="GeneralConfiguration_UnableToSetHotKeyHelpText" xml:space="preserve">
-    <value>De snelkoppeling kon niet toegepast worden. De toets combinatie is mogelijk niet geldig, of hij is al in gebruik. Selecteer een nieuwe toets combinatie en probeer het opnieuw.</value>
+    <value>De sneltoets kon niet toegepast worden. De toets combinatie is mogelijk niet geldig, of hij is al in gebruik. Selecteer een nieuwe toets combinatie en probeer het opnieuw.</value>
     <comment>Original: The hot key could not be configured. The combination might be invalid or it may already be in use. Please use a different key combination and try again.</comment>
   </data>
   <data name="HotKeyAddKey" xml:space="preserve">
@@ -807,11 +807,11 @@ Do you want to restart TQL to see if this resolves the issue?</comment>
     <comment>Original: Installing update...</comment>
   </data>
   <data name="App_CouldNotRegisterHotKey" xml:space="preserve">
-    <value>De snelkoppeling kon niet geregistreerd worden</value>
+    <value>De sneltoets kon niet geregistreerd worden</value>
     <comment>Original: Could not register hot key</comment>
   </data>
   <data name="App_CouldNotRegisterHotKeySubtitle" xml:space="preserve">
-    <value>De snelkoppeling {0} kon niet geregistreerd worden. De reden is waarschijnlijk dat hij al in gebruik is. De snelkoppeling is uigeschakeld. Je kunt deze wijzigen in de configuratie.</value>
+    <value>De sneltoets {0} kon niet geregistreerd worden. De reden is waarschijnlijk dat hij al in gebruik is. De sneltoets is uigeschakeld. Je kunt deze wijzigen in de configuratie.</value>
     <comment>Original: Could not register the hot key {0}. The reason likely is that it's in use already. The hot key is disabled. You can change the hot key in the configuration.</comment>
   </data>
   <data name="PackageManager_RestoringPackage" xml:space="preserve">
@@ -821,6 +821,70 @@ Do you want to restart TQL to see if this resolves the issue?</comment>
   <data name="PackageStoreManager_DeletingUnusedFiles" xml:space="preserve">
     <value>Bestanden worden opgeschoond…</value>
     <comment>Original: Deleting unused files...</comment>
+  </data>
+  <data name="ApplicationShellLinkDescription" xml:space="preserve">
+    <value>Quick Launcher voor Techneuten</value>
+    <comment>Original: Quick Launcher for Techies</comment>
+  </data>
+  <data name="ProfileEditWindow_IconLabel" xml:space="preserve">
+    <value>Icoon:</value>
+    <comment>Original: Icon:</comment>
+  </data>
+  <data name="ProfileEditWindow_Title" xml:space="preserve">
+    <value>Wijzig Profiel</value>
+    <comment>Original: Edit Profile</comment>
+  </data>
+  <data name="ProfileEditWindow_TitleLabel" xml:space="preserve">
+    <value>Titel:</value>
+    <comment>Original: Title:</comment>
+  </data>
+  <data name="ProfileManager_DefaultProfile" xml:space="preserve">
+    <value>Standaard Profiel</value>
+    <comment>Original: Default Profile</comment>
+  </data>
+  <data name="ProfilesConfiguration_AreYouSureDeleteProfile" xml:space="preserve">
+    <value>Weet je het zeker?</value>
+    <comment>Original: Are you sure?</comment>
+  </data>
+  <data name="ProfilesConfiguration_AreYouSureDeleteProfileSubtitle" xml:space="preserve">
+    <value>Weet je zeker dat je dit profiel wilt verwijderen? Dit verwijdert alle data van het profiel.</value>
+    <comment>Original: Are you sure you want to delete this profile? All data associated with this profile will be deleted.</comment>
+  </data>
+  <data name="ProfilesConfiguration_CannotDeleteDefaultProfile" xml:space="preserve">
+    <value>Het standard profiel kan niet verwijderd worden</value>
+    <comment>Original: The default profile cannot be deleted</comment>
+  </data>
+  <data name="ProfilesConfiguration_CreatedNewProfile" xml:space="preserve">
+    <value>Het nieuwe profiel is aangemaakt</value>
+    <comment>Original: The new profile has been created</comment>
+  </data>
+  <data name="ProfilesConfiguration_CreatedNewProfileSubtitle" xml:space="preserve">
+    <value>Er is een nieuwe snelkoppeling toegevoegd aan het start menu. Je kunt de app met je nieuwe profiel openen door de snelkoppeling te openen. Het profiel wordt ook automatisch opgestart met het opstarten van je computer.
+
+Vergeet niet de sneltoets voor je nieuwe profiel te wijzigen. Je kunt dit in de algemene configuratie pagina doen.</value>
+    <comment>Original: A new shortcut has been added to the start menu. You can open the app with your new profile by opening the shortcut. The profile will also start automatically when your computer starts up.
+
+Don't forget to change the hotkey for your new profile. You can do this in the general configuration page.</comment>
+  </data>
+  <data name="ProfilesConfiguration_Profiles" xml:space="preserve">
+    <value>Profielen</value>
+    <comment>Original: Profiles</comment>
+  </data>
+  <data name="ProfilesConfiguration_Title" xml:space="preserve">
+    <value>Titel</value>
+    <comment>Original: Title</comment>
+  </data>
+  <data name="ProfilesConfiguration_CannotDeleteCurrentProfile" xml:space="preserve">
+    <value>Het huidige profiel kan niet verwijderd worden</value>
+    <comment>Original: The current profile cannot be deleted</comment>
+  </data>
+  <data name="ProfilesConfiguration_CannotDeleteCurrentProfileSubtitle" xml:space="preserve">
+    <value>Het profiel dat je probeert te verwijderen is het huidige profiel van de app. Als je dit profiel wilt verwijderen, moet je de huidige app afsluiten en het via een ander profiel verwijderen.</value>
+    <comment>Original: The profile you're trying to delete is the current profile of the app. If you want to delete this profile, you need to close the current app and delete it from a different profile.</comment>
+  </data>
+  <data name="ProfilesConfiguration_CouldNotDeleteProfile" xml:space="preserve">
+    <value>Het profiel kon niet verwijderd worden. Controleer of er geen app met dit profiel meer draait en probeert het opnieuw.</value>
+    <comment>Original: The profile could not be deleted. Make sure you close the instance of the app with this profile before you delete the profile.</comment>
   </data>
   <data name="PluginsConfiguration_Local" xml:space="preserve">
     <value>Lokaal</value>

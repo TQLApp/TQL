@@ -32,6 +32,7 @@ internal static class Constants
     public static readonly Guid PackageManagerPageId = Guid.Parse(
         "4474c041-702c-415a-8531-5460dc1b9db1"
     );
+    public static readonly Guid ProfilesPageId = Guid.Parse("c4bb3afb-a39a-48b4-81d3-6fd65270ba78");
 
     public static NuGetFramework ApplicationFrameworkVersion = new NuGetFramework(
         FrameworkConstants.FrameworkIdentifiers.NetCoreApp,
