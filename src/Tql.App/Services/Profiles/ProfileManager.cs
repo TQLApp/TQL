@@ -6,14 +6,16 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
 using Tql.Abstractions;
 using Tql.App.Interop;
+using Tql.App.Services.Telemetry;
 using Tql.App.Support;
 using Path = System.IO.Path;
 
 namespace Tql.App.Services.Profiles;
 
-internal class ProfileManager(ILogger<ProfileManager> logger) : IProfileManager
+internal class ProfileManager(ILogger<ProfileManager> logger, TelemetryService telemetryService)
+    : IProfileManager
 {
-    private static volatile IProfileConfiguration? _currentProfile;
+    private static volatile CurrentProfileConfiguration? _currentProfile;
 
     public static IProfileConfiguration GetCurrentProfile()
     {
@@ -27,7 +29,7 @@ internal class ProfileManager(ILogger<ProfileManager> logger) : IProfileManager
         return _currentProfile;
     }
 
-    private static IProfileConfiguration LoadCurrentProfile()
+    private static CurrentProfileConfiguration LoadCurrentProfile()
     {
         using var key = CreateKey();
 
@@ -53,7 +55,8 @@ internal class ProfileManager(ILogger<ProfileManager> logger) : IProfileManager
         return new CurrentProfileConfiguration(
             configuration.Name,
             configuration.Title ?? Labels.ProfileManager_DefaultProfile,
-            image
+            image,
+            configuration.IconName
         );
     }
 
@@ -74,7 +77,23 @@ internal class ProfileManager(ILogger<ProfileManager> logger) : IProfileManager
     {
         _currentProfile = LoadCurrentProfile();
 
+        TrackEvent("ProfileLoaded", _currentProfile.Name, _currentProfile.IconName);
+
         OnCurrentProfileChanged();
+    }
+
+    private void TrackEvent(string name, string? profileName, string iconName)
+    {
+        using var @event = telemetryService.CreateEvent(name);
+
+        @event.AddProperty(
+            "ProfileNameHash",
+            profileName == null
+                ? "Default"
+                : Utilities.Encryption.Sha1Hash(profileName).Substring(0, 7) // Git short hash length
+        );
+
+        @event.AddProperty("IconName", iconName);
     }
 
     public ImmutableArray<ProfileConfiguration> GetProfiles()
@@ -151,6 +170,8 @@ internal class ProfileManager(ILogger<ProfileManager> logger) : IProfileManager
 
         if (IsCurrentProfile(profile.Name))
             UpdateCurrentProfile();
+
+        TrackEvent("ProfileAdded", profile.Name, profile.IconName);
     }
 
     public void UpdateProfile(ProfileConfiguration profile)
@@ -179,6 +200,8 @@ internal class ProfileManager(ILogger<ProfileManager> logger) : IProfileManager
 
         if (IsCurrentProfile(profile.Name))
             UpdateCurrentProfile();
+
+        TrackEvent("ProfileUpdated", profile.Name, profile.IconName);
     }
 
     public void DeleteProfile(string name)
@@ -208,6 +231,8 @@ internal class ProfileManager(ILogger<ProfileManager> logger) : IProfileManager
         DeleteFolder(Store.GetDataFolder(profile.Name));
         DeleteFolder(Store.GetLocalDataFolder(profile.Name));
         DeleteRegistryKey(Store.GetEnvironmentName(profile.Name));
+
+        TrackEvent("ProfileDeleted", profile.Name, profile.IconName);
     }
 
     private static bool IsCurrentProfile(string? name) =>
@@ -357,18 +382,27 @@ internal class ProfileManager(ILogger<ProfileManager> logger) : IProfileManager
 
     private class CurrentProfileConfiguration : IProfileConfiguration
     {
+        // We need to track this icon to make sure it's not disposed.
+        // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
         private readonly Icon _icon;
 
         public string? Name { get; }
         public string Title { get; }
         public ImageSource Image { get; }
         public ImageSource Icon { get; }
+        public string IconName { get; }
 
-        public CurrentProfileConfiguration(string? name, string title, ImageSource image)
+        public CurrentProfileConfiguration(
+            string? name,
+            string title,
+            ImageSource image,
+            string iconName
+        )
         {
             Name = name;
             Title = title;
             Image = image;
+            IconName = iconName;
 
             using (var iconStream = IconBuilder.Build(image))
             {
