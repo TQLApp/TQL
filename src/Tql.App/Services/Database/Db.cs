@@ -127,26 +127,35 @@ internal partial class Db : IDb, IDisposable
 
     public void Backup(Stream stream)
     {
-        using var _ = Access();
-
-        var tempFileName = Path.GetTempFileName();
+        _semaphore.Wait();
 
         try
         {
-            using (var target = new SQLiteConnection($"data source={tempFileName}"))
-            {
-                _connection.BackupDatabase(target, "main", "main", -1, null, -1);
-            }
+            var tempFileName = Path.GetTempFileName();
 
-            using (var source = File.OpenRead(tempFileName))
+            try
             {
-                source.CopyTo(stream);
+                using (var target = new SQLiteConnection($"data source={tempFileName}"))
+                {
+                    target.Open();
+
+                    _connection.BackupDatabase(target, "main", "main", -1, null, -1);
+                }
+
+                using (var source = File.OpenRead(tempFileName))
+                {
+                    source.CopyTo(stream);
+                }
+            }
+            finally
+            {
+                if (File.Exists(tempFileName))
+                    File.Delete(tempFileName);
             }
         }
         finally
         {
-            if (File.Exists(tempFileName))
-                File.Delete(tempFileName);
+            _semaphore.Release();
         }
     }
 

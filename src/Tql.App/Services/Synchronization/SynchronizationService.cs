@@ -4,62 +4,113 @@ using Tql.App.Support;
 
 namespace Tql.App.Services.Synchronization;
 
-internal partial class SynchronizationService : IDisposable
+internal class SynchronizationService : IDisposable
 {
     private readonly LocalSettings _settings;
     private readonly BackupService _backupService;
     private readonly ILogger<SynchronizationService> _logger;
-    private volatile string _status;
-    private volatile bool _isConfigured;
+    private volatile string _synchronizationStatus = default!;
     private readonly Timer _timer;
-    private volatile Thread? _synchronizeThread;
+    private Thread? _synchronizeThread;
+    private readonly object _syncRoot = new();
+    private SynchronizationConfiguration _configuration;
+    private readonly ImmutableArray<IBackupProvider> _providers;
+    private bool _isConfigured;
 
-    public string SynchronizationStatus
+    public string SynchronizationStatus => _synchronizationStatus;
+
+    public bool IsConfigured
     {
-        get => _status;
-        set
+        get
         {
-            _status = value;
-
-            OnSynchronizationStatusChanged();
+            lock (_syncRoot)
+            {
+                return _isConfigured;
+            }
         }
     }
 
-    public bool IsSynchronizing => _synchronizeThread != null;
-    public bool IsConfigured => _isConfigured;
+    public SynchronizationConfiguration Configuration
+    {
+        get
+        {
+            lock (_syncRoot)
+            {
+                return _configuration;
+            }
+        }
+        set
+        {
+            lock (_syncRoot)
+            {
+                _configuration = value;
+
+                _settings.SynchronizationConfiguration = JsonSerializer.Serialize(value);
+
+                ReloadConfiguration();
+            }
+        }
+    }
 
     public event EventHandler? SynchronizationStatusChanged;
 
     public SynchronizationService(
         LocalSettings settings,
         BackupService backupService,
+        IEnumerable<IBackupProvider> providers,
         ILogger<SynchronizationService> logger
     )
     {
         _settings = settings;
         _backupService = backupService;
+        _providers = providers.ToImmutableArray();
         _logger = logger;
+
+        foreach (var provider in _providers)
+        {
+            provider.Initialize(this);
+        }
 
         _timer = new Timer(_ => StartSynchronization(), null, Timeout.Infinite, Timeout.Infinite);
 
+        var json = _settings.SynchronizationConfiguration;
+
+        _configuration =
+            json == null
+                ? new SynchronizationConfiguration(null)
+                : JsonSerializer.Deserialize<SynchronizationConfiguration>(json)!;
+
         ReloadConfiguration();
 
-        _status = GetStatus();
+        UpdateSynchronizationStatus();
     }
 
-    private string GetStatus()
+    public IBackupProvider GetProvider(BackupProviderService service)
     {
-        if (IsSynchronizing)
-            return Labels.SynchronizationService_Synchronizing;
+        return _providers.Single(p => p.Service == service);
+    }
 
-        var lastSynchronized = GetLastSynchronized();
-        if (lastSynchronized == null)
-            return Labels.SynchronizationService_SynchronizationPending;
-
-        return string.Format(
-            Labels.SynchronizationService_LastSynchronized,
-            lastSynchronized.Value.LocalDateTime.ToString(CultureInfo.CurrentCulture)
-        );
+    private void UpdateSynchronizationStatus()
+    {
+        if (_synchronizeThread != null)
+        {
+            _synchronizationStatus = Labels.SynchronizationService_Synchronizing;
+        }
+        else
+        {
+            var lastSynchronized = GetLastSynchronized();
+            if (lastSynchronized == null)
+            {
+                _synchronizationStatus = Labels.SynchronizationService_SynchronizationPending;
+            }
+            else
+            {
+                _synchronizationStatus = string.Format(
+                    Labels.SynchronizationService_LastSynchronized,
+                    lastSynchronized.Value.LocalDateTime.ToString(CultureInfo.CurrentCulture)
+                );
+            }
+        }
     }
 
     private DateTimeOffset? GetLastSynchronized()
@@ -71,27 +122,9 @@ internal partial class SynchronizationService : IDisposable
         return DateTimeOffset.ParseExact(lastSynchronized, "o", CultureInfo.InvariantCulture);
     }
 
-    public SynchronizationConfiguration GetConfiguration()
-    {
-        var json = _settings.SynchronizationConfiguration;
-        if (json == null)
-            return new SynchronizationConfiguration(null);
-
-        return JsonSerializer.Deserialize<SynchronizationConfiguration>(json)!;
-    }
-
-    public void SetConfiguration(SynchronizationConfiguration configuration)
-    {
-        _settings.SynchronizationConfiguration = JsonSerializer.Serialize(configuration);
-
-        ReloadConfiguration();
-    }
-
     private void ReloadConfiguration()
     {
-        var configuration = GetConfiguration();
-
-        _isConfigured = configuration.GoogleDrive != null;
+        _isConfigured = _providers.Any(p => p.IsConfigured);
 
         if (!_isConfigured)
         {
@@ -117,31 +150,49 @@ internal partial class SynchronizationService : IDisposable
 
     public void StartSynchronization()
     {
-        if (!_isConfigured || IsSynchronizing)
-            return;
+        lock (_syncRoot)
+        {
+            if (_synchronizeThread != null || !_isConfigured)
+                return;
 
-        _timer.Change(Timeout.Infinite, Timeout.Infinite);
+            _timer.Change(Timeout.Infinite, Timeout.Infinite);
 
-        _synchronizeThread = new Thread(ThreadProc);
-        _synchronizeThread.Start();
+            _synchronizeThread = new Thread(ThreadProc);
+            _synchronizeThread.Start();
 
-        SynchronizationStatus = GetStatus();
+            UpdateSynchronizationStatus();
+        }
+
+        OnSynchronizationStatusChanged();
     }
 
     private void ThreadProc()
     {
         try
         {
-            TaskUtils.RunSynchronously(() => DoSynchronize(default));
+            try
+            {
+                TaskUtils.RunSynchronously(() => DoSynchronize(default));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Synchronization failed");
+            }
+            finally
+            {
+                lock (_syncRoot)
+                {
+                    _synchronizeThread = null;
+
+                    UpdateSynchronizationStatus();
+                }
+
+                OnSynchronizationStatusChanged();
+            }
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "Synchronization failed");
-        }
-        finally
-        {
-            _synchronizeThread = null;
-            SynchronizationStatus = GetStatus();
+            _logger.LogWarning(ex, "Error in synchronization thread");
         }
     }
 
@@ -149,10 +200,22 @@ internal partial class SynchronizationService : IDisposable
     {
         var backup = _backupService.CreateBackup();
 
-        var configuration = GetConfiguration();
-
-        if (configuration.GoogleDrive != null)
-            await DoGoogleDriveSynchronization(backup, cancellationToken);
+        foreach (var provider in _providers)
+        {
+            try
+            {
+                if (provider.IsConfigured)
+                    await provider.UploadBackup(backup, cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(
+                    ex,
+                    "Synchronization failed for provider '{Provider}'",
+                    provider.GetType()
+                );
+            }
+        }
 
         _settings.LastSynchronization = DateTimeOffset.Now.ToString("o");
     }
@@ -169,5 +232,3 @@ internal partial class SynchronizationService : IDisposable
 }
 
 internal record SynchronizationConfiguration(GoogleDriveSynchronizationConfiguration? GoogleDrive);
-
-internal record GoogleDriveSynchronizationConfiguration;

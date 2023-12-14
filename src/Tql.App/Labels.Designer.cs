@@ -621,6 +621,15 @@ namespace Tql.App {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Google Drive.
+        /// </summary>
+        public static string GoogleDriveBackupProvider_Label {
+            get {
+                return ResourceManager.GetString("GoogleDriveBackupProvider_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add.
         /// </summary>
         public static string HotKeyAddKey {
@@ -1878,11 +1887,11 @@ namespace Tql.App {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Are you sure you want to remove your Google Drive account?.
+        ///   Looks up a localized string similar to Are you sure you want to remove your {0} account?.
         /// </summary>
-        public static string SynchronizationConfiguration_AreYouSureRemoveGoogleDrive {
+        public static string SynchronizationConfiguration_AreYouSureRemoveService {
             get {
-                return ResourceManager.GetString("SynchronizationConfiguration_AreYouSureRemoveGoogleDrive", resourceCulture);
+                return ResourceManager.GetString("SynchronizationConfiguration_AreYouSureRemoveService", resourceCulture);
             }
         }
         
@@ -1892,15 +1901,6 @@ namespace Tql.App {
         public static string SynchronizationConfiguration_GoogleDriveLabel {
             get {
                 return ResourceManager.GetString("SynchronizationConfiguration_GoogleDriveLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Synchronization with Google Drive has been setup successfully.
-        /// </summary>
-        public static string SynchronizationConfiguration_GoogleDriveSetupComplete {
-            get {
-                return ResourceManager.GetString("SynchronizationConfiguration_GoogleDriveSetupComplete", resourceCulture);
             }
         }
         
@@ -1919,6 +1919,15 @@ namespace Tql.App {
         public static string SynchronizationConfiguration_Setup {
             get {
                 return ResourceManager.GetString("SynchronizationConfiguration_Setup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Synchronization with {0} has been setup successfully.
+        /// </summary>
+        public static string SynchronizationConfiguration_SetupComplete {
+            get {
+                return ResourceManager.GetString("SynchronizationConfiguration_SetupComplete", resourceCulture);
             }
         }
         

@@ -57,10 +57,12 @@ internal partial class SynchronizationConfigurationControl : IConfigurationPage
 
     private void UpdateEnabled()
     {
-        var configuration = _synchronizationService.GetConfiguration();
+        var googleDriveProvider = _synchronizationService.GetProvider(
+            BackupProviderService.GoogleDrive
+        );
 
-        SetVisibility(_setupGoogleDrive, configuration.GoogleDrive == null);
-        SetVisibility(_removeGoogleDrive, configuration.GoogleDrive != null);
+        SetVisibility(_setupGoogleDrive, !googleDriveProvider.IsConfigured);
+        SetVisibility(_removeGoogleDrive, googleDriveProvider.IsConfigured);
 
         SetVisibility(_synchronization, _synchronizationService.IsConfigured);
         SetVisibility(_synchronizeNow, _synchronizationService.IsConfigured);
@@ -77,41 +79,11 @@ internal partial class SynchronizationConfigurationControl : IConfigurationPage
         return Task.FromResult(SaveStatus.Success);
     }
 
-    private async void _setupGoogleDrive_Click(object sender, RoutedEventArgs e)
-    {
-        try
-        {
-            await _synchronizationService.SetupGoogleDrive();
+    private async void _setupGoogleDrive_Click(object sender, RoutedEventArgs e) =>
+        await SetupService(BackupProviderService.GoogleDrive);
 
-            _ui.ShowAlert(
-                this,
-                Labels.SynchronizationConfiguration_GoogleDriveSetupComplete,
-                icon: DialogIcon.Information
-            );
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Setup with Google Drive failed");
-
-            _ui.ShowException(this, Labels.SynchronizationConfiguration_SetupFailed, ex);
-        }
-
-        UpdateEnabled();
-    }
-
-    private async void _removeGoogleDrive_Click(object sender, RoutedEventArgs e)
-    {
-        var result = _ui.ShowConfirmation(
-            this,
-            Labels.GeneralConfiguration_AreYouSure,
-            Labels.SynchronizationConfiguration_AreYouSureRemoveGoogleDrive
-        );
-
-        if (result == DialogResult.Yes)
-            await _synchronizationService.RemoveGoogleDrive();
-
-        UpdateEnabled();
-    }
+    private async void _removeGoogleDrive_Click(object sender, RoutedEventArgs e) =>
+        await RemoveService(BackupProviderService.GoogleDrive);
 
     private void _synchronizeNow_Click(object sender, RoutedEventArgs e)
     {
@@ -122,5 +94,48 @@ internal partial class SynchronizationConfigurationControl : IConfigurationPage
             Labels.SynchronizationConfiguration_SynchronizationStarted,
             icon: DialogIcon.Information
         );
+    }
+
+    private async Task SetupService(BackupProviderService service)
+    {
+        var provider = _synchronizationService.GetProvider(service);
+
+        try
+        {
+            await provider.Setup();
+
+            _ui.ShowAlert(
+                this,
+                string.Format(Labels.SynchronizationConfiguration_SetupComplete, provider.Label),
+                icon: DialogIcon.Information
+            );
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Setup with {Provider} failed", provider.Label);
+
+            _ui.ShowException(this, Labels.SynchronizationConfiguration_SetupFailed, ex);
+        }
+
+        UpdateEnabled();
+    }
+
+    private async Task RemoveService(BackupProviderService service)
+    {
+        var provider = _synchronizationService.GetProvider(service);
+
+        var result = _ui.ShowConfirmation(
+            this,
+            Labels.GeneralConfiguration_AreYouSure,
+            string.Format(
+                Labels.SynchronizationConfiguration_AreYouSureRemoveService,
+                provider.Label
+            )
+        );
+
+        if (result == DialogResult.Yes)
+            await provider.Remove();
+
+        UpdateEnabled();
     }
 }

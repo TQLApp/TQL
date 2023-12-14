@@ -824,11 +824,14 @@ Don't forget to change the hotkey for your new profile. You can do this in the g
   <data name="SynchronizationService_Synchronizing" xml:space="preserve">
     <value>Synchronizing...</value>
   </data>
-  <data name="SynchronizationConfiguration_AreYouSureRemoveGoogleDrive" xml:space="preserve">
-    <value>Are you sure you want to remove your Google Drive account?</value>
+  <data name="GoogleDriveBackupProvider_Label" xml:space="preserve">
+    <value>Google Drive</value>
   </data>
-  <data name="SynchronizationConfiguration_GoogleDriveSetupComplete" xml:space="preserve">
-    <value>Synchronization with Google Drive has been setup successfully</value>
+  <data name="SynchronizationConfiguration_AreYouSureRemoveService" xml:space="preserve">
+    <value>Are you sure you want to remove your {0} account?</value>
+  </data>
+  <data name="SynchronizationConfiguration_SetupComplete" xml:space="preserve">
+    <value>Synchronization with {0} has been setup successfully</value>
   </data>
   <data name="SynchronizationConfiguration_SetupFailed" xml:space="preserve">
     <value>Failed to setup synchronization</value>

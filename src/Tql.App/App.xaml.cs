@@ -434,6 +434,7 @@ public partial class App
         builder.AddSingleton<IProfileManager, ProfileManager>();
         builder.AddSingleton<SynchronizationService>();
         builder.AddSingleton<BackupService>();
+        builder.AddSingleton<IBackupProvider, GoogleDriveBackupProvider>();
 
         builder.Add(ServiceDescriptor.Singleton(typeof(ICache<>), typeof(Cache<>)));
         builder.Add(ServiceDescriptor.Singleton(typeof(IMatchFactory<,>), typeof(MatchFactory<,>)));
