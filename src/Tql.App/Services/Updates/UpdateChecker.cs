@@ -20,7 +20,7 @@ internal class UpdateChecker : IDisposable
     private readonly HttpClient _httpClient;
     private readonly PackageManager _packageManager;
     private readonly NotifyIconManager _notifyIconManager;
-    private readonly Settings _settings;
+    private readonly LocalSettings _settings;
     private readonly Timer _timer;
 
     public UpdateChecker(
@@ -29,7 +29,7 @@ internal class UpdateChecker : IDisposable
         HttpClient httpClient,
         PackageManager packageManager,
         NotifyIconManager notifyIconManager,
-        Settings settings
+        LocalSettings settings
     )
     {
         _ui = ui;

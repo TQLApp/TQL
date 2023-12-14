@@ -414,6 +414,7 @@ public partial class App
     {
         builder.AddSingleton<IDb, Db>();
         builder.AddSingleton<Settings>();
+        builder.AddSingleton<LocalSettings>();
         builder.AddSingleton<IConfigurationManager, ConfigurationManager>();
         builder.AddSingleton<IUI, UI>();
         builder.AddSingleton<CacheManagerManager>();

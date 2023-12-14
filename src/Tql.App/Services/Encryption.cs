@@ -14,12 +14,12 @@ internal class Encryption : IEncryption, IDisposable
 
     private readonly Aes _aes;
 
-    public Encryption(Settings settings)
+    public Encryption(LocalSettings settings)
     {
         _aes = EnsureEncryptionKey(settings);
     }
 
-    private Aes EnsureEncryptionKey(Settings settings)
+    private Aes EnsureEncryptionKey(LocalSettings settings)
     {
         var aes = Aes.Create();
 

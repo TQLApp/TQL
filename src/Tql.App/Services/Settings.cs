@@ -66,12 +66,6 @@ internal class Settings(IStore store) : INotifyPropertyChanged
         set => SetString(nameof(Theme), value);
     }
 
-    public string? DeviceId
-    {
-        get => GetString(nameof(DeviceId));
-        set => SetString(nameof(DeviceId), value);
-    }
-
     public string? UserId
     {
         get => GetString(nameof(UserId));
@@ -106,18 +100,6 @@ internal class Settings(IStore store) : INotifyPropertyChanged
     {
         get => GetString(nameof(QuickStart));
         set => SetString(nameof(QuickStart), value);
-    }
-
-    public string? EncryptionKey
-    {
-        get => GetString(nameof(EncryptionKey));
-        set => SetString(nameof(EncryptionKey), value);
-    }
-
-    public bool? InstallPrerelease
-    {
-        get => GetBoolean(nameof(InstallPrerelease));
-        set => SetBoolean(nameof(InstallPrerelease), value);
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
