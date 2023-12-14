@@ -93,6 +93,9 @@ internal partial class Settings : INotifyPropertyChanged
         set => SetInteger(nameof(TextOuterGlowSize), value);
     }
 
+    // We need the language very early in the startup process. Because of this,
+    // we have a language setting in both Settings and LocalSettings that need
+    // to be synced.
     public string? Language
     {
         get => GetString(nameof(Language));

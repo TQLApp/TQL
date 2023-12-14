@@ -58,6 +58,7 @@ public partial class App
         System.Windows.Forms.Application.EnableVisualStyles();
 
         var store = new Store(Options.Environment, TraceLogger.Instance);
+        var configurationManager = new ConfigurationManager(store);
 
         SetUICulture(store);
 
@@ -93,6 +94,7 @@ public partial class App
 
         var packageStoreManager = new PackageStoreManager(
             store,
+            configurationManager,
             loggerFactory.CreateLogger<PackageStoreManager>()
         );
 
@@ -119,6 +121,7 @@ public partial class App
         builder.Services.AddSingleton<IStore>(store);
         builder.Services.AddSingleton<IPluginManager>(pluginManager);
         builder.Services.AddSingleton(packageStoreManager);
+        builder.Services.AddSingleton<IConfigurationManager>(configurationManager);
 
         ConfigureServices(builder.Services);
 
@@ -284,7 +287,7 @@ public partial class App
     {
         using var key = store.CreateBaseKey();
 
-        if (key.GetValue(nameof(Settings.Language)) is string language)
+        if (key.GetValue(nameof(LocalSettings.Language)) is string language)
         {
             var culture = CultureInfo.GetCultureInfo(language);
 
@@ -415,7 +418,6 @@ public partial class App
         builder.AddSingleton<IDb, Db>();
         builder.AddSingleton<Settings>();
         builder.AddSingleton<LocalSettings>();
-        builder.AddSingleton<IConfigurationManager, ConfigurationManager>();
         builder.AddSingleton<IUI, UI>();
         builder.AddSingleton<CacheManagerManager>();
         builder.AddSingleton<IClipboard, ClipboardImpl>();

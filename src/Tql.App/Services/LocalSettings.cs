@@ -2,12 +2,22 @@
 using System.Runtime.CompilerServices;
 using Microsoft.Win32;
 using Tql.Abstractions;
+using Tql.App.Support;
 
 namespace Tql.App.Services;
 
-internal class LocalSettings(IStore store) : INotifyPropertyChanged
+internal class LocalSettings : INotifyPropertyChanged
 {
-    private readonly RegistryKey _key = ((Store)store).CreateBaseKey();
+    private readonly RegistryKey _key;
+
+    // We need the language very early in the startup process. Because of this,
+    // we have a language setting in both Settings and LocalSettings that need
+    // to be synced.
+    public string? Language
+    {
+        get => GetString(nameof(Language));
+        set => SetString(nameof(Language), value);
+    }
 
     public string? DeviceId
     {
@@ -28,6 +38,29 @@ internal class LocalSettings(IStore store) : INotifyPropertyChanged
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
+
+    public LocalSettings(IStore store, Settings settings)
+    {
+        _key = ((Store)store).CreateBaseKey();
+
+        this.AttachPropertyChanged(
+            nameof(Language),
+            (_, _) =>
+            {
+                if (Language != settings.Language)
+                    settings.Language = Language;
+            }
+        );
+
+        settings.AttachPropertyChanged(
+            nameof(Language),
+            (_, _) =>
+            {
+                if (Language != settings.Language)
+                    Language = settings.Language;
+            }
+        );
+    }
 
     private string? GetString(string name) => _key.GetValue(name) as string;
 

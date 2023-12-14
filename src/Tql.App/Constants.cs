@@ -29,7 +29,6 @@ internal static class Constants
     public static readonly Guid SettingsConfigurationId = Guid.Parse(
         "30817a0a-ef4f-4f0e-b765-35a5e375e12e"
     );
-
     public static readonly Guid PackageManagerConfigurationId = Guid.Parse(
         "8dd1ea3b-d412-43c3-b5a4-a36bb7d52189"
     );
@@ -37,6 +36,9 @@ internal static class Constants
         "4474c041-702c-415a-8531-5460dc1b9db1"
     );
     public static readonly Guid ProfilesPageId = Guid.Parse("c4bb3afb-a39a-48b4-81d3-6fd65270ba78");
+    public static readonly Guid PackageStoreConfigurationId = Guid.Parse(
+        "52b8c0d3-d66e-4b98-a127-4ebb5c0a516d"
+    );
 
     public static NuGetFramework ApplicationFrameworkVersion = new NuGetFramework(
         FrameworkConstants.FrameworkIdentifiers.NetCoreApp,

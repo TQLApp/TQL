@@ -10,19 +10,17 @@ namespace Tql.App.ConfigurationUI;
 internal partial class GeneralConfigurationControl : IConfigurationPage
 {
     private static readonly List<LabeledValue<Theme>> ThemeLabels =
-        new()
-        {
-            LabeledValue.Create(Labels.ThemeSystem, Theme.System),
-            LabeledValue.Create(Labels.ThemeLight, Theme.Light),
-            LabeledValue.Create(Labels.ThemeDark, Theme.Dark)
-        };
+    [
+        LabeledValue.Create(Labels.ThemeSystem, Theme.System),
+        LabeledValue.Create(Labels.ThemeLight, Theme.Light),
+        LabeledValue.Create(Labels.ThemeDark, Theme.Dark)
+    ];
     private static readonly List<LabeledValue<string?>> LanguageLabels =
-        new()
-        {
-            LabeledValue.Create(Labels.GeneralConfiguration_LanguageSystem, default(string)),
-            LabeledValue.Create(Labels.GeneralConfiguration_LanguageEnglish, (string?)"en"),
-            LabeledValue.Create(Labels.GeneralConfiguration_LanguageDutch, (string?)"nl")
-        };
+    [
+        LabeledValue.Create(Labels.GeneralConfiguration_LanguageSystem, default(string)),
+        LabeledValue.Create(Labels.GeneralConfiguration_LanguageEnglish, (string?)"en"),
+        LabeledValue.Create(Labels.GeneralConfiguration_LanguageDutch, (string?)"nl")
+    ];
 
     private readonly Settings _settings;
     private readonly IUI _ui;
@@ -59,16 +57,16 @@ internal partial class GeneralConfigurationControl : IConfigurationPage
         );
 
         _historyInRootResults.ConfigureAsNumericOnly(NumberStyles.None, false);
-        _historyInRootResults.Text = settings.HistoryInRootResults?.ToString();
-        ConfigureResetButton(_resetHistoryInRootResults, () => _historyInRootResults.Text = null);
+        _historyInRootResults.Text = settings.HistoryInRootResults?.ToString() ?? "";
+        ConfigureResetButton(_resetHistoryInRootResults, () => _historyInRootResults.Text = "");
 
         _cacheUpdateInterval.ConfigureAsNumericOnly(NumberStyles.None, false);
-        _cacheUpdateInterval.Text = settings.CacheUpdateInterval?.ToString();
-        ConfigureResetButton(_resetCacheUpdateInterval, () => _cacheUpdateInterval.Text = null);
+        _cacheUpdateInterval.Text = settings.CacheUpdateInterval?.ToString() ?? "";
+        ConfigureResetButton(_resetCacheUpdateInterval, () => _cacheUpdateInterval.Text = "");
 
         _mainFontSize.ConfigureAsNumericOnly(NumberStyles.None, false);
-        _mainFontSize.Text = settings.MainFontSize?.ToString();
-        ConfigureResetButton(_resetMainFontSize, () => _mainFontSize.Text = null);
+        _mainFontSize.Text = settings.MainFontSize?.ToString() ?? "";
+        ConfigureResetButton(_resetMainFontSize, () => _mainFontSize.Text = "");
 
         _mainWindowTint.SelectedColor = SettingsUtils.ParseMainWindowTint(
             settings.MainWindowTint ?? Settings.DefaultMainWindowTint

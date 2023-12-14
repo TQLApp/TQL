@@ -49,7 +49,11 @@ internal partial class Settings
 
         foreach (var name in values.Keys)
         {
-            key.DeleteValue(name, false);
+            // We need the language very early in the startup process. Because of this,
+            // we have a language setting in both Settings and LocalSettings that need
+            // to be synced.
+            if (name != nameof(LocalSettings.Language))
+                key.DeleteValue(name, false);
         }
 
         JsonValue? GetLegacyString(string name) =>
