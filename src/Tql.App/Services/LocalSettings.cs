@@ -37,6 +37,18 @@ internal class LocalSettings : INotifyPropertyChanged
         set => SetBoolean(nameof(InstallPrerelease), value);
     }
 
+    public string? SynchronizationConfiguration
+    {
+        get => GetString(nameof(SynchronizationConfiguration));
+        set => SetString(nameof(SynchronizationConfiguration), value);
+    }
+
+    public string? LastSynchronization
+    {
+        get => GetString(nameof(LastSynchronization));
+        set => SetString(nameof(LastSynchronization), value);
+    }
+
     public event PropertyChangedEventHandler? PropertyChanged;
 
     public LocalSettings(IStore store, Settings settings)

@@ -40,6 +40,41 @@
         "resolved": "4.5.1",
         "contentHash": "Z0AL4oOORLZsKUediAaXOVt+nQI8owUcv05RDuoup0JaS96cqN/2zeIVr2TLX5oDK6VOrm1NkJKV1zrQCj3Deg=="
       },
+      "Google.Apis": {
+        "type": "Transitive",
+        "resolved": "1.64.0",
+        "contentHash": "0ki3AJDiTuV5Cb7NUyq+0DDGDLWcPCKbZC1HgyvAW+o/I0rY/HXMvv6IAF65hhfbQB/Scfm8nuAW3weNEXYkxw==",
+        "dependencies": {
+          "Google.Apis.Core": "1.64.0"
+        }
+      },
+      "Google.Apis.Auth": {
+        "type": "Transitive",
+        "resolved": "1.64.0",
+        "contentHash": "u3cwX0E3IpAkROzRPgZtohFSS2DUblkSmwMfh3/2Qwbi/QXHd8ebq2JuCNqmfpJyfgW5AG0+fO0UrrLsYtglMQ==",
+        "dependencies": {
+          "Google.Apis": "1.64.0",
+          "Google.Apis.Core": "1.64.0",
+          "System.Management": "7.0.2"
+        }
+      },
+      "Google.Apis.Core": {
+        "type": "Transitive",
+        "resolved": "1.64.0",
+        "contentHash": "bqrUhDeMFeMdjtv4QT4Z99WDPSEbS6EKnp1bYvqyc/VpEu4oFNMqw8/bk/7SS7Ko+bodDgum8fkvDwCMZtdWDg==",
+        "dependencies": {
+          "Newtonsoft.Json": "13.0.3"
+        }
+      },
+      "Google.Apis.Drive.v3": {
+        "type": "Transitive",
+        "resolved": "1.64.0.3256",
+        "contentHash": "fLwUFd/rjSAXbvBeXXz5Xi/LP0Jq0YZqdzHz1uh2UsFp7SjUSjsIMfy1BVNeqWorRgZSd9ciL+DxgsnPyVLRng==",
+        "dependencies": {
+          "Google.Apis": "1.64.0",
+          "Google.Apis.Auth": "1.64.0"
+        }
+      },
       "JeremyAnsel.HLSL.Targets": {
         "type": "Transitive",
         "resolved": "1.0.13",
@@ -533,6 +568,11 @@
         "resolved": "1.0.118",
         "contentHash": "4TS8IZvDj0ud6utxfXI6zv9Ditk4U9Kt9KqLyAIQGcU3GXp5oGBHgGZifq+APcqRCayuN/MSE8t9ZZmygtU28A=="
       },
+      "System.CodeDom": {
+        "type": "Transitive",
+        "resolved": "7.0.0",
+        "contentHash": "GLltyqEsE5/3IE+zYRP5sNa1l44qKl9v+bfdMcwg+M9qnQf47wK3H0SUR/T+3N4JEQXF3vV4CSuuo0rsg+nq2A=="
+      },
       "System.Collections": {
         "type": "Transitive",
         "resolved": "4.3.0",
@@ -666,6 +706,14 @@
           "System.Runtime": "4.3.0",
           "System.Runtime.Extensions": "4.3.0",
           "System.Threading": "4.3.0"
+        }
+      },
+      "System.Management": {
+        "type": "Transitive",
+        "resolved": "7.0.2",
+        "contentHash": "/qEUN91mP/MUQmJnM5y5BdT7ZoPuVrtxnFlbJ8a3kBJGhe2wCzBfnPFtK2wTtEEcf3DMGR9J00GZZfg6HRI6yA==",
+        "dependencies": {
+          "System.CodeDom": "7.0.0"
         }
       },
       "System.ObjectModel": {
@@ -902,6 +950,8 @@
           "Dapper": "[2.1.21, )",
           "Emoji.Wpf": "[0.3.4, )",
           "Extended.Wpf.Toolkit": "[4.5.1, )",
+          "Google.Apis.Auth": "[1.64.0, )",
+          "Google.Apis.Drive.v3": "[1.64.0.3256, )",
           "Markdig": "[0.33.0, )",
           "Microsoft.ApplicationInsights": "[2.21.0, )",
           "Microsoft.Extensions.Hosting": "[8.0.0, )",

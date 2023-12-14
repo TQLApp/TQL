@@ -31,7 +31,7 @@ internal partial class GeneralConfigurationControl : IConfigurationPage
     private bool _requireRestart;
     private readonly DrawingImage _undoImage;
 
-    public Guid PageId => Guid.Parse("df92b623-a629-465a-bddf-8f36ef6d4fdd");
+    public Guid PageId => Constants.GeneralPageId;
     public string Title => Labels.GeneralConfiguration_General;
     public ConfigurationPageMode PageMode => ConfigurationPageMode.Scroll;
 

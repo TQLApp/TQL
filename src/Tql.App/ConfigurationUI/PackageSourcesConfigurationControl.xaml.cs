@@ -14,7 +14,7 @@ internal partial class PackageSourcesConfigurationControl : IConfigurationPage
     private new PackageManagerConfigurationDto DataContext =>
         (PackageManagerConfigurationDto)base.DataContext;
 
-    public Guid PageId => Constants.PackageManagerPageId;
+    public Guid PageId => Constants.PackageSourcesPageId;
     public string Title => Labels.PackageSourcesConfiguration_PackageSources;
     public ConfigurationPageMode PageMode => ConfigurationPageMode.AutoSize;
 

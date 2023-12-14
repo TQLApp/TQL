@@ -15,7 +15,7 @@ internal partial class ProfilesConfigurationControl : IConfigurationPage
 
     private new ProfileConfigurationDto DataContext => (ProfileConfigurationDto)base.DataContext;
 
-    public Guid PageId => Constants.PackageManagerPageId;
+    public Guid PageId => Constants.ProfilesPageId;
     public string Title => Labels.ProfilesConfiguration_Profiles;
     public ConfigurationPageMode PageMode => ConfigurationPageMode.AutoSize;
 

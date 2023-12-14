@@ -18,6 +18,7 @@ using Tql.App.Services.Database;
 using Tql.App.Services.Packages;
 using Tql.App.Services.Packages.PackageStore;
 using Tql.App.Services.Profiles;
+using Tql.App.Services.Synchronization;
 using Tql.App.Services.Telemetry;
 using Tql.App.Services.Updates;
 using Tql.App.Support;
@@ -431,6 +432,8 @@ public partial class App
         builder.AddSingleton<QuickStartScript>();
         builder.AddSingleton<IEncryption, Services.Encryption>();
         builder.AddSingleton<IProfileManager, ProfileManager>();
+        builder.AddSingleton<SynchronizationService>();
+        builder.AddSingleton<BackupService>();
 
         builder.Add(ServiceDescriptor.Singleton(typeof(ICache<>), typeof(Cache<>)));
         builder.Add(ServiceDescriptor.Singleton(typeof(IMatchFactory<,>), typeof(MatchFactory<,>)));
@@ -445,6 +448,7 @@ public partial class App
         builder.AddTransient<PackageSourceEditWindow>();
         builder.AddTransient<ProfilesConfigurationControl>();
         builder.AddTransient<ProfileEditWindow>();
+        builder.AddTransient<SynchronizationConfigurationControl>();
     }
 
     private void Application_Exit(object? sender, ExitEventArgs e)

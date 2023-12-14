@@ -13,7 +13,7 @@ internal partial class PluginsConfigurationControl : IConfigurationPage
     private readonly IServiceProvider _serviceProvider;
     private readonly IUI _ui;
 
-    public Guid PageId => Guid.Parse("96260cfa-5814-4ed4-ac69-fcc63e4f4571");
+    public Guid PageId => Constants.PluginsPageId;
     public string Title => Labels.PluginsConfiguration_Plugins;
     public ConfigurationPageMode PageMode => ConfigurationPageMode.AutoSize;
     public Package? SelectedPackage => (Package?)_browser.SelectedItem;

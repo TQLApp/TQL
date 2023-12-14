@@ -100,4 +100,5 @@ internal static class Images
         Color.FromRgb(20, 79, 162)
     );
     public static readonly DrawingImage Folder = GetImage("Folder.svg");
+    public static readonly DrawingImage GoogleDrive = GetImage("Google Drive.svg");
 }
