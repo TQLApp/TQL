@@ -26,6 +26,10 @@ internal static class Constants
         "https://api.nuget.org/v3/index.json"
     );
 
+    public static readonly Guid SettingsConfigurationId = Guid.Parse(
+        "30817a0a-ef4f-4f0e-b765-35a5e375e12e"
+    );
+
     public static readonly Guid PackageManagerConfigurationId = Guid.Parse(
         "8dd1ea3b-d412-43c3-b5a4-a36bb7d52189"
     );
