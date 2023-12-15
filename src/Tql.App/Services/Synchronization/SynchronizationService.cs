@@ -1,6 +1,5 @@
 ﻿using System.Globalization;
 using System.IO;
-using System.Net.NetworkInformation;
 using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
 using Tql.Abstractions;
@@ -120,7 +119,6 @@ internal class SynchronizationService : IDisposable
 
         SystemEvents.SessionSwitch += SystemEvents_SessionSwitch;
         SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
-        NetworkChange.NetworkAvailabilityChanged += NetworkChange_NetworkAvailabilityChanged;
 
         void SetDirty()
         {
@@ -157,19 +155,6 @@ internal class SynchronizationService : IDisposable
                 "Queueing synchronization because of power mode change to '{Mode}'",
                 e.Mode
             );
-
-            QueueRestoreSynchronization();
-        }
-    }
-
-    private void NetworkChange_NetworkAvailabilityChanged(
-        object? sender,
-        NetworkAvailabilityEventArgs e
-    )
-    {
-        if (e.IsAvailable)
-        {
-            _logger.LogInformation("Queueing synchronization because the network became available");
 
             QueueRestoreSynchronization();
         }
