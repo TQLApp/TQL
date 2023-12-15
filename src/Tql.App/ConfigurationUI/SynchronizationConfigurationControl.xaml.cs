@@ -10,6 +10,7 @@ internal partial class SynchronizationConfigurationControl : IConfigurationPage
 {
     private readonly SynchronizationService _synchronizationService;
     private readonly IUI _ui;
+    private readonly BackupService _backupService;
     private readonly ILogger<SynchronizationConfigurationControl> _logger;
 
     public Guid PageId => Constants.SynchronizationPageId;
@@ -19,11 +20,13 @@ internal partial class SynchronizationConfigurationControl : IConfigurationPage
     public SynchronizationConfigurationControl(
         SynchronizationService synchronizationService,
         IUI ui,
+        BackupService backupService,
         ILogger<SynchronizationConfigurationControl> logger
     )
     {
         _synchronizationService = synchronizationService;
         _ui = ui;
+        _backupService = backupService;
         _logger = logger;
 
         InitializeComponent();
@@ -87,7 +90,10 @@ internal partial class SynchronizationConfigurationControl : IConfigurationPage
 
     private void _synchronizeNow_Click(object sender, RoutedEventArgs e)
     {
-        _synchronizationService.StartSynchronization();
+        _synchronizationService.StartSynchronization(
+            RestartMode.Restart,
+            SynchronizationMode.ForceDirty
+        );
 
         _ui.ShowAlert(
             this,
@@ -104,10 +110,52 @@ internal partial class SynchronizationConfigurationControl : IConfigurationPage
         {
             await provider.Setup();
 
+            var status = await provider.GetBackupStatus();
+
+            if (status == BackupStatus.Available)
+            {
+                var result = _ui.ShowConfirmation(
+                    this,
+                    Labels.SynchronizationConfiguration_BackupAvailable,
+                    string.Format(
+                        Labels.SynchronizationConfiguration_BackupAvailableSubtitle,
+                        provider.Label
+                    )
+                );
+
+                if (result == DialogResult.Yes)
+                {
+                    var restoreStatus = await _synchronizationService.RestoreBackup(
+                        provider.Service,
+                        RestartMode.Restart
+                    );
+
+                    if (restoreStatus == BackupRestoreStatus.Restoring)
+                        return;
+
+                    result = _ui.ShowConfirmation(
+                        this,
+                        Labels.SynchronizationConfiguration_RestoreFailed,
+                        Labels.SynchronizationConfiguration_RestoreFailedSubtitle
+                    );
+
+                    if (result != DialogResult.Yes)
+                    {
+                        await provider.Remove();
+                        return;
+                    }
+                }
+            }
+
             _ui.ShowAlert(
                 this,
                 string.Format(Labels.SynchronizationConfiguration_SetupComplete, provider.Label),
                 icon: DialogIcon.Information
+            );
+
+            _synchronizationService.StartSynchronization(
+                RestartMode.Restart,
+                SynchronizationMode.ForceDirty
             );
         }
         catch (Exception ex)

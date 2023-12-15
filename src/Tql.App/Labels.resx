@@ -839,4 +839,16 @@ Don't forget to change the hotkey for your new profile. You can do this in the g
   <data name="SynchronizationConfiguration_SynchronizationStarted" xml:space="preserve">
     <value>Started synchronization</value>
   </data>
+  <data name="SynchronizationConfiguration_BackupAvailable" xml:space="preserve">
+    <value>Backup found</value>
+  </data>
+  <data name="SynchronizationConfiguration_BackupAvailableSubtitle" xml:space="preserve">
+    <value>A backup was found in your {0} account. Do you want to restore this backup?</value>
+  </data>
+  <data name="SynchronizationConfiguration_RestoreFailed" xml:space="preserve">
+    <value>Failed to restore backup</value>
+  </data>
+  <data name="SynchronizationConfiguration_RestoreFailedSubtitle" xml:space="preserve">
+    <value>The backup couldn't be restored. Do you want to keep this account? The existing backup will be overwritten.</value>
+  </data>
 </root>

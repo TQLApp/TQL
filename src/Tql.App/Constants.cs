@@ -6,6 +6,7 @@ namespace Tql.App;
 internal static class Constants
 {
     public static readonly TimeSpan SynchronizationInterval = TimeSpan.FromHours(1);
+    public static readonly TimeSpan SynchronizationRestoreDelay = TimeSpan.FromSeconds(30);
 
     public const int MaxPenalty = 5;
     public const int MaxDistance = 3;

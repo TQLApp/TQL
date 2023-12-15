@@ -178,6 +178,10 @@ public partial class App
 
         if (!Options.IsSilent)
             _mainWindow.DoShow();
+
+        logger.LogInformation("Queueing synchronization because of startup");
+
+        _host.Services.GetRequiredService<SynchronizationService>().QueueRestoreSynchronization();
     }
 
     private void RegisterHotKey(ILogger<App> logger)

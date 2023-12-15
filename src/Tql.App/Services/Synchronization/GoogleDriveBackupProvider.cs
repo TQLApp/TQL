@@ -181,6 +181,11 @@ internal class GoogleDriveBackupProvider(ILogger<GoogleDriveBackupProvider> logg
         if (file == null)
             return null;
 
+        _synchronizationService.Configuration = _synchronizationService.Configuration with
+        {
+            GoogleDrive = new GoogleDriveSynchronizationConfiguration(file.Md5Checksum)
+        };
+
         var request = service.Files.Get(file.Id);
 
         request.Alt = DriveBaseServiceRequest<File>.AltEnum.Media;

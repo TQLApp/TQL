@@ -33,6 +33,10 @@ internal class ConfigurationManager : IConfigurationManager
     {
         lock (_syncRoot)
         {
+            var oldConfiguration = GetConfiguration(pluginId);
+            if (configuration == oldConfiguration)
+                return;
+
             if (configuration == null)
             {
                 _configuration.Remove(pluginId);
@@ -91,6 +95,13 @@ internal class ConfigurationManager : IConfigurationManager
         using var writer = new Utf8JsonWriter(stream, new JsonWriterOptions { Indented = true });
 
         obj.WriteTo(writer);
+    }
+
+    public void RestoreConfiguration(Stream stream)
+    {
+        using var target = File.Create(GetConfigurationFileName());
+
+        stream.CopyTo(target);
     }
 
     private string GetConfigurationFileName() =>

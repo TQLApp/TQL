@@ -16,7 +16,11 @@ internal class BackupService(
     public Backup CreateBackup()
     {
         return new Backup(
-            new BackupMetadata(settings.UserId!, localSettings.EncryptionKey!),
+            new BackupMetadata(
+                BackupMetadata.CurrentVersion,
+                settings.UserId!,
+                Encryption.Unprotect(localSettings.EncryptionKey!)
+            ),
             GetConfigurationBackup(),
             GetDbBackup()
         );
@@ -108,4 +112,7 @@ internal record Backup(
     }
 }
 
-internal record BackupMetadata(string UserId, string EncryptionKey);
+internal record BackupMetadata(int Version, string UserId, string EncryptionKey)
+{
+    public const int CurrentVersion = 1;
+};

@@ -1896,6 +1896,24 @@ namespace Tql.App {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Backup found.
+        /// </summary>
+        public static string SynchronizationConfiguration_BackupAvailable {
+            get {
+                return ResourceManager.GetString("SynchronizationConfiguration_BackupAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A backup was found in your {0} account. Do you want to restore this backup?.
+        /// </summary>
+        public static string SynchronizationConfiguration_BackupAvailableSubtitle {
+            get {
+                return ResourceManager.GetString("SynchronizationConfiguration_BackupAvailableSubtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Google Drive:.
         /// </summary>
         public static string SynchronizationConfiguration_GoogleDriveLabel {
@@ -1910,6 +1928,24 @@ namespace Tql.App {
         public static string SynchronizationConfiguration_Remove {
             get {
                 return ResourceManager.GetString("SynchronizationConfiguration_Remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to restore backup.
+        /// </summary>
+        public static string SynchronizationConfiguration_RestoreFailed {
+            get {
+                return ResourceManager.GetString("SynchronizationConfiguration_RestoreFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The backup couldn&apos;t be restored. Do you want to keep this account? The existing backup will be overwritten..
+        /// </summary>
+        public static string SynchronizationConfiguration_RestoreFailedSubtitle {
+            get {
+                return ResourceManager.GetString("SynchronizationConfiguration_RestoreFailedSubtitle", resourceCulture);
             }
         }
         

@@ -28,9 +28,7 @@ internal class Encryption : IEncryption, IDisposable
         var json = settings.EncryptionKey;
         if (json != null)
         {
-            var key = JsonSerializer.Deserialize<KeyDto>(
-                Unprotect(Convert.FromBase64String(json))
-            )!;
+            var key = JsonSerializer.Deserialize<KeyDto>(Unprotect(json))!;
 
             aes.Key = key.Key;
             aes.IV = key.IV;
@@ -39,7 +37,7 @@ internal class Encryption : IEncryption, IDisposable
         {
             var key = new KeyDto(aes.Key, aes.IV);
 
-            settings.EncryptionKey = Convert.ToBase64String(Protect(JsonSerializer.Serialize(key)));
+            settings.EncryptionKey = Protect(JsonSerializer.Serialize(key));
         }
 
         return aes;
@@ -98,20 +96,24 @@ internal class Encryption : IEncryption, IDisposable
         return Encoding.UTF8.GetString(Decrypt(encrypted));
     }
 
-    private string Unprotect(byte[] value)
+    public static string Unprotect(string value)
     {
+        var data = Convert.FromBase64String(value);
+
         return Encoding
             .UTF8
-            .GetString(ProtectedData.Unprotect(value, null, DataProtectionScope.CurrentUser));
+            .GetString(ProtectedData.Unprotect(data, null, DataProtectionScope.CurrentUser));
     }
 
-    private byte[] Protect(string value)
+    public static string Protect(string value)
     {
-        return ProtectedData.Protect(
+        var data = ProtectedData.Protect(
             Encoding.UTF8.GetBytes(value),
             null,
             DataProtectionScope.CurrentUser
         );
+
+        return Convert.ToBase64String(data);
     }
 
     public void Dispose()
