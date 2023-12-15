@@ -197,10 +197,7 @@ internal class UpdateChecker : IDisposable
         {
             _logger.LogInformation("One or more plugins were updated; restarting");
 
-            if (App.Options.IsSilent)
-                App.RestartMode = RestartMode.SilentRestart;
-            else
-                App.RestartMode = RestartMode.Restart;
+            _ui.Shutdown(App.Options.IsSilent ? RestartMode.SilentRestart : RestartMode.Restart);
         }
 
         return updatesAvailable;

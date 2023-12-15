@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Net.Http;
 using System.Reflection;
 using System.Runtime.Loader;
@@ -36,7 +35,6 @@ public partial class App
     private MainWindow? _mainWindow;
     private WindowMessageIPC? _ipc;
 
-    public static RestartMode RestartMode { get; set; } = RestartMode.Shutdown;
     public static ImmutableArray<Assembly>? DebugAssemblies { get; set; }
     public static bool IsDebugMode { get; set; }
     internal static Options Options { get; private set; } = new();
@@ -435,6 +433,7 @@ public partial class App
         builder.AddSingleton<SynchronizationService>();
         builder.AddSingleton<BackupService>();
         builder.AddSingleton<IBackupProvider, GoogleDriveBackupProvider>();
+        builder.AddSingleton<LifecycleService>();
 
         builder.Add(ServiceDescriptor.Singleton(typeof(ICache<>), typeof(Cache<>)));
         builder.Add(ServiceDescriptor.Singleton(typeof(IMatchFactory<,>), typeof(MatchFactory<,>)));
@@ -454,28 +453,20 @@ public partial class App
 
     private void Application_Exit(object? sender, ExitEventArgs e)
     {
+        var lifecycle = _host?.Services.GetRequiredService<LifecycleService>();
+
+        lifecycle?.RaiseBeforeHostTermination();
+
         _host?.Dispose();
         _ipc?.Dispose();
 
-        if (RestartMode is RestartMode.Restart or RestartMode.SilentRestart)
-        {
-            var startInfo = new ProcessStartInfo
-            {
-                FileName = Path.ChangeExtension(Assembly.GetEntryAssembly()!.Location, ".exe"),
-                UseShellExecute = false
-            };
+        // We need two events here. UI uses the before shutdown event
+        // to start a new instance of the app. We need to give services
+        // a chance before there is any chance of the new instance of
+        // the app running.
 
-            if (RestartMode == RestartMode.SilentRestart)
-                startInfo.ArgumentList.Add("--silent");
-
-            if (Options.Environment != null)
-            {
-                startInfo.ArgumentList.Add("--env");
-                startInfo.ArgumentList.Add(Options.Environment);
-            }
-
-            Process.Start(startInfo);
-        }
+        lifecycle?.RaiseAfterHostTermination();
+        lifecycle?.RaiseBeforeShutdown();
     }
 
     private static IEnumerable<string> FixupArgs(IEnumerable<string> args)
