@@ -362,13 +362,9 @@ internal class SynchronizationService : IDisposable
             }
 
             if (dirty)
-            {
                 await UploadBackup();
-            }
             else
-            {
                 await RestoreBackupIfAvailable(restartMode);
-            }
 
             _logger.LogInformation("Synchronization complete");
 

@@ -164,13 +164,6 @@ internal partial class Db : IDb, IDisposable
 
     public void Restore(Stream stream)
     {
-        if (_connection.State == ConnectionState.Open)
-        {
-            throw new NotSupportedException(
-                "Cannot restore the database while the connection is open"
-            );
-        }
-
         var targetFileName = GetDatabaseFileName();
 
         foreach (

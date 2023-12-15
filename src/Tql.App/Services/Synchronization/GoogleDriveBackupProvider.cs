@@ -138,11 +138,11 @@ internal class GoogleDriveBackupProvider(ILogger<GoogleDriveBackupProvider> logg
         stream.Position = 0;
 
         var file = await GetBackupFile(service, cancellationToken);
-        var metadata = new File { Name = BackupFileName, Parents = new[] { BackupFolder } };
         string md5Checksum;
 
         if (file == null)
         {
+            var metadata = new File { Name = BackupFileName, Parents = new[] { BackupFolder } };
             var request = service.Files.Create(metadata, stream, "application/zip");
 
             request.Fields = "md5Checksum";
@@ -155,6 +155,7 @@ internal class GoogleDriveBackupProvider(ILogger<GoogleDriveBackupProvider> logg
         }
         else
         {
+            var metadata = new File { Name = BackupFileName };
             var request = service.Files.Update(metadata, file.Id, stream, "application/zip");
 
             request.Fields = "md5Checksum";

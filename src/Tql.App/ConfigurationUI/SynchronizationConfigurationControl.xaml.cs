@@ -110,6 +110,8 @@ internal partial class SynchronizationConfigurationControl : IConfigurationPage
         {
             await provider.Setup();
 
+            UpdateEnabled();
+
             var status = await provider.GetBackupStatus();
 
             if (status == BackupStatus.Available)
