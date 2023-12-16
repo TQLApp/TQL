@@ -91,6 +91,7 @@ internal class SearchManager : IDisposable
                 var plugins = _pluginManager.Plugins.ToDictionary(p => p.Id, p => p);
 
                 var matches = new List<(HistoryEntity Entity, IMatch Match)>();
+                var staleHistory = default(List<HistoryEntity>);
 
                 foreach (var entity in historyEntities)
                 {
@@ -113,15 +114,24 @@ internal class SearchManager : IDisposable
                             var json = ((ISerializableMatch)match).Serialize();
                             if (json != entity.Json)
                             {
-                                _logger.LogWarning(
-                                    "Serialized JSON did not match the JSON stored in the history table"
-                                );
-
                                 entity.Json = json;
+
+                                staleHistory ??= [];
+                                staleHistory.Add(entity);
                             }
 
                             matches.Add((entity, match));
                         }
+                    }
+                }
+
+                if (staleHistory != null)
+                {
+                    using var access = _db.Access();
+
+                    foreach (var entity in staleHistory)
+                    {
+                        access.UpdateHistory(entity.Id!.Value, entity.Json!);
                     }
                 }
 

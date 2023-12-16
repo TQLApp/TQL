@@ -60,6 +60,16 @@ internal partial class Db
             history.Id = owner._connection.LastInsertRowId;
         }
 
+        public void UpdateHistory(long id, string json)
+        {
+            Execute(
+                """
+                update History set Json = @json where Id = @id
+                """,
+                new { id, json }
+            );
+        }
+
         public void MarkHistoryAsAccessed(long id, string? parentJson)
         {
             Execute(
