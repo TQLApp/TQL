@@ -44,6 +44,8 @@ jobs:
       - name: Embedding secrets
         shell: pwsh
         run: ./scripts/Write-Secrets.ps1
+        env:
+          GOOGLE_DRIVE_API_SECRET: ${{ secrets.GOOGLE_DRIVE_API_SECRET }}
 
       - name: Build Solution
         run: dotnet build -c Release -warnaserror
