@@ -19,6 +19,7 @@ internal class UI : IUI
     private readonly ILogger<UI> _logger;
     private RestartMode _restartMode = RestartMode.Shutdown;
 
+    public RestartMode RestartMode => _restartMode;
     public MainWindow? MainWindow { get; private set; }
     public bool IsModalDialogShowing => _modalDialogShowing > 0;
 
@@ -29,7 +30,7 @@ internal class UI : IUI
     public event EventHandler? UINotificationsChanged;
     public event EventHandler<ConfigurationUIEventArgs>? ConfigurationUIRequested;
 
-    public UI(LifecycleService lifecycleService, ILogger<UI> logger)
+    public UI(ILifecycleService lifecycleService, ILogger<UI> logger)
     {
         _logger = logger;
 

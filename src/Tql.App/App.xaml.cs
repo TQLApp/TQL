@@ -21,7 +21,6 @@ using Tql.App.Services.Synchronization;
 using Tql.App.Services.Telemetry;
 using Tql.App.Services.Updates;
 using Tql.App.Support;
-using Tql.Utilities;
 using Application = System.Windows.Application;
 using ConfigurationManager = Tql.App.Services.ConfigurationManager;
 using MessageBox = System.Windows.Forms.MessageBox;
@@ -32,7 +31,6 @@ namespace Tql.App;
 public partial class App
 {
     private IHost? _host;
-    private MainWindow? _mainWindow;
     private WindowMessageIPC? _ipc;
 
     public static ImmutableArray<Assembly>? DebugAssemblies { get; set; }
@@ -168,43 +166,13 @@ public partial class App
 
         logger.LogInformation("Startup complete");
 
-        _mainWindow = _host.Services.GetRequiredService<MainWindow>();
+        _host.Start();
 
-        RegisterHotKey(logger);
-
-        _ipc.Received += (_, _) => _mainWindow.DoShow();
+        _ipc.Received += (_, _) => _host.Services.GetRequiredService<MainWindow>().DoShow();
 
         splashScreen.Hide();
 
-        if (!Options.IsSilent)
-            _mainWindow.DoShow();
-
-        logger.LogInformation("Queueing synchronization because of startup");
-
-        _host.Services.GetRequiredService<SynchronizationService>().QueueRestoreSynchronization();
-    }
-
-    private void RegisterHotKey(ILogger<App> logger)
-    {
-        var settings = _host!.Services.GetRequiredService<Settings>();
-        var hotKey = HotKey.FromSettings(settings);
-
-        try
-        {
-            _host!.Services.GetRequiredService<HotKeyService>().RegisterHotKey(hotKey);
-        }
-        catch (Exception ex)
-        {
-            logger.LogWarning(ex, "Could not register hot key");
-
-            var ui = _host!.Services.GetRequiredService<IUI>();
-
-            ui.ShowAlert(
-                _mainWindow!,
-                Labels.App_CouldNotRegisterHotKey,
-                string.Format(Labels.App_CouldNotRegisterHotKeySubtitle, hotKey.ToLabel())
-            );
-        }
+        //_host.Services.GetRequiredService<IUI>().OpenConfiguration(Constants.SynchronizationPageId);
     }
 
     private bool ConfirmReset()
@@ -432,17 +400,20 @@ public partial class App
         builder.AddSingleton<PackageManager>();
         builder.AddSingleton<QuickStartManager>();
         builder.AddSingleton<QuickStartScript>();
-        builder.AddSingleton<IEncryption, Services.Encryption>();
+        builder.AddSingleton<IEncryption, Encryption>();
         builder.AddSingleton<IProfileManager, ProfileManager>();
         builder.AddSingleton<SynchronizationService>();
         builder.AddSingleton<BackupService>();
         builder.AddSingleton<IBackupProvider, GoogleDriveBackupProvider>();
-        builder.AddSingleton<LifecycleService>();
+        builder.AddSingleton<ILifecycleService, LifecycleService>();
+        builder.AddSingleton<MainWindow>();
+
+        builder.AddSingleton<IHostedService>(p => p.GetRequiredService<SynchronizationService>());
+        builder.AddSingleton<IHostedService>(p => p.GetRequiredService<MainWindow>());
 
         builder.Add(ServiceDescriptor.Singleton(typeof(ICache<>), typeof(Cache<>)));
         builder.Add(ServiceDescriptor.Singleton(typeof(IMatchFactory<,>), typeof(MatchFactory<,>)));
 
-        builder.AddTransient<MainWindow>();
         builder.AddTransient<ConfigurationWindow>();
         builder.AddTransient<FeedbackWindow>();
         builder.AddTransient<SearchManager>();
@@ -457,11 +428,23 @@ public partial class App
 
     private void Application_Exit(object? sender, ExitEventArgs e)
     {
-        var lifecycle = _host?.Services.GetRequiredService<LifecycleService>();
+        if (_host == null)
+            return;
 
-        lifecycle?.RaiseBeforeHostTermination();
+        var lifecycle = (LifecycleService)_host.Services.GetRequiredService<ILifecycleService>();
+        var logger = _host.Services.GetRequiredService<ILogger<App>>();
 
-        _host?.Dispose();
+        try
+        {
+            _host.StopAsync().GetAwaiter().GetResult();
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Exception while stopping the host");
+        }
+
+        _host.Dispose();
+
         _ipc?.Dispose();
 
         // We need two events here. UI uses the before shutdown event
@@ -469,8 +452,8 @@ public partial class App
         // a chance before there is any chance of the new instance of
         // the app running.
 
-        lifecycle?.RaiseAfterHostTermination();
-        lifecycle?.RaiseBeforeShutdown();
+        lifecycle.RaiseAfterHostTermination();
+        lifecycle.RaiseBeforeShutdown();
     }
 
     private static IEnumerable<string> FixupArgs(IEnumerable<string> args)

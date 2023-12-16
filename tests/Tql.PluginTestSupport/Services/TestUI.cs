@@ -8,6 +8,8 @@ public class TestUI : IUI
     private readonly List<NotificationBarData> _notifications = new();
     private readonly object _syncRoot = new();
 
+    public RestartMode RestartMode => RestartMode.Shutdown;
+
     public ImmutableArray<NotificationBarData> NotificationBars
     {
         get

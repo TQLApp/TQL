@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.IO;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
 using Tql.Abstractions;
@@ -8,7 +9,7 @@ using Tql.App.Support;
 
 namespace Tql.App.Services.Synchronization;
 
-internal class SynchronizationService : IDisposable
+internal class SynchronizationService : IHostedService, IDisposable
 {
     private readonly LocalSettings _settings;
     private readonly BackupService _backupService;
@@ -68,7 +69,7 @@ internal class SynchronizationService : IDisposable
         LocalSettings settings,
         BackupService backupService,
         IEnumerable<IBackupProvider> providers,
-        LifecycleService lifecycleService,
+        ILifecycleService lifecycleService,
         IUI ui,
         IConfigurationManager configurationManager,
         IDb db,
@@ -158,6 +159,38 @@ internal class SynchronizationService : IDisposable
 
             QueueRestoreSynchronization();
         }
+    }
+
+    public Task StartAsync(CancellationToken cancellationToken)
+    {
+        _logger.LogInformation("Queueing synchronization because of startup");
+
+        QueueRestoreSynchronization();
+
+        return Task.CompletedTask;
+    }
+
+    public Task StopAsync(CancellationToken cancellationToken)
+    {
+        if (_ui.RestartMode != RestartMode.Shutdown)
+            return Task.CompletedTask;
+
+        bool dirty;
+
+        lock (_syncRoot)
+        {
+            dirty = _dirty;
+            _dirty = false;
+        }
+
+        if (dirty)
+        {
+            _logger.LogInformation("Starting sync on normal shutdown");
+
+            StartSynchronization(RestartMode.Shutdown, SynchronizationMode.ForceDirty);
+        }
+
+        return Task.CompletedTask;
     }
 
     private void AfterHostTermination()
@@ -285,7 +318,11 @@ internal class SynchronizationService : IDisposable
 
             _synchronizationTimer.Change(Timeout.Infinite, Timeout.Infinite);
 
-            _synchronizeThread = new Thread(() => SynchronizationThread(mode, restartMode));
+            _synchronizeThread = new Thread(() => SynchronizationThread(mode, restartMode))
+            {
+                Name = "Synchronization"
+            };
+
             _synchronizeThread.Start();
 
             UpdateSynchronizationStatus();
@@ -300,7 +337,7 @@ internal class SynchronizationService : IDisposable
         {
             try
             {
-                TaskUtils.RunSynchronously(() => DoSynchronize(mode, restartMode));
+                TaskUtils.RunSynchronously(() => DoSynchronize(restartMode, mode));
             }
             catch (Exception ex)
             {
@@ -324,7 +361,7 @@ internal class SynchronizationService : IDisposable
         }
     }
 
-    private async Task DoSynchronize(SynchronizationMode mode, RestartMode restartMode)
+    private async Task DoSynchronize(RestartMode restartMode, SynchronizationMode mode)
     {
         _synchronizationTimer.Change(Timeout.Infinite, Timeout.Infinite);
 

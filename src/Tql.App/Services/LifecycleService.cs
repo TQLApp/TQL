@@ -1,21 +1,13 @@
 ﻿using Microsoft.Extensions.Logging;
+using Tql.Abstractions;
 
 namespace Tql.App.Services;
 
-internal class LifecycleService(ILogger<LifecycleService> logger)
+internal class LifecycleService(ILogger<LifecycleService> logger) : ILifecycleService
 {
     private readonly object _syncRoot = new();
-    private readonly List<Action> _beforeHostTermination = new();
     private readonly List<Action> _afterHostTermination = new();
     private readonly List<Action> _beforeShutdown = new();
-
-    public void RegisterBeforeHostTermination(Action action)
-    {
-        lock (_syncRoot)
-        {
-            _beforeHostTermination.Add(action);
-        }
-    }
 
     public void RegisterAfterHostTermination(Action action)
     {
@@ -32,8 +24,6 @@ internal class LifecycleService(ILogger<LifecycleService> logger)
             _beforeShutdown.Add(action);
         }
     }
-
-    public void RaiseBeforeHostTermination() => Raise(_beforeHostTermination);
 
     public void RaiseAfterHostTermination() => Raise(_afterHostTermination);
 
