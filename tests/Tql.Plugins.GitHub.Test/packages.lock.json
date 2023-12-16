@@ -557,6 +557,15 @@
           "NETStandard.Library": "2.0.0"
         }
       },
+      "OAuth2": {
+        "type": "Transitive",
+        "resolved": "0.10.3",
+        "contentHash": "Yg5OaNfNrUq2HN0LNcxGL9plMh3XC9fja1/iTVZB96D7UwIxk0iq9irN0EbvardXlALUIIv3NKz6CVRHk+1Mxg==",
+        "dependencies": {
+          "Newtonsoft.Json": "13.0.2",
+          "RestSharp": "106.12.0"
+        }
+      },
       "Octokit": {
         "type": "Transitive",
         "resolved": "9.0.0",
@@ -569,6 +578,11 @@
         "dependencies": {
           "Newtonsoft.Json": "13.0.1"
         }
+      },
+      "RestSharp": {
+        "type": "Transitive",
+        "resolved": "106.12.0",
+        "contentHash": "irOsQHe5nTJB0BKxGQnTX1dsgCPl5dLTxvL7gbl98JiFPiHMN4wpFyUG/66ZpaFCsIrPKh6XwozWXlwYe9JwYQ=="
       },
       "SharpVectors.Wpf": {
         "type": "Transitive",
@@ -1000,6 +1014,7 @@
         "type": "Project",
         "dependencies": {
           "HtmlAgilityPack": "[1.11.54, )",
+          "OAuth2": "[0.10.3, )",
           "Octokit": "[9.0.0, )",
           "Octokit.GraphQL": "[0.3.0-beta, )",
           "TQLApp.Utilities": "[0.0.0, )"

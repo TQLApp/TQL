@@ -8,6 +8,16 @@
         "resolved": "1.11.54",
         "contentHash": "bgB79N4urc4D7hrD4R+Qk6CjPiYOfs6vfXNsmw3nCcfQEQvBQGjfAcl5k/tB1ZP1hA0d7xXs0jK8xAXV36IVUg=="
       },
+      "OAuth2": {
+        "type": "Direct",
+        "requested": "[0.10.3, )",
+        "resolved": "0.10.3",
+        "contentHash": "Yg5OaNfNrUq2HN0LNcxGL9plMh3XC9fja1/iTVZB96D7UwIxk0iq9irN0EbvardXlALUIIv3NKz6CVRHk+1Mxg==",
+        "dependencies": {
+          "Newtonsoft.Json": "13.0.2",
+          "RestSharp": "106.12.0"
+        }
+      },
       "Octokit": {
         "type": "Direct",
         "requested": "[9.0.0, )",
@@ -95,8 +105,13 @@
       },
       "Newtonsoft.Json": {
         "type": "Transitive",
-        "resolved": "13.0.1",
-        "contentHash": "ppPFpBcvxdsfUonNcvITKqLl3bqxWbDCZIzDWHzjpdAHRFfZe0Dw9HmA0+za13IdyrgJwpkDTDA9fHaxOrt20A=="
+        "resolved": "13.0.2",
+        "contentHash": "R2pZ3B0UjeyHShm9vG+Tu0EBb2lC8b0dFzV9gVn50ofHXh9Smjk6kTn7A/FdAsC8B5cKib1OnGYOXxRBz5XQDg=="
+      },
+      "RestSharp": {
+        "type": "Transitive",
+        "resolved": "106.12.0",
+        "contentHash": "irOsQHe5nTJB0BKxGQnTX1dsgCPl5dLTxvL7gbl98JiFPiHMN4wpFyUG/66ZpaFCsIrPKh6XwozWXlwYe9JwYQ=="
       },
       "SharpVectors.Wpf": {
         "type": "Transitive",

@@ -57,7 +57,7 @@ internal class GoogleDriveBackupProvider(ILogger<GoogleDriveBackupProvider> logg
 
     private string GetClientSecret()
     {
-#if !DEBUG
+#if DEBUG
         return Environment.GetEnvironmentVariable("GOOGLE_DRIVE_API_SECRET")!;
 #else
         return Encoding

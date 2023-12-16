@@ -160,42 +160,6 @@ namespace Tql.Plugins.GitHub {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Authenticate with GitHub.
-        /// </summary>
-        public static string DeviceCodeWindow_AuthenticationWithGitHub {
-            get {
-                return ResourceManager.GetString("DeviceCodeWindow_AuthenticationWithGitHub", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Click the button below to go to the GitHub website and enter the user code shown below:.
-        /// </summary>
-        public static string DeviceCodeWindow_HelpText {
-            get {
-                return ResourceManager.GetString("DeviceCodeWindow_HelpText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Open Device Activation page.
-        /// </summary>
-        public static string DeviceCodeWindow_OpenDeviceActivationPage {
-            get {
-                return ResourceManager.GetString("DeviceCodeWindow_OpenDeviceActivationPage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to GitHub Authentication.
-        /// </summary>
-        public static string DeviceCodeWindow_Title {
-            get {
-                return ResourceManager.GetString("DeviceCodeWindow_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to GitHub Gist.
         /// </summary>
         public static string GistsMatch_Label {
@@ -237,6 +201,15 @@ namespace Tql.Plugins.GitHub {
         public static string GitHubApi_UnableToConnect {
             get {
                 return ResourceManager.GetString("GitHubApi_UnableToConnect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Authentication completed. You can now go back to the app..
+        /// </summary>
+        public static string GitHubOAuthWorkflow_AuthenticationComplete {
+            get {
+                return ResourceManager.GetString("GitHubOAuthWorkflow_AuthenticationComplete", resourceCulture);
             }
         }
         
