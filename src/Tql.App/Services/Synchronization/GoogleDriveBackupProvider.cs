@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Drive.v3;
 using Google.Apis.Services;
@@ -12,7 +12,6 @@ internal class GoogleDriveBackupProvider(ILogger<GoogleDriveBackupProvider> logg
 {
     private const string ClientId =
         "596960957664-d847qfgjba8qr1bjq3j801d0tk3hn7ia.apps.googleusercontent.com";
-    private const string ClientSecret = "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";
     private const string BackupFolder = "appDataFolder";
     private const string BackupFileName = "backup.zip";
 
@@ -39,7 +38,11 @@ internal class GoogleDriveBackupProvider(ILogger<GoogleDriveBackupProvider> logg
 
     private Task<UserCredential> GetCredentials(CancellationToken cancellationToken)
     {
-        var clientSecrets = new ClientSecrets { ClientId = ClientId, ClientSecret = ClientSecret };
+        var clientSecrets = new ClientSecrets
+        {
+            ClientId = ClientId,
+            ClientSecret = GetClientSecret()
+        };
         string userId = "DefaultUser";
         if (App.Options.Environment != null)
             userId = $"{userId}.{App.Options.Environment}";
@@ -50,6 +53,15 @@ internal class GoogleDriveBackupProvider(ILogger<GoogleDriveBackupProvider> logg
             userId,
             cancellationToken
         );
+    }
+
+    private string GetClientSecret()
+    {
+#if DEBUG
+        return Environment.GetEnvironmentVariable("GOOGLE_DRIVE_API_SECRET")!;
+#else
+        return """<![SECRET[GOOGLE_DRIVE_API_SECRET]]>""";
+#endif
     }
 
     public async Task Remove(CancellationToken cancellationToken)
