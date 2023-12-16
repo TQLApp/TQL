@@ -171,8 +171,6 @@ public partial class App
         _ipc.Received += (_, _) => _host.Services.GetRequiredService<MainWindow>().DoShow();
 
         splashScreen.Hide();
-
-        //_host.Services.GetRequiredService<IUI>().OpenConfiguration(Constants.SynchronizationPageId);
     }
 
     private bool ConfirmReset()
