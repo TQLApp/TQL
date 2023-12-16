@@ -1,12 +1,15 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Concurrent;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Microsoft.Win32;
+using System.Text.Json.Nodes;
 using Tql.Abstractions;
 
 namespace Tql.App.Services;
 
-internal class Settings(IStore store) : INotifyPropertyChanged
+internal partial class Settings : INotifyPropertyChanged
 {
+    private readonly IConfigurationManager _configurationManager;
+
     public const int DefaultHistoryInRootResults = 90;
     public const int DefaultCacheUpdateInterval = 60;
     public const int DefaultMainFontSize = 15;
@@ -22,7 +25,7 @@ internal class Settings(IStore store) : INotifyPropertyChanged
 
     public const int DefaultTextOuterGlowSize = 3;
 
-    private readonly RegistryKey _key = ((Store)store).CreateBaseKey();
+    private readonly ConcurrentDictionary<string, object> _values = new();
 
     public string? HotKey
     {
@@ -66,12 +69,6 @@ internal class Settings(IStore store) : INotifyPropertyChanged
         set => SetString(nameof(Theme), value);
     }
 
-    public string? DeviceId
-    {
-        get => GetString(nameof(DeviceId));
-        set => SetString(nameof(DeviceId), value);
-    }
-
     public string? UserId
     {
         get => GetString(nameof(UserId));
@@ -96,6 +93,9 @@ internal class Settings(IStore store) : INotifyPropertyChanged
         set => SetInteger(nameof(TextOuterGlowSize), value);
     }
 
+    // We need the language very early in the startup process. Because of this,
+    // we have a language setting in both Settings and LocalSettings that need
+    // to be synced.
     public string? Language
     {
         get => GetString(nameof(Language));
@@ -108,21 +108,42 @@ internal class Settings(IStore store) : INotifyPropertyChanged
         set => SetString(nameof(QuickStart), value);
     }
 
-    public string? EncryptionKey
-    {
-        get => GetString(nameof(EncryptionKey));
-        set => SetString(nameof(EncryptionKey), value);
-    }
-
-    public bool? InstallPrerelease
-    {
-        get => GetBoolean(nameof(InstallPrerelease));
-        set => SetBoolean(nameof(InstallPrerelease), value);
-    }
-
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    private string? GetString(string name) => _key.GetValue(name) as string;
+    public Settings(IStore store, IConfigurationManager configurationManager)
+    {
+        _configurationManager = configurationManager;
+
+        MigrateRegistrySettings(store, configurationManager);
+
+        var configuration = configurationManager.GetConfiguration(
+            Constants.SettingsConfigurationId
+        );
+
+        if (configuration != null)
+        {
+            var obj = JsonNode.Parse(configuration)!.AsObject();
+
+            foreach (var entry in obj)
+            {
+                switch (entry.Value?.GetValueKind())
+                {
+                    case JsonValueKind.String:
+                        _values[entry.Key] = entry.Value.GetValue<string>();
+                        break;
+                    case JsonValueKind.Number:
+                        _values[entry.Key] = entry.Value.GetValue<int>();
+                        break;
+                    case JsonValueKind.True:
+                    case JsonValueKind.False:
+                        _values[entry.Key] = entry.Value.GetValue<bool>();
+                        break;
+                }
+            }
+        }
+    }
+
+    private string? GetString(string name) => GetValue(name) as string;
 
     private void SetString(string name, string? value) => SetValue(name, value);
 
@@ -145,22 +166,59 @@ internal class Settings(IStore store) : INotifyPropertyChanged
             }
         );
 
-    private int? GetInteger(string name) => _key.GetValue(name) as int?;
+    private int? GetInteger(string name) => GetValue(name) as int?;
 
     private void SetInteger(string name, int? value) => SetValue(name, value);
 
     private void SetValue(string name, object? value)
     {
+        var oldValue = GetValue(name);
+
+        if (Equals(value, oldValue))
+            return;
+
         if (value == null)
-            _key.DeleteValue(name, false);
+            _values.TryRemove(name, out _);
         else
-            _key.SetValue(name, value);
+            _values[name] = value;
+
+        WriteConfiguration();
 
         RaisePropertyChanged(name);
+    }
+
+    private object? GetValue(string name)
+    {
+        _values.TryGetValue(name, out var value);
+        return value;
     }
 
     private void RaisePropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    private void WriteConfiguration()
+    {
+        var obj = new JsonObject();
+
+        foreach (var entry in _values)
+        {
+            var jsonValue = entry.Value switch
+            {
+                int intValue => JsonValue.Create(intValue),
+                string stringValue => JsonValue.Create(stringValue),
+                bool boolValue => JsonValue.Create(boolValue),
+                _ => null
+            };
+
+            if (jsonValue != null)
+                obj.Add(entry.Key, jsonValue);
+        }
+
+        _configurationManager.SetConfiguration(
+            Constants.SettingsConfigurationId,
+            obj.ToJsonString()
+        );
     }
 }

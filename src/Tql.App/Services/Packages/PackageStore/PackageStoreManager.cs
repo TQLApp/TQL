@@ -1,47 +1,56 @@
 ﻿using System.IO;
 using Microsoft.Extensions.Logging;
-using Microsoft.Win32;
+using Tql.Abstractions;
 using Tql.App.Support;
 using Path = System.IO.Path;
 
 namespace Tql.App.Services.Packages.PackageStore;
 
-internal class PackageStoreManager
+internal partial class PackageStoreManager
 {
     private readonly Store _store;
+    private readonly IConfigurationManager _configurationManager;
     private readonly ILogger<PackageStoreManager> _logger;
+
+    private ConfigurationDto Configuration
+    {
+        get
+        {
+            var json = _configurationManager.GetConfiguration(
+                Constants.PackageStoreConfigurationId
+            );
+            if (json == null)
+                return new ConfigurationDto(ImmutableArray<PackageRef>.Empty);
+
+            return JsonSerializer.Deserialize<ConfigurationDto>(json)!;
+        }
+        set
+        {
+            _configurationManager.SetConfiguration(
+                Constants.PackageStoreConfigurationId,
+                JsonSerializer.Serialize(value)
+            );
+        }
+    }
 
     public string PackagesFolder { get; }
 
-    public PackageStoreManager(Store store, ILogger<PackageStoreManager> logger)
+    public PackageStoreManager(
+        Store store,
+        IConfigurationManager configurationManager,
+        ILogger<PackageStoreManager> logger
+    )
     {
         _store = store;
+        _configurationManager = configurationManager;
         _logger = logger;
 
         PackagesFolder = _store.PackagesFolder;
+
+        MigrateConfiguration();
     }
 
-    private RegistryKey CreatePackagesKey()
-    {
-        using var key = _store.CreateBaseKey();
-
-        return key.CreateSubKey("Packages")!;
-    }
-
-    public ImmutableArray<PackageRef> GetInstalledPackages()
-    {
-        var packages = ImmutableArray.CreateBuilder<PackageRef>();
-
-        using var key = CreatePackagesKey();
-
-        foreach (var id in key.GetValueNames())
-        {
-            if (key.GetValue(id) is string version)
-                packages.Add(new PackageRef(id, version));
-        }
-
-        return packages.ToImmutable();
-    }
+    public ImmutableArray<PackageRef> GetInstalledPackages() => Configuration.Packages;
 
     public void PerformCleanup(IProgress progress)
     {
@@ -80,22 +89,32 @@ internal class PackageStoreManager
 
     public void SetPackageVersion(string packageId, Version version)
     {
-        using var key = CreatePackagesKey();
+        var packages = Configuration
+            .Packages
+            .RemoveAll(p => string.Equals(p.Id, packageId, StringComparison.OrdinalIgnoreCase))
+            .Add(new PackageRef(packageId, version.ToString()));
 
-        key.SetValue(packageId, version.ToString());
+        Configuration = new ConfigurationDto(packages);
     }
 
     public void RemovePackage(string packageId)
     {
-        using var key = CreatePackagesKey();
+        var packages = Configuration
+            .Packages
+            .RemoveAll(p => string.Equals(p.Id, packageId, StringComparison.OrdinalIgnoreCase));
 
-        key.DeleteValue(packageId, false);
+        Configuration = new ConfigurationDto(packages);
     }
 
     public string? GetInstalledVersion(string packageId)
     {
-        using var key = CreatePackagesKey();
-
-        return key.GetValue(packageId) as string;
+        return Configuration
+            .Packages
+            .SingleOrDefault(
+                p => string.Equals(p.Id, packageId, StringComparison.OrdinalIgnoreCase)
+            )
+            ?.Version;
     }
+
+    private record ConfigurationDto(ImmutableArray<PackageRef> Packages);
 }

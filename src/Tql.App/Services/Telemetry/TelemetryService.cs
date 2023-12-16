@@ -15,13 +15,13 @@ internal class TelemetryService : IDisposable
     private volatile bool _enableExceptions;
     private volatile bool _enableMetrics;
 
-    public TelemetryService(Settings settings)
+    public TelemetryService(Settings settings, LocalSettings localSettings)
     {
         // Right now we're generating a random user ID for every device. Once
         // we setup (some kind of) sync, we can sync this user ID across to
         // other devices.
         var userId = (settings.UserId ??= Guid.NewGuid().ToString());
-        var deviceId = (settings.DeviceId ??= Guid.NewGuid().ToString());
+        var deviceId = (localSettings.DeviceId ??= Guid.NewGuid().ToString());
 
         LoadSettings(settings);
 

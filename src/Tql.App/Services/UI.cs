@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Reflection;
 using System.Windows.Forms;
 using Microsoft.Extensions.Logging;
 using Tql.Abstractions;
@@ -9,13 +10,16 @@ using IWin32Window = System.Windows.Forms.IWin32Window;
 
 namespace Tql.App.Services;
 
-internal class UI(ILogger<UI> logger) : IUI
+internal class UI : IUI
 {
     private SynchronizationContext? _synchronizationContext;
     private volatile List<UINotification> _notifications = new();
     private readonly object _syncRoot = new();
     private int _modalDialogShowing;
+    private readonly ILogger<UI> _logger;
+    private RestartMode _restartMode = RestartMode.Shutdown;
 
+    public RestartMode RestartMode => _restartMode;
     public MainWindow? MainWindow { get; private set; }
     public bool IsModalDialogShowing => _modalDialogShowing > 0;
 
@@ -25,6 +29,39 @@ internal class UI(ILogger<UI> logger) : IUI
 
     public event EventHandler? UINotificationsChanged;
     public event EventHandler<ConfigurationUIEventArgs>? ConfigurationUIRequested;
+
+    public UI(ILifecycleService lifecycleService, ILogger<UI> logger)
+    {
+        _logger = logger;
+
+        lifecycleService.RegisterBeforeShutdown(BeforeShutdown);
+    }
+
+    private void BeforeShutdown()
+    {
+        if (_restartMode is not (RestartMode.Restart or RestartMode.SilentRestart))
+            return;
+
+        var startInfo = new ProcessStartInfo
+        {
+            FileName = System
+                .IO
+                .Path
+                .ChangeExtension(Assembly.GetEntryAssembly()!.Location, ".exe"),
+            UseShellExecute = false
+        };
+
+        if (_restartMode == RestartMode.SilentRestart)
+            startInfo.ArgumentList.Add("--silent");
+
+        if (App.Options.Environment != null)
+        {
+            startInfo.ArgumentList.Add("--env");
+            startInfo.ArgumentList.Add(App.Options.Environment);
+        }
+
+        Process.Start(startInfo);
+    }
 
     public void SetSynchronizationContext(SynchronizationContext? synchronizationContext)
     {
@@ -74,7 +111,7 @@ internal class UI(ILogger<UI> logger) : IUI
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Failed to open '{Url}'", url);
+            _logger.LogError(ex, "Failed to open '{Url}'", url);
         }
     }
 
@@ -85,14 +122,19 @@ internal class UI(ILogger<UI> logger) : IUI
 
     public void Shutdown(RestartMode mode)
     {
-        _synchronizationContext?.Post(
-            _ =>
-            {
-                App.RestartMode = mode;
-                Application.Current.Shutdown();
-            },
-            null
-        );
+        if (
+            _synchronizationContext == null
+            || _synchronizationContext == SynchronizationContext.Current
+        )
+            DoShutdown();
+        else
+            _synchronizationContext.Post(_ => DoShutdown(), null);
+
+        void DoShutdown()
+        {
+            _restartMode = mode;
+            Application.Current.Shutdown();
+        }
     }
 
     public DialogResult ShowTaskDialog(

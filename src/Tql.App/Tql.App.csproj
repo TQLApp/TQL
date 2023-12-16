@@ -41,6 +41,8 @@
 		<PackageReference Include="Dapper" Version="2.1.21" />
 		<PackageReference Include="Emoji.Wpf" Version="0.3.4" />
 		<PackageReference Include="Extended.Wpf.Toolkit" Version="4.5.1" />
+		<PackageReference Include="Google.Apis.Auth" Version="1.64.0" />
+		<PackageReference Include="Google.Apis.Drive.v3" Version="1.64.0.3256" />
 		<PackageReference Include="Markdig" Version="0.33.0" />
 		<PackageReference Include="Microsoft.ApplicationInsights" Version="2.21.0" />
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
@@ -56,6 +58,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Compile Update="ConfigurationUI\SynchronizationConfigurationControl.xaml.cs">
+		  <SubType>Code</SubType>
+		</Compile>
 		<Compile Update="ConfigurationUI\ProfileEditWindow.xaml.cs">
 		  <SubType>Code</SubType>
 		</Compile>

@@ -8,6 +8,18 @@ namespace Tql.Abstractions;
 public interface IUI
 {
     /// <summary>
+    /// Indicates the restart mode of the application.
+    /// </summary>
+    /// <remarks>
+    /// The restart mode indicates what happens when the app
+    /// shuts down. This is used e.g. to automatically restart the
+    /// app on automatic updates. You can use this to decide if
+    /// you want to do cleanup or maintenance actions on application
+    /// shutdown. See also <see cref="ILifecycleService"/>.
+    /// </remarks>
+    RestartMode RestartMode { get; }
+
+    /// <summary>
     /// Perform interactive authentication.
     /// </summary>
     /// <remarks>

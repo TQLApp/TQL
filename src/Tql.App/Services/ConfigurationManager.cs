@@ -33,6 +33,10 @@ internal class ConfigurationManager : IConfigurationManager
     {
         lock (_syncRoot)
         {
+            var oldConfiguration = GetConfiguration(pluginId);
+            if (configuration == oldConfiguration)
+                return;
+
             if (configuration == null)
             {
                 _configuration.Remove(pluginId);
@@ -74,6 +78,13 @@ internal class ConfigurationManager : IConfigurationManager
 
     private void SaveConfiguration()
     {
+        using var stream = File.Create(GetConfigurationFileName());
+
+        SaveConfiguration(stream);
+    }
+
+    public void SaveConfiguration(Stream stream)
+    {
         var obj = new JsonObject();
 
         foreach (var entry in _configuration)
@@ -81,10 +92,16 @@ internal class ConfigurationManager : IConfigurationManager
             obj.Add(entry.Key.ToString(), JsonNode.Parse(entry.Value));
         }
 
-        using var stream = File.Create(GetConfigurationFileName());
         using var writer = new Utf8JsonWriter(stream, new JsonWriterOptions { Indented = true });
 
         obj.WriteTo(writer);
+    }
+
+    public void RestoreConfiguration(Stream stream)
+    {
+        using var target = File.Create(GetConfigurationFileName());
+
+        stream.CopyTo(target);
     }
 
     private string GetConfigurationFileName() =>

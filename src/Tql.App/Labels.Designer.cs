@@ -621,6 +621,15 @@ namespace Tql.App {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Google Drive.
+        /// </summary>
+        public static string GoogleDriveBackupProvider_Label {
+            get {
+                return ResourceManager.GetString("GoogleDriveBackupProvider_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add.
         /// </summary>
         public static string HotKeyAddKey {
@@ -1874,6 +1883,159 @@ namespace Tql.App {
         public static string SplashScreenWindow_Starting {
             get {
                 return ResourceManager.GetString("SplashScreenWindow_Starting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to remove your {0} account?.
+        /// </summary>
+        public static string SynchronizationConfiguration_AreYouSureRemoveService {
+            get {
+                return ResourceManager.GetString("SynchronizationConfiguration_AreYouSureRemoveService", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Backup found.
+        /// </summary>
+        public static string SynchronizationConfiguration_BackupAvailable {
+            get {
+                return ResourceManager.GetString("SynchronizationConfiguration_BackupAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A backup was found in your {0} account. Do you want to restore this backup?.
+        /// </summary>
+        public static string SynchronizationConfiguration_BackupAvailableSubtitle {
+            get {
+                return ResourceManager.GetString("SynchronizationConfiguration_BackupAvailableSubtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Google Drive:.
+        /// </summary>
+        public static string SynchronizationConfiguration_GoogleDriveLabel {
+            get {
+                return ResourceManager.GetString("SynchronizationConfiguration_GoogleDriveLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove.
+        /// </summary>
+        public static string SynchronizationConfiguration_Remove {
+            get {
+                return ResourceManager.GetString("SynchronizationConfiguration_Remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to restore backup.
+        /// </summary>
+        public static string SynchronizationConfiguration_RestoreFailed {
+            get {
+                return ResourceManager.GetString("SynchronizationConfiguration_RestoreFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The backup couldn&apos;t be restored. Do you want to keep this account? The existing backup will be overwritten..
+        /// </summary>
+        public static string SynchronizationConfiguration_RestoreFailedSubtitle {
+            get {
+                return ResourceManager.GetString("SynchronizationConfiguration_RestoreFailedSubtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setup.
+        /// </summary>
+        public static string SynchronizationConfiguration_Setup {
+            get {
+                return ResourceManager.GetString("SynchronizationConfiguration_Setup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Synchronization with {0} has been setup successfully.
+        /// </summary>
+        public static string SynchronizationConfiguration_SetupComplete {
+            get {
+                return ResourceManager.GetString("SynchronizationConfiguration_SetupComplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to setup synchronization.
+        /// </summary>
+        public static string SynchronizationConfiguration_SetupFailed {
+            get {
+                return ResourceManager.GetString("SynchronizationConfiguration_SetupFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Synchronization.
+        /// </summary>
+        public static string SynchronizationConfiguration_Synchronization {
+            get {
+                return ResourceManager.GetString("SynchronizationConfiguration_Synchronization", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Synchronization:.
+        /// </summary>
+        public static string SynchronizationConfiguration_SynchronizationLabel {
+            get {
+                return ResourceManager.GetString("SynchronizationConfiguration_SynchronizationLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Synchronize Now.
+        /// </summary>
+        public static string SynchronizationConfiguration_SynchronizationNow {
+            get {
+                return ResourceManager.GetString("SynchronizationConfiguration_SynchronizationNow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Started synchronization.
+        /// </summary>
+        public static string SynchronizationConfiguration_SynchronizationStarted {
+            get {
+                return ResourceManager.GetString("SynchronizationConfiguration_SynchronizationStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last synchronized at {0}.
+        /// </summary>
+        public static string SynchronizationService_LastSynchronized {
+            get {
+                return ResourceManager.GetString("SynchronizationService_LastSynchronized", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Synchronization pending.
+        /// </summary>
+        public static string SynchronizationService_SynchronizationPending {
+            get {
+                return ResourceManager.GetString("SynchronizationService_SynchronizationPending", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Synchronizing....
+        /// </summary>
+        public static string SynchronizationService_Synchronizing {
+            get {
+                return ResourceManager.GetString("SynchronizationService_Synchronizing", resourceCulture);
             }
         }
         

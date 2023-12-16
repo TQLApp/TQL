@@ -1,6 +1,7 @@
 ﻿using System.Windows.Interop;
 using System.Windows.Threading;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Tql.Abstractions;
 using Tql.App.QuickStart;
@@ -25,7 +26,7 @@ namespace Tql.App;
 // I am), it's not fast enough to capture the first characters
 // typed.
 
-internal partial class MainWindow
+internal partial class MainWindow : IHostedService
 {
     private const int ResultItemsCount = 8;
 
@@ -35,6 +36,7 @@ internal partial class MainWindow
     private readonly IDb _db;
     private readonly CacheManagerManager _cacheManagerManager;
     private readonly TelemetryService _telemetryService;
+    private readonly HotKeyService _hotKeyService;
     private readonly QuickStartScript _quickStartScript;
     private readonly QuickStartManager _quickStartManager;
     private readonly NotifyIconManager _notifyIconManager;
@@ -80,6 +82,7 @@ internal partial class MainWindow
         _db = db;
         _cacheManagerManager = cacheManagerManager;
         _telemetryService = telemetryService;
+        _hotKeyService = hotKeyService;
         _quickStartScript = quickStartScript;
         _quickStartManager = quickStartManager;
         _notifyIconManager = notifyIconManager;
@@ -145,6 +148,38 @@ internal partial class MainWindow
 
         RenderHotKey();
     }
+
+    public Task StartAsync(CancellationToken cancellationToken)
+    {
+        RegisterHotKey();
+
+        if (!App.Options.IsSilent)
+            Dispatcher.BeginInvoke(() => DoShow());
+
+        return Task.CompletedTask;
+    }
+
+    private void RegisterHotKey()
+    {
+        var hotKey = HotKey.FromSettings(_settings);
+
+        try
+        {
+            _hotKeyService.RegisterHotKey(hotKey);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Could not register hot key");
+
+            _ui.ShowAlert(
+                this,
+                Labels.App_CouldNotRegisterHotKey,
+                string.Format(Labels.App_CouldNotRegisterHotKeySubtitle, hotKey.ToLabel())
+            );
+        }
+    }
+
+    public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
 
     private Color ParseMainWindowTint()
     {

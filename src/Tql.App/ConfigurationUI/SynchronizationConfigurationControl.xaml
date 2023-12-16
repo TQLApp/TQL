@@ -1,0 +1,92 @@
+﻿<UserControl
+    x:Class="Tql.App.ConfigurationUI.SynchronizationConfigurationControl"
+    x:ClassModifier="internal"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:app="clr-namespace:Tql.App"
+    mc:Ignorable="d"
+    d:DesignHeight="450"
+    d:DesignWidth="800">
+    <StackPanel Orientation="Vertical">
+        <GroupBox
+            Header="{x:Static app:Labels.SynchronizationConfiguration_Synchronization}"
+            Padding="4">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Label
+                    Content="{x:Static app:Labels.SynchronizationConfiguration_GoogleDriveLabel}"
+                    Margin="3" />
+
+                <Button
+                    x:Name="_setupGoogleDrive"
+                    Margin="3"
+                    HorizontalAlignment="Left"
+                    Grid.Column="1"
+                    Click="_setupGoogleDrive_Click">
+                    <TextBlock>
+                        <InlineUIContainer BaselineAlignment="Bottom">
+                            <Image
+                                x:Name="_googleDriveSetupImage"
+                                Margin="0,0,3,0"
+                                Height="16"
+                                Width="16" />
+                        </InlineUIContainer>
+                        <Run
+                            Text="{x:Static app:Labels.SynchronizationConfiguration_Setup}" />
+                    </TextBlock>
+                </Button>
+
+                <Button
+                    x:Name="_removeGoogleDrive"
+                    Margin="3"
+                    HorizontalAlignment="Left"
+                    Grid.Column="1"
+                    Click="_removeGoogleDrive_Click">
+                    <TextBlock>
+                        <InlineUIContainer BaselineAlignment="Bottom">
+                            <Image
+                                x:Name="_googleDriveRemoveImage"
+                                Margin="0,0,3,0"
+                                Height="16"
+                                Width="16" />
+                        </InlineUIContainer>
+                        <Run
+                            Text="{x:Static app:Labels.SynchronizationConfiguration_Remove}" />
+                    </TextBlock>
+                </Button>
+
+                <Label
+                    x:Name="_synchronization"
+                    Content="{x:Static app:Labels.SynchronizationConfiguration_SynchronizationLabel}"
+                    Margin="3"
+                    Grid.Row="1" />
+
+                <Button
+                    x:Name="_synchronizeNow"
+                    Content="{x:Static app:Labels.SynchronizationConfiguration_SynchronizationNow}"
+                    HorizontalAlignment="Left"
+                    Margin="3"
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Click="_synchronizeNow_Click" />
+
+                <Label
+                    x:Name="_synchronizationStatus"
+                    Margin="3"
+                    Grid.Row="2"
+                    Grid.Column="1" />
+            </Grid>
+        </GroupBox>
+    </StackPanel>
+</UserControl>

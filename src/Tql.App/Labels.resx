@@ -797,4 +797,58 @@ Don't forget to change the hotkey for your new profile. You can do this in the g
   <data name="PluginsConfiguration_Verified" xml:space="preserve">
     <value>Verified</value>
   </data>
+  <data name="SynchronizationConfiguration_GoogleDriveLabel" xml:space="preserve">
+    <value>Google Drive:</value>
+  </data>
+  <data name="SynchronizationConfiguration_Remove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="SynchronizationConfiguration_Setup" xml:space="preserve">
+    <value>Setup</value>
+  </data>
+  <data name="SynchronizationConfiguration_Synchronization" xml:space="preserve">
+    <value>Synchronization</value>
+  </data>
+  <data name="SynchronizationConfiguration_SynchronizationLabel" xml:space="preserve">
+    <value>Synchronization:</value>
+  </data>
+  <data name="SynchronizationConfiguration_SynchronizationNow" xml:space="preserve">
+    <value>Synchronize Now</value>
+  </data>
+  <data name="SynchronizationService_LastSynchronized" xml:space="preserve">
+    <value>Last synchronized at {0}</value>
+  </data>
+  <data name="SynchronizationService_SynchronizationPending" xml:space="preserve">
+    <value>Synchronization pending</value>
+  </data>
+  <data name="SynchronizationService_Synchronizing" xml:space="preserve">
+    <value>Synchronizing...</value>
+  </data>
+  <data name="GoogleDriveBackupProvider_Label" xml:space="preserve">
+    <value>Google Drive</value>
+  </data>
+  <data name="SynchronizationConfiguration_AreYouSureRemoveService" xml:space="preserve">
+    <value>Are you sure you want to remove your {0} account?</value>
+  </data>
+  <data name="SynchronizationConfiguration_SetupComplete" xml:space="preserve">
+    <value>Synchronization with {0} has been setup successfully</value>
+  </data>
+  <data name="SynchronizationConfiguration_SetupFailed" xml:space="preserve">
+    <value>Failed to setup synchronization</value>
+  </data>
+  <data name="SynchronizationConfiguration_SynchronizationStarted" xml:space="preserve">
+    <value>Started synchronization</value>
+  </data>
+  <data name="SynchronizationConfiguration_BackupAvailable" xml:space="preserve">
+    <value>Backup found</value>
+  </data>
+  <data name="SynchronizationConfiguration_BackupAvailableSubtitle" xml:space="preserve">
+    <value>A backup was found in your {0} account. Do you want to restore this backup?</value>
+  </data>
+  <data name="SynchronizationConfiguration_RestoreFailed" xml:space="preserve">
+    <value>Failed to restore backup</value>
+  </data>
+  <data name="SynchronizationConfiguration_RestoreFailedSubtitle" xml:space="preserve">
+    <value>The backup couldn't be restored. Do you want to keep this account? The existing backup will be overwritten.</value>
+  </data>
 </root>

@@ -5,7 +5,7 @@ namespace Tql.App.Services.Database;
 
 internal partial class Db
 {
-    private class DbAccess(Db owner) : IDbAccess
+    private class DbAccess(Db owner, IDisposable @lock) : IDbAccess
     {
         private bool _disposed;
         private readonly SQLiteTransaction _transaction = owner._connection.BeginTransaction();
@@ -113,7 +113,9 @@ internal partial class Db
                 _transaction.Commit();
                 _transaction.Dispose();
 
-                owner._semaphore.Release();
+                @lock.Dispose();
+
+                owner.OnTransactionCommitted();
 
                 _disposed = true;
             }

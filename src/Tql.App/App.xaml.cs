@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Net.Http;
 using System.Reflection;
 using System.Runtime.Loader;
@@ -18,10 +17,10 @@ using Tql.App.Services.Database;
 using Tql.App.Services.Packages;
 using Tql.App.Services.Packages.PackageStore;
 using Tql.App.Services.Profiles;
+using Tql.App.Services.Synchronization;
 using Tql.App.Services.Telemetry;
 using Tql.App.Services.Updates;
 using Tql.App.Support;
-using Tql.Utilities;
 using Application = System.Windows.Application;
 using ConfigurationManager = Tql.App.Services.ConfigurationManager;
 using MessageBox = System.Windows.Forms.MessageBox;
@@ -32,10 +31,8 @@ namespace Tql.App;
 public partial class App
 {
     private IHost? _host;
-    private MainWindow? _mainWindow;
     private WindowMessageIPC? _ipc;
 
-    public static RestartMode RestartMode { get; set; } = RestartMode.Shutdown;
     public static ImmutableArray<Assembly>? DebugAssemblies { get; set; }
     public static bool IsDebugMode { get; set; }
     internal static Options Options { get; private set; } = new();
@@ -58,6 +55,7 @@ public partial class App
         System.Windows.Forms.Application.EnableVisualStyles();
 
         var store = new Store(Options.Environment, TraceLogger.Instance);
+        var configurationManager = new ConfigurationManager(store);
 
         SetUICulture(store);
 
@@ -93,6 +91,7 @@ public partial class App
 
         var packageStoreManager = new PackageStoreManager(
             store,
+            configurationManager,
             loggerFactory.CreateLogger<PackageStoreManager>()
         );
 
@@ -119,6 +118,7 @@ public partial class App
         builder.Services.AddSingleton<IStore>(store);
         builder.Services.AddSingleton<IPluginManager>(pluginManager);
         builder.Services.AddSingleton(packageStoreManager);
+        builder.Services.AddSingleton<IConfigurationManager>(configurationManager);
 
         ConfigureServices(builder.Services);
 
@@ -166,39 +166,11 @@ public partial class App
 
         logger.LogInformation("Startup complete");
 
-        _mainWindow = _host.Services.GetRequiredService<MainWindow>();
+        _host.Start();
 
-        RegisterHotKey(logger);
-
-        _ipc.Received += (_, _) => _mainWindow.DoShow();
+        _ipc.Received += (_, _) => _host.Services.GetRequiredService<MainWindow>().DoShow();
 
         splashScreen.Hide();
-
-        if (!Options.IsSilent)
-            _mainWindow.DoShow();
-    }
-
-    private void RegisterHotKey(ILogger<App> logger)
-    {
-        var settings = _host!.Services.GetRequiredService<Settings>();
-        var hotKey = HotKey.FromSettings(settings);
-
-        try
-        {
-            _host!.Services.GetRequiredService<HotKeyService>().RegisterHotKey(hotKey);
-        }
-        catch (Exception ex)
-        {
-            logger.LogWarning(ex, "Could not register hot key");
-
-            var ui = _host!.Services.GetRequiredService<IUI>();
-
-            ui.ShowAlert(
-                _mainWindow!,
-                Labels.App_CouldNotRegisterHotKey,
-                string.Format(Labels.App_CouldNotRegisterHotKeySubtitle, hotKey.ToLabel())
-            );
-        }
     }
 
     private bool ConfirmReset()
@@ -284,7 +256,7 @@ public partial class App
     {
         using var key = store.CreateBaseKey();
 
-        if (key.GetValue(nameof(Settings.Language)) is string language)
+        if (key.GetValue(nameof(LocalSettings.Language)) is string language)
         {
             var culture = CultureInfo.GetCultureInfo(language);
 
@@ -414,7 +386,7 @@ public partial class App
     {
         builder.AddSingleton<IDb, Db>();
         builder.AddSingleton<Settings>();
-        builder.AddSingleton<IConfigurationManager, ConfigurationManager>();
+        builder.AddSingleton<LocalSettings>();
         builder.AddSingleton<IUI, UI>();
         builder.AddSingleton<CacheManagerManager>();
         builder.AddSingleton<IClipboard, ClipboardImpl>();
@@ -426,13 +398,20 @@ public partial class App
         builder.AddSingleton<PackageManager>();
         builder.AddSingleton<QuickStartManager>();
         builder.AddSingleton<QuickStartScript>();
-        builder.AddSingleton<IEncryption, Services.Encryption>();
+        builder.AddSingleton<IEncryption, Encryption>();
         builder.AddSingleton<IProfileManager, ProfileManager>();
+        builder.AddSingleton<SynchronizationService>();
+        builder.AddSingleton<BackupService>();
+        builder.AddSingleton<IBackupProvider, GoogleDriveBackupProvider>();
+        builder.AddSingleton<ILifecycleService, LifecycleService>();
+        builder.AddSingleton<MainWindow>();
+
+        builder.AddSingleton<IHostedService>(p => p.GetRequiredService<SynchronizationService>());
+        builder.AddSingleton<IHostedService>(p => p.GetRequiredService<MainWindow>());
 
         builder.Add(ServiceDescriptor.Singleton(typeof(ICache<>), typeof(Cache<>)));
         builder.Add(ServiceDescriptor.Singleton(typeof(IMatchFactory<,>), typeof(MatchFactory<,>)));
 
-        builder.AddTransient<MainWindow>();
         builder.AddTransient<ConfigurationWindow>();
         builder.AddTransient<FeedbackWindow>();
         builder.AddTransient<SearchManager>();
@@ -442,32 +421,37 @@ public partial class App
         builder.AddTransient<PackageSourceEditWindow>();
         builder.AddTransient<ProfilesConfigurationControl>();
         builder.AddTransient<ProfileEditWindow>();
+        builder.AddTransient<SynchronizationConfigurationControl>();
     }
 
     private void Application_Exit(object? sender, ExitEventArgs e)
     {
-        _host?.Dispose();
+        if (_host == null)
+            return;
+
+        var lifecycle = (LifecycleService)_host.Services.GetRequiredService<ILifecycleService>();
+        var logger = _host.Services.GetRequiredService<ILogger<App>>();
+
+        try
+        {
+            _host.StopAsync().GetAwaiter().GetResult();
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Exception while stopping the host");
+        }
+
+        _host.Dispose();
+
         _ipc?.Dispose();
 
-        if (RestartMode is RestartMode.Restart or RestartMode.SilentRestart)
-        {
-            var startInfo = new ProcessStartInfo
-            {
-                FileName = Path.ChangeExtension(Assembly.GetEntryAssembly()!.Location, ".exe"),
-                UseShellExecute = false
-            };
+        // We need two events here. UI uses the before shutdown event
+        // to start a new instance of the app. We need to give services
+        // a chance before there is any chance of the new instance of
+        // the app running.
 
-            if (RestartMode == RestartMode.SilentRestart)
-                startInfo.ArgumentList.Add("--silent");
-
-            if (Options.Environment != null)
-            {
-                startInfo.ArgumentList.Add("--env");
-                startInfo.ArgumentList.Add(Options.Environment);
-            }
-
-            Process.Start(startInfo);
-        }
+        lifecycle.RaiseAfterHostTermination();
+        lifecycle.RaiseBeforeShutdown();
     }
 
     private static IEnumerable<string> FixupArgs(IEnumerable<string> args)

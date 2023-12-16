@@ -3,23 +3,27 @@ using System.Data.SQLite;
 using System.IO;
 using Dapper;
 using Tql.Abstractions;
+using Tql.Utilities;
 using Path = System.IO.Path;
 
 namespace Tql.App.Services.Database;
 
 internal partial class Db : IDb, IDisposable
 {
+    private readonly IStore _store;
     private readonly SQLiteConnection _connection;
 
-    // Using a semaphore instead of an object and Monitor.Exit/Leave
-    // to support cross thread acquire and release.
-    private readonly SemaphoreSlim _semaphore = new(1, 1);
+    private readonly AsyncLock _lock = new();
+
+    public event EventHandler? TransactionCommitted;
 
     public Db(IStore store)
     {
+        _store = store;
+
         SetupDapper();
 
-        var fileName = Path.Combine(((Store)store).DataFolder, "Tql.db");
+        var fileName = GetDatabaseFileName();
         bool exists = File.Exists(fileName);
 
         _connection = new SQLiteConnection($"data source={fileName}");
@@ -40,6 +44,11 @@ internal partial class Db : IDb, IDisposable
         }
 
         Migrate(!exists);
+    }
+
+    private string GetDatabaseFileName()
+    {
+        return Path.Combine(((Store)_store).DataFolder, "Tql.db");
     }
 
     private void SetupDapper()
@@ -120,14 +129,64 @@ internal partial class Db : IDb, IDisposable
 
     public IDbAccess Access()
     {
-        _semaphore.Wait();
+        var @lock = _lock.Lock();
 
-        return new DbAccess(this);
+        return new DbAccess(this, @lock);
     }
+
+    public void Backup(Stream stream)
+    {
+        using (_lock.Lock())
+        {
+            var tempFileName = Path.GetTempFileName();
+
+            try
+            {
+                using (var target = new SQLiteConnection($"data source={tempFileName}"))
+                {
+                    target.Open();
+
+                    _connection.BackupDatabase(target, "main", "main", -1, null, -1);
+                }
+
+                using (var source = File.OpenRead(tempFileName))
+                {
+                    source.CopyTo(stream);
+                }
+            }
+            finally
+            {
+                if (File.Exists(tempFileName))
+                    File.Delete(tempFileName);
+            }
+        }
+    }
+
+    public void Restore(Stream stream)
+    {
+        var targetFileName = GetDatabaseFileName();
+
+        foreach (
+            var fileName in Directory.GetFiles(
+                Path.GetDirectoryName(targetFileName)!,
+                Path.GetFileName(targetFileName) + "*"
+            )
+        )
+        {
+            File.Delete(fileName);
+        }
+
+        using var target = File.Create(targetFileName);
+
+        stream.CopyTo(target);
+    }
+
+    protected virtual void OnTransactionCommitted() =>
+        TransactionCommitted?.Invoke(this, EventArgs.Empty);
 
     public void Dispose()
     {
-        _semaphore.Dispose();
+        _lock.Dispose();
 
         _connection.Dispose();
     }
