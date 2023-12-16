@@ -24,7 +24,12 @@ $ReplacementScriptBlock = {
         throw "No value found for secret $SecretName"
     }
 
-    return $SecretValue
+    # Base 64 encoding to obfuscate the secret. This is only to not
+    # have the secret show up in a `strings` command or whatnot. It
+    # won't really hide it.
+
+    $Bytes = [System.Text.Encoding]::UTF8.GetBytes($SecretValue)
+    return [System.Convert]::ToBase64String($Bytes)
 }
 
 Get-ChildItem -Path $Global:Src -Filter "*.cs" -Recurse -File | ForEach-Object {
