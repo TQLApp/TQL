@@ -898,4 +898,76 @@ Don't forget to change the hotkey for your new profile. You can do this in the g
     <value>Geverifieerd</value>
     <comment>Original: Verified</comment>
   </data>
+  <data name="SynchronizationConfiguration_GoogleDriveLabel" xml:space="preserve">
+    <value>Google Drive:</value>
+    <comment>Original: Google Drive:</comment>
+  </data>
+  <data name="SynchronizationConfiguration_Remove" xml:space="preserve">
+    <value>Verwijder</value>
+    <comment>Original: Remove</comment>
+  </data>
+  <data name="SynchronizationConfiguration_Setup" xml:space="preserve">
+    <value>Instellen</value>
+    <comment>Original: Setup</comment>
+  </data>
+  <data name="SynchronizationConfiguration_Synchronization" xml:space="preserve">
+    <value>Synchronisatie</value>
+    <comment>Original: Synchronization</comment>
+  </data>
+  <data name="SynchronizationConfiguration_SynchronizationLabel" xml:space="preserve">
+    <value>Synchronisatie:</value>
+    <comment>Original: Synchronization:</comment>
+  </data>
+  <data name="SynchronizationConfiguration_SynchronizationNow" xml:space="preserve">
+    <value>Nu Synchroniseren</value>
+    <comment>Original: Synchronize Now</comment>
+  </data>
+  <data name="SynchronizationService_LastSynchronized" xml:space="preserve">
+    <value>Laatste synchronisatie op {0}</value>
+    <comment>Original: Last synchronized at {0}</comment>
+  </data>
+  <data name="SynchronizationService_SynchronizationPending" xml:space="preserve">
+    <value>Nog niet gesynchroniseerd</value>
+    <comment>Original: Synchronization pending</comment>
+  </data>
+  <data name="SynchronizationService_Synchronizing" xml:space="preserve">
+    <value>Bezig met synchroniseren…</value>
+    <comment>Original: Synchronizing...</comment>
+  </data>
+  <data name="GoogleDriveBackupProvider_Label" xml:space="preserve">
+    <value>Google Drive</value>
+    <comment>Original: Google Drive</comment>
+  </data>
+  <data name="SynchronizationConfiguration_AreYouSureRemoveService" xml:space="preserve">
+    <value>Weet je zeker dat je je {0} account wilt verwijderen?</value>
+    <comment>Original: Are you sure you want to remove your {0} account?</comment>
+  </data>
+  <data name="SynchronizationConfiguration_SetupComplete" xml:space="preserve">
+    <value>Synchronisatie met {0} is ingesteld</value>
+    <comment>Original: Synchronization with {0} has been setup successfully</comment>
+  </data>
+  <data name="SynchronizationConfiguration_SetupFailed" xml:space="preserve">
+    <value>Synchronisatie installatie is mislukt</value>
+    <comment>Original: Failed to setup synchronization</comment>
+  </data>
+  <data name="SynchronizationConfiguration_SynchronizationStarted" xml:space="preserve">
+    <value>Synchronisatie begonnen</value>
+    <comment>Original: Started synchronization</comment>
+  </data>
+  <data name="SynchronizationConfiguration_BackupAvailable" xml:space="preserve">
+    <value>Back-up gevonden</value>
+    <comment>Original: Backup found</comment>
+  </data>
+  <data name="SynchronizationConfiguration_BackupAvailableSubtitle" xml:space="preserve">
+    <value>Er is een back-up in je {0} account gevonden. Wil je deze back-up herstellen?</value>
+    <comment>Original: A backup was found in your {0} account. Do you want to restore this backup?</comment>
+  </data>
+  <data name="SynchronizationConfiguration_RestoreFailed" xml:space="preserve">
+    <value>Back-up kon niet hersteld worden</value>
+    <comment>Original: Failed to restore backup</comment>
+  </data>
+  <data name="SynchronizationConfiguration_RestoreFailedSubtitle" xml:space="preserve">
+    <value>De back-up kon niet hersteld worden. Wil je deze account houden? De bestaande back-up zal overschreven worden.</value>
+    <comment>Original: The backup couldn't be restored. Do you want to keep this account? The existing backup will be overwritten.</comment>
+  </data>
 </root>
