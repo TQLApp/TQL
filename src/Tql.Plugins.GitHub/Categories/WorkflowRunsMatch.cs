@@ -10,6 +10,7 @@ namespace Tql.Plugins.GitHub.Categories;
 internal class WorkflowRunsMatch(
     RepositoryItemMatchDto dto,
     GitHubApi api,
+    WorkflowRunType workflowRunType,
     IMatchFactory<WorkflowRunMatch, WorkflowRunMatchDto> factory
 ) : IRunnableMatch, ICopyableMatch, ISearchableMatch, ISerializableMatch
 {
@@ -74,37 +75,39 @@ internal class WorkflowRunsMatch(
             .Runs
             .List(dto.Owner, dto.RepositoryName, new WorkflowRunsRequest(), options);
 
-        return (
+        var dtos = (
             from run in response.WorkflowRuns
-            select factory.Create(
-                new WorkflowRunMatchDto(
-                    dto.ConnectionId,
-                    dto.Owner,
-                    dto.RepositoryName,
-                    run.Name,
-                    run.RunNumber,
-                    run.DisplayTitle,
-                    run.Status.Value switch
-                    {
-                        WorkflowRunStatus.Requested
-                        or WorkflowRunStatus.Queued
-                        or WorkflowRunStatus.Pending
-                            => WorkflowRunMatchStatus.Queued,
-                        WorkflowRunStatus.InProgress => WorkflowRunMatchStatus.InProgress,
-                        WorkflowRunStatus.Completed
-                            => run.Conclusion?.Value switch
-                            {
-                                WorkflowRunConclusion.Success => WorkflowRunMatchStatus.Success,
-                                WorkflowRunConclusion.Failure => WorkflowRunMatchStatus.Failure,
-                                WorkflowRunConclusion.Cancelled => WorkflowRunMatchStatus.Cancelled,
-                                _ => WorkflowRunMatchStatus.Unknown
-                            },
-                        _ => throw new ArgumentOutOfRangeException()
-                    },
-                    run.HtmlUrl
-                )
+            select new WorkflowRunMatchDto(
+                dto.ConnectionId,
+                dto.Owner,
+                dto.RepositoryName,
+                run.Name,
+                run.RunNumber,
+                run.DisplayTitle,
+                run.Status.Value switch
+                {
+                    WorkflowRunStatus.Requested
+                    or WorkflowRunStatus.Queued
+                    or WorkflowRunStatus.Pending
+                        => WorkflowRunMatchStatus.Queued,
+                    WorkflowRunStatus.InProgress => WorkflowRunMatchStatus.InProgress,
+                    WorkflowRunStatus.Completed
+                        => run.Conclusion?.Value switch
+                        {
+                            WorkflowRunConclusion.Success => WorkflowRunMatchStatus.Success,
+                            WorkflowRunConclusion.Failure => WorkflowRunMatchStatus.Failure,
+                            WorkflowRunConclusion.Cancelled => WorkflowRunMatchStatus.Cancelled,
+                            _ => WorkflowRunMatchStatus.Unknown
+                        },
+                    _ => throw new ArgumentOutOfRangeException()
+                },
+                run.HtmlUrl
             )
-        ).ToImmutableArray();
+        ).ToList();
+
+        workflowRunType.UpdateCache(dtos);
+
+        return dtos.Select(factory.Create).ToImmutableArray();
     }
 
     public string Serialize()
