@@ -130,6 +130,10 @@ public partial class App
 
         notifyIconManager.Initialize(_host.Services);
 
+        ((UI)_host.Services.GetRequiredService<IUI>()).SetSynchronizationContext(
+            SynchronizationContext.Current
+        );
+
         splashScreen.Progress.SetProgress(0.5);
 
         var settings = _host.Services.GetRequiredService<Settings>();
@@ -155,10 +159,6 @@ public partial class App
         splashScreen.Progress.SetProgress(0.8);
 
         logger.LogInformation("Initializing plugins");
-
-        ((UI)_host.Services.GetRequiredService<IUI>()).SetSynchronizationContext(
-            SynchronizationContext.Current
-        );
 
         pluginManager.Initialize(_host.Services);
 

@@ -17,7 +17,7 @@ internal class UI : IUI
     private readonly object _syncRoot = new();
     private int _modalDialogShowing;
     private readonly ILogger<UI> _logger;
-    private RestartMode _restartMode = RestartMode.Shutdown;
+    private volatile RestartMode _restartMode = RestartMode.Shutdown;
 
     public RestartMode RestartMode => _restartMode;
     public MainWindow? MainWindow { get; private set; }
@@ -122,19 +122,11 @@ internal class UI : IUI
 
     public void Shutdown(RestartMode mode)
     {
-        if (
-            _synchronizationContext == null
-            || _synchronizationContext == SynchronizationContext.Current
-        )
-            DoShutdown();
-        else
-            _synchronizationContext.Post(_ => DoShutdown(), null);
-
-        void DoShutdown()
+        Application.Current.Dispatcher.BeginInvoke(() =>
         {
             _restartMode = mode;
             Application.Current.Shutdown();
-        }
+        });
     }
 
     public DialogResult ShowTaskDialog(
