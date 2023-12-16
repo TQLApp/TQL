@@ -8,8 +8,7 @@ internal record PackageManagerConfiguration(ImmutableArray<PackageSource> Source
     {
         return new PackageManagerConfiguration(
             Constants
-                .PackageSources
-                .Select(p => new PackageSource(p, null, null))
+                .PackageSources.Select(p => new PackageSource(p, null, null))
                 .ToImmutableArray()
         );
     }

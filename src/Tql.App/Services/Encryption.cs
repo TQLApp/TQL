@@ -100,9 +100,9 @@ internal class Encryption : IEncryption, IDisposable
     {
         var data = Convert.FromBase64String(value);
 
-        return Encoding
-            .UTF8
-            .GetString(ProtectedData.Unprotect(data, null, DataProtectionScope.CurrentUser));
+        return Encoding.UTF8.GetString(
+            ProtectedData.Unprotect(data, null, DataProtectionScope.CurrentUser)
+        );
     }
 
     public static string Protect(string value)

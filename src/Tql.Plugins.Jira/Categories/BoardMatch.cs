@@ -57,9 +57,9 @@ internal class BoardMatch(
         };
 
         matches.AddRange(
-            board
-                .QuickFilters
-                .Select(p => factory.Create(new BoardQuickFilterMatchDto(dto, p.Id, p.Name)))
+            board.QuickFilters.Select(
+                p => factory.Create(new BoardQuickFilterMatchDto(dto, p.Id, p.Name))
+            )
         );
 
         return context.Filter(matches);

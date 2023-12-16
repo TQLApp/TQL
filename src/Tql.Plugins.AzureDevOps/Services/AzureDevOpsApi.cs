@@ -24,10 +24,9 @@ internal class AzureDevOpsApi(
         {
             if (!_connections.TryGetValue(collectionUrl, out vssConnection))
             {
-                var connection = configurationManager
-                    .Configuration
-                    .Connections
-                    .Single(p => p.Url == collectionUrl);
+                var connection = configurationManager.Configuration.Connections.Single(
+                    p => p.Url == collectionUrl
+                );
 
                 vssConnection = new VssConnection(
                     new Uri(connection.Url.TrimEnd('/') + "/"),

@@ -12,19 +12,11 @@ internal class ConfigurationDto
     {
         var result = new ConfigurationDto();
 
-        result
-            .Connections
-            .AddRange(
-                configuration
-                    .Connections
-                    .Select(
-                        p =>
-                            new ConnectionDto(p.Id, p.PatToken, p.ProtectedCredentials)
-                            {
-                                Name = p.Name
-                            }
-                    )
-            );
+        result.Connections.AddRange(
+            configuration.Connections.Select(
+                p => new ConnectionDto(p.Id, p.PatToken, p.ProtectedCredentials) { Name = p.Name }
+            )
+        );
 
         return result;
     }

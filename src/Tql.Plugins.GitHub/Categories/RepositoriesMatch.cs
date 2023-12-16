@@ -41,8 +41,7 @@ internal class RepositoriesMatch(
             if (text.IsWhiteSpace())
             {
                 return connection
-                    .Repositories
-                    .OrderByDescending(p => p.UpdatedAt)
+                    .Repositories.OrderByDescending(p => p.UpdatedAt)
                     .Select(CreateMatch);
             }
 
@@ -76,12 +75,9 @@ internal class RepositoriesMatch(
 
         cancellationToken.ThrowIfCancellationRequested();
 
-        return response
-            .Items
-            .Select(
-                p =>
-                    factory.Create(new RepositoryMatchDto(dto.Id, p.Owner.Login, p.Name, p.HtmlUrl))
-            );
+        return response.Items.Select(
+            p => factory.Create(new RepositoryMatchDto(dto.Id, p.Owner.Login, p.Name, p.HtmlUrl))
+        );
     }
 
     public string Serialize()

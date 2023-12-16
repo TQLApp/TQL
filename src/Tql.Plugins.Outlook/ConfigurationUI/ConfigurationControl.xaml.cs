@@ -26,16 +26,14 @@ internal partial class ConfigurationControl : IConfigurationPage
 
         void AddNameFormat(string label, NameFormat nameFormat)
         {
-            _nameFormat
-                .Items
-                .Add(
-                    new ComboBoxItem
-                    {
-                        Content = label,
-                        IsSelected = configuration.NameFormat == nameFormat,
-                        Tag = nameFormat
-                    }
-                );
+            _nameFormat.Items.Add(
+                new ComboBoxItem
+                {
+                    Content = label,
+                    IsSelected = configuration.NameFormat == nameFormat,
+                    Tag = nameFormat
+                }
+            );
         }
     }
 

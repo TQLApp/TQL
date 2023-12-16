@@ -79,11 +79,9 @@ internal class GitHubCacheManager : ICacheManager<GitHubData>
             var response = await client.Search.SearchRepo(request);
 
             repositories.AddRange(
-                response
-                    .Items
-                    .Select(
-                        p => new GitHubRepository(p.Owner.Login, p.Name, p.HtmlUrl, p.UpdatedAt)
-                    )
+                response.Items.Select(
+                    p => new GitHubRepository(p.Owner.Login, p.Name, p.HtmlUrl, p.UpdatedAt)
+                )
             );
 
             if (response.Items.Count == 0)

@@ -58,15 +58,13 @@ internal class ConfigurationManager
 
         UpdateConfiguration(
             new Configuration(
-                _configuration
-                    .Connections
-                    .Replace(
-                        connection,
-                        connection with
-                        {
-                            ProtectedCredentials = protectedCredentials
-                        }
-                    )
+                _configuration.Connections.Replace(
+                    connection,
+                    connection with
+                    {
+                        ProtectedCredentials = protectedCredentials
+                    }
+                )
             )
         );
     }

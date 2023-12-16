@@ -178,21 +178,19 @@ internal class QuickStartMarkdownRenderer
 
             var image = Images.GetImage(url, color);
 
-            renderer
-                .CurrentInlines!
-                .Add(
-                    new InlineUIContainer
+            renderer.CurrentInlines!.Add(
+                new InlineUIContainer
+                {
+                    BaselineAlignment = BaselineAlignment.Center,
+                    Child = new Image
                     {
-                        BaselineAlignment = BaselineAlignment.Center,
-                        Child = new Image
-                        {
-                            Source = image,
-                            Height = 15,
-                            Width = 15,
-                            VerticalAlignment = VerticalAlignment.Center
-                        }
+                        Source = image,
+                        Height = 15,
+                        Width = 15,
+                        VerticalAlignment = VerticalAlignment.Center
                     }
-                );
+                }
+            );
         }
 
         private static void WriteLink(TextBlockRenderer renderer, LinkInline obj)
@@ -222,33 +220,29 @@ internal class QuickStartMarkdownRenderer
             {
                 foreach (var item in obj.Content.ToString()!.Split('+'))
                 {
-                    renderer
-                        .CurrentInlines!
-                        .Add(
-                            new InlineUIContainer
+                    renderer.CurrentInlines!.Add(
+                        new InlineUIContainer
+                        {
+                            BaselineAlignment = BaselineAlignment.Center,
+                            Child = new KeyboardKey
                             {
-                                BaselineAlignment = BaselineAlignment.Center,
-                                Child = new KeyboardKey
-                                {
-                                    Content = new TextBlock(renderer.CreateRun(item)),
-                                    VerticalAlignment = VerticalAlignment.Center
-                                }
+                                Content = new TextBlock(renderer.CreateRun(item)),
+                                VerticalAlignment = VerticalAlignment.Center
                             }
-                        );
+                        }
+                    );
                 }
             }
             else if (obj is EmojiInline)
             {
-                renderer
-                    .CurrentInlines!
-                    .Add(
-                        new Emoji.Wpf.EmojiInline
-                        {
-                            Text = obj.Content.ToString(),
-                            FontSize = WpfUtils.PointsToPixels(13),
-                            Foreground = Brushes.Black
-                        }
-                    );
+                renderer.CurrentInlines!.Add(
+                    new Emoji.Wpf.EmojiInline
+                    {
+                        Text = obj.Content.ToString(),
+                        FontSize = WpfUtils.PointsToPixels(13),
+                        Foreground = Brushes.Black
+                    }
+                );
             }
             else
             {

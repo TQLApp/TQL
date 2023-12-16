@@ -33,10 +33,8 @@ internal class AzureWorkItemIconManager(ICache<AzureData> cache)
             if (!task.IsCompleted)
                 return null;
 
-            var workItemIcon = task.Result
-                .GetConnection(collectionUrl)
-                .Projects
-                .SingleOrDefault(
+            var workItemIcon = task.Result.GetConnection(collectionUrl)
+                .Projects.SingleOrDefault(
                     p => string.Equals(p.Name, project, StringComparison.OrdinalIgnoreCase)
                 )
                 ?.WorkItemTypes

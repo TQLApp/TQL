@@ -260,8 +260,7 @@ internal class SearchContext : ISearchContext, IDisposable
             if (result != 0)
                 return result;
 
-            return -a.LastAccessed
-                .GetValueOrDefault()
+            return -a.LastAccessed.GetValueOrDefault()
                 .CompareTo(b.LastAccessed.GetValueOrDefault());
         }
     }

@@ -30,8 +30,7 @@ internal partial class ConfigurationControl : IConfigurationPage
         _selectedDirectories.IsChecked = configuration.Mode == ConfigurationMode.Selected;
 
         _directories.ItemsSource = peopleDirectoryManager
-            .Directories
-            .OrderBy(p => p.Name, StringComparer.CurrentCultureIgnoreCase)
+            .Directories.OrderBy(p => p.Name, StringComparer.CurrentCultureIgnoreCase)
             .Select(
                 p => new DirectoryItem(p) { IsSelected = configuration.DirectoryIds.Contains(p.Id) }
             )
@@ -50,8 +49,7 @@ internal partial class ConfigurationControl : IConfigurationPage
     public Task<SaveStatus> Save()
     {
         var directoryIds = _directories
-            .ItemsSource
-            .Cast<DirectoryItem>()
+            .ItemsSource.Cast<DirectoryItem>()
             .Where(p => p.IsSelected)
             .Select(p => p.Directory.Id)
             .ToImmutableArray();

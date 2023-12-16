@@ -16,21 +16,17 @@ internal class ConfigurationDto
     {
         var result = new ConfigurationDto();
 
-        result
-            .Connections
-            .AddRange(
-                configuration
-                    .Connections
-                    .Select(
-                        p =>
-                            new ConnectionDto(p.Id)
-                            {
-                                Name = p.Name,
-                                Url = p.Url,
-                                PATToken = encryption.DecryptString(p.ProtectedPATToken)
-                            }
-                    )
-            );
+        result.Connections.AddRange(
+            configuration.Connections.Select(
+                p =>
+                    new ConnectionDto(p.Id)
+                    {
+                        Name = p.Name,
+                        Url = p.Url,
+                        PATToken = encryption.DecryptString(p.ProtectedPATToken)
+                    }
+            )
+        );
 
         return result;
     }

@@ -266,8 +266,7 @@ internal class SearchManager : IDisposable
         if (context.Search.Length == 0)
         {
             return context
-                .History
-                ?.Items
+                .History?.Items
                 .Select(p => context.GetSearchResult(p.Match))
                 .Take(100)
                 .ToImmutableArray();
@@ -421,8 +420,7 @@ internal class SearchManager : IDisposable
         var parentJson = (parent as ISerializableMatch)?.Serialize();
 
         var items = _history
-            .Items
-            .Where(
+            .Items.Where(
                 p =>
                     p.History.PluginId == parentTypeId.PluginId
                     && p.History.ParentTypeId == parentTypeId.Id
