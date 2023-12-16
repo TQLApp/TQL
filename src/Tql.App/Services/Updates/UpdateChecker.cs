@@ -91,8 +91,7 @@ internal class UpdateChecker : IDisposable
             return false;
 
         var assets = release
-            .Assets
-            .Where(p => p.Name.EndsWith(".msi", StringComparison.OrdinalIgnoreCase))
+            .Assets.Where(p => p.Name.EndsWith(".msi", StringComparison.OrdinalIgnoreCase))
             .ToList();
 
         switch (assets.Count)
@@ -210,10 +209,9 @@ internal class UpdateChecker : IDisposable
 
     private void InitializeRequest(HttpRequestMessage request)
     {
-        request
-            .Headers
-            .UserAgent
-            .Add(new ProductInfoHeaderValue("TQL", GetAppVersion().ToString()));
+        request.Headers.UserAgent.Add(
+            new ProductInfoHeaderValue("TQL", GetAppVersion().ToString())
+        );
     }
 
     private async Task<string> Download(ReleaseAssetDto asset, IProgress progress)

@@ -29,9 +29,9 @@ internal class GitHubApi(
 #if DEBUG
         return Environment.GetEnvironmentVariable("GITHUB_OAUTH_SECRET")!;
 #else
-        return Encoding
-            .UTF8
-            .GetString(Convert.FromBase64String("""<![SECRET[GITHUB_OAUTH_SECRET]]>"""));
+        return Encoding.UTF8.GetString(
+            Convert.FromBase64String("""<![SECRET[GITHUB_OAUTH_SECRET]]>""")
+        );
 #endif
     }
 

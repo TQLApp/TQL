@@ -65,9 +65,9 @@ internal class ProfileManager : IProfileManager
 
     private static RegistryKey CreateKey()
     {
-        return Registry
-            .CurrentUser
-            .CreateSubKey($@"{Store.RegistryRoot}\{Store.GetEnvironmentName(null)}\Profiles");
+        return Registry.CurrentUser.CreateSubKey(
+            $@"{Store.RegistryRoot}\{Store.GetEnvironmentName(null)}\Profiles"
+        );
     }
 
     private readonly object _syncRoot = new();

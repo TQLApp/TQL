@@ -44,10 +44,10 @@ internal class UI : IUI
 
         var startInfo = new ProcessStartInfo
         {
-            FileName = System
-                .IO
-                .Path
-                .ChangeExtension(Assembly.GetEntryAssembly()!.Location, ".exe"),
+            FileName = System.IO.Path.ChangeExtension(
+                Assembly.GetEntryAssembly()!.Location,
+                ".exe"
+            ),
             UseShellExecute = false
         };
 

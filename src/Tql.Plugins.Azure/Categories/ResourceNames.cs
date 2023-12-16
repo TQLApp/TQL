@@ -17,9 +17,9 @@ internal static class ResourceNames
 
     private static AssetCollection LoadAssetCollection()
     {
-        using var stream = typeof(ResourceNames)
-            .Assembly
-            .GetManifestResourceStream($"{typeof(ResourceNames).Namespace}.Resources.json.gz");
+        using var stream = typeof(ResourceNames).Assembly.GetManifestResourceStream(
+            $"{typeof(ResourceNames).Namespace}.Resources.json.gz"
+        );
         using var gzStream = new GZipStream(stream!, CompressionMode.Decompress);
 
         return JsonSerializer.Deserialize<AssetCollection>(
@@ -35,8 +35,7 @@ internal static class ResourceNames
     private static Dictionary<string, AssetType> LoadResourceTypes()
     {
         return LoadAssetCollection()
-            .Assets
-            .ToDictionary(p => p.ResourceTypeName, p => p, StringComparer.OrdinalIgnoreCase);
+            .Assets.ToDictionary(p => p.ResourceTypeName, p => p, StringComparer.OrdinalIgnoreCase);
     }
 
     private static Dictionary<int, AssetIcon> LoadIcons()
@@ -51,15 +50,13 @@ internal static class ResourceNames
 
         if (!kind.IsEmpty())
         {
-            var assetKind = assetType
-                .Kinds
-                ?.FirstOrDefault(
-                    p =>
-                        p.Kinds != null
-                        && p.Kinds.Any(
-                            p1 => string.Equals(p1, kind, StringComparison.OrdinalIgnoreCase)
-                        )
-                );
+            var assetKind = assetType.Kinds?.FirstOrDefault(
+                p =>
+                    p.Kinds != null
+                    && p.Kinds.Any(
+                        p1 => string.Equals(p1, kind, StringComparison.OrdinalIgnoreCase)
+                    )
+            );
 
             if (assetKind is { SingularDisplayName: not null, PluralDisplayName: not null })
             {

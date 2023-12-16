@@ -23,11 +23,9 @@ internal class Converter
             if (!File.Exists(RequireConfigFileName))
                 File.WriteAllText(RequireConfigFileName, "READ THE README!");
 
-            Console
-                .Error
-                .Write(
-                    "Created empty resource files. Please read the README to understand how to use these."
-                );
+            Console.Error.Write(
+                "Created empty resource files. Please read the README to understand how to use these."
+            );
             return;
         }
 

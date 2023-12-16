@@ -60,9 +60,9 @@ internal class GoogleDriveBackupProvider(ILogger<GoogleDriveBackupProvider> logg
 #if DEBUG
         return Environment.GetEnvironmentVariable("GOOGLE_DRIVE_API_SECRET")!;
 #else
-        return Encoding
-            .UTF8
-            .GetString(Convert.FromBase64String("""<![SECRET[GOOGLE_DRIVE_API_SECRET]]>"""));
+        return Encoding.UTF8.GetString(
+            Convert.FromBase64String("""<![SECRET[GOOGLE_DRIVE_API_SECRET]]>""")
+        );
 #endif
     }
 
@@ -121,8 +121,9 @@ internal class GoogleDriveBackupProvider(ILogger<GoogleDriveBackupProvider> logg
         var files = await list.ExecuteAsync(cancellationToken);
 
         var backupFiles = files
-            .Files
-            .Where(p => string.Equals(p.Name, BackupFileName, StringComparison.OrdinalIgnoreCase))
+            .Files.Where(
+                p => string.Equals(p.Name, BackupFileName, StringComparison.OrdinalIgnoreCase)
+            )
             .ToList();
 
         // Automatically reset any invalid state.
