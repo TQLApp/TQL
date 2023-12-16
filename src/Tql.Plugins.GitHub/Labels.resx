@@ -135,18 +135,6 @@
   <data name="ConnectionEditWindow_NameLabel" xml:space="preserve">
     <value>Name:</value>
   </data>
-  <data name="DeviceCodeWindow_AuthenticationWithGitHub" xml:space="preserve">
-    <value>Authenticate with GitHub</value>
-  </data>
-  <data name="DeviceCodeWindow_HelpText" xml:space="preserve">
-    <value>Click the button below to go to the GitHub website and enter the user code shown below:</value>
-  </data>
-  <data name="DeviceCodeWindow_OpenDeviceActivationPage" xml:space="preserve">
-    <value>Open Device Activation page</value>
-  </data>
-  <data name="DeviceCodeWindow_Title" xml:space="preserve">
-    <value>GitHub Authentication</value>
-  </data>
   <data name="GistsMatch_SearchHint" xml:space="preserve">
     <value>Find gists</value>
   </data>
@@ -263,5 +251,8 @@
   </data>
   <data name="WorkflowRunsMatch_SearchHint" xml:space="preserve">
     <value>Find workflow runs</value>
+  </data>
+  <data name="GitHubOAuthWorkflow_AuthenticationComplete" xml:space="preserve">
+    <value>Authentication completed. You can now go back to the app.</value>
   </data>
 </root>

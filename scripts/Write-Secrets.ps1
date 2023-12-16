@@ -17,6 +17,7 @@ $ReplacementScriptBlock = {
 
     switch ($SecretName) {
         "GOOGLE_DRIVE_API_SECRET" { $SecretValue = $env:GOOGLE_DRIVE_API_SECRET }
+        "GITHUB_OAUTH_SECRET" { $SecretValue = $env:GITHUB_OAUTH_SECRET }
         default { throw "Invalid secret name $SecretName" }
     }
 

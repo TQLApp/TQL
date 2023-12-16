@@ -82,22 +82,6 @@
     <value>Naam:</value>
     <comment>Original: Name:</comment>
   </data>
-  <data name="DeviceCodeWindow_AuthenticationWithGitHub" xml:space="preserve">
-    <value>Authentiseer met GitHub</value>
-    <comment>Original: Authenticate with GitHub</comment>
-  </data>
-  <data name="DeviceCodeWindow_HelpText" xml:space="preserve">
-    <value>Klik op de knop hieronder om naar de GitHub website te gaan en voor deze gebruikers code in:</value>
-    <comment>Original: Click the button below to go to the GitHub website and enter the user code shown below:</comment>
-  </data>
-  <data name="DeviceCodeWindow_OpenDeviceActivationPage" xml:space="preserve">
-    <value>Open Apparaat Activatie pagina</value>
-    <comment>Original: Open Device Activation page</comment>
-  </data>
-  <data name="DeviceCodeWindow_Title" xml:space="preserve">
-    <value>GitHub Authenticatie</value>
-    <comment>Original: GitHub Authentication</comment>
-  </data>
   <data name="GistsMatch_SearchHint" xml:space="preserve">
     <value>Vind gists</value>
     <comment>Original: Find gists</comment>
@@ -253,5 +237,9 @@
   <data name="WorkflowRunsMatch_SearchHint" xml:space="preserve">
     <value>Vind workflow runs</value>
     <comment>Original: Find workflow runs</comment>
+  </data>
+  <data name="GitHubOAuthWorkflow_AuthenticationComplete" xml:space="preserve">
+    <value>Authenticatie is afgerond. Je kunt nu terug naar de app.</value>
+    <comment>Original: Authentication completed. You can now go back to the app.</comment>
   </data>
 </root>

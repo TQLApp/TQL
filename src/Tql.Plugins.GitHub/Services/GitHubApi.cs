@@ -1,11 +1,7 @@
-﻿using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text.Json.Serialization;
-using System.Windows.Interop;
+﻿using System.Text.Json.Serialization;
 using Microsoft.Extensions.Logging;
 using Octokit;
 using Tql.Abstractions;
-using Tql.Plugins.GitHub.ConfigurationUI;
 using Tql.Utilities;
 using GraphQLConnection = Octokit.GraphQL.Connection;
 using IWin32Window = System.Windows.Forms.IWin32Window;
@@ -17,16 +13,27 @@ internal class GitHubApi(
     ILogger<GitHubApi> logger,
     IUI ui,
     ConfigurationManager configurationManager,
-    HttpClient httpClient,
     IEncryption encryption
 )
 {
     private const string ClientId = "b5cf8dfb10c01dcfd22f";
     private const string Scope = "repo,project,read:org";
+    private const string RedirectUri = "http://127.0.0.1:23119/";
 
     private readonly AsyncLock _lock = new();
     private readonly Dictionary<Guid, GitHubClient> _clients = new();
     private readonly Dictionary<Guid, GraphQLConnection> _connections = new();
+
+    private static string GetClientSecret()
+    {
+#if DEBUG
+        return Environment.GetEnvironmentVariable("GITHUB_OAUTH_SECRET")!;
+#else
+        return Encoding
+            .UTF8
+            .GetString(Convert.FromBase64String("""<![SECRET[GITHUB_OAUTH_SECRET]]>"""));
+#endif
+    }
 
     public async Task<GitHubClient> GetClient(Guid id)
     {
@@ -140,8 +147,8 @@ internal class GitHubApi(
                 new InteractiveAuthentication(
                     string.Format(Labels.GitHubApi_ResourceName, connection.Name),
                     client,
-                    httpClient,
-                    ui
+                    ui,
+                    logger
                 )
             );
 
@@ -186,42 +193,24 @@ internal class GitHubApi(
     private class InteractiveAuthentication(
         string resourceName,
         GitHubClient client,
-        HttpClient httpClient,
-        IUI ui
+        IUI ui,
+        ILogger logger
     ) : IInteractiveAuthentication
     {
         public string ResourceName { get; } = resourceName;
 
         public async Task Authenticate(IWin32Window owner)
         {
-            using var request = new HttpRequestMessage(
-                HttpMethod.Post,
-                $"https://github.com/login/device/code?client_id={Uri.EscapeDataString(ClientId)}&scope={Uri.EscapeDataString(Scope)}"
+            var workflow = new GitHubOAuthWorkflow(
+                ClientId,
+                GetClientSecret(),
+                Scope,
+                RedirectUri,
+                ui,
+                logger
             );
 
-            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            using var response = await httpClient.SendAsync(request);
-
-            response.EnsureSuccessStatusCode();
-
-            using var stream = await response.Content.ReadAsStreamAsync();
-
-            var dto = JsonSerializer.Deserialize<DeviceCodeLoginDto>(stream)!;
-
-            var window = new DeviceCodeWindow(dto, ClientId, ui, httpClient)
-            {
-                Owner = HwndSource.FromHwnd(owner.Handle)?.RootVisual as Window
-            };
-
-            window.ShowDialog();
-
-            window.Exception?.Throw();
-
-            if (window.AccessToken == null)
-                throw new GitHubAuthenticationException("Unexpected error");
-
-            client.Credentials = new Credentials(window.AccessToken, AuthenticationType.Bearer);
+            client.Credentials = await workflow.Authorize();
 
             await client.User.Current();
         }
@@ -229,11 +218,3 @@ internal class GitHubApi(
 
     private record CredentialsDto(string AccessToken, string Scope);
 }
-
-internal record DeviceCodeLoginDto(
-    [property: JsonPropertyName("device_code")] string DeviceCode,
-    [property: JsonPropertyName("user_code")] string UserCode,
-    [property: JsonPropertyName("verification_uri")] string VerificationUri,
-    [property: JsonPropertyName("expires_in")] int ExpiresIn,
-    [property: JsonPropertyName("interval")] int Interval
-);
