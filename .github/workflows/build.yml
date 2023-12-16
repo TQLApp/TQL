@@ -46,6 +46,10 @@ jobs:
       - name: Restore Solution
         run: dotnet restore -warnaserror
 
+      - name: Embedding secrets
+        shell: pwsh
+        run: ./scripts/Write-Secrets.ps1
+
       - name: Build Solution
         run: dotnet build -c Release -property:Version="${{ steps.get-build-version.outputs.build-version }}" -warnaserror
 
