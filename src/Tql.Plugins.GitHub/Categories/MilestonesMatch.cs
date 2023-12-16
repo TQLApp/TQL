@@ -1,4 +1,6 @@
-﻿using Tql.Abstractions;
+﻿using System.Windows.Forms;
+using Microsoft.Extensions.DependencyInjection;
+using Tql.Abstractions;
 using Tql.Plugins.GitHub.Services;
 using Tql.Utilities;
 
@@ -8,13 +10,29 @@ internal class MilestonesMatch(
     RepositoryItemMatchDto dto,
     GitHubApi api,
     IMatchFactory<MilestoneMatch, MilestoneMatchDto> factory
-) : ISearchableMatch, ISerializableMatch
+) : IRunnableMatch, ICopyableMatch, ISearchableMatch, ISerializableMatch
 {
     public string Text =>
         MatchText.Path($"{dto.Owner}/{dto.RepositoryName}", Labels.MilestonesMatch_Label);
     public ImageSource Icon => Images.Milestone;
     public MatchTypeId TypeId => TypeIds.Milestones;
     public string SearchHint => Labels.MilestonesMatch_SearchHint;
+
+    public Task Run(IServiceProvider serviceProvider, IWin32Window owner)
+    {
+        serviceProvider.GetRequiredService<IUI>().OpenUrl(GetUrl());
+
+        return Task.CompletedTask;
+    }
+
+    public Task Copy(IServiceProvider serviceProvider)
+    {
+        serviceProvider.GetRequiredService<IClipboard>().CopyUri(Text, GetUrl());
+
+        return Task.CompletedTask;
+    }
+
+    private string GetUrl() => $"{dto.GetUrl()}/milestones";
 
     public async Task<IEnumerable<IMatch>> Search(
         ISearchContext context,

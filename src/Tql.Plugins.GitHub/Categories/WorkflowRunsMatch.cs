@@ -1,4 +1,6 @@
-﻿using Octokit;
+﻿using System.Windows.Forms;
+using Microsoft.Extensions.DependencyInjection;
+using Octokit;
 using Tql.Abstractions;
 using Tql.Plugins.GitHub.Services;
 using Tql.Utilities;
@@ -9,13 +11,29 @@ internal class WorkflowRunsMatch(
     RepositoryItemMatchDto dto,
     GitHubApi api,
     IMatchFactory<WorkflowRunMatch, WorkflowRunMatchDto> factory
-) : ISearchableMatch, ISerializableMatch
+) : IRunnableMatch, ICopyableMatch, ISearchableMatch, ISerializableMatch
 {
     public string Text =>
         MatchText.Path($"{dto.Owner}/{dto.RepositoryName}", Labels.WorkflowRunsMatch_Label);
     public ImageSource Icon => Images.Workflow;
     public MatchTypeId TypeId => TypeIds.WorkflowRuns;
     public string SearchHint => Labels.WorkflowRunsMatch_SearchHint;
+
+    public Task Run(IServiceProvider serviceProvider, IWin32Window owner)
+    {
+        serviceProvider.GetRequiredService<IUI>().OpenUrl(GetUrl());
+
+        return Task.CompletedTask;
+    }
+
+    public Task Copy(IServiceProvider serviceProvider)
+    {
+        serviceProvider.GetRequiredService<IClipboard>().CopyUri(Text, GetUrl());
+
+        return Task.CompletedTask;
+    }
+
+    private string GetUrl() => $"{dto.GetUrl()}/actions";
 
     public async Task<IEnumerable<IMatch>> Search(
         ISearchContext context,

@@ -1,4 +1,6 @@
-﻿using Octokit;
+﻿using System.Windows.Forms;
+using Microsoft.Extensions.DependencyInjection;
+using Octokit;
 using Tql.Abstractions;
 using Tql.Plugins.GitHub.Services;
 using Tql.Plugins.GitHub.Support;
@@ -11,7 +13,7 @@ internal abstract class IssuesMatchBase<T>(
     GitHubApi api,
     IssueTypeQualifier type,
     IMatchFactory<T, IssueMatchDto> factory
-) : ISearchableMatch, ISerializableMatch
+) : IRunnableMatch, ICopyableMatch, ISearchableMatch, ISerializableMatch
     where T : IssueMatchBase
 {
     public string Text =>
@@ -26,6 +28,23 @@ internal abstract class IssuesMatchBase<T>(
 
     public abstract MatchTypeId TypeId { get; }
     public abstract string SearchHint { get; }
+
+    public Task Run(IServiceProvider serviceProvider, IWin32Window owner)
+    {
+        serviceProvider.GetRequiredService<IUI>().OpenUrl(GetUrl());
+
+        return Task.CompletedTask;
+    }
+
+    public Task Copy(IServiceProvider serviceProvider)
+    {
+        serviceProvider.GetRequiredService<IClipboard>().CopyUri(Text, GetUrl());
+
+        return Task.CompletedTask;
+    }
+
+    private string GetUrl() =>
+        $"{dto.GetUrl()}/{(type == IssueTypeQualifier.Issue ? "issues" : "pulls")}";
 
     public async Task<IEnumerable<IMatch>> Search(
         ISearchContext context,
