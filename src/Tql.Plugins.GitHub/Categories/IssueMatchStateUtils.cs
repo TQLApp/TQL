@@ -8,7 +8,7 @@ internal static class IssueMatchStateUtils
     {
         if (issue.State.Value == ItemState.Open)
             return IssueMatchState.Open;
-        if (issue?.PullRequest.Merged == true)
+        if (issue.PullRequest?.Merged == true)
             return IssueMatchState.Merged;
         return IssueMatchState.Closed;
     }
