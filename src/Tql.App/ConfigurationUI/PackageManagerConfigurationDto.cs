@@ -17,21 +17,17 @@ internal class PackageManagerConfigurationDto
     {
         var result = new PackageManagerConfigurationDto();
 
-        result
-            .Sources
-            .AddRange(
-                configuration
-                    .Sources
-                    .Select(
-                        p =>
-                            new PackageSourceDto
-                            {
-                                Url = p.Url,
-                                UserName = p.UserName,
-                                Password = encryption.DecryptString(p.ProtectedPassword)
-                            }
-                    )
-            );
+        result.Sources.AddRange(
+            configuration.Sources.Select(
+                p =>
+                    new PackageSourceDto
+                    {
+                        Url = p.Url,
+                        UserName = p.UserName,
+                        Password = encryption.DecryptString(p.ProtectedPassword)
+                    }
+            )
+        );
 
         return result;
     }

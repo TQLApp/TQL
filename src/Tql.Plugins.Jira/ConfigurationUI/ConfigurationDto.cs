@@ -16,22 +16,18 @@ internal class ConfigurationDto
     {
         var result = new ConfigurationDto();
 
-        result
-            .Connections
-            .AddRange(
-                configuration
-                    .Connections
-                    .Select(
-                        p =>
-                            new ConnectionDto(p.Id)
-                            {
-                                Name = p.Name,
-                                Url = p.Url,
-                                UserName = p.UserName,
-                                Password = encryption.DecryptString(p.ProtectedPassword)
-                            }
-                    )
-            );
+        result.Connections.AddRange(
+            configuration.Connections.Select(
+                p =>
+                    new ConnectionDto(p.Id)
+                    {
+                        Name = p.Name,
+                        Url = p.Url,
+                        UserName = p.UserName,
+                        Password = encryption.DecryptString(p.ProtectedPassword)
+                    }
+            )
+        );
 
         return result;
     }

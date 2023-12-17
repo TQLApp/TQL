@@ -233,8 +233,9 @@ internal class NuGetClient : IDisposable
             return ImmutableArray<string>.Empty;
 
         return matchedReferenceItem
-            .Items
-            .Select(p => Path.Combine(packagePath, p.Replace('/', Path.DirectorySeparatorChar)))
+            .Items.Select(
+                p => Path.Combine(packagePath, p.Replace('/', Path.DirectorySeparatorChar))
+            )
             .ToImmutableArray();
     }
 

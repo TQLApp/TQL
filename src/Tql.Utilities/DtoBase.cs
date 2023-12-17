@@ -115,8 +115,7 @@ public class DtoBase : INotifyPropertyChanged, INotifyDataErrorInfo
     public IEnumerable<string> GetErrors(string? propertyName = null)
     {
         return _properties
-            .Values
-            .Where(p => p.Error != null && p.Name == propertyName)
+            .Values.Where(p => p.Error != null && p.Name == propertyName)
             .Select(p => p.Error!);
     }
 

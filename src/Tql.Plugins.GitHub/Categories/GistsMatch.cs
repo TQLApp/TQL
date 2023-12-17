@@ -53,12 +53,9 @@ internal class GistsMatch(
         var client = await api.GetClient(dto.Id);
         var connection = (Octokit.Connection)client.Connection;
 
-        request
-            .Headers
-            .UserAgent
-            .Add(
-                new ProductInfoHeaderValue("TQL", GetType().Assembly.GetName().Version!.ToString())
-            );
+        request.Headers.UserAgent.Add(
+            new ProductInfoHeaderValue("TQL", GetType().Assembly.GetName().Version!.ToString())
+        );
         request.Headers.Authorization = new AuthenticationHeaderValue(
             "Bearer",
             connection.Credentials.Password
@@ -73,8 +70,7 @@ internal class GistsMatch(
         var matches = new List<IMatch>();
 
         foreach (
-            var element in doc.DocumentNode
-                .Descendants("div")
+            var element in doc.DocumentNode.Descendants("div")
                 .Where(p => p.HasClass("gist-snippet-meta"))
         )
         {

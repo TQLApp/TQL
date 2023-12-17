@@ -45,9 +45,7 @@ internal class PluginManager : IPluginManager, IDisposable
             if (package.Plugins.HasValue)
             {
                 var packagePlugins = package
-                    .Plugins
-                    .Value
-                    .Select(p => new AvailablePlugin(p))
+                    .Plugins.Value.Select(p => new AvailablePlugin(p))
                     .ToList();
 
                 plugins.AddRange(packagePlugins);

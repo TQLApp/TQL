@@ -56,10 +56,10 @@ internal class MilestonesMatch(
         var client = await api.GetClient(dto.ConnectionId);
 
         return (
-            from milestone in await client
-                .Issue
-                .Milestone
-                .GetAllForRepository(dto.Owner, dto.RepositoryName)
+            from milestone in await client.Issue.Milestone.GetAllForRepository(
+                dto.Owner,
+                dto.RepositoryName
+            )
             select factory.Create(
                 new MilestoneMatchDto(
                     dto.ConnectionId,

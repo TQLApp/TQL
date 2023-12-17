@@ -96,8 +96,7 @@ internal partial class Db : IDb, IDisposable
 
         foreach (
             var resourceName in GetType()
-                .Assembly
-                .GetManifestResourceNames()
+                .Assembly.GetManifestResourceNames()
                 .Where(
                     p =>
                         p.StartsWith(resourceNamePrefix)

@@ -25,9 +25,9 @@ internal class PortalsMatch(
 
     private static string LoadQuery(string resourceName)
     {
-        using var stream = typeof(PortalsType)
-            .Assembly
-            .GetManifestResourceStream($"{typeof(PortalsType).Namespace}.{resourceName}");
+        using var stream = typeof(PortalsType).Assembly.GetManifestResourceStream(
+            $"{typeof(PortalsType).Namespace}.{resourceName}"
+        );
         using var reader = new StreamReader(stream!);
 
         return reader.ReadToEnd();
@@ -90,12 +90,9 @@ internal class PortalsMatch(
             cancellationToken
         );
 
-        var resources = response
-            .Value
-            .Data
-            .ToObjectFromJson<List<ResourceDto>>(
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
-            );
+        var resources = response.Value.Data.ToObjectFromJson<List<ResourceDto>>(
+            new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
+        );
 
         return resources
             .Select(

@@ -37,9 +37,9 @@ internal class UsersMatch(
 
         cancellationToken.ThrowIfCancellationRequested();
 
-        return response
-            .Items
-            .Select(p => factory.Create(new UserMatchDto(dto.Id, p.Login, p.HtmlUrl)));
+        return response.Items.Select(
+            p => factory.Create(new UserMatchDto(dto.Id, p.Login, p.HtmlUrl))
+        );
     }
 
     public string Serialize()

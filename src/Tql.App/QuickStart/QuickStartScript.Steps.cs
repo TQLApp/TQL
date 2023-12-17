@@ -540,10 +540,9 @@ internal partial class QuickStartScript
 
     private void UpdateStateCompletedTool()
     {
-        var completedTools = _quickStart
-            .State
-            .CompletedTools
-            .Add(_quickStart.State.SelectedTool!.Value);
+        var completedTools = _quickStart.State.CompletedTools.Add(
+            _quickStart.State.SelectedTool!.Value
+        );
 
         var toolsAvailable = EnumEx
             .GetValues<QuickStartTool>()

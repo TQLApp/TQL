@@ -69,11 +69,12 @@ internal class WorkflowRunsMatch(
             PageSize = 100
         };
 
-        var response = await client
-            .Actions
-            .Workflows
-            .Runs
-            .List(dto.Owner, dto.RepositoryName, new WorkflowRunsRequest(), options);
+        var response = await client.Actions.Workflows.Runs.List(
+            dto.Owner,
+            dto.RepositoryName,
+            new WorkflowRunsRequest(),
+            options
+        );
 
         var dtos = (
             from run in response.WorkflowRuns

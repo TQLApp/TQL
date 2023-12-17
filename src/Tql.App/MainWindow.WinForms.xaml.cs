@@ -24,18 +24,18 @@ internal partial class MainWindow
 
         if (App.IsDebugMode)
         {
-            contextMenu
-                .Items
-                .Add(
-                    Labels.NotifyMenu_InvalidateAllCachesLabel,
-                    null,
-                    (_, _) => InvalidateAllCaches()
-                );
+            contextMenu.Items.Add(
+                Labels.NotifyMenu_InvalidateAllCachesLabel,
+                null,
+                (_, _) => InvalidateAllCaches()
+            );
         }
 
-        contextMenu
-            .Items
-            .Add(Labels.NotifyMenu_ConfigurationLabel, null, (_, _) => OpenConfiguration());
+        contextMenu.Items.Add(
+            Labels.NotifyMenu_ConfigurationLabel,
+            null,
+            (_, _) => OpenConfiguration()
+        );
         contextMenu.Items.Add("-");
         contextMenu.Items.Add(Labels.NotifyMenu_HelpLabel, null, (_, _) => OpenHelp());
         contextMenu.Items.Add("-");

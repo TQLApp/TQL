@@ -50,20 +50,18 @@ internal class UserMatch(
 
         var client = await api.GetClient(dto.ConnectionId);
 
-        var response = await client
-            .Search
-            .SearchRepo(new SearchRepositoriesRequest(text) { User = dto.Login });
+        var response = await client.Search.SearchRepo(
+            new SearchRepositoriesRequest(text) { User = dto.Login }
+        );
 
         cancellationToken.ThrowIfCancellationRequested();
 
-        return response
-            .Items
-            .Select(
-                p =>
-                    factory.Create(
-                        new RepositoryMatchDto(dto.ConnectionId, p.Owner.Login, p.Name, p.HtmlUrl)
-                    )
-            );
+        return response.Items.Select(
+            p =>
+                factory.Create(
+                    new RepositoryMatchDto(dto.ConnectionId, p.Owner.Login, p.Name, p.HtmlUrl)
+                )
+        );
     }
 }
 

@@ -121,8 +121,7 @@ internal class AssemblyResolver : IDisposable
     private Assembly? GetLoadedAssembly(AssemblyKey assemblyKey)
     {
         return _assemblyLoadContext
-            .Assemblies
-            .Select(p => (AssemblyName: p.GetName(), Assembly: p))
+            .Assemblies.Select(p => (AssemblyName: p.GetName(), Assembly: p))
             .Where(p => AssemblyKey.FromName(p.AssemblyName).Equals(assemblyKey))
             .OrderByDescending(p => p.AssemblyName.Version)
             .FirstOrDefault()

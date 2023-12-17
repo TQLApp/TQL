@@ -31,11 +31,9 @@ internal class SimpleHttpServer : IDisposable
 
         var context = await contextTask;
 
-        var buffer = Encoding
-            .UTF8
-            .GetBytes(
-                $"<html><body>{SecurityElement.Escape(Labels.GitHubOAuthWorkflow_AuthenticationComplete)}</body></html>"
-            );
+        var buffer = Encoding.UTF8.GetBytes(
+            $"<html><body>{SecurityElement.Escape(Labels.GitHubOAuthWorkflow_AuthenticationComplete)}</body></html>"
+        );
 
         context.Response.ContentLength64 = buffer.Length;
 
