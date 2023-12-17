@@ -5,9 +5,9 @@ using Tql.Utilities;
 namespace Tql.Plugins.GitHub.Categories;
 
 internal class PullRequestType(
-    IMatchFactory<IssueMatch, IssueMatchDto> factory,
+    IMatchFactory<PullRequestMatch, IssueMatchDto> factory,
     ConfigurationManager configurationManager
-) : MatchType<IssueMatch, IssueMatchDto>(factory)
+) : IssueTypeBase<PullRequestMatch>(factory)
 {
     public override Guid Id => TypeIds.PullRequest.Id;
 

@@ -7,6 +7,7 @@ internal interface IDbAccess : IDisposable
     void DeleteCache(string key);
     List<HistoryEntity> GetHistory(int days);
     void AddHistory(HistoryEntity history);
+    void UpdateHistory(long id, string json);
     void MarkHistoryAsAccessed(long id, string? parentJson);
     long? FindHistory(Guid pluginId, Guid typeId, string json);
     void DeleteHistory(long id);

@@ -76,7 +76,7 @@ internal class MilestoneMatch(
                         p.Number,
                         p.Title,
                         p.HtmlUrl,
-                        p.State.Value
+                        IssueMatchStateUtils.FromIssue(p)
                     )
                 )
         );

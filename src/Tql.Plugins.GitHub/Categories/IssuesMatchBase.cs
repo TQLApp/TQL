@@ -1,4 +1,6 @@
-﻿using Octokit;
+﻿using System.Windows.Forms;
+using Microsoft.Extensions.DependencyInjection;
+using Octokit;
 using Tql.Abstractions;
 using Tql.Plugins.GitHub.Services;
 using Tql.Plugins.GitHub.Support;
@@ -10,8 +12,9 @@ internal abstract class IssuesMatchBase<T>(
     RepositoryItemMatchDto dto,
     GitHubApi api,
     IssueTypeQualifier type,
-    IMatchFactory<T, IssueMatchDto> factory
-) : ISearchableMatch, ISerializableMatch
+    IMatchFactory<T, IssueMatchDto> factory,
+    IssueTypeBase<T> issueType
+) : IRunnableMatch, ICopyableMatch, ISearchableMatch, ISerializableMatch
     where T : IssueMatchBase
 {
     public string Text =>
@@ -26,6 +29,23 @@ internal abstract class IssuesMatchBase<T>(
 
     public abstract MatchTypeId TypeId { get; }
     public abstract string SearchHint { get; }
+
+    public Task Run(IServiceProvider serviceProvider, IWin32Window owner)
+    {
+        serviceProvider.GetRequiredService<IUI>().OpenUrl(GetUrl());
+
+        return Task.CompletedTask;
+    }
+
+    public Task Copy(IServiceProvider serviceProvider)
+    {
+        serviceProvider.GetRequiredService<IClipboard>().CopyUri(Text, GetUrl());
+
+        return Task.CompletedTask;
+    }
+
+    private string GetUrl() =>
+        $"{dto.GetUrl()}/{(type == IssueTypeQualifier.Issue ? "issues" : "pulls")}";
 
     public async Task<IEnumerable<IMatch>> Search(
         ISearchContext context,
@@ -52,21 +72,23 @@ internal abstract class IssuesMatchBase<T>(
 
         var response = await client.Search.SearchIssues(request);
 
-        cancellationToken.ThrowIfCancellationRequested();
-
-        return response.Items.Select(
-            p =>
-                factory.Create(
+        var dtos = response
+            .Items.Select(
+                p =>
                     new IssueMatchDto(
                         dto.ConnectionId,
                         GitHubUtils.GetRepositoryName(p.HtmlUrl),
                         p.Number,
                         p.Title,
                         p.HtmlUrl,
-                        p.State.Value
+                        IssueMatchStateUtils.FromIssue(p)
                     )
-                )
-        );
+            )
+            .ToList();
+
+        issueType.UpdateCache(dtos);
+
+        return dtos.Select(factory.Create);
     }
 
     public string Serialize()
