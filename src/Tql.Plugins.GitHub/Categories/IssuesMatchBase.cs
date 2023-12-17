@@ -12,7 +12,8 @@ internal abstract class IssuesMatchBase<T>(
     RepositoryItemMatchDto dto,
     GitHubApi api,
     IssueTypeQualifier type,
-    IMatchFactory<T, IssueMatchDto> factory
+    IMatchFactory<T, IssueMatchDto> factory,
+    IssueTypeBase<T> issueType
 ) : IRunnableMatch, ICopyableMatch, ISearchableMatch, ISerializableMatch
     where T : IssueMatchBase
 {
@@ -71,11 +72,9 @@ internal abstract class IssuesMatchBase<T>(
 
         var response = await client.Search.SearchIssues(request);
 
-        cancellationToken.ThrowIfCancellationRequested();
-
-        return response.Items.Select(
-            p =>
-                factory.Create(
+        var dtos = response
+            .Items.Select(
+                p =>
                     new IssueMatchDto(
                         dto.ConnectionId,
                         GitHubUtils.GetRepositoryName(p.HtmlUrl),
@@ -84,8 +83,12 @@ internal abstract class IssuesMatchBase<T>(
                         p.HtmlUrl,
                         p.State.Value
                     )
-                )
-        );
+            )
+            .ToList();
+
+        issueType.UpdateCache(dtos);
+
+        return dtos.Select(factory.Create);
     }
 
     public string Serialize()

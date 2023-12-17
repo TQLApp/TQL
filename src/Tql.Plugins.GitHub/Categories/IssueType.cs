@@ -7,7 +7,7 @@ namespace Tql.Plugins.GitHub.Categories;
 internal class IssueType(
     IMatchFactory<IssueMatch, IssueMatchDto> factory,
     ConfigurationManager configurationManager
-) : MatchType<IssueMatch, IssueMatchDto>(factory)
+) : IssueTypeBase<IssueMatch>(factory)
 {
     public override Guid Id => TypeIds.Issue.Id;
 
