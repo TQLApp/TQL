@@ -87,7 +87,7 @@ Function Create-MSI
         -WorkingDirectory $Global:Distrib
 
     $Version = Get-App-Version
-    $Output = "Tql-$Version.msi"
+    $Output = "TQLApp.msi"
 
     Write-Host "Linking $Output"
 

@@ -76,7 +76,7 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          files: ./build/Tql*.msi
+          files: ./build/*.msi
           generate_release_notes: true
           prerelease: true
           body: ${{ steps.tag-data.outputs.git-tag-annotation }}
