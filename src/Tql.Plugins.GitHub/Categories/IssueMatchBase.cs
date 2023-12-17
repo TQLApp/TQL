@@ -48,5 +48,5 @@ internal record IssueMatchDto(
     int Number,
     string Title,
     string Url,
-    ItemState State
+    IssueMatchState State
 );

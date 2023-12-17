@@ -6,6 +6,6 @@ namespace Tql.Plugins.GitHub.Categories;
 internal class IssueMatch(IssueMatchDto dto) : IssueMatchBase(dto)
 {
     public override ImageSource Icon =>
-        Dto.State == ItemState.Open ? Images.OpenIssue : Images.ClosedIssue;
+        Dto.State == IssueMatchState.Open ? Images.OpenIssue : Images.ClosedIssue;
     public override MatchTypeId TypeId => TypeIds.Issue;
 }
