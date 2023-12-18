@@ -3,7 +3,7 @@
 	<Import Project="..\..\TqlPluginPackage.targets" />
 
 	<PropertyGroup>
-		<Product>TQL Microsoft Outlook</Product>
+		<Product>TQL Outlook Plugin</Product>
 		<Description>Techie's Quick Launcher plugin for Outlook. This plugin allows you to search for contacts in your Outlook and you can send emails directly from this plugin.</Description>
 		<PackageId>TQLApp.Plugins.Outlook</PackageId>
 		<PackageProjectUrl>https://github.com/TQLApp/TQL/wiki/Outlook-plugin</PackageProjectUrl>
