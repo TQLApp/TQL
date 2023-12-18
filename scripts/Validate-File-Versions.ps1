@@ -36,13 +36,17 @@ Function Get-Latest-Published-Version
 
 Function Download-Release-Files([string]$Version)
 {
-    $Msi = "$Global:Distrib\VersionCheck\Tql.msi"
+    $Msi = "$Global:Distrib\VersionCheck\TQLApp.msi"
     $Target = "$Global:Distrib\VersionCheck\$Version"
-    $Url = "https://github.com/TQLApp/TQL/releases/download/v$Version/Tql-$Version.msi"
 
     Write-Host "Downloading $Url"
 
-    $Global:WebClient.DownloadFile($Url, $Msi)
+    try {
+        $Global:WebClient.DownloadFile("https://github.com/TQLApp/TQL/releases/download/v$Version/TQLApp.msi", $Msi)
+    }
+    catch {
+        $Global:WebClient.DownloadFile("https://github.com/TQLApp/TQL/releases/download/v$Version/Tql-$Version.msi", $Msi)
+    }
 
     Write-Host "Extracting $Msi"
 
