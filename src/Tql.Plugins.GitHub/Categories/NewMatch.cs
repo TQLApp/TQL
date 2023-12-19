@@ -8,12 +8,10 @@ namespace Tql.Plugins.GitHub.Categories;
 internal class NewMatch(NewMatchDto dto) : IRunnableMatch, ISerializableMatch, ICopyableMatch
 {
     public string Text =>
-        Dto.Type switch
+        dto.Type switch
         {
             NewMatchType.Issue
-                => MatchText.Path($"{Dto.Owner}/{Dto.Repository}", Labels.NewMatch_NewIssue),
-            NewMatchType.PullRequest
-                => MatchText.Path($"{Dto.Owner}/{Dto.Repository}", Labels.NewMatch_NewPullRequest),
+                => MatchText.Path($"{dto.Owner}/{dto.Repository}", Labels.NewMatch_NewIssue),
             NewMatchType.Repository => Labels.NewMatch_NewRepository,
             NewMatchType.Gist => Labels.NewMatch_NewGist,
             NewMatchType.Organization => Labels.NewMatch_NewOrganization,
@@ -23,10 +21,9 @@ internal class NewMatch(NewMatchDto dto) : IRunnableMatch, ISerializableMatch, I
         };
 
     public ImageSource Icon =>
-        Dto.Type switch
+        dto.Type switch
         {
             NewMatchType.Issue => Images.Issue,
-            NewMatchType.PullRequest => Images.PullRequest,
             NewMatchType.Repository => Images.Repository,
             NewMatchType.Gist => Images.Gist,
             NewMatchType.Organization => Images.Organization,
@@ -35,9 +32,7 @@ internal class NewMatch(NewMatchDto dto) : IRunnableMatch, ISerializableMatch, I
             _ => throw new ArgumentOutOfRangeException()
         };
 
-    public virtual MatchTypeId TypeId => TypeIds.New;
-
-    protected NewMatchDto Dto { get; } = dto;
+    public MatchTypeId TypeId => TypeIds.New;
 
     public Task Run(IServiceProvider serviceProvider, IWin32Window owner)
     {
@@ -48,7 +43,7 @@ internal class NewMatch(NewMatchDto dto) : IRunnableMatch, ISerializableMatch, I
 
     public string Serialize()
     {
-        return JsonSerializer.Serialize(Dto);
+        return JsonSerializer.Serialize(dto);
     }
 
     public Task Copy(IServiceProvider serviceProvider)
@@ -59,11 +54,11 @@ internal class NewMatch(NewMatchDto dto) : IRunnableMatch, ISerializableMatch, I
     }
 
     private string GetUrl() =>
-        Dto.Type switch
+        dto.Type switch
         {
             NewMatchType.Issue
-                => $"https://github.com/{Dto.Owner}/{Dto.Repository}/issues/new/choose",
-            NewMatchType.PullRequest => $"https://github.com/{Dto.Owner}/{Dto.Repository}/compare",
+                => $"https://github.com/{dto.Owner}/{dto.Repository}/issues/new/choose",
+            NewMatchType.PullRequest => $"https://github.com/{dto.Owner}/{dto.Repository}/compare",
             NewMatchType.Repository => "https://github.com/new",
             NewMatchType.Gist => "https://gist.github.com/",
             NewMatchType.Organization => "https://github.com/account/organizations/new",
