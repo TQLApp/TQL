@@ -242,4 +242,8 @@
     <value>Authenticatie is afgerond. Je kunt nu terug naar de app.</value>
     <comment>Original: Authentication completed. You can now go back to the app.</comment>
   </data>
+  <data name="NewPullRequestsMatch_SearchHint" xml:space="preserve">
+    <value>Vind compare branch</value>
+    <comment>Original: Find compare branch</comment>
+  </data>
 </root>
