@@ -10,10 +10,18 @@ internal class NewPullRequestsMatch(
     NewMatchDto dto,
     GitHubApi api,
     IMatchFactory<NewPullRequestMatch, NewPullRequestDto> factory
-) : NewMatch(dto), ISearchableMatch
+) : ISerializableMatch, ISearchableMatch
 {
-    public override MatchTypeId TypeId => TypeIds.NewPullRequests;
+    public string Text =>
+        MatchText.Path($"{dto.Owner}/{dto.Repository}", Labels.NewMatch_NewPullRequest);
+    public ImageSource Icon => Images.PullRequest;
+    public MatchTypeId TypeId => TypeIds.NewPullRequests;
     public string SearchHint => Labels.NewPullRequestsMatch_SearchHint;
+
+    public string Serialize()
+    {
+        return JsonSerializer.Serialize(dto);
+    }
 
     public async Task<IEnumerable<IMatch>> Search(
         ISearchContext context,
@@ -21,7 +29,7 @@ internal class NewPullRequestsMatch(
         CancellationToken cancellationToken
     )
     {
-        var task = context.GetDataCached($"{GetType()}|{Dto.Id}", _ => GetMatches());
+        var task = context.GetDataCached($"{GetType()}|{dto.Id}", _ => GetMatches());
 
         if (!task.IsCompleted)
             await context.DebounceDelay(cancellationToken);
@@ -31,10 +39,10 @@ internal class NewPullRequestsMatch(
 
     private async Task<ImmutableArray<NewPullRequestMatch>> GetMatches()
     {
-        var graphQlConnection = await api.GetConnection(Dto.Id!.Value);
+        var graphQlConnection = await api.GetConnection(dto.Id!.Value);
 
         var query = new Query()
-            .Repository(Dto.Repository, Dto.Owner)
+            .Repository(dto.Repository, dto.Owner)
             .Refs("refs/heads/", first: 100)
             .Edges.Select(
                 refEdge =>
@@ -82,9 +90,9 @@ internal class NewPullRequestsMatch(
                 p =>
                     factory.Create(
                         new NewPullRequestDto(
-                            Dto.Id!.Value,
-                            Dto.Owner!,
-                            Dto.Repository!,
+                            dto.Id!.Value,
+                            dto.Owner!,
+                            dto.Repository!,
                             p.Refs.Name
                         )
                     )
