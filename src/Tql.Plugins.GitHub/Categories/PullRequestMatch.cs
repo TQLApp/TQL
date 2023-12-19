@@ -1,5 +1,4 @@
-﻿using Octokit;
-using Tql.Abstractions;
+﻿using Tql.Abstractions;
 
 namespace Tql.Plugins.GitHub.Categories;
 

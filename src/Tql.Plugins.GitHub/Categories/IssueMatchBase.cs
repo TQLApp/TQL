@@ -1,6 +1,5 @@
 ﻿using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
-using Octokit;
 using Tql.Abstractions;
 using Tql.Utilities;
 

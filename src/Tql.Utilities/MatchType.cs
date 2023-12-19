@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Tql.Abstractions;
+﻿using Tql.Abstractions;
 
 namespace Tql.Utilities;
 
