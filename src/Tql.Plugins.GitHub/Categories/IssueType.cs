@@ -1,6 +1,5 @@
 ﻿using Tql.Abstractions;
 using Tql.Plugins.GitHub.Services;
-using Tql.Utilities;
 
 namespace Tql.Plugins.GitHub.Categories;
 

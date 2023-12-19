@@ -340,6 +340,15 @@ namespace Tql.Plugins.GitHub {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Find compare branch.
+        /// </summary>
+        public static string NewPullRequestsMatch_SearchHint {
+            get {
+                return ResourceManager.GetString("NewPullRequestsMatch_SearchHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to GitHub New.
         /// </summary>
         public static string NewsMatch_Label {

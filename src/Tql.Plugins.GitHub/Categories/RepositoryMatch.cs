@@ -68,5 +68,6 @@ internal record RepositoryMatchDto(
 
 internal record RepositoryItemMatchDto(Guid ConnectionId, string Owner, string RepositoryName)
 {
-    public string GetUrl() => $"https://github.com/{Owner}/{RepositoryName}";
+    public string GetUrl() =>
+        $"https://github.com/{Uri.EscapeDataString(Owner)}/{Uri.EscapeDataString(RepositoryName)}";
 }
