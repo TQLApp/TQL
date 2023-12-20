@@ -108,6 +108,12 @@ internal partial class Settings : INotifyPropertyChanged
         set => SetString(nameof(QuickStart), value);
     }
 
+    public string? LastTermsOfServiceHash
+    {
+        get => GetString(nameof(LastTermsOfServiceHash));
+        set => SetString(nameof(LastTermsOfServiceHash), value);
+    }
+
     public event PropertyChangedEventHandler? PropertyChanged;
 
     public Settings(IStore store, IConfigurationManager configurationManager)

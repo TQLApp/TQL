@@ -851,4 +851,7 @@ Don't forget to change the hotkey for your new profile. You can do this in the g
   <data name="SynchronizationConfiguration_RestoreFailedSubtitle" xml:space="preserve">
     <value>The backup couldn't be restored. Do you want to keep this account? The existing backup will be overwritten.</value>
   </data>
+  <data name="TermsOfServiceNotificationService_Updated" xml:space="preserve">
+    <value>The Terms of Service has been updated. Click here to review the latest version.</value>
+  </data>
 </root>

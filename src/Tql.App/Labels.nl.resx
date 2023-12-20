@@ -970,4 +970,8 @@ Don't forget to change the hotkey for your new profile. You can do this in the g
     <value>De back-up kon niet hersteld worden. Wil je deze account houden? De bestaande back-up zal overschreven worden.</value>
     <comment>Original: The backup couldn't be restored. Do you want to keep this account? The existing backup will be overwritten.</comment>
   </data>
+  <data name="TermsOfServiceNotificationService_Updated" xml:space="preserve">
+    <value>De Terms of Service zijn gewijzigd. Klik hier om de laatste versie te bekijken.</value>
+    <comment>Original: The Terms of Service has been updated. Click here to review the latest version.</comment>
+  </data>
 </root>

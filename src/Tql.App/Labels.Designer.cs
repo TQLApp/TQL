@@ -2040,6 +2040,15 @@ namespace Tql.App {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The Terms of Service has been updated. Click here to review the latest version..
+        /// </summary>
+        public static string TermsOfServiceNotificationService_Updated {
+            get {
+                return ResourceManager.GetString("TermsOfServiceNotificationService_Updated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dark.
         /// </summary>
         public static string ThemeDark {
