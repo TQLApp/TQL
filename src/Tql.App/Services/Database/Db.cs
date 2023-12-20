@@ -146,6 +146,17 @@ internal partial class Db : IDb, IDisposable
                     target.Open();
 
                     _connection.BackupDatabase(target, "main", "main", -1, null, -1);
+
+                    ExecuteCommand("delete from Cache");
+                    ExecuteCommand("vacuum");
+
+                    void ExecuteCommand(string commandText)
+                    {
+                        using var command = target.CreateCommand();
+
+                        command.CommandText = commandText;
+                        command.ExecuteNonQuery();
+                    }
                 }
 
                 using (var source = File.OpenRead(tempFileName))
