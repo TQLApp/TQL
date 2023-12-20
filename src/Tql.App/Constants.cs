@@ -7,6 +7,7 @@ internal static class Constants
 {
     public static readonly TimeSpan SynchronizationInterval = TimeSpan.FromHours(1);
     public static readonly TimeSpan SynchronizationRestoreDelay = TimeSpan.FromSeconds(30);
+    public static readonly TimeSpan TermsOfServiceCheckInterval = TimeSpan.FromDays(1);
 
     public const int MaxPenalty = 5;
     public const int MaxDistance = 3;
@@ -24,6 +25,8 @@ internal static class Constants
     [UsedImplicitly]
     public const string ApplicationInsightsConnectionString =
         "InstrumentationKey=b24fa90c-fa1d-4b19-836b-66202920fa50;IngestionEndpoint=https://westeurope-5.in.applicationinsights.azure.com/;LiveEndpoint=https://westeurope.livediagnostics.monitor.azure.com/";
+
+    public const string TermsOfServiceUrl = "https://tqlapp.dev/Terms-of-service.html";
 
     public static readonly Guid SynchronizationPageId = Guid.Parse(
         "b2560909-5210-4efa-bfd2-08cb1df96d09"

@@ -79,7 +79,7 @@ internal class UpdateChecker : IDisposable
         )
             throw new InvalidOperationException("Unexpected tag format");
 
-        var appVersion = GetAppVersion();
+        var appVersion = GitHubUtils.GetAppVersion();
 
         _logger.LogInformation(
             "Latest release version {ReleaseVersion}, app version {AppVersion}",
@@ -108,7 +108,7 @@ internal class UpdateChecker : IDisposable
 
         progress.SetProgress(Labels.UpdateChecker_DownloadingUpdate, 0);
 
-        var target = await Download(assets.Single(), progress);
+        var target = await Download(assets.Single());
 
         progress.SetProgress(Labels.UpdateChecker_InstallingUpdate, 1);
 
@@ -127,7 +127,7 @@ internal class UpdateChecker : IDisposable
             "https://api.github.com/repos/TQLApp/TQL/releases/latest"
         );
 
-        InitializeRequest(request);
+        GitHubUtils.InitializeRequest(request);
 
         using var response = await _httpClient.SendAsync(request);
 
@@ -158,7 +158,7 @@ internal class UpdateChecker : IDisposable
                 $"https://api.github.com/repos/TQLApp/TQL/releases?per_page={pageSize}&page={page}"
             );
 
-            InitializeRequest(request);
+            GitHubUtils.InitializeRequest(request);
 
             using var response = await _httpClient.SendAsync(request);
 
@@ -202,19 +202,7 @@ internal class UpdateChecker : IDisposable
         return updatesAvailable;
     }
 
-    private Version GetAppVersion()
-    {
-        return GetType().Assembly.GetName().Version!;
-    }
-
-    private void InitializeRequest(HttpRequestMessage request)
-    {
-        request.Headers.UserAgent.Add(
-            new ProductInfoHeaderValue("TQL", GetAppVersion().ToString())
-        );
-    }
-
-    private async Task<string> Download(ReleaseAssetDto asset, IProgress progress)
+    private async Task<string> Download(ReleaseAssetDto asset)
     {
         _logger.LogInformation("Downloading setup from {Url}", asset.Url);
 
@@ -230,7 +218,7 @@ internal class UpdateChecker : IDisposable
 
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/octet-stream"));
 
-        InitializeRequest(request);
+        GitHubUtils.InitializeRequest(request);
 
         using var response = await _httpClient.SendAsync(request);
 
