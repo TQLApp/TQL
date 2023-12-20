@@ -67,7 +67,9 @@ internal class SearchManager : IDisposable
     {
         // PERFORMANCE: Load the history in the background.
 
-        ThreadPool.QueueUserWorkItem(_ =>
+        ThreadPool.QueueUserWorkItem(_ => DoLoadHistory());
+
+        void DoLoadHistory()
         {
             _logger.LogInformation("Loading history");
 
@@ -102,6 +104,13 @@ internal class SearchManager : IDisposable
                         try
                         {
                             match = plugin.DeserializeMatch(entity.TypeId!.Value, entity.Json!);
+
+                            if (match != null)
+                            {
+                                // Work around bad code in plugins.
+                                _ = match.Text;
+                                _ = match.Icon;
+                            }
                         }
                         catch (Exception ex)
                         {
@@ -145,7 +154,7 @@ internal class SearchManager : IDisposable
             {
                 _logger.LogError(ex, "Failed to load history");
             }
-        });
+        }
     }
 
     public void Push(ISearchableMatch match)
