@@ -48,19 +48,6 @@ Function Run-WiX-Command([string]$File, [string]$ArgumentList, [string]$WorkingD
     }
 }
 
-Function Get-App-Version
-{
-    $Content = [System.IO.File]::ReadAllText("$Global:Scripts\Version.wxi")
-
-    if (-not ($Content -match "Version=`"(.*?)`""))
-    {
-        Write-Host "Could not parse Version.wxi"
-        exit 1
-    }
-
-    return $Matches[1]
-}
-
 Function Create-MSI
 {
     Write-Host "Collecting source files"
@@ -86,7 +73,6 @@ Function Create-MSI
         -ArgumentList "-nologo -v $Global:Distrib\AppFiles.wxs" `
         -WorkingDirectory $Global:Distrib
 
-    $Version = Get-App-Version
     $Output = "TQLApp.msi"
 
     Write-Host "Linking $Output"

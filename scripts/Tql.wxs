@@ -4,6 +4,7 @@
     Shared variables
   -->
 
+  <!-- prettier-ignore -->
   <?define ProductName="Techie's Quick Launcher"?>
   <?define ProductDescription="Quick Launcher for Techies"?>
   <?define Manufacturer="Pieter van Ginkel"?>
@@ -32,9 +33,18 @@
       InstallScope="perUser"
     />
 
-    <WixVariable Id="WixUILicenseRtf" Value="..\scripts\Assets\LICENSE.rtf" />
-    <WixVariable Id="WixUIDialogBmp" Value="..\scripts\Assets\WixUIDialogBmp.png" />
-    <WixVariable Id="WixUIBannerBmp" Value="..\scripts\Assets\WixUIBannerBmp.png" />
+    <WixVariable
+      Id="WixUILicenseRtf"
+      Value="..\scripts\Assets\Terms of Service.rtf"
+    />
+    <WixVariable
+      Id="WixUIDialogBmp"
+      Value="..\scripts\Assets\WixUIDialogBmp.png"
+    />
+    <WixVariable
+      Id="WixUIBannerBmp"
+      Value="..\scripts\Assets\WixUIBannerBmp.png"
+    />
 
     <Media Id="1" Cabinet="Product.cab" EmbedCab="yes" />
 
