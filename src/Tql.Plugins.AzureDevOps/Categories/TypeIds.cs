@@ -20,6 +20,13 @@ internal static class TypeIds
     public static readonly MatchTypeId News = CreateId("2e9aece7-2741-4559-8b81-3964be627c81");
     public static readonly MatchTypeId New = CreateId("1149d624-9dcf-4fc5-bdf5-41f2bdfd2217");
 
+    public static readonly MatchTypeId NewPullRequests = CreateId(
+        "2ec48a57-1ef8-4efc-be04-07d479870b8c"
+    );
+    public static readonly MatchTypeId NewPullRequest = CreateId(
+        "621e52e2-7a43-43ff-a7f0-ea75058bd766"
+    );
+
     public static readonly MatchTypeId Pipelines = CreateId("ad43b94d-b94d-4974-8bd9-9d479ed9c9c7");
     public static readonly MatchTypeId Pipeline = CreateId("34e37fdc-6843-4dd4-8cb8-5d9d299a4aa7");
 

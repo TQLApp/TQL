@@ -358,6 +358,24 @@ namespace Tql.Plugins.AzureDevOps {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New Pull Request.
+        /// </summary>
+        public static string NewPullRequestsMatch_Label {
+            get {
+                return ResourceManager.GetString("NewPullRequestsMatch_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find source branch.
+        /// </summary>
+        public static string NewPullRequestsMatch_SearchHint {
+            get {
+                return ResourceManager.GetString("NewPullRequestsMatch_SearchHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Azure DevOps New.
         /// </summary>
         public static string NewsMatch_Label {

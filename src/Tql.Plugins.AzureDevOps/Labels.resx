@@ -252,4 +252,10 @@
   <data name="ConnectionEditWindow_Title" xml:space="preserve">
     <value>Edit Connection</value>
   </data>
+  <data name="NewPullRequestsMatch_Label" xml:space="preserve">
+    <value>New Pull Request</value>
+  </data>
+  <data name="NewPullRequestsMatch_SearchHint" xml:space="preserve">
+    <value>Find source branch</value>
+  </data>
 </root>
