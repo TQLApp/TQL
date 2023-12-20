@@ -15,8 +15,7 @@ internal class AzureDevOpsApi(
     private readonly AsyncLock _lock = new();
     private readonly Dictionary<string, VssConnection> _connections = new();
 
-    public async Task<T> GetClient<T>(string collectionUrl)
-        where T : IVssHttpClient
+    private async Task<VssConnection> GetConnection(string collectionUrl)
     {
         VssConnection? vssConnection;
 
@@ -58,7 +57,22 @@ internal class AzureDevOpsApi(
             }
         }
 
+        return vssConnection;
+    }
+
+    public async Task<T> GetClient<T>(string collectionUrl)
+        where T : IVssHttpClient
+    {
+        var vssConnection = await GetConnection(collectionUrl);
+
         return await vssConnection.GetClientAsync<T>();
+    }
+
+    public async Task<Guid> GetUserId(string collectionUrl)
+    {
+        var vssConnection = await GetConnection(collectionUrl);
+
+        return vssConnection.AuthorizedIdentity.Id;
     }
 
     private static async Task EnsureCanConnect(VssConnection vssConnection)

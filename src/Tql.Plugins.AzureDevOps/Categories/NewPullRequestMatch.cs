@@ -1,9 +1,8 @@
 ﻿using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
 using Tql.Abstractions;
-using Tql.Utilities;
 
-namespace Tql.Plugins.GitHub.Categories;
+namespace Tql.Plugins.AzureDevOps.Categories;
 
 // This class is not serializable because instances of this class
 // are transient by definition. The moment the user creates the pull
@@ -12,7 +11,7 @@ namespace Tql.Plugins.GitHub.Categories;
 // still need the TypeId though!
 internal class NewPullRequestMatch(NewPullRequestMatchDto dto) : IRunnableMatch, ICopyableMatch
 {
-    public string Text => dto.CompareBranch;
+    public string Text => dto.SourceBranch;
     public ImageSource Icon => Images.PullRequest;
     public MatchTypeId TypeId => TypeIds.NewPullRequest;
 
@@ -32,12 +31,12 @@ internal class NewPullRequestMatch(NewPullRequestMatchDto dto) : IRunnableMatch,
 }
 
 internal record NewPullRequestMatchDto(
-    Guid Id,
-    string Owner,
-    string Repository,
-    string CompareBranch
+    string Url,
+    string ProjectName,
+    string RepositoryName,
+    string SourceBranch
 )
 {
     public string GetUrl() =>
-        $"https://github.com/{Uri.EscapeDataString(Owner)}/{Uri.EscapeDataString(Repository)}/compare/{Uri.EscapeDataString(CompareBranch)}?expand=1";
+        $"{Url.TrimEnd('/')}/{Uri.EscapeDataString(ProjectName)}/_git/{Uri.EscapeDataString(RepositoryName)}/pullrequestcreate?sourceRef={Uri.EscapeDataString(SourceBranch)}";
 }

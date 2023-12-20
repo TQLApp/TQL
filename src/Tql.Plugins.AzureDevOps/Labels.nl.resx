@@ -238,4 +238,12 @@
     <value>Bewerk Verbinding</value>
     <comment>Original: Edit Connection</comment>
   </data>
+  <data name="NewPullRequestsMatch_Label" xml:space="preserve">
+    <value>Nieuwe Pull Request</value>
+    <comment>Original: New Pull Request</comment>
+  </data>
+  <data name="NewPullRequestsMatch_SearchHint" xml:space="preserve">
+    <value>Vind source branch</value>
+    <comment>Original: Find source branch</comment>
+  </data>
 </root>

@@ -10,7 +10,8 @@ internal class NewsMatch(
     RootItemDto dto,
     ICache<AzureData> cache,
     ConfigurationManager configurationManager,
-    IMatchFactory<NewMatch, NewMatchDto> factory
+    IMatchFactory<NewMatch, NewMatchDto> factory,
+    IMatchFactory<NewPullRequestsMatch, NewPullRequestsMatchDto> pullRequestsFactory
 ) : CachedMatch<AzureData>(cache), ISerializableMatch
 {
     public override string Text =>
@@ -36,6 +37,13 @@ internal class NewsMatch(
             {
                 yield return factory.Create(
                     new NewMatchDto(dto.Url, project.Name, NewMatchType.WorkItem, workItemType.Name)
+                );
+            }
+
+            foreach (var repository in project.Repositories)
+            {
+                yield return pullRequestsFactory.Create(
+                    new NewPullRequestsMatchDto(dto.Url, project.Name, repository.Name)
                 );
             }
         }
