@@ -10,7 +10,7 @@ namespace Tql.Plugins.GitHub.Categories;
 // request, the instance in the history becomes invalid. Because of
 // this, there also isn't a MatchType class for this match. We do
 // still need the TypeId though!
-internal class NewPullRequestMatch(NewPullRequestDto dto) : IRunnableMatch, ICopyableMatch
+internal class NewPullRequestMatch(NewPullRequestMatchDto dto) : IRunnableMatch, ICopyableMatch
 {
     public string Text => dto.CompareBranch;
     public ImageSource Icon => Images.PullRequest;
@@ -31,7 +31,12 @@ internal class NewPullRequestMatch(NewPullRequestDto dto) : IRunnableMatch, ICop
     }
 }
 
-internal record NewPullRequestDto(Guid Id, string Owner, string Repository, string CompareBranch)
+internal record NewPullRequestMatchDto(
+    Guid Id,
+    string Owner,
+    string Repository,
+    string CompareBranch
+)
 {
     public string GetUrl() =>
         $"https://github.com/{Uri.EscapeDataString(Owner)}/{Uri.EscapeDataString(Repository)}/compare/{Uri.EscapeDataString(CompareBranch)}?expand=1";

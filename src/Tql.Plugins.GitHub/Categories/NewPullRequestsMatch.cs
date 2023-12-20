@@ -9,7 +9,7 @@ namespace Tql.Plugins.GitHub.Categories;
 internal class NewPullRequestsMatch(
     NewMatchDto dto,
     GitHubApi api,
-    IMatchFactory<NewPullRequestMatch, NewPullRequestDto> factory
+    IMatchFactory<NewPullRequestMatch, NewPullRequestMatchDto> factory
 ) : ISerializableMatch, ISearchableMatch
 {
     public string Text =>
@@ -89,7 +89,7 @@ internal class NewPullRequestsMatch(
             .Select(
                 p =>
                     factory.Create(
-                        new NewPullRequestDto(
+                        new NewPullRequestMatchDto(
                             dto.Id!.Value,
                             dto.Owner!,
                             dto.Repository!,
