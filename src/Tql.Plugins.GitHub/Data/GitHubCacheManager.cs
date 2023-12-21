@@ -14,7 +14,7 @@ internal class GitHubCacheManager : ICacheManager<GitHubData>
     private readonly ConfigurationManager _configurationManager;
     private readonly GitHubApi _api;
 
-    public int Version => 3;
+    public int Version => 4;
 
     public event EventHandler<CacheInvalidationRequiredEventArgs>? CacheInvalidationRequired;
 
@@ -42,7 +42,12 @@ internal class GitHubCacheManager : ICacheManager<GitHubData>
                 select organization.Login
             ).ToImmutableArray();
 
-            var repositories = await GetRepositories(user, organizations, client);
+            var repositories = await GetRepositories(
+                user,
+                organizations,
+                client,
+                graphQlConnection
+            );
 
             var projects = await GetProjects(user, organizations, graphQlConnection);
 
@@ -63,7 +68,8 @@ internal class GitHubCacheManager : ICacheManager<GitHubData>
     private static async Task<ImmutableArray<GitHubRepository>> GetRepositories(
         User user,
         ImmutableArray<string> organizations,
-        GitHubClient client
+        GitHubClient client,
+        GraphQLConnection graphQlConnection
     )
     {
         var repositories = ImmutableArray.CreateBuilder<GitHubRepository>();
@@ -78,17 +84,47 @@ internal class GitHubCacheManager : ICacheManager<GitHubData>
 
             var response = await client.Search.SearchRepo(request);
 
-            repositories.AddRange(
-                response.Items.Select(
-                    p => new GitHubRepository(p.Owner.Login, p.Name, p.HtmlUrl, p.UpdatedAt)
-                )
-            );
+            foreach (var repository in response.Items)
+            {
+                var issueTemplates = await GetIssueTemplates(
+                    repository.Owner.Login,
+                    repository.Name,
+                    graphQlConnection
+                );
+
+                repositories.Add(
+                    new GitHubRepository(
+                        repository.Owner.Login,
+                        repository.Name,
+                        repository.HtmlUrl,
+                        repository.UpdatedAt,
+                        issueTemplates
+                    )
+                );
+            }
 
             if (response.Items.Count == 0)
                 break;
         }
 
         return repositories.ToImmutable();
+    }
+
+    private static async Task<ImmutableArray<GitHubIssueTemplate>> GetIssueTemplates(
+        string owner,
+        string name,
+        GraphQLConnection graphQlConnection
+    )
+    {
+        var query = new Query()
+            .Repository(name, owner)
+            .IssueTemplates.Select(p => new { p.Name, p.Filename })
+            .Compile();
+
+        return (
+            from issueTemplate in await graphQlConnection.Run(query)
+            select new GitHubIssueTemplate(issueTemplate.Name, issueTemplate.Filename)
+        ).ToImmutableArray();
     }
 
     private async Task<ImmutableArray<GitHubProject>> GetProjects(

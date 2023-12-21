@@ -5,6 +5,7 @@ description: Verify search features.
 ---
 
 {% if page %}{% assign spec = page %}{% endif %}
+{% include Configuration/Plugins/Azure-DevOps.md %}
 
 # {{ spec.title }}
 
@@ -73,6 +74,28 @@ description: Verify search features.
 | **Enter** the **Azure DevOps New** category. | A list of things to create shows.                 |
 | **Type** in `user story`.                    | One or more **... › User Story** categories show. |
 | **Activate** a **... › User Story** item     | The new user story editor opens.                  |
+
+## Create a pull request
+
+This spec requires a recent new branch. Create this first if it doesn't exist.
+
+| Action                                                                            | Expected result |
+| --------------------------------------------------------------------------------- | --------------- |
+| Open Azure DevOps at {{ azure_devops_url }}.                                      |                 |
+| Open the Launcher project.                                                        |                 |
+| Open the Launcher repository.                                                     |                 |
+| Open the branches drop-down and click **+ New branch**.                           |                 |
+| Change **Based on** to **main**, give the new branch a name and click **Create**. |                 |
+
+This new branch should now show up in the following spec:
+
+| Action                                                                | Expected result                                                                     |
+| --------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| Open the app.                                                         |                                                                                     |
+| **Enter** the **Azure DevOps New** category.                          | A list of things to create shows.                                                   |
+| **Type** in `pull request`                                            | One or more **... › New Pull Request** category show.                               |
+| **Activate** the **Launcher › Launcher › New Pull Request** category. | One or more branches show, including at least the one you just created.             |
+| **Activate** the branch you just created.                             | The new pull request page opens in Azure DevOps with the activated branch selected. |
 
 ## Find pipeline
 
