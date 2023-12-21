@@ -17,8 +17,11 @@ internal record GitHubRepository(
     string Owner,
     string Name,
     string HtmlUrl,
-    DateTimeOffset UpdatedAt
+    DateTimeOffset UpdatedAt,
+    ImmutableArray<GitHubIssueTemplate> IssueTemplates
 );
+
+internal record GitHubIssueTemplate(string Name, string FileName);
 
 internal record GitHubProject(
     string Owner,

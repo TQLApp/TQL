@@ -11,7 +11,11 @@ internal class NewsMatch(
     ICache<GitHubData> cache,
     ConfigurationManager configurationManager,
     IMatchFactory<NewMatch, NewMatchDto> factory,
-    IMatchFactory<NewPullRequestsMatch, NewMatchDto> newPullRequestsFactory
+    IMatchFactory<NewPullRequestsMatch, NewMatchDto> newPullRequestsFactory,
+    IMatchFactory<
+        NewIssueFromTemplateMatch,
+        NewIssueFromTemplateMatchDto
+    > newIssueFromTemplateFactory
 ) : CachedMatch<GitHubData>(cache), ISerializableMatch
 {
     public override string Text =>
@@ -36,6 +40,18 @@ internal class NewsMatch(
             yield return factory.Create(
                 new NewMatchDto(dto.Id, repository.Owner, repository.Name, NewMatchType.Issue)
             );
+            foreach (var issueTemplate in repository.IssueTemplates)
+            {
+                yield return newIssueFromTemplateFactory.Create(
+                    new NewIssueFromTemplateMatchDto(
+                        dto.Id,
+                        repository.Owner,
+                        repository.Name,
+                        issueTemplate.Name,
+                        issueTemplate.FileName
+                    )
+                );
+            }
             yield return newPullRequestsFactory.Create(
                 new NewMatchDto(dto.Id, repository.Owner, repository.Name, NewMatchType.PullRequest)
             );

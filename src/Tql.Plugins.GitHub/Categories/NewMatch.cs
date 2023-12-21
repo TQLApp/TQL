@@ -58,7 +58,6 @@ internal class NewMatch(NewMatchDto dto) : IRunnableMatch, ISerializableMatch, I
         {
             NewMatchType.Issue
                 => $"https://github.com/{dto.Owner}/{dto.Repository}/issues/new/choose",
-            NewMatchType.PullRequest => $"https://github.com/{dto.Owner}/{dto.Repository}/compare",
             NewMatchType.Repository => "https://github.com/new",
             NewMatchType.Gist => "https://gist.github.com/",
             NewMatchType.Organization => "https://github.com/account/organizations/new",
