@@ -1,18 +1,32 @@
+>>>>>CM:GREEN
 <Project Sdk="Microsoft.NET.Sdk">
 
+>>>>>CM:GREEN
   <PropertyGroup>
+>>>>>CM:GREEN
     <TargetFramework>net7.0</TargetFramework>
+>>>>>CM:GREEN
     <ImplicitUsings>enable</ImplicitUsings>
+>>>>>CM:GREEN
     <Nullable>enable</Nullable>
+>>>>>CM:GREEN
   </PropertyGroup>
 
+>>>>>CM:GREEN
   <ItemGroup>
+>>>>>CM:GREEN
     <PackageReference Include="Docfx.Plugins" Version="2.74.0" />
+>>>>>CM:GREEN
     <PackageReference Include="Microsoft.Composition" Version="1.0.31" />
+>>>>>CM:GREEN
   </ItemGroup>
 
+>>>>>CM:GREEN
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+>>>>>CM:GREEN
     <Exec Command="copy $(OutDir)\$(TargetFileName) $(SolutionDir)..\..\docs\Template\Plugins" />
+>>>>>CM:GREEN
   </Target>
 
+>>>>>CM:GREEN
 </Project>

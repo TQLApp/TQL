@@ -1,221 +1,418 @@
+>>>>>CM:GREEN
 <?xml version="1.0" encoding="UTF-8"?>
+>>>>>CM:GREEN
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+>>>>>CM:GREEN
   <!-- 
+>>>>>CM:GREEN
     Shared variables
+>>>>>CM:GREEN
   -->
 
+>>>>>CM:GREEN
   <!-- prettier-ignore -->
+>>>>>CM:GREEN
   <?define ProductName="Techie's Quick Launcher"?>
+>>>>>CM:GREEN
   <?define ProductDescription="Quick Launcher for Techies"?>
+>>>>>CM:GREEN
   <?define Manufacturer="Pieter van Ginkel"?>
+>>>>>CM:GREEN
   <?include Version.wxi?>
+>>>>>CM:GREEN
   <?define RegistryRoot="HKCU"?>
+>>>>>CM:GREEN
   <?define RegistryBaseKey="Software\TQL"?>
 
+>>>>>CM:GREEN
   <Product
+>>>>>CM:GREEN
     Name="$(var.ProductName)"
+>>>>>CM:GREEN
     Manufacturer="$(var.Manufacturer)"
+>>>>>CM:GREEN
     Id="$(var.VersionId)"
+>>>>>CM:GREEN
     UpgradeCode="bc88996c-303d-44f0-aca4-28490b78603b"
+>>>>>CM:GREEN
     Language="1033"
+>>>>>CM:GREEN
     Codepage="1252"
+>>>>>CM:GREEN
     Version="$(var.Version)"
+>>>>>CM:GREEN
   >
+>>>>>CM:GREEN
     <Package
+>>>>>CM:GREEN
       Id="*"
+>>>>>CM:GREEN
       Keywords="Installer"
+>>>>>CM:GREEN
       Description="$(var.ProductName) Installer"
+>>>>>CM:GREEN
       Manufacturer="$(var.Manufacturer)"
+>>>>>CM:GREEN
       InstallerVersion="100"
+>>>>>CM:GREEN
       Languages="1033"
+>>>>>CM:GREEN
       Compressed="yes"
+>>>>>CM:GREEN
       SummaryCodepage="1252"
+>>>>>CM:GREEN
       InstallScope="perUser"
+>>>>>CM:GREEN
     />
 
+>>>>>CM:GREEN
     <WixVariable
+>>>>>CM:GREEN
       Id="WixUILicenseRtf"
+>>>>>CM:GREEN
       Value="..\scripts\Assets\Terms of Service.rtf"
+>>>>>CM:GREEN
     />
+>>>>>CM:GREEN
     <WixVariable
+>>>>>CM:GREEN
       Id="WixUIDialogBmp"
+>>>>>CM:GREEN
       Value="..\scripts\Assets\WixUIDialogBmp.png"
+>>>>>CM:GREEN
     />
+>>>>>CM:GREEN
     <WixVariable
+>>>>>CM:GREEN
       Id="WixUIBannerBmp"
+>>>>>CM:GREEN
       Value="..\scripts\Assets\WixUIBannerBmp.png"
+>>>>>CM:GREEN
     />
 
+>>>>>CM:GREEN
     <Media Id="1" Cabinet="Product.cab" EmbedCab="yes" />
 
+>>>>>CM:GREEN
     <!-- 
+>>>>>CM:GREEN
       Directory structure
+>>>>>CM:GREEN
     -->
 
+>>>>>CM:GREEN
     <Directory Id="TARGETDIR" Name="SourceDir">
+>>>>>CM:GREEN
       <Directory Id="LocalAppDataFolder">
+>>>>>CM:GREEN
         <Directory Id="ProgramsFolder" Name="Programs">
+>>>>>CM:GREEN
           <Directory Id="INSTALLFOLDER" Name="TQL" />
+>>>>>CM:GREEN
         </Directory>
+>>>>>CM:GREEN
       </Directory>
+>>>>>CM:GREEN
       <Directory Id="ProgramMenuFolder">
+>>>>>CM:GREEN
         <Directory Id="MyProgramMenuFolder" Name="$(var.ProductName)" />
+>>>>>CM:GREEN
       </Directory>
+>>>>>CM:GREEN
       <Directory Id="StartupFolder" />
+>>>>>CM:GREEN
     </Directory>
 
+>>>>>CM:GREEN
     <!-- 
+>>>>>CM:GREEN
       Shortcuts
+>>>>>CM:GREEN
     -->
 
+>>>>>CM:GREEN
     <DirectoryRef Id="MyProgramMenuFolder">
+>>>>>CM:GREEN
       <Component Id="MyShortcuts" Guid="8dd80f29-afef-4af5-9a16-82919972a228">
+>>>>>CM:GREEN
         <Shortcut
+>>>>>CM:GREEN
           Id="StartMenuShortcut"
+>>>>>CM:GREEN
           Name="$(var.ProductName)"
+>>>>>CM:GREEN
           Description="$(var.ProductDescription)"
+>>>>>CM:GREEN
           Target="[INSTALLFOLDER]Tql.App.exe"
+>>>>>CM:GREEN
           WorkingDirectory="INSTALLFOLDER"
+>>>>>CM:GREEN
         />
+>>>>>CM:GREEN
         <Shortcut
+>>>>>CM:GREEN
           Id="StartMenuUninstallShortcut"
+>>>>>CM:GREEN
           Name="Uninstall $(var.ProductName)"
+>>>>>CM:GREEN
           Target="[SystemFolder]msiexec.exe"
+>>>>>CM:GREEN
           Arguments="/x [ProductCode]"
+>>>>>CM:GREEN
           Description="Uninstalls $(var.ProductDescription)"
+>>>>>CM:GREEN
         />
+>>>>>CM:GREEN
         <RemoveFolder
+>>>>>CM:GREEN
           Id="ShortcutsCleanup"
+>>>>>CM:GREEN
           Directory="MyProgramMenuFolder"
+>>>>>CM:GREEN
           On="uninstall"
+>>>>>CM:GREEN
         />
+>>>>>CM:GREEN
         <RegistryValue
+>>>>>CM:GREEN
           Root="$(var.RegistryRoot)"
+>>>>>CM:GREEN
           Key="$(var.RegistryBaseKey)\Installation"
+>>>>>CM:GREEN
           Name="Shortcuts"
+>>>>>CM:GREEN
           Value="1"
+>>>>>CM:GREEN
           Type="integer"
+>>>>>CM:GREEN
           KeyPath="yes"
+>>>>>CM:GREEN
         />
+>>>>>CM:GREEN
       </Component>
+>>>>>CM:GREEN
     </DirectoryRef>
 
+>>>>>CM:GREEN
     <DirectoryRef Id="StartupFolder">
+>>>>>CM:GREEN
       <Component
+>>>>>CM:GREEN
         Id="MyStartupShortcuts"
+>>>>>CM:GREEN
         Guid="da8817bc-20f4-4429-8503-41179cdba7ed"
+>>>>>CM:GREEN
       >
+>>>>>CM:GREEN
         <Shortcut
+>>>>>CM:GREEN
           Id="StartupShortcut"
+>>>>>CM:GREEN
           Name="$(var.ProductName)"
+>>>>>CM:GREEN
           Description="$(var.ProductDescription)"
+>>>>>CM:GREEN
           Target="[INSTALLFOLDER]Tql.App.exe"
+>>>>>CM:GREEN
           WorkingDirectory="INSTALLFOLDER"
+>>>>>CM:GREEN
           Arguments="--silent"
+>>>>>CM:GREEN
         />
+>>>>>CM:GREEN
         <RemoveFile
+>>>>>CM:GREEN
           Id="StartupShortcutCleanup"
+>>>>>CM:GREEN
           Name="$(var.ProductName).lnk"
+>>>>>CM:GREEN
           Directory="StartupFolder"
+>>>>>CM:GREEN
           On="uninstall"
+>>>>>CM:GREEN
         />
+>>>>>CM:GREEN
         <RegistryValue
+>>>>>CM:GREEN
           Root="$(var.RegistryRoot)"
+>>>>>CM:GREEN
           Key="$(var.RegistryBaseKey)\Installation"
+>>>>>CM:GREEN
           Name="StartupShortcuts"
+>>>>>CM:GREEN
           Value="1"
+>>>>>CM:GREEN
           Type="integer"
+>>>>>CM:GREEN
           KeyPath="yes"
+>>>>>CM:GREEN
         />
+>>>>>CM:GREEN
       </Component>
+>>>>>CM:GREEN
     </DirectoryRef>
 
+>>>>>CM:GREEN
     <!-- 
+>>>>>CM:GREEN
       Main product.
+>>>>>CM:GREEN
     -->
 
+>>>>>CM:GREEN
     <ComponentGroup Id="MyProduct" Directory="INSTALLFOLDER">
+>>>>>CM:GREEN
       <Component
+>>>>>CM:GREEN
         Id="CleanupComponent"
+>>>>>CM:GREEN
         Guid="ea575cf4-df5e-4d66-9cd9-9dee225cb33d"
+>>>>>CM:GREEN
       >
+>>>>>CM:GREEN
         <RemoveFolder
+>>>>>CM:GREEN
           Id="InstallationFolderCleanup"
+>>>>>CM:GREEN
           Directory="INSTALLFOLDER"
+>>>>>CM:GREEN
           On="uninstall"
+>>>>>CM:GREEN
         />
+>>>>>CM:GREEN
         <RegistryValue
+>>>>>CM:GREEN
           Root="$(var.RegistryRoot)"
+>>>>>CM:GREEN
           Key="$(var.RegistryBaseKey)"
+>>>>>CM:GREEN
           Type="string"
+>>>>>CM:GREEN
           Value=""
+>>>>>CM:GREEN
           KeyPath="yes"
+>>>>>CM:GREEN
         />
+>>>>>CM:GREEN
       </Component>
+>>>>>CM:GREEN
     </ComponentGroup>
 
+>>>>>CM:GREEN
     <Feature Id="MyFeature" Title="$(var.ProductName)" Level="1">
+>>>>>CM:GREEN
       <ComponentGroupRef Id="MyProduct" />
+>>>>>CM:GREEN
       <ComponentGroupRef Id="MyAppComponents" />
+>>>>>CM:GREEN
       <ComponentRef Id="MyShortcuts" />
+>>>>>CM:GREEN
       <ComponentRef Id="MyStartupShortcuts" />
+>>>>>CM:GREEN
     </Feature>
 
+>>>>>CM:GREEN
     <!-- 
+>>>>>CM:GREEN
       Default the launch the application. The user may disable this,
+>>>>>CM:GREEN
       but it ensures that the app gets re-launched on silent upgrades.
+>>>>>CM:GREEN
     -->
 
+>>>>>CM:GREEN
     <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOX" Value="1" />
 
+>>>>>CM:GREEN
     <!-- 
+>>>>>CM:GREEN
       UI
+>>>>>CM:GREEN
     -->
 
+>>>>>CM:GREEN
     <UI>
+>>>>>CM:GREEN
       <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+>>>>>CM:GREEN
       <Property
+>>>>>CM:GREEN
         Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT"
+>>>>>CM:GREEN
         Value="Launch $(var.ProductName)"
+>>>>>CM:GREEN
       />
 
+>>>>>CM:GREEN
       <UIRef Id="WixUI_InstallDir" />
+>>>>>CM:GREEN
       <UIRef Id="WixUI_Common" />
 
+>>>>>CM:GREEN
       <DialogRef Id="ProgressDlg" />
+>>>>>CM:GREEN
       <DialogRef Id="ExitDialog" />
+>>>>>CM:GREEN
     </UI>
 
+>>>>>CM:GREEN
     <InstallUISequence>
+>>>>>CM:GREEN
       <Show Dialog="ProgressDlg" Before="ExecuteAction" />
+>>>>>CM:GREEN
       <Show Dialog="ExitDialog" OnExit="success" />
+>>>>>CM:GREEN
     </InstallUISequence>
 
+>>>>>CM:GREEN
     <!-- 
+>>>>>CM:GREEN
       Upgrade metadata
+>>>>>CM:GREEN
     -->
 
+>>>>>CM:GREEN
     <MajorUpgrade
+>>>>>CM:GREEN
       DowngradeErrorMessage="A later version of $(var.ProductName) is already installed. Setup will now exit."
+>>>>>CM:GREEN
     />
 
+>>>>>CM:GREEN
     <!--
+>>>>>CM:GREEN
       Launching the app
+>>>>>CM:GREEN
     -->
 
+>>>>>CM:GREEN
     <CustomAction
+>>>>>CM:GREEN
       Id="LaunchApplication"
+>>>>>CM:GREEN
       Execute="immediate"
+>>>>>CM:GREEN
       Impersonate="yes"
+>>>>>CM:GREEN
       Return="asyncNoWait"
+>>>>>CM:GREEN
       Directory="INSTALLFOLDER"
+>>>>>CM:GREEN
       ExeCommand="[INSTALLFOLDER]Tql.App.exe"
+>>>>>CM:GREEN
     />
 
+>>>>>CM:GREEN
     <InstallExecuteSequence>
+>>>>>CM:GREEN
       <Custom Action="LaunchApplication" After="InstallFinalize">
+>>>>>CM:GREEN
         WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1
+>>>>>CM:GREEN
       </Custom>
+>>>>>CM:GREEN
     </InstallExecuteSequence>
+>>>>>CM:GREEN
   </Product>
+>>>>>CM:GREEN
 </Wix>

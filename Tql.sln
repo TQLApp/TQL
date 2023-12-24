@@ -1,168 +1,335 @@
 ﻿
+>>>>>CM:GREEN
 Microsoft Visual Studio Solution File, Format Version 12.00
+>>>>>CM:GREEN
 # Visual Studio Version 17
+>>>>>CM:GREEN
 VisualStudioVersion = 17.7.34031.279
+>>>>>CM:GREEN
 MinimumVisualStudioVersion = 10.0.40219.1
+>>>>>CM:GREEN
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tql.App", "src\Tql.App\Tql.App.csproj", "{DF5BE5AC-476E-4B2F-9FE1-0A3904549212}"
+>>>>>CM:GREEN
 EndProject
+>>>>>CM:GREEN
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tql.Abstractions", "src\Tql.Abstractions\Tql.Abstractions.csproj", "{496D3069-B962-4FBA-85D6-04514A4FC3F5}"
+>>>>>CM:GREEN
 EndProject
+>>>>>CM:GREEN
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tql.Plugins.AzureDevOps", "src\Tql.Plugins.AzureDevOps\Tql.Plugins.AzureDevOps.csproj", "{09D6838F-0A44-4B70-AB00-18E2A39ED6DB}"
+>>>>>CM:GREEN
 EndProject
+>>>>>CM:GREEN
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tql.Utilities", "src\Tql.Utilities\Tql.Utilities.csproj", "{9A3DADDE-2D3A-4C9A-8142-2C605C9DE731}"
+>>>>>CM:GREEN
 EndProject
+>>>>>CM:GREEN
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App", "App", "{094A034F-EBB5-42F1-A87B-633A3117042F}"
+>>>>>CM:GREEN
 EndProject
+>>>>>CM:GREEN
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{E67CF545-0D68-469F-BD58-DAC8EDCE4562}"
+>>>>>CM:GREEN
 EndProject
+>>>>>CM:GREEN
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tql.App.Test", "tests\Tql.App.Test\Tql.App.Test.csproj", "{F03E8683-F9DF-47A1-807A-E46F6CC817E8}"
+>>>>>CM:GREEN
 EndProject
+>>>>>CM:GREEN
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tql.Plugins.Azure", "src\Tql.Plugins.Azure\Tql.Plugins.Azure.csproj", "{784B5E1A-F6AC-4928-8200-F9751E9A4DEA}"
+>>>>>CM:GREEN
 EndProject
+>>>>>CM:GREEN
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tql.Plugins.Azure.ResourcesConverter", "src\Tql.Plugins.Azure.ResourcesConverter\Tql.Plugins.Azure.ResourcesConverter.csproj", "{F334EB1B-05E6-47FF-B88C-806F2288E3E8}"
+>>>>>CM:GREEN
 EndProject
+>>>>>CM:GREEN
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tql.Plugins.GitHub", "src\Tql.Plugins.GitHub\Tql.Plugins.GitHub.csproj", "{AEA1E75D-5444-4496-B27A-E5794FC1ED90}"
+>>>>>CM:GREEN
 EndProject
+>>>>>CM:GREEN
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tql.Plugins.Jira", "src\Tql.Plugins.Jira\Tql.Plugins.Jira.csproj", "{1C729906-D7AD-4AFF-A885-6DDE561438E6}"
+>>>>>CM:GREEN
 EndProject
+>>>>>CM:GREEN
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tql.Plugins.MicrosoftTeams", "src\Tql.Plugins.MicrosoftTeams\Tql.Plugins.MicrosoftTeams.csproj", "{DF829FD0-CB9D-4229-B010-AB31851ADC2A}"
+>>>>>CM:GREEN
 EndProject
+>>>>>CM:GREEN
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tql.Plugins.Confluence", "src\Tql.Plugins.Confluence\Tql.Plugins.Confluence.csproj", "{0A274981-B8C5-47D6-9AC8-295149B9A5DF}"
+>>>>>CM:GREEN
 EndProject
+>>>>>CM:GREEN
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tql.PluginTestSupport", "tests\Tql.PluginTestSupport\Tql.PluginTestSupport.csproj", "{C4F2211F-22B3-4983-89FC-F65A386D197D}"
+>>>>>CM:GREEN
 EndProject
+>>>>>CM:GREEN
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tql.Plugins.GitHub.Test", "tests\Tql.Plugins.GitHub.Test\Tql.Plugins.GitHub.Test.csproj", "{CCCC5456-D907-474E-86F3-A00F1732E254}"
+>>>>>CM:GREEN
 EndProject
+>>>>>CM:GREEN
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tql.Plugins.Demo", "src\Tql.Plugins.Demo\Tql.Plugins.Demo.csproj", "{CD857478-20C7-4BA9-8CB7-886FDFD62D0B}"
+>>>>>CM:GREEN
 EndProject
+>>>>>CM:GREEN
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tql.DebugApp", "src\Tql.DebugApp\Tql.DebugApp.csproj", "{FF29F203-71D5-43B5-91F2-4260194B7B1F}"
+>>>>>CM:GREEN
 EndProject
+>>>>>CM:GREEN
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tql.Plugins.Outlook", "src\Tql.Plugins.Outlook\Tql.Plugins.Outlook.csproj", "{0B52F552-CBE0-423E-8EEC-EF2E8D5FAF91}"
+>>>>>CM:GREEN
 EndProject
+>>>>>CM:GREEN
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tql.Plugins.Demo.Test", "tests\Tql.Plugins.Demo.Test\Tql.Plugins.Demo.Test.csproj", "{493C14D2-0DAF-4167-BC04-2023DF55AB45}"
+>>>>>CM:GREEN
 EndProject
+>>>>>CM:GREEN
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tql.Benchmarks", "src\Tql.Benchmarks\Tql.Benchmarks.csproj", "{E5226BB4-2336-40E5-8A8F-9B3F241AA459}"
+>>>>>CM:GREEN
 EndProject
+>>>>>CM:GREEN
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tql.Localization", "src\Tql.Localization\Tql.Localization.csproj", "{3BCD5CFB-31AD-42E5-BC08-40C38F63523E}"
+>>>>>CM:GREEN
 EndProject
+>>>>>CM:GREEN
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C6ED2573-EB45-49CB-BFD3-9D09A60BA23F}"
+>>>>>CM:GREEN
 	ProjectSection(SolutionItems) = preProject
+>>>>>CM:GREEN
 		Directory.Build.props = Directory.Build.props
+>>>>>CM:GREEN
 		README.md = README.md
+>>>>>CM:GREEN
 		Tql.targets = Tql.targets
+>>>>>CM:GREEN
 		TqlPackage.targets = TqlPackage.targets
+>>>>>CM:GREEN
 		TqlPluginPackage.targets = TqlPluginPackage.targets
+>>>>>CM:GREEN
 		TqlSupportPackage.targets = TqlSupportPackage.targets
+>>>>>CM:GREEN
 	EndProjectSection
+>>>>>CM:GREEN
 EndProject
+>>>>>CM:GREEN
 Global
+>>>>>CM:GREEN
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+>>>>>CM:GREEN
 		Debug|Any CPU = Debug|Any CPU
+>>>>>CM:GREEN
 		Release|Any CPU = Release|Any CPU
+>>>>>CM:GREEN
 	EndGlobalSection
+>>>>>CM:GREEN
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+>>>>>CM:GREEN
 		{DF5BE5AC-476E-4B2F-9FE1-0A3904549212}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+>>>>>CM:GREEN
 		{DF5BE5AC-476E-4B2F-9FE1-0A3904549212}.Debug|Any CPU.Build.0 = Debug|Any CPU
+>>>>>CM:GREEN
 		{DF5BE5AC-476E-4B2F-9FE1-0A3904549212}.Release|Any CPU.ActiveCfg = Release|Any CPU
+>>>>>CM:GREEN
 		{DF5BE5AC-476E-4B2F-9FE1-0A3904549212}.Release|Any CPU.Build.0 = Release|Any CPU
+>>>>>CM:GREEN
 		{496D3069-B962-4FBA-85D6-04514A4FC3F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+>>>>>CM:GREEN
 		{496D3069-B962-4FBA-85D6-04514A4FC3F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+>>>>>CM:GREEN
 		{496D3069-B962-4FBA-85D6-04514A4FC3F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+>>>>>CM:GREEN
 		{496D3069-B962-4FBA-85D6-04514A4FC3F5}.Release|Any CPU.Build.0 = Release|Any CPU
+>>>>>CM:GREEN
 		{09D6838F-0A44-4B70-AB00-18E2A39ED6DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+>>>>>CM:GREEN
 		{09D6838F-0A44-4B70-AB00-18E2A39ED6DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+>>>>>CM:GREEN
 		{09D6838F-0A44-4B70-AB00-18E2A39ED6DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+>>>>>CM:GREEN
 		{09D6838F-0A44-4B70-AB00-18E2A39ED6DB}.Release|Any CPU.Build.0 = Release|Any CPU
+>>>>>CM:GREEN
 		{9A3DADDE-2D3A-4C9A-8142-2C605C9DE731}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+>>>>>CM:GREEN
 		{9A3DADDE-2D3A-4C9A-8142-2C605C9DE731}.Debug|Any CPU.Build.0 = Debug|Any CPU
+>>>>>CM:GREEN
 		{9A3DADDE-2D3A-4C9A-8142-2C605C9DE731}.Release|Any CPU.ActiveCfg = Release|Any CPU
+>>>>>CM:GREEN
 		{9A3DADDE-2D3A-4C9A-8142-2C605C9DE731}.Release|Any CPU.Build.0 = Release|Any CPU
+>>>>>CM:GREEN
 		{F03E8683-F9DF-47A1-807A-E46F6CC817E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+>>>>>CM:GREEN
 		{F03E8683-F9DF-47A1-807A-E46F6CC817E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+>>>>>CM:GREEN
 		{F03E8683-F9DF-47A1-807A-E46F6CC817E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+>>>>>CM:GREEN
 		{F03E8683-F9DF-47A1-807A-E46F6CC817E8}.Release|Any CPU.Build.0 = Release|Any CPU
+>>>>>CM:GREEN
 		{784B5E1A-F6AC-4928-8200-F9751E9A4DEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+>>>>>CM:GREEN
 		{784B5E1A-F6AC-4928-8200-F9751E9A4DEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+>>>>>CM:GREEN
 		{784B5E1A-F6AC-4928-8200-F9751E9A4DEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+>>>>>CM:GREEN
 		{784B5E1A-F6AC-4928-8200-F9751E9A4DEA}.Release|Any CPU.Build.0 = Release|Any CPU
+>>>>>CM:GREEN
 		{F334EB1B-05E6-47FF-B88C-806F2288E3E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+>>>>>CM:GREEN
 		{F334EB1B-05E6-47FF-B88C-806F2288E3E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+>>>>>CM:GREEN
 		{F334EB1B-05E6-47FF-B88C-806F2288E3E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+>>>>>CM:GREEN
 		{F334EB1B-05E6-47FF-B88C-806F2288E3E8}.Release|Any CPU.Build.0 = Release|Any CPU
+>>>>>CM:GREEN
 		{AEA1E75D-5444-4496-B27A-E5794FC1ED90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+>>>>>CM:GREEN
 		{AEA1E75D-5444-4496-B27A-E5794FC1ED90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+>>>>>CM:GREEN
 		{AEA1E75D-5444-4496-B27A-E5794FC1ED90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+>>>>>CM:GREEN
 		{AEA1E75D-5444-4496-B27A-E5794FC1ED90}.Release|Any CPU.Build.0 = Release|Any CPU
+>>>>>CM:GREEN
 		{1C729906-D7AD-4AFF-A885-6DDE561438E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+>>>>>CM:GREEN
 		{1C729906-D7AD-4AFF-A885-6DDE561438E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+>>>>>CM:GREEN
 		{1C729906-D7AD-4AFF-A885-6DDE561438E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+>>>>>CM:GREEN
 		{1C729906-D7AD-4AFF-A885-6DDE561438E6}.Release|Any CPU.Build.0 = Release|Any CPU
+>>>>>CM:GREEN
 		{DF829FD0-CB9D-4229-B010-AB31851ADC2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+>>>>>CM:GREEN
 		{DF829FD0-CB9D-4229-B010-AB31851ADC2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+>>>>>CM:GREEN
 		{DF829FD0-CB9D-4229-B010-AB31851ADC2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+>>>>>CM:GREEN
 		{DF829FD0-CB9D-4229-B010-AB31851ADC2A}.Release|Any CPU.Build.0 = Release|Any CPU
+>>>>>CM:GREEN
 		{0A274981-B8C5-47D6-9AC8-295149B9A5DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+>>>>>CM:GREEN
 		{0A274981-B8C5-47D6-9AC8-295149B9A5DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+>>>>>CM:GREEN
 		{0A274981-B8C5-47D6-9AC8-295149B9A5DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+>>>>>CM:GREEN
 		{0A274981-B8C5-47D6-9AC8-295149B9A5DF}.Release|Any CPU.Build.0 = Release|Any CPU
+>>>>>CM:GREEN
 		{C4F2211F-22B3-4983-89FC-F65A386D197D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+>>>>>CM:GREEN
 		{C4F2211F-22B3-4983-89FC-F65A386D197D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+>>>>>CM:GREEN
 		{C4F2211F-22B3-4983-89FC-F65A386D197D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+>>>>>CM:GREEN
 		{C4F2211F-22B3-4983-89FC-F65A386D197D}.Release|Any CPU.Build.0 = Release|Any CPU
+>>>>>CM:GREEN
 		{CCCC5456-D907-474E-86F3-A00F1732E254}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+>>>>>CM:GREEN
 		{CCCC5456-D907-474E-86F3-A00F1732E254}.Debug|Any CPU.Build.0 = Debug|Any CPU
+>>>>>CM:GREEN
 		{CCCC5456-D907-474E-86F3-A00F1732E254}.Release|Any CPU.ActiveCfg = Release|Any CPU
+>>>>>CM:GREEN
 		{CCCC5456-D907-474E-86F3-A00F1732E254}.Release|Any CPU.Build.0 = Release|Any CPU
+>>>>>CM:GREEN
 		{CD857478-20C7-4BA9-8CB7-886FDFD62D0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+>>>>>CM:GREEN
 		{CD857478-20C7-4BA9-8CB7-886FDFD62D0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+>>>>>CM:GREEN
 		{CD857478-20C7-4BA9-8CB7-886FDFD62D0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+>>>>>CM:GREEN
 		{CD857478-20C7-4BA9-8CB7-886FDFD62D0B}.Release|Any CPU.Build.0 = Release|Any CPU
+>>>>>CM:GREEN
 		{FF29F203-71D5-43B5-91F2-4260194B7B1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+>>>>>CM:GREEN
 		{FF29F203-71D5-43B5-91F2-4260194B7B1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+>>>>>CM:GREEN
 		{FF29F203-71D5-43B5-91F2-4260194B7B1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+>>>>>CM:GREEN
 		{FF29F203-71D5-43B5-91F2-4260194B7B1F}.Release|Any CPU.Build.0 = Release|Any CPU
+>>>>>CM:GREEN
 		{0B52F552-CBE0-423E-8EEC-EF2E8D5FAF91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+>>>>>CM:GREEN
 		{0B52F552-CBE0-423E-8EEC-EF2E8D5FAF91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+>>>>>CM:GREEN
 		{0B52F552-CBE0-423E-8EEC-EF2E8D5FAF91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+>>>>>CM:GREEN
 		{0B52F552-CBE0-423E-8EEC-EF2E8D5FAF91}.Release|Any CPU.Build.0 = Release|Any CPU
+>>>>>CM:GREEN
 		{493C14D2-0DAF-4167-BC04-2023DF55AB45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+>>>>>CM:GREEN
 		{493C14D2-0DAF-4167-BC04-2023DF55AB45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+>>>>>CM:GREEN
 		{493C14D2-0DAF-4167-BC04-2023DF55AB45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+>>>>>CM:GREEN
 		{493C14D2-0DAF-4167-BC04-2023DF55AB45}.Release|Any CPU.Build.0 = Release|Any CPU
+>>>>>CM:GREEN
 		{E5226BB4-2336-40E5-8A8F-9B3F241AA459}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+>>>>>CM:GREEN
 		{E5226BB4-2336-40E5-8A8F-9B3F241AA459}.Debug|Any CPU.Build.0 = Debug|Any CPU
+>>>>>CM:GREEN
 		{E5226BB4-2336-40E5-8A8F-9B3F241AA459}.Release|Any CPU.ActiveCfg = Release|Any CPU
+>>>>>CM:GREEN
 		{E5226BB4-2336-40E5-8A8F-9B3F241AA459}.Release|Any CPU.Build.0 = Release|Any CPU
+>>>>>CM:GREEN
 		{3BCD5CFB-31AD-42E5-BC08-40C38F63523E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+>>>>>CM:GREEN
 		{3BCD5CFB-31AD-42E5-BC08-40C38F63523E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+>>>>>CM:GREEN
 		{3BCD5CFB-31AD-42E5-BC08-40C38F63523E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+>>>>>CM:GREEN
 		{3BCD5CFB-31AD-42E5-BC08-40C38F63523E}.Release|Any CPU.Build.0 = Release|Any CPU
+>>>>>CM:GREEN
 	EndGlobalSection
+>>>>>CM:GREEN
 	GlobalSection(SolutionProperties) = preSolution
+>>>>>CM:GREEN
 		HideSolutionNode = FALSE
+>>>>>CM:GREEN
 	EndGlobalSection
+>>>>>CM:GREEN
 	GlobalSection(NestedProjects) = preSolution
+>>>>>CM:GREEN
 		{DF5BE5AC-476E-4B2F-9FE1-0A3904549212} = {094A034F-EBB5-42F1-A87B-633A3117042F}
+>>>>>CM:GREEN
 		{496D3069-B962-4FBA-85D6-04514A4FC3F5} = {094A034F-EBB5-42F1-A87B-633A3117042F}
+>>>>>CM:GREEN
 		{09D6838F-0A44-4B70-AB00-18E2A39ED6DB} = {E67CF545-0D68-469F-BD58-DAC8EDCE4562}
+>>>>>CM:GREEN
 		{9A3DADDE-2D3A-4C9A-8142-2C605C9DE731} = {094A034F-EBB5-42F1-A87B-633A3117042F}
+>>>>>CM:GREEN
 		{F03E8683-F9DF-47A1-807A-E46F6CC817E8} = {094A034F-EBB5-42F1-A87B-633A3117042F}
+>>>>>CM:GREEN
 		{784B5E1A-F6AC-4928-8200-F9751E9A4DEA} = {E67CF545-0D68-469F-BD58-DAC8EDCE4562}
+>>>>>CM:GREEN
 		{F334EB1B-05E6-47FF-B88C-806F2288E3E8} = {E67CF545-0D68-469F-BD58-DAC8EDCE4562}
+>>>>>CM:GREEN
 		{AEA1E75D-5444-4496-B27A-E5794FC1ED90} = {E67CF545-0D68-469F-BD58-DAC8EDCE4562}
+>>>>>CM:GREEN
 		{1C729906-D7AD-4AFF-A885-6DDE561438E6} = {E67CF545-0D68-469F-BD58-DAC8EDCE4562}
+>>>>>CM:GREEN
 		{DF829FD0-CB9D-4229-B010-AB31851ADC2A} = {E67CF545-0D68-469F-BD58-DAC8EDCE4562}
+>>>>>CM:GREEN
 		{0A274981-B8C5-47D6-9AC8-295149B9A5DF} = {E67CF545-0D68-469F-BD58-DAC8EDCE4562}
+>>>>>CM:GREEN
 		{C4F2211F-22B3-4983-89FC-F65A386D197D} = {094A034F-EBB5-42F1-A87B-633A3117042F}
+>>>>>CM:GREEN
 		{CCCC5456-D907-474E-86F3-A00F1732E254} = {E67CF545-0D68-469F-BD58-DAC8EDCE4562}
+>>>>>CM:GREEN
 		{CD857478-20C7-4BA9-8CB7-886FDFD62D0B} = {E67CF545-0D68-469F-BD58-DAC8EDCE4562}
+>>>>>CM:GREEN
 		{FF29F203-71D5-43B5-91F2-4260194B7B1F} = {094A034F-EBB5-42F1-A87B-633A3117042F}
+>>>>>CM:GREEN
 		{0B52F552-CBE0-423E-8EEC-EF2E8D5FAF91} = {E67CF545-0D68-469F-BD58-DAC8EDCE4562}
+>>>>>CM:GREEN
 		{493C14D2-0DAF-4167-BC04-2023DF55AB45} = {E67CF545-0D68-469F-BD58-DAC8EDCE4562}
+>>>>>CM:GREEN
 		{E5226BB4-2336-40E5-8A8F-9B3F241AA459} = {094A034F-EBB5-42F1-A87B-633A3117042F}
+>>>>>CM:GREEN
 		{3BCD5CFB-31AD-42E5-BC08-40C38F63523E} = {094A034F-EBB5-42F1-A87B-633A3117042F}
+>>>>>CM:GREEN
 	EndGlobalSection
+>>>>>CM:GREEN
 	GlobalSection(ExtensibilityGlobals) = postSolution
+>>>>>CM:GREEN
 		SolutionGuid = {473D3E4B-C738-47D6-8D01-1D80FA3D6F49}
+>>>>>CM:GREEN
 	EndGlobalSection
+>>>>>CM:GREEN
 EndGlobal

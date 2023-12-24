@@ -1,25 +1,49 @@
 ﻿
+>>>>>CM:GREEN
 Microsoft Visual Studio Solution File, Format Version 12.00
+>>>>>CM:GREEN
 # Visual Studio Version 17
+>>>>>CM:GREEN
 VisualStudioVersion = 17.8.34309.116
+>>>>>CM:GREEN
 MinimumVisualStudioVersion = 10.0.40219.1
+>>>>>CM:GREEN
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocFxTqlPlugin", "DocFxTqlPlugin.csproj", "{30474B6E-98F4-4BF8-977C-7C226A31037E}"
+>>>>>CM:GREEN
 EndProject
+>>>>>CM:GREEN
 Global
+>>>>>CM:GREEN
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+>>>>>CM:GREEN
 		Debug|Any CPU = Debug|Any CPU
+>>>>>CM:GREEN
 		Release|Any CPU = Release|Any CPU
+>>>>>CM:GREEN
 	EndGlobalSection
+>>>>>CM:GREEN
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+>>>>>CM:GREEN
 		{30474B6E-98F4-4BF8-977C-7C226A31037E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+>>>>>CM:GREEN
 		{30474B6E-98F4-4BF8-977C-7C226A31037E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+>>>>>CM:GREEN
 		{30474B6E-98F4-4BF8-977C-7C226A31037E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+>>>>>CM:GREEN
 		{30474B6E-98F4-4BF8-977C-7C226A31037E}.Release|Any CPU.Build.0 = Release|Any CPU
+>>>>>CM:GREEN
 	EndGlobalSection
+>>>>>CM:GREEN
 	GlobalSection(SolutionProperties) = preSolution
+>>>>>CM:GREEN
 		HideSolutionNode = FALSE
+>>>>>CM:GREEN
 	EndGlobalSection
+>>>>>CM:GREEN
 	GlobalSection(ExtensibilityGlobals) = postSolution
+>>>>>CM:GREEN
 		SolutionGuid = {6D1DC209-3E25-4E06-A486-B6457409CECD}
+>>>>>CM:GREEN
 	EndGlobalSection
+>>>>>CM:GREEN
 EndGlobal

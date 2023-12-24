@@ -1,8 +1,16 @@
+>>>>>CM:GREEN
 {
+>>>>>CM:GREEN
   "overrides": [
+>>>>>CM:GREEN
     {
+>>>>>CM:GREEN
       "files": "*.wxs",
+>>>>>CM:GREEN
       "options": { "parser": "html" }
+>>>>>CM:GREEN
     }
+>>>>>CM:GREEN
   ]
+>>>>>CM:GREEN
 }

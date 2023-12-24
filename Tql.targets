@@ -1,13 +1,24 @@
+>>>>>CM:GREEN
 <Project>
 
+>>>>>CM:GREEN
 	<PropertyGroup>
+>>>>>CM:GREEN
 		<TargetFramework>net8.0-windows</TargetFramework>
+>>>>>CM:GREEN
 		<ImplicitUsings>disable</ImplicitUsings>
+>>>>>CM:GREEN
 		<Nullable>enable</Nullable>
+>>>>>CM:GREEN
 		<LangVersion>12.0</LangVersion>
+>>>>>CM:GREEN
 		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+>>>>>CM:GREEN
 		<UseWPF>true</UseWPF>
+>>>>>CM:GREEN
 		<UseWindowsForms>true</UseWindowsForms>
+>>>>>CM:GREEN
 	</PropertyGroup>
 
+>>>>>CM:GREEN
 </Project>

@@ -1,10 +1,20 @@
+>>>>>CM:GREEN
 {
+>>>>>CM:GREEN
   "profiles": {
+>>>>>CM:GREEN
     "DocFX": {
+>>>>>CM:GREEN
       "commandName": "Executable",
+>>>>>CM:GREEN
       "executablePath": "dotnet",
+>>>>>CM:GREEN
       "commandLineArgs": "docfx docfx.json --serve",
+>>>>>CM:GREEN
       "workingDirectory": "$(SolutionDir)..\\Documentation"
+>>>>>CM:GREEN
     }
+>>>>>CM:GREEN
   }
+>>>>>CM:GREEN
 }

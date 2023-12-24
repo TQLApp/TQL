@@ -1,9 +1,15 @@
+>>>>>CM:GREEN
 <Project>
 
+>>>>>CM:GREEN
 	<Import Project="TqlPackage.targets" />
 
+>>>>>CM:GREEN
 	<PropertyGroup>
+>>>>>CM:GREEN
 		<PackageTags>tql-plugin</PackageTags>
+>>>>>CM:GREEN
 	</PropertyGroup>
 
+>>>>>CM:GREEN
 </Project>

@@ -1,6 +1,12 @@
+>>>>>CM:GREEN
 {
+>>>>>CM:GREEN
   "devDependencies": {
+>>>>>CM:GREEN
     "@prettier/plugin-xml": "^3.2.2",
+>>>>>CM:GREEN
     "prettier": "^3.1.1"
+>>>>>CM:GREEN
   }
+>>>>>CM:GREEN
 }

@@ -1,8 +1,14 @@
+>>>>>CM:GREEN
 root = true
 
+>>>>>CM:GREEN
 [*]
+>>>>>CM:GREEN
 end_of_line = crlf
 
+>>>>>CM:GREEN
 [*.{cs,vb,xaml}]
+>>>>>CM:GREEN
 indent_style = space
+>>>>>CM:GREEN
 tab_width = 4

@@ -1,5 +1,10 @@
+>>>>>CM:GREEN
 <Project>
+>>>>>CM:GREEN
 	<PropertyGroup>
+>>>>>CM:GREEN
 		<EnableSourceControlManagerQueries>true</EnableSourceControlManagerQueries>
+>>>>>CM:GREEN
 	</PropertyGroup>
+>>>>>CM:GREEN
 </Project>

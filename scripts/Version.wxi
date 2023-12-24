@@ -1,5 +1,10 @@
+>>>>>CM:GREEN
 <Include>
+>>>>>CM:GREEN
   <?define Version="0.1"?>
+>>>>>CM:GREEN
   <!-- This needs to be changed for every new version -->
+>>>>>CM:GREEN
   <?define VersionId="09d186ec-f70b-4b05-bdb8-f6b794417878"?>
+>>>>>CM:GREEN
 </Include>

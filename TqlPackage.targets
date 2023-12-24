@@ -1,34 +1,62 @@
+>>>>>CM:GREEN
 <Project>
 
+>>>>>CM:GREEN
 	<Import Project="Tql.targets" />
 
+>>>>>CM:GREEN
 	<PropertyGroup>
+>>>>>CM:GREEN
 		<Version>0.0</Version>
+>>>>>CM:GREEN
 		<Authors>Pieter van Ginkel</Authors>
+>>>>>CM:GREEN
 		<Copyright>Copyright © 2023 Pieter van Ginkel</Copyright>
+>>>>>CM:GREEN
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+>>>>>CM:GREEN
 		<PackageIcon>Logo.png</PackageIcon>
+>>>>>CM:GREEN
 		<PackageReadmeFile>README.md</PackageReadmeFile>
+>>>>>CM:GREEN
 		<RepositoryUrl>https://github.com/TQLApp/TQL</RepositoryUrl>
+>>>>>CM:GREEN
 		<IncludeSymbols>True</IncludeSymbols>
+>>>>>CM:GREEN
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+>>>>>CM:GREEN
 	</PropertyGroup>
 
+>>>>>CM:GREEN
 	<Target Name="DeferredProperties" BeforeTargets="Build">
+>>>>>CM:GREEN
 		<PropertyGroup>
+>>>>>CM:GREEN
 			<Title Condition="'$(Title)' == ''">$(Product)</Title>
+>>>>>CM:GREEN
 			<PackageProjectUrl Condition="'$(PackageProjectUrl)' == ''">$(RepositoryUrl)</PackageProjectUrl>
+>>>>>CM:GREEN
 		</PropertyGroup>
+>>>>>CM:GREEN
 	</Target>
 
+>>>>>CM:GREEN
 	<PropertyGroup Condition="'$(Configuration)' == 'Release'">
+>>>>>CM:GREEN
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+>>>>>CM:GREEN
 	</PropertyGroup>
 
+>>>>>CM:GREEN
 	<ItemGroup>
+>>>>>CM:GREEN
 		<None Include="..\..\LICENSE" Pack="true" PackagePath=""/>
+>>>>>CM:GREEN
 		<None Include="README.md" Pack="true" PackagePath=""/>
+>>>>>CM:GREEN
 		<None Include="..\..\Logo.png" Pack="true" PackagePath=""/>
+>>>>>CM:GREEN
 	</ItemGroup>
 
+>>>>>CM:GREEN
 </Project>

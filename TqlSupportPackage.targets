@@ -1,9 +1,15 @@
+>>>>>CM:GREEN
 <Project>
 
+>>>>>CM:GREEN
 	<Import Project="TqlPackage.targets" />
 
+>>>>>CM:GREEN
 	<PropertyGroup>
+>>>>>CM:GREEN
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+>>>>>CM:GREEN
 	</PropertyGroup>
 
+>>>>>CM:GREEN
 </Project>
