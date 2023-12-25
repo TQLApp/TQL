@@ -1,63 +1,110 @@
+>>>>>CM:GREEN
 name: PR build
 
+>>>>>CM:GREEN
 on: pull_request
 
+>>>>>CM:GREEN
 jobs:
+>>>>>CM:GREEN
   pr-build:
+>>>>>CM:GREEN
     name: PR build
+>>>>>CM:GREEN
     runs-on: windows-2022
 
+>>>>>CM:GREEN
     steps:
+>>>>>CM:GREEN
       - uses: actions/checkout@v4
 
+>>>>>CM:GREEN
       - name: Setup dotnet 8.0.x
+>>>>>CM:GREEN
         uses: actions/setup-dotnet@v3
+>>>>>CM:GREEN
         with:
+>>>>>CM:GREEN
           dotnet-version: 8.0.x
 
+>>>>>CM:GREEN
       - uses: actions/cache@v3
+>>>>>CM:GREEN
         id: cache
+>>>>>CM:GREEN
         with:
+>>>>>CM:GREEN
           path: ~/.nuget/packages
+>>>>>CM:GREEN
           key: ${{ runner.os }}-nuget-v2-${{ hashFiles('**/packages.lock.json', '**/dotnet-tools.json') }}
 
+>>>>>CM:GREEN
       - name: Restore dotnet tools
+>>>>>CM:GREEN
         run: dotnet tool restore
 
+>>>>>CM:GREEN
       - name: Validate prettier
+>>>>>CM:GREEN
         run: ./runprettier.bat
 
+>>>>>CM:GREEN
       - name: Check for changes by prettier
+>>>>>CM:GREEN
         shell: pwsh
+>>>>>CM:GREEN
         run: ./scripts/Uncommitted-changes.ps1 -Tool runprettier.bat
 
+>>>>>CM:GREEN
       - name: Run CSharpier
+>>>>>CM:GREEN
         run: dotnet csharpier .
 
+>>>>>CM:GREEN
       - name: Check for changes by CSharpier
+>>>>>CM:GREEN
         shell: pwsh
+>>>>>CM:GREEN
         run: ./scripts/Uncommitted-changes.ps1 -Tool "dotnet csharpier ."
 
+>>>>>CM:GREEN
       - name: Restore Solution
+>>>>>CM:GREEN
         run: dotnet restore -warnaserror
 
+>>>>>CM:GREEN
       - name: Embedding secrets
+>>>>>CM:GREEN
         shell: pwsh
+>>>>>CM:GREEN
         run: ./scripts/Write-Secrets.ps1
+>>>>>CM:GREEN
         env:
+>>>>>CM:GREEN
           GOOGLE_DRIVE_API_SECRET: ${{ secrets.GOOGLE_DRIVE_API_SECRET }}
+>>>>>CM:GREEN
           GITHUB_OAUTH_SECRET: ${{ secrets.MY_GITHUB_OAUTH_SECRET }}
 
+>>>>>CM:GREEN
       - name: Build Solution
+>>>>>CM:GREEN
         run: dotnet build -c Release -warnaserror
 
+>>>>>CM:GREEN
       - name: Check localization status
+>>>>>CM:GREEN
         shell: pwsh
+>>>>>CM:GREEN
         run: .\src\Tql.Localization\bin\Release\net8.0-windows\Tql.Localization.exe --export --filename Strings.xlsx --locale nl --pipeline
 
+>>>>>CM:GREEN
       - name: Preprocess DocFX Markdown Files
+>>>>>CM:GREEN
         shell: pwsh
+>>>>>CM:GREEN
         run: ./scripts/Preprocess-Markdown.ps1
 
+>>>>>CM:GREEN
       - name: Run DocFX
+>>>>>CM:GREEN
         run: dotnet docfx docs/docfx.json --warningsAsErrors true

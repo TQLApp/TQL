@@ -1,82 +1,145 @@
+>>>>>CM:GREEN
 name: Release
 
+>>>>>CM:GREEN
 on:
+>>>>>CM:GREEN
   push:
+>>>>>CM:GREEN
     tags:
+>>>>>CM:GREEN
       - "v*"
 
+>>>>>CM:GREEN
 permissions:
+>>>>>CM:GREEN
   contents: write
+>>>>>CM:GREEN
   packages: write
 
+>>>>>CM:GREEN
 jobs:
+>>>>>CM:GREEN
   release:
+>>>>>CM:GREEN
     name: Release
+>>>>>CM:GREEN
     runs-on: windows-2022
 
+>>>>>CM:GREEN
     steps:
+>>>>>CM:GREEN
       - name: Authenticate GitHub package source
+>>>>>CM:GREEN
         run: dotnet nuget add source --username USERNAME --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/TQLApp/index.json"
 
+>>>>>CM:GREEN
       - uses: actions/checkout@v4
 
+>>>>>CM:GREEN
       - name: Fetch tags
+>>>>>CM:GREEN
         run: git fetch --tags --force
 
+>>>>>CM:GREEN
       - name: Get Build Version
+>>>>>CM:GREEN
         id: get-build-version
+>>>>>CM:GREEN
         shell: pwsh
+>>>>>CM:GREEN
         run: ./scripts/GetBuildVersion.ps1 -Tag ${{ github.ref }}
 
+>>>>>CM:GREEN
       - name: Setup dotnet 8.0.x
+>>>>>CM:GREEN
         uses: actions/setup-dotnet@v3
+>>>>>CM:GREEN
         with:
+>>>>>CM:GREEN
           dotnet-version: 8.0.x
 
+>>>>>CM:GREEN
       - uses: actions/cache@v3
+>>>>>CM:GREEN
         id: cache
+>>>>>CM:GREEN
         with:
+>>>>>CM:GREEN
           path: ~/.nuget/packages
+>>>>>CM:GREEN
           key: ${{ runner.os }}-nuget-v2-${{ hashFiles('**/packages.lock.json', '**/dotnet-tools.json') }}
 
+>>>>>CM:GREEN
       - name: Restore Solution
+>>>>>CM:GREEN
         run: dotnet restore -warnaserror
 
+>>>>>CM:GREEN
       - name: Embedding secrets
+>>>>>CM:GREEN
         shell: pwsh
+>>>>>CM:GREEN
         run: ./scripts/Write-Secrets.ps1
+>>>>>CM:GREEN
         env:
+>>>>>CM:GREEN
           GOOGLE_DRIVE_API_SECRET: ${{ secrets.GOOGLE_DRIVE_API_SECRET }}
+>>>>>CM:GREEN
           GITHUB_OAUTH_SECRET: ${{ secrets.MY_GITHUB_OAUTH_SECRET }}
 
+>>>>>CM:GREEN
       - name: Build Solution
+>>>>>CM:GREEN
         run: dotnet build -c Release -property:Version="${{ steps.get-build-version.outputs.build-version }}" -warnaserror
 
+>>>>>CM:GREEN
       - name: Publish NuGet packages to NuGet.org
+>>>>>CM:GREEN
         run: dotnet nuget push "**/*.nupkg" --api-key "${{ secrets.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
 
+>>>>>CM:GREEN
       - name: Publish symbol NuGet packages to NuGet.org
+>>>>>CM:GREEN
         run: dotnet nuget push "**/*.snupkg" --api-key "${{ secrets.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
 
+>>>>>CM:GREEN
       - name: Publish App
+>>>>>CM:GREEN
         run: dotnet publish -c Release -r win-x64 --self-contained src\Tql.App -property:Version="${{ steps.get-build-version.outputs.build-version }}" -warnaserror
 
+>>>>>CM:GREEN
       - name: Validate file versions
+>>>>>CM:GREEN
         shell: pwsh
+>>>>>CM:GREEN
         run: ./scripts/Validate-File-Versions.ps1 -Version "${{ steps.get-build-version.outputs.build-version }}"
 
+>>>>>CM:GREEN
       - name: Create MSI
+>>>>>CM:GREEN
         shell: pwsh
+>>>>>CM:GREEN
         run: ./scripts/Create-MSI.ps1
 
+>>>>>CM:GREEN
       - name: Get Tag Annotation
+>>>>>CM:GREEN
         uses: ericcornelissen/git-tag-annotation-action@v2
+>>>>>CM:GREEN
         id: tag-data
 
+>>>>>CM:GREEN
       - name: Release
+>>>>>CM:GREEN
         uses: softprops/action-gh-release@v1
+>>>>>CM:GREEN
         with:
+>>>>>CM:GREEN
           files: ./build/*.msi
+>>>>>CM:GREEN
           generate_release_notes: true
+>>>>>CM:GREEN
           prerelease: true
+>>>>>CM:GREEN
           body: ${{ steps.tag-data.outputs.git-tag-annotation }}

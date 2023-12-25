@@ -1,88 +1,154 @@
+>>>>>CM:GREEN
 name: Update GitHub Pages
 
+>>>>>CM:GREEN
 on:
+>>>>>CM:GREEN
   push:
+>>>>>CM:GREEN
     branches:
+>>>>>CM:GREEN
       - main
 
+>>>>>CM:GREEN
 permissions:
+>>>>>CM:GREEN
   contents: write
+>>>>>CM:GREEN
   pages: write
+>>>>>CM:GREEN
   id-token: write
 
+>>>>>CM:GREEN
 jobs:
+>>>>>CM:GREEN
   build:
+>>>>>CM:GREEN
     name: Build
+>>>>>CM:GREEN
     runs-on: windows-2022
 
+>>>>>CM:GREEN
     steps:
+>>>>>CM:GREEN
       - name: Authenticate GitHub package source
+>>>>>CM:GREEN
         run: dotnet nuget add source --username USERNAME --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/TQLApp/index.json"
 
+>>>>>CM:GREEN
       - uses: actions/checkout@v4
 
+>>>>>CM:GREEN
       - name: Fetch tags
+>>>>>CM:GREEN
         run: git fetch --tags --force
 
+>>>>>CM:GREEN
       - name: Get Build Version
+>>>>>CM:GREEN
         id: get-build-version
+>>>>>CM:GREEN
         shell: pwsh
+>>>>>CM:GREEN
         run: ./scripts/GetBuildVersion.ps1
 
+>>>>>CM:GREEN
       - name: Setup dotnet 8.0.x
+>>>>>CM:GREEN
         uses: actions/setup-dotnet@v3
+>>>>>CM:GREEN
         with:
+>>>>>CM:GREEN
           dotnet-version: 8.0.x
 
+>>>>>CM:GREEN
       - uses: actions/cache@v3
+>>>>>CM:GREEN
         id: cache
+>>>>>CM:GREEN
         with:
+>>>>>CM:GREEN
           path: ~/.nuget/packages
+>>>>>CM:GREEN
           key: ${{ runner.os }}-nuget-v2-${{ hashFiles('**/packages.lock.json', '**/dotnet-tools.json') }}
 
+>>>>>CM:GREEN
       - name: Restore dotnet tools
+>>>>>CM:GREEN
         run: dotnet tool restore
 
+>>>>>CM:GREEN
       - name: Restore Solution
+>>>>>CM:GREEN
         run: dotnet restore -warnaserror
 
+>>>>>CM:GREEN
       - name: Embedding secrets
+>>>>>CM:GREEN
         shell: pwsh
+>>>>>CM:GREEN
         run: ./scripts/Write-Secrets.ps1
+>>>>>CM:GREEN
         env:
+>>>>>CM:GREEN
           GOOGLE_DRIVE_API_SECRET: ${{ secrets.GOOGLE_DRIVE_API_SECRET }}
+>>>>>CM:GREEN
           GITHUB_OAUTH_SECRET: ${{ secrets.MY_GITHUB_OAUTH_SECRET }}
 
+>>>>>CM:GREEN
       - name: Build Solution
+>>>>>CM:GREEN
         run: dotnet build -c Release -property:Version="${{ steps.get-build-version.outputs.build-version }}" -warnaserror
 
+>>>>>CM:GREEN
       - name: Preprocess DocFX Markdown Files
+>>>>>CM:GREEN
         shell: pwsh
+>>>>>CM:GREEN
         run: ./scripts/Preprocess-Markdown.ps1
 
+>>>>>CM:GREEN
       - name: Run DocFX
+>>>>>CM:GREEN
         run: dotnet docfx docs/docfx.json --warningsAsErrors true
 
+>>>>>CM:GREEN
       - name: Setup Pages
+>>>>>CM:GREEN
         uses: actions/configure-pages@v3
 
+>>>>>CM:GREEN
       - name: Upload DocFX Pages Artifact
+>>>>>CM:GREEN
         uses: actions/upload-pages-artifact@v2
+>>>>>CM:GREEN
         with:
+>>>>>CM:GREEN
           path: "docs/_site"
 
+>>>>>CM:GREEN
   deploy-pages:
+>>>>>CM:GREEN
     needs: build
 
+>>>>>CM:GREEN
     environment:
+>>>>>CM:GREEN
       name: github-pages
+>>>>>CM:GREEN
       url: ${{ steps.deployment.outputs.page_url }}
 
+>>>>>CM:GREEN
     name: Deploy pages
 
+>>>>>CM:GREEN
     runs-on: ubuntu-latest
 
+>>>>>CM:GREEN
     steps:
+>>>>>CM:GREEN
       - name: Deploy to GitHub Pages
+>>>>>CM:GREEN
         id: deployment
+>>>>>CM:GREEN
         uses: actions/deploy-pages@v2
