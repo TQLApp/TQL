@@ -297,7 +297,7 @@ internal partial class MainWindow : IHostedService
         void Invoke()
         {
             if (IsVisible)
-                SearchManager?.DoSearch();
+                SearchManager?.DoSearch(true);
         }
     }
 
@@ -443,7 +443,7 @@ internal partial class MainWindow : IHostedService
 
         _results.ItemsSource = e.Results;
 
-        if (_results.Items.Count > 0)
+        if (!e.IsUpdated && _results.Items.Count > 0)
         {
             SetSelectedIndex(0);
 
