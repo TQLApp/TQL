@@ -73,5 +73,10 @@ internal class TestCache<T> : ICache<T>
 
     public Task<T> Get() => Task.FromResult(_data);
 
+    public void RaiseUpdated()
+    {
+        OnUpdated(new CacheEventArgs<T>(_data));
+    }
+
     protected virtual void OnUpdated(CacheEventArgs<T> e) => Updated?.Invoke(this, e);
 }
