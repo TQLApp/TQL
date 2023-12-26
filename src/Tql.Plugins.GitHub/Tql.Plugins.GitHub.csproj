@@ -3,7 +3,7 @@
 	<Import Project="..\..\TqlPluginPackage.targets" />
 
 	<PropertyGroup>
-		<Product>TQL GitHib Plugin</Product>
+		<Product>TQL GitHub Plugin</Product>
 		<Description>Techie's Quick Launcher plugin for GitHub.</Description>
 		<PackageId>TQLApp.Plugins.GitHub</PackageId>
 		<PackageProjectUrl>https://github.com/TQLApp/TQL/wiki/GitHub-plugin</PackageProjectUrl>
