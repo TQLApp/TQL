@@ -53,8 +53,7 @@ internal class UpdateChecker : IDisposable
         }
         finally
         {
-            if (!result)
-                _notifyIconManager.State = NotifyIconState.Running;
+            _notifyIconManager.State = NotifyIconState.Running;
         }
 
         return result;
