@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Tql.Abstractions;
+using Tql.Plugins.Confluence.Data;
 using Tql.Utilities;
 
 namespace Tql.Plugins.Confluence.Services;
@@ -7,6 +8,7 @@ namespace Tql.Plugins.Confluence.Services;
 internal class IconCacheManager(
     IStore store,
     ILogger<IconCacheManager> logger,
+    ICache<ConfluenceData> cache,
     ConfigurationManager configurationManager
 )
     : IconCacheManager<IconKey>(
@@ -31,6 +33,13 @@ internal class IconCacheManager(
                 return new IconData(p.Headers.ContentType?.MediaType, target.ToArray());
             }
         );
+    }
+
+    protected override void OnIconLoaded()
+    {
+        base.OnIconLoaded();
+
+        cache.RaiseUpdated();
     }
 }
 
