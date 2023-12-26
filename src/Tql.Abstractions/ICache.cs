@@ -27,4 +27,15 @@ public interface ICache<T>
     /// </summary>
     /// <returns>Current version of the cache.</returns>
     Task<T> Get();
+
+    /// <summary>
+    /// Raises the <see cref="Updated"/> event.
+    /// </summary>
+    /// <remarks>
+    /// This can be used to simulate a cache update without actually
+    /// updating the cache. The primary use case for this is to reload
+    /// cached matches if the <c>IconCacheManager</c> completes loading
+    /// an image.
+    /// </remarks>
+    void RaiseUpdated();
 }

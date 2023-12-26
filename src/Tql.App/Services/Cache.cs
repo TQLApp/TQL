@@ -172,19 +172,16 @@ internal class Cache<T> : ICache<T>
                     raiseCacheChanged = true;
                 }
 
-                ThreadPool.QueueUserWorkItem(_ =>
-                {
-                    _logger.LogInformation("Raising cache updated");
+                _logger.LogInformation("Raising cache updated");
 
-                    try
-                    {
-                        OnUpdated(new CacheEventArgs<T>(data));
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.LogError(ex, "Raising cache updated failed");
-                    }
-                });
+                try
+                {
+                    OnUpdated(new CacheEventArgs<T>(data));
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Raising cache updated failed");
+                }
 
                 telemetry.IsSuccess = true;
             }
@@ -261,4 +258,26 @@ internal class Cache<T> : ICache<T>
     }
 
     protected virtual void OnUpdated(CacheEventArgs<T> e) => Updated?.Invoke(this, e);
+
+    public void RaiseUpdated()
+    {
+        // We don't raise the events if the cache isn't available.
+
+        var task = _tcs.Task;
+        if (!task.IsCompleted)
+            return;
+
+        _logger.LogInformation("Raising cache updated");
+
+        try
+        {
+            OnUpdated(new CacheEventArgs<T>(task.Result));
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Raising cache updated failed");
+        }
+
+        _cacheManagerManager.RaiseCacheChanged();
+    }
 }

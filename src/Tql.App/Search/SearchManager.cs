@@ -195,7 +195,7 @@ internal class SearchManager : IDisposable
         LoadHistory();
     }
 
-    public async void DoSearch()
+    public async void DoSearch(bool isUpdate = false)
     {
         if (_suspendSearch > 0)
             return;
@@ -230,7 +230,7 @@ internal class SearchManager : IDisposable
 
             results ??= ImmutableArray<SearchResult>.Empty;
 
-            OnSearchCompleted(new SearchResultsEventArgs(results.Value, false));
+            OnSearchCompleted(new SearchResultsEventArgs(results.Value, false, isUpdate));
 
             telemetry.AddProperty("Results", results.Value.Length.ToString());
             telemetry.IsSuccess = true;
@@ -425,7 +425,7 @@ internal class SearchManager : IDisposable
     {
         var results = await GetPreliminaryResults();
         if (results != null)
-            OnSearchCompleted(new SearchResultsEventArgs(results.Value, true));
+            OnSearchCompleted(new SearchResultsEventArgs(results.Value, true, false));
     }
 
     private async Task<ImmutableArray<SearchResult>?> GetPreliminaryResults()
