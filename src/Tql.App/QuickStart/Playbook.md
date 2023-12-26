@@ -288,7 +288,7 @@ window.
 Search results are identified by the ![](Person+Running.svg?color=true) icon,
 and categories by the ![](Apps+List.svg?color=true) icon.
 
-![](Keyboard.svg?color=true) Press ::Tab:: to enter the lighlighted category.
+![](Keyboard.svg?color=true) Press ::Tab:: to enter the highlighted category.
 
 ---
 id: search-hint-jira
