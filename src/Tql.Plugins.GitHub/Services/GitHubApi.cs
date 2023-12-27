@@ -1,9 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
+using OAuth2.Configuration;
+using OAuth2.Infrastructure;
 using Octokit;
 using Tql.Abstractions;
 using Tql.Utilities;
 using GraphQLConnection = Octokit.GraphQL.Connection;
-using IWin32Window = System.Windows.Forms.IWin32Window;
 using ProductHeaderValue = Octokit.ProductHeaderValue;
 
 namespace Tql.Plugins.GitHub.Services;
@@ -142,14 +143,30 @@ internal class GitHubApi(
 
         if (client.Credentials.AuthenticationType != AuthenticationType.Bearer)
         {
-            await ui.PerformInteractiveAuthentication(
-                new InteractiveAuthentication(
-                    string.Format(Labels.GitHubApi_ResourceName, connection.Name),
-                    client,
-                    ui,
-                    logger
-                )
+            var oauthClient = new OAuth2.Client.Impl.GitHubClient(
+                new RequestFactory(),
+                new ClientConfiguration
+                {
+                    ClientId = ClientId,
+                    ClientSecret = GetClientSecret(),
+                    Scope = Scope,
+                    RedirectUri = RedirectUri
+                }
             );
+
+            var authorizationRequest = await oauthClient.GetLoginLinkUriAsync();
+
+            var result = await ui.PerformBrowserBasedInteractiveAuthentication(
+                string.Format(Labels.GitHubApi_ResourceName, connection.Name),
+                authorizationRequest,
+                RedirectUri
+            );
+
+            var accessToken = await oauthClient.GetTokenAsync(result.QueryString);
+
+            client.Credentials = new Credentials(accessToken, AuthenticationType.Bearer);
+
+            await client.User.Current();
 
             if (client.Credentials.AuthenticationType != AuthenticationType.Bearer)
                 throw new GitHubAuthenticationException("Authentication failed");
@@ -187,32 +204,6 @@ internal class GitHubApi(
         var protectedCredentials = encryption.EncryptString(json)!;
 
         configurationManager.UpdateCredentials(id, protectedCredentials);
-    }
-
-    private class InteractiveAuthentication(
-        string resourceName,
-        GitHubClient client,
-        IUI ui,
-        ILogger logger
-    ) : IInteractiveAuthentication
-    {
-        public string ResourceName { get; } = resourceName;
-
-        public async Task Authenticate(IWin32Window owner)
-        {
-            var workflow = new GitHubOAuthWorkflow(
-                ClientId,
-                GetClientSecret(),
-                Scope,
-                RedirectUri,
-                ui,
-                logger
-            );
-
-            client.Credentials = await workflow.Authorize();
-
-            await client.User.Current();
-        }
     }
 
     private record CredentialsDto(string AccessToken, string Scope);

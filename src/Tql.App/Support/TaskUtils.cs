@@ -11,4 +11,9 @@ internal static class TaskUtils
     {
         return Task.Run(action).GetAwaiter().GetResult();
     }
+
+    public static void RunBackground(Func<Task> action)
+    {
+        Task.Run(action).ConfigureAwait(false);
+    }
 }

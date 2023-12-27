@@ -409,6 +409,11 @@
         "resolved": "1.1.0",
         "contentHash": "aOZA3BWfz9RXjpzt0sRJJMjAscAUm3Hoa4UWAfceV9UTYxgwZ1lZt5nO2myFf+/jetYQo4uTP7zS8sJY67BBxg=="
       },
+      "Microsoft.Web.WebView2": {
+        "type": "Transitive",
+        "resolved": "1.0.2210.55",
+        "contentHash": "pb5kuzl8TQm+ztzOnOm/qX75DXXjOQMdKlcs2hyizbZobiGzJcMcIhpmMmgg1cTGYwof2fVhlC809YScvDbm3w=="
+      },
       "Microsoft.Web.Xdt": {
         "type": "Transitive",
         "resolved": "3.0.0",
@@ -987,6 +992,7 @@
           "Microsoft.ApplicationInsights": "[2.21.0, )",
           "Microsoft.Extensions.Hosting": "[8.0.0, )",
           "Microsoft.Extensions.Logging": "[8.0.0, )",
+          "Microsoft.Web.WebView2": "[1.0.2210.55, )",
           "NReco.Logging.File": "[1.1.7, )",
           "NuGet.PackageManagement": "[6.8.0, )",
           "System.Data.SQLite.Core": "[1.0.118, )",

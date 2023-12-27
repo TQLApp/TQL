@@ -17,6 +17,8 @@ internal class UI : IUI
     private readonly object _syncRoot = new();
     private int _modalDialogShowing;
     private readonly ILogger<UI> _logger;
+    private readonly ILoggerFactory _loggerFactory;
+    private readonly IStore _store;
     private volatile RestartMode _restartMode = RestartMode.Shutdown;
 
     public RestartMode RestartMode => _restartMode;
@@ -30,9 +32,16 @@ internal class UI : IUI
     public event EventHandler? UINotificationsChanged;
     public event EventHandler<ConfigurationUIEventArgs>? ConfigurationUIRequested;
 
-    public UI(ILifecycleService lifecycleService, ILogger<UI> logger)
+    public UI(
+        ILifecycleService lifecycleService,
+        ILogger<UI> logger,
+        ILoggerFactory loggerFactory,
+        IStore store
+    )
     {
         _logger = logger;
+        _loggerFactory = loggerFactory;
+        _store = store;
 
         lifecycleService.RegisterBeforeShutdown(BeforeShutdown);
     }
@@ -72,7 +81,7 @@ internal class UI : IUI
         IInteractiveAuthentication interactiveAuthentication
     )
     {
-        var tcs = new TaskCompletionSource<bool>();
+        var tcs = new TaskCompletionSource();
 
         _synchronizationContext!.Post(
             _ =>
@@ -95,7 +104,55 @@ internal class UI : IUI
                 if (window.Exception != null)
                     tcs.SetException(window.Exception);
                 else
-                    tcs.SetResult(true);
+                    tcs.SetResult();
+            },
+            null
+        );
+
+        return tcs.Task;
+    }
+
+    public Task<BrowserBasedInteractiveAuthenticationResult> PerformBrowserBasedInteractiveAuthentication(
+        string resourceName,
+        string loginUrl,
+        string redirectUrl
+    )
+    {
+        var tcs = new TaskCompletionSource<BrowserBasedInteractiveAuthenticationResult>();
+
+        _synchronizationContext!.Post(
+            _ =>
+            {
+                var window = new BrowserBasedInteractiveAuthenticationWindow(
+                    resourceName,
+                    loginUrl,
+                    redirectUrl,
+                    tcs,
+                    _store,
+                    _loggerFactory.CreateLogger<BrowserBasedInteractiveAuthenticationWindow>()
+                )
+                {
+                    Owner = MainWindow
+                };
+
+                EnterModalDialog();
+                try
+                {
+                    window.ShowDialog();
+                }
+                finally
+                {
+                    ExitModalDialog();
+                }
+
+                if (!tcs.Task.IsCompleted)
+                {
+                    tcs.SetException(
+                        new BrowserBasedInteractiveAuthenticationException(
+                            "Interactive authentication was aborted by the user"
+                        )
+                    );
+                }
             },
             null
         );

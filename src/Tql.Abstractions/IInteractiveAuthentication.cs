@@ -17,7 +17,7 @@ namespace Tql.Abstractions;
 /// This will show a dialog to the user telling him that he needs
 /// to enter credentials. The <see cref="ResourceName"/> is used
 /// to tell the user what resource is being authenticated.
-/// You should include the name of a connect in this to ensure
+/// You should include the name of a connection in this to ensure
 /// the user knows what credentials he needs to enter. If the
 /// user proceeds to authenticate, the <see cref="Authenticate(IWin32Window)"/>
 /// method is called to allow you to show UI to the user.

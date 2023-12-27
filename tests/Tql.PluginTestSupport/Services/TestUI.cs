@@ -30,6 +30,15 @@ public class TestUI : IUI
         return interactiveAuthentication.Authenticate(new Win32Window(IntPtr.Zero));
     }
 
+    public Task<BrowserBasedInteractiveAuthenticationResult> PerformBrowserBasedInteractiveAuthentication(
+        string resourceName,
+        string loginUrl,
+        string redirectUrl
+    )
+    {
+        throw new NotSupportedException();
+    }
+
     public void OpenUrl(string url) => OpenUrlData = new OpenUrlData(url);
 
     public void ShowNotificationBar(

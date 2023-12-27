@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System.Collections.Specialized;
+using System.Windows.Forms;
 
 namespace Tql.Abstractions;
 
@@ -31,6 +32,33 @@ public interface IUI
     /// <param name="interactiveAuthentication">Pending interactive authentication.</param>
     /// <returns>Task representing the operation.</returns>
     Task PerformInteractiveAuthentication(IInteractiveAuthentication interactiveAuthentication);
+
+    /// <summary>
+    /// Perform browser based interactive authentication.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This can be used to implement web based interactive authentication workflows
+    /// while staying in the app. The redirect URL is the URL configured with the authentication
+    /// provider. TQL will start a web server at that URL and wait for an incoming request.
+    /// The result of this method includes the parameters sent when the redirect URL
+    /// was called.
+    /// </para>
+    ///
+    /// <para>
+    /// The OAuth2 NuGet package is a good option to implement OAuth2 in a TQL plugin. This
+    /// will provide you with a login URL you can pass into this method.
+    /// </para>
+    /// </remarks>
+    /// <param name="resourceName">The name of the resource that requires authentication.</param>
+    /// <param name="loginUrl">The URL to load in the browser.</param>
+    /// <param name="redirectUrl">The URL that's expected to be called.</param>
+    /// <returns>The parameters of the redirect URI request or an exception on failure.</returns>
+    Task<BrowserBasedInteractiveAuthenticationResult> PerformBrowserBasedInteractiveAuthentication(
+        string resourceName,
+        string loginUrl,
+        string redirectUrl
+    );
 
     /// <summary>
     /// Opens a URL in the default browser.
@@ -134,3 +162,10 @@ public interface IUI
     /// <param name="mode">Mode in which to shutdown the app.</param>
     void Shutdown(RestartMode mode);
 }
+
+/// <summary>
+/// Result of a browser based interactive authentication request.
+/// </summary>
+/// <param name="Url">The called URL.</param>
+/// <param name="QueryString">The parsed parameters of the called URI.</param>
+public record BrowserBasedInteractiveAuthenticationResult(Uri Url, NameValueCollection QueryString);

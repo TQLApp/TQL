@@ -1,7 +1,6 @@
 ﻿using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
 using Tql.Abstractions;
-using Tql.Utilities;
 
 namespace Tql.Plugins.GitHub.Categories;
 
