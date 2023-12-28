@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Tql.Abstractions;
 using Tql.App.Services.Packages;
 using Tql.App.Services.Packages.PackageStore;
+using Tql.App.Services.UIService;
 using Tql.App.Support;
 using Tql.Utilities;
 

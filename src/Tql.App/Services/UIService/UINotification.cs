@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace Tql.App.Services;
+namespace Tql.App.Services.UIService;
 
 internal record UINotification(
     string Key,

@@ -1,4 +1,4 @@
-﻿namespace Tql.App.Services;
+﻿namespace Tql.App.Services.UIService;
 
 internal class BrowserBasedInteractiveAuthenticationException : Exception
 {

@@ -2,6 +2,7 @@
 using System.Windows.Interop;
 using Tql.Abstractions;
 using Tql.App.Services;
+using Tql.App.Services.UIService;
 using Tql.App.Support;
 using Tql.Utilities;
 

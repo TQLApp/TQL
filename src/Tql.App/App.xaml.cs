@@ -19,6 +19,7 @@ using Tql.App.Services.Packages.PackageStore;
 using Tql.App.Services.Profiles;
 using Tql.App.Services.Synchronization;
 using Tql.App.Services.Telemetry;
+using Tql.App.Services.UIService;
 using Tql.App.Services.Updates;
 using Tql.App.Support;
 using Application = System.Windows.Application;

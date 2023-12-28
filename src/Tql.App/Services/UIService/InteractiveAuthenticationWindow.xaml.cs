@@ -4,7 +4,7 @@ using Tql.App.Support;
 using Tql.Utilities;
 using IWin32Window = System.Windows.Forms.IWin32Window;
 
-namespace Tql.App.Services;
+namespace Tql.App.Services.UIService;
 
 internal partial class InteractiveAuthenticationWindow
 {

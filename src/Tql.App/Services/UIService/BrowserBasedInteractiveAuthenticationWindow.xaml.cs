@@ -5,7 +5,7 @@ using Microsoft.Web.WebView2.Core;
 using Tql.Abstractions;
 using Path = System.IO.Path;
 
-namespace Tql.App.Services;
+namespace Tql.App.Services.UIService;
 
 internal partial class BrowserBasedInteractiveAuthenticationWindow
 {

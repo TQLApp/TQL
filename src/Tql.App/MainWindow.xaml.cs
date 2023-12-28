@@ -9,6 +9,7 @@ using Tql.App.Search;
 using Tql.App.Services;
 using Tql.App.Services.Database;
 using Tql.App.Services.Telemetry;
+using Tql.App.Services.UIService;
 using Tql.App.Support;
 using Tql.Utilities;
 

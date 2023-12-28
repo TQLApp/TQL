@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Tql.App.Support;
 
-namespace Tql.App.Services;
+namespace Tql.App.Services.UIService;
 
 internal class SimpleHttpServer : IDisposable
 {

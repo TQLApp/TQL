@@ -1,6 +1,6 @@
 ﻿using System.Collections.Specialized;
 
-namespace Tql.App.Services;
+namespace Tql.App.Services.UIService;
 
 internal class SimpleHttpRequestEventArgs(Uri uri, NameValueCollection queryString)
 {

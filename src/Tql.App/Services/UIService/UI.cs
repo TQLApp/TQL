@@ -9,7 +9,7 @@ using Application = System.Windows.Application;
 using Clipboard = System.Windows.Forms.Clipboard;
 using IWin32Window = System.Windows.Forms.IWin32Window;
 
-namespace Tql.App.Services;
+namespace Tql.App.Services.UIService;
 
 internal class UI : IUI
 {
