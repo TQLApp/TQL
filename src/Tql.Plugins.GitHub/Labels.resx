@@ -252,9 +252,6 @@
   <data name="WorkflowRunsMatch_SearchHint" xml:space="preserve">
     <value>Find workflow runs</value>
   </data>
-  <data name="GitHubOAuthWorkflow_AuthenticationComplete" xml:space="preserve">
-    <value>Authentication completed. You can now go back to the app.</value>
-  </data>
   <data name="NewPullRequestsMatch_SearchHint" xml:space="preserve">
     <value>Find compare branch</value>
   </data>
