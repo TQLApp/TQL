@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Tql.Abstractions;
 using Tql.App.Services.Packages;
 using Tql.App.Services.Packages.PackageStore;
+using Tql.App.Services.UIService;
 using Tql.App.Support;
 using Tql.Utilities;
 
@@ -122,10 +123,10 @@ internal class PluginManager : IPluginManager, IDisposable
                     Activate
                 );
 
-                void Activate()
+                void Activate(IWin32Window owner)
                 {
                     var result = ui.ShowConfirmation(
-                        ui.MainWindow!,
+                        owner,
                         string.Format(Labels.PluginManager_PackageFailedToLoad, package.Id.Id),
                         string.Format(
                             Labels.PluginManager_PackageFailedToLoadSubtitle,
@@ -149,10 +150,10 @@ internal class PluginManager : IPluginManager, IDisposable
                         Activate
                     );
 
-                    void Activate()
+                    void Activate(IWin32Window owner)
                     {
                         var result = ui.ShowConfirmation(
-                            ui.MainWindow!,
+                            owner,
                             string.Format(
                                 Labels.PluginManager_PluginFailedToLoad,
                                 plugin.Plugin.Title

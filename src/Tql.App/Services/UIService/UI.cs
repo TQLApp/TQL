@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
 using System.Windows.Forms;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Tql.Abstractions;
 using Tql.App.Support;
@@ -8,19 +9,21 @@ using Application = System.Windows.Application;
 using Clipboard = System.Windows.Forms.Clipboard;
 using IWin32Window = System.Windows.Forms.IWin32Window;
 
-namespace Tql.App.Services;
+namespace Tql.App.Services.UIService;
 
 internal class UI : IUI
 {
     private SynchronizationContext? _synchronizationContext;
-    private volatile List<UINotification> _notifications = new();
+    private volatile List<UINotification> _notifications = [];
     private readonly object _syncRoot = new();
     private int _modalDialogShowing;
     private readonly ILogger<UI> _logger;
+    private readonly InteractiveAuthenticationWindow.Factory _interactiveAuthenticationWindowFactory;
+    private readonly BrowserBasedInteractiveAuthenticationWindow.Factory _browserBasedInteractiveAuthenticationWindowFactory;
+    private readonly IServiceProvider _serviceProvider;
     private volatile RestartMode _restartMode = RestartMode.Shutdown;
 
     public RestartMode RestartMode => _restartMode;
-    public MainWindow? MainWindow { get; private set; }
     public bool IsModalDialogShowing => _modalDialogShowing > 0;
 
     // This uses the safe publication pattern.
@@ -30,9 +33,19 @@ internal class UI : IUI
     public event EventHandler? UINotificationsChanged;
     public event EventHandler<ConfigurationUIEventArgs>? ConfigurationUIRequested;
 
-    public UI(ILifecycleService lifecycleService, ILogger<UI> logger)
+    public UI(
+        ILifecycleService lifecycleService,
+        ILogger<UI> logger,
+        InteractiveAuthenticationWindow.Factory interactiveAuthenticationWindowFactory,
+        BrowserBasedInteractiveAuthenticationWindow.Factory browserBasedInteractiveAuthenticationWindowFactory,
+        IServiceProvider serviceProvider
+    )
     {
         _logger = logger;
+        _interactiveAuthenticationWindowFactory = interactiveAuthenticationWindowFactory;
+        _browserBasedInteractiveAuthenticationWindowFactory =
+            browserBasedInteractiveAuthenticationWindowFactory;
+        _serviceProvider = serviceProvider;
 
         lifecycleService.RegisterBeforeShutdown(BeforeShutdown);
     }
@@ -69,20 +82,22 @@ internal class UI : IUI
     }
 
     public Task PerformInteractiveAuthentication(
-        IInteractiveAuthentication interactiveAuthentication
+        InteractiveAuthenticationResource resource,
+        Func<IWin32Window, Task> action
     )
     {
-        var tcs = new TaskCompletionSource<bool>();
+        var tcs = new TaskCompletionSource();
 
         _synchronizationContext!.Post(
             _ =>
             {
-                var window = new InteractiveAuthenticationWindow(interactiveAuthentication, this)
-                {
-                    Owner = MainWindow
-                };
+                var window = _interactiveAuthenticationWindowFactory.CreateInstance(
+                    resource,
+                    action,
+                    this
+                );
 
-                EnterModalDialog();
+                window.Owner = EnterModalDialog();
                 try
                 {
                     window.ShowDialog();
@@ -95,7 +110,50 @@ internal class UI : IUI
                 if (window.Exception != null)
                     tcs.SetException(window.Exception);
                 else
-                    tcs.SetResult(true);
+                    tcs.SetResult();
+            },
+            null
+        );
+
+        return tcs.Task;
+    }
+
+    public Task<BrowserBasedInteractiveAuthenticationResult> PerformBrowserBasedInteractiveAuthentication(
+        InteractiveAuthenticationResource resource,
+        string loginUrl,
+        string redirectUrl
+    )
+    {
+        var tcs = new TaskCompletionSource<BrowserBasedInteractiveAuthenticationResult>();
+
+        _synchronizationContext!.Post(
+            _ =>
+            {
+                var window = _browserBasedInteractiveAuthenticationWindowFactory.CreateInstance(
+                    resource,
+                    loginUrl,
+                    redirectUrl,
+                    tcs
+                );
+
+                window.Owner = EnterModalDialog();
+                try
+                {
+                    window.ShowDialog();
+                }
+                finally
+                {
+                    ExitModalDialog();
+                }
+
+                if (!tcs.Task.IsCompleted)
+                {
+                    tcs.SetException(
+                        new BrowserBasedInteractiveAuthenticationException(
+                            "Interactive authentication was aborted by the user"
+                        )
+                    );
+                }
             },
             null
         );
@@ -113,11 +171,6 @@ internal class UI : IUI
         {
             _logger.LogError(ex, "Failed to open '{Url}'", url);
         }
-    }
-
-    public void SetMainWindow(MainWindow? mainWindow)
-    {
-        MainWindow = mainWindow;
     }
 
     public void Shutdown(RestartMode mode)
@@ -265,8 +318,8 @@ internal class UI : IUI
     public void ShowNotificationBar(
         string key,
         string message,
-        Action? activate = null,
-        Action? dismiss = null
+        Action<IWin32Window>? activate = null,
+        Action<IWin32Window>? dismiss = null
     )
     {
         lock (_syncRoot)
@@ -302,19 +355,30 @@ internal class UI : IUI
         OnConfigurationUIRequested(new ConfigurationUIEventArgs(id));
     }
 
-    public void EnterModalDialog()
+    public Window EnterModalDialog()
     {
-        if (_modalDialogShowing == 0 && MainWindow != null)
-            MainWindow.SetShowInTaskbar(true);
+        var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
+        if (!mainWindow.IsVisible)
+            mainWindow.DoShow();
+
+        if (_modalDialogShowing == 0)
+            mainWindow.SetShowInTaskbar(true);
+
         _modalDialogShowing++;
+
+        return mainWindow;
     }
 
     public void ExitModalDialog()
     {
+        var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
+
         _modalDialogShowing--;
-        if (_modalDialogShowing == 0 && MainWindow != null)
-            MainWindow.SetShowInTaskbar(false);
+        if (_modalDialogShowing == 0)
+            mainWindow.SetShowInTaskbar(false);
     }
+
+    public void ShowModalDialog(Action<IWin32Window> action) { }
 
     protected virtual void OnUINotificationsChanged() =>
         UINotificationsChanged?.Invoke(this, EventArgs.Empty);

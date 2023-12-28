@@ -238,10 +238,6 @@
     <value>Vind workflow runs</value>
     <comment>Original: Find workflow runs</comment>
   </data>
-  <data name="GitHubOAuthWorkflow_AuthenticationComplete" xml:space="preserve">
-    <value>Authenticatie is afgerond. Je kunt nu terug naar de app.</value>
-    <comment>Original: Authentication completed. You can now go back to the app.</comment>
-  </data>
   <data name="NewPullRequestsMatch_SearchHint" xml:space="preserve">
     <value>Vind compare branch</value>
     <comment>Original: Find compare branch</comment>

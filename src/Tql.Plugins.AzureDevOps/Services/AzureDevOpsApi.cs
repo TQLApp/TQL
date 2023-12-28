@@ -48,7 +48,7 @@ internal class AzureDevOpsApi(
                             string.Format(Labels.AzureDevOpsApi_ResourceName, collectionUrl),
                             Labels.AzureDevOpsPlugin_Title
                         ),
-                        () => ui.OpenConfiguration(AzureDevOpsPlugin.ConfigurationPageId)
+                        _ => ui.OpenConfiguration(AzureDevOpsPlugin.ConfigurationPageId)
                     );
                     throw;
                 }

@@ -1,5 +1,5 @@
 ﻿<utilities:BaseWindow
-    x:Class="Tql.App.Services.InteractiveAuthenticationWindow"
+    x:Class="Tql.App.Services.UIService.InteractiveAuthenticationWindow"
     x:ClassModifier="internal"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -24,7 +24,7 @@
         </Grid.RowDefinitions>
 
         <Image
-            Source="pack://application:,,,/Tql.App;component/Resources/Radar.png"
+            x:Name="_resourceIcon"
             Height="64"
             Margin="0,0,10,0"
             VerticalAlignment="Top" />
@@ -36,7 +36,7 @@
                 Margin="0,0,0,4"
                 FontWeight="Bold"
                 Text="{x:Static app:Labels.InteractiveAuthenticationWindow_TheFollowingResourceRequiresYourCredentialsLabel}" />
-            <TextBlock x:Name="_plugin">PLUGIN</TextBlock>
+            <TextBlock x:Name="_resourceName">RESOURCE NAME</TextBlock>
         </StackPanel>
 
         <StackPanel

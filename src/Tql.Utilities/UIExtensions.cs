@@ -55,6 +55,28 @@ public static class UIExtensions
     }
 
     /// <summary>
+    /// Shows a confirmation dialog to the user.
+    /// </summary>
+    /// <param name="self">UI service.</param>
+    /// <param name="owner">Owner window of the dialog.</param>
+    /// <param name="title">Title shown on the dialog.</param>
+    /// <param name="subtitle">Subtitle or descriptive shown on the dialog.</param>
+    /// <param name="buttons">Buttons shown on the dialog (defaults to <see cref="DialogCommonButtons.Yes"/> and <see cref="DialogCommonButtons.No"/>).</param>
+    /// <param name="icon">Icon shown on the dialog (defaults to <see cref="DialogIcon.Warning"/>).</param>
+    /// <returns>Button the user clicked.</returns>
+    public static DialogResult ShowConfirmation(
+        this IUI self,
+        IWin32Window owner,
+        string title,
+        string? subtitle = null,
+        DialogCommonButtons buttons = DialogCommonButtons.Yes | DialogCommonButtons.No,
+        DialogIcon icon = DialogIcon.Warning
+    )
+    {
+        return self.ShowTaskDialog(owner, title, subtitle, buttons, icon);
+    }
+
+    /// <summary>
     /// Shows an alert dialog to the user.
     /// </summary>
     /// <param name="self">UI service.</param>
@@ -74,6 +96,28 @@ public static class UIExtensions
     )
     {
         return self.ShowTaskDialog(GetOwner(owner), title, subtitle, buttons, icon);
+    }
+
+    /// <summary>
+    /// Shows an alert dialog to the user.
+    /// </summary>
+    /// <param name="self">UI service.</param>
+    /// <param name="owner">Owner window of the dialog.</param>
+    /// <param name="title">Title shown on the dialog.</param>
+    /// <param name="subtitle">Subtitle or descriptive shown on the dialog.</param>
+    /// <param name="buttons">Buttons shown on the dialog (defaults to <see cref="DialogCommonButtons.OK"/>).</param>
+    /// <param name="icon">Icon shown on the dialog (defaults to <see cref="DialogIcon.Error"/>).</param>
+    /// <returns>Button the user clicked.</returns>
+    public static DialogResult ShowAlert(
+        this IUI self,
+        IWin32Window owner,
+        string title,
+        string? subtitle = null,
+        DialogCommonButtons buttons = DialogCommonButtons.OK,
+        DialogIcon icon = DialogIcon.Error
+    )
+    {
+        return self.ShowTaskDialog(owner, title, subtitle, buttons, icon);
     }
 
     /// <summary>

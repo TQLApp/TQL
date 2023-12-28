@@ -24,10 +24,20 @@ public class TestUI : IUI
     public OpenUrlData? OpenUrlData { get; private set; }
 
     public Task PerformInteractiveAuthentication(
-        IInteractiveAuthentication interactiveAuthentication
+        InteractiveAuthenticationResource resource,
+        Func<IWin32Window, Task> action
     )
     {
-        return interactiveAuthentication.Authenticate(new Win32Window(IntPtr.Zero));
+        return action(new Win32Window(IntPtr.Zero));
+    }
+
+    public Task<BrowserBasedInteractiveAuthenticationResult> PerformBrowserBasedInteractiveAuthentication(
+        InteractiveAuthenticationResource resource,
+        string loginUrl,
+        string redirectUrl
+    )
+    {
+        throw new NotSupportedException();
     }
 
     public void OpenUrl(string url) => OpenUrlData = new OpenUrlData(url);
@@ -35,8 +45,8 @@ public class TestUI : IUI
     public void ShowNotificationBar(
         string key,
         string message,
-        Action? activate = null,
-        Action? dismiss = null
+        Action<IWin32Window>? activate = null,
+        Action<IWin32Window>? dismiss = null
     )
     {
         lock (_syncRoot)
@@ -91,6 +101,11 @@ public class TestUI : IUI
     private record Win32Window(IntPtr Handle) : IWin32Window;
 }
 
-public record NotificationBarData(string Key, string Message, Action? Activate, Action? Dismiss);
+public record NotificationBarData(
+    string Key,
+    string Message,
+    Action<IWin32Window>? Activate,
+    Action<IWin32Window>? Dismiss
+);
 
 public record OpenUrlData(string Url);

@@ -113,6 +113,12 @@
           "Microsoft.Extensions.Options": "8.0.0"
         }
       },
+      "Microsoft.Web.WebView2": {
+        "type": "Direct",
+        "requested": "[1.0.2210.55, )",
+        "resolved": "1.0.2210.55",
+        "contentHash": "pb5kuzl8TQm+ztzOnOm/qX75DXXjOQMdKlcs2hyizbZobiGzJcMcIhpmMmgg1cTGYwof2fVhlC809YScvDbm3w=="
+      },
       "NReco.Logging.File": {
         "type": "Direct",
         "requested": "[1.1.7, )",

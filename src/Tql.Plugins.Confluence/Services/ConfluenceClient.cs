@@ -146,7 +146,7 @@ internal class ConfluenceClient
                     string.Format(Labels.ConfluenceClient_ResourceName, _connection.Name),
                     Labels.ConfluencePlugin_Label
                 ),
-                () => _ui.OpenConfiguration(ConfluencePlugin.ConfigurationPageId)
+                _ => _ui.OpenConfiguration(ConfluencePlugin.ConfigurationPageId)
             );
         }
         else

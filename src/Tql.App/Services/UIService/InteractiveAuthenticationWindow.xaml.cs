@@ -2,27 +2,42 @@
 using Tql.Abstractions;
 using Tql.App.Support;
 using Tql.Utilities;
+using IWin32Window = System.Windows.Forms.IWin32Window;
 
-namespace Tql.App.Services;
+namespace Tql.App.Services.UIService;
 
 internal partial class InteractiveAuthenticationWindow
 {
-    private readonly IInteractiveAuthentication _interactiveAuthentication;
+    public class Factory(IPluginManager pluginManager)
+    {
+        public InteractiveAuthenticationWindow CreateInstance(
+            InteractiveAuthenticationResource resource,
+            Func<IWin32Window, Task> action,
+            IUI ui
+        ) => new(resource, action, pluginManager, ui);
+    }
+
+    private readonly Func<IWin32Window, Task> _action;
     private readonly IUI _ui;
 
     public Exception? Exception { get; private set; }
 
     public InteractiveAuthenticationWindow(
-        IInteractiveAuthentication interactiveAuthentication,
+        InteractiveAuthenticationResource resource,
+        Func<IWin32Window, Task> action,
+        IPluginManager pluginManager,
         IUI ui
     )
     {
-        _interactiveAuthentication = interactiveAuthentication;
+        _action = action;
         _ui = ui;
 
         InitializeComponent();
 
-        _plugin.Text = interactiveAuthentication.ResourceName;
+        var plugin = pluginManager.Plugins.Single(p => p.Id == resource.PluginId);
+
+        _resourceName.Text = $"{plugin.Title} - {resource.ResourceName}";
+        _resourceIcon.Source = resource.ResourceIcon;
     }
 
     private async void _acceptButton_Click(object? sender, RoutedEventArgs e)
@@ -33,7 +48,7 @@ internal partial class InteractiveAuthenticationWindow
         {
             try
             {
-                await _interactiveAuthentication.Authenticate(new Win32Window(handle));
+                await _action(new Win32Window(handle));
 
                 Close();
                 return;

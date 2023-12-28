@@ -205,15 +205,6 @@ namespace Tql.Plugins.GitHub {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Authentication completed. You can now go back to the app..
-        /// </summary>
-        public static string GitHubOAuthWorkflow_AuthenticationComplete {
-            get {
-                return ResourceManager.GetString("GitHubOAuthWorkflow_AuthenticationComplete", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to GitHub.
         /// </summary>
         public static string GitHubPlugin_Title {

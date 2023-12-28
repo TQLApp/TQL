@@ -9,6 +9,7 @@ using Tql.App.Search;
 using Tql.App.Services;
 using Tql.App.Services.Database;
 using Tql.App.Services.Telemetry;
+using Tql.App.Services.UIService;
 using Tql.App.Support;
 using Tql.Utilities;
 
@@ -354,8 +355,6 @@ internal partial class MainWindow : IHostedService
 
         RenderStack();
 
-        _ui.SetMainWindow(this);
-
         UpdateClearVisibility();
 
         ReloadNotifications();
@@ -405,7 +404,7 @@ internal partial class MainWindow : IHostedService
         // the taskbar button re-appearing next time the app is opened.
         // Maybe that's the bug they mean.
         //
-        // The work around is that the next time we show the app, we
+        // The workaround is that the next time we show the app, we
         // reset the ShowInTaskbar property "properly" (see the
         // ResetShowInTaskbar method). This seems to work fine.
 
@@ -532,8 +531,6 @@ internal partial class MainWindow : IHostedService
 
         if (haveQuickStartChildWindow)
             _quickStartManager.Close();
-
-        _ui.SetMainWindow(null);
 
         Visibility = Visibility.Hidden;
 
@@ -952,7 +949,9 @@ internal partial class MainWindow : IHostedService
 
         ReloadNotifications();
 
-        e.Notification.Activate?.Invoke();
+        var handle = new WindowInteropHelper(this).Handle;
+
+        e.Notification.Activate?.Invoke(new Win32Window(handle));
     }
 
     private void NotificationBarUserControl_Dismissed(object? sender, UINotificationEventArgs e)
@@ -961,7 +960,9 @@ internal partial class MainWindow : IHostedService
 
         ReloadNotifications();
 
-        e.Notification.Dismiss?.Invoke();
+        var handle = new WindowInteropHelper(this).Handle;
+
+        e.Notification.Dismiss?.Invoke(new Win32Window(handle));
     }
 
     private void _results_SelectionChanged(object sender, SelectionChangedEventArgs e)

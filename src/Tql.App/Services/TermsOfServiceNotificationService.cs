@@ -71,16 +71,11 @@ internal class TermsOfServiceNotificationService(
                 ui.ShowNotificationBar(
                     GetType().FullName!,
                     Labels.TermsOfServiceNotificationService_Updated,
-                    OpenTermsOfService
+                    _ => ui.OpenUrl(Constants.TermsOfServiceUrl)
                 );
             }
 
             settings.LastTermsOfServiceHash = hash;
         }
-    }
-
-    private void OpenTermsOfService()
-    {
-        ui.OpenUrl(Constants.TermsOfServiceUrl);
     }
 }
