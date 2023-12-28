@@ -146,8 +146,8 @@ public interface IUI
     void ShowNotificationBar(
         string key,
         string message,
-        Action? activate = null,
-        Action? dismiss = null
+        Action<IWin32Window>? activate = null,
+        Action<IWin32Window>? dismiss = null
     );
 
     /// <summary>

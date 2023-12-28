@@ -285,7 +285,7 @@ internal class JiraClient
 
         response.EnsureSuccessStatusCode();
 
-        var json = await response.Content.ReadAsStringAsync();
+        var json = await response.Content.ReadAsStringAsync(cancellationToken);
 
         return JsonSerializer.Deserialize<T>(json)!;
     }
@@ -303,7 +303,7 @@ internal class JiraClient
                     string.Format(Labels.JiraClient_ResourceName, _connection.Name),
                     Labels.JiraPlugin_Title
                 ),
-                () => _ui.OpenConfiguration(JiraPlugin.ConfigurationPageId)
+                _ => _ui.OpenConfiguration(JiraPlugin.ConfigurationPageId)
             );
         }
         else

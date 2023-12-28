@@ -1,3 +1,10 @@
-﻿namespace Tql.App.Services;
+﻿using System.Windows.Forms;
 
-internal record UINotification(string Key, string Message, Action? Activate, Action? Dismiss);
+namespace Tql.App.Services;
+
+internal record UINotification(
+    string Key,
+    string Message,
+    Action<IWin32Window>? Activate,
+    Action<IWin32Window>? Dismiss
+);

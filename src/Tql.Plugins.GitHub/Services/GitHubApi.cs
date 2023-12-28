@@ -83,7 +83,7 @@ internal class GitHubApi(
                         Labels.GitHubApi_UnableToConnect,
                         string.Format(Labels.GitHubApi_ResourceName, connection.Name)
                     ),
-                    () => RetryConnect(id)
+                    _ => RetryConnect(id)
                 );
                 throw;
             }

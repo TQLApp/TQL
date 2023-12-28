@@ -45,8 +45,8 @@ public class TestUI : IUI
     public void ShowNotificationBar(
         string key,
         string message,
-        Action? activate = null,
-        Action? dismiss = null
+        Action<IWin32Window>? activate = null,
+        Action<IWin32Window>? dismiss = null
     )
     {
         lock (_syncRoot)
@@ -101,6 +101,11 @@ public class TestUI : IUI
     private record Win32Window(IntPtr Handle) : IWin32Window;
 }
 
-public record NotificationBarData(string Key, string Message, Action? Activate, Action? Dismiss);
+public record NotificationBarData(
+    string Key,
+    string Message,
+    Action<IWin32Window>? Activate,
+    Action<IWin32Window>? Dismiss
+);
 
 public record OpenUrlData(string Url);

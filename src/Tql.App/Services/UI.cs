@@ -173,11 +173,6 @@ internal class UI : IUI
         }
     }
 
-    public void SetMainWindow(MainWindow? mainWindow)
-    {
-        MainWindow = mainWindow;
-    }
-
     public void Shutdown(RestartMode mode)
     {
         Application.Current.Dispatcher.BeginInvoke(() =>
@@ -323,8 +318,8 @@ internal class UI : IUI
     public void ShowNotificationBar(
         string key,
         string message,
-        Action? activate = null,
-        Action? dismiss = null
+        Action<IWin32Window>? activate = null,
+        Action<IWin32Window>? dismiss = null
     )
     {
         lock (_syncRoot)
@@ -360,19 +355,30 @@ internal class UI : IUI
         OnConfigurationUIRequested(new ConfigurationUIEventArgs(id));
     }
 
-    public void EnterModalDialog()
+    public Window EnterModalDialog()
     {
-        if (_modalDialogShowing == 0 && MainWindow != null)
-            MainWindow.SetShowInTaskbar(true);
+        var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
+        if (!mainWindow.IsVisible)
+            mainWindow.DoShow();
+
+        if (_modalDialogShowing == 0)
+            mainWindow.SetShowInTaskbar(true);
+
         _modalDialogShowing++;
+
+        return mainWindow;
     }
 
     public void ExitModalDialog()
     {
+        var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
+
         _modalDialogShowing--;
-        if (_modalDialogShowing == 0 && MainWindow != null)
-            MainWindow.SetShowInTaskbar(false);
+        if (_modalDialogShowing == 0)
+            mainWindow.SetShowInTaskbar(false);
     }
+
+    public void ShowModalDialog(Action<IWin32Window> action) { }
 
     protected virtual void OnUINotificationsChanged() =>
         UINotificationsChanged?.Invoke(this, EventArgs.Empty);
