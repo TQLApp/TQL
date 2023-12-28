@@ -157,7 +157,12 @@ internal class GitHubApi(
             var authorizationRequest = await oauthClient.GetLoginLinkUriAsync();
 
             var result = await ui.PerformBrowserBasedInteractiveAuthentication(
-                string.Format(Labels.GitHubApi_ResourceName, connection.Name),
+                new InteractiveAuthenticationResource(
+                    GitHubPlugin.Id,
+                    connection.Id,
+                    connection.Name,
+                    Images.GitHub
+                ),
                 authorizationRequest,
                 RedirectUri
             );

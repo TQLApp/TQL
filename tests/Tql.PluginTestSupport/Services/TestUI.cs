@@ -24,14 +24,15 @@ public class TestUI : IUI
     public OpenUrlData? OpenUrlData { get; private set; }
 
     public Task PerformInteractiveAuthentication(
-        IInteractiveAuthentication interactiveAuthentication
+        InteractiveAuthenticationResource resource,
+        Func<IWin32Window, Task> action
     )
     {
-        return interactiveAuthentication.Authenticate(new Win32Window(IntPtr.Zero));
+        return action(new Win32Window(IntPtr.Zero));
     }
 
     public Task<BrowserBasedInteractiveAuthenticationResult> PerformBrowserBasedInteractiveAuthentication(
-        string resourceName,
+        InteractiveAuthenticationResource resource,
         string loginUrl,
         string redirectUrl
     )

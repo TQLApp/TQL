@@ -9,7 +9,21 @@ namespace Tql.App.Services;
 
 internal partial class BrowserBasedInteractiveAuthenticationWindow
 {
-    private readonly string _resourceName;
+    public class Factory(
+        IStore store,
+        IPluginManager pluginManager,
+        ILogger<BrowserBasedInteractiveAuthenticationWindow> logger
+    )
+    {
+        public BrowserBasedInteractiveAuthenticationWindow CreateInstance(
+            InteractiveAuthenticationResource resource,
+            string loginUrl,
+            string redirectUrl,
+            TaskCompletionSource<BrowserBasedInteractiveAuthenticationResult> tcs
+        ) => new(resource, loginUrl, redirectUrl, tcs, store, pluginManager, logger);
+    }
+
+    private readonly InteractiveAuthenticationResource _resource;
     private readonly string _loginUrl;
     private readonly string _redirectUrl;
     private readonly IStore _store;
@@ -18,15 +32,16 @@ internal partial class BrowserBasedInteractiveAuthenticationWindow
     private readonly TaskCompletionSource<BrowserBasedInteractiveAuthenticationResult> _tcs;
 
     public BrowserBasedInteractiveAuthenticationWindow(
-        string resourceName,
+        InteractiveAuthenticationResource resource,
         string loginUrl,
         string redirectUrl,
         TaskCompletionSource<BrowserBasedInteractiveAuthenticationResult> tcs,
         IStore store,
+        IPluginManager pluginManager,
         ILogger<BrowserBasedInteractiveAuthenticationWindow> logger
     )
     {
-        _resourceName = resourceName;
+        _resource = resource;
         _loginUrl = loginUrl;
         _redirectUrl = redirectUrl;
         _tcs = tcs;
@@ -35,7 +50,10 @@ internal partial class BrowserBasedInteractiveAuthenticationWindow
 
         InitializeComponent();
 
-        _plugin.Text = resourceName;
+        var plugin = pluginManager.Plugins.Single(p => p.Id == resource.PluginId);
+
+        _resourceName.Text = $"{plugin.Title} - {resource.ResourceName}";
+        _resourceIcon.Source = resource.ResourceIcon;
     }
 
     private async void BaseWindow_Loaded(object sender, RoutedEventArgs e)
@@ -50,11 +68,10 @@ internal partial class BrowserBasedInteractiveAuthenticationWindow
 
             _server.RequestReceived += _server_RequestReceived;
 
-            var resourceNameHash = Utilities.Encryption.Sha1Hash(_resourceName);
             var browserCacheFolder = Path.Combine(
-                ((Store)_store).CacheFolder,
+                _store.GetCacheFolder(_resource.PluginId),
                 "Browser Based Interactive Authentication",
-                resourceNameHash
+                _resource.ResourceId.ToString()
             );
             Directory.CreateDirectory(browserCacheFolder);
 

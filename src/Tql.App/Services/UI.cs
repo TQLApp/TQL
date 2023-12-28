@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
 using System.Windows.Forms;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Tql.Abstractions;
 using Tql.App.Support;
@@ -13,16 +14,16 @@ namespace Tql.App.Services;
 internal class UI : IUI
 {
     private SynchronizationContext? _synchronizationContext;
-    private volatile List<UINotification> _notifications = new();
+    private volatile List<UINotification> _notifications = [];
     private readonly object _syncRoot = new();
     private int _modalDialogShowing;
     private readonly ILogger<UI> _logger;
-    private readonly ILoggerFactory _loggerFactory;
-    private readonly IStore _store;
+    private readonly InteractiveAuthenticationWindow.Factory _interactiveAuthenticationWindowFactory;
+    private readonly BrowserBasedInteractiveAuthenticationWindow.Factory _browserBasedInteractiveAuthenticationWindowFactory;
+    private readonly IServiceProvider _serviceProvider;
     private volatile RestartMode _restartMode = RestartMode.Shutdown;
 
     public RestartMode RestartMode => _restartMode;
-    public MainWindow? MainWindow { get; private set; }
     public bool IsModalDialogShowing => _modalDialogShowing > 0;
 
     // This uses the safe publication pattern.
@@ -35,13 +36,16 @@ internal class UI : IUI
     public UI(
         ILifecycleService lifecycleService,
         ILogger<UI> logger,
-        ILoggerFactory loggerFactory,
-        IStore store
+        InteractiveAuthenticationWindow.Factory interactiveAuthenticationWindowFactory,
+        BrowserBasedInteractiveAuthenticationWindow.Factory browserBasedInteractiveAuthenticationWindowFactory,
+        IServiceProvider serviceProvider
     )
     {
         _logger = logger;
-        _loggerFactory = loggerFactory;
-        _store = store;
+        _interactiveAuthenticationWindowFactory = interactiveAuthenticationWindowFactory;
+        _browserBasedInteractiveAuthenticationWindowFactory =
+            browserBasedInteractiveAuthenticationWindowFactory;
+        _serviceProvider = serviceProvider;
 
         lifecycleService.RegisterBeforeShutdown(BeforeShutdown);
     }
@@ -78,7 +82,8 @@ internal class UI : IUI
     }
 
     public Task PerformInteractiveAuthentication(
-        IInteractiveAuthentication interactiveAuthentication
+        InteractiveAuthenticationResource resource,
+        Func<IWin32Window, Task> action
     )
     {
         var tcs = new TaskCompletionSource();
@@ -86,12 +91,13 @@ internal class UI : IUI
         _synchronizationContext!.Post(
             _ =>
             {
-                var window = new InteractiveAuthenticationWindow(interactiveAuthentication, this)
-                {
-                    Owner = MainWindow
-                };
+                var window = _interactiveAuthenticationWindowFactory.CreateInstance(
+                    resource,
+                    action,
+                    this
+                );
 
-                EnterModalDialog();
+                window.Owner = EnterModalDialog();
                 try
                 {
                     window.ShowDialog();
@@ -113,7 +119,7 @@ internal class UI : IUI
     }
 
     public Task<BrowserBasedInteractiveAuthenticationResult> PerformBrowserBasedInteractiveAuthentication(
-        string resourceName,
+        InteractiveAuthenticationResource resource,
         string loginUrl,
         string redirectUrl
     )
@@ -123,19 +129,14 @@ internal class UI : IUI
         _synchronizationContext!.Post(
             _ =>
             {
-                var window = new BrowserBasedInteractiveAuthenticationWindow(
-                    resourceName,
+                var window = _browserBasedInteractiveAuthenticationWindowFactory.CreateInstance(
+                    resource,
                     loginUrl,
                     redirectUrl,
-                    tcs,
-                    _store,
-                    _loggerFactory.CreateLogger<BrowserBasedInteractiveAuthenticationWindow>()
-                )
-                {
-                    Owner = MainWindow
-                };
+                    tcs
+                );
 
-                EnterModalDialog();
+                window.Owner = EnterModalDialog();
                 try
                 {
                     window.ShowDialog();

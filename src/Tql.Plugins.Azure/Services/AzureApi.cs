@@ -34,7 +34,7 @@ internal class AzureApi(IUI ui, ConfigurationManager configurationManager)
                             Labels.AzureApi_UnableToConnect,
                             string.Format(Labels.AzureApi_ResourceName, connection.Name)
                         ),
-                        () => RetryConnect(id)
+                        _ => RetryConnect(id)
                     );
                     throw;
                 }
@@ -81,7 +81,7 @@ internal class AzureApi(IUI ui, ConfigurationManager configurationManager)
                     }
                 ),
                 ui,
-                string.Format(Labels.AzureApi_ResourceName, connection.Name)
+                connection
             )
         );
 
@@ -93,7 +93,8 @@ internal class AzureApi(IUI ui, ConfigurationManager configurationManager)
         return client;
     }
 
-    private class UICredential(TokenCredential item, IUI ui, string resourceName) : TokenCredential
+    private class UICredential(TokenCredential item, IUI ui, Connection connection)
+        : TokenCredential
     {
         public override async ValueTask<AccessToken> GetTokenAsync(
             TokenRequestContext requestContext,
@@ -103,11 +104,13 @@ internal class AzureApi(IUI ui, ConfigurationManager configurationManager)
             var accessToken = default(AccessToken);
 
             await ui.PerformInteractiveAuthentication(
-                new InteractiveAuthentication(
-                    resourceName,
-                    async () =>
-                        accessToken = await item.GetTokenAsync(requestContext, cancellationToken)
-                )
+                new InteractiveAuthenticationResource(
+                    AzurePlugin.Id,
+                    connection.Id,
+                    connection.Name,
+                    Images.Azure
+                ),
+                async _ => accessToken = await item.GetTokenAsync(requestContext, cancellationToken)
             );
 
             return accessToken;
@@ -119,17 +122,6 @@ internal class AzureApi(IUI ui, ConfigurationManager configurationManager)
         )
         {
             throw new NotSupportedException();
-        }
-    }
-
-    private class InteractiveAuthentication(string resourceName, Func<Task> action)
-        : IInteractiveAuthentication
-    {
-        public string ResourceName { get; } = resourceName;
-
-        public async Task Authenticate(IWin32Window owner)
-        {
-            await action();
         }
     }
 }

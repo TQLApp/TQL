@@ -22,34 +22,32 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-    <Grid Margin="9">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+        <Grid Margin="9">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-        <Image
-            Source="pack://application:,,,/Tql.App;component/Resources/Radar.png"
-            Height="32"
-            Margin="0,0,10,0"
-            VerticalAlignment="Top" />
+            <Image
+                x:Name="_resourceIcon"
+                Height="32"
+                Margin="0,0,10,0"
+                VerticalAlignment="Top" />
 
-        <StackPanel
-            Orientation="Vertical"
-            Grid.Column="1">
-            <TextBlock
-                Margin="0,0,0,4"
-                FontWeight="Bold"
-                Text="{x:Static app:Labels.InteractiveAuthenticationWindow_TheFollowingResourceRequiresYourCredentialsLabel}" />
-            <TextBlock
-                x:Name="_plugin"
-                >PLUGIN</TextBlock>
-        </StackPanel>
+            <StackPanel
+                Orientation="Vertical"
+                Grid.Column="1">
+                <TextBlock
+                    Margin="0,0,0,4"
+                    FontWeight="Bold"
+                    Text="{x:Static app:Labels.InteractiveAuthenticationWindow_TheFollowingResourceRequiresYourCredentialsLabel}" />
+                <TextBlock x:Name="_resourceName">RESOURCE NAME</TextBlock>
+            </StackPanel>
         </Grid>
 
-        <wv2:WebView2 Name="_webView"
-                      Grid.Row="1"
-                      Grid.ColumnSpan="2"
-        />
+        <wv2:WebView2
+            Name="_webView"
+            Grid.Row="1"
+            Grid.ColumnSpan="2" />
     </Grid>
 </utilities:BaseWindow>

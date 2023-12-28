@@ -406,6 +406,8 @@ public partial class App
         builder.AddSingleton<ILifecycleService, LifecycleService>();
         builder.AddSingleton<MainWindow>();
         builder.AddHostedService<TermsOfServiceNotificationService>();
+        builder.AddSingleton<InteractiveAuthenticationWindow.Factory>();
+        builder.AddSingleton<BrowserBasedInteractiveAuthenticationWindow.Factory>();
 
         builder.AddSingleton<IHostedService>(p => p.GetRequiredService<SynchronizationService>());
         builder.AddSingleton<IHostedService>(p => p.GetRequiredService<MainWindow>());
