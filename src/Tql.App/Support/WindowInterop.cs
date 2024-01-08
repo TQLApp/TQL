@@ -1,5 +1,7 @@
-﻿using System.Runtime.InteropServices;
-using System.Windows.Interop;
+﻿using System.Windows.Interop;
+using Windows.Win32;
+using Windows.Win32.Foundation;
+using Windows.Win32.UI.WindowsAndMessaging;
 using Rectangle = System.Drawing.Rectangle;
 using Size = System.Drawing.Size;
 
@@ -9,30 +11,24 @@ public static class WindowInterop
 {
     public static Size GetClientSize(IntPtr handle)
     {
-        GetClientRect(handle, out var clientRect);
+        PInvoke.GetClientRect(new HWND(handle), out var clientRect);
 
-        return new Size(clientRect.Right - clientRect.Left, clientRect.Bottom - clientRect.Top);
+        return new Size(clientRect.right - clientRect.left, clientRect.bottom - clientRect.top);
     }
 
     public static Rectangle GetClientRect(IntPtr handle)
     {
         var clientSize = GetClientSize(handle);
 
-        var rect = new RECT
-        {
-            Left = 0,
-            Top = 0,
-            Right = clientSize.Width,
-            Bottom = clientSize.Height
-        };
+        var rect = new RECT(0, 0, clientSize.Width, clientSize.Height);
 
         // Get window style
-        uint style = GetWindowLong(handle, GWL_STYLE);
+        var style = PInvoke.GetWindowLong(new HWND(handle), WINDOW_LONG_PTR_INDEX.GWL_STYLE);
 
         // Adjust the rect to include the non-client area
-        AdjustWindowRect(ref rect, style, false);
+        PInvoke.AdjustWindowRect(ref rect, (WINDOW_STYLE)style, false);
 
-        return new Rectangle(-rect.Left, -rect.Top, clientSize.Width, clientSize.Height);
+        return new Rectangle(-rect.left, -rect.top, clientSize.Width, clientSize.Height);
     }
 
     public static void SetTaskbarButtonWindowStyle(Window window, bool visible)
@@ -40,58 +36,41 @@ public static class WindowInterop
         var handle = new WindowInteropHelper(window).Handle;
 
         if (visible)
-            AddWindowExStyle(handle, WS_EX_APPWINDOW);
+            AddWindowExStyle(handle, WINDOW_EX_STYLE.WS_EX_APPWINDOW);
         else
-            RemoveWindowExStyle(handle, WS_EX_APPWINDOW);
+            RemoveWindowExStyle(handle, WINDOW_EX_STYLE.WS_EX_APPWINDOW);
     }
 
     public static void SetToolWindowStyle(Window window)
     {
         var handle = new WindowInteropHelper(window).Handle;
 
-        AddWindowExStyle(handle, WS_EX_TOOLWINDOW);
+        AddWindowExStyle(handle, WINDOW_EX_STYLE.WS_EX_TOOLWINDOW);
     }
 
-    private static void AddWindowExStyle(IntPtr handle, uint style)
+    private static void AddWindowExStyle(IntPtr handle, WINDOW_EX_STYLE style)
     {
-        var extendedStyle = GetWindowLong(handle, GWL_EXSTYLE);
-        SetWindowLong(handle, GWL_EXSTYLE, extendedStyle | style);
+        var extendedStyle = PInvoke.GetWindowLong(
+            new HWND(handle),
+            WINDOW_LONG_PTR_INDEX.GWL_EXSTYLE
+        );
+        PInvoke.SetWindowLong(
+            new HWND(handle),
+            WINDOW_LONG_PTR_INDEX.GWL_EXSTYLE,
+            extendedStyle | (int)style
+        );
     }
 
-    private static void RemoveWindowExStyle(IntPtr handle, uint style)
+    private static void RemoveWindowExStyle(IntPtr handle, WINDOW_EX_STYLE style)
     {
-        var extendedStyle = GetWindowLong(handle, GWL_EXSTYLE);
-        SetWindowLong(handle, GWL_EXSTYLE, extendedStyle & ~style);
-    }
-
-    [DllImport("user32.dll")]
-    private static extern bool GetClientRect(IntPtr hWnd, out RECT lpRect);
-
-    [DllImport("user32.dll", SetLastError = true)]
-    private static extern uint GetWindowLong(IntPtr hWnd, int nIndex);
-
-    [DllImport("user32.dll")]
-    private static extern int SetWindowLong(IntPtr hwnd, int index, uint newStyle);
-
-    [DllImport("user32.dll")]
-    private static extern bool AdjustWindowRect(ref RECT lpRect, uint dwStyle, bool bMenu);
-
-    public const int GWL_STYLE = -16;
-    public const int GWL_EXSTYLE = -20;
-
-    public const uint WS_EX_TOOLWINDOW = 0x80;
-    public const uint WS_EX_APPWINDOW = 0x40000;
-
-    public const int WM_MOUSEACTIVATE = 0x0021;
-
-    public const int MA_NOACTIVATE = 0x0003;
-
-    [StructLayout(LayoutKind.Sequential)]
-    private struct RECT
-    {
-        public int Left;
-        public int Top;
-        public int Right;
-        public int Bottom;
+        var extendedStyle = PInvoke.GetWindowLong(
+            new HWND(handle),
+            WINDOW_LONG_PTR_INDEX.GWL_EXSTYLE
+        );
+        PInvoke.SetWindowLong(
+            new HWND(handle),
+            WINDOW_LONG_PTR_INDEX.GWL_EXSTYLE,
+            extendedStyle & ~(int)style
+        );
     }
 }

@@ -2,6 +2,10 @@
 
 	<Import Project="..\..\Tql.targets" />
 
+	<PropertyGroup>
+		<PlatformTarget>x64</PlatformTarget>
+	</PropertyGroup>
+
 	<ItemGroup>
 	  <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
 	  <PackageReference Include="NUnit" Version="3.14.0" />

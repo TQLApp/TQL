@@ -1,5 +1,7 @@
-﻿using System.Runtime.InteropServices;
-using System.Windows.Interop;
+﻿using System.Windows.Interop;
+using Windows.Win32;
+using Windows.Win32.Foundation;
+using Windows.Win32.Graphics.Dwm;
 using Color = System.Windows.Media.Color;
 
 namespace Tql.Utilities;
@@ -39,13 +41,16 @@ public class BaseWindow : Window
         {
             var interop = new WindowInteropHelper(this);
 
-            var value = 1;
-            DwmSetWindowAttribute(
-                interop.Handle,
-                DWMWA_USE_IMMERSIVE_DARK_MODE,
-                ref value,
-                sizeof(int)
-            );
+            unsafe
+            {
+                var value = 1;
+                PInvoke.DwmSetWindowAttribute(
+                    new HWND(interop.Handle),
+                    DWMWINDOWATTRIBUTE.DWMWA_USE_IMMERSIVE_DARK_MODE,
+                    &value,
+                    sizeof(int)
+                );
+            }
         }
     }
 
@@ -54,14 +59,4 @@ public class BaseWindow : Window
     {
         return (((5 * clr.G) + (2 * clr.R) + clr.B) > (8 * 128));
     }
-
-    [DllImport("dwmapi.dll")]
-    internal static extern int DwmSetWindowAttribute(
-        IntPtr hwnd,
-        uint attr,
-        ref int attrValue,
-        int attrSize
-    );
-
-    private const uint DWMWA_USE_IMMERSIVE_DARK_MODE = 20;
 }

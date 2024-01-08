@@ -8,13 +8,17 @@ using Tql.Abstractions;
 using Tql.App.Interop;
 using Tql.App.Services.Telemetry;
 using Tql.App.Support;
+using Windows.Win32;
+using Windows.Win32.Foundation;
+using Windows.Win32.System.Com.StructuredStorage;
+using Windows.Win32.UI.Shell.PropertiesSystem;
 using Path = System.IO.Path;
 
 namespace Tql.App.Services.Profiles;
 
 internal class ProfileManager : IProfileManager
 {
-    private static readonly uint TaskbarButtonCreatedMessage = NativeMethods.RegisterWindowMessage(
+    private static readonly uint TaskbarButtonCreatedMessage = PInvoke.RegisterWindowMessage(
         "TaskbarButtonCreated"
     );
 
@@ -506,9 +510,16 @@ internal class ProfileManager : IProfileManager
 
         public void InitializeWindowProperties(IntPtr hwnd)
         {
-            using var propertyStore = new WindowPropertyStore(hwnd);
+            var guid = typeof(IPropertyStore).GUID;
 
-            propertyStore.SetValue(PropertyStoreProperty.AppUserModel_PreventPinning, true);
+            PInvoke.SHGetPropertyStoreForWindow(new HWND(hwnd), in guid, out var propertyStore);
+
+            var propvar = new PROPVARIANT();
+            propvar.Anonymous.Anonymous.vt = Windows.Win32.System.Variant.VARENUM.VT_BOOL;
+            propvar.Anonymous.Anonymous.Anonymous.boolVal = true;
+
+            var key = PInvoke.PKEY_AppUserModel_PreventPinning;
+            ((IPropertyStore)propertyStore).SetValue(key, propvar);
         }
     }
 }

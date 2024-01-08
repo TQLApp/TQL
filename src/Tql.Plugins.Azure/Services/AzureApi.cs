@@ -1,5 +1,4 @@
-﻿using System.Windows.Forms;
-using Azure.Core;
+﻿using Azure.Core;
 using Azure.Identity;
 using Azure.ResourceManager;
 using Tql.Abstractions;
