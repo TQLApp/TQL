@@ -2,7 +2,6 @@
 using System.Runtime.ExceptionServices;
 using Microsoft.Extensions.DependencyInjection;
 using Tql.Abstractions;
-using Tql.App.Services;
 using Tql.App.Services.UIService;
 
 namespace Tql.App.Support;

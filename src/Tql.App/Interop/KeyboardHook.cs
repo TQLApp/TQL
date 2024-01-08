@@ -1,27 +1,19 @@
 ﻿// Taken from https://stackoverflow.com/questions/2450373/set-global-hotkeys-using-c-sharp.
 
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using Windows.Win32;
+using Windows.Win32.Foundation;
+using Windows.Win32.UI.Input.KeyboardAndMouse;
 
 namespace Tql.App.Interop;
 
 public sealed class KeyboardHook : IDisposable
 {
-    // Registers a hot key with Windows.
-    [DllImport("user32.dll")]
-    private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
-
-    // Unregisters the hot key with Windows.
-    [DllImport("user32.dll")]
-    private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
-
     /// <summary>
     /// Represents the window that is used internally to get the messages.
     /// </summary>
     private class Window : NativeWindow, IDisposable
     {
-        private const int WM_HOTKEY = 0x0312;
-
         public Window()
         {
             CreateHandle(new CreateParams());
@@ -36,7 +28,7 @@ public sealed class KeyboardHook : IDisposable
             base.WndProc(ref m);
 
             // check if we got a hot key pressed.
-            if (m.Msg == WM_HOTKEY)
+            if (m.Msg == PInvoke.WM_HOTKEY)
             {
                 // get the keys.
                 Keys key = (Keys)(((int)m.LParam >> 16) & 0xFFFF);
@@ -84,7 +76,14 @@ public sealed class KeyboardHook : IDisposable
         _currentId = _currentId + 1;
 
         // register the hot key.
-        if (!RegisterHotKey(_window.Handle, _currentId, (uint)modifier, (uint)key))
+        if (
+            !PInvoke.RegisterHotKey(
+                new HWND(_window.Handle),
+                _currentId,
+                (HOT_KEY_MODIFIERS)modifier,
+                (uint)key
+            )
+        )
             throw new InvalidOperationException(Labels.Error_CouldNotRegisterHotKey);
 
         return _currentId;
@@ -92,7 +91,7 @@ public sealed class KeyboardHook : IDisposable
 
     public void UnregisterHotKey(int id)
     {
-        UnregisterHotKey(_window.Handle, id);
+        PInvoke.UnregisterHotKey(new HWND(_window.Handle), id);
     }
 
     /// <summary>
@@ -107,7 +106,7 @@ public sealed class KeyboardHook : IDisposable
         // unregister all the registered hot keys.
         for (int i = _currentId; i > 0; i--)
         {
-            UnregisterHotKey(_window.Handle, i);
+            PInvoke.UnregisterHotKey(new HWND(_window.Handle), i);
         }
 
         // dispose the inner native window.

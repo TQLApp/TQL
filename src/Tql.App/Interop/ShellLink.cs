@@ -5,6 +5,12 @@
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using Windows.Win32;
+using Windows.Win32.Foundation;
+using Windows.Win32.Storage.FileSystem;
+using Windows.Win32.System.Com;
+using Windows.Win32.UI.Shell;
+using Windows.Win32.UI.WindowsAndMessaging;
 
 namespace Tql.App.Interop;
 
@@ -13,18 +19,19 @@ namespace Tql.App.Interop;
 /// </summary>
 internal sealed class ShellLink : IDisposable
 {
-    public static void NotifyShellLinksChanged() =>
-        NativeMethods.SHChangeNotify(
-            NativeMethods.SHCNE_ASSOCCHANGED,
-            NativeMethods.SHCNF_IDLIST,
-            0,
-            0
-        );
+    private const int PATH_BUFFER_SIZE = 260;
+    private const int DESCRIPTION_BUFFER_SIZE = 1024;
+
+    public static void NotifyShellLinksChanged()
+    {
+        unsafe
+        {
+            PInvoke.SHChangeNotify(SHCNE_ID.SHCNE_ASSOCCHANGED, SHCNF_FLAGS.SHCNF_IDLIST);
+        }
+    }
 
     // Use Unicode (W) under NT, otherwise use ANSI
-    private NativeMethods.IShellLinkW _linkW;
-    private NativeMethods.IShellLinkA _linkA;
-    private string _shortcutFile = "";
+    private IShellLinkW _link;
     private bool _disposed;
 
     /// <summary>
@@ -32,14 +39,7 @@ internal sealed class ShellLink : IDisposable
     /// </summary>
     public ShellLink()
     {
-        if (System.Environment.OSVersion.Platform == PlatformID.Win32NT)
-        {
-            _linkW = (NativeMethods.IShellLinkW)new NativeMethods.CShellLink();
-        }
-        else
-        {
-            _linkA = (NativeMethods.IShellLinkA)new NativeMethods.CShellLink();
-        }
+        _link = (IShellLinkW)new Windows.Win32.UI.Shell.ShellLink();
     }
 
     /// <summary>
@@ -58,28 +58,12 @@ internal sealed class ShellLink : IDisposable
     /// </summary>
     public void Dispose()
     {
-        Dispose(true);
-
-        GC.SuppressFinalize(this);
-    }
-
-    private void Dispose(bool disposing)
-    {
         if (!_disposed)
         {
-            if (disposing)
+            if (_link != null)
             {
-                if (_linkW != null)
-                {
-                    Marshal.FinalReleaseComObject(_linkW);
-                    _linkW = null;
-                }
-
-                if (_linkA != null)
-                {
-                    Marshal.FinalReleaseComObject(_linkA);
-                    _linkA = null;
-                }
+                Marshal.FinalReleaseComObject(_link);
+                _link = null;
             }
 
             _disposed = true;
@@ -89,73 +73,63 @@ internal sealed class ShellLink : IDisposable
     /// <summary>
     /// Get or sets the path of the shortcut file.
     /// </summary>
-    public string ShortcutFile
-    {
-        get { return _shortcutFile; }
-        set { _shortcutFile = value; }
-    }
+    public string ShortcutFile { get; set; } = "";
 
-    public Icon LargeIcon
-    {
-        get { return getIcon(true); }
-    }
+    public Icon LargeIcon => GetIcon(true);
 
-    public Icon SmallIcon
-    {
-        get { return getIcon(false); }
-    }
+    public Icon SmallIcon => GetIcon(false);
 
-    private Icon getIcon(bool large)
+    private Icon GetIcon(bool large)
     {
         // Get icon index and path:
-        int iconIndex = 0;
-        StringBuilder iconPath = new StringBuilder(260, 260);
-        if (_linkA == null)
+        int iconIndex;
+        string iconFile;
+
+        unsafe
         {
-            _linkW.GetIconLocation(iconPath, iconPath.Capacity, out iconIndex);
+            fixed (char* iconFileBuffer = new char[PATH_BUFFER_SIZE])
+            {
+                _link.GetIconLocation(iconFileBuffer, PATH_BUFFER_SIZE, out iconIndex);
+                iconFile = new string(iconFileBuffer);
+            }
         }
-        else
-        {
-            _linkA.GetIconLocation(iconPath, iconPath.Capacity, out iconIndex);
-        }
-        string iconFile = iconPath.ToString();
 
         // If there are no details set for the icon, then we must use
         // the shell to get the icon for the target:
         if (iconFile.Length == 0)
         {
             // Use the FileIcon object to get the icon:
-            FileInfoOptions flags = FileInfoOptions.Icon | FileInfoOptions.Attributes;
+            var flags = SHGFI_FLAGS.SHGFI_ICON | SHGFI_FLAGS.SHGFI_ATTRIBUTES;
 
             if (large)
-            {
-                flags = flags | FileInfoOptions.LargeIcon;
-            }
+                flags |= SHGFI_FLAGS.SHGFI_LARGEICON;
             else
-            {
-                flags = flags | FileInfoOptions.SmallIcon;
-            }
-            FileIcon fileIcon = new FileIcon(Target, flags);
+                flags |= SHGFI_FLAGS.SHGFI_SMALLICON;
+
+            var fileIcon = new FileIcon(Target, flags);
             return fileIcon.ShellIcon;
         }
         else
         {
             // Use ExtractIconEx to get the icon:
-            IntPtr[] hIconEx = new IntPtr[1] { IntPtr.Zero };
-            int iconCount;
-            if (large)
+            HICON hIcon;
+
+            unsafe
             {
-                iconCount = NativeMethods.ExtractIconEx(iconFile, iconIndex, hIconEx, null, 1);
+                fixed (char* iconFileBuffer = iconFile)
+                {
+                    if (large)
+                        PInvoke.ExtractIconEx(iconFileBuffer, iconIndex, &hIcon, null, 1);
+                    else
+                        PInvoke.ExtractIconEx(iconFileBuffer, iconIndex, null, &hIcon, 1);
+                }
             }
-            else
-            {
-                iconCount = NativeMethods.ExtractIconEx(iconFile, iconIndex, null, hIconEx, 1);
-            }
+
             // If success then return as a GDI+ object
             Icon icon = null;
-            if (hIconEx[0] != IntPtr.Zero)
+            if (hIcon != IntPtr.Zero)
             {
-                icon = Icon.FromHandle(hIconEx[0]);
+                icon = Icon.FromHandle(hIcon);
                 //UnManagedMethods.DestroyIcon(hIconEx[0]);
             }
             return icon;
@@ -169,37 +143,24 @@ internal sealed class ShellLink : IDisposable
     {
         get
         {
-            StringBuilder iconPath = new StringBuilder(260, 260);
-            int iconIndex;
-            if (_linkA == null)
+            unsafe
             {
-                _linkW.GetIconLocation(iconPath, iconPath.Capacity, out iconIndex);
+                fixed (char* iconPath = new char[PATH_BUFFER_SIZE])
+                {
+                    _link.GetIconLocation(iconPath, PATH_BUFFER_SIZE, out _);
+                    return new string(iconPath);
+                }
             }
-            else
-            {
-                _linkA.GetIconLocation(iconPath, iconPath.Capacity, out iconIndex);
-            }
-            return iconPath.ToString();
         }
         set
         {
-            StringBuilder iconPath = new StringBuilder(260, 260);
-            int iconIndex;
-            if (_linkA == null)
+            unsafe
             {
-                _linkW.GetIconLocation(iconPath, iconPath.Capacity, out iconIndex);
-            }
-            else
-            {
-                _linkA.GetIconLocation(iconPath, iconPath.Capacity, out iconIndex);
-            }
-            if (_linkA == null)
-            {
-                _linkW.SetIconLocation(value, iconIndex);
-            }
-            else
-            {
-                _linkA.SetIconLocation(value, iconIndex);
+                fixed (char* iconPath = new char[PATH_BUFFER_SIZE])
+                {
+                    _link.GetIconLocation(iconPath, PATH_BUFFER_SIZE, out var iconIndex);
+                    _link.SetIconLocation(value, iconIndex);
+                }
             }
         }
     }
@@ -211,37 +172,24 @@ internal sealed class ShellLink : IDisposable
     {
         get
         {
-            StringBuilder iconPath = new StringBuilder(260, 260);
-            int iconIndex;
-            if (_linkA == null)
+            unsafe
             {
-                _linkW.GetIconLocation(iconPath, iconPath.Capacity, out iconIndex);
+                fixed (char* iconPath = new char[PATH_BUFFER_SIZE])
+                {
+                    _link.GetIconLocation(iconPath, PATH_BUFFER_SIZE, out var iconIndex);
+                    return iconIndex;
+                }
             }
-            else
-            {
-                _linkA.GetIconLocation(iconPath, iconPath.Capacity, out iconIndex);
-            }
-            return iconIndex;
         }
         set
         {
-            StringBuilder iconPath = new StringBuilder(260, 260);
-            int iconIndex;
-            if (_linkA == null)
+            unsafe
             {
-                _linkW.GetIconLocation(iconPath, iconPath.Capacity, out iconIndex);
-            }
-            else
-            {
-                _linkA.GetIconLocation(iconPath, iconPath.Capacity, out iconIndex);
-            }
-            if (_linkA == null)
-            {
-                _linkW.SetIconLocation(iconPath.ToString(), value);
-            }
-            else
-            {
-                _linkA.SetIconLocation(iconPath.ToString(), value);
+                fixed (char* iconPath = new char[PATH_BUFFER_SIZE])
+                {
+                    _link.GetIconLocation(iconPath, PATH_BUFFER_SIZE, out int _);
+                    _link.SetIconLocation(new string(iconPath), value);
+                }
             }
         }
     }
@@ -253,40 +201,22 @@ internal sealed class ShellLink : IDisposable
     {
         get
         {
-            StringBuilder target = new StringBuilder(260, 260);
-            if (_linkA == null)
+            unsafe
             {
-                NativeMethods._WIN32_FIND_DATAW fd = new NativeMethods._WIN32_FIND_DATAW();
-                _linkW.GetPath(
-                    target,
-                    target.Capacity,
-                    ref fd,
-                    (uint)NativeMethods.EShellLinkGP.SLGP_UNCPRIORITY
-                );
-            }
-            else
-            {
-                NativeMethods._WIN32_FIND_DATAA fd = new NativeMethods._WIN32_FIND_DATAA();
-                _linkA.GetPath(
-                    target,
-                    target.Capacity,
-                    ref fd,
-                    (uint)NativeMethods.EShellLinkGP.SLGP_UNCPRIORITY
-                );
-            }
-            return target.ToString();
-        }
-        set
-        {
-            if (_linkA == null)
-            {
-                _linkW.SetPath(value);
-            }
-            else
-            {
-                _linkA.SetPath(value);
+                fixed (char* target = new char[PATH_BUFFER_SIZE])
+                {
+                    var fd = new WIN32_FIND_DATAW();
+                    _link.GetPath(
+                        target,
+                        PATH_BUFFER_SIZE,
+                        ref fd,
+                        (uint)SLGP_FLAGS.SLGP_UNCPRIORITY
+                    );
+                    return new string(target);
+                }
             }
         }
+        set => _link.SetPath(value);
     }
 
     /// <summary>
@@ -296,28 +226,16 @@ internal sealed class ShellLink : IDisposable
     {
         get
         {
-            StringBuilder path = new StringBuilder(260, 260);
-            if (_linkA == null)
+            unsafe
             {
-                _linkW.GetWorkingDirectory(path, path.Capacity);
-            }
-            else
-            {
-                _linkA.GetWorkingDirectory(path, path.Capacity);
-            }
-            return path.ToString();
-        }
-        set
-        {
-            if (_linkA == null)
-            {
-                _linkW.SetWorkingDirectory(value);
-            }
-            else
-            {
-                _linkA.SetWorkingDirectory(value);
+                fixed (char* path = new char[PATH_BUFFER_SIZE])
+                {
+                    _link.GetWorkingDirectory(path, PATH_BUFFER_SIZE);
+                    return new string(path);
+                }
             }
         }
+        set => _link.SetWorkingDirectory(value);
     }
 
     /// <summary>
@@ -327,28 +245,16 @@ internal sealed class ShellLink : IDisposable
     {
         get
         {
-            StringBuilder description = new StringBuilder(1024, 1024);
-            if (_linkA == null)
+            unsafe
             {
-                _linkW.GetDescription(description, description.Capacity);
-            }
-            else
-            {
-                _linkA.GetDescription(description, description.Capacity);
-            }
-            return description.ToString();
-        }
-        set
-        {
-            if (_linkA == null)
-            {
-                _linkW.SetDescription(value);
-            }
-            else
-            {
-                _linkA.SetDescription(value);
+                fixed (char* description = new char[DESCRIPTION_BUFFER_SIZE])
+                {
+                    _link.GetDescription(description, DESCRIPTION_BUFFER_SIZE);
+                    return new string(description);
+                }
             }
         }
+        set => _link.SetDescription(value);
     }
 
     /// <summary>
@@ -358,88 +264,40 @@ internal sealed class ShellLink : IDisposable
     {
         get
         {
-            StringBuilder arguments = new StringBuilder(260, 260);
-            if (_linkA == null)
+            unsafe
             {
-                _linkW.GetArguments(arguments, arguments.Capacity);
-            }
-            else
-            {
-                _linkA.GetArguments(arguments, arguments.Capacity);
-            }
-            return arguments.ToString();
-        }
-        set
-        {
-            if (_linkA == null)
-            {
-                _linkW.SetArguments(value);
-            }
-            else
-            {
-                _linkA.SetArguments(value);
+                fixed (char* arguments = new char[PATH_BUFFER_SIZE])
+                {
+                    _link.GetArguments(arguments, PATH_BUFFER_SIZE);
+                    return new string(arguments);
+                }
             }
         }
+        set => _link.SetArguments(value);
     }
 
     /// <summary>
     /// Get or sets the initial display mode when the shortcut is
     /// run.
     /// </summary>
-    public LinkDisplayMode DisplayMode
+    public SHOW_WINDOW_CMD DisplayMode
     {
         get
         {
-            uint cmd;
-            if (_linkA == null)
-            {
-                _linkW.GetShowCmd(out cmd);
-            }
-            else
-            {
-                _linkA.GetShowCmd(out cmd);
-            }
-            return (LinkDisplayMode)cmd;
+            _link.GetShowCmd(out var cmd);
+            return cmd;
         }
-        set
-        {
-            if (_linkA == null)
-            {
-                _linkW.SetShowCmd((uint)value);
-            }
-            else
-            {
-                _linkA.SetShowCmd((uint)value);
-            }
-        }
+        set => _link.SetShowCmd(value);
     }
 
     public Keys HotKey
     {
         get
         {
-            short key;
-            if (_linkA == null)
-            {
-                _linkW.GetHotkey(out key);
-            }
-            else
-            {
-                _linkA.GetHotkey(out key);
-            }
+            _link.GetHotkey(out var key);
             return (Keys)key;
         }
-        set
-        {
-            if (_linkA == null)
-            {
-                _linkW.SetHotkey((short)value);
-            }
-            else
-            {
-                _linkA.SetHotkey((short)value);
-            }
-        }
+        set => _link.SetHotkey((ushort)value);
     }
 
     /// <summary>
@@ -447,7 +305,7 @@ internal sealed class ShellLink : IDisposable
     /// </summary>
     public void Save()
     {
-        Save(_shortcutFile);
+        Save(ShortcutFile);
     }
 
     /// <summary>
@@ -457,16 +315,8 @@ internal sealed class ShellLink : IDisposable
     public void Save(string linkFile)
     {
         // Save the object to disk
-        if (_linkA == null)
-        {
-            ((NativeMethods.IPersistFile)_linkW).Save(linkFile, true);
-            _shortcutFile = linkFile;
-        }
-        else
-        {
-            ((NativeMethods.IPersistFile)_linkA).Save(linkFile, true);
-            _shortcutFile = linkFile;
-        }
+        ((IPersistFile)_link).Save(linkFile, true);
+        ShortcutFile = linkFile;
     }
 
     /// <summary>
@@ -475,12 +325,7 @@ internal sealed class ShellLink : IDisposable
     /// <param name="linkFile">The shortcut file to load.</param>
     public void Open(string linkFile)
     {
-        Open(
-            linkFile,
-            IntPtr.Zero,
-            (ShellLinkResolveType)(NativeMethods.SLR_ANY_MATCH | NativeMethods.SLR_NO_UI),
-            1
-        );
+        Open(linkFile, IntPtr.Zero, SLR_FLAGS.SLR_ANY_MATCH | SLR_FLAGS.SLR_NO_UI, 1);
     }
 
     /// <summary>
@@ -490,7 +335,7 @@ internal sealed class ShellLink : IDisposable
     /// <param name="linkFile">The path to load the shortcut from.</param>
     /// <param name="hWnd">The window handle of the application's UI, if any.</param>
     /// <param name="resolveFlags">Flags controlling resolution behavior.</param>
-    public void Open(string linkFile, IntPtr hWnd, ShellLinkResolveType resolveFlags)
+    public void Open(string linkFile, IntPtr hWnd, SLR_FLAGS resolveFlags)
     {
         Open(linkFile, hWnd, resolveFlags, 1);
     }
@@ -503,35 +348,17 @@ internal sealed class ShellLink : IDisposable
     /// <param name="hWnd">The window handle of the application's UI, if any.</param>
     /// <param name="resolveFlags">Flags controlling resolution behavior.</param>
     /// <param name="timeout">Timeout if <c>SLR_NO_UI</c> is specified, in milliseconds.</param>
-    public void Open(
-        string linkFile,
-        IntPtr hWnd,
-        ShellLinkResolveType resolveFlags,
-        ushort timeout
-    )
+    public void Open(string linkFile, IntPtr hWnd, SLR_FLAGS resolveFlags, ushort timeout)
     {
         uint flags;
 
-        if (((uint)resolveFlags & NativeMethods.SLR_NO_UI) == NativeMethods.SLR_NO_UI)
-        {
+        if ((resolveFlags & SLR_FLAGS.SLR_NO_UI) == SLR_FLAGS.SLR_NO_UI)
             flags = (uint)((int)resolveFlags | (timeout << 16));
-        }
         else
-        {
             flags = (uint)resolveFlags;
-        }
 
-        if (_linkA == null)
-        {
-            ((NativeMethods.IPersistFile)_linkW).Load(linkFile, 0); //STGM_DIRECT)
-            _linkW.Resolve(hWnd, flags);
-            _shortcutFile = linkFile;
-        }
-        else
-        {
-            ((NativeMethods.IPersistFile)_linkA).Load(linkFile, 0); //STGM_DIRECT)
-            _linkA.Resolve(hWnd, flags);
-            _shortcutFile = linkFile;
-        }
+        ((IPersistFile)_link).Load(linkFile, 0); //STGM_DIRECT)
+        _link.Resolve(new HWND(hWnd), flags);
+        ShortcutFile = linkFile;
     }
 }

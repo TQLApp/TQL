@@ -2,6 +2,9 @@
 using System.Windows.Interop;
 using Tql.App.Interop;
 using Tql.Utilities;
+using Windows.Win32;
+using Windows.Win32.Foundation;
+using Windows.Win32.Graphics.Dwm;
 
 namespace Tql.App.Support;
 
@@ -52,13 +55,16 @@ internal class BlurWindow : BaseWindow
 
             Dwm.Windows10EnableBlurBehind(interop.Handle);
 
-            int cornerPreference = (int)Dwm.DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_ROUND;
-            Dwm.DwmSetWindowAttribute(
-                interop.Handle,
-                Dwm.DWMWINDOWATTRIBUTE.WindowCornerPreference,
-                ref cornerPreference,
-                Marshal.SizeOf<int>()
-            );
+            unsafe
+            {
+                int cornerPreference = (int)DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_ROUND;
+                PInvoke.DwmSetWindowAttribute(
+                    new HWND(interop.Handle),
+                    DWMWINDOWATTRIBUTE.DWMWA_WINDOW_CORNER_PREFERENCE,
+                    &cornerPreference,
+                    (uint)Marshal.SizeOf<int>()
+                );
+            }
         }
     }
 

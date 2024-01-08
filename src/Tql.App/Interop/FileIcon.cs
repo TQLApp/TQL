@@ -1,7 +1,10 @@
 ﻿#nullable disable
 
+using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using Windows.Win32;
+using Windows.Win32.UI.Shell;
 
 namespace Tql.App.Interop;
 
@@ -11,62 +14,32 @@ namespace Tql.App.Interop;
 /// </summary>
 internal class FileIcon
 {
-    #region Member Variables
-    private string fileName;
-    private string displayName;
-    private string typeName;
-    private FileInfoOptions flags;
-    private Icon fileIcon;
-    #endregion
-
-    #region Enumerations
-
-    #endregion
-
-    #region Implementation
     /// <summary>
     /// Gets/sets the flags used to extract the icon
     /// </summary>
-    public FileInfoOptions Flags
-    {
-        get { return flags; }
-        set { flags = value; }
-    }
+    public SHGFI_FLAGS Flags { get; set; }
 
     /// <summary>
     /// Gets/sets the filename to get the icon for
     /// </summary>
-    public string FileName
-    {
-        get { return fileName; }
-        set { fileName = value; }
-    }
+    public string FileName { get; set; }
 
     /// <summary>
     /// Gets the icon for the chosen file
     /// </summary>
-    public Icon ShellIcon
-    {
-        get { return fileIcon; }
-    }
+    public Icon ShellIcon { get; private set; }
 
     /// <summary>
     /// Gets the display name for the selected file
     /// if the DisplayName flag was set.
     /// </summary>
-    public string DisplayName
-    {
-        get { return displayName; }
-    }
+    public string DisplayName { get; private set; }
 
     /// <summary>
     /// Gets the type name for the selected file
     /// if the TypeName flag was set.
     /// </summary>
-    public string TypeName
-    {
-        get { return typeName; }
-    }
+    public string TypeName { get; private set; }
 
     /// <summary>
     ///  Gets the information for the specified
@@ -74,44 +47,28 @@ internal class FileIcon
     /// </summary>
     public void GetInfo()
     {
-        fileIcon = null;
-        typeName = "";
-        displayName = "";
+        ShellIcon = null;
+        TypeName = "";
+        DisplayName = "";
 
-        NativeMethods.SHFILEINFO shfi = new NativeMethods.SHFILEINFO();
+        var shfi = new SHFILEINFOW();
         uint shfiSize = (uint)Marshal.SizeOf(shfi.GetType());
 
-        IntPtr ret = NativeMethods.SHGetFileInfo(fileName, 0, ref shfi, shfiSize, (uint)(flags));
-        if (ret != IntPtr.Zero)
+        unsafe
         {
-            if (shfi.hIcon != IntPtr.Zero)
-            {
-                fileIcon = System.Drawing.Icon.FromHandle(shfi.hIcon);
-                // Now owned by the GDI+ object
-                //DestroyIcon(shfi.hIcon);
-            }
-            typeName = shfi.szTypeName;
-            displayName = shfi.szDisplayName;
+            var ret = PInvoke.SHGetFileInfo(FileName, default, &shfi, shfiSize, Flags);
+            if (ret == 0)
+                throw new Win32Exception(Marshal.GetLastWin32Error());
         }
-        else
-        {
-            int err = NativeMethods.GetLastError();
-            Console.WriteLine("Error {0}", err);
-            string txtS = new string('\0', 256);
-            int len = NativeMethods.FormatMessage(
-                NativeMethods.FORMAT_MESSAGE_FROM_SYSTEM
-                    | NativeMethods.FORMAT_MESSAGE_IGNORE_INSERTS,
-                IntPtr.Zero,
-                err,
-                0,
-                txtS,
-                256,
-                0
-            );
-            Console.WriteLine("Len {0} text {1}", len, txtS);
 
-            // throw exception
+        if (shfi.hIcon != IntPtr.Zero)
+        {
+            ShellIcon = Icon.FromHandle(shfi.hIcon);
+            // Now owned by the GDI+ object
+            //DestroyIcon(shfi.hIcon);
         }
+        TypeName = shfi.szTypeName.ToString();
+        DisplayName = shfi.szDisplayName.ToString();
     }
 
     /// <summary>
@@ -121,12 +78,12 @@ internal class FileIcon
     /// </summary>
     public FileIcon()
     {
-        flags =
-            FileInfoOptions.Icon
-            | FileInfoOptions.DisplayName
-            | FileInfoOptions.TypeName
-            | FileInfoOptions.Attributes
-            | FileInfoOptions.ExeType;
+        Flags =
+            SHGFI_FLAGS.SHGFI_ICON
+            | SHGFI_FLAGS.SHGFI_DISPLAYNAME
+            | SHGFI_FLAGS.SHGFI_TYPENAME
+            | SHGFI_FLAGS.SHGFI_ATTRIBUTES
+            | SHGFI_FLAGS.SHGFI_EXETYPE;
     }
 
     /// <summary>
@@ -139,7 +96,7 @@ internal class FileIcon
     public FileIcon(string fileName)
         : this()
     {
-        this.fileName = fileName;
+        FileName = fileName;
         GetInfo();
     }
 
@@ -152,12 +109,10 @@ internal class FileIcon
     /// for</param>
     /// <param name="flags">The flags to use when extracting the
     /// icon and other shell information.</param>
-    public FileIcon(string fileName, FileInfoOptions flags)
+    public FileIcon(string fileName, SHGFI_FLAGS flags)
     {
-        this.fileName = fileName;
-        this.flags = flags;
+        FileName = fileName;
+        Flags = flags;
         GetInfo();
     }
-
-    #endregion
 }

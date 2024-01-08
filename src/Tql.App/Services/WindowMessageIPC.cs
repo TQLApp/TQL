@@ -1,6 +1,7 @@
-﻿using System.Runtime.InteropServices;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using Microsoft.Extensions.Logging;
+using Windows.Win32;
+using Windows.Win32.Foundation;
 using Application = System.Windows.Forms.Application;
 
 namespace Tql.App.Services;
@@ -31,9 +32,9 @@ internal class WindowMessageIPC : IDisposable
     public WindowMessageIPC(string? environment, bool kill, ILogger logger)
     {
         _logger = logger;
-        _windowMessage = RegisterWindowMessage(GetFullName(MessageName));
-        _killWindowMessage = RegisterWindowMessage(GetFullName(KillMessageName));
-        _responseWindowMessage = RegisterWindowMessage(GetFullName(ResponseMessageName));
+        _windowMessage = PInvoke.RegisterWindowMessage(GetFullName(MessageName));
+        _killWindowMessage = PInvoke.RegisterWindowMessage(GetFullName(KillMessageName));
+        _responseWindowMessage = PInvoke.RegisterWindowMessage(GetFullName(ResponseMessageName));
 
         // Create a separate thread for the IPC window. This is to ensure it can
         // pump messages while the main thread is working, or, doing a synchronous
@@ -53,7 +54,7 @@ internal class WindowMessageIPC : IDisposable
             // If there is no window with the right name, we become the
             // first runner.
 
-            var handle = FindWindow(null, GetFullName(WindowName));
+            var handle = PInvoke.FindWindow(null, GetFullName(WindowName));
 
             if (handle == IntPtr.Zero)
             {
@@ -72,7 +73,12 @@ internal class WindowMessageIPC : IDisposable
 
             logger.LogDebug("[IPC] Sending message to current first runner");
 
-            PostMessage(handle, kill ? _killWindowMessage : _windowMessage, IntPtr.Zero, _handle);
+            PInvoke.PostMessage(
+                handle,
+                kill ? _killWindowMessage : _windowMessage,
+                default,
+                _handle
+            );
 
             var raised = _responseReceivedEvent.Wait(TimeSpan.FromSeconds(1));
             if (raised)
@@ -136,7 +142,7 @@ internal class WindowMessageIPC : IDisposable
 
         void SendResponse(IntPtr handle)
         {
-            PostMessage(handle, _responseWindowMessage, IntPtr.Zero, IntPtr.Zero);
+            PInvoke.PostMessage(new HWND(handle), _responseWindowMessage, default, default);
         }
     }
 
@@ -175,13 +181,4 @@ internal class WindowMessageIPC : IDisposable
             base.SetVisibleCore(false);
         }
     }
-
-    [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-    private static extern uint RegisterWindowMessage(string lpString);
-
-    [DllImport("user32.dll", SetLastError = true)]
-    private static extern IntPtr FindWindow(string? lpClassName, string? lpWindowName);
-
-    [DllImport("user32.dll", SetLastError = true)]
-    private static extern bool PostMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
 }

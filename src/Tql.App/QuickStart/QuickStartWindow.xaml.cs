@@ -1,6 +1,7 @@
 ﻿using System.Windows.Interop;
 using Tql.Abstractions;
 using Tql.App.Support;
+using Windows.Win32;
 
 namespace Tql.App.QuickStart;
 
@@ -148,10 +149,10 @@ internal partial class QuickStartWindow
         // buttons have this set to false, but this may cause issues if
         // the quick start window is changed later on.
 
-        if (msg == WindowInterop.WM_MOUSEACTIVATE)
+        if (msg == PInvoke.WM_MOUSEACTIVATE)
         {
             handled = true;
-            return WindowInterop.MA_NOACTIVATE;
+            return (IntPtr)PInvoke.MA_NOACTIVATE;
         }
 
         return IntPtr.Zero;

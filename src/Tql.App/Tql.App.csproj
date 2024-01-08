@@ -7,6 +7,7 @@
 		<ApplicationIcon>mainicon.ico</ApplicationIcon>
 		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
 		<ApplicationManifest>app.manifest</ApplicationManifest>
+		<PlatformTarget>x64</PlatformTarget>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -48,6 +49,9 @@
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2210.55" />
+		<PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.49-beta">
+		  <PrivateAssets>all</PrivateAssets>
+		</PackageReference>
 		<PackageReference Include="NReco.Logging.File" Version="1.1.7" />
 		<PackageReference Include="NuGet.PackageManagement" Version="6.8.0" />
 		<PackageReference Include="System.Data.SQLite.Core" Version="1.0.118" />
