@@ -44,58 +44,46 @@ internal class NewPullRequestsMatch(
         var query = new Query()
             .Repository(dto.Repository, dto.Owner)
             .Refs("refs/heads/", first: 100)
-            .Edges.Select(
-                refEdge =>
-                    new
+            .Edges.Select(refEdge => new
+            {
+                Refs = refEdge
+                    .Node.Select(@ref => new
                     {
-                        Refs = refEdge
-                            .Node.Select(
-                                @ref =>
-                                    new
-                                    {
-                                        @ref.Name,
-                                        AssociatedPullRequests = @ref.AssociatedPullRequests(
-                                            1,
-                                            null,
-                                            null,
-                                            null,
-                                            null,
-                                            null,
-                                            null,
-                                            null,
-                                            new[] { PullRequestState.Open }
-                                        )
-                                            .Edges.Select(
-                                                pullRequest =>
-                                                    new
-                                                    {
-                                                        Id = pullRequest
-                                                            .Select(p4 => p4.Node.Id)
-                                                            .SingleOrDefault()
-                                                    }
-                                            )
-                                            .ToList()
-                                    }
-                            )
-                            .SingleOrDefault()
-                    }
-            )
+                        @ref.Name,
+                        AssociatedPullRequests = @ref.AssociatedPullRequests(
+                            1,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            new[] { PullRequestState.Open }
+                        )
+                            .Edges.Select(pullRequest => new
+                            {
+                                Id = pullRequest.Select(p4 => p4.Node.Id).SingleOrDefault()
+                            })
+                            .ToList()
+                    })
+                    .SingleOrDefault()
+            })
             .Compile();
 
         var items = await graphQlConnection.Run(query);
 
         return items
             .Where(p => p.Refs.AssociatedPullRequests.Count == 0)
-            .Select(
-                p =>
-                    factory.Create(
-                        new NewPullRequestMatchDto(
-                            dto.Id!.Value,
-                            dto.Owner!,
-                            dto.Repository!,
-                            p.Refs.Name
-                        )
+            .Select(p =>
+                factory.Create(
+                    new NewPullRequestMatchDto(
+                        dto.Id!.Value,
+                        dto.Owner!,
+                        dto.Repository!,
+                        p.Refs.Name
                     )
+                )
             )
             .ToImmutableArray();
     }

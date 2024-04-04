@@ -11,9 +11,10 @@ internal static class PersonNames
     {
         Randomizer.Seed = random;
 
-        var faker = new Faker<Person>(locale).CustomInstantiator(
-            p => new Person(p.Name.FirstName(), p.Name.LastName())
-        );
+        var faker = new Faker<Person>(locale).CustomInstantiator(p => new Person(
+            p.Name.FirstName(),
+            p.Name.LastName()
+        ));
 
         var seen = new HashSet<Person>();
 

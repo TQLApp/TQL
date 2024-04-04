@@ -90,8 +90,8 @@ internal partial class PackageStoreManager
     public void SetPackageVersion(string packageId, Version version)
     {
         var packages = Configuration
-            .Packages.RemoveAll(
-                p => string.Equals(p.Id, packageId, StringComparison.OrdinalIgnoreCase)
+            .Packages.RemoveAll(p =>
+                string.Equals(p.Id, packageId, StringComparison.OrdinalIgnoreCase)
             )
             .Add(new PackageRef(packageId, version.ToString()));
 
@@ -100,8 +100,8 @@ internal partial class PackageStoreManager
 
     public void RemovePackage(string packageId)
     {
-        var packages = Configuration.Packages.RemoveAll(
-            p => string.Equals(p.Id, packageId, StringComparison.OrdinalIgnoreCase)
+        var packages = Configuration.Packages.RemoveAll(p =>
+            string.Equals(p.Id, packageId, StringComparison.OrdinalIgnoreCase)
         );
 
         Configuration = new ConfigurationDto(packages);
@@ -110,8 +110,8 @@ internal partial class PackageStoreManager
     public string? GetInstalledVersion(string packageId)
     {
         return Configuration
-            .Packages.SingleOrDefault(
-                p => string.Equals(p.Id, packageId, StringComparison.OrdinalIgnoreCase)
+            .Packages.SingleOrDefault(p =>
+                string.Equals(p.Id, packageId, StringComparison.OrdinalIgnoreCase)
             )
             ?.Version;
     }

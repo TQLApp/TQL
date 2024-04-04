@@ -97,10 +97,9 @@ internal partial class Db : IDb, IDisposable
         foreach (
             var resourceName in GetType()
                 .Assembly.GetManifestResourceNames()
-                .Where(
-                    p =>
-                        p.StartsWith(resourceNamePrefix)
-                        && p.EndsWith(".sql", StringComparison.OrdinalIgnoreCase)
+                .Where(p =>
+                    p.StartsWith(resourceNamePrefix)
+                    && p.EndsWith(".sql", StringComparison.OrdinalIgnoreCase)
                 )
                 .OrderBy(p => p, StringComparer.OrdinalIgnoreCase)
         )

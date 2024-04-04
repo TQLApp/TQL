@@ -199,8 +199,8 @@ internal class ProfileManager : IProfileManager
             var profiles = GetProfiles();
 
             if (
-                profiles.Any(
-                    p => string.Equals(p.Name, profile.Name, StringComparison.OrdinalIgnoreCase)
+                profiles.Any(p =>
+                    string.Equals(p.Name, profile.Name, StringComparison.OrdinalIgnoreCase)
                 )
             )
                 throw new InvalidOperationException("Profile with name already exists");
@@ -225,8 +225,8 @@ internal class ProfileManager : IProfileManager
         lock (_syncRoot)
         {
             oldProfile = GetProfiles()
-                .SingleOrDefault(
-                    p => string.Equals(p.Name, profile.Name, StringComparison.OrdinalIgnoreCase)
+                .SingleOrDefault(p =>
+                    string.Equals(p.Name, profile.Name, StringComparison.OrdinalIgnoreCase)
                 );
 
             if (oldProfile == null)

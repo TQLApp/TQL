@@ -13,9 +13,11 @@ internal class ConfigurationDto
         var result = new ConfigurationDto();
 
         result.Connections.AddRange(
-            configuration.Connections.Select(
-                p => new ConnectionDto(p.Id) { Name = p.Name, TenantId = p.TenantId }
-            )
+            configuration.Connections.Select(p => new ConnectionDto(p.Id)
+            {
+                Name = p.Name,
+                TenantId = p.TenantId
+            })
         );
 
         return result;

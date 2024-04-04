@@ -56,11 +56,10 @@ internal class UserMatch(
 
         cancellationToken.ThrowIfCancellationRequested();
 
-        return response.Items.Select(
-            p =>
-                factory.Create(
-                    new RepositoryMatchDto(dto.ConnectionId, p.Owner.Login, p.Name, p.HtmlUrl)
-                )
+        return response.Items.Select(p =>
+            factory.Create(
+                new RepositoryMatchDto(dto.ConnectionId, p.Owner.Login, p.Name, p.HtmlUrl)
+            )
         );
     }
 }

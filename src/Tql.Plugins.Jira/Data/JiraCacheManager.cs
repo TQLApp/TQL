@@ -60,9 +60,13 @@ internal class JiraCacheManager : ICacheManager<JiraData>
             if (project.IssueTypes != null)
             {
                 issueTypes = project
-                    .IssueTypes.Value.Select(
-                        p => new JiraIssueType(p.Id, p.Description, p.IconUrl, p.Name, p.SubTask)
-                    )
+                    .IssueTypes.Value.Select(p => new JiraIssueType(
+                        p.Id,
+                        p.Description,
+                        p.IconUrl,
+                        p.Name,
+                        p.SubTask
+                    ))
                     .ToImmutableArray();
             }
 
@@ -138,9 +142,11 @@ internal class JiraCacheManager : ICacheManager<JiraData>
                         xBoardConfig.CurrentViewConfig.IsIssueListBacklog,
                         xBoardConfig.CurrentViewConfig.SprintSupportEnabled,
                         xBoardConfig
-                            .CurrentViewConfig.QuickFilters.Select(
-                                p => new JiraQuickFilter(p.Id, p.Name, p.Query)
-                            )
+                            .CurrentViewConfig.QuickFilters.Select(p => new JiraQuickFilter(
+                                p.Id,
+                                p.Name,
+                                p.Query
+                            ))
                             .ToImmutableArray()
                     )
                 );

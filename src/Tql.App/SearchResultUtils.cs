@@ -50,9 +50,9 @@ internal static class SearchResultUtils
             VerticalAlignment = VerticalAlignment.Center
         };
 
-        var imageRotationAnimationAttribute = (match as IHasMatchAttributes)
-            ?.Attributes
-            .GetAttribute<ImageRotationAnimationAttribute>();
+        var imageRotationAnimationAttribute = (
+            match as IHasMatchAttributes
+        )?.Attributes.GetAttribute<ImageRotationAnimationAttribute>();
 
         if (imageRotationAnimationAttribute != null)
         {

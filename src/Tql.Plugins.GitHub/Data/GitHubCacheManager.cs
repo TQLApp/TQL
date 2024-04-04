@@ -156,16 +156,13 @@ internal class GitHubCacheManager : ICacheManager<GitHubData>
         {
             var query = projectsQuery
                 .AllPages()
-                .Select(
-                    p =>
-                        new
-                        {
-                            p.Number,
-                            p.Title,
-                            p.Url,
-                            p.UpdatedAt
-                        }
-                );
+                .Select(p => new
+                {
+                    p.Number,
+                    p.Title,
+                    p.Url,
+                    p.UpdatedAt
+                });
 
             return from project in await graphQlConnection.Run(query)
                 select new GitHubProject(

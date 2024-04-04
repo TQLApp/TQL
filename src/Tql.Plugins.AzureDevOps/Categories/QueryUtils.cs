@@ -33,7 +33,10 @@ internal static class QueryUtils
             SELECT [System.Id]
                 FROM WorkItems
                 WHERE [System.TeamProject] = {Escape(project.Name)}
-                    AND [System.WorkItemType] IN ({string.Join(", ", backlog.WorkItemTypes.Select(Escape))})
+                    AND [System.WorkItemType] IN ({string.Join(
+                ", ",
+                backlog.WorkItemTypes.Select(Escape)
+            )})
             """
         );
 
@@ -101,17 +104,16 @@ internal static class QueryUtils
         );
 
         return workItems
-            .Select(
-                p =>
-                    factory.Create(
-                        new WorkItemMatchDto(
-                            connectionUrl,
-                            (string)p.Fields["System.TeamProject"],
-                            p.Id!.Value,
-                            (string)p.Fields["System.WorkItemType"],
-                            (string)p.Fields["System.Title"]
-                        )
+            .Select(p =>
+                factory.Create(
+                    new WorkItemMatchDto(
+                        connectionUrl,
+                        (string)p.Fields["System.TeamProject"],
+                        p.Id!.Value,
+                        (string)p.Fields["System.WorkItemType"],
+                        (string)p.Fields["System.Title"]
                     )
+                )
             )
             .ToImmutableArray<IMatch>();
     }

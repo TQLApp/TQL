@@ -80,17 +80,16 @@ internal class WorkItemsMatch(
             cancellationToken: cancellationToken
         );
 
-        return results.Results.Select(
-            p =>
-                factory.Create(
-                    new WorkItemMatchDto(
-                        dto.Url,
-                        p.Project.Name,
-                        int.Parse(p.Fields["system.id"]),
-                        p.Fields["system.workitemtype"],
-                        p.Fields["system.title"]
-                    )
+        return results.Results.Select(p =>
+            factory.Create(
+                new WorkItemMatchDto(
+                    dto.Url,
+                    p.Project.Name,
+                    int.Parse(p.Fields["system.id"]),
+                    p.Fields["system.workitemtype"],
+                    p.Fields["system.title"]
                 )
+            )
         );
     }
 

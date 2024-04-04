@@ -140,13 +140,12 @@ internal class PackageManager : IDisposable
                     package.DownloadCount.GetValueOrDefault(),
                     package.Authors,
                     await GetIcon(package.IconUrl),
-                    installedPackages.Any(
-                        p1 =>
-                            string.Equals(
-                                p1.Id,
-                                package.Identity.Id,
-                                StringComparison.OrdinalIgnoreCase
-                            )
+                    installedPackages.Any(p1 =>
+                        string.Equals(
+                            p1.Id,
+                            package.Identity.Id,
+                            StringComparison.OrdinalIgnoreCase
+                        )
                     ),
                     isVerified,
                     isLocal

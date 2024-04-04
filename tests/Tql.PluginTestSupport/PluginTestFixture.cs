@@ -120,8 +120,8 @@ public abstract class PluginTestFixture
             if (items.Count > 1)
             {
                 var exactMatches = items
-                    .Where(
-                        p => string.Equals(p.Text, lastSearch, StringComparison.OrdinalIgnoreCase)
+                    .Where(p =>
+                        string.Equals(p.Text, lastSearch, StringComparison.OrdinalIgnoreCase)
                     )
                     .ToList();
 

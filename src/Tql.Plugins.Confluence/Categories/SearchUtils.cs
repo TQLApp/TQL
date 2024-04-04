@@ -11,16 +11,15 @@ internal static class SearchUtils
         IMatchFactory<SearchMatch, SearchMatchDto> factory
     )
     {
-        return searchResults.Select(
-            p =>
-                factory.Create(
-                    new SearchMatchDto(
-                        url,
-                        p.ResultGlobalContainer?.Title,
-                        p.Title,
-                        p.Content?.Links.TinyUI ?? p.Url
-                    )
+        return searchResults.Select(p =>
+            factory.Create(
+                new SearchMatchDto(
+                    url,
+                    p.ResultGlobalContainer?.Title,
+                    p.Title,
+                    p.Content?.Links.TinyUI ?? p.Url
                 )
+            )
         );
     }
 }

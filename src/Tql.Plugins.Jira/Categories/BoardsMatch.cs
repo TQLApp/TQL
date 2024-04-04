@@ -39,8 +39,8 @@ internal class BoardsMatch(
                 if (matchType == BoardMatchType.Backlog && !board.IsIssueListBacklog)
                     continue;
 
-                var project = connection.Projects.SingleOrDefault(
-                    p => string.Equals(p.Key, board.ProjectKey, StringComparison.OrdinalIgnoreCase)
+                var project = connection.Projects.SingleOrDefault(p =>
+                    string.Equals(p.Key, board.ProjectKey, StringComparison.OrdinalIgnoreCase)
                 );
                 if (project == null)
                 {

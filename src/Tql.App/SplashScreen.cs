@@ -86,9 +86,9 @@ internal class SplashScreen : IDisposable
 
         public void SetProgress(string? status, double progress)
         {
-            owner
-                ._window?.Dispatcher
-                .BeginInvoke(() => owner._window.SetProgress(status, progress));
+            owner._window?.Dispatcher.BeginInvoke(
+                () => owner._window.SetProgress(status, progress)
+            );
         }
     }
 }

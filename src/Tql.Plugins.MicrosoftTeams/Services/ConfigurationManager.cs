@@ -89,8 +89,8 @@ internal class ConfigurationManager
             else
             {
                 _directoryIds = configuration
-                    .DirectoryIds.Where(
-                        p => _peopleDirectoryManager.Directories.Any(p1 => p1.Id == p)
+                    .DirectoryIds.Where(p =>
+                        _peopleDirectoryManager.Directories.Any(p1 => p1.Id == p)
                     )
                     .ToImmutableArray();
             }

@@ -19,9 +19,10 @@ internal class OutlookPeopleDirectory(ICache<OutlookData> cache) : IPeopleDirect
         if (search.IsWhiteSpace())
             return data.People.CastArray<IPerson>();
 
-        return data.People.Where(
-            p => p.DisplayName.Contains(search, StringComparison.CurrentCultureIgnoreCase)
-        )
+        return data
+            .People.Where(p =>
+                p.DisplayName.Contains(search, StringComparison.CurrentCultureIgnoreCase)
+            )
             .ToImmutableArray<IPerson>();
     }
 }

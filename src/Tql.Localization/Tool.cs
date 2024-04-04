@@ -71,8 +71,8 @@ internal abstract class Tool
         {
             var baseResourceStrings = ReadResourceFile(resource.FileName).ToList();
 
-            var localizedResource = resource.Resources.SingleOrDefault(
-                p => string.Equals(p.Locale, Options.Locale, StringComparison.OrdinalIgnoreCase)
+            var localizedResource = resource.Resources.SingleOrDefault(p =>
+                string.Equals(p.Locale, Options.Locale, StringComparison.OrdinalIgnoreCase)
             );
             var localizedResourceStrings = ReadResourceFile(localizedResource?.FileName)
                 .ToDictionary(p => p.Key, p => p);

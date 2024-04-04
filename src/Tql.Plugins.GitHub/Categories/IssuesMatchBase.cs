@@ -73,17 +73,14 @@ internal abstract class IssuesMatchBase<T>(
         var response = await client.Search.SearchIssues(request);
 
         var dtos = response
-            .Items.Select(
-                p =>
-                    new IssueMatchDto(
-                        dto.ConnectionId,
-                        GitHubUtils.GetRepositoryName(p.HtmlUrl),
-                        p.Number,
-                        p.Title,
-                        p.HtmlUrl,
-                        IssueMatchStateUtils.FromIssue(p)
-                    )
-            )
+            .Items.Select(p => new IssueMatchDto(
+                dto.ConnectionId,
+                GitHubUtils.GetRepositoryName(p.HtmlUrl),
+                p.Number,
+                p.Title,
+                p.HtmlUrl,
+                IssueMatchStateUtils.FromIssue(p)
+            ))
             .ToList();
 
         issueType.UpdateCache(dtos);

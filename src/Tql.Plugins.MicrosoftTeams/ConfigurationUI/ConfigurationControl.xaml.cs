@@ -31,9 +31,10 @@ internal partial class ConfigurationControl : IConfigurationPage
 
         _directories.ItemsSource = peopleDirectoryManager
             .Directories.OrderBy(p => p.Name, StringComparer.CurrentCultureIgnoreCase)
-            .Select(
-                p => new DirectoryItem(p) { IsSelected = configuration.DirectoryIds.Contains(p.Id) }
-            )
+            .Select(p => new DirectoryItem(p)
+            {
+                IsSelected = configuration.DirectoryIds.Contains(p.Id)
+            })
             .ToList();
 
         UpdateEnabled();

@@ -18,15 +18,12 @@ internal class PackageManagerConfigurationDto
         var result = new PackageManagerConfigurationDto();
 
         result.Sources.AddRange(
-            configuration.Sources.Select(
-                p =>
-                    new PackageSourceDto
-                    {
-                        Url = p.Url,
-                        UserName = p.UserName,
-                        Password = encryption.DecryptString(p.ProtectedPassword)
-                    }
-            )
+            configuration.Sources.Select(p => new PackageSourceDto
+            {
+                Url = p.Url,
+                UserName = p.UserName,
+                Password = encryption.DecryptString(p.ProtectedPassword)
+            })
         );
 
         return result;
@@ -36,9 +33,11 @@ internal class PackageManagerConfigurationDto
     {
         return new PackageManagerConfiguration(
             Sources
-                .Select(
-                    p => new PackageSource(p.Url!, p.UserName, encryption.EncryptString(p.Password))
-                )
+                .Select(p => new PackageSource(
+                    p.Url!,
+                    p.UserName,
+                    encryption.EncryptString(p.Password)
+                ))
                 .ToImmutableArray()
         );
     }

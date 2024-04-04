@@ -50,12 +50,9 @@ internal static class ResourceNames
 
         if (!kind.IsEmpty())
         {
-            var assetKind = assetType.Kinds?.FirstOrDefault(
-                p =>
-                    p.Kinds != null
-                    && p.Kinds.Any(
-                        p1 => string.Equals(p1, kind, StringComparison.OrdinalIgnoreCase)
-                    )
+            var assetKind = assetType.Kinds?.FirstOrDefault(p =>
+                p.Kinds != null
+                && p.Kinds.Any(p1 => string.Equals(p1, kind, StringComparison.OrdinalIgnoreCase))
             );
 
             if (assetKind is { SingularDisplayName: not null, PluralDisplayName: not null })

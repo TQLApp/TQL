@@ -83,16 +83,15 @@ internal class NewPullRequestsMatch(
             .Where(p => !pullRequestSourceBranches.Contains(p));
 
         return sourceBranches
-            .Select(
-                p =>
-                    factory.Create(
-                        new NewPullRequestMatchDto(
-                            dto.Url,
-                            dto.ProjectName,
-                            dto.RepositoryName,
-                            GetBranchName(p)
-                        )
+            .Select(p =>
+                factory.Create(
+                    new NewPullRequestMatchDto(
+                        dto.Url,
+                        dto.ProjectName,
+                        dto.RepositoryName,
+                        GetBranchName(p)
                     )
+                )
             )
             .ToImmutableArray();
     }
