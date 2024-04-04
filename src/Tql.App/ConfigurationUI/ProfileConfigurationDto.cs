@@ -16,15 +16,12 @@ internal class ProfileConfigurationDto
         result.Profiles.AddRange(
             profileManager
                 .GetProfiles()
-                .Select(
-                    p =>
-                        new ProfileDto
-                        {
-                            Name = p.Name,
-                            Title = p.Title,
-                            IconName = p.IconName
-                        }
-                )
+                .Select(p => new ProfileDto
+                {
+                    Name = p.Name,
+                    Title = p.Title,
+                    IconName = p.IconName
+                })
         );
 
         return result;

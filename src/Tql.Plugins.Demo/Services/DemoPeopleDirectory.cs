@@ -23,8 +23,8 @@ internal class DemoPeopleDirectory(string name, string locale) : IPeopleDirector
 
         return Task.FromResult(
             GetPeople()
-                .Where(
-                    p => p.DisplayName.Contains(search, StringComparison.CurrentCultureIgnoreCase)
+                .Where(p =>
+                    p.DisplayName.Contains(search, StringComparison.CurrentCultureIgnoreCase)
                 )
                 .ToImmutableArray()
         );

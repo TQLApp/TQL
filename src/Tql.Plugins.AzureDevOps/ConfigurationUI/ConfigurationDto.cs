@@ -17,15 +17,12 @@ internal class ConfigurationDto
         var result = new ConfigurationDto();
 
         result.Connections.AddRange(
-            configuration.Connections.Select(
-                p =>
-                    new ConnectionDto(p.Id)
-                    {
-                        Name = p.Name,
-                        Url = p.Url,
-                        PATToken = encryption.DecryptString(p.ProtectedPATToken)
-                    }
-            )
+            configuration.Connections.Select(p => new ConnectionDto(p.Id)
+            {
+                Name = p.Name,
+                Url = p.Url,
+                PATToken = encryption.DecryptString(p.ProtectedPATToken)
+            })
         );
 
         return result;
@@ -35,10 +32,12 @@ internal class ConfigurationDto
     {
         return new Configuration(
             Connections
-                .Select(
-                    p =>
-                        new Connection(p.Id, p.Name!, p.Url!, encryption.EncryptString(p.PATToken)!)
-                )
+                .Select(p => new Connection(
+                    p.Id,
+                    p.Name!,
+                    p.Url!,
+                    encryption.EncryptString(p.PATToken)!
+                ))
                 .ToImmutableArray()
         );
     }

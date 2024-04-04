@@ -121,8 +121,8 @@ internal class GoogleDriveBackupProvider(ILogger<GoogleDriveBackupProvider> logg
         var files = await list.ExecuteAsync(cancellationToken);
 
         var backupFiles = files
-            .Files.Where(
-                p => string.Equals(p.Name, BackupFileName, StringComparison.OrdinalIgnoreCase)
+            .Files.Where(p =>
+                string.Equals(p.Name, BackupFileName, StringComparison.OrdinalIgnoreCase)
             )
             .ToList();
 

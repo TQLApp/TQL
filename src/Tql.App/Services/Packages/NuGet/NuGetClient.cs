@@ -233,8 +233,8 @@ internal class NuGetClient : IDisposable
             return ImmutableArray<string>.Empty;
 
         return matchedReferenceItem
-            .Items.Select(
-                p => Path.Combine(packagePath, p.Replace('/', Path.DirectorySeparatorChar))
+            .Items.Select(p =>
+                Path.Combine(packagePath, p.Replace('/', Path.DirectorySeparatorChar))
             )
             .ToImmutableArray();
     }
@@ -344,8 +344,8 @@ internal class NuGetClient : IDisposable
     {
         var resolvedDependency = installActions
             .Select(p => p.PackageIdentity)
-            .Where(
-                p => string.Equals(p.Id, requiredDependency.Id, StringComparison.OrdinalIgnoreCase)
+            .Where(p =>
+                string.Equals(p.Id, requiredDependency.Id, StringComparison.OrdinalIgnoreCase)
             )
             .MaxBy(p => p.Version.Version);
 

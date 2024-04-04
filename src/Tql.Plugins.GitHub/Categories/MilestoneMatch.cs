@@ -67,18 +67,17 @@ internal class MilestoneMatch(
 
         cancellationToken.ThrowIfCancellationRequested();
 
-        return response.Items.Select(
-            p =>
-                factory.Create(
-                    new IssueMatchDto(
-                        dto.ConnectionId,
-                        GitHubUtils.GetRepositoryName(p.HtmlUrl),
-                        p.Number,
-                        p.Title,
-                        p.HtmlUrl,
-                        IssueMatchStateUtils.FromIssue(p)
-                    )
+        return response.Items.Select(p =>
+            factory.Create(
+                new IssueMatchDto(
+                    dto.ConnectionId,
+                    GitHubUtils.GetRepositoryName(p.HtmlUrl),
+                    p.Number,
+                    p.Title,
+                    p.HtmlUrl,
+                    IssueMatchStateUtils.FromIssue(p)
                 )
+            )
         );
     }
 }

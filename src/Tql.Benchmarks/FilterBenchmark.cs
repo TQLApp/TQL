@@ -37,9 +37,10 @@ public class FilterBenchmark
     {
         Randomizer.Seed = new Random(42);
 
-        var faker = new Faker<PersonMatch>().CustomInstantiator(
-            p => new PersonMatch(p.Name.FirstName(), p.Name.LastName())
-        );
+        var faker = new Faker<PersonMatch>().CustomInstantiator(p => new PersonMatch(
+            p.Name.FirstName(),
+            p.Name.LastName()
+        ));
 
         _people = faker.Generate(Count).ToArray<IMatch>();
     }

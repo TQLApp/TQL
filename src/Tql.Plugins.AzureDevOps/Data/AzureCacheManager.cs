@@ -133,9 +133,10 @@ internal class AzureCacheManager : ICacheManager<AzureData>
                             team.Id,
                             team.Name,
                             teamFieldValues
-                                .Values.Select(
-                                    p => new AzureTeamAreaPath(p.Value, p.IncludeChildren)
-                                )
+                                .Values.Select(p => new AzureTeamAreaPath(
+                                    p.Value,
+                                    p.IncludeChildren
+                                ))
                                 .ToImmutableArray()
                         )
                     );

@@ -75,8 +75,8 @@ internal class RepositoriesMatch(
 
         cancellationToken.ThrowIfCancellationRequested();
 
-        return response.Items.Select(
-            p => factory.Create(new RepositoryMatchDto(dto.Id, p.Owner.Login, p.Name, p.HtmlUrl))
+        return response.Items.Select(p =>
+            factory.Create(new RepositoryMatchDto(dto.Id, p.Owner.Login, p.Name, p.HtmlUrl))
         );
     }
 

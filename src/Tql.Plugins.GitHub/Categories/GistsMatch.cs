@@ -70,7 +70,8 @@ internal class GistsMatch(
         var matches = new List<IMatch>();
 
         foreach (
-            var element in doc.DocumentNode.Descendants("div")
+            var element in doc
+                .DocumentNode.Descendants("div")
                 .Where(p => p.HasClass("gist-snippet-meta"))
         )
         {

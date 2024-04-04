@@ -95,21 +95,20 @@ internal class PortalsMatch(
         );
 
         return resources
-            .Select(
-                p =>
-                    factory.Create(
-                        new PortalMatchDto(
-                            dto.Id,
-                            tenant.Data.DefaultDomain,
-                            p.Id,
-                            p.Name,
-                            p.Type,
-                            p.Kind,
-                            p.SubscriptionId,
-                            p.ResourceGroup,
-                            p.NormalizedName
-                        )
+            .Select(p =>
+                factory.Create(
+                    new PortalMatchDto(
+                        dto.Id,
+                        tenant.Data.DefaultDomain,
+                        p.Id,
+                        p.Name,
+                        p.Type,
+                        p.Kind,
+                        p.SubscriptionId,
+                        p.ResourceGroup,
+                        p.NormalizedName
                     )
+                )
             )
             .ToList<IMatch>();
     }

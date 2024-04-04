@@ -74,67 +74,55 @@ internal class ProjectMatch(
         var query = projectQuery
             .Items()
             .AllPages()
-            .Select(
-                p =>
-                    p.Content.Switch<ProjectItem>(
-                        p1 =>
-                            p1.DraftIssue(
-                                    p2 =>
-                                        new ProjectItem(
-                                            p.DatabaseId,
-                                            p2.Title,
-                                            ProjectItemMatchType.DraftIssue,
-                                            null,
-                                            null,
-                                            null,
-                                            null
-                                        )
-                                )
-                                .Issue(
-                                    p2 =>
-                                        new ProjectItem(
-                                            p.DatabaseId,
-                                            p2.Title,
-                                            ProjectItemMatchType.Issue,
-                                            p2.Repository.Name,
-                                            p2.Number,
-                                            p2.State,
-                                            null
-                                        )
-                                )
-                                .PullRequest(
-                                    p2 =>
-                                        new ProjectItem(
-                                            p.DatabaseId,
-                                            p2.Title,
-                                            ProjectItemMatchType.PullRequest,
-                                            p2.Repository.Name,
-                                            p2.Number,
-                                            null,
-                                            p2.State
-                                        )
-                                )
-                    )
+            .Select(p =>
+                p.Content.Switch<ProjectItem>(p1 =>
+                    p1.DraftIssue(p2 => new ProjectItem(
+                            p.DatabaseId,
+                            p2.Title,
+                            ProjectItemMatchType.DraftIssue,
+                            null,
+                            null,
+                            null,
+                            null
+                        ))
+                        .Issue(p2 => new ProjectItem(
+                            p.DatabaseId,
+                            p2.Title,
+                            ProjectItemMatchType.Issue,
+                            p2.Repository.Name,
+                            p2.Number,
+                            p2.State,
+                            null
+                        ))
+                        .PullRequest(p2 => new ProjectItem(
+                            p.DatabaseId,
+                            p2.Title,
+                            ProjectItemMatchType.PullRequest,
+                            p2.Repository.Name,
+                            p2.Number,
+                            null,
+                            p2.State
+                        ))
+                )
             );
 
         var items = await graphQlConnection.Run(query);
 
         return items
-            .Select(
-                p =>
-                    factory.Create(
-                        new ProjectItemMatchDto(
-                            dto.ConnectionId,
-                            dto.Owner,
-                            dto.Number,
-                            p.Id!.Value,
-                            p.Title,
-                            p.Type,
-                            p.RepositoryName,
-                            p.Number,
-                            GetState(p.IssueState, p.PullRequestState)
-                        )
+            .Select(p =>
+                factory.Create(
+                    new ProjectItemMatchDto(
+                        dto.ConnectionId,
+                        dto.Owner,
+                        dto.Number,
+                        p.Id!.Value,
+                        p.Title,
+                        p.Type,
+                        p.RepositoryName,
+                        p.Number,
+                        GetState(p.IssueState, p.PullRequestState)
                     )
+                )
             )
             .ToImmutableArray();
     }

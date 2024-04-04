@@ -11,11 +11,10 @@ internal static class IssueUtils
         IMatchFactory<IssueMatch, IssueMatchDto> factory
     )
     {
-        return issues.Select(
-            p =>
-                factory.Create(
-                    new IssueMatchDto(url, p.Key, p.Fields.Summary, p.Fields.IssueType.IconUrl)
-                )
+        return issues.Select(p =>
+            factory.Create(
+                new IssueMatchDto(url, p.Key, p.Fields.Summary, p.Fields.IssueType.IconUrl)
+            )
         );
     }
 }

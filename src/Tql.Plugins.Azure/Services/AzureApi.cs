@@ -18,8 +18,8 @@ internal class AzureApi(IUI ui, ConfigurationManager configurationManager)
         {
             if (!_clients.TryGetValue(id, out var client))
             {
-                var connection = configurationManager.Configuration.Connections.Single(
-                    p => p.Id == id
+                var connection = configurationManager.Configuration.Connections.Single(p =>
+                    p.Id == id
                 );
 
                 try
