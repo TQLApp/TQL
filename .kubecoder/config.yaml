@@ -7,8 +7,8 @@ capabilities:
 
 tools:
   - use: dotnet
-    # Raised from the catalog's 2Gi: `dotnet build Tql.sln` runs a parallel
-    # MSBuild over ~20 projects plus the Roslyn compiler server.
+    # Raised from the catalog's 2Gi: a clean `kc project build` (parallel MSBuild
+    # over ~20 projects, the Roslyn server, the publish) peaked at 2.4 GB.
     resources:
       limits:
         memory: 4Gi
