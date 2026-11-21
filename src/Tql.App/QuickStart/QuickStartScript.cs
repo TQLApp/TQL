@@ -48,7 +48,10 @@ internal partial class QuickStartScript
     private static IPlaybook LoadPlaybook()
     {
 #if DEBUG
-        return DebugPlaybook.Load();
+        // Debug builds load the playbook from the source tree, so edits show up
+        // live. A debug build running elsewhere, e.g. a published copy, uses the
+        // embedded playbook instead.
+        return DebugPlaybook.TryLoad() ?? Playbook.Load();
 #else
         return Playbook.Load();
 #endif
