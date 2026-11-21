@@ -8,12 +8,18 @@ internal class DebugPlaybook : IPlaybook, IDisposable
 {
     private readonly string _path;
 
-    public static IPlaybook Load()
+    /// <summary>
+    /// Loads the playbook from the source tree, or returns null when the app
+    /// isn't running from inside one.
+    /// </summary>
+    public static IPlaybook? TryLoad()
     {
-        return new DebugPlaybook(FindPlaybookPath());
+        var path = FindPlaybookPath();
+
+        return path != null ? new DebugPlaybook(path) : null;
     }
 
-    private static string FindPlaybookPath()
+    private static string? FindPlaybookPath()
     {
         var basePath = Path.GetDirectoryName(typeof(DebugPlaybook).Assembly.Location);
         var subPath = Path.Combine("Tql.App", "QuickStart");
@@ -26,7 +32,7 @@ internal class DebugPlaybook : IPlaybook, IDisposable
             basePath = Path.GetDirectoryName(basePath);
         }
 
-        throw new InvalidOperationException("Cannot find playbook path");
+        return null;
     }
 
     private readonly FileSystemWatcher _watcher;

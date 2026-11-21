@@ -1,5 +1,7 @@
 <Project>
 	<PropertyGroup>
 		<EnableSourceControlManagerQueries>true</EnableSourceControlManagerQueries>
+		<!-- Lets the net8.0-windows projects compile on Linux, e.g. in a KubeCoder environment. No effect on Windows. -->
+		<EnableWindowsTargeting Condition="'$(OS)' != 'Windows_NT'">true</EnableWindowsTargeting>
 	</PropertyGroup>
 </Project>

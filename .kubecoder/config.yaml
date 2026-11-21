@@ -1,0 +1,41 @@
+# KubeCoder environment for TQL (Techie's Quick Launcher), a WPF desktop app.
+# Schema: https://kubecoder.home/help/reference/config-yaml/
+# Verbs: .kubecoder/project.yaml (`kc project info`).
+
+capabilities:
+  github: rw
+
+tools:
+  - use: dotnet
+    # Raised from the catalog's 2Gi: a clean `kc project build` (parallel MSBuild
+    # over ~20 projects, the Roslyn server, the publish) peaked at 2.4 GB.
+    resources:
+      limits:
+        memory: 4Gi
+
+secrets:
+  # Permanent token for https://issues.webathome.org. Only for checking the
+  # YouTrack plugin's REST calls with curl; nothing in the repo reads it.
+  YOUTRACK_API_KEY_SECRET: youtrack-api-key
+
+preamble:
+  instructions: |
+    Every TQL project targets net8.0-windows (WPF + WinForms). It compiles here
+    through EnableWindowsTargeting (Directory.Build.props) but nothing WPF runs
+    here: not the app, not the Windows test projects. Run .NET as
+    `cexec dotnet dotnet …`.
+
+    `kc project build` publishes Tql.DebugApp self-contained for win-x64 into
+    build/DebugApp. The operator tests that on their Windows desktop. Windows
+    won't run it from the Samba share, so they run
+    \\tqlapp-tql-49385e.home\work\TQL\scripts\Run-KubeCoder-Build.bat, which
+    mirrors it into %TEMP%\TQL-DebugApp and starts it there as
+    `Tql.DebugApp.exe --env Debug`, apart from their installed TQL.
+
+    The repo stores real line endings (`* -text` in .gitattributes) and almost
+    every source file is CRLF. A .cs, .xaml, .md, .csproj or .resx you create
+    must be CRLF too, or it stands out from the tree (.editorconfig says crlf,
+    and the PR build's prettier runs with --end-of-line crlf).
+
+    YOUTRACK_API_KEY_SECRET is a token for https://issues.webathome.org, for
+    curl checks of the YouTrack plugin's REST calls. Never print it.

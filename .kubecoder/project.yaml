@@ -1,0 +1,46 @@
+# Curated entry points for TQL. Schema: https://kubecoder.home/help/reference/project-yaml/
+#
+# Every project in Tql.sln targets net8.0-windows (WPF + WinForms). It compiles on Linux
+# through EnableWindowsTargeting (Directory.Build.props) with Microsoft's SDK, but nothing
+# WPF runs here: not the app, and not the test projects, whose test host needs the
+# Microsoft.WindowsDesktop.App runtime that only exists on Windows.
+
+projects:
+  root:
+    description: Techie's Quick Launcher, its plugins and support libraries (Tql.sln, net8.0-windows), built here and tested on Windows
+    setup:
+      - cexec dotnet dotnet tool restore
+      - cexec dotnet dotnet restore Tql.sln
+    build:
+      # -warnaserror as in CI, but Debug where CI builds Release: Release also packs
+      # every NuGet package, which nothing here uses.
+      - cexec dotnet dotnet build Tql.sln --no-restore -warnaserror
+      # The build the operator tests on their Windows desktop. Windows won't run it
+      # from the Samba share; scripts/Run-KubeCoder-Build.bat, run from the share,
+      # mirrors it into %TEMP%\TQL-DebugApp and starts it.
+      # -r win-x64 flows into the restore of every referenced project and would add a
+      # win-x64 section to each tracked packages.lock.json; NuGetLockFilePath keeps those
+      # lock files in obj/ instead.
+      - cexec dotnet dotnet publish src/Tql.DebugApp -c Debug -r win-x64 --self-contained -o build/DebugApp -p:NuGetLockFilePath=obj/packages.win-x64.lock.json
+    # test: deliberately unset. No test project can run on Linux (see the header), and CI
+    # runs none either. A WPF-free test project (plain net8.0) is the plan for the YouTrack
+    # plugin; see docs/Designs/YouTrack-plugin.md.
+    lint:
+      - cexec dotnet dotnet csharpier --check .
+
+  prettier:
+    description: XAML and Markdown formatting as the PR build checks it (prettier from scripts/package-lock.json), run in the dev container
+    cwd: scripts
+    # Bare, not through a toolchain sidecar: prettier is plain JavaScript, the dev
+    # container's node runs it, and a frontend sidecar would cost 5Gi for one formatter.
+    # npm ci, as scripts/Run-Prettier.ps1 runs it, keeps the prettier the lock file pins.
+    setup: npm ci --no-audit --no-fund
+    # The options of scripts/Run-Prettier.ps1, as a check. The files are git's tracked and
+    # untracked-but-not-ignored ones, so build output and node_modules stay out, as in
+    # CI's clean checkout.
+    lint: >-
+      git ls-files -z --cached --others --exclude-standard -- ':/*.xaml' ':/*.md'
+      | xargs -0 -r npx prettier --plugin=@prettier/plugin-xml --check
+      --end-of-line crlf --bracket-same-line true --single-attribute-per-line true
+      --xml-quote-attributes double --xml-self-closing-space true
+      --xml-whitespace-sensitivity ignore --prose-wrap always

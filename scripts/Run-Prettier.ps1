@@ -109,7 +109,7 @@ if ($IsVSCode)
 }
 else
 {
-    npm install --save-dev prettier @prettier/plugin-xml
+    npm ci --no-audit --no-fund
 }
 
 rm "$Global:Src\Tql.App\QuickStart\SplitPlaybook*.md"
