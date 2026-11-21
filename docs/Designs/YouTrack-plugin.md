@@ -102,8 +102,9 @@ once there is more than one.
 
 ## Features
 
-Paged lists use `$skip` and `$top`; every call passes `$top`, because YouTrack
-returns 42 items when it is left out.
+Paged lists use `$skip` and `$top`; every call passes `$top`, because the
+default page size is not documented (measured: `/api/issues` returned 500 items
+without it).
 
 - **YouTrack Issues**: searched live with
   `GET /api/issues?query=<text>&$top=100`. The text goes to YouTrack as a query,
@@ -126,7 +127,9 @@ returns 42 items when it is left out.
 Measured on issues.webathome.org: YouTrack matches word prefixes without a
 wildcard (`kubecod` finds "KubeCoder"), so the plugin never appends `*`. Doing
 so could also break a query the user typed. `GET /api/issues/<id>` answers 404
-for an issue that doesn't exist, and the search then runs as usual.
+for an issue that doesn't exist, and the search then runs as usual. A half-typed
+query such as `#Unres` or `state: Op` answers 400 with `invalid_query`; the
+plugin shows no results for it rather than an error.
 
 The people directory searches `GET /api/users?query=<text>&$top=100`. It leaves
 out users without an email address, banned users and guests, and hands the rest
