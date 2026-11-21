@@ -196,7 +196,7 @@ Studio is written by hand to match; Visual Studio regenerates it on the next
 - **On Windows.** `kc project build` publishes `build/DebugApp`. Windows won't
   run it from the share, so run
   `\\tqlapp-tql-49385e.home\work\TQL\scripts\Sync-KubeCoder-Build.bat`, which
-  mirrors it into `%TEMP%\TQL-DebugApp`, and start
+  mirrors it into `%TEMP%\TQL-DebugApp` and starts
   `Tql.DebugApp.exe --env Debug` there. A manual test script in
   `specs/Plugins - YouTrack/`, modelled on the JIRA one, covers installing,
   configuring (a URL copied from the address bar included), searching every

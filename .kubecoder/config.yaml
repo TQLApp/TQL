@@ -29,8 +29,8 @@ preamble:
     build/DebugApp. The operator tests that on their Windows desktop. Windows
     won't run it from the Samba share, so they run
     \\tqlapp-tql-49385e.home\work\TQL\scripts\Sync-KubeCoder-Build.bat, which
-    mirrors it into %TEMP%\TQL-DebugApp, and start it there as
-    `Tql.DebugApp.exe --env Debug` so it stays apart from their installed TQL.
+    mirrors it into %TEMP%\TQL-DebugApp and starts it there as
+    `Tql.DebugApp.exe --env Debug`, apart from their installed TQL.
 
     The repo stores real line endings (`* -text` in .gitattributes) and almost
     every source file is CRLF. A .cs, .xaml, .md, .csproj or .resx you create

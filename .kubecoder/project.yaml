@@ -18,7 +18,7 @@ projects:
       - cexec dotnet dotnet build Tql.sln --no-restore
       # The build the operator tests on their Windows desktop. Windows won't run it
       # from the Samba share; scripts/Sync-KubeCoder-Build.bat, run from the share,
-      # mirrors it into %TEMP%\TQL-DebugApp.
+      # mirrors it into %TEMP%\TQL-DebugApp and starts it.
       # -r win-x64 flows into the restore of every referenced project and would add a
       # win-x64 section to each tracked packages.lock.json; NuGetLockFilePath keeps those
       # lock files in obj/ instead.
