@@ -156,8 +156,8 @@ The project follows `Tql.Plugins.Jira` file by file:
 - `Labels.resx`, `Labels.nl.resx` and `Labels.Designer.cs`.
 - `Resources/`: the glyphs YouTrack's own web app shows for each category
   (JetBrains icons, Apache 2.0; the search glyph stands in for saved searches),
-  recoloured to `#B6C2CF` like the JIRA category icons, and the YouTrack product
-  icon from JetBrains' brand resources.
+  in the `#8496AD` YouTrack shows them in, and the YouTrack product icon from
+  JetBrains' brand resources.
 
 These four files have no WPF or TQL dependencies, and the test project includes
 them as linked `Compile` items:
