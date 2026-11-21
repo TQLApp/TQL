@@ -19,8 +19,8 @@ towards the first release.
 
 ## Features
 
-- Support for Azure, Azure DevOps, JIRA, Confluence, GitHub, Outlook and
-  Microsoft Teams.
+- Support for Azure, Azure DevOps, JIRA, YouTrack, Confluence, GitHub, Outlook
+  and Microsoft Teams.
 - Built in plugin system to be able to add your own plugins.
 - Quick start tutorial to get you up and running quickly.
 - Advanced search capabilities. You'll forget how to use the web apps once you
