@@ -1,0 +1,241 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BoardMatch_Label" xml:space="preserve">
+    <value>{0} Bord</value>
+    <comment>Original: {0} Board</comment>
+  </data>
+  <data name="BoardsMatch_Label" xml:space="preserve">
+    <value>YouTrack Agile-borden</value>
+    <comment>Original: YouTrack Agile Boards</comment>
+  </data>
+  <data name="BoardsMatch_SearchHint" xml:space="preserve">
+    <value>Vind agile-borden</value>
+    <comment>Original: Find agile boards</comment>
+  </data>
+  <data name="Button_Add" xml:space="preserve">
+    <value>Nieuw</value>
+    <comment>Original: Add</comment>
+  </data>
+  <data name="Button_Cancel" xml:space="preserve">
+    <value>Annuleren</value>
+    <comment>Original: Cancel</comment>
+  </data>
+  <data name="Button_Delete" xml:space="preserve">
+    <value>Verwijder</value>
+    <comment>Original: Delete</comment>
+  </data>
+  <data name="Button_Documentation" xml:space="preserve">
+    <value>Documentatie</value>
+    <comment>Original: Documentation</comment>
+  </data>
+  <data name="Button_Edit" xml:space="preserve">
+    <value>Wijzig</value>
+    <comment>Original: Edit</comment>
+  </data>
+  <data name="Button_Save" xml:space="preserve">
+    <value>Opslaan</value>
+    <comment>Original: Save</comment>
+  </data>
+  <data name="ConfigurationControl_Connections" xml:space="preserve">
+    <value>Verbindingen</value>
+    <comment>Original: Connections</comment>
+  </data>
+  <data name="ConfigurationControl_General" xml:space="preserve">
+    <value>Algemeen</value>
+    <comment>Original: General</comment>
+  </data>
+  <data name="ConfigurationControl_Name" xml:space="preserve">
+    <value>Naam</value>
+    <comment>Original: Name</comment>
+  </data>
+  <data name="ConfigurationControl_URL" xml:space="preserve">
+    <value>URL</value>
+    <comment>Original: URL</comment>
+  </data>
+  <data name="ConnectionEditWindow_DidYouMean" xml:space="preserve">
+    <value>Bedoelde je {0}?</value>
+    <comment>Original: Did you mean {0}?</comment>
+  </data>
+  <data name="ConnectionEditWindow_DidYouMeanHelpText" xml:space="preserve">
+    <value>YouTrack antwoordt niet op {0}, maar wel op het adres hierboven.</value>
+    <comment>Original: YouTrack doesn't answer at {0}, but it does at the address above.</comment>
+  </data>
+  <data name="ConnectionEditWindow_NameLabel" xml:space="preserve">
+    <value>Naam:</value>
+    <comment>Original: Name:</comment>
+  </data>
+  <data name="ConnectionEditWindow_NotYouTrack" xml:space="preserve">
+    <value>Geen YouTrack gevonden op {0}</value>
+    <comment>Original: No YouTrack found at {0}</comment>
+  </data>
+  <data name="ConnectionEditWindow_NotYouTrackHelpText" xml:space="preserve">
+    <value>Vul het adres in waarop je YouTrack opent, bijvoorbeeld https://youtrack.example.com of https://example.youtrack.cloud.</value>
+    <comment>Original: Enter the address you open YouTrack on, e.g. https://youtrack.example.com or https://example.youtrack.cloud.</comment>
+  </data>
+  <data name="ConnectionEditWindow_Title" xml:space="preserve">
+    <value>Bewerk Verbinding</value>
+    <comment>Original: Edit Connection</comment>
+  </data>
+  <data name="ConnectionEditWindow_TokenHelpText" xml:space="preserve">
+    <value>Maak een permanent token aan in YouTrack: open je profiel (Profile), ga naar Account Security, klik op New token en geef het de scope YouTrack.</value>
+    <comment>Original: Create a permanent token in YouTrack: open your Profile, go to Account Security, click New token and give it the YouTrack scope.</comment>
+  </data>
+  <data name="ConnectionEditWindow_TokenLabel" xml:space="preserve">
+    <value>Token:</value>
+    <comment>Original: Token:</comment>
+  </data>
+  <data name="ConnectionEditWindow_TokenRefused" xml:space="preserve">
+    <value>YouTrack weigert het token</value>
+    <comment>Original: YouTrack refused the token</comment>
+  </data>
+  <data name="ConnectionEditWindow_TokenRefusedHelpText" xml:space="preserve">
+    <value>{0} accepteert dit token niet. Controleer of je het helemaal hebt gekopieerd, en of het niet verlopen of ingetrokken is.</value>
+    <comment>Original: {0} doesn't accept this token. Check that you copied all of it, and that it hasn't expired or been revoked.</comment>
+  </data>
+  <data name="ConnectionEditWindow_UnableToConnect" xml:space="preserve">
+    <value>Kon niet verbinden met {0}</value>
+    <comment>Original: Unable to connect to {0}</comment>
+  </data>
+  <data name="ConnectionEditWindow_URLHelpText" xml:space="preserve">
+    <value>Het adres waarop je YouTrack opent, bijvoorbeeld https://youtrack.example.com of https://example.youtrack.cloud.</value>
+    <comment>Original: The address you open YouTrack on, e.g. https://youtrack.example.com or https://example.youtrack.cloud.</comment>
+  </data>
+  <data name="ConnectionEditWindow_URLLabel" xml:space="preserve">
+    <value>URL:</value>
+    <comment>Original: URL:</comment>
+  </data>
+  <data name="DashboardMatch_Label" xml:space="preserve">
+    <value>{0} Dashboard</value>
+    <comment>Original: {0} Dashboard</comment>
+  </data>
+  <data name="DashboardsMatch_Label" xml:space="preserve">
+    <value>YouTrack Dashboards</value>
+    <comment>Original: YouTrack Dashboards</comment>
+  </data>
+  <data name="DashboardsMatch_SearchHint" xml:space="preserve">
+    <value>Vind dashboards</value>
+    <comment>Original: Find dashboards</comment>
+  </data>
+  <data name="IssuesMatch_Label" xml:space="preserve">
+    <value>YouTrack Issues</value>
+    <comment>Original: YouTrack Issues</comment>
+  </data>
+  <data name="IssuesMatch_SearchHint" xml:space="preserve">
+    <value>Vind issues</value>
+    <comment>Original: Find issues</comment>
+  </data>
+  <data name="NewMatch_NewIssue" xml:space="preserve">
+    <value>Nieuw Issue</value>
+    <comment>Original: New Issue</comment>
+  </data>
+  <data name="NewsMatch_Label" xml:space="preserve">
+    <value>Nieuw YouTrack Issue</value>
+    <comment>Original: New YouTrack Issue</comment>
+  </data>
+  <data name="NewsMatch_SearchHint" xml:space="preserve">
+    <value>Vind projecten</value>
+    <comment>Original: Find projects</comment>
+  </data>
+  <data name="ProjectMatch_Label" xml:space="preserve">
+    <value>{0} Project</value>
+    <comment>Original: {0} Project</comment>
+  </data>
+  <data name="ProjectMatch_SearchHint" xml:space="preserve">
+    <value>Vind issues</value>
+    <comment>Original: Find issues</comment>
+  </data>
+  <data name="ProjectsMatch_Label" xml:space="preserve">
+    <value>YouTrack Projecten</value>
+    <comment>Original: YouTrack Projects</comment>
+  </data>
+  <data name="ProjectsMatch_SearchHint" xml:space="preserve">
+    <value>Vind projecten</value>
+    <comment>Original: Find projects</comment>
+  </data>
+  <data name="SavedSearchesMatch_Label" xml:space="preserve">
+    <value>YouTrack Opgeslagen Zoekopdrachten</value>
+    <comment>Original: YouTrack Saved Searches</comment>
+  </data>
+  <data name="SavedSearchesMatch_SearchHint" xml:space="preserve">
+    <value>Vind opgeslagen zoekopdrachten</value>
+    <comment>Original: Find saved searches</comment>
+  </data>
+  <data name="SavedSearchMatch_SearchHint" xml:space="preserve">
+    <value>Vind issues</value>
+    <comment>Original: Find issues</comment>
+  </data>
+  <data name="YouTrackApi_ResourceName" xml:space="preserve">
+    <value>YouTrack - {0}</value>
+    <comment>Original: YouTrack - {0}</comment>
+  </data>
+  <data name="YouTrackApi_UnableToConnect" xml:space="preserve">
+    <value>Kon niet verbinden met {0}. Klik hier om het {1} instellingenscherm te openen en je token te controleren.</value>
+    <comment>Original: Unable to connect to {0}. Click here to open the {1} settings screen and validate your token.</comment>
+  </data>
+  <data name="YouTrackPeopleDirectory_Title" xml:space="preserve">
+    <value>YouTrack - {0}</value>
+    <comment>Original: YouTrack - {0}</comment>
+  </data>
+  <data name="YouTrackPlugin_Title" xml:space="preserve">
+    <value>YouTrack</value>
+    <comment>Original: YouTrack</comment>
+  </data>
+</root>
