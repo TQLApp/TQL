@@ -193,13 +193,15 @@ Studio is written by hand to match; Visual Studio regenerates it on the next
   live YouTrack, read-only, when `YOUTRACK_TEST_URL` and `YOUTRACK_TEST_TOKEN`
   are set, and is ignored otherwise. This environment has a token for
   issues.webathome.org in `YOUTRACK_API_KEY_SECRET`.
-- **On Windows.** `kc project build` publishes `build/DebugApp`. Run
-  `\\tqlapp-tql-49385e.home\work\TQL\build\DebugApp\Tql.DebugApp.exe --env Debug`,
-  or copy the folder locally if Windows warns about starting a program from the
-  network. A manual test script in `specs/Plugins - YouTrack/`, modelled on the
-  JIRA one, covers installing, configuring (a URL copied from the address bar
-  included), searching every category, and a second connection. The
-  configuration page and the connection dialog can only be tested this way.
+- **On Windows.** `kc project build` publishes `build/DebugApp`. Windows won't
+  run it from the share, so run
+  `\\tqlapp-tql-49385e.home\work\TQL\scripts\Sync-KubeCoder-Build.bat`, which
+  mirrors it into `%TEMP%\TQL-DebugApp`, and start
+  `Tql.DebugApp.exe --env Debug` there. A manual test script in
+  `specs/Plugins - YouTrack/`, modelled on the JIRA one, covers installing,
+  configuring (a URL copied from the address bar included), searching every
+  category, and a second connection. The configuration page and the connection
+  dialog can only be tested this way.
 
 ## Open points
 
