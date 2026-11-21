@@ -1,6 +1,7 @@
 # YouTrack plugin: design
 
-Status: proposed, 2026-11-21. Nothing is built yet.
+Status: built, 2026-11-21. The Windows test run (`specs/Plugins - YouTrack/`) is
+still to do.
 
 ## Decisions
 
