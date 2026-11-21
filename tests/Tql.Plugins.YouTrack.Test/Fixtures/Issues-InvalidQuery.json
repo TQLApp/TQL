@@ -1,0 +1,12 @@
+{
+  "error": "invalid_query",
+  "error_description": "Can't parse search query, please check and update query syntax",
+  "error_developer_message": "Can't parse search query",
+  "error_field": "query",
+  "error_children": [
+    {
+      "error": "The value \"Op\" isn't used for the State field.",
+      "error_description": ""
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <meta name="apple-itunes-app" content="app-id=1028024655">
+    <!-- theme-color value should be synced with --navigation-background-color -->
+    <meta name="theme-color" content="#18191b">
+    <link rel="manifest" href="manifest.json">
+    <title></title>
+    
+    <base href="/"/>
+    
+
+    <link rel="shortcut icon" href="manager/favicon.ico?ec7189eae873dc35d92e2ee8330c22b8" type="image/x-icon" sizes="16x16 32x32"/>
+ <link rel="icon" href="manager/icon.svg?68d08c78771bd20bcc4b154b3ce9e10f" type="image/svg+xml"/>
+ <link rel="apple-touch-icon" sizes="180x180" href="manager/apple-touch-icon.png?9e7dc0c36f153e07c9878397eca2a20e"/>
+ <meta name="msapplication-TileColor" content="#000000"/>
+
+    
+        
+            <link rel="stylesheet" href="manager/vendor.333dbf4d.css"/>
+        
+            <link rel="stylesheet" href="manager/7273.a5e98259.css"/>
+        
+            <link rel="stylesheet" href="manager/6575.ef1faa21.css"/>
+        
+            <link rel="stylesheet" href="manager/6432.feb37f28.css"/>
+        
+            <link rel="stylesheet" href="manager/4253.635ad516.css"/>
+        
+            <link rel="stylesheet" href="manager/9913.2e908f36.css"/>
+        
+            <link rel="stylesheet" href="manager/655.95324f0a.css"/>
+        
+            <link rel="stylesheet" href="manager/3580.37867bbd.css"/>
+        
+            <link rel="stylesheet" href="manager/8805.c61943a2.css"/>
+        
+            <link rel="stylesheet" href="manager/4131.3872152b.css"/>
+        
+    
+</head>
+<body>
+
+<script>
+    {
+        // See common/components/theme/anti-flicker.ts
+        const background = localStorage.getItem('com.jetbrains.youtrack.bodyBackgroundColor');
+        document.body.style.setProperty('background', background);
+    }
+</script>
+
+<div class="manager">
+
+    <div class="manager__menu" data-test="navigation-bar" data-navigation-click id="menu-react-root"></div>
+
+    <div class="manager__app">
+        <div id="banners-root"></div>
+
+        <div id="recent-entities-portal"></div>
+        <div id="react-root"></div>
+        <div id="angular-root"></div>
+        <div id="error-root"></div>
+
+        <template id="angular-app-template">
+            <div id="angular-app" rg-shortcuts-app shortcuts-loop class="manager__angular-app">
+                <div rg-page-title delimiter="{{' – '}}" no-title="YouTrack" hidden></div>
+
+                <div class="app" ng-if="$root.isBootstrapped">
+                    <div class="app__container">
+                        <yt-top-bar data-test="header" class="app__header" show-banners="false"></yt-top-bar>
+
+                        <div class="app__body">
+                            <div ng-if="$root.applicationError" class="app__error">
+                                <yt-error code="{{$root.applicationError.status}}" guest="$root.applicationError.guest"></yt-error>
+                            </div>
+
+                            <div ng-if="!$root.applicationError" class="app__view-container">
+                                <div class="app__view" ng-view></div>
+                                <div id="simplified-root"></div>
+                            </div>
+
+                            <yt-onboarding-panel></yt-onboarding-panel>
+                        </div>
+                    </div>
+                </div>
+                <div rg-dialog=""></div>
+
+                <yt-page-loader></yt-page-loader>
+            </div>
+        </template>
+    </div>
+</div>
+
+<div data-test="ytLoader" id="fast-loader"></div>
+
+<script src="manager/fast-loader.09d5649c.js"></script>
+
+    <script src="manager/vendor.46568a00.js"></script>
+
+<script src="manager/index.4b365d7d.js"></script>
+
+</body>
+
+</html>

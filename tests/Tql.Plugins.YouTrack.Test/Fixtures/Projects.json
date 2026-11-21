@@ -1,0 +1,50 @@
+[
+  {
+    "shortName": "DEMO",
+    "iconUrl": null,
+    "archived": false,
+    "name": "Demo",
+    "id": "0-101",
+    "$type": "Project"
+  },
+  {
+    "shortName": "WEB",
+    "iconUrl": null,
+    "archived": false,
+    "name": "Website",
+    "id": "0-102",
+    "$type": "Project"
+  },
+  {
+    "shortName": "OPS",
+    "iconUrl": null,
+    "archived": false,
+    "name": "Operations",
+    "id": "0-103",
+    "$type": "Project"
+  },
+  {
+    "shortName": "OLD",
+    "iconUrl": null,
+    "archived": true,
+    "name": "Legacy Portal",
+    "id": "0-104",
+    "$type": "Project"
+  },
+  {
+    "shortName": "DOCS",
+    "iconUrl": null,
+    "archived": false,
+    "name": "Documentation",
+    "id": "0-105",
+    "$type": "Project"
+  },
+  {
+    "shortName": "MOB",
+    "iconUrl": null,
+    "archived": false,
+    "name": "Mobile App",
+    "id": "0-106",
+    "$type": "Project"
+  }
+]

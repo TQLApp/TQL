@@ -8,6 +8,7 @@ using Tql.Plugins.GitHub;
 using Tql.Plugins.Jira;
 using Tql.Plugins.MicrosoftTeams;
 using Tql.Plugins.Outlook;
+using Tql.Plugins.YouTrack;
 
 namespace Tql.DebugApp;
 
@@ -24,6 +25,7 @@ public static class Program
             typeof(ConfluencePlugin).Assembly,
             typeof(MicrosoftTeamsPlugin).Assembly,
             typeof(OutlookPlugin).Assembly,
+            typeof(YouTrackPlugin).Assembly,
             typeof(DemoPlugin).Assembly
         );
 

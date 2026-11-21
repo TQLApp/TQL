@@ -1,0 +1,9 @@
+{
+  "login": "jdoe",
+  "guest": false,
+  "email": "jane.doe@example.com",
+  "banned": false,
+  "fullName": "Jane Doe",
+  "id": "2-11",
+  "$type": "Me"
+}

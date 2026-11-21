@@ -1,0 +1,19 @@
+﻿using Tql.Abstractions;
+using Tql.Plugins.YouTrack.Data;
+using Tql.Plugins.YouTrack.Services;
+using Tql.Plugins.YouTrack.Support;
+using Tql.Utilities;
+
+namespace Tql.Plugins.YouTrack.Categories;
+
+[RootMatchType(YouTrackEndpoint.Projects)]
+internal class NewsType(
+    IMatchFactory<NewsMatch, RootItemDto> factory,
+    ConfigurationManager configurationManager
+) : MatchType<NewsMatch, RootItemDto>(factory)
+{
+    public override Guid Id => TypeIds.News.Id;
+
+    protected override bool IsValid(RootItemDto dto) =>
+        configurationManager.Configuration.HasConnection(dto.Url);
+}

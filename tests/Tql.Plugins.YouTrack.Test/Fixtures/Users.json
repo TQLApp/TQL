@@ -1,0 +1,47 @@
+[
+  {
+    "login": "build-bot",
+    "guest": false,
+    "email": null,
+    "banned": false,
+    "fullName": "Build Bot",
+    "id": "2-12",
+    "$type": "User"
+  },
+  {
+    "login": "guest",
+    "guest": true,
+    "email": null,
+    "banned": true,
+    "fullName": "Guest",
+    "id": "2-10",
+    "$type": "User"
+  },
+  {
+    "login": "bsmith",
+    "guest": false,
+    "email": "bob.smith@example.com",
+    "banned": false,
+    "fullName": "Bob Smith",
+    "id": "2-13",
+    "$type": "User"
+  },
+  {
+    "login": "jdoe",
+    "guest": false,
+    "email": "jane.doe@example.com",
+    "banned": false,
+    "fullName": "Jane Doe",
+    "id": "2-11",
+    "$type": "User"
+  },
+  {
+    "login": "cjones",
+    "guest": false,
+    "email": "carol.jones@example.com",
+    "banned": true,
+    "fullName": "Carol Jones",
+    "id": "2-14",
+    "$type": "User"
+  }
+]

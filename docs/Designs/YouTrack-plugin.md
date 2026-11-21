@@ -1,6 +1,7 @@
 # YouTrack plugin: design
 
-Status: proposed, 2026-11-21. Nothing is built yet.
+Status: built, 2026-11-21. The Windows test run (`specs/Plugins - YouTrack/`) is
+still to do.
 
 ## Decisions
 
@@ -102,8 +103,9 @@ once there is more than one.
 
 ## Features
 
-Paged lists use `$skip` and `$top`; every call passes `$top`, because YouTrack
-returns 42 items when it is left out.
+Paged lists use `$skip` and `$top`; every call passes `$top`, because the
+default page size is not documented (measured: `/api/issues` returned 500 items
+without it).
 
 - **YouTrack Issues**: searched live with
   `GET /api/issues?query=<text>&$top=100`. The text goes to YouTrack as a query,
@@ -126,7 +128,9 @@ returns 42 items when it is left out.
 Measured on issues.webathome.org: YouTrack matches word prefixes without a
 wildcard (`kubecod` finds "KubeCoder"), so the plugin never appends `*`. Doing
 so could also break a query the user typed. `GET /api/issues/<id>` answers 404
-for an issue that doesn't exist, and the search then runs as usual.
+for an issue that doesn't exist, and the search then runs as usual. A half-typed
+query such as `#Unres` or `state: Op` answers 400 with `invalid_query`; the
+plugin shows no results for it rather than an error.
 
 The people directory searches `GET /api/users?query=<text>&$top=100`. It leaves
 out users without an email address, banned users and guests, and hands the rest
@@ -150,9 +154,10 @@ The project follows `Tql.Plugins.Jira` file by file:
   JIRA plugin does), `IconCacheManager` and `YouTrackPeopleDirectory`.
 - `ConfigurationUI/`: the connections list and the connection dialog.
 - `Labels.resx`, `Labels.nl.resx` and `Labels.Designer.cs`.
-- `Resources/`: Fluent UI System Icons (MIT, already credited in the README),
-  recoloured to `#B6C2CF` like the JIRA category icons, and the YouTrack product
-  icon from JetBrains' brand resources.
+- `Resources/`: the glyphs YouTrack's own web app shows for each category
+  (JetBrains icons, Apache 2.0; the search glyph stands in for saved searches),
+  in the `#8496AD` YouTrack shows them in, and the YouTrack product icon from
+  JetBrains' brand resources.
 
 These four files have no WPF or TQL dependencies, and the test project includes
 them as linked `Compile` items:

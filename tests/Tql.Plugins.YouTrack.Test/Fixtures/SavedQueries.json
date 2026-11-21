@@ -1,0 +1,44 @@
+[
+  {
+    "query": "for: me",
+    "name": "Assigned to me",
+    "id": "11-20",
+    "$type": "SavedQuery"
+  },
+  {
+    "query": "commenter: me",
+    "name": "Commented by me",
+    "id": "11-21",
+    "$type": "SavedQuery"
+  },
+  {
+    "query": "by: me",
+    "name": "Reported by me",
+    "id": "11-22",
+    "$type": "SavedQuery"
+  },
+  {
+    "query": "document type: Issue",
+    "name": "All issues",
+    "id": "11-23",
+    "$type": "SavedQuery"
+  },
+  {
+    "query": "document type: Ticket",
+    "name": "All tickets",
+    "id": "11-24",
+    "$type": "SavedQuery"
+  },
+  {
+    "query": "State: -Done Type: Bug ",
+    "name": "Open bugs",
+    "id": "11-25",
+    "$type": "SavedQuery"
+  },
+  {
+    "query": "tag: {Needs review} sort by: {resolved date} desc",
+    "name": "Recently resolved",
+    "id": "11-26",
+    "$type": "SavedQuery"
+  }
+]

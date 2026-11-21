@@ -2030,6 +2030,12 @@
           "TQLApp.Utilities": "[0.0.0, )"
         }
       },
+      "TQLApp.Plugins.YouTrack": {
+        "type": "Project",
+        "dependencies": {
+          "TQLApp.Utilities": "[0.0.0, )"
+        }
+      },
       "TQLApp.Utilities": {
         "type": "Project",
         "dependencies": {
