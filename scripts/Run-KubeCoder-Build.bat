@@ -6,7 +6,7 @@ rem writes it to build\DebugApp) into %TEMP%\TQL-DebugApp, because Windows won't
 rem run it from the network share, and starts it in the Debug environment so it
 rem stays apart from an installed TQL. Run this script from the share:
 rem
-rem   \\<environment>.home\work\TQL\scripts\Sync-KubeCoder-Build.bat
+rem   \\<environment>.home\work\TQL\scripts\Run-KubeCoder-Build.bat
 rem
 rem or pass the build folder as the first argument. A running Tql.DebugApp is
 rem killed first, because files it has open can't be replaced.

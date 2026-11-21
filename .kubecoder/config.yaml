@@ -28,7 +28,7 @@ preamble:
     `kc project build` publishes Tql.DebugApp self-contained for win-x64 into
     build/DebugApp. The operator tests that on their Windows desktop. Windows
     won't run it from the Samba share, so they run
-    \\tqlapp-tql-49385e.home\work\TQL\scripts\Sync-KubeCoder-Build.bat, which
+    \\tqlapp-tql-49385e.home\work\TQL\scripts\Run-KubeCoder-Build.bat, which
     mirrors it into %TEMP%\TQL-DebugApp and starts it there as
     `Tql.DebugApp.exe --env Debug`, apart from their installed TQL.
 
