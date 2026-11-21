@@ -1,0 +1,17 @@
+[
+  {
+    "name": "Sprint Board",
+    "id": "201-11",
+    "$type": "Agile"
+  },
+  {
+    "name": "Kanban",
+    "id": "201-12",
+    "$type": "Agile"
+  },
+  {
+    "name": "Support",
+    "id": "201-13",
+    "$type": "Agile"
+  }
+]

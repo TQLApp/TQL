@@ -1,0 +1,12 @@
+[
+  {
+    "name": "YouTrack Default Dashboard",
+    "id": "173-10",
+    "$type": "Dashboard"
+  },
+  {
+    "name": "Team overview",
+    "id": "173-11",
+    "$type": "Dashboard"
+  }
+]

@@ -45,6 +45,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tql.Benchmarks", "src\Tql.B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tql.Localization", "src\Tql.Localization\Tql.Localization.csproj", "{3BCD5CFB-31AD-42E5-BC08-40C38F63523E}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tql.Plugins.YouTrack.Test", "tests\Tql.Plugins.YouTrack.Test\Tql.Plugins.YouTrack.Test.csproj", "{581A2C7D-0C4D-4B2D-8621-4834EC4378F6}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C6ED2573-EB45-49CB-BFD3-9D09A60BA23F}"
 	ProjectSection(SolutionItems) = preProject
 		Directory.Build.props = Directory.Build.props
@@ -137,6 +139,10 @@ Global
 		{3BCD5CFB-31AD-42E5-BC08-40C38F63523E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BCD5CFB-31AD-42E5-BC08-40C38F63523E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3BCD5CFB-31AD-42E5-BC08-40C38F63523E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{581A2C7D-0C4D-4B2D-8621-4834EC4378F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{581A2C7D-0C4D-4B2D-8621-4834EC4378F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{581A2C7D-0C4D-4B2D-8621-4834EC4378F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{581A2C7D-0C4D-4B2D-8621-4834EC4378F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -161,6 +167,7 @@ Global
 		{493C14D2-0DAF-4167-BC04-2023DF55AB45} = {E67CF545-0D68-469F-BD58-DAC8EDCE4562}
 		{E5226BB4-2336-40E5-8A8F-9B3F241AA459} = {094A034F-EBB5-42F1-A87B-633A3117042F}
 		{3BCD5CFB-31AD-42E5-BC08-40C38F63523E} = {094A034F-EBB5-42F1-A87B-633A3117042F}
+		{581A2C7D-0C4D-4B2D-8621-4834EC4378F6} = {E67CF545-0D68-469F-BD58-DAC8EDCE4562}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {473D3E4B-C738-47D6-8D01-1D80FA3D6F49}
