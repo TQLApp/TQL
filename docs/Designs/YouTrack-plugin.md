@@ -154,7 +154,8 @@ The project follows `Tql.Plugins.Jira` file by file:
   JIRA plugin does), `IconCacheManager` and `YouTrackPeopleDirectory`.
 - `ConfigurationUI/`: the connections list and the connection dialog.
 - `Labels.resx`, `Labels.nl.resx` and `Labels.Designer.cs`.
-- `Resources/`: Fluent UI System Icons (MIT, already credited in the README),
+- `Resources/`: the glyphs YouTrack's own web app shows for each category
+  (JetBrains icons, Apache 2.0; the search glyph stands in for saved searches),
   recoloured to `#B6C2CF` like the JIRA category icons, and the YouTrack product
   icon from JetBrains' brand resources.
 
