@@ -14,8 +14,9 @@ tools:
         memory: 4Gi
 
 secrets:
-  # Permanent token for https://issues.webathome.org. Only for checking the
-  # YouTrack plugin's REST calls with curl; nothing in the repo reads it.
+  # Permanent token for https://issues.webathome.org, for checking the YouTrack
+  # plugin's REST calls with curl and for the live fixture `kc project test`
+  # runs (read-only).
   YOUTRACK_API_KEY_SECRET: youtrack-api-key
 
 preamble:

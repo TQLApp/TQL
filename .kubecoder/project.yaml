@@ -1,9 +1,10 @@
 # Curated entry points for TQL. Schema: https://kubecoder.home/help/reference/project-yaml/
 #
-# Every project in Tql.sln targets net8.0-windows (WPF + WinForms). It compiles on Linux
-# through EnableWindowsTargeting (Directory.Build.props) with Microsoft's SDK, but nothing
-# WPF runs here: not the app, and not the test projects, whose test host needs the
-# Microsoft.WindowsDesktop.App runtime that only exists on Windows.
+# Every project in Tql.sln but one targets net8.0-windows (WPF + WinForms). They compile
+# on Linux through EnableWindowsTargeting (Directory.Build.props) with Microsoft's SDK, but
+# nothing WPF runs here: not the app, and not their test projects, whose test host needs
+# the Microsoft.WindowsDesktop.App runtime that only exists on Windows. The exception is
+# tests/Tql.Plugins.YouTrack.Test, plain net8.0, which the test verb runs.
 
 projects:
   root:
@@ -22,9 +23,16 @@ projects:
       # win-x64 section to each tracked packages.lock.json; NuGetLockFilePath keeps those
       # lock files in obj/ instead.
       - cexec dotnet dotnet publish src/Tql.DebugApp -c Debug -r win-x64 --self-contained -o build/DebugApp -p:NuGetLockFilePath=obj/packages.win-x64.lock.json
-    # test: deliberately unset. No test project can run on Linux (see the header), and CI
-    # runs none either. A WPF-free test project (plain net8.0) is the plan for the YouTrack
-    # plugin; see docs/Designs/YouTrack-plugin.md.
+    # The one test project that runs on Linux: the YouTrack plugin's WPF-free core, compiled
+    # into plain net8.0 (docs/Designs/YouTrack-plugin.md). The other test projects need
+    # Windows (see the header), and CI runs none. cexec passes the environment on to the
+    # dotnet container, so the live fixture runs too: read-only, against
+    # issues.webathome.org, with the environment's token.
+    test:
+      - >-
+        YOUTRACK_TEST_URL=https://issues.webathome.org
+        YOUTRACK_TEST_TOKEN="$YOUTRACK_API_KEY_SECRET"
+        cexec dotnet dotnet test tests/Tql.Plugins.YouTrack.Test
     lint:
       - cexec dotnet dotnet csharpier --check .
 
