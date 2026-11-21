@@ -12,10 +12,9 @@ projects:
       - cexec dotnet dotnet tool restore
       - cexec dotnet dotnet restore Tql.sln
     build:
-      # Debug, where CI builds Release with -warnaserror: Release also packs every NuGet
-      # package, and the NuGet audit warnings (NU1902/NU1903 on Azure.Identity and
-      # System.Text.Json) would fail -warnaserror today.
-      - cexec dotnet dotnet build Tql.sln --no-restore
+      # -warnaserror as in CI, but Debug where CI builds Release: Release also packs
+      # every NuGet package, which nothing here uses.
+      - cexec dotnet dotnet build Tql.sln --no-restore -warnaserror
       # The build the operator tests on their Windows desktop. Windows won't run it
       # from the Samba share; scripts/Run-KubeCoder-Build.bat, run from the share,
       # mirrors it into %TEMP%\TQL-DebugApp and starts it.
@@ -34,8 +33,7 @@ projects:
     cwd: scripts
     # Bare, not through a toolchain sidecar: prettier is plain JavaScript, the dev
     # container's node runs it, and a frontend sidecar would cost 5Gi for one formatter.
-    # npm ci, not CI's `npm install --save-dev prettier …`, which upgrades the pinned
-    # prettier and rewrites package.json.
+    # npm ci, as scripts/Run-Prettier.ps1 runs it, keeps the prettier the lock file pins.
     setup: npm ci --no-audit --no-fund
     # The options of scripts/Run-Prettier.ps1, as a check. The files are git's tracked and
     # untracked-but-not-ignored ones, so build output and node_modules stay out, as in

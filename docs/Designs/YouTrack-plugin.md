@@ -211,10 +211,6 @@ Studio is written by hand to match; Visual Studio regenerates it on the next
 - **Non-admin tokens.** Every measurement used the operator's administrator
   token. Whether a plain user's token may call `/api/admin/projects` and
   `/api/users` is untested; both are coded to degrade.
-- **CI is red before this work starts.** The PR, main and release builds run
-  `dotnet restore -warnaserror`, which now fails on NU1902 (Azure.Identity
-  1.10.4) and NU1903 (System.Text.Json 8.0.0). The plugin's pull request stays
-  red until those packages are updated.
 - **Documentation.** The configuration's documentation link points at a
   `YouTrack-plugin` page on the GitHub wiki, which lives outside this
   repository.
