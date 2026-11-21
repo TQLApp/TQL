@@ -8,6 +8,9 @@ on:
 permissions:
   contents: write
   packages: write
+  # NuGet trusted publishing: NuGet/login trades the workflow's OIDC token for a
+  # one-hour nuget.org API key.
+  id-token: write
 
 jobs:
   release:
@@ -52,11 +55,19 @@ jobs:
       - name: Build Solution
         run: dotnet build -c Release -property:Version="${{ steps.get-build-version.outputs.build-version }}" -warnaserror
 
+      # The key lasts an hour, so this runs right before the pushes. It needs the
+      # trusted publishing policy on nuget.org for TQLApp/TQL and release.yml.
+      - name: Log in to NuGet.org
+        uses: NuGet/login@v1
+        id: nuget-login
+        with:
+          user: ${{ secrets.NUGET_USER }}
+
       - name: Publish NuGet packages to NuGet.org
-        run: dotnet nuget push "**/*.nupkg" --api-key "${{ secrets.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+        run: dotnet nuget push "**/*.nupkg" --api-key "${{ steps.nuget-login.outputs.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
 
       - name: Publish symbol NuGet packages to NuGet.org
-        run: dotnet nuget push "**/*.snupkg" --api-key "${{ secrets.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+        run: dotnet nuget push "**/*.snupkg" --api-key "${{ steps.nuget-login.outputs.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
 
       - name: Publish App
         run: dotnet publish -c Release -r win-x64 --self-contained src\Tql.App -property:Version="${{ steps.get-build-version.outputs.build-version }}" -warnaserror
